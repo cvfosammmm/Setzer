@@ -1,17 +1,17 @@
 # Setzer
 
-![Screenshot](https://gitlab.gnome.org/cvfosammmm/setzer/raw/master/resources/images/screenshot.png)
+![Screenshot](https://github.com/cvfosammmm/Setzer/raw/master/resources/images/screenshot.png)
 
-Setzer is a LaTeX editor written in Python with Gtk+. It still lacks features and likely has some bugs but I find it quite useful already. I'm happy if you give it a try and provide feedback via the issue tracker here on Gitlab, be it about design, code architecture, bugs, feature requests, ... I try to respond to issues immediately.
+Setzer is a LaTeX editor written in Python with Gtk. It still lacks features and likely has some bugs but I find it quite useful already. I'm happy if you give it a try and provide feedback via the issue tracker here on GitHub, be it about design, code architecture, bugs, feature requests, ... I try to respond to issues immediately.
 
 ## Running Setzer on Debian (Ubuntu, other Distributions too?)
 
-I develop Setzer on Debian and that's what I exclusively tested it with. On Debian derivatives (like Ubuntu) it should probably work the same. On distributions other than Debian and Debian derivatives it should work more or less the same. If you want to run Setzer on another distribution and don't know how please open an issue here on Gitlab. I will then try to provide instructions for your system.
+I develop Setzer on Debian and that's what I exclusively tested it with. On Debian derivatives (like Ubuntu) it should probably work the same. On distributions other than Debian and Debian derivatives it should work more or less the same. If you want to run Setzer on another distribution and don't know how please open an issue here on GitHub. I will then try to provide instructions for your system.
 
 1. Run the following command to install prerequisite Debian packages:<br />
 `apt-get install libgtk-3-dev libgtksourceview-3.0-dev libpoppler-glib-dev`
 
-2. Download und Unpack Setzer from Gitlab
+2. Download und Unpack Setzer from GitHub
 
 3. cd to Setzer folder
 
@@ -28,7 +28,7 @@ To specify a build command open the "Preferences" dialog and type in the command
 
 ## Getting in touch
 
-Setzer development / discussion takes place on Gnome Gitlab at [https://gitlab.gnome.org/cvfosammmm/setzer](https://gitlab.gnome.org/cvfosammmm/setzer "project url").
+Setzer development / discussion takes place on GitHub at [https://github.com/cvfosammmm/Setzer](https://github.com/cvfosammmm/Setzer "project url").
 
 ## Acknowledgements
 
