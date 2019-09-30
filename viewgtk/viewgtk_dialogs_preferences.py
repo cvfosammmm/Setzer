@@ -83,7 +83,7 @@ class Preferences(object):
         self.page_other.pack_start(self.option_autoshow_build_log_errors_warnings, False, False, 0)
         self.page_other.pack_start(self.option_autoshow_build_log_all, False, False, 0)
         
-        self.notebook.append_page(self.page_other, Gtk.Label('Other'))
+        self.notebook.append_page(self.page_other, Gtk.Label('Build System'))
         
         self.dialog.show_all()
     
