@@ -1,0 +1,141 @@
+<symbols>
+  <symbol file="bowtie.png" command="\bowtie" math="1" />
+  <symbol file="Join.png" command="\Join" package="amssymb" math="1" />
+  <symbol file="propto.png" command="\propto" math="1" />
+  <symbol file="varpropto.png" command="\varpropto" package="amssymb" math="1" />
+  <symbol file="multimap.png" command="\multimap" package="amssymb" math="1" />
+  <symbol file="pitchfork.png" command="\pitchfork" package="amssymb" math="1" />
+  <symbol file="therefore.png" command="\therefore" package="amssymb" math="1" />
+  <symbol file="because.png" command="\because" package="amssymb" math="1" />
+  <symbol file="equals.png" command="=" math="1" />
+  <symbol file="neq.png" command="\neq" math="1" />
+  <symbol file="equiv.png" command="\equiv" math="1" />
+  <symbol file="approx.png" command="\approx" math="1" />
+  <symbol file="sim.png" command="\sim" math="1" />
+  <symbol file="simeq.png" command="\simeq" math="1" />
+  <symbol file="backsimeq.png" command="\backsimeq" package="amssymb" math="1" />
+  <symbol file="approxeq.png" command="\approxeq" package="amssymb" math="1" />
+  <symbol file="cong.png" command="\cong" math="1" />
+  <symbol file="ncong.png" command="\ncong" package="amssymb" math="1" />
+  <symbol file="smile.png" command="\smile" math="1" />
+  <symbol file="frown.png" command="\frown" math="1" />
+  <symbol file="asymp.png" command="\asymp" math="1" />
+  <symbol file="smallfrown.png" command="\smallfrown" package="amssymb" math="1" />
+  <symbol file="smallsmile.png" command="\smallsmile" package="amssymb" math="1" />
+  <symbol file="between.png" command="\between" package="amssymb" math="1" />
+  <symbol file="prec.png" command="\prec" math="1" />
+  <symbol file="succ.png" command="\succ" math="1" />
+  <symbol file="nprec.png" command="\nprec" package="amssymb" math="1" />
+  <symbol file="nsucc.png" command="\nsucc" package="amssymb" math="1" />
+  <symbol file="preceq.png" command="\preceq" math="1" />
+  <symbol file="succeq.png" command="\succeq" math="1" />
+  <symbol file="npreceq.png" command="\npreceq" package="amssymb" math="1" />
+  <symbol file="nsucceq.png" command="\nsucceq" package="amssymb" math="1" />
+  <symbol file="preccurlyeq.png" command="\preccurlyeq" package="amssymb" math="1" />
+  <symbol file="succcurlyeq.png" command="\succcurlyeq" package="amssymb" math="1" />
+  <symbol file="curlyeqprec.png" command="\curlyeqprec" package="amssymb" math="1" />
+  <symbol file="curlyeqsucc.png" command="\curlyeqsucc" package="amssymb" math="1" />
+  <symbol file="precsim.png" command="\precsim" package="amssymb" math="1" />
+  <symbol file="succsim.png" command="\succsim" package="amssymb" math="1" />
+  <symbol file="precnsim.png" command="\precnsim" package="amssymb" math="1" />
+  <symbol file="succnsim.png" command="\succnsim" package="amssymb" math="1" />
+  <symbol file="precapprox.png" command="\precapprox" package="amssymb" math="1" />
+  <symbol file="succapprox.png" command="\succapprox" package="amssymb" math="1" />
+  <symbol file="precnapprox.png" command="\precnapprox" package="amssymb" math="1" />
+  <symbol file="succnapprox.png" command="\succnapprox" package="amssymb" math="1" />
+  <symbol file="perp.png" command="\perp" math="1" />
+  <symbol file="vdash.png" command="\vdash" math="1" />
+  <symbol file="dashv.png" command="\dashv" math="1" />
+  <symbol file="nvdash.png" command="\nvdash" package="amssymb" math="1" />
+  <symbol file="Vdash.png" command="\Vdash" package="amssymb" math="1" />
+  <symbol file="Vvdash.png" command="\Vvdash" package="amssymb" math="1" />
+  <symbol file="models.png" command="\models" math="1" />
+  <symbol file="vDash.png" command="\vDash" package="amssymb" math="1" />
+  <symbol file="nvDash.png" command="\nvDash" package="amssymb" math="1" />
+  <symbol file="nVDash.png" command="\nVDash" package="amssymb" math="1" />
+  <symbol file="mid.png" command="\mid" math="1" />
+  <symbol file="nmid.png" command="\nmid" package="amssymb" math="1" />
+  <symbol file="parallel.png" command="\parallel" math="1" />
+  <symbol file="nparallel.png" command="\nparallel" package="amssymb" math="1" />
+  <symbol file="shortmid.png" command="\shortmid" package="amssymb" math="1" />
+  <symbol file="nshortmid.png" command="\nshortmid" package="amssymb" math="1" />
+  <symbol file="shortparallel.png" command="\shortparallel" package="amssymb" math="1" />
+  <symbol file="nshortparallel.png" command="\nshortparallel" package="amssymb" math="1" />
+  <symbol file="lt.png" command="&lt;" math="1" />
+  <symbol file="gt.png" command="&gt;" math="1" />
+  <symbol file="nless.png" command="\nless" package="amssymb" math="1" />
+  <symbol file="ngtr.png" command="\ngtr" package="amssymb" math="1" />
+  <symbol file="lessdot.png" command="\lessdot" package="amssymb" math="1" />
+  <symbol file="gtrdot.png" command="\gtrdot" package="amssymb" math="1" />
+  <symbol file="ll.png" command="\ll" math="1" />
+  <symbol file="gg.png" command="\gg" math="1" />
+  <symbol file="lll.png" command="\lll" package="amssymb" math="1" />
+  <symbol file="ggg.png" command="\ggg" package="amssymb" math="1" />
+  <symbol file="leq.png" command="\leq" math="1" />
+  <symbol file="geq.png" command="\geq" math="1" />
+  <symbol file="lneq.png" command="\lneq" package="amssymb" math="1" />
+  <symbol file="gneq.png" command="\gneq" package="amssymb" math="1" />
+  <symbol file="nleq.png" command="\nleq" package="amssymb" math="1" />
+  <symbol file="ngeq.png" command="\ngeq" package="amssymb" math="1" />
+  <symbol file="leqq.png" command="\leqq" package="amssymb" math="1" />
+  <symbol file="geqq.png" command="\geqq" package="amssymb" math="1" />
+  <symbol file="lneqq.png" command="\lneqq" package="amssymb" math="1" />
+  <symbol file="gneqq.png" command="\gneqq" package="amssymb" math="1" />
+  <symbol file="lvertneqq.png" command="\lvertneqq" package="amssymb" math="1" />
+  <symbol file="gvertneqq.png" command="\gvertneqq" package="amssymb" math="1" />
+  <symbol file="nleqq.png" command="\nleqq" package="amssymb" math="1" />
+  <symbol file="ngeqq.png" command="\ngeqq" package="amssymb" math="1" />
+  <symbol file="leqslant.png" command="\leqslant" package="amssymb" math="1" />
+  <symbol file="geqslant.png" command="\geqslant" package="amssymb" math="1" />
+  <symbol file="nleqslant.png" command="\nleqslant" package="amssymb" math="1" />
+  <symbol file="ngeqslant.png" command="\ngeqslant" package="amssymb" math="1" />
+  <symbol file="eqslantless.png" command="\eqslantless" package="amssymb" math="1" />
+  <symbol file="eqslantgtr.png" command="\eqslantgtr" package="amssymb" math="1" />
+  <symbol file="lessgtr.png" command="\lessgtr" package="amssymb" math="1" />
+  <symbol file="gtrless.png" command="\gtrless" package="amssymb" math="1" />
+  <symbol file="lesseqgtr.png" command="\lesseqgtr" package="amssymb" math="1" />
+  <symbol file="gtreqless.png" command="\gtreqless" package="amssymb" math="1" />
+  <symbol file="lesseqqgtr.png" command="\lesseqqgtr" package="amssymb" math="1" />
+  <symbol file="gtreqqless.png" command="\gtreqqless" package="amssymb" math="1" />
+  <symbol file="lesssim.png" command="\lesssim" package="amssymb" math="1" />
+  <symbol file="gtrsim.png" command="\gtrsim" package="amssymb" math="1" />
+  <symbol file="lnsim.png" command="\lnsim" package="amssymb" math="1" />
+  <symbol file="gnsim.png" command="\gnsim" package="amssymb" math="1" />
+  <symbol file="lessapprox.png" command="\lessapprox" package="amssymb" math="1" />
+  <symbol file="gtrapprox.png" command="\gtrapprox" package="amssymb" math="1" />
+  <symbol file="lnapprox.png" command="\lnapprox" package="amssymb" math="1" />
+  <symbol file="gnapprox.png" command="\gnapprox" package="amssymb" math="1" />
+  <symbol file="vartriangleleft.png" command="\vartriangleleft" package="amssymb" math="1" />
+  <symbol file="vartriangleright.png" command="\vartriangleright" package="amssymb" math="1" />
+  <symbol file="ntriangleleft.png" command="\ntriangleleft" package="amssymb" math="1" />
+  <symbol file="ntriangleright.png" command="\ntriangleright" package="amssymb" math="1" />
+  <symbol file="trianglelefteq.png" command="\trianglelefteq" package="amssymb" math="1" />
+  <symbol file="trianglerighteq.png" command="\trianglerighteq" package="amssymb" math="1" />
+  <symbol file="ntrianglelefteq.png" command="\ntrianglelefteq" package="amssymb" math="1" />
+  <symbol file="ntrianglerighteq.png" command="\ntrianglerighteq" package="amssymb" math="1" />
+  <symbol file="blacktriangleleft.png" command="\blacktriangleleft" package="amssymb" math="1" />
+  <symbol file="blacktriangleright.png" command="\blacktriangleright" package="amssymb" math="1" />
+  <symbol file="subset.png" command="\subset" math="1" />
+  <symbol file="supset.png" command="\supset" math="1" />
+  <symbol file="subseteq.png" command="\subseteq" math="1" />
+  <symbol file="supseteq.png" command="\supseteq" math="1" />
+  <symbol file="subsetneq.png" command="\subsetneq" package="amssymb" math="1" />
+  <symbol file="supsetneq.png" command="\supsetneq" package="amssymb" math="1" />
+  <symbol file="varsubsetneq.png" command="\varsubsetneq" package="amssymb" math="1" />
+  <symbol file="varsupsetneq.png" command="\varsupsetneq" package="amssymb" math="1" />
+  <symbol file="nsubseteq.png" command="\nsubseteq" package="amssymb" math="1" />
+  <symbol file="nsupseteq.png" command="\nsupseteq" package="amssymb" math="1" />
+  <symbol file="subseteqq.png" command="\subseteqq" package="amssymb" math="1" />
+  <symbol file="supseteqq.png" command="\supseteqq" package="amssymb" math="1" />
+  <symbol file="subsetneqq.png" command="\subsetneqq" package="amssymb" math="1" />
+  <symbol file="supsetneqq.png" command="\supsetneqq" package="amssymb" math="1" />
+  <symbol file="nsubseteqq.png" command="\nsubseteqq" package="amssymb" math="1" />
+  <symbol file="nsupseteqq.png" command="\nsupseteqq" package="amssymb" math="1" />
+  <symbol file="backepsilon.png" command="\backepsilon" package="amssymb" math="1" />
+  <symbol file="Subset.png" command="\Subset" package="amssymb" math="1" />
+  <symbol file="Supset.png" command="\Supset" package="amssymb" math="1" />
+  <symbol file="sqsubset.png" command="\sqsubset" package="amssymb" math="1" />
+  <symbol file="sqsupset.png" command="\sqsupset" package="amssymb" math="1" />
+  <symbol file="sqsubseteq.png" command="\sqsubseteq" math="1" />
+  <symbol file="sqsupseteq.png" command="\sqsupseteq" math="1" />
+</symbols>

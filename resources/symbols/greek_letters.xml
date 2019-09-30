@@ -1,0 +1,53 @@
+<symbols>
+  <symbol file="alpha.png" command="\alpha" math="1" />
+  <symbol file="beta.png" command="\beta" math="1" />
+  <symbol file="gamma.png" command="\gamma" math="1" />
+  <symbol file="delta.png" command="\delta" math="1" />
+  <symbol file="epsilon.png" command="\epsilon" math="1" />
+  <symbol file="varepsilon.png" command="\varepsilon" math="1" />
+  <symbol file="zeta.png" command="\zeta" math="1" />
+  <symbol file="eta.png" command="\eta" math="1" />
+  <symbol file="theta.png" command="\theta" math="1" />
+  <symbol file="vartheta.png" command="\vartheta" math="1" />
+  <symbol file="iota.png" command="\iota" math="1" />
+  <symbol file="kappa.png" command="\kappa" math="1" />
+  <symbol file="lambda.png" command="\lambda" math="1" />
+  <symbol file="mu.png" command="\mu" math="1" />
+  <symbol file="nu.png" command="\nu" math="1" />
+  <symbol file="xi.png" command="\xi" math="1" />
+  <symbol file="pi.png" command="\pi" math="1" />
+  <symbol file="varpi.png" command="\varpi" math="1" />
+  <symbol file="rho.png" command="\rho" math="1" />
+  <symbol file="varrho.png" command="\varrho" math="1" />
+  <symbol file="sigma.png" command="\sigma" math="1" />
+  <symbol file="varsigma.png" command="\varsigma" math="1" />
+  <symbol file="tau.png" command="\tau" math="1" />
+  <symbol file="upsilon.png" command="\upsilon" math="1" />
+  <symbol file="phi.png" command="\phi" math="1" />
+  <symbol file="varphi.png" command="\varphi" math="1" />
+  <symbol file="chi.png" command="\chi" math="1" />
+  <symbol file="psi.png" command="\psi" math="1" />
+  <symbol file="omega.png" command="\omega" math="1" />
+  <symbol file="Gamma.png" command="\Gamma" math="1" />
+  <symbol file="varGamma.png" command="\varGamma" package="amsmath" math="1" />
+  <symbol file="Delta.png" command="\Delta" math="1" />
+  <symbol file="varDelta.png" command="\varDelta" package="amsmath" math="1" />
+  <symbol file="Theta.png" command="\Theta" math="1" />
+  <symbol file="varTheta.png" command="\varTheta" package="amsmath" math="1" />
+  <symbol file="Lambda.png" command="\Lambda" math="1" />
+  <symbol file="varLambda.png" command="\varLambda" package="amsmath" math="1" />
+  <symbol file="Xi.png" command="\Xi" math="1" />
+  <symbol file="varXi.png" command="\varXi" package="amsmath" math="1" />
+  <symbol file="Pi.png" command="\Pi" math="1" />
+  <symbol file="varPi.png" command="\varPi" package="amsmath" math="1" />
+  <symbol file="Sigma.png" command="\Sigma" math="1" />
+  <symbol file="varSigma.png" command="\varSigma" package="amsmath" math="1" />
+  <symbol file="Upsilon.png" command="\Upsilon" math="1" />
+  <symbol file="varUpsilon.png" command="\varUpsilon" package="amsmath" math="1" />
+  <symbol file="Phi.png" command="\Phi" math="1" />
+  <symbol file="varPhi.png" command="\varPhi" package="amsmath" math="1" />
+  <symbol file="Psi.png" command="\Psi" math="1" />
+  <symbol file="varPsi.png" command="\varPsi" package="amsmath" math="1" />
+  <symbol file="Omega.png" command="\Omega" math="1" />
+  <symbol file="varOmega.png" command="\varOmega" package="amsmath" math="1" />
+</symbols>

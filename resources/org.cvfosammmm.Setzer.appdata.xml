@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>org.cvfosammmm.Setzer</id>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>GPL-3.0 or later</project_license>
+	<name>Setzer</name>
+	<summary>Edit and build LaTeX documents</summary>
+	<description>
+		<p>Setzer is LaTeX editor written in Python with Gtk+.</p>
+	</description>
+	<launchable type="desktop-id">org.cvfosammmm.Setzer.desktop</launchable>
+	<url type="homepage">https://gitlab.gnome.org/cvfosammmm/setzer</url>
+	<screenshots>
+		<screenshot type="default">
+			<image>https://gitlab.gnome.org/cvfosammmm/setzer/raw/master/resources/images/screenshot.png</image>
+		</screenshot>
+	</screenshots>
+	<provides>
+		<id>org.cvfosammmm.Setzer.desktop</id>
+	</provides>
+</component>
