@@ -118,6 +118,22 @@ class BuildSaveDialog(Gtk.MessageDialog):
         self.set_default_response(Gtk.ResponseType.YES)
         
 
+class InterpreterMissingDialog(Gtk.MessageDialog):
+
+    def __init__(self, main_window, interpreter_name):
+        Gtk.MessageDialog.__init__(self, main_window, 0, Gtk.MessageType.QUESTION)
+        
+        self.set_property('text', 'LateX Interpreter is missing.')
+        self.format_secondary_markup('''Setzer is configured to use "''' + interpreter_name + '''" which seems to be missing on this system.
+
+To choose a different interpreter go to Preferences.
+
+For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibooks.org/wiki/LaTeX/Installation</a>''')
+
+        self.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Go to Preferences', Gtk.ResponseType.YES)
+        self.set_default_response(Gtk.ResponseType.YES)
+        
+
 class ReplaceConfirmDialog(Gtk.MessageDialog):
     ''' This dialog is asking users if they really want to do a replace all. '''
 

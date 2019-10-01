@@ -40,7 +40,7 @@ import re
 class DocumentController(object):
     ''' Mediator between workspace and view. '''
     
-    def __init__(self, document, document_view, doclist_item, backend, settings, main_window, workspace):
+    def __init__(self, document, document_view, doclist_item, backend, settings, main_window, workspace, main_controller):
 
         self.document = document
         self.document_view = document_view
@@ -48,6 +48,7 @@ class DocumentController(object):
         self.settings = settings
         self.main_window = main_window
         self.workspace = workspace
+        self.main_controller = main_controller
         self.doclist_item = doclist_item
         self.modified_state = document.get_modified()
         self.build_button_state = ('idle', int(time.time()*1000))
@@ -153,6 +154,19 @@ class DocumentController(object):
 
                 build_log = self.document.build_log
                 build_log.clear_items()
+
+                if result_blob['error'] == 'interpreter_missing':
+                    self.document.change_state('idle')
+                    self.on_build_state_change('')
+                    self.set_clean_button_state()
+                    document = self.document
+                    dialog = view.dialogs.InterpreterMissingDialog(self.main_window, result_blob['error_arg'])
+                    response = dialog.run()
+                    dialog.hide()
+                    if response == Gtk.ResponseType.YES:
+                        self.main_controller.on_appmenu_show_preferences_dialog()
+                    return
+
                 try:
                     build_log_blob = result_blob['log_messages']
                 except KeyError:

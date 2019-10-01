@@ -78,7 +78,7 @@ class MainApplicationController(Gtk.Application):
         self.observe_main_window()
 
         # init controller
-        self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace, self.main_window, self.settings)
+        self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace, self.main_window, self.settings, self)
         self.setup_hamburger_menu()
         self.shortcuts_controller = shortcutscontroller.ShortcutsController(self.workspace, self.workspace_controller, self.main_window, self)
 
@@ -270,7 +270,7 @@ class MainApplicationController(Gtk.Application):
         quit_action.connect('activate', self.on_appmenu_quit)
         self.add_action(quit_action)
         
-    def on_appmenu_show_preferences_dialog(self, action, parameter=''):
+    def on_appmenu_show_preferences_dialog(self, action=None, parameter=''):
         
         def on_check_button_toggle(button, preference_name):
             self.settings.set_value('preferences', preference_name, button.get_active())

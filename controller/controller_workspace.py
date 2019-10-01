@@ -36,12 +36,13 @@ import time
 class WorkspaceController(object):
     ''' Mediator between workspace and view. '''
     
-    def __init__(self, workspace, main_window, settings):
+    def __init__(self, workspace, main_window, settings, main_controller):
 
         self.workspace = workspace
         self.main_window = main_window
         self.backend = backend.Backend()
         self.settings = settings
+        self.main_controller = main_controller
 
         self.document_controllers = dict()
         self.sidebar_controller = sidebarcontroller.SidebarController(self.main_window.sidebar, self, self.main_window)
@@ -167,7 +168,7 @@ class WorkspaceController(object):
             doclist_item = self.main_window.headerbar.open_docs_popover.add_document(document)
             
             # add controller
-            document_controller = documentcontroller.DocumentController(document, document_view, doclist_item, self.backend, self.settings, self.main_window, self.workspace)
+            document_controller = documentcontroller.DocumentController(document, document_view, doclist_item, self.backend, self.settings, self.main_window, self.workspace, self.main_controller)
             self.document_controllers[document] = document_controller
             self.observe_doclist_item(doclist_item)
 

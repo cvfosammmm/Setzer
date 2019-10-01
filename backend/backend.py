@@ -123,7 +123,18 @@ class Query(object):
         arguments = self.build_command.split()
         arguments = list(map(lambda arg: arg.replace('%OUTDIR', self.directory_name), arguments))
         arguments = list(map(lambda arg: arg.replace('%FILENAME', tex_file.name), arguments))
-        self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        try:
+            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        except FileNotFoundError as e:
+            self.result_lock.acquire()
+            self.result = {'document_controller': self.document_controller, 
+                           'pdf_filename': None, 
+                           'log_messages': None,
+                           'pdf_position': None,
+                           'error': 'interpreter_missing',
+                           'error_arg': arguments[0]}
+            self.result_lock.release()
+            return
         self.process.wait()
 
         # parse results
@@ -145,7 +156,9 @@ class Query(object):
             self.result = {'document_controller': self.document_controller, 
                            'pdf_filename': self.new_pdf_filename, 
                            'log_messages': self.log_messages, 
-                           'pdf_position': pdf_position}
+                           'pdf_position': pdf_position,
+                           'error': None,
+                           'error_arg': None}
             self.result_lock.release()
         else:
             self.cleanup_build_files(tex_file.name)
