@@ -100,20 +100,29 @@ class BuildLogRowView(Gtk.HBox):
         except ValueError:
             self.line_number = 0
             line_number = ''
-        
+
+        self.icon_box = Gtk.VBox()
         self.icon = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
         self.icon.set_margin_left(10)
         self.icon.set_margin_right(12)
+        self.icon.set_margin_top(1)
+        self.icon.set_valign(0)
+        self.icon_box.pack_start(self.icon, False, False, 0)
         self.label_message_type = Gtk.Label(message_type)
         self.label_message_type.set_size_request(80, -1)
         self.label_message_type.set_xalign(0)
+        self.label_message_type.set_yalign(0)
         self.label_line_number = Gtk.Label(line_number)
         self.label_line_number.set_size_request(80, -1)
         self.label_line_number.set_xalign(0)
-        self.label_message = Gtk.Label(message)
+        self.label_line_number.set_yalign(0)
+        self.label_message = Gtk.Label()
+        self.label_message.set_text(message)
         self.label_message.set_size_request(100, -1)
         self.label_message.set_xalign(0)
-        self.pack_start(self.icon, False, False, 0)
+        self.label_message.set_yalign(0)
+        self.label_message.set_line_wrap(False)
+        self.pack_start(self.icon_box, False, False, 0)
         self.pack_start(self.label_message_type, False, False, 0)
         self.pack_start(self.label_line_number, False, False, 0)
         self.pack_start(self.label_message, True, True, 0)
