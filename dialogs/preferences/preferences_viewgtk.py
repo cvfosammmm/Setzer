@@ -46,7 +46,13 @@ class Preferences(object):
         self.notebook.set_show_tabs(True)
         self.notebook.set_show_border(False)
         self.topbox.pack_start(self.notebook, True, True, 0)
+
+        self.build_page_other()
+        self.notebook.append_page(self.page_other, Gtk.Label('Build System'))
         
+        self.dialog.show_all()
+
+    def build_page_other(self):
         self.page_other = Gtk.VBox()
         self.page_other.set_margin_start(18)
         self.page_other.set_margin_end(18)
@@ -54,12 +60,37 @@ class Preferences(object):
         self.page_other.set_margin_bottom(18)
 
         label = Gtk.Label()
-        label.set_markup('<b>Build command</b>')
+        label.set_markup('<b>LaTeX Interpreter</b>')
         label.set_xalign(0)
         label.set_margin_bottom(6)
         self.page_other.pack_start(label, False, False, 0)
+        self.option_latex_interpreter_latexmk = Gtk.RadioButton('Latexmk')
+        self.option_latex_interpreter_pdflatex = Gtk.RadioButton.new_with_label_from_widget(self.option_latex_interpreter_latexmk, 'PdfLaTeX')
+        self.option_latex_interpreter_xelatex = Gtk.RadioButton.new_with_label_from_widget(self.option_latex_interpreter_latexmk, 'XeLaTeX')
+        self.option_latex_interpreter_lualatex = Gtk.RadioButton.new_with_label_from_widget(self.option_latex_interpreter_latexmk, 'LuaLaTeX')
+
+        hbox1 = Gtk.HBox()
+        hbox1.pack_start(self.option_latex_interpreter_latexmk, True, True, 0)
+        hbox1.pack_start(self.option_latex_interpreter_pdflatex, True, True, 0)
+        hbox1.pack_start(self.option_latex_interpreter_xelatex, True, True, 0)
+        hbox1.pack_start(self.option_latex_interpreter_lualatex, True, True, 0)
+        self.page_other.pack_start(hbox1, False, False, 0)
+
+        label = Gtk.Label()
+        label.set_markup('<b>Build command</b>')
+        label.set_xalign(0)
+        label.set_margin_top(18)
+        label.set_margin_bottom(6)
+        self.page_other.pack_start(label, False, False, 0)
+        hbox = Gtk.HBox()
         self.build_command_entry = Gtk.Entry()
-        self.page_other.pack_start(self.build_command_entry, False, False, 0)
+        self.build_command_reset_button = Gtk.Button.new_from_icon_name('edit-undo-symbolic', Gtk.IconSize.MENU)
+        self.build_command_reset_button.set_can_focus(False)
+        self.build_command_reset_button.set_tooltip_text('Undo changes')
+        hbox.pack_start(self.build_command_entry, True, True, 0)
+        hbox.pack_start(self.build_command_reset_button, False, False, 0)
+        hbox.get_style_context().add_class('linked')
+        self.page_other.pack_start(hbox, False, False, 0)
 
         label = Gtk.Label()
         label.set_markup('<b>Options</b>')
@@ -82,10 +113,6 @@ class Preferences(object):
         self.page_other.pack_start(self.option_autoshow_build_log_errors, False, False, 0)
         self.page_other.pack_start(self.option_autoshow_build_log_errors_warnings, False, False, 0)
         self.page_other.pack_start(self.option_autoshow_build_log_all, False, False, 0)
-        
-        self.notebook.append_page(self.page_other, Gtk.Label('Build System'))
-        
-        self.dialog.show_all()
     
     def run(self):
         return self.dialog.run()

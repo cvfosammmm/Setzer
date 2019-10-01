@@ -31,8 +31,7 @@ import controller.controller_settings as settingscontroller
 import controller.controller_workspace as workspacecontroller
 import controller.controller_shortcuts as shortcutscontroller
 import helpers.helpers as helpers
-
-import viewgtk.viewgtk_dialogs_preferences as preferences_dialog
+import dialogs.preferences.preferences as preferences_dialog
 
 
 class MainApplicationController(Gtk.Application):
@@ -76,6 +75,9 @@ class MainApplicationController(Gtk.Application):
 
         self.main_window.show_all()
         self.observe_main_window()
+
+        # init dialogs
+        self.preferences_dialog = preferences_dialog.PreferencesDialog(self.main_window, self.settings)
 
         # init controller
         self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace, self.main_window, self.settings, self)
@@ -271,37 +273,7 @@ class MainApplicationController(Gtk.Application):
         self.add_action(quit_action)
         
     def on_appmenu_show_preferences_dialog(self, action=None, parameter=''):
-        
-        def on_check_button_toggle(button, preference_name):
-            self.settings.set_value('preferences', preference_name, button.get_active())
-        
-        def on_radio_button_toggle(button, preference_name, value):
-            self.settings.set_value('preferences', preference_name, value)
-        
-        def text_deleted(buffer, position, n_chars, preference_name):
-            self.settings.set_value('preferences', preference_name, buffer.get_text())
-
-        def text_inserted(buffer, position, chars, n_chars, preference_name):
-            self.settings.set_value('preferences', preference_name, buffer.get_text())
-        
-        dialog = preferences_dialog.Preferences(self.main_window)
-        
-        dialog.option_cleanup_build_files.set_active(self.settings.get_value('preferences', 'cleanup_build_files'))
-        dialog.option_cleanup_build_files.connect('toggled', on_check_button_toggle, 'cleanup_build_files')
-
-        dialog.option_autoshow_build_log_errors.set_active(self.settings.get_value('preferences', 'autoshow_build_log') == 'errors')
-        dialog.option_autoshow_build_log_errors_warnings.set_active(self.settings.get_value('preferences', 'autoshow_build_log') == 'errors_warnings')
-        dialog.option_autoshow_build_log_all.set_active(self.settings.get_value('preferences', 'autoshow_build_log') == 'all')
-        dialog.build_command_entry.set_text(self.settings.get_value('preferences', 'build_command'))
-
-        dialog.option_autoshow_build_log_errors.connect('toggled', on_radio_button_toggle, 'autoshow_build_log', 'errors')
-        dialog.option_autoshow_build_log_errors_warnings.connect('toggled', on_radio_button_toggle, 'autoshow_build_log', 'errors_warnings')
-        dialog.option_autoshow_build_log_all.connect('toggled', on_radio_button_toggle, 'autoshow_build_log', 'all')
-        dialog.build_command_entry.get_buffer().connect('deleted-text', text_deleted, 'build_command')
-        dialog.build_command_entry.get_buffer().connect('inserted-text', text_inserted, 'build_command')
-
-        response = dialog.run()
-        del(dialog)
+        self.preferences_dialog.run()
 
     def on_appmenu_show_about_dialog(self, action, parameter=''):
         ''' show popup with some information about the app. '''
