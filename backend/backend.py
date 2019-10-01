@@ -125,7 +125,7 @@ class Query(object):
         arguments = list(map(lambda arg: arg.replace('%FILENAME', tex_file.name), arguments))
         try:
             self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             self.result_lock.acquire()
             self.result = {'document_controller': self.document_controller, 
                            'pdf_filename': None, 
