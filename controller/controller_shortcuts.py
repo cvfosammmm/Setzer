@@ -36,7 +36,7 @@ class ShortcutsController(object):
         self.setup_shortcuts()
 
         show_shortcuts_window_action = Gio.SimpleAction.new('show-shortcuts-window', None)
-        show_shortcuts_window_action.connect('activate', self.on_appmenu_show_shortcuts_window)
+        show_shortcuts_window_action.connect('activate', self.show_shortcuts_window)
         self.main_controller.add_action(show_shortcuts_window_action)
 
     def setup_shortcuts(self):
@@ -118,12 +118,12 @@ class ShortcutsController(object):
         self.workspace_controller.save_as_action.activate()
 
     def shortcut_quit(self, accel_group=None, window=None, key=None, mask=None):
-        self.main_controller.on_appmenu_quit()
+        self.main_controller.hamburger_quit()
 
     def shortcut_quotes(self, accel_group=None, window=None, key=None, mask=None):
         self.workspace_controller.activate_quotes_popover()
 
-    def on_appmenu_show_shortcuts_window(self, action, parameter=''):
+    def show_shortcuts_window(self, action, parameter=''):
         ''' show popup with a list of keyboard shortcuts. '''
         
         self.builder = Gtk.Builder()

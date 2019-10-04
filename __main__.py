@@ -56,8 +56,6 @@ class MainApplicationController(Gtk.Application):
         self.workspace = model_workspace.Workspace()
         
         # init view
-        self.construct_application_menu()
-
         self.main_window = view.MainWindow(self)
         self.main_window.set_default_size(self.settings.get_value('window_state', 'width'), 
                                           self.settings.get_value('window_state', 'height'))
@@ -234,26 +232,38 @@ class MainApplicationController(Gtk.Application):
             return True
 
     '''
-    *** app menu
+    *** hamburger menu
     '''
 
-    def construct_application_menu(self):
+    def setup_hamburger_menu(self):
         show_preferences_dialog_action = Gio.SimpleAction.new('show-preferences-dialog', None)
-        show_preferences_dialog_action.connect('activate', self.on_appmenu_show_preferences_dialog)
+        show_preferences_dialog_action.connect('activate', self.show_preferences_dialog)
         self.add_action(show_preferences_dialog_action)
 
         show_about_dialog_action = Gio.SimpleAction.new('show-about-dialog', None)
-        show_about_dialog_action.connect('activate', self.on_appmenu_show_about_dialog)
+        show_about_dialog_action.connect('activate', self.show_about_dialog)
         self.add_action(show_about_dialog_action)
 
         quit_action = Gio.SimpleAction.new('quit', None)
-        quit_action.connect('activate', self.on_appmenu_quit)
+        quit_action.connect('activate', self.hamburger_quit)
         self.add_action(quit_action)
+
+        self.add_action(self.workspace_controller.save_as_action)
+        self.add_action(self.workspace_controller.save_all_action)
+        self.add_action(self.workspace_controller.find_action)
+        self.add_action(self.workspace_controller.find_next_action)
+        self.add_action(self.workspace_controller.find_prev_action)
+        self.add_action(self.workspace_controller.find_replace_action)
+        self.add_action(self.workspace_controller.close_document_action)
+        self.add_action(self.workspace_controller.close_all_action)
+        self.add_action(self.workspace_controller.insert_before_after_action)
+        self.add_action(self.workspace_controller.insert_symbol_action)
+        self.add_action(self.workspace_controller.document_wizard_action)
         
-    def on_appmenu_show_preferences_dialog(self, action=None, parameter=''):
+    def show_preferences_dialog(self, action=None, parameter=''):
         self.preferences_dialog.run()
 
-    def on_appmenu_show_about_dialog(self, action, parameter=''):
+    def show_about_dialog(self, action, parameter=''):
         ''' show popup with some information about the app. '''
         
         self.about_dialog = Gtk.AboutDialog()
@@ -273,24 +283,11 @@ class MainApplicationController(Gtk.Application):
         
         self.about_dialog.show_all()
         
-    def on_appmenu_quit(self, action=None, parameter=''):
+    def hamburger_quit(self, action=None, parameter=''):
         ''' quit application, show save dialog if unsaved worksheets present. '''
 
         if not self.on_window_close(self.main_window):
             self.quit()
-        
-    def setup_hamburger_menu(self):
-        self.add_action(self.workspace_controller.save_as_action)
-        self.add_action(self.workspace_controller.save_all_action)
-        self.add_action(self.workspace_controller.find_action)
-        self.add_action(self.workspace_controller.find_next_action)
-        self.add_action(self.workspace_controller.find_prev_action)
-        self.add_action(self.workspace_controller.find_replace_action)
-        self.add_action(self.workspace_controller.close_document_action)
-        self.add_action(self.workspace_controller.close_all_action)
-        self.add_action(self.workspace_controller.insert_before_after_action)
-        self.add_action(self.workspace_controller.insert_symbol_action)
-        self.add_action(self.workspace_controller.document_wizard_action)
         
     def toggle_dark_mode(self, action, parameter=None):
         new_state = not action.get_state().get_boolean()

@@ -164,7 +164,7 @@ class DocumentController(object):
                     response = dialog.run()
                     dialog.hide()
                     if response == Gtk.ResponseType.YES:
-                        self.main_controller.on_appmenu_show_preferences_dialog()
+                        self.main_controller.show_preferences_dialog()
                     return
 
                 try:
