@@ -2,5 +2,5 @@
 Name=Setzer
 Exec=setzer
 Type=Application
-Icon=org.cvfosammmm.Setzer
+Icon=/app/share/icons/hicolor/scalable/apps/org.cvfosammmm.Setzer.svg
 Categories=GNOME;GTK;Science;
