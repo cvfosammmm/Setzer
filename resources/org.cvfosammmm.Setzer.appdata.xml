@@ -6,13 +6,13 @@
 	<name>Setzer</name>
 	<summary>Edit and build LaTeX documents</summary>
 	<description>
-		<p>Setzer is LaTeX editor written in Python with Gtk+.</p>
+		<p>Setzer is LaTeX editor written in Python with Gtk</p>
 	</description>
 	<launchable type="desktop-id">org.cvfosammmm.Setzer.desktop</launchable>
-	<url type="homepage">https://gitlab.gnome.org/cvfosammmm/setzer</url>
+	<url type="homepage">https://github.com/cvfosammmm/Setzer</url>
 	<screenshots>
 		<screenshot type="default">
-			<image>https://gitlab.gnome.org/cvfosammmm/setzer/raw/master/resources/images/screenshot.png</image>
+			<image>https://github.com/cvfosammmm/Setzer/raw/master/resources/images/screenshot.png</image>
 		</screenshot>
 	</screenshots>
 	<provides>
