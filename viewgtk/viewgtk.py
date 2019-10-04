@@ -52,7 +52,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.ismaximized = False
 
         # headerbar
-        self.headerbar = HeaderBar(not app.settings.gtksettings.get_property('gtk-shell-shows-app-menu'))
+        self.headerbar = HeaderBar()
         self.set_titlebar(self.headerbar)
         
         # notebook

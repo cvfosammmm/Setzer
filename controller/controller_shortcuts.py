@@ -35,7 +35,7 @@ class ShortcutsController(object):
         
         self.setup_shortcuts()
 
-        show_shortcuts_window_action = Gio.SimpleAction.new('show_shortcuts_window', None)
+        show_shortcuts_window_action = Gio.SimpleAction.new('show-shortcuts-window', None)
         show_shortcuts_window_action.connect('activate', self.on_appmenu_show_shortcuts_window)
         self.main_controller.add_action(show_shortcuts_window_action)
 

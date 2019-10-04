@@ -238,33 +238,11 @@ class MainApplicationController(Gtk.Application):
     '''
 
     def construct_application_menu(self):
-
-        # show classic gnome app menu
-        if self.settings.gtksettings.get_property('gtk-shell-shows-app-menu') == True:
-            app_menu = Gio.Menu()
-
-            preferences_section = Gio.Menu()
-            item = Gio.MenuItem.new('Preferences', 'app.show_preferences_dialog')
-            preferences_section.append_item(item)
-
-            meta_section = Gio.Menu()
-            item = Gio.MenuItem.new('Keyboard Shortcuts', 'app.show_shortcuts_window')
-            meta_section.append_item(item)
-            item = Gio.MenuItem.new('About', 'app.show_about_dialog')
-            meta_section.append_item(item)
-            item = Gio.MenuItem.new('Quit', 'app.quit')
-            meta_section.append_item(item)
-
-            app_menu.append_section(None, preferences_section)
-            app_menu.append_section(None, meta_section)
-
-            self.set_app_menu(app_menu)
-
-        show_preferences_dialog_action = Gio.SimpleAction.new('show_preferences_dialog', None)
+        show_preferences_dialog_action = Gio.SimpleAction.new('show-preferences-dialog', None)
         show_preferences_dialog_action.connect('activate', self.on_appmenu_show_preferences_dialog)
         self.add_action(show_preferences_dialog_action)
 
-        show_about_dialog_action = Gio.SimpleAction.new('show_about_dialog', None)
+        show_about_dialog_action = Gio.SimpleAction.new('show-about-dialog', None)
         show_about_dialog_action.connect('activate', self.on_appmenu_show_about_dialog)
         self.add_action(show_about_dialog_action)
 

@@ -31,7 +31,7 @@ import time
 class HeaderBar(Gtk.HeaderBar):
     ''' Title bar of the app, contains global controls '''
         
-    def __init__(self, shows_app_menu):
+    def __init__(self):
         Gtk.HeaderBar.__init__(self)
 
         self.set_show_close_button(True)
@@ -78,20 +78,18 @@ class HeaderBar(Gtk.HeaderBar):
         section.append_item(Gio.MenuItem.new('Close All Documents', 'app.close-all-documents'))
         section.append_item(Gio.MenuItem.new('Close Document', 'app.close-active-document'))
         self.workspace_menu.append_section(None, section)
-
-        if shows_app_menu == True:
-            preferences_section = Gio.Menu()
-            item = Gio.MenuItem.new('Preferences', 'app.show-preferences-dialog')
-            preferences_section.append_item(item)
-            self.workspace_menu.append_section(None, preferences_section)
-            meta_section = Gio.Menu()
-            item = Gio.MenuItem.new('Keyboard Shortcuts', 'app.show-shortcuts-window')
-            meta_section.append_item(item)
-            item = Gio.MenuItem.new('About', 'app.show-about-dialog')
-            meta_section.append_item(item)
-            item = Gio.MenuItem.new('Quit', 'app.quit')
-            meta_section.append_item(item)
-            self.workspace_menu.append_section(None, meta_section)
+        preferences_section = Gio.Menu()
+        item = Gio.MenuItem.new('Preferences', 'app.show-preferences-dialog')
+        preferences_section.append_item(item)
+        self.workspace_menu.append_section(None, preferences_section)
+        meta_section = Gio.Menu()
+        item = Gio.MenuItem.new('Keyboard Shortcuts', 'app.show-shortcuts-window')
+        meta_section.append_item(item)
+        item = Gio.MenuItem.new('About', 'app.show-about-dialog')
+        meta_section.append_item(item)
+        item = Gio.MenuItem.new('Quit', 'app.quit')
+        meta_section.append_item(item)
+        self.workspace_menu.append_section(None, meta_section)
         self.menu_button.set_menu_model(self.workspace_menu)
         self.pack_end(self.menu_button)
 
