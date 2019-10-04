@@ -56,8 +56,6 @@ class WorkspaceController(object):
 
         self.show_document_name(None)
         self.main_window.headerbar.save_document_button.hide()
-        if self.settings.gtksettings.get_property('gtk-shell-shows-app-menu') == True:
-            self.main_window.headerbar.menu_button.hide()
         self.main_window.headerbar.build_wrapper.hide()
         self.main_window.shortcuts_bar.sidebar_toggle.set_sensitive(False)
         self.main_window.headerbar.preview_toggle.set_sensitive(False)
@@ -186,8 +184,6 @@ class WorkspaceController(object):
                 notebook.set_current_page(notebook.page_num(self.main_window.blank_slate))
                 self.show_document_name(None)
                 self.main_window.headerbar.save_document_button.hide()
-                if self.settings.gtksettings.get_property('gtk-shell-shows-app-menu') == True:
-                    self.main_window.headerbar.menu_button.hide()
                 self.main_window.headerbar.build_wrapper.hide()
                 self.main_window.headerbar.preview_toggle.hide()
                 self.main_window.shortcuts_bar.sidebar_toggle.set_sensitive(False)
