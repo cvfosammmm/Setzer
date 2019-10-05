@@ -274,8 +274,8 @@ class MainApplicationController(Gtk.Application):
         self.about_dialog.set_copyright('Copyright © 2018-2019 - the Setzer developers')
         self.about_dialog.set_comments('Setzer is a LaTeX editor.')
         self.about_dialog.set_license_type(Gtk.License.GPL_3_0)
-        self.about_dialog.set_website('https://github.com/cvfosammmm/setzer')
-        self.about_dialog.set_website_label('https://github.com/cvfosammmm/setzer')
+        self.about_dialog.set_website('https://www.cvfosammmm.org/setzer')
+        self.about_dialog.set_website_label('https://www.cvfosammmm.org/setzer')
         self.about_dialog.set_authors(('Robert Griesel',))
         
         logo = Gtk.Image.new_from_file('./resources/images/org.setzer.setzer.svg')
