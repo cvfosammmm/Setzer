@@ -124,11 +124,25 @@ class InterpreterMissingDialog(Gtk.MessageDialog):
         Gtk.MessageDialog.__init__(self, main_window, 0, Gtk.MessageType.QUESTION)
         
         self.set_property('text', 'LateX Interpreter is missing.')
-        self.format_secondary_markup('''Setzer is configured to use "''' + interpreter_name + '''" which seems to be missing on this system.
+        self.format_secondary_markup('''Setzer is configured to use »''' + interpreter_name + '''« which seems to be missing on this system.
 
 To choose a different interpreter go to Preferences.
 
 For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibooks.org/wiki/LaTeX/Installation</a>''')
+
+        self.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Go to Preferences', Gtk.ResponseType.YES)
+        self.set_default_response(Gtk.ResponseType.YES)
+        
+
+class BuildingFailedDialog(Gtk.MessageDialog):
+
+    def __init__(self, main_window, error_message):
+        Gtk.MessageDialog.__init__(self, main_window, 0, Gtk.MessageType.QUESTION)
+        
+        self.set_property('text', 'Something went wrong.')
+        self.format_secondary_markup('''The build process ended unexpectedly returning "''' + error_message + '''".
+
+To configure your build system go to Preferences.''')
 
         self.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Go to Preferences', Gtk.ResponseType.YES)
         self.set_default_response(Gtk.ResponseType.YES)

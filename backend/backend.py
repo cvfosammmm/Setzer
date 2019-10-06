@@ -138,7 +138,18 @@ class Query(object):
         self.process.wait()
 
         # parse results
-        self.parse_build_log(log_filename)
+        try: self.parse_build_log(log_filename)
+        except FileNotFoundError as e:
+            self.result_lock.acquire()
+            self.result = {'document_controller': self.document_controller, 
+                           'pdf_filename': None, 
+                           'log_messages': None,
+                           'pdf_position': None,
+                           'error': 'interpreter_not_working',
+                           'error_arg': 'log file missing'}
+            self.result_lock.release()
+            return
+        
         pdf_position = self.parse_synctex(tex_file.name, pdf_filename)
         if self.process != None:
             results = self.process.communicate()
@@ -203,7 +214,9 @@ class Query(object):
             return None
 
     def parse_build_log(self, log_filename):
-        with open(log_filename, 'rb') as file:
+        try: file = open(log_filename, 'rb')
+        except FileNotFoundError as e: raise e
+        else:
             for line in file:
                 try:
                     line = line.decode('utf-8')

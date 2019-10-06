@@ -167,6 +167,18 @@ class DocumentController(object):
                         self.main_controller.show_preferences_dialog()
                     return
 
+                if result_blob['error'] == 'interpreter_not_working':
+                    self.document.change_state('idle')
+                    self.on_build_state_change('')
+                    self.set_clean_button_state()
+                    document = self.document
+                    dialog = view.dialogs.BuildingFailedDialog(self.main_window, result_blob['error_arg'])
+                    response = dialog.run()
+                    dialog.hide()
+                    if response == Gtk.ResponseType.YES:
+                        self.main_controller.show_preferences_dialog()
+                    return
+
                 try:
                     build_log_blob = result_blob['log_messages']
                 except KeyError:
