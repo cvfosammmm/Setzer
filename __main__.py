@@ -23,7 +23,7 @@ from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
 
-import sys, time
+import sys, time, os
 
 import model.model_workspace as model_workspace
 import viewgtk.viewgtk as view
@@ -278,7 +278,7 @@ class MainApplicationController(Gtk.Application):
         self.about_dialog.set_website_label('https://www.cvfosammmm.org/setzer')
         self.about_dialog.set_authors(('Robert Griesel',))
         
-        logo = Gtk.Image.new_from_file('./resources/images/org.setzer.setzer.svg')
+        logo = Gtk.Image.new_from_file(os.getcwd() + '/resources/images/org.setzer.setzer.svg')
         self.about_dialog.set_logo(logo.get_pixbuf())
         
         self.about_dialog.show_all()
