@@ -126,11 +126,9 @@ class Query(object):
         try:
             self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         except FileNotFoundError:
+            self.cleanup_build_files(tex_file.name)
             self.result_lock.acquire()
             self.result = {'document_controller': self.document_controller, 
-                           'pdf_filename': None, 
-                           'log_messages': None,
-                           'pdf_position': None,
                            'error': 'interpreter_missing',
                            'error_arg': arguments[0]}
             self.result_lock.release()
@@ -140,11 +138,9 @@ class Query(object):
         # parse results
         try: self.parse_build_log(log_filename)
         except FileNotFoundError as e:
+            self.cleanup_build_files(tex_file.name)
             self.result_lock.acquire()
             self.result = {'document_controller': self.document_controller, 
-                           'pdf_filename': None, 
-                           'log_messages': None,
-                           'pdf_position': None,
                            'error': 'interpreter_not_working',
                            'error_arg': 'log file missing'}
             self.result_lock.release()
@@ -252,8 +248,8 @@ class Query(object):
                         pass
             
     def cleanup_build_files(self, tex_file_name):
-        file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,
-                        '.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc']
+        file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' , '.ilg',
+                        '.ind', '.log', '.nav', '.out', '.pdf', '.snm', '.synctex.gz', '.toc']
         for ending in file_endings:
             try: os.remove(tex_file_name.rsplit('.tex', 1)[0] + ending)
             except FileNotFoundError: pass
