@@ -1,12 +1,18 @@
 # Setzer
 
+Simple yet full-featured LaTeX editor for the GNU/Linux desktop, written in Python with Gtk.
+
+Website: <a href="https://www.cvfosammmm.org/setzer">https://www.cvfosammmm.org/setzer</a>
+
+<a href="https://flathub.org/apps/details/org.cvfosammmm.Setzer"><img src="https://www.cvfosammmm.org/setzer/images/flathub-badge-en.svg" width="150" height="50"></a>
+
 ![Screenshot](https://github.com/cvfosammmm/Setzer/raw/master/resources/images/screenshot.png)
 
-Setzer is a LaTeX editor written in Python with Gtk. It still lacks features and likely has some bugs but I find it quite useful already. I'm happy if you give it a try and provide feedback via the issue tracker here on GitHub, be it about design, code architecture, bugs, feature requests, ... I try to respond to issues immediately.
+Setzer is a LaTeX editor written in Python with Gtk. I'm happy if you give it a try and provide feedback via the issue tracker here on GitHub, be it about design, code architecture, bugs, feature requests, ... I try to respond to issues immediately.
 
-## Running Setzer on Debian (Ubuntu, other Distributions too?)
+## Running Setzer from source (on Debian, probably Ubuntu, other Distributions too?)
 
-I develop Setzer on Debian and that's what I exclusively tested it with. On Debian derivatives (like Ubuntu) it should probably work the same. On distributions other than Debian and Debian derivatives it should work more or less the same. If you want to run Setzer on another distribution and don't know how please open an issue here on GitHub. I will then try to provide instructions for your system.
+I develop Setzer on Debian and that's what I exclusively tested it with. On Debian derivatives (like Ubuntu) it should probably work the same. On distributions other than Debian and Debian derivatives it should work more or less the same. If you want to run Setzer from source on another distribution and don't know how please open an issue here on GitHub. I will then try to provide instructions for your system.
 
 1. Run the following command to install prerequisite Debian packages:<br />
 `apt-get install libgtk-3-dev libgtksourceview-3.0-dev libpoppler-glib-dev`
@@ -28,7 +34,7 @@ To specify a build command open the "Preferences" dialog and type in the command
 
 ## Getting in touch
 
-Setzer development / discussion takes place on GitHub at [https://github.com/cvfosammmm/Setzer](https://github.com/cvfosammmm/Setzer "project url").
+Setzer development / discussion takes place on GitHub at [https://github.com/cvfosammmm/setzer](https://github.com/cvfosammmm/setzer "project url").
 
 ## Acknowledgements
 
