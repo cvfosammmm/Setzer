@@ -10,9 +10,15 @@ Website: <a href="https://www.cvfosammmm.org/setzer">https://www.cvfosammmm.org/
 
 Setzer is a LaTeX editor written in Python with Gtk. I'm happy if you give it a try and provide feedback via the issue tracker here on GitHub, be it about design, code architecture, bugs, feature requests, ... I try to respond to issues immediately.
 
-## Running Setzer from source (on Debian, probably Ubuntu, other Distributions too?)
+## Running Setzer with Gnome Builder
 
-I develop Setzer on Debian and that's what I exclusively tested it with. On Debian derivatives (like Ubuntu) it should probably work the same. On distributions other than Debian and Debian derivatives it should work more or less the same. If you want to run Setzer from source on another distribution and don't know how please open an issue here on GitHub. I will then try to provide instructions for your system.
+To run Setzer with Gnome Builder just click the "Clone.." button on the start screen, paste in the url (https://github.com/cvfosammmm/Setzer.git), click on "Clone" again, wait for it to download and hit the play button. It will build Setzer and its dependencies and then launch it.
+
+Warning: Building Setzer this way may take a long time (~ 30 minutes on my laptop).
+
+## Running Setzer on Debian (probably Ubuntu, other Distributions too?)
+
+This way is probably a bit faster and may save you some disk space. I develop Setzer on Debian and that's what I tested it with. On Debian derivatives (like Ubuntu) it should probably work the same. On distributions other than Debian and Debian derivatives it should work more or less the same. If you want to run Setzer from source on another distribution and don't know how please open an issue here on GitHub. I will then try to provide instructions for your system.
 
 1. Run the following command to install prerequisite Debian packages:<br />
 `apt-get install libgtk-3-dev libgtksourceview-3.0-dev libpoppler-glib-dev`
