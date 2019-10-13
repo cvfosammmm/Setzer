@@ -1,25 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-	<id>org.cvfosammmm.Setzer</id>
+    <id>org.cvfosammmm.Setzer</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0+</project_license>
-	<name>Setzer</name>
-	<summary>Edit and build LaTeX documents</summary>
-	<description>
-		<p>Setzer is LaTeX editor written in Python with Gtk</p>
-	</description>
 	<content_rating type="oars-1.1" />
+	<name>Setzer</name>
+	<summary>Simple yet full-featured LaTeX editor</summary>
+    <developer_name>Cvfosammmm</developer_name>
+
+	<description>
+		<p>Write LaTeX documents with an easy to use yet full-featured editor.</p>
+		<p>Features include:</p>
+		<ul>
+		    <li>Buttons and shortcuts for many LaTeX elements and special characters</li>
+		    <li>Comfortable document creation wizard</li>
+		    <li>Dark mode</li>
+		    <li>Helpful error messages in the build log</li>
+		    <li>Looks great on the Gnome desktop</li>
+		    <li>Good screen to content ratio</li>
+		    <li>Arguably the best .pdf viewer of any LaTeX editor</li>
+		</ul>
+	</description>
+
 	<launchable type="desktop-id">org.cvfosammmm.Setzer.desktop</launchable>
-	<url type="homepage">https://www.cvfosammmm.org/setzer</url>
+
 	<screenshots>
-		<screenshot type="default">
-			<image>https://github.com/cvfosammmm/Setzer/raw/master/resources/images/screenshot.png</image>
+    	<screenshot type="default">
+			<image>https://www.cvfosammmm.org/setzer/images/screenshot-symbols-appdata.png</image>
+		</screenshot>
+		<screenshot>
+			<image>https://www.cvfosammmm.org/setzer/images/screenshot-wizard-appdata.png</image>
+		</screenshot>
+		<screenshot>
+			<image>https://www.cvfosammmm.org/setzer/images/screenshot-dark-mode-appdata.png</image>
+		</screenshot>
+		<screenshot>
+			<image>https://www.cvfosammmm.org/setzer/images/screenshot-build-log-appdata.png</image>
 		</screenshot>
 	</screenshots>
+
+	<url type="homepage">https://www.cvfosammmm.org/setzer</url>
+	<url type="bugtracker">https://github.com/cvfosammmm/Setzer/issues</url>
+
 	<provides>
 		<id>org.cvfosammmm.Setzer.desktop</id>
 	</provides>
+
     <releases>
-       ​<release version="0.0.1" date="2019-10-04"/>
+        ​<release version="0.0.1" date="2019-10-13">
+            <description>
+                <p>Initial release</p>
+            </description>
+        </release>
     </releases>
 </component>
