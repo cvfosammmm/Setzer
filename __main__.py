@@ -32,6 +32,7 @@ import controller.controller_workspace as workspacecontroller
 import controller.controller_shortcuts as shortcutscontroller
 import helpers.helpers as helpers
 import dialogs.preferences.preferences as preferences_dialog
+import dialogs.about.about as about_dialog
 
 
 class MainApplicationController(Gtk.Application):
@@ -76,6 +77,7 @@ class MainApplicationController(Gtk.Application):
 
         # init dialogs
         self.preferences_dialog = preferences_dialog.PreferencesDialog(self.main_window, self.settings)
+        self.about_dialog = about_dialog.AboutDialog(self.main_window, self.settings)
 
         # init controller
         self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace, self.main_window, self.settings, self)
@@ -264,24 +266,7 @@ class MainApplicationController(Gtk.Application):
         self.preferences_dialog.run()
 
     def show_about_dialog(self, action, parameter=''):
-        ''' show popup with some information about the app. '''
-        
-        self.about_dialog = Gtk.AboutDialog()
-        self.about_dialog.set_transient_for(self.main_window)
-        self.about_dialog.set_modal(True)
-        self.about_dialog.set_program_name('Setzer')
-        self.about_dialog.set_version('0.0.1')
-        self.about_dialog.set_copyright('Copyright © 2018-2019 - the Setzer developers')
-        self.about_dialog.set_comments('Setzer is a LaTeX editor.')
-        self.about_dialog.set_license_type(Gtk.License.GPL_3_0)
-        self.about_dialog.set_website('https://www.cvfosammmm.org/setzer')
-        self.about_dialog.set_website_label('https://www.cvfosammmm.org/setzer')
-        self.about_dialog.set_authors(('Robert Griesel',))
-        
-        logo = Gtk.Image.new_from_file(os.getcwd() + '/resources/images/org.cvfosammmm.Setzer.svg')
-        self.about_dialog.set_logo(logo.get_pixbuf())
-        
-        self.about_dialog.show_all()
+        self.about_dialog.run()
         
     def hamburger_quit(self, action=None, parameter=''):
         ''' quit application, show save dialog if unsaved worksheets present. '''
