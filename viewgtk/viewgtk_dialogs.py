@@ -65,19 +65,6 @@ class CloseConfirmation(Gtk.MessageDialog):
         self.set_default_response(Gtk.ResponseType.YES)
         
 
-class BuildSaveDialog(Gtk.MessageDialog):
-    ''' This dialog is asking users to save never saved documents before building. '''
-
-    def __init__(self, main_window, document):
-        Gtk.MessageDialog.__init__(self, main_window, 0, Gtk.MessageType.QUESTION)
-        
-        self.set_property('text', 'Document »' + document.get_displayname() + '« has no filename.')
-        self.format_secondary_markup('Please save your document to a file, so the build system knows where to put the .pdf (it will be in the same folder as your document).')
-
-        self.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Save document now', Gtk.ResponseType.YES)
-        self.set_default_response(Gtk.ResponseType.YES)
-        
-
 class InterpreterMissingDialog(Gtk.MessageDialog):
 
     def __init__(self, main_window, interpreter_name):

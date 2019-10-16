@@ -32,6 +32,7 @@ import controller.controller_document_search as searchcontroller
 import helpers.helpers as helpers
 import dialogs.building_failed.building_failed as building_failed_dialog
 import dialogs.save_document.save_document as save_document_dialog
+import dialogs.build_save.build_save as build_save_dialog
 
 import time
 import os.path
@@ -61,6 +62,7 @@ class DocumentController(object):
         # init dialogs
         self.building_failed_dialog = building_failed_dialog.BuildingFailedDialog(self.main_window)
         self.save_document_dialog = save_document_dialog.SaveDocumentDialog(self.main_window, self.workspace)
+        self.build_save_dialog = build_save_dialog.BuildSaveDialog(self.main_window)
 
         self.autocomplete_controller = autocompletecontroller.DocumentAutocompleteController(self.document, self.document_view, self.main_window)
         self.search_controller = searchcontroller.DocumentSearchController(self.document, self.document_view, self.document_view.search_bar, self.main_window)
@@ -450,13 +452,9 @@ class DocumentController(object):
         document = self.document
 
         if document.filename == None:
-            build_save_dialog = view.dialogs.BuildSaveDialog(self.main_window, document)
-            response = build_save_dialog.run()
-            if response == Gtk.ResponseType.YES:
-                build_save_dialog.hide()
+            if self.build_save_dialog.run(document):
                 self.save_document_dialog.run(document, '.tex')
             else:
-                build_save_dialog.hide()
                 return False
 
         if document.filename != None:
