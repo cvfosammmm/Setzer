@@ -30,6 +30,7 @@ import backend.backend as backend
 import controller.controller_document_autocomplete as autocompletecontroller
 import controller.controller_document_search as searchcontroller
 import helpers.helpers as helpers
+import dialogs.building_failed.building_failed as building_failed_dialog
 import dialogs.save_document.save_document as save_document_dialog
 
 import time
@@ -58,6 +59,7 @@ class DocumentController(object):
         self.set_clean_button_state()
 
         # init dialogs
+        self.building_failed_dialog = building_failed_dialog.BuildingFailedDialog(self.main_window)
         self.save_document_dialog = save_document_dialog.SaveDocumentDialog(self.main_window, self.workspace)
 
         self.autocomplete_controller = autocompletecontroller.DocumentAutocompleteController(self.document, self.document_view, self.main_window)
@@ -176,10 +178,7 @@ class DocumentController(object):
                     self.on_build_state_change('')
                     self.set_clean_button_state()
                     document = self.document
-                    dialog = view.dialogs.BuildingFailedDialog(self.main_window, result_blob['error_arg'])
-                    response = dialog.run()
-                    dialog.hide()
-                    if response == Gtk.ResponseType.YES:
+                    if self.building_failed_dialog.run(result_blob['error_arg']):
                         self.main_controller.show_preferences_dialog()
                     return
 

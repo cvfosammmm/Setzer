@@ -94,20 +94,6 @@ For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/
         self.set_default_response(Gtk.ResponseType.YES)
         
 
-class BuildingFailedDialog(Gtk.MessageDialog):
-
-    def __init__(self, main_window, error_message):
-        Gtk.MessageDialog.__init__(self, main_window, 0, Gtk.MessageType.QUESTION)
-        
-        self.set_property('text', 'Something went wrong.')
-        self.format_secondary_markup('''The build process ended unexpectedly returning "''' + error_message + '''".
-
-To configure your build system go to Preferences.''')
-
-        self.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Go to Preferences', Gtk.ResponseType.YES)
-        self.set_default_response(Gtk.ResponseType.YES)
-        
-
 class ReplaceConfirmDialog(Gtk.MessageDialog):
     ''' This dialog is asking users if they really want to do a replace all. '''
 
