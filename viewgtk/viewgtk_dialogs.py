@@ -21,46 +21,6 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 
 
-class OpenDocument(Gtk.FileChooserDialog):
-    ''' File chooser for opening documents '''
-    
-    def __init__(self, main_window):
-        self.action = Gtk.FileChooserAction.OPEN
-        self.buttons = ('_Cancel', Gtk.ResponseType.CANCEL, '_Open', Gtk.ResponseType.OK)
-        Gtk.FileChooserDialog.__init__(self, 'Open', main_window, self.action, self.buttons)
-    
-        for widget in self.get_header_bar().get_children():
-            if isinstance(widget, Gtk.Button) and widget.get_label() == '_Open':
-                widget.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
-                widget.set_can_default(True)
-                widget.grab_default()
-
-        # file filtering
-        file_filter1 = Gtk.FileFilter()
-        file_filter1.add_pattern('*.tex')
-        file_filter1.set_name('LaTeX files')
-        self.add_filter(file_filter1)
-
-        self.set_select_multiple(False)
-
-
-class SaveDocument(Gtk.FileChooserDialog):
-    ''' File chooser for saving documents '''
-
-    def __init__(self, main_window):
-        self.action = Gtk.FileChooserAction.SAVE
-        self.buttons = ('_Cancel', Gtk.ResponseType.CANCEL, '_Save', Gtk.ResponseType.OK)
-        Gtk.FileChooserDialog.__init__(self, 'Save document', main_window, self.action, self.buttons)
-        
-        self.set_do_overwrite_confirmation(True)
-
-        for widget in self.get_header_bar().get_children():
-            if isinstance(widget, Gtk.Button) and widget.get_label() == '_Save':
-                widget.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
-                widget.set_can_default(True)
-                widget.grab_default()
-
-
 class CloseConfirmation(Gtk.MessageDialog):
     ''' This dialog is asking users to save unsaved documents or discard their changes. '''
 

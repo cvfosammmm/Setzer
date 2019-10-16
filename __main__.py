@@ -33,6 +33,7 @@ import controller.controller_shortcuts as shortcutscontroller
 import helpers.helpers as helpers
 import dialogs.preferences.preferences as preferences_dialog
 import dialogs.about.about as about_dialog
+import dialogs.save_document.save_document as save_document_dialog
 
 
 class MainApplicationController(Gtk.Application):
@@ -78,6 +79,7 @@ class MainApplicationController(Gtk.Application):
         # init dialogs
         self.preferences_dialog = preferences_dialog.PreferencesDialog(self.main_window, self.settings)
         self.about_dialog = about_dialog.AboutDialog(self.main_window, self.settings)
+        self.save_document_dialog = save_document_dialog.SaveDocumentDialog(self.main_window, self.workspace)
 
         # init controller
         self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace, self.main_window, self.settings, self)
@@ -205,17 +207,9 @@ class MainApplicationController(Gtk.Application):
                 if document.get_filename() == None:
                     self.workspace.set_active_document(document)
                     return_to_active_document = True
-                    dialog = view.dialogs.SaveDocument(self.main_window)
-                    dialog.set_current_name('.tex')
-                    response = dialog.run()
-                    if response == Gtk.ResponseType.OK:
-                        filename = dialog.get_filename()
-                        document.set_filename(filename)
-                        document.save_to_disk()
-                        self.workspace.update_recently_opened_document(filename)
-                    else:
+
+                    if not self.save_document_dialog.run(document, '.tex'):
                         documents_still_to_save.append(document)
-                    dialog.hide()
                 else:
                     document.save_to_disk()
             if return_to_active_document == True:

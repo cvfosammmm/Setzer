@@ -29,6 +29,8 @@ import controller.controller_preview as previewcontroller
 import controller.controller_document_wizard as document_wizard_controller
 import backend.backend as backend
 import helpers.helpers as helpers
+import dialogs.open_document.open_document as open_document_dialog
+import dialogs.save_document.save_document as save_document_dialog
 
 import time
 
@@ -43,6 +45,10 @@ class WorkspaceController(object):
         self.backend = backend.Backend()
         self.settings = settings
         self.main_controller = main_controller
+
+        # init dialogs
+        self.open_document_dialog = open_document_dialog.OpenDocumentDialog(self.main_window, self.workspace)
+        self.save_document_dialog = save_document_dialog.SaveDocumentDialog(self.main_window, self.workspace)
 
         self.document_controllers = dict()
         self.sidebar_controller = sidebarcontroller.SidebarController(self.main_window.sidebar, self, self.main_window)
@@ -289,21 +295,7 @@ class WorkspaceController(object):
             self.workspace.set_active_document(document)
 
     def on_open_document_button_click(self, button_object=None):
-        dialog = view.dialogs.OpenDocument(self.main_window)
-        self.main_window.headerbar.document_chooser.popdown()
-        response = dialog.run()
-        if response == Gtk.ResponseType.OK:
-            filename = dialog.get_filename()
-            document_candidate = self.workspace.get_document_by_filename(filename)
-            if isinstance(document_candidate, model_document.Document):
-                self.workspace.set_active_document(document_candidate)
-            else:
-                document = model_document.Document(self.workspace.pathname, with_buffer=True)
-                document.set_filename(filename)
-                document.populate_from_filename()
-                self.workspace.add_document(document)
-                self.workspace.set_active_document(document)
-        dialog.hide()
+        self.open_document_dialog.run()
 
     def on_new_document_button_click(self, button_object=None):
         document = model_document.Document(self.workspace.pathname, with_buffer=True)
@@ -321,16 +313,8 @@ class WorkspaceController(object):
                 self.workspace.remove_document(document)
             elif response == Gtk.ResponseType.YES:
                 if document.get_filename() == None:
-                    dialog = view.dialogs.SaveDocument(self.main_window)
-                    dialog.set_current_name('.tex')
-                    response = dialog.run()
-                    if response == Gtk.ResponseType.OK:
-                        filename = dialog.get_filename()
-                        document.set_filename(filename)
-                        document.save_to_disk()
-                        self.workspace.update_recently_opened_document(filename)
+                    if self.save_document_dialog.run(document, '.tex'):
                         self.workspace.remove_document(document)
-                    dialog.hide()
                 else:
                     document.save_to_disk()
                     self.workspace.remove_document(document)
@@ -360,19 +344,11 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def on_save_as_clicked(self, action=None, parameter=None):
         document = self.workspace.get_active_document()
-        dialog = view.dialogs.SaveDocument(self.main_window)
         filename = document.get_filename()
         if filename != None:
-            dialog.set_filename(filename)
+            self.save_document_dialog.run(document, filename)
         else:
-            dialog.set_current_name('.tex')
-        response = dialog.run()
-        if response == Gtk.ResponseType.OK:
-            filename = dialog.get_filename()
-            document.set_filename(filename)
-            document.save_to_disk()
-            self.workspace.update_recently_opened_document(filename)
-        dialog.hide()
+            self.save_document_dialog.run(document, '.tex')
         
     @_assert_has_active_document
     def on_save_all_clicked(self, action=None, parameter=None):
@@ -384,15 +360,7 @@ class WorkspaceController(object):
                 if document.get_filename() == None:
                     self.workspace.set_active_document(document)
                     return_to_active_document = True
-                    dialog = view.dialogs.SaveDocument(self.main_window)
-                    dialog.set_current_name('.tex')
-                    response = dialog.run()
-                    if response == Gtk.ResponseType.OK:
-                        filename = dialog.get_filename()
-                        document.set_filename(filename)
-                        document.save_to_disk()
-                        self.workspace.update_recently_opened_document(filename)
-                    dialog.hide()
+                    self.save_document_dialog.run(document, '.tex')
                 else:
                     document.save_to_disk()
             if return_to_active_document == True:
@@ -452,16 +420,8 @@ class WorkspaceController(object):
                     if document in selected_documents:
                         if document.get_filename() == None:
                             self.workspace.set_active_document(document)
-                            dialog = view.dialogs.SaveDocument(self.main_window)
-                            dialog.set_current_name('.tex')
-                            response = dialog.run()
-                            if response == Gtk.ResponseType.OK:
-                                filename = dialog.get_filename()
-                                document.set_filename(filename)
-                                document.save_to_disk()
-                                self.workspace.update_recently_opened_document(filename)
+                            if self.save_document_dialog.run(document, '.tex'):
                                 self.workspace.remove_document(document)
-                            dialog.hide()
                         else:
                             document.save_to_disk()
                             self.workspace.remove_document(document)

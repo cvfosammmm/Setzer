@@ -30,6 +30,7 @@ import backend.backend as backend
 import controller.controller_document_autocomplete as autocompletecontroller
 import controller.controller_document_search as searchcontroller
 import helpers.helpers as helpers
+import dialogs.save_document.save_document as save_document_dialog
 
 import time
 import os.path
@@ -55,6 +56,9 @@ class DocumentController(object):
         self.document_view.build_widget.build_button.show_all()
         self.document_view.build_widget.stop_button.hide()
         self.set_clean_button_state()
+
+        # init dialogs
+        self.save_document_dialog = save_document_dialog.SaveDocumentDialog(self.main_window, self.workspace)
 
         self.autocomplete_controller = autocompletecontroller.DocumentAutocompleteController(self.document, self.document_view, self.main_window)
         self.search_controller = searchcontroller.DocumentSearchController(self.document, self.document_view, self.document_view.search_bar, self.main_window)
@@ -447,21 +451,13 @@ class DocumentController(object):
         document = self.document
 
         if document.filename == None:
-            save_document_dialog = view.dialogs.BuildSaveDialog(self.main_window, document)
-            response = save_document_dialog.run()
+            build_save_dialog = view.dialogs.BuildSaveDialog(self.main_window, document)
+            response = build_save_dialog.run()
             if response == Gtk.ResponseType.YES:
-                save_document_dialog.hide()
-                dialog = view.dialogs.SaveDocument(self.main_window)
-                dialog.set_current_name('.tex')
-                response = dialog.run()
-                if response == Gtk.ResponseType.OK:
-                    filename = dialog.get_filename()
-                    document.set_filename(filename)
-                    document.save_to_disk()
-                    self.workspace.update_recently_opened_document(filename)
-                dialog.hide()
+                build_save_dialog.hide()
+                self.save_document_dialog.run(document, '.tex')
             else:
-                save_document_dialog.hide()
+                build_save_dialog.hide()
                 return False
 
         if document.filename != None:
