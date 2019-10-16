@@ -26,7 +26,6 @@ from viewgtk.viewgtk_headerbar import *
 from viewgtk.viewgtk_sidebar import *
 from viewgtk.viewgtk_document import *
 from viewgtk.viewgtk_preview import *
-import viewgtk.viewgtk_dialogs as dialogs
 
 import os
 

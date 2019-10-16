@@ -31,9 +31,9 @@ import controller.controller_settings as settingscontroller
 import controller.controller_workspace as workspacecontroller
 import controller.controller_shortcuts as shortcutscontroller
 import helpers.helpers as helpers
-import dialogs.preferences.preferences as preferences_dialog
 import dialogs.about.about as about_dialog
-import dialogs.save_document.save_document as save_document_dialog
+import dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
+import dialogs.preferences.preferences as preferences_dialog
 
 
 class MainApplicationController(Gtk.Application):
@@ -79,7 +79,7 @@ class MainApplicationController(Gtk.Application):
         # init dialogs
         self.preferences_dialog = preferences_dialog.PreferencesDialog(self.main_window, self.settings)
         self.about_dialog = about_dialog.AboutDialog(self.main_window, self.settings)
-        self.save_document_dialog = save_document_dialog.SaveDocumentDialog(self.main_window, self.workspace)
+        self.close_confirmation_dialog = close_confirmation_dialog.CloseConfirmationDialog(self.main_window, self.workspace)
 
         # init controller
         self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace, self.main_window, self.settings, self)
@@ -172,8 +172,6 @@ class MainApplicationController(Gtk.Application):
     def on_window_close(self, main_window, event=None):
         ''' signal handler, ask user to save unsaved documents or discard changes '''
 
-        return_to_active_document = False
-        
         for document in self.workspace.open_documents: document.save_document_data()
 
         documents = self.workspace.get_unsaved_documents()
@@ -186,46 +184,8 @@ class MainApplicationController(Gtk.Application):
         if active_document == None:
             return False
 
-        self.save_changes_dialog = view.dialogs.CloseConfirmation(self.main_window, documents)
-        response = self.save_changes_dialog.run()
-        documents_still_to_save = list()
-        if response == Gtk.ResponseType.NO:
-            self.save_changes_dialog.hide()
-            self.workspace.save_to_disk()
-            self.save_window_state()
-            return False
-        elif response == Gtk.ResponseType.YES:
-            selected_documents = list()
-            if len(documents) == 1:
-                selected_documents.append(documents[0])
-            else:
-                for child in self.save_changes_dialog.chooser.get_children():
-                    if child.get_child().get_active():
-                        number = int(child.get_child().get_name()[29:])
-                        selected_documents.append(documents[number])
-            for document in selected_documents:
-                if document.get_filename() == None:
-                    self.workspace.set_active_document(document)
-                    return_to_active_document = True
-
-                    if not self.save_document_dialog.run(document, '.tex'):
-                        documents_still_to_save.append(document)
-                else:
-                    document.save_to_disk()
-            if return_to_active_document == True:
-                self.workspace.set_active_document(document)
-
-            self.save_changes_dialog.hide()
-            self.workspace.save_to_disk()
-            self.save_window_state()
-            if len(documents_still_to_save) >= 1:
-                self.workspace.set_active_document(documents_still_to_save[-1])
-                return True
-            else:
-                return False
-        else:
-            self.save_changes_dialog.hide()
-            return True
+        self.save_window_state()
+        return self.close_confirmation_dialog.run(documents)
 
     '''
     *** hamburger menu
