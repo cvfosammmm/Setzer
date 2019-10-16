@@ -33,6 +33,7 @@ import helpers.helpers as helpers
 import dialogs.building_failed.building_failed as building_failed_dialog
 import dialogs.save_document.save_document as save_document_dialog
 import dialogs.build_save.build_save as build_save_dialog
+import dialogs.interpreter_missing.interpreter_missing as interpreter_missing_dialog
 
 import time
 import os.path
@@ -63,6 +64,7 @@ class DocumentController(object):
         self.building_failed_dialog = building_failed_dialog.BuildingFailedDialog(self.main_window)
         self.save_document_dialog = save_document_dialog.SaveDocumentDialog(self.main_window, self.workspace)
         self.build_save_dialog = build_save_dialog.BuildSaveDialog(self.main_window)
+        self.interpreter_missing_dialog = interpreter_missing_dialog.InterpreterMissingDialog(self.main_window)
 
         self.autocomplete_controller = autocompletecontroller.DocumentAutocompleteController(self.document, self.document_view, self.main_window)
         self.search_controller = searchcontroller.DocumentSearchController(self.document, self.document_view, self.document_view.search_bar, self.main_window)
@@ -167,11 +169,7 @@ class DocumentController(object):
                     self.document.change_state('idle')
                     self.on_build_state_change('')
                     self.set_clean_button_state()
-                    document = self.document
-                    dialog = view.dialogs.InterpreterMissingDialog(self.main_window, result_blob['error_arg'])
-                    response = dialog.run()
-                    dialog.hide()
-                    if response == Gtk.ResponseType.YES:
+                    if self.interpreter_missing_dialog.run(result_blob['error_arg']):
                         self.main_controller.show_preferences_dialog()
                     return
 
@@ -179,7 +177,6 @@ class DocumentController(object):
                     self.document.change_state('idle')
                     self.on_build_state_change('')
                     self.set_clean_button_state()
-                    document = self.document
                     if self.building_failed_dialog.run(result_blob['error_arg']):
                         self.main_controller.show_preferences_dialog()
                     return
