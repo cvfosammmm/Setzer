@@ -28,6 +28,7 @@ from gi.repository import GtkSource
 import viewgtk.viewgtk as view
 import backend.backend as backend
 import helpers.helpers as helpers
+import dialogs.replace_confirmation.replace_confirmation as replace_confirmation_dialog
 
 import time
 import os.path
@@ -45,11 +46,15 @@ class DocumentSearchController(object):
         self.document_view = document_view
         self.document = document
         self.main_window = main_window
+
+        # init dialogs
+        self.replace_confirmation_dialog = replace_confirmation_dialog.ReplaceConfirmationDialog(self.main_window)
+
         self.observe_search_bar()
         self.observe_shortcuts_bar()
         self.search_bar.connect('size-allocate', self.on_search_bar_size_allocate)
         self.search_bar.match_counter.connect('size-allocate', self.on_match_counter_size_allocate)
-        
+
     def observe_shortcuts_bar(self):
         self.document_view.shortcuts_bar_bottom.button_find.connect('toggled', self.on_find_button_clicked)
         self.document_view.shortcuts_bar_bottom.button_find_and_replace.connect('toggled', self.on_find_replace_button_clicked)
@@ -98,11 +103,8 @@ class DocumentSearchController(object):
             number_of_occurences = search_context.get_occurrences_count()
             
             if number_of_occurences > 0:
-                confirmation_dialog = view.dialogs.ReplaceConfirmDialog(self.main_window, original, replacement, number_of_occurences)
-                response = confirmation_dialog.run()
-                if response == Gtk.ResponseType.YES:
+                if self.replace_confirmation_dialog.run(original, replacement, number_of_occurences):
                     search_context.replace_all(replacement, -1)
-                confirmation_dialog.hide()
 
     def on_search_entry_activate(self, entry=None):
         self.on_search_next_match(entry, True)

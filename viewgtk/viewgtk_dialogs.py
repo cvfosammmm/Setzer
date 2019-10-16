@@ -94,17 +94,3 @@ For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/
         self.set_default_response(Gtk.ResponseType.YES)
         
 
-class ReplaceConfirmDialog(Gtk.MessageDialog):
-    ''' This dialog is asking users if they really want to do a replace all. '''
-
-    def __init__(self, main_window, original, replacement, number_of_occurences):
-        Gtk.MessageDialog.__init__(self, main_window, 0, Gtk.MessageType.QUESTION)
-        
-        plural = 's' if number_of_occurences > 1 else ''
-        self.set_property('text', 'Replacing ' + str(number_of_occurences) + ' occurence' + plural + ' of »' + original + '« with »' + replacement + '«.')
-        self.format_secondary_markup('Do you really want to do this?')
-
-        self.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Yes, replace all occurences', Gtk.ResponseType.YES)
-        self.set_default_response(Gtk.ResponseType.YES)
-        
-

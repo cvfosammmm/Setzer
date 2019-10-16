@@ -21,13 +21,14 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
-class BuildingFailedDialog(object):
+class ReplaceConfirmationDialog(object):
+    ''' This dialog is asking users if they really want to do a replace all. '''
 
     def __init__(self, main_window):
         self.main_window = main_window
 
-    def run(self, error_message):
-        self.setup(error_message)
+    def run(self, original, replacement, number_of_occurences):
+        self.setup(original, replacement, number_of_occurences)
         response = self.view.run()
         if response == Gtk.ResponseType.YES:
             return_value = True
@@ -37,15 +38,14 @@ class BuildingFailedDialog(object):
         del(self.view)
         return return_value
 
-    def setup(self, error_message):
+    def setup(self, original, replacement, number_of_occurences):
         self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
-        
-        self.view.set_property('text', 'Something went wrong.')
-        self.view.format_secondary_markup('''The build process ended unexpectedly returning "''' + error_message + '''".
 
-To configure your build system go to Preferences.''')
+        plural = 's' if number_of_occurences > 1 else ''
+        self.view.set_property('text', 'Replacing ' + str(number_of_occurences) + ' occurence' + plural + ' of »' + original + '« with »' + replacement + '«.')
+        self.view.format_secondary_markup('Do you really want to do this?')
 
-        self.view.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Go to Preferences', Gtk.ResponseType.YES)
+        self.view.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Yes, replace all occurences', Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)
 
 
