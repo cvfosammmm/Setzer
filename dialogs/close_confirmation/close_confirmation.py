@@ -36,7 +36,7 @@ class CloseConfirmationDialog(object):
     def run(self, documents):
         self.setup(documents)
 
-        documents_still_to_save = list()
+        documents_not_save_to_close = list()
         return_to_active_document = False
 
         response = self.view.run()
@@ -58,15 +58,15 @@ class CloseConfirmationDialog(object):
                     return_to_active_document = True
 
                     if not self.save_document_dialog.run(document, '.tex'):
-                        documents_still_to_save.append(document)
+                        documents_not_save_to_close.append(document)
                 else:
                     document.save_to_disk()
             if return_to_active_document == True:
                 self.workspace.set_active_document(document)
 
             self.workspace.save_to_disk()
-            if len(documents_still_to_save) >= 1:
-                self.workspace.set_active_document(documents_still_to_save[-1])
+            if len(documents_not_save_to_close) >= 1:
+                self.workspace.set_active_document(documents_not_save_to_close[-1])
                 dont_close_window = True
             else:
                 dont_close_window = False
@@ -75,7 +75,7 @@ class CloseConfirmationDialog(object):
 
         self.view.hide()
         del(self.view)
-        return dont_close_window
+        return {'all_save_to_close': dont_close_window, 'not_save_to_close_documents': documents_not_save_to_close}
 
     def setup(self, documents):
         self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)

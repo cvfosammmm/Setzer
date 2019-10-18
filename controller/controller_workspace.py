@@ -28,9 +28,10 @@ import controller.controller_sidebar as sidebarcontroller
 import controller.controller_preview as previewcontroller
 import backend.backend as backend
 import helpers.helpers as helpers
+import dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
+import dialogs.document_wizard.document_wizard as document_wizard
 import dialogs.open_document.open_document as open_document_dialog
 import dialogs.save_document.save_document as save_document_dialog
-import dialogs.document_wizard.document_wizard as document_wizard
 
 import time
 
@@ -50,6 +51,7 @@ class WorkspaceController(object):
         self.open_document_dialog = open_document_dialog.OpenDocumentDialog(self.main_window, self.workspace)
         self.save_document_dialog = save_document_dialog.SaveDocumentDialog(self.main_window, self.workspace)
         self.document_wizard_dialog = document_wizard.DocumentWizard(self.main_window, self.workspace, self.settings)
+        self.close_confirmation_dialog = close_confirmation_dialog.CloseConfirmationDialog(self.main_window, self.workspace)
 
         self.document_controllers = dict()
         self.sidebar_controller = sidebarcontroller.SidebarController(self.main_window.sidebar, self, self.main_window)
@@ -398,43 +400,11 @@ class WorkspaceController(object):
         active_document = self.workspace.get_active_document()
         documents = self.workspace.get_all_documents()
         unsaved_documents = self.workspace.get_unsaved_documents()
-        if unsaved_documents != None: 
-            save_changes_dialog = view.dialogs.CloseConfirmation(self.main_window, unsaved_documents)
-            response = save_changes_dialog.run()
-            if response == Gtk.ResponseType.NO:
-                save_changes_dialog.hide()
-                document = self.workspace.get_active_document()
-                while document != None:
-                    self.workspace.remove_document(document)
-                    document = self.workspace.get_active_document()
-            elif response == Gtk.ResponseType.YES:
-                selected_documents = list()
-                if len(unsaved_documents) == 1:
-                    selected_documents.append(unsaved_documents[0])
-                else:
-                    for child in save_changes_dialog.chooser.get_children():
-                        if child.get_child().get_active():
-                            number = int(child.get_child().get_name()[29:])
-                            selected_documents.append(unsaved_documents[number])
-                for document in documents:
-                    if document in selected_documents:
-                        if document.get_filename() == None:
-                            self.workspace.set_active_document(document)
-                            if self.save_document_dialog.run(document, '.tex'):
-                                self.workspace.remove_document(document)
-                        else:
-                            document.save_to_disk()
-                            self.workspace.remove_document(document)
-                    else:
-                        self.workspace.remove_document(document)
-                save_changes_dialog.hide()
-            else:
-                save_changes_dialog.hide()
-        else:
-            document = self.workspace.get_active_document()
-            while document != None:
+        not_save_to_close_documents = self.close_confirmation_dialog.run(unsaved_documents)['not_save_to_close_documents']
+
+        for document in documents:
+            if document not in not_save_to_close_documents:
                 self.workspace.remove_document(document)
-                document = self.workspace.get_active_document()
 
     def activate_quotes_popover(self, action=None, parameter=None):
         self.main_window.shortcuts_bar.quotes_button.set_active(True)
