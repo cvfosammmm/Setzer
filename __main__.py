@@ -168,24 +168,23 @@ class MainApplicationController(Gtk.Application):
             preview_position = -1
         self.settings.set_value('window_state', 'preview_paned_position', preview_position)
         self.settings.pickle()
-        
-    def on_window_close(self, main_window, event=None):
-        ''' signal handler, ask user to save unsaved documents or discard changes '''
 
+    def on_window_close(self, window=None, parameter=None):
+        self.save_quit()
+
+    def on_quit_action(self, action=None, parameter=None):
+        self.save_quit()
+
+    def save_quit(self):
         for document in self.workspace.open_documents: document.save_document_data()
 
         documents = self.workspace.get_unsaved_documents()
-        if documents == None: 
-            self.workspace.save_to_disk()
-            self.save_window_state()
-            return False
-
         active_document = self.workspace.get_active_document()
-        if active_document == None:
-            return False
 
-        self.save_window_state()
-        return self.close_confirmation_dialog.run(documents)
+        if documents == None or active_document == None or not self.close_confirmation_dialog.run(documents):
+            self.save_window_state()
+            self.workspace.save_to_disk()
+            self.quit()
 
     '''
     *** hamburger menu
@@ -201,7 +200,7 @@ class MainApplicationController(Gtk.Application):
         self.add_action(show_about_dialog_action)
 
         quit_action = Gio.SimpleAction.new('quit', None)
-        quit_action.connect('activate', self.hamburger_quit)
+        quit_action.connect('activate', self.on_quit_action)
         self.add_action(quit_action)
 
         self.add_action(self.workspace_controller.save_as_action)
@@ -221,12 +220,6 @@ class MainApplicationController(Gtk.Application):
 
     def show_about_dialog(self, action, parameter=''):
         self.about_dialog.run()
-        
-    def hamburger_quit(self, action=None, parameter=''):
-        ''' quit application, show save dialog if unsaved worksheets present. '''
-
-        if not self.on_window_close(self.main_window):
-            self.quit()
         
     def toggle_dark_mode(self, action, parameter=None):
         new_state = not action.get_state().get_boolean()

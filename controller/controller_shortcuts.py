@@ -118,7 +118,7 @@ class ShortcutsController(object):
         self.workspace_controller.save_as_action.activate()
 
     def shortcut_quit(self, accel_group=None, window=None, key=None, mask=None):
-        self.main_controller.hamburger_quit()
+        self.main_controller.save_quit()
 
     def shortcut_quotes(self, accel_group=None, window=None, key=None, mask=None):
         self.workspace_controller.activate_quotes_popover()
