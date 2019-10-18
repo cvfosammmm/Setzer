@@ -306,23 +306,9 @@ class WorkspaceController(object):
 
     def on_doclist_close_clicked(self, button_object, document):
         if document.get_modified():
-            documents = list()
-            documents.append(document)
-            self.workspace.set_active_document(document)
-            save_changes_dialog = view.dialogs.CloseConfirmation(self.main_window, documents)
-            response = save_changes_dialog.run()
-            if response == Gtk.ResponseType.NO:
+            not_save_to_close = self.close_confirmation_dialog.run([document])['not_save_to_close_documents']
+            if document not in not_save_to_close:
                 self.workspace.remove_document(document)
-            elif response == Gtk.ResponseType.YES:
-                if document.get_filename() == None:
-                    if self.save_document_dialog.run(document, '.tex'):
-                        self.workspace.remove_document(document)
-                else:
-                    document.save_to_disk()
-                    self.workspace.remove_document(document)
-            save_changes_dialog.hide()
-        else:
-            self.workspace.remove_document(document)
         
     def on_doclist_row_activated(self, box, row, data=None):
         self.main_window.headerbar.open_docs_popover.popdown()
