@@ -24,14 +24,15 @@ from gi.repository import GLib
 from gi.repository import GdkPixbuf
 from gi.repository import Gdk
 
+from dialogs.dialog import Dialog
+import dialogs.document_wizard.document_wizard_viewgtk as viewgtk
+
 import _thread as thread
 import pickle
 import os
 
-import dialogs.document_wizard.document_wizard_viewgtk as viewgtk
 
-
-class DocumentWizard(object):
+class DocumentWizard(Dialog):
     ''' Create document templates for users to build on. '''
 
     def __init__(self, main_window, workspace, settings):

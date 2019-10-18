@@ -20,8 +20,10 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from dialogs.dialog import Dialog
 
-class BuildingFailedDialog(object):
+
+class BuildingFailedDialog(Dialog):
 
     def __init__(self, main_window):
         self.main_window = main_window
@@ -33,8 +35,7 @@ class BuildingFailedDialog(object):
             return_value = True
         else:
             return_value = False
-        self.view.hide()
-        del(self.view)
+        self.close()
         return return_value
 
     def setup(self, error_message):

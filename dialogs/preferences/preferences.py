@@ -16,10 +16,11 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 
+from dialogs.dialog import Dialog
 import dialogs.preferences.preferences_viewgtk as viewgtk
 
 
-class PreferencesDialog(object):
+class PreferencesDialog(Dialog):
 
     def __init__(self, main_window, settings):
         self.main_window = main_window

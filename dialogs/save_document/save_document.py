@@ -20,10 +20,12 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from dialogs.dialog import Dialog
+
 import os.path
 
 
-class SaveDocumentDialog(object):
+class SaveDocumentDialog(Dialog):
     ''' File chooser for saving documents '''
 
     def __init__(self, main_window, workspace):
@@ -42,8 +44,7 @@ class SaveDocumentDialog(object):
             return_value = True
         else:
             return_value = False
-        self.view.hide()
-        del(self.view)
+        self.close()
         return return_value
 
     def setup(self):

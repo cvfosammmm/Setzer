@@ -20,12 +20,13 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from dialogs.dialog import Dialog
 import model.model_document as model_document
 
 import os.path
 
 
-class OpenDocumentDialog(object):
+class OpenDocumentDialog(Dialog):
     ''' File chooser for opening documents '''
 
     def __init__(self, main_window, workspace):
@@ -46,8 +47,7 @@ class OpenDocumentDialog(object):
                 document.populate_from_filename()
                 self.workspace.add_document(document)
                 self.workspace.set_active_document(document)
-        self.view.hide()
-        del(self.view)
+        self.close()
 
     def setup(self):
         self.action = Gtk.FileChooserAction.OPEN

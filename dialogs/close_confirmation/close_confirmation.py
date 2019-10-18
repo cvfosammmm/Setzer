@@ -20,12 +20,13 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from dialogs.dialog import Dialog
 import dialogs.save_document.save_document as save_document_dialog
 
 import os.path
 
 
-class CloseConfirmationDialog(object):
+class CloseConfirmationDialog(Dialog):
     ''' This dialog is asking users to save unsaved documents or discard their changes. '''
 
     def __init__(self, main_window, workspace):
@@ -74,8 +75,7 @@ class CloseConfirmationDialog(object):
             dont_close_window = True
             documents_not_save_to_close = documents
 
-        self.view.hide()
-        del(self.view)
+        self.close()
         return {'all_save_to_close': dont_close_window, 'not_save_to_close_documents': documents_not_save_to_close}
 
     def setup(self, documents):

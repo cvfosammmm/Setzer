@@ -20,10 +20,12 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from dialogs.dialog import Dialog
+
 import os.path
 
 
-class AboutDialog(object):
+class AboutDialog(Dialog):
 
     def __init__(self, main_window, settings):
         self.main_window = main_window

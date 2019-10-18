@@ -20,8 +20,10 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from dialogs.dialog import Dialog
 
-class ReplaceConfirmationDialog(object):
+
+class ReplaceConfirmationDialog(Dialog):
     ''' This dialog is asking users if they really want to do a replace all. '''
 
     def __init__(self, main_window):
@@ -34,8 +36,7 @@ class ReplaceConfirmationDialog(object):
             return_value = True
         else:
             return_value = False
-        self.view.hide()
-        del(self.view)
+        self.close()
         return return_value
 
     def setup(self, original, replacement, number_of_occurences):
