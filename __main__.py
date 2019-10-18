@@ -31,9 +31,7 @@ import controller.controller_settings as settingscontroller
 import controller.controller_workspace as workspacecontroller
 import controller.controller_shortcuts as shortcutscontroller
 import helpers.helpers as helpers
-import dialogs.about.about as about_dialog
-import dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
-import dialogs.preferences.preferences as preferences_dialog
+import dialogs.dialog_provider as dialog_provider
 
 
 class MainApplicationController(Gtk.Application):
@@ -76,10 +74,8 @@ class MainApplicationController(Gtk.Application):
         self.main_window.show_all()
         self.observe_main_window()
 
-        # init dialogs
-        self.preferences_dialog = preferences_dialog.PreferencesDialog(self.main_window, self.settings)
-        self.about_dialog = about_dialog.AboutDialog(self.main_window, self.settings)
-        self.close_confirmation_dialog = close_confirmation_dialog.CloseConfirmationDialog(self.main_window, self.workspace)
+        # init dialog provider
+        self.dialog_provider = dialog_provider.DialogProvider(self.main_window, self.workspace, self.settings)
 
         # init controller
         self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace, self.main_window, self.settings, self)
@@ -181,7 +177,7 @@ class MainApplicationController(Gtk.Application):
         documents = self.workspace.get_unsaved_documents()
         active_document = self.workspace.get_active_document()
 
-        if documents == None or active_document == None or not self.close_confirmation_dialog.run(documents)['all_save_to_close']:
+        if documents == None or active_document == None or not self.dialog_provider.get_dialog('close_confirmation').run(documents)['all_save_to_close']:
             self.save_window_state()
             self.workspace.save_to_disk()
             self.quit()
@@ -216,10 +212,10 @@ class MainApplicationController(Gtk.Application):
         self.add_action(self.workspace_controller.document_wizard_action)
         
     def show_preferences_dialog(self, action=None, parameter=''):
-        self.preferences_dialog.run()
+        self.dialog_provider.get_dialog('preferences').run()
 
     def show_about_dialog(self, action, parameter=''):
-        self.about_dialog.run()
+        self.dialog_provider.get_dialog('about').run()
         
     def toggle_dark_mode(self, action, parameter=None):
         new_state = not action.get_state().get_boolean()
