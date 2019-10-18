@@ -72,6 +72,7 @@ class CloseConfirmationDialog(object):
                 dont_close_window = False
         else:
             dont_close_window = True
+            documents_not_save_to_close = documents
 
         self.view.hide()
         del(self.view)
