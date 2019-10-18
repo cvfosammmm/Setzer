@@ -22,8 +22,6 @@ from gi.repository import Gdk, GdkPixbuf
 
 import os
 
-import helpers.helpers as helpers
-
 
 class DocumentWizardView(object):
     ''' Create document templates for users to build on. '''
@@ -162,7 +160,7 @@ class DocumentWizardDocumentClassPageView(DocumentWizardPageView):
         self.preview_data.append({'name': 'beamer', 'image': 'beamer1.svg', 'text': '<b>Beamer:</b>  A class for making presentation slides\nwith LaTeX.\n\nThere are many predefined presentation styles.'})
         for item in self.preview_data:
             box = Gtk.VBox()
-            image = Gtk.Image.new_from_file(os.path.dirname(__file__) + '/../resources/images/documentwizard/' + item['image'])
+            image = Gtk.Image.new_from_file(os.path.dirname(__file__) + '/../../resources/images/documentwizard/' + item['image'])
             image.set_margin_bottom(6)
             label = Gtk.Label()
             label.set_markup(item['text'])

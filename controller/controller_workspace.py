@@ -31,6 +31,7 @@ import backend.backend as backend
 import helpers.helpers as helpers
 import dialogs.open_document.open_document as open_document_dialog
 import dialogs.save_document.save_document as save_document_dialog
+import dialogs.document_wizard.document_wizard as document_wizard
 
 import time
 
@@ -49,11 +50,11 @@ class WorkspaceController(object):
         # init dialogs
         self.open_document_dialog = open_document_dialog.OpenDocumentDialog(self.main_window, self.workspace)
         self.save_document_dialog = save_document_dialog.SaveDocumentDialog(self.main_window, self.workspace)
+        self.document_wizard_dialog = document_wizard.DocumentWizard(self.main_window, self.workspace, self.settings)
 
         self.document_controllers = dict()
         self.sidebar_controller = sidebarcontroller.SidebarController(self.main_window.sidebar, self, self.main_window)
         self.preview_controller = previewcontroller.PreviewController(self.main_window.preview, self, self.main_window)
-        self.document_wizard_controller = document_wizard_controller.DocumentWizardController(self.main_window, self)
 
         self.observe_workspace()
         self.observe_workspace_view()
@@ -112,7 +113,7 @@ class WorkspaceController(object):
         self.insert_symbol_action.set_enabled(False)
 
         self.document_wizard_action = Gio.SimpleAction.new('show-document-wizard', None)
-        self.document_wizard_action.connect('activate', self.document_wizard_controller.start_wizard)
+        self.document_wizard_action.connect('activate', self.start_wizard)
         self.document_wizard_action.set_enabled(False)
 
         # populate workspace
@@ -569,6 +570,11 @@ class WorkspaceController(object):
             document_view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
 
             buff.end_user_action()
+
+    @_assert_has_active_document
+    def start_wizard(self, action, parameter=None):
+        document = self.workspace.get_active_document()
+        self.document_wizard_dialog.run(document)
 
     @_assert_has_active_document
     def insert_before_after(self, action, parameter):

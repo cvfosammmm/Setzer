@@ -15,52 +15,55 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
+from gi.repository import GdkPixbuf
+from gi.repository import Gdk
+
 import _thread as thread
-
 import pickle
+import os
 
-from viewgtk.viewgtk_dialogs_document_wizard import *
-
-import helpers.helpers as helpers
+import dialogs.document_wizard.document_wizard_viewgtk as viewgtk
 
 
-class DocumentWizardController(object):
-    ''' Init and controll document wizard '''
-    
-    def __init__(self, main_window, workspace_controller):
+class DocumentWizard(object):
+    ''' Create document templates for users to build on. '''
 
+    def __init__(self, main_window, workspace, settings):
         self.main_window = main_window
-        self.workspace_controller = workspace_controller
+        self.workspace = workspace
+        self.settings = settings
         self.page_formats = {'US Letter': 'letterpaper', 'US Legal': 'legalpaper', 'A4': 'a4paper', 'A5': 'a5paper', 'B5': 'b5paper'}
 
-        self.view = DocumentWizardView(self.main_window)
-        self.presets = None
-        
-        self.current_page = None
-
-        self.init_current_values()
+        self.view = viewgtk.DocumentWizardView(self.main_window)
         self.image_loading_lock = thread.allocate_lock()
-        self.setup_wizard()
+        thread.start_new_thread(self.load_beamer_images, ())
 
-    '''
-    *** decorators
-    '''
-    
-    def _assert_has_active_document(original_function):
-        def new_function(self, *args, **kwargs):
-            if self.workspace_controller.workspace.get_active_document() != None:
-                return original_function(self, *args, **kwargs)
-        return new_function    
+    def run(self, document):
+        self.image_loading_lock.acquire()
+        self.image_loading_lock.release()
 
-    '''
-    *** logic
-    '''
-    
+        self.document = document
+        self.presets = None
+        self.current_page = None
+        self.init_current_values()
+        self.setup()
+
+        self.load_presets()
+        self.goto_page(0)
+        response = self.view.run()
+
+        if response == Gtk.ResponseType.APPLY:
+            self.save_presets()
+            self.insert_template()
+
+        self.view.dialog.hide()
+
     def init_current_values(self):
         self.current_values = dict()
         self.current_values['document_class'] = 'article'
@@ -98,7 +101,7 @@ class DocumentWizardController(object):
         self.current_values['beamer']['option_show_navigation'] = True
         self.current_values['beamer']['option_top_align'] = True
     
-    def setup_wizard(self):
+    def setup(self):
         self.view.dialog.connect('key-press-event', self.on_keypress)
         self.observe_document_class_page()
         self.observe_article_settings_page()
@@ -109,24 +112,24 @@ class DocumentWizardController(object):
         self.observe_general_settings_page()
         self.view.next_button.connect('clicked', self.goto_page_next)
         self.view.back_button.connect('clicked', self.goto_page_prev)
-    
-    def start_wizard(self, action=None, parameter=None):
-        self.image_loading_lock.acquire()
-        self.image_loading_lock.release()
-        self.load_presets()
-        self.goto_page(0)
-        response = self.view.run()
 
-        if response in [Gtk.ResponseType.CANCEL, Gtk.ResponseType.CLOSE, Gtk.ResponseType.DELETE_EVENT]:
-            self.close_wizard()
-        elif response == Gtk.ResponseType.APPLY:
-            self.save_presets()
-            self.insert_template()
-            self.close_wizard()
+    def load_beamer_images(self):
+        self.image_loading_lock.acquire()
+        page = self.view.beamer_settings_page
+        for name in self.view.beamer_settings_page.theme_names:
+            for i in range(0, 2):
+                pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.dirname(__file__) + '/../../resources/images/documentwizard/beamerpreview_' + name + '_page_' + str(i) + '.png', 346, 260, False)
+                image = Gtk.Image.new_from_pixbuf(pixbuf)
+                page.preview_images[name].append(image)
+                pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.dirname(__file__) + '/../../resources/images/documentwizard/beamerpreview_' + name + '_page_' + str(i) + '.png', 100, 75, False)
+                image = Gtk.Image.new_from_pixbuf(pixbuf)
+                page.preview_button_images[name].append(image)
+        self.view.beamer_settings_page.preview_stack.show_all()
+        self.image_loading_lock.release()
 
     def load_presets(self):
         if self.presets == None:
-            presets = self.workspace_controller.settings.get_value('app_document_wizard', 'presets')
+            presets = self.settings.get_value('app_document_wizard', 'presets')
             if presets == None: return
             else: self.presets = pickle.loads(presets)
 
@@ -220,11 +223,7 @@ class DocumentWizardController(object):
         self.presets['letter']['page_format'] = self.current_values['letter']['page_format']
         self.presets['letter']['font_size'] = self.current_values['letter']['font_size']
         
-        self.workspace_controller.settings.set_value('app_document_wizard', 'presets', pickle.dumps(self.presets))
-
-    def close_wizard(self):
-        self.view.dialog.hide()
-        self.current_page = None
+        self.settings.set_value('app_document_wizard', 'presets', pickle.dumps(self.presets))
 
     def goto_page_next(self, button=None, data=None):
         if self.current_page == 0:
@@ -371,20 +370,6 @@ class DocumentWizardController(object):
                 stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT)
             stack.set_visible_child_name(theme_name + '_' + str(number))
 
-        def setup_preview():
-            self.image_loading_lock.acquire()
-            page = self.view.beamer_settings_page
-            for name in self.view.beamer_settings_page.theme_names:
-                for i in range(0, 2):
-                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.dirname(__file__) + '/../resources/images/documentwizard/beamerpreview_' + name + '_page_' + str(i) + '.png', 346, 260, False)
-                    image = Gtk.Image.new_from_pixbuf(pixbuf)
-                    page.preview_images[name].append(image)
-                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.dirname(__file__) + '/../resources/images/documentwizard/beamerpreview_' + name + '_page_' + str(i) + '.png', 100, 75, False)
-                    image = Gtk.Image.new_from_pixbuf(pixbuf)
-                    page.preview_button_images[name].append(image)
-            self.view.beamer_settings_page.preview_stack.show_all()
-            self.image_loading_lock.release()
-
         self.view.beamer_settings_page.themes_list.connect('row-selected', row_selected)
         self.view.beamer_settings_page.option_show_navigation.connect('toggled', option_toggled, 'show_navigation')
         self.view.beamer_settings_page.option_top_align.connect('toggled', option_toggled, 'top_align')
@@ -394,8 +379,6 @@ class DocumentWizardController(object):
                 button = self.view.beamer_settings_page.preview_buttons[name][i]
                 button.set_can_focus(False)
                 button.connect('clicked', preview_button_clicked, name, i)
-
-        thread.start_new_thread(setup_preview, ())
 
     def observe_general_settings_page(self):
         def text_deleted(buffer, position, n_chars, field_name):
@@ -439,12 +422,8 @@ class DocumentWizardController(object):
                     return True
         return False
 
-    @_assert_has_active_document
     def insert_template(self, data=None):
-        active_document = self.workspace_controller.workspace.get_active_document()
-
-        document_view = self.workspace_controller.document_controllers[active_document].document_view
-        buff = active_document.get_buffer()
+        buff = self.document.get_buffer()
         if buff != False:
             buff.begin_user_action()
 
