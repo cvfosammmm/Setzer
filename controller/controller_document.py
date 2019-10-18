@@ -30,10 +30,6 @@ import backend.backend as backend
 import controller.controller_document_autocomplete as autocompletecontroller
 import controller.controller_document_search as searchcontroller
 import helpers.helpers as helpers
-import dialogs.building_failed.building_failed as building_failed_dialog
-import dialogs.save_document.save_document as save_document_dialog
-import dialogs.build_save.build_save as build_save_dialog
-import dialogs.interpreter_missing.interpreter_missing as interpreter_missing_dialog
 
 import time
 import os.path
@@ -44,7 +40,7 @@ import re
 class DocumentController(object):
     ''' Mediator between workspace and view. '''
     
-    def __init__(self, document, document_view, doclist_item, backend, settings, main_window, workspace, main_controller):
+    def __init__(self, document, document_view, doclist_item, backend, settings, main_window, workspace, main_controller, dialog_provider):
 
         self.document = document
         self.document_view = document_view
@@ -53,6 +49,7 @@ class DocumentController(object):
         self.main_window = main_window
         self.workspace = workspace
         self.main_controller = main_controller
+        self.dialog_provider = dialog_provider
         self.doclist_item = doclist_item
         self.modified_state = document.get_modified()
         self.build_button_state = ('idle', int(time.time()*1000))
@@ -60,14 +57,8 @@ class DocumentController(object):
         self.document_view.build_widget.stop_button.hide()
         self.set_clean_button_state()
 
-        # init dialogs
-        self.building_failed_dialog = building_failed_dialog.BuildingFailedDialog(self.main_window)
-        self.save_document_dialog = save_document_dialog.SaveDocumentDialog(self.main_window, self.workspace)
-        self.build_save_dialog = build_save_dialog.BuildSaveDialog(self.main_window)
-        self.interpreter_missing_dialog = interpreter_missing_dialog.InterpreterMissingDialog(self.main_window)
-
         self.autocomplete_controller = autocompletecontroller.DocumentAutocompleteController(self.document, self.document_view, self.main_window)
-        self.search_controller = searchcontroller.DocumentSearchController(self.document, self.document_view, self.document_view.search_bar, self.main_window)
+        self.search_controller = searchcontroller.DocumentSearchController(self.document, self.document_view, self.document_view.search_bar, self.main_window, self.dialog_provider)
         
         self.observe_document()
         self.observe_document_view()
@@ -169,7 +160,7 @@ class DocumentController(object):
                     self.document.change_state('idle')
                     self.on_build_state_change('')
                     self.set_clean_button_state()
-                    if self.interpreter_missing_dialog.run(result_blob['error_arg']):
+                    if self.dialog_provider.get_dialog('interpreter_missing').run(result_blob['error_arg']):
                         self.main_controller.show_preferences_dialog()
                     return
 
@@ -177,7 +168,7 @@ class DocumentController(object):
                     self.document.change_state('idle')
                     self.on_build_state_change('')
                     self.set_clean_button_state()
-                    if self.building_failed_dialog.run(result_blob['error_arg']):
+                    if self.dialog_provider.get_dialog('building_failed').run(result_blob['error_arg']):
                         self.main_controller.show_preferences_dialog()
                     return
 
@@ -449,8 +440,8 @@ class DocumentController(object):
         document = self.document
 
         if document.filename == None:
-            if self.build_save_dialog.run(document):
-                self.save_document_dialog.run(document, '.tex')
+            if self.dialog_provider.get_dialog('build_save').run(document):
+                self.dialog_provider.get_dialog('save_document').run(document, '.tex')
             else:
                 return False
 

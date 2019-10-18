@@ -28,10 +28,6 @@ import controller.controller_sidebar as sidebarcontroller
 import controller.controller_preview as previewcontroller
 import backend.backend as backend
 import helpers.helpers as helpers
-import dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
-import dialogs.document_wizard.document_wizard as document_wizard
-import dialogs.open_document.open_document as open_document_dialog
-import dialogs.save_document.save_document as save_document_dialog
 
 import time
 
@@ -39,19 +35,14 @@ import time
 class WorkspaceController(object):
     ''' Mediator between workspace and view. '''
     
-    def __init__(self, workspace, main_window, settings, main_controller):
+    def __init__(self, workspace, main_window, settings, main_controller, dialog_provider):
 
         self.workspace = workspace
         self.main_window = main_window
         self.backend = backend.Backend()
         self.settings = settings
         self.main_controller = main_controller
-
-        # init dialogs
-        self.open_document_dialog = open_document_dialog.OpenDocumentDialog(self.main_window, self.workspace)
-        self.save_document_dialog = save_document_dialog.SaveDocumentDialog(self.main_window, self.workspace)
-        self.document_wizard_dialog = document_wizard.DocumentWizard(self.main_window, self.workspace, self.settings)
-        self.close_confirmation_dialog = close_confirmation_dialog.CloseConfirmationDialog(self.main_window, self.workspace)
+        self.dialog_provider = dialog_provider
 
         self.document_controllers = dict()
         self.sidebar_controller = sidebarcontroller.SidebarController(self.main_window.sidebar, self, self.main_window)
@@ -174,7 +165,7 @@ class WorkspaceController(object):
             doclist_item = self.main_window.headerbar.open_docs_popover.add_document(document)
             
             # add controller
-            document_controller = documentcontroller.DocumentController(document, document_view, doclist_item, self.backend, self.settings, self.main_window, self.workspace, self.main_controller)
+            document_controller = documentcontroller.DocumentController(document, document_view, doclist_item, self.backend, self.settings, self.main_window, self.workspace, self.main_controller, self.dialog_provider)
             self.document_controllers[document] = document_controller
             self.observe_doclist_item(doclist_item)
 
@@ -297,7 +288,7 @@ class WorkspaceController(object):
             self.workspace.set_active_document(document)
 
     def on_open_document_button_click(self, button_object=None):
-        self.open_document_dialog.run()
+        self.dialog_provider.get_dialog('open_document').run()
 
     def on_new_document_button_click(self, button_object=None):
         document = model_document.Document(self.workspace.pathname, with_buffer=True)
@@ -306,7 +297,8 @@ class WorkspaceController(object):
 
     def on_doclist_close_clicked(self, button_object, document):
         if document.get_modified():
-            not_save_to_close = self.close_confirmation_dialog.run([document])['not_save_to_close_documents']
+            dialog = self.dialog_provider.get_dialog('close_confirmation')
+            not_save_to_close = dialog.run([document])['not_save_to_close_documents']
             if document not in not_save_to_close:
                 self.workspace.remove_document(document)
         
@@ -334,9 +326,9 @@ class WorkspaceController(object):
         document = self.workspace.get_active_document()
         filename = document.get_filename()
         if filename != None:
-            self.save_document_dialog.run(document, filename)
+            self.dialog_provider.get_dialog('save_document').run(document, filename)
         else:
-            self.save_document_dialog.run(document, '.tex')
+            self.dialog_provider.get_dialog('save_document').run(document, '.tex')
         
     @_assert_has_active_document
     def on_save_all_clicked(self, action=None, parameter=None):
@@ -348,7 +340,7 @@ class WorkspaceController(object):
                 if document.get_filename() == None:
                     self.workspace.set_active_document(document)
                     return_to_active_document = True
-                    self.save_document_dialog.run(document, '.tex')
+                    self.dialog_provider.get_dialog('save_document').run(document, '.tex')
                 else:
                     document.save_to_disk()
             if return_to_active_document == True:
@@ -386,7 +378,8 @@ class WorkspaceController(object):
         active_document = self.workspace.get_active_document()
         documents = self.workspace.get_all_documents()
         unsaved_documents = self.workspace.get_unsaved_documents()
-        not_save_to_close_documents = self.close_confirmation_dialog.run(unsaved_documents)['not_save_to_close_documents']
+        dialog = self.dialog_provider.get_dialog('close_confirmation')
+        not_save_to_close_documents = dialog.run(unsaved_documents)['not_save_to_close_documents']
 
         for document in documents:
             if document not in not_save_to_close_documents:
@@ -529,7 +522,7 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def start_wizard(self, action, parameter=None):
         document = self.workspace.get_active_document()
-        self.document_wizard_dialog.run(document)
+        self.dialog_provider.get_dialog('document_wizard').run(document)
 
     @_assert_has_active_document
     def insert_before_after(self, action, parameter):

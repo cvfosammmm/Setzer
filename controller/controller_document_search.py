@@ -28,7 +28,6 @@ from gi.repository import GtkSource
 import viewgtk.viewgtk as view
 import backend.backend as backend
 import helpers.helpers as helpers
-import dialogs.replace_confirmation.replace_confirmation as replace_confirmation_dialog
 
 import time
 import os.path
@@ -39,16 +38,14 @@ import re
 class DocumentSearchController(object):
     ''' Control find, find and replace. '''
     
-    def __init__(self, document, document_view, search_bar, main_window):
+    def __init__(self, document, document_view, search_bar, main_window, dialog_provider):
 
         self.search_bar = search_bar
         self.search_bar_mode = 'search'
         self.document_view = document_view
         self.document = document
         self.main_window = main_window
-
-        # init dialogs
-        self.replace_confirmation_dialog = replace_confirmation_dialog.ReplaceConfirmationDialog(self.main_window)
+        self.dialog_provider = dialog_provider
 
         self.observe_search_bar()
         self.observe_shortcuts_bar()
@@ -103,7 +100,8 @@ class DocumentSearchController(object):
             number_of_occurences = search_context.get_occurrences_count()
             
             if number_of_occurences > 0:
-                if self.replace_confirmation_dialog.run(original, replacement, number_of_occurences):
+                dialog = self.dialog_provider.get_dialog('replace_confirmation')
+                if dialog.run(original, replacement, number_of_occurences):
                     search_context.replace_all(replacement, -1)
 
     def on_search_entry_activate(self, entry=None):

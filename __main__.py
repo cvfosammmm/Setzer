@@ -78,7 +78,7 @@ class MainApplicationController(Gtk.Application):
         self.dialog_provider = dialog_provider.DialogProvider(self.main_window, self.workspace, self.settings)
 
         # init controller
-        self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace, self.main_window, self.settings, self)
+        self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace, self.main_window, self.settings, self, self.dialog_provider)
         self.setup_hamburger_menu()
         self.shortcuts_controller = shortcutscontroller.ShortcutsController(self.workspace, self.workspace_controller, self.main_window, self)
 
