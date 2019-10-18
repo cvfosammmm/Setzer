@@ -26,7 +26,6 @@ import viewgtk.viewgtk as view
 import controller.controller_document as documentcontroller
 import controller.controller_sidebar as sidebarcontroller
 import controller.controller_preview as previewcontroller
-import controller.controller_document_wizard as document_wizard_controller
 import backend.backend as backend
 import helpers.helpers as helpers
 import dialogs.open_document.open_document as open_document_dialog
