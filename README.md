@@ -2,7 +2,7 @@
 
 Simple yet full-featured LaTeX editor for the GNU/Linux desktop, written in Python with Gtk.
 
-Website: <a href="https://www.cvfosammmm.org/setzer">https://www.cvfosammmm.org/setzer</a>
+Website: <a href="https://www.cvfosammmm.org/setzer/">https://www.cvfosammmm.org/setzer/</a>
 
 <a href="https://flathub.org/apps/details/org.cvfosammmm.Setzer"><img src="https://www.cvfosammmm.org/setzer/images/flathub-badge-en.svg" width="150" height="50"></a>
 
