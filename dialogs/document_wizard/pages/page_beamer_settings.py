@@ -43,10 +43,11 @@ class BeamerSettingsPage(Page):
         def row_selected(box, row, user_data=None):
             child_name = row.get_child().get_text()
             self.current_values['beamer']['theme'] = child_name
-            image_box = self.view.preview_image_boxes[child_name][0]
-            if image_box.get_center_widget() == None:
-                image_box.set_center_widget(self.view.preview_images[child_name][0])
-                image_box.show_all()
+            for i in range(0, 2):
+                image_box = self.view.preview_image_boxes[child_name][i]
+                if image_box.get_center_widget() == None:
+                    image_box.set_center_widget(self.view.preview_images[child_name][i])
+                    image_box.show_all()
             self.view.preview_stack.set_transition_type(Gtk.StackTransitionType.NONE)
             self.view.preview_stack.set_visible_child_name(child_name + '_0')
 
