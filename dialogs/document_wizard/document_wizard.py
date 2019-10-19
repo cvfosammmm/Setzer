@@ -20,14 +20,18 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GdkPixbuf
 from gi.repository import Gdk
 
 from dialogs.dialog import Dialog
 import dialogs.document_wizard.document_wizard_viewgtk as viewgtk
+from dialogs.document_wizard.pages.page_document_class import DocumentClassPage
+from dialogs.document_wizard.pages.page_article_settings import ArticleSettingsPage
+from dialogs.document_wizard.pages.page_report_settings import ReportSettingsPage
+from dialogs.document_wizard.pages.page_book_settings import BookSettingsPage
+from dialogs.document_wizard.pages.page_letter_settings import LetterSettingsPage
+from dialogs.document_wizard.pages.page_beamer_settings import BeamerSettingsPage
+from dialogs.document_wizard.pages.page_general_settings import GeneralSettingsPage
 
-import _thread as thread
 import pickle
 import os
 
@@ -39,24 +43,36 @@ class DocumentWizard(Dialog):
         self.main_window = main_window
         self.workspace = workspace
         self.settings = settings
+        self.current_values = dict()
         self.page_formats = {'US Letter': 'letterpaper', 'US Legal': 'legalpaper', 'A4': 'a4paper', 'A5': 'a5paper', 'B5': 'b5paper'}
 
         self.view = viewgtk.DocumentWizardView(self.main_window)
-        self.image_loading_lock = thread.allocate_lock()
-        thread.start_new_thread(self.load_beamer_images, ())
+
+        self.pages = list()
+        self.pages.append(DocumentClassPage(self.current_values))
+        self.pages.append(ArticleSettingsPage(self.current_values))
+        self.pages.append(ReportSettingsPage(self.current_values))
+        self.pages.append(BookSettingsPage(self.current_values))
+        self.pages.append(LetterSettingsPage(self.current_values))
+        self.pages.append(BeamerSettingsPage(self.current_values))
+        self.pages.append(GeneralSettingsPage(self.current_values))
+        for page in self.pages: self.view.notebook.append_page(page.view)
+
+        self.is_not_setup = True
 
     def run(self, document):
-        self.image_loading_lock.acquire()
-        self.image_loading_lock.release()
-
         self.document = document
-        self.presets = None
-        self.current_page = None
-        self.init_current_values()
-        self.setup()
 
+        if self.is_not_setup:
+            self.init_current_values()
+            self.setup()
+            self.is_not_setup = False
+
+        self.presets = None
+        self.current_page = 0
         self.load_presets()
         self.goto_page(0)
+
         response = self.view.run()
 
         if response == Gtk.ResponseType.APPLY:
@@ -66,7 +82,6 @@ class DocumentWizard(Dialog):
         self.view.dialog.hide()
 
     def init_current_values(self):
-        self.current_values = dict()
         self.current_values['document_class'] = 'article'
         self.current_values['title'] = ''
         self.current_values['author'] = ''
@@ -104,29 +119,9 @@ class DocumentWizard(Dialog):
     
     def setup(self):
         self.view.dialog.connect('key-press-event', self.on_keypress)
-        self.observe_document_class_page()
-        self.observe_article_settings_page()
-        self.observe_report_settings_page()
-        self.observe_book_settings_page()
-        self.observe_letter_settings_page()
-        self.observe_beamer_settings_page()
-        self.observe_general_settings_page()
+        for page in self.pages: page.observe_view()
         self.view.next_button.connect('clicked', self.goto_page_next)
         self.view.back_button.connect('clicked', self.goto_page_prev)
-
-    def load_beamer_images(self):
-        self.image_loading_lock.acquire()
-        page = self.view.beamer_settings_page
-        for name in self.view.beamer_settings_page.theme_names:
-            for i in range(0, 2):
-                pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.dirname(__file__) + '/../../resources/images/documentwizard/beamerpreview_' + name + '_page_' + str(i) + '.png', 346, 260, False)
-                image = Gtk.Image.new_from_pixbuf(pixbuf)
-                page.preview_images[name].append(image)
-                pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.dirname(__file__) + '/../../resources/images/documentwizard/beamerpreview_' + name + '_page_' + str(i) + '.png', 100, 75, False)
-                image = Gtk.Image.new_from_pixbuf(pixbuf)
-                page.preview_button_images[name].append(image)
-        self.view.beamer_settings_page.preview_stack.show_all()
-        self.image_loading_lock.release()
 
     def load_presets(self):
         if self.presets == None:
@@ -134,97 +129,11 @@ class DocumentWizard(Dialog):
             if presets == None: return
             else: self.presets = pickle.loads(presets)
 
-        try:
-            row = self.view.document_class_page.list_rows[self.presets['document_class']]
-        except KeyError:
-            row = self.view.document_class_page.list_rows[self.current_values['document_class']]
-        self.view.document_class_page.list.select_row(row)
-
-        try:
-            row = self.view.beamer_settings_page.themes_list_rows[self.presets['beamer']['theme']]
-        except KeyError:
-            row = self.view.beamer_settings_page.themes_list_rows[self.current_values['beamer']['theme']]
-        self.view.beamer_settings_page.themes_list.select_row(row)
-
-        try:
-            is_active = self.presets['beamer']['option_show_navigation']
-        except KeyError:
-            is_active = self.current_values['beamer']['option_show_navigation']
-        self.view.beamer_settings_page.option_show_navigation.set_active(is_active)
-
-        try:
-            is_active = self.presets['beamer']['option_top_align']
-        except KeyError:
-            is_active = self.current_values['beamer']['option_top_align']
-        self.view.beamer_settings_page.option_top_align.set_active(is_active)
-        
-        for no, page_class in [(1, 'article'), (2, 'report'), (3, 'book'), (4, 'letter')]:
-            try:
-                row = self.view.pages[no].page_format_list_rows[self.presets[page_class]['page_format']]
-            except KeyError:
-                row = self.view.pages[no].page_format_list_rows[self.current_values[page_class]['page_format']]
-            self.view.pages[no].page_format_list.select_row(row)
-
-        for no, page_class in [(1, 'article'), (2, 'report'), (3, 'book'), (4, 'letter')]:
-            try:
-                value = self.presets[page_class]['font_size']
-            except KeyError:
-                value = self.current_values[page_class]['font_size']
-            self.view.pages[no].font_size_entry.set_value(value)
-
-        for no, page_class in [(1, 'article'), (2, 'report'), (3, 'book')]:
-            try:
-                is_active = self.presets[page_class]['option_twocolumn']
-            except KeyError:
-                is_active = self.current_values[page_class]['option_twocolumn']
-            self.view.pages[no].option_twocolumn.set_active(is_active)
-
-        try:
-            text = self.presets['author']
-        except KeyError:
-            text = self.current_values['author']
-        self.view.general_settings_page.author_entry.set_text(text)
-        self.view.general_settings_page.title_entry.set_text('')
-        self.view.general_settings_page.date_entry.set_text('\\today')
-
-        for name, option in self.view.general_settings_page.option_packages.items():
-            try:
-                is_active = self.presets['packages'][name]
-            except KeyError:
-                is_active = self.current_values['packages'][name]
-            option.set_active(is_active)
+        for page in self.pages:
+            page.load_presets(self.presets)
 
     def save_presets(self):
-        self.presets = dict()
-        self.presets['document_class'] = self.current_values['document_class']
-        self.presets['author'] = self.current_values['author']
-        self.presets['packages'] = self.current_values['packages']
-        
-        self.presets['beamer'] = dict()
-        self.presets['beamer']['theme'] = self.current_values['beamer']['theme']
-        self.presets['beamer']['option_show_navigation'] = self.current_values['beamer']['option_show_navigation']
-        self.presets['beamer']['option_top_align'] = self.current_values['beamer']['option_top_align']
-        
-        self.presets['article'] = dict()
-        self.presets['article']['page_format'] = self.current_values['article']['page_format']
-        self.presets['article']['font_size'] = self.current_values['article']['font_size']
-        self.presets['article']['option_twocolumn'] = self.current_values['article']['option_twocolumn']
-        
-        self.presets['report'] = dict()
-        self.presets['report']['page_format'] = self.current_values['report']['page_format']
-        self.presets['report']['font_size'] = self.current_values['report']['font_size']
-        self.presets['report']['option_twocolumn'] = self.current_values['report']['option_twocolumn']
-        
-        self.presets['book'] = dict()
-        self.presets['book']['page_format'] = self.current_values['book']['page_format']
-        self.presets['book']['font_size'] = self.current_values['book']['font_size']
-        self.presets['book']['option_twocolumn'] = self.current_values['book']['option_twocolumn']
-        
-        self.presets['letter'] = dict()
-        self.presets['letter']['page_format'] = self.current_values['letter']['page_format']
-        self.presets['letter']['font_size'] = self.current_values['letter']['font_size']
-        
-        self.settings.set_value('app_document_wizard', 'presets', pickle.dumps(self.presets))
+        self.settings.set_value('app_document_wizard', 'presets', pickle.dumps(self.current_values))
 
     def goto_page_next(self, button=None, data=None):
         if self.current_page == 0:
@@ -249,22 +158,9 @@ class DocumentWizard(Dialog):
     def goto_page(self, page_number):
         self.current_page = page_number
         self.view.notebook.set_current_page(page_number)
-        self.view.headerbar.set_subtitle(self.view.pages[page_number].headerbar_subtitle)
+        self.view.headerbar.set_subtitle(self.pages[page_number].view.headerbar_subtitle)
         
-        if page_number == 0:
-            GLib.idle_add(self.view.document_class_page.list_grab_focus)
-        elif page_number == 1:
-            GLib.idle_add(self.view.article_settings_page.list_grab_focus)
-        elif page_number == 2:
-            GLib.idle_add(self.view.report_settings_page.list_grab_focus)
-        elif page_number == 3:
-            GLib.idle_add(self.view.book_settings_page.list_grab_focus)
-        elif page_number == 4:
-            GLib.idle_add(self.view.letter_settings_page.list_grab_focus)
-        elif page_number == 5:
-            GLib.idle_add(self.view.beamer_settings_page.list_grab_focus)
-        elif page_number == 6:
-            GLib.idle_add(self.view.general_settings_page.title_entry.grab_focus)
+        self.pages[page_number].on_activation()
 
         if page_number == 0:
             self.view.back_button.hide()
@@ -278,137 +174,6 @@ class DocumentWizard(Dialog):
             self.view.next_button.hide()
             self.view.back_button.show_all()
             self.view.create_button.show_all()
-
-    def observe_document_class_page(self):
-        def row_selected(box, row, user_data=None):
-            child_name = row.get_child().get_text().lower()
-            self.current_values['document_class'] = child_name
-            self.view.document_class_page.preview_container.set_visible_child_name(child_name)
-
-        self.view.document_class_page.list.connect('row-selected', row_selected)
-
-    def observe_article_settings_page(self):
-        def row_selected(box, row, user_data=None):
-            child_name = row.get_child().get_text()
-            self.current_values['article']['page_format'] = child_name
-
-        def scale_change_value(scale, scroll, value, user_data=None):
-            self.current_values['article']['font_size'] = int(value)
-
-        def option_toggled(button, option_name):
-            self.current_values['article']['option_' + option_name] = button.get_active()
-
-        self.view.article_settings_page.page_format_list.connect('row-selected', row_selected)
-        self.view.article_settings_page.font_size_entry.connect('change-value', scale_change_value)
-        self.view.article_settings_page.option_twocolumn.connect('toggled', option_toggled, 'twocolumn')
-
-    def observe_report_settings_page(self):
-        def row_selected(box, row, user_data=None):
-            child_name = row.get_child().get_text()
-            self.current_values['report']['page_format'] = child_name
-
-        def scale_change_value(scale, scroll, value, user_data=None):
-            self.current_values['report']['font_size'] = int(value)
-
-        def option_toggled(button, option_name):
-            self.current_values['report']['option_' + option_name] = button.get_active()
-
-        self.view.report_settings_page.page_format_list.connect('row-selected', row_selected)
-        self.view.report_settings_page.font_size_entry.connect('change-value', scale_change_value)
-        self.view.report_settings_page.option_twocolumn.connect('toggled', option_toggled, 'twocolumn')
-
-    def observe_book_settings_page(self):
-        def row_selected(box, row, user_data=None):
-            child_name = row.get_child().get_text()
-            self.current_values['book']['page_format'] = child_name
-
-        def scale_change_value(scale, scroll, value, user_data=None):
-            self.current_values['book']['font_size'] = int(value)
-
-        def option_toggled(button, option_name):
-            self.current_values['book']['option_' + option_name] = button.get_active()
-
-        self.view.book_settings_page.page_format_list.connect('row-selected', row_selected)
-        self.view.book_settings_page.font_size_entry.connect('change-value', scale_change_value)
-        self.view.book_settings_page.option_twocolumn.connect('toggled', option_toggled, 'twocolumn')
-
-    def observe_letter_settings_page(self):
-        def row_selected(box, row, user_data=None):
-            child_name = row.get_child().get_text()
-            self.current_values['letter']['page_format'] = child_name
-
-        def scale_change_value(scale, scroll, value, user_data=None):
-            self.current_values['letter']['font_size'] = int(value)
-
-        self.view.letter_settings_page.page_format_list.connect('row-selected', row_selected)
-        self.view.letter_settings_page.font_size_entry.connect('change-value', scale_change_value)
-
-    def observe_beamer_settings_page(self):
-        def row_selected(box, row, user_data=None):
-            child_name = row.get_child().get_text()
-            self.current_values['beamer']['theme'] = child_name
-            image_box = self.view.beamer_settings_page.preview_image_boxes[child_name][0]
-            if image_box.get_center_widget() == None:
-                image_box.set_center_widget(page.preview_images[child_name][0])
-                image_box.show_all()
-            self.view.beamer_settings_page.preview_stack.set_transition_type(Gtk.StackTransitionType.NONE)
-            self.view.beamer_settings_page.preview_stack.set_visible_child_name(child_name + '_0')
-
-            button = self.view.beamer_settings_page.preview_buttons[child_name][0]
-            button.set_image(page.preview_button_images[child_name][0])
-            button = self.view.beamer_settings_page.preview_buttons[child_name][1]
-            button.set_image(page.preview_button_images[child_name][1])
-            self.view.beamer_settings_page.preview_button_stack.set_visible_child_name(child_name)
-
-        def option_toggled(button, option_name):
-            self.current_values['beamer']['option_' + option_name] = button.get_active()
-
-        def preview_button_clicked(button, theme_name, number):
-            stack = self.view.beamer_settings_page.preview_stack
-            if number == 0:
-                stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT)
-            elif number == 1:
-                stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT)
-            stack.set_visible_child_name(theme_name + '_' + str(number))
-
-        self.view.beamer_settings_page.themes_list.connect('row-selected', row_selected)
-        self.view.beamer_settings_page.option_show_navigation.connect('toggled', option_toggled, 'show_navigation')
-        self.view.beamer_settings_page.option_top_align.connect('toggled', option_toggled, 'top_align')
-        page = self.view.beamer_settings_page
-        for name in self.view.beamer_settings_page.theme_names:
-            for i in range(0, 2):
-                button = self.view.beamer_settings_page.preview_buttons[name][i]
-                button.set_can_focus(False)
-                button.connect('clicked', preview_button_clicked, name, i)
-
-    def observe_general_settings_page(self):
-        def text_deleted(buffer, position, n_chars, field_name):
-            self.current_values[field_name] = buffer.get_text()
-
-        def text_inserted(buffer, position, chars, n_chars, field_name):
-            self.current_values[field_name] = buffer.get_text()
-
-        def option_toggled(button, package_name):
-            self.current_values['packages'][package_name] = button.get_active()
-
-        def package_hover_start(button, event, package_name):
-            markup = self.view.general_settings_page.packages_tooltip_data[package_name]
-            self.view.general_settings_page.packages_tooltip.set_markup(markup)
-
-        def package_hover_end(button, event, package_name):
-            self.view.general_settings_page.packages_tooltip.set_markup(' ')
-
-        page = self.view.general_settings_page
-        page.title_entry.get_buffer().connect('deleted-text', text_deleted, 'title')
-        page.title_entry.get_buffer().connect('inserted-text', text_inserted, 'title')
-        page.author_entry.get_buffer().connect('deleted-text', text_deleted, 'author')
-        page.author_entry.get_buffer().connect('inserted-text', text_inserted, 'author')
-        page.date_entry.get_buffer().connect('deleted-text', text_deleted, 'date')
-        page.date_entry.get_buffer().connect('inserted-text', text_inserted, 'date')
-        for name, checkbox in self.view.general_settings_page.option_packages.items():
-            checkbox.connect('toggled', option_toggled, name)
-            checkbox.connect('enter-notify-event', package_hover_start, name)
-            checkbox.connect('leave-notify-event', package_hover_end, name)
 
     def on_keypress(self, widget, event, data=None):
         modifiers = Gtk.accelerator_get_default_mod_mask()
@@ -540,7 +305,7 @@ class DocumentWizard(Dialog):
 \\end{document}''')
 
     def get_insert_text_letter(self):
-        return ('''\\documentclass[''' + self.page_formats[self.current_values['letter']['page_format']] + ''',''' + str(self.current_values['letter']['font_size']) + '''pt''' + (',twocolumn' if self.current_values['letter']['option_twocolumn'] else '') + ''']{letter}
+        return ('''\\documentclass[''' + self.page_formats[self.current_values['letter']['page_format']] + ''',''' + str(self.current_values['letter']['font_size']) + '''pt]{letter}
 \\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
 \\usepackage{lmodern}
