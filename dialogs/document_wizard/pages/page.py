@@ -65,11 +65,18 @@ class PageView(Gtk.VBox):
         self.page_format_list.set_margin_right(0)
         self.page_format_list.set_vexpand(False)
 
+        self.orientation_box = Gtk.HBox()
+        self.option_portrait = Gtk.RadioButton('Portrait')
+        self.option_landscape = Gtk.RadioButton.new_with_label_from_widget(self.option_portrait, 'Landscape')
+        self.orientation_box.pack_start(self.option_portrait, True, True, 0)
+        self.orientation_box.pack_start(self.option_landscape, True, True, 0)
+        self.orientation_box.set_margin_top(6)
+
         self.subheader_margins = Gtk.Label('Page margins')
         self.subheader_margins.get_style_context().add_class('document-wizard-subheader')
         self.subheader_margins.set_xalign(0)
         self.subheader_margins.set_margin_top(18)
-        self.option_default_margins = Gtk.CheckButton.new_with_label('Leave default margins')
+        self.option_default_margins = Gtk.CheckButton.new_with_label('Use default margins')
 
         self.margins_box = Gtk.VBox()
         self.margins_button_left = Gtk.SpinButton.new_with_range(0.0, 5.0, 0.1)

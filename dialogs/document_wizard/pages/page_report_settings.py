@@ -45,6 +45,12 @@ class ReportSettingsPage(Page):
         def margin_changed(button, side):
             self.current_values['report']['margin_' + side] = button.get_value()
 
+        def on_orientation_toggle(button, button_name):
+            if button_name == 'portrait':
+                self.current_values['report']['is_landscape'] = not button.get_active()
+            elif button_name == 'landscape':
+                self.current_values['report']['is_landscape'] = button.get_active()
+
         self.view.page_format_list.connect('changed', format_changed)
         self.view.font_size_entry.connect('change-value', scale_change_value)
         self.view.option_twocolumn.connect('toggled', option_toggled, 'twocolumn')
@@ -53,6 +59,8 @@ class ReportSettingsPage(Page):
         self.view.margins_button_right.connect('value-changed', margin_changed, 'right')
         self.view.margins_button_top.connect('value-changed', margin_changed, 'top')
         self.view.margins_button_bottom.connect('value-changed', margin_changed, 'bottom')
+        self.view.option_portrait.connect('toggled', on_orientation_toggle, 'portrait')
+        self.view.option_landscape.connect('toggled', on_orientation_toggle, 'landscape')
 
     def option_default_margins_toggled(self, button, option_name=None):
         for spinbutton in [self.view.margins_button_left, self.view.margins_button_right, self.view.margins_button_top, self.view.margins_button_bottom]:
@@ -112,6 +120,12 @@ class ReportSettingsPage(Page):
         self.view.option_default_margins.set_active(is_active)
         self.option_default_margins_toggled(self.view.option_default_margins)
 
+        try:
+            is_landscape = presets['report']['is_landscape']
+        except KeyError:
+            is_landscape = self.current_values['report']['is_landscape']
+        self.view.option_landscape.set_active(is_landscape)
+
     def on_activation(self):
         GLib.idle_add(self.view.page_format_list.grab_focus)
 
@@ -135,6 +149,7 @@ class ReportSettingsPageView(PageView):
 
         self.left_content.pack_start(self.subheader_page_format, False, False, 0)
         self.left_content.pack_start(self.page_format_list, False, False, 0)
+        self.left_content.pack_start(self.orientation_box, False, False, 0)
         self.left_content.pack_start(self.subheader_margins, False, False, 0)
         self.left_content.pack_start(self.option_default_margins, False, False, 0)
         self.left_content.pack_start(self.margins_box, False, False, 0)
