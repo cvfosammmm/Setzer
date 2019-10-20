@@ -138,6 +138,7 @@ class ArticleSettingsPageView(PageView):
         self.left_content.pack_start(self.subheader_margins, False, False, 0)
         self.left_content.pack_start(self.option_default_margins, False, False, 0)
         self.left_content.pack_start(self.margins_box, False, False, 0)
+        self.left_content.pack_start(self.margins_description, False, False, 0)
 
         self.right_content.pack_start(self.subheader_font_size, False, False, 0)
         self.right_content.pack_start(self.font_size_entry, False, False, 0)

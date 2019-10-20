@@ -46,7 +46,8 @@ box.autocomplete label.infobox {
     padding-left: 3px;
     background-color: @theme_bg_color;
     font-size: 14px;
-    color: #666;
+    color: @theme_fg_color;
+    opacity: 0.65;
     border-right: 1px solid mix(@borders, @theme_bg_color, 0.5);
     border-left: 1px solid mix(@borders, @theme_bg_color, 0.5);
 }
@@ -395,6 +396,9 @@ label.document-wizard-option-desc {
     font-size: 12px;
     margin-left: 26px;
     margin-bottom: 6px;
+}
+label.document-wizard-desc {
+    color: mix(@theme_fg_color, @theme_bg_color, 0.3);
 }
 scrolledwindow.document-wizard-scrolledwindow {
     border: 1px solid @borders;

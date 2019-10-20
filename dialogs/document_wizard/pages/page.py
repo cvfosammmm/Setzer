@@ -97,6 +97,11 @@ class PageView(Gtk.VBox):
         self.margins_box.get_style_context().add_class('margins-box')
         self.margins_box.set_size_request(348, -1)
 
+        self.margins_description = Gtk.Label('All values are in cm (1 inch ≅ 2.54 cm).')
+        self.margins_description.set_xalign(0)
+        self.margins_description.set_margin_top(6)
+        self.margins_description.get_style_context().add_class('document-wizard-desc')
+
         self.subheader_font_size = Gtk.Label('Font size')
         self.subheader_font_size.get_style_context().add_class('document-wizard-subheader')
         self.subheader_font_size.set_xalign(0)
