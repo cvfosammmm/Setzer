@@ -101,17 +101,37 @@ class DocumentWizard(Dialog):
         self.current_values['article']['page_format'] = 'US Letter'
         self.current_values['article']['font_size'] = 11
         self.current_values['article']['option_twocolumn'] = False
+        self.current_values['article']['option_default_margins'] = True
+        self.current_values['article']['margin_left'] = 3.5
+        self.current_values['article']['margin_right'] = 3.5
+        self.current_values['article']['margin_top'] = 3.5
+        self.current_values['article']['margin_bottom'] = 3.5
         self.current_values['report'] = dict()
         self.current_values['report']['page_format'] = 'US Letter'
         self.current_values['report']['font_size'] = 11
         self.current_values['report']['option_twocolumn'] = False
+        self.current_values['report']['option_default_margins'] = True
+        self.current_values['report']['margin_left'] = 3.5
+        self.current_values['report']['margin_right'] = 3.5
+        self.current_values['report']['margin_top'] = 3.5
+        self.current_values['report']['margin_bottom'] = 3.5
         self.current_values['book'] = dict()
         self.current_values['book']['page_format'] = 'US Letter'
         self.current_values['book']['font_size'] = 11
         self.current_values['book']['option_twocolumn'] = False
+        self.current_values['book']['option_default_margins'] = True
+        self.current_values['book']['margin_left'] = 3.5
+        self.current_values['book']['margin_right'] = 3.5
+        self.current_values['book']['margin_top'] = 3.5
+        self.current_values['book']['margin_bottom'] = 3.5
         self.current_values['letter'] = dict()
         self.current_values['letter']['page_format'] = 'US Letter'
         self.current_values['letter']['font_size'] = 11
+        self.current_values['letter']['option_default_margins'] = True
+        self.current_values['letter']['margin_left'] = 3.5
+        self.current_values['letter']['margin_right'] = 3.5
+        self.current_values['letter']['margin_top'] = 3.5
+        self.current_values['letter']['margin_bottom'] = 3.5
         self.current_values['beamer'] = dict()
         self.current_values['beamer']['theme'] = 'Default'
         self.current_values['beamer']['option_show_navigation'] = True
@@ -237,7 +257,9 @@ class DocumentWizard(Dialog):
     
     def get_insert_text_article(self):
         return ('''\\documentclass[''' + self.page_formats[self.current_values['article']['page_format']] + ''',''' + str(self.current_values['article']['font_size']) + '''pt''' + (',twocolumn' if self.current_values['article']['option_twocolumn'] else '') + ''']{article}
-\\usepackage[T1]{fontenc}
+''' +
+('''\\usepackage[top=''' + str(self.current_values['article']['margin_top']) + '''cm, bottom=''' + str(self.current_values['article']['margin_bottom']) + '''cm, left=''' + str(self.current_values['article']['margin_left']) + '''cm, right=''' + str(self.current_values['article']['margin_right']) + '''cm]{geometry}''' if not self.current_values['article']['option_default_margins'] else '')
++ '''\\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
 \\usepackage{lmodern}
 ''' + self.get_insert_packages() + '''
@@ -261,7 +283,9 @@ class DocumentWizard(Dialog):
 
     def get_insert_text_report(self):
         return ('''\\documentclass[''' + self.page_formats[self.current_values['report']['page_format']] + ''',''' + str(self.current_values['report']['font_size']) + '''pt''' + (',twocolumn' if self.current_values['report']['option_twocolumn'] else '') + ''']{report}
-\\usepackage[T1]{fontenc}
+''' +
+('''\\usepackage[top=''' + str(self.current_values['report']['margin_top']) + '''cm, bottom=''' + str(self.current_values['report']['margin_bottom']) + '''cm, left=''' + str(self.current_values['report']['margin_left']) + '''cm, right=''' + str(self.current_values['report']['margin_right']) + '''cm]{geometry}''' if not self.current_values['report']['option_default_margins'] else '')
++ '''\\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
 \\usepackage{lmodern}
 ''' + self.get_insert_packages() + '''
@@ -285,7 +309,9 @@ class DocumentWizard(Dialog):
 
     def get_insert_text_book(self):
         return ('''\\documentclass[''' + self.page_formats[self.current_values['book']['page_format']] + ''',''' + str(self.current_values['book']['font_size']) + '''pt''' + (',twocolumn' if self.current_values['book']['option_twocolumn'] else '') + ''']{book}
-\\usepackage[T1]{fontenc}
+''' +
+('''\\usepackage[top=''' + str(self.current_values['book']['margin_top']) + '''cm, bottom=''' + str(self.current_values['book']['margin_bottom']) + '''cm, left=''' + str(self.current_values['book']['margin_left']) + '''cm, right=''' + str(self.current_values['book']['margin_right']) + '''cm]{geometry}''' if not self.current_values['book']['option_default_margins'] else '')
++ '''\\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
 \\usepackage{lmodern}
 ''' + self.get_insert_packages() + '''
@@ -306,7 +332,9 @@ class DocumentWizard(Dialog):
 
     def get_insert_text_letter(self):
         return ('''\\documentclass[''' + self.page_formats[self.current_values['letter']['page_format']] + ''',''' + str(self.current_values['letter']['font_size']) + '''pt]{letter}
-\\usepackage[T1]{fontenc}
+''' +
+('''\\usepackage[top=''' + str(self.current_values['letter']['margin_top']) + '''cm, bottom=''' + str(self.current_values['letter']['margin_bottom']) + '''cm, left=''' + str(self.current_values['letter']['margin_left']) + '''cm, right=''' + str(self.current_values['letter']['margin_right']) + '''cm]{geometry}''' if not self.current_values['letter']['option_default_margins'] else '')
++ '''\\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
 \\usepackage{lmodern}
 ''' + self.get_insert_packages() + '''

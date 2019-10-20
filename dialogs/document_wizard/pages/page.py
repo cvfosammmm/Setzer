@@ -50,29 +50,57 @@ class PageView(Gtk.VBox):
         self.headerbar_subtitle = 'Step 2'
         self.content = Gtk.HBox()
         self.left_content = Gtk.VBox()
+        self.right_content = Gtk.VBox()
+        self.right_content.set_margin_left(18)
 
         self.subheader_page_format = Gtk.Label('Page format')
         self.subheader_page_format.get_style_context().add_class('document-wizard-subheader')
         self.subheader_page_format.set_xalign(0)
 
-        self.page_format_list = Gtk.ListBox()
+        self.page_format_list = Gtk.ComboBoxText()
         self.page_format_list.set_can_focus(True)
+        for name in ['US Letter', 'US Legal', 'A4', 'A5', 'B5']:
+            self.page_format_list.append(name, name)
         self.page_format_list.set_size_request(348, -1)
-        self.page_format_list_rows = dict()
-        for name in ['B5', 'A5', 'A4', 'US Legal', 'US Letter']:
-            label = Gtk.Label(name)
-            label.set_xalign(0)
-            self.page_format_list.prepend(label)
-        for row in self.page_format_list.get_children():
-            self.page_format_list_rows[row.get_child().get_text()] = row
         self.page_format_list.set_margin_right(0)
         self.page_format_list.set_vexpand(False)
-        self.page_format_list.get_style_context().add_class('document-wizard-list1')
-        
+
+        self.subheader_margins = Gtk.Label('Page margins')
+        self.subheader_margins.get_style_context().add_class('document-wizard-subheader')
+        self.subheader_margins.set_xalign(0)
+        self.subheader_margins.set_margin_top(18)
+        self.option_default_margins = Gtk.CheckButton.new_with_label('Leave default margins')
+
+        self.margins_box = Gtk.VBox()
+        self.margins_button_left = Gtk.SpinButton.new_with_range(0.0, 5.0, 0.1)
+        self.margins_button_left.get_style_context().add_class('left')
+        self.margins_button_right = Gtk.SpinButton.new_with_range(0.0, 5.0, 0.1)
+        self.margins_button_right.get_style_context().add_class('right')
+        self.margins_button_top = Gtk.SpinButton.new_with_range(0.0, 5.0, 0.1)
+        self.margins_button_top.get_style_context().add_class('top')
+        self.margins_button_bottom = Gtk.SpinButton.new_with_range(0.0, 5.0, 0.1)
+        self.margins_button_bottom.get_style_context().add_class('bottom')
+        self.margins_hbox1 = Gtk.HBox()
+        self.margins_hbox1.pack_start(Gtk.DrawingArea(), True, True, 0)
+        self.margins_hbox1.pack_start(self.margins_button_top, False, False, 0)
+        self.margins_hbox1.pack_start(Gtk.DrawingArea(), True, True, 0)
+        self.margins_hbox2 = Gtk.HBox()
+        self.margins_hbox2.pack_start(self.margins_button_left, False, False, 0)
+        self.margins_hbox2.pack_end(self.margins_button_right, False, False, 0)
+        self.margins_hbox3 = Gtk.HBox()
+        self.margins_hbox3.pack_start(Gtk.DrawingArea(), True, True, 0)
+        self.margins_hbox3.pack_start(self.margins_button_bottom, False, False, 0)
+        self.margins_hbox3.pack_start(Gtk.DrawingArea(), True, True, 0)
+        self.margins_box.pack_start(self.margins_hbox1, False, False, 0)
+        self.margins_box.pack_start(self.margins_hbox2, False, False, 50)
+        self.margins_box.pack_start(self.margins_hbox3, False, False, 0)
+        self.margins_box.get_style_context().add_class('margins-box')
+        self.margins_box.set_size_request(348, -1)
+
         self.subheader_font_size = Gtk.Label('Font size')
         self.subheader_font_size.get_style_context().add_class('document-wizard-subheader')
         self.subheader_font_size.set_xalign(0)
-        self.subheader_font_size.set_margin_top(18)
+        self.subheader_font_size.set_size_request(348, -1)
 
         self.font_size_entry = Gtk.HScale.new_with_range(6, 18, 1)
 

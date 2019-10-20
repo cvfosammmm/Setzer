@@ -32,22 +32,38 @@ class LetterSettingsPage(Page):
         self.view = LetterSettingsPageView()
 
     def observe_view(self):
-        def row_selected(box, row, user_data=None):
-            child_name = row.get_child().get_text()
-            self.current_values['letter']['page_format'] = child_name
+        def format_changed(box, user_data=None):
+            format_name = box.get_active_text()
+            self.current_values['letter']['page_format'] = format_name
 
         def scale_change_value(scale, scroll, value, user_data=None):
             self.current_values['letter']['font_size'] = int(value)
 
-        self.view.page_format_list.connect('row-selected', row_selected)
+        def margin_changed(button, side):
+            self.current_values['letter']['margin_' + side] = button.get_value()
+
+        self.view.page_format_list.connect('changed', format_changed)
         self.view.font_size_entry.connect('change-value', scale_change_value)
+        self.view.option_default_margins.connect('toggled', self.option_default_margins_toggled, 'default_margins')
+        self.view.margins_button_left.connect('value-changed', margin_changed, 'left')
+        self.view.margins_button_right.connect('value-changed', margin_changed, 'right')
+        self.view.margins_button_top.connect('value-changed', margin_changed, 'top')
+        self.view.margins_button_bottom.connect('value-changed', margin_changed, 'bottom')
+
+    def option_default_margins_toggled(self, button, option_name=None):
+        for spinbutton in [self.view.margins_button_left, self.view.margins_button_right, self.view.margins_button_top, self.view.margins_button_bottom]:
+            spinbutton.set_sensitive(not button.get_active())
+            if button.get_active():
+                spinbutton.set_value(3.5)
+        if option_name != None:
+            self.current_values['letter']['option_' + option_name] = button.get_active()
 
     def load_presets(self, presets):
         try:
-            row = self.view.page_format_list_rows[presets['letter']['page_format']]
+            value = presets['letter']['page_format']
         except KeyError:
-            row = self.view.page_format_list_rows[self.current_values['letter']['page_format']]
-        self.view.page_format_list.select_row(row)
+            value = self.current_values['letter']['page_format']
+        self.view.page_format_list.set_active_id(value)
 
         try:
             value = presets['letter']['font_size']
@@ -55,8 +71,39 @@ class LetterSettingsPage(Page):
             value = self.current_values['letter']['font_size']
         self.view.font_size_entry.set_value(value)
 
+        try:
+            value = presets['letter']['margin_left']
+        except KeyError:
+            value = self.current_values['letter']['margin_left']
+        self.view.margins_button_left.set_value(value)
+
+        try:
+            value = presets['letter']['margin_right']
+        except KeyError:
+            value = self.current_values['letter']['margin_right']
+        self.view.margins_button_right.set_value(value)
+
+        try:
+            value = presets['letter']['margin_top']
+        except KeyError:
+            value = self.current_values['letter']['margin_top']
+        self.view.margins_button_top.set_value(value)
+
+        try:
+            value = presets['letter']['margin_bottom']
+        except KeyError:
+            value = self.current_values['letter']['margin_bottom']
+        self.view.margins_button_bottom.set_value(value)
+
+        try:
+            is_active = presets['letter']['option_default_margins']
+        except KeyError:
+            is_active = self.current_values['letter']['option_default_margins']
+        self.view.option_default_margins.set_active(is_active)
+        self.option_default_margins_toggled(self.view.option_default_margins)
+
     def on_activation(self):
-        GLib.idle_add(self.view.page_format_list.get_selected_row().grab_focus)
+        GLib.idle_add(self.view.page_format_list.grab_focus)
 
 
 class LetterSettingsPageView(PageView):
@@ -68,11 +115,18 @@ class LetterSettingsPageView(PageView):
         self.header.set_text('Letter settings')
 
         self.pack_start(self.header, False, False, 0)
+
         self.left_content.pack_start(self.subheader_page_format, False, False, 0)
         self.left_content.pack_start(self.page_format_list, False, False, 0)
-        self.left_content.pack_start(self.subheader_font_size, False, False, 0)
-        self.left_content.pack_start(self.font_size_entry, False, False, 0)
+        self.left_content.pack_start(self.subheader_margins, False, False, 0)
+        self.left_content.pack_start(self.option_default_margins, False, False, 0)
+        self.left_content.pack_start(self.margins_box, False, False, 0)
+
+        self.right_content.pack_start(self.subheader_font_size, False, False, 0)
+        self.right_content.pack_start(self.font_size_entry, False, False, 0)
+
         self.content.pack_start(self.left_content, False, False, 0)
+        self.content.pack_start(self.right_content, False, False, 0)
         self.pack_start(self.content, False, False, 0)
         self.show_all()
 

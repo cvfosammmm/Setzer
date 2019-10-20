@@ -413,3 +413,19 @@ box.document-wizard-beamer-preview-buttons button {
 box.document-wizard-beamer-preview-buttons image {
     border: 1px solid @borders;
 }
+box.document-wizard-page box.margins-box {
+    border: 1px solid @borders;
+    background-color: @theme_base_color;
+}
+box.document-wizard-page box.margins-box spinbutton.left {
+    border-left: 0px;
+}
+box.document-wizard-page box.margins-box spinbutton.right {
+    border-right: 0px;
+}
+box.document-wizard-page box.margins-box spinbutton.top {
+    border-top: 0px;
+}
+box.document-wizard-page box.margins-box spinbutton.bottom {
+    border-bottom: 0px;
+}
