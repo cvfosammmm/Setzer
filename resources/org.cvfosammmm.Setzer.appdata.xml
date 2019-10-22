@@ -47,7 +47,7 @@
 	</provides>
 
     <releases>
-        ​<release version="0.0.2" date="2019-10-22">
+        <release version="0.0.2" date="2019-10-22">
             <description>
                 <p>Set margins in wizard, improved icon, ...</p>
             </description>
