@@ -30,8 +30,9 @@ import viewgtk.viewgtk as view
 import controller.controller_settings as settingscontroller
 import controller.controller_workspace as workspacecontroller
 import controller.controller_shortcuts as shortcutscontroller
+import backend.backend as backend
 import helpers.helpers as helpers
-import dialogs.dialog_provider as dialog_provider
+from dialogs.dialog_provider import DialogProvider
 
 
 class MainApplicationController(Gtk.Application):
@@ -52,11 +53,17 @@ class MainApplicationController(Gtk.Application):
         self.toggle_dark_mode_action.connect('activate', self.toggle_dark_mode)
         self.add_action(self.toggle_dark_mode_action)
         
-        # init model
-        self.workspace = model_workspace.Workspace()
-        
-        # init view
+        # backend
+        self.backend = backend.Backend()
         self.main_window = view.MainWindow(self)
+
+        # init model
+        self.workspace = model_workspace.Workspace(self.backend, self.settings, self.main_window)
+        
+        # init dialog provider
+        DialogProvider.init(self.main_window, self.workspace, self.settings)
+
+        # init view
         self.main_window.set_default_size(self.settings.get_value('window_state', 'width'), 
                                           self.settings.get_value('window_state', 'height'))
         self.main_window.current_width = self.settings.get_value('window_state', 'width')
@@ -74,11 +81,8 @@ class MainApplicationController(Gtk.Application):
         self.main_window.show_all()
         self.observe_main_window()
 
-        # init dialog provider
-        self.dialog_provider = dialog_provider.DialogProvider(self.main_window, self.workspace, self.settings)
-
         # init controller
-        self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace, self.main_window, self.settings, self, self.dialog_provider)
+        self.workspace_controller = workspacecontroller.WorkspaceController(self.backend, self.workspace, self.main_window, self.settings, self)
         self.setup_hamburger_menu()
         self.shortcuts_controller = shortcutscontroller.ShortcutsController(self.workspace, self.workspace_controller, self.main_window, self)
 
@@ -120,11 +124,11 @@ class MainApplicationController(Gtk.Application):
             self.fg_color = fg_color
             self.bg_color = bg_color
             
-            try: document_controllers = self.workspace_controller.document_controllers
+            try: documents = self.workspace.open_documents
             except AttributeError: pass
             else:
                 is_dark_mode = helpers.is_dark_mode(main_window)
-                for document in self.workspace_controller.document_controllers:
+                for document in documents:
                     if is_dark_mode:
                         document.set_use_dark_scheme(True)
                     else:
@@ -177,7 +181,7 @@ class MainApplicationController(Gtk.Application):
         documents = self.workspace.get_unsaved_documents()
         active_document = self.workspace.get_active_document()
 
-        if documents == None or active_document == None or not self.dialog_provider.get_dialog('close_confirmation').run(documents)['all_save_to_close']:
+        if documents == None or active_document == None or not DialogProvider.get_dialog('close_confirmation').run(documents)['all_save_to_close']:
             self.save_window_state()
             self.workspace.save_to_disk()
             self.quit()
@@ -212,10 +216,10 @@ class MainApplicationController(Gtk.Application):
         self.add_action(self.workspace_controller.document_wizard_action)
         
     def show_preferences_dialog(self, action=None, parameter=''):
-        self.dialog_provider.get_dialog('preferences').run()
+        DialogProvider.get_dialog('preferences').run()
 
     def show_about_dialog(self, action, parameter=''):
-        self.dialog_provider.get_dialog('about').run()
+        DialogProvider.get_dialog('about').run()
         
     def toggle_dark_mode(self, action, parameter=None):
         new_state = not action.get_state().get_boolean()

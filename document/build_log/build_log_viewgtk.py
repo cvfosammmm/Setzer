@@ -46,7 +46,6 @@ class BuildLogView(Gtk.VBox):
         self.header_label.set_size_request(300, -1)
         self.header_label.set_xalign(0)
         self.header_label.set_margin_left(0)
-        self.set_header_data(0, 0, False)
         self.header.pack_start(self.header_label, True, True, 0)
         self.header.pack_start(self.close_button, False, False, 0)
 
@@ -57,21 +56,6 @@ class BuildLogView(Gtk.VBox):
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
                      
-    def set_header_data (self, errors, warnings, tried_building=False):
-        if tried_building:
-            if errors == 0:
-                if warnings == 0:
-                    self.header_label.set_markup('<b>Building successful</b> (no warnings or badboxes).')
-                else:
-                    self.header_label.set_markup('<b>Building successful</b> (' + str(warnings) + ' warning' + ('s' if warnings > 1 else '') + ' or badbox' + ('es' if warnings > 1 else '') + ').')
-            else:
-                if warnings == 0:
-                    self.header_label.set_markup('<b>Building failed with ' + str(errors) + ' error' + ('s' if errors > 1 else '') + '</b> (no warnings or badboxes).')
-                else:
-                    self.header_label.set_markup('<b>Building failed with ' + str(errors) + ' error' + ('s' if errors > 1 else '') + '</b> (' + str(warnings) + ' warning' + ('s' if warnings > 1 else '') + ' or badbox' + ('es' if warnings > 1 else '') + ').')
-        else:
-            self.header_label.set_markup('')
-    
     def sort_function(self, row1, row2, user_data=None):
         line_number1 = row1.get_child().line_number
         line_number2 = row2.get_child().line_number

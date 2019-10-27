@@ -21,7 +21,6 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 from dialogs.dialog import Dialog
-import model.model_document as model_document
 
 import os.path
 
@@ -37,17 +36,11 @@ class OpenDocumentDialog(Dialog):
         self.setup()
         response = self.view.run()
         if response == Gtk.ResponseType.OK:
-            filename = self.view.get_filename()
-            document_candidate = self.workspace.get_document_by_filename(filename)
-            if document_candidate != None:
-                self.workspace.set_active_document(document_candidate)
-            else:
-                document = model_document.Document(self.workspace.pathname, with_buffer=True)
-                document.set_filename(filename)
-                document.populate_from_filename()
-                self.workspace.add_document(document)
-                self.workspace.set_active_document(document)
+            return_value = self.view.get_filename()
+        else:
+            return_value = None
         self.close()
+        return return_value
 
     def setup(self):
         self.action = Gtk.FileChooserAction.OPEN

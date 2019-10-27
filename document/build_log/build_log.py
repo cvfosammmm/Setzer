@@ -15,7 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import model.model_document as model_document
+from document.build_log.build_log_viewgtk import *
+from document.build_log.build_log_presenter import *
 from helpers.observable import *
 
 
@@ -26,7 +27,10 @@ class BuildLog(Observable):
 
         self.items = list()
         self.symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
-        
+
+        self.view = BuildLogView()
+        self.presenter = BuildLogPresenter(self, self.view)
+
     def add_item(self, item_type, line_number, message):
         item = [item_type, line_number, message]
         self.items.append(item)
@@ -34,7 +38,7 @@ class BuildLog(Observable):
 
     def signal_finish_adding(self):
         self.add_change_code('build_log_finished_adding', None)
-    
+
     def clear_items(self):
         self.items = list()
         self.add_change_code('build_log_cleared_items', None)
@@ -81,6 +85,5 @@ class BuildLog(Observable):
                 if item[0] == 'Badbox':
                     count += 1
         return count
-
 
 

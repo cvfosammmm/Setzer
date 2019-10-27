@@ -23,21 +23,17 @@ from gi.repository import GtkSource
 
 from viewgtk.viewgtk_shortcutsbar import *
 from viewgtk.viewgtk_document_search import *
-from viewgtk.viewgtk_document_buildlog import *
-from viewgtk.viewgtk_document_buildwidget import *
 from viewgtk.viewgtk_document_autocomplete import *
 
 
 class DocumentView(Gtk.HBox):
     
-    def __init__(self, document):
+    def __init__(self, document, build_log_view):
         Gtk.HBox.__init__(self)
         
         self.vbox = Gtk.VBox()        
         self.scrolled_window = Gtk.ScrolledWindow()
         
-        self.build_widget = BuildWidget()
-        self.build_log_view = BuildLogView()
         self.search_bar = SearchBar()
         self.shortcuts_bar_bottom = ShortcutsBarBottom()
         self.autocomplete = DocumentAutocompleteView()
@@ -56,7 +52,7 @@ class DocumentView(Gtk.HBox):
         self.document_paned = Gtk.VPaned()
         self.document_paned.get_style_context().add_class("document_paned")
         self.document_paned.pack1(self.vbox, True, False)
-        self.document_paned.pack2(self.build_log_view, False, True)
+        self.document_paned.pack2(build_log_view, False, True)
 
         self.vbox.pack_start(self.scrolled_window, True, True, 0)
         self.vbox.pack_start(self.search_bar, False, False, 0)

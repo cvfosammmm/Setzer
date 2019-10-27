@@ -21,13 +21,12 @@ from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
 
-import model.model_document as model_document
+from document.document import Document
 import viewgtk.viewgtk as view
-import controller.controller_document as documentcontroller
 import controller.controller_sidebar as sidebarcontroller
 import controller.controller_preview as previewcontroller
-import backend.backend as backend
 import helpers.helpers as helpers
+from dialogs.dialog_provider import DialogProvider
 
 import time
 
@@ -35,16 +34,14 @@ import time
 class WorkspaceController(object):
     ''' Mediator between workspace and view. '''
     
-    def __init__(self, workspace, main_window, settings, main_controller, dialog_provider):
+    def __init__(self, backend, workspace, main_window, settings, main_controller):
 
         self.workspace = workspace
         self.main_window = main_window
-        self.backend = backend.Backend()
+        self.backend = backend
         self.settings = settings
         self.main_controller = main_controller
-        self.dialog_provider = dialog_provider
 
-        self.document_controllers = dict()
         self.sidebar_controller = sidebarcontroller.SidebarController(self.main_window.sidebar, self, self.main_window)
         self.preview_controller = previewcontroller.PreviewController(self.main_window.preview, self, self.main_window)
 
@@ -161,24 +158,17 @@ class WorkspaceController(object):
             document.set_use_dark_scheme(helpers.is_dark_mode(self.main_window))
 
             # init view
-            document_view = view.DocumentView(document)
-            doclist_item = self.main_window.headerbar.open_docs_popover.add_document(document)
-            
-            # add controller
-            document_controller = documentcontroller.DocumentController(document, document_view, doclist_item, self.backend, self.settings, self.main_window, self.workspace, self.main_controller, self.dialog_provider)
-            self.document_controllers[document] = document_controller
+            doclist_item = document.presenter.doclist_item
             self.observe_doclist_item(doclist_item)
 
             # show
-            self.main_window.notebook.append_page(document_view)
+            self.main_window.notebook.append_page(document.view)
             
         if change_code == 'document_removed':
             document = parameter
-            document_view = self.document_controllers[document].document_view
             notebook = self.main_window.notebook
             self.main_window.headerbar.open_docs_popover.remove_document(document)
-            self.main_window.notebook.remove(document_view)
-            del(self.document_controllers[document])
+            self.main_window.notebook.remove(document.view)
             if self.workspace.active_document == None:
                 notebook.set_current_page(notebook.page_num(self.main_window.blank_slate))
                 self.show_document_name(None)
@@ -203,12 +193,11 @@ class WorkspaceController(object):
             
         if change_code == 'new_active_document':
             document = parameter
-            document_view = self.document_controllers[document].document_view
             notebook = self.main_window.notebook
-            notebook.set_current_page(notebook.page_num(document_view))
-            document_view.source_view.grab_focus()
-            self.main_window.preview_paned_overlay.add_overlay(document_view.autocomplete)
-            self.document_controllers[document].autocomplete_controller.update_autocomplete_position()
+            notebook.set_current_page(notebook.page_num(document.view))
+            document.view.source_view.grab_focus()
+            self.main_window.preview_paned_overlay.add_overlay(document.view.autocomplete)
+            document.controller.autocomplete_controller.update_autocomplete_position()
 
             self.show_document_name(document)
             self.main_window.headerbar.open_docs_popover.document_list.invalidate_sort()
@@ -245,9 +234,8 @@ class WorkspaceController(object):
         
         if change_code == 'new_inactive_document':
             document = parameter
-            document_view = self.document_controllers[document].document_view
             notebook = self.main_window.notebook
-            self.main_window.preview_paned_overlay.remove(document_view.autocomplete)
+            self.main_window.preview_paned_overlay.remove(document.view.autocomplete)
 
         if change_code == 'update_recently_opened_documents':
             items = list()
@@ -278,29 +266,41 @@ class WorkspaceController(object):
         filename = row.folder + '/' + row.filename
         document_candidate = self.workspace.get_document_by_filename(filename)
 
-        if isinstance(document_candidate, model_document.Document):
+        if isinstance(document_candidate, Document):
             self.workspace.set_active_document(document_candidate)
         else:
-            document = model_document.Document(self.workspace.pathname, with_buffer=True)
+            document = Document(self.backend, self.settings, self.main_window, self.workspace.pathname, with_buffer=True)
             document.set_filename(filename)
             document.populate_from_filename()
             self.workspace.add_document(document)
             self.workspace.set_active_document(document)
 
     def on_open_document_button_click(self, button_object=None):
-        self.dialog_provider.get_dialog('open_document').run()
+        filename = DialogProvider.get_dialog('open_document').run()
+        if filename != None:
+            document_candidate = self.workspace.get_document_by_filename(filename)
+            if document_candidate != None:
+                self.workspace.set_active_document(document_candidate)
+            else:
+                document = Document(self.backend, self.settings, self.main_window, self.workspace.pathname, with_buffer=True)
+                document.set_filename(filename)
+                document.populate_from_filename()
+                self.workspace.add_document(document)
+                self.workspace.set_active_document(document)
 
     def on_new_document_button_click(self, button_object=None):
-        document = model_document.Document(self.workspace.pathname, with_buffer=True)
+        document = Document(self.backend, self.settings, self.main_window, self.workspace.pathname, with_buffer=True)
         self.workspace.add_document(document)
         self.workspace.set_active_document(document)
 
     def on_doclist_close_clicked(self, button_object, document):
         if document.get_modified():
-            dialog = self.dialog_provider.get_dialog('close_confirmation')
+            dialog = DialogProvider.get_dialog('close_confirmation')
             not_save_to_close = dialog.run([document])['not_save_to_close_documents']
             if document not in not_save_to_close:
                 self.workspace.remove_document(document)
+        else:
+            self.workspace.remove_document(document)
         
     def on_doclist_row_activated(self, box, row, data=None):
         self.main_window.headerbar.open_docs_popover.popdown()
@@ -326,9 +326,9 @@ class WorkspaceController(object):
         document = self.workspace.get_active_document()
         filename = document.get_filename()
         if filename != None:
-            self.dialog_provider.get_dialog('save_document').run(document, filename)
+            DialogProvider.get_dialog('save_document').run(document, filename)
         else:
-            self.dialog_provider.get_dialog('save_document').run(document, '.tex')
+            DialogProvider.get_dialog('save_document').run(document, '.tex')
         
     @_assert_has_active_document
     def on_save_all_clicked(self, action=None, parameter=None):
@@ -340,7 +340,7 @@ class WorkspaceController(object):
                 if document.get_filename() == None:
                     self.workspace.set_active_document(document)
                     return_to_active_document = True
-                    self.dialog_provider.get_dialog('save_document').run(document, '.tex')
+                    DialogProvider.get_dialog('save_document').run(document, '.tex')
                 else:
                     document.save_to_disk()
             if return_to_active_document == True:
@@ -349,36 +349,33 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def on_menu_find_clicked(self, action=None, parameter=None):
         active_document = self.workspace.get_active_document()
-        view = self.document_controllers[active_document].document_view
-        view.shortcuts_bar_bottom.button_find.set_active(True)
-        GLib.idle_add(self.document_controllers[active_document].search_controller.search_entry_grab_focus, None)
+        active_document.view.shortcuts_bar_bottom.button_find.set_active(True)
+        GLib.idle_add(self.active_document.controller.search_controller.search_entry_grab_focus, None)
 
     @_assert_has_active_document
     def find_next(self, action=None, parameter=None):
         active_document = self.workspace.get_active_document()
-        controller = self.document_controllers[active_document]
-        if controller.document_view.source_view.has_focus() or controller.document_view.search_bar.entry.has_focus() or controller.document_view.search_bar.replace_entry.has_focus():
-            controller.document_view.search_bar.entry.emit('next-match')
+        if active_document.view.source_view.has_focus() or active_document.view.search_bar.entry.has_focus() or active_document.view.search_bar.replace_entry.has_focus():
+            active_document.view.search_bar.entry.emit('next-match')
 
     @_assert_has_active_document
     def find_prev(self, action=None, parameter=None):
         active_document = self.workspace.get_active_document()
-        controller = self.document_controllers[active_document]
-        if controller.document_view.source_view.has_focus() or controller.document_view.search_bar.entry.has_focus() or controller.document_view.search_bar.replace_entry.has_focus():
-            controller.document_view.search_bar.entry.emit('previous-match')
+        if active_document.controller.document_view.source_view.has_focus() or active_document.controller.document_view.search_bar.entry.has_focus() or active_document.controller.document_view.search_bar.replace_entry.has_focus():
+            active_document.controller.document_view.search_bar.entry.emit('previous-match')
 
     @_assert_has_active_document
     def on_menu_find_replace_clicked(self, action=None, parameter=None):
         active_document = self.workspace.get_active_document()
-        self.document_controllers[active_document].document_view.shortcuts_bar_bottom.button_find_and_replace.set_active(True)
-        GLib.idle_add(self.document_controllers[active_document].search_controller.search_entry_grab_focus, None)
+        active_document.view.shortcuts_bar_bottom.button_find_and_replace.set_active(True)
+        GLib.idle_add(active_document.controller.search_controller.search_entry_grab_focus, None)
 
     @_assert_has_active_document
     def on_close_all_clicked(self, action=None, parameter=None):
         active_document = self.workspace.get_active_document()
         documents = self.workspace.get_all_documents()
         unsaved_documents = self.workspace.get_unsaved_documents()
-        dialog = self.dialog_provider.get_dialog('close_confirmation')
+        dialog = DialogProvider.get_dialog('close_confirmation')
         not_save_to_close_documents = dialog.run(unsaved_documents)['not_save_to_close_documents']
 
         for document in documents:
@@ -416,27 +413,24 @@ class WorkspaceController(object):
         document = self.workspace.active_document
         state = document.get_state()
             
-        document_view = self.document_controllers[self.workspace.active_document].document_view
         headerbar = self.main_window.headerbar
         prev_widget = headerbar.build_wrapper.get_center_widget()
         if prev_widget != None:
             headerbar.build_wrapper.remove(prev_widget)
-        headerbar.build_wrapper.set_center_widget(document_view.build_widget)
+        headerbar.build_wrapper.set_center_widget(document.build_widget.view)
         headerbar.build_wrapper.show()
-        document_view.build_widget.show()
-        if document_view.build_widget.has_result():
-            document_view.build_widget.hide_timer(4000)
+        document.build_widget.view.show()
+        if document.build_widget.view.has_result():
+            document.build_widget.view.hide_timer(4000)
 
     def set_shortcuts_bar_bottom(self):
         document = self.workspace.active_document
-            
-        document_view = self.document_controllers[self.workspace.active_document].document_view
         shortcuts_bar = self.main_window.shortcuts_bar
 
         if shortcuts_bar.current_bottom != None:
             shortcuts_bar.remove(shortcuts_bar.current_bottom)
-        shortcuts_bar.current_bottom = document_view.shortcuts_bar_bottom
-        shortcuts_bar.pack_end(document_view.shortcuts_bar_bottom, False, False, 0)
+        shortcuts_bar.current_bottom = document.view.shortcuts_bar_bottom
+        shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
 
     def show_document_name(self, document):
         headerbar = self.main_window.headerbar
@@ -485,10 +479,9 @@ class WorkspaceController(object):
         ''' insert text at the cursor. '''
         
         text = parameter[0]
-        
         active_document = self.workspace.get_active_document()
-        document_view = self.document_controllers[active_document].document_view
         buff = active_document.get_buffer()
+
         if buff != False:
             buff.begin_user_action()
 
@@ -515,14 +508,14 @@ class WorkspaceController(object):
             else:
                 buff.delete_selection(False, False)
                 buff.insert_at_cursor(text)
-            document_view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
+            active_document.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
 
             buff.end_user_action()
 
     @_assert_has_active_document
     def start_wizard(self, action, parameter=None):
         document = self.workspace.get_active_document()
-        self.dialog_provider.get_dialog('document_wizard').run(document)
+        DialogProvider.get_dialog('document_wizard').run(document)
 
     @_assert_has_active_document
     def insert_before_after(self, action, parameter):
@@ -532,7 +525,6 @@ class WorkspaceController(object):
         after = parameter[1]
 
         active_document = self.workspace.get_active_document()
-        document_view = self.document_controllers[active_document].document_view
         buff = active_document.get_buffer()
         if buff != False:
             bounds = buff.get_selection_bounds()
@@ -544,7 +536,7 @@ class WorkspaceController(object):
                 cursor_pos = buff.get_iter_at_mark(buff.get_insert())
                 cursor_pos.backward_chars(len(after))
                 buff.place_cursor(cursor_pos)
-                document_view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
+                active_document.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
             else:
                 text = before + '•' + after
                 buff.insert_at_cursor(text)
@@ -553,7 +545,7 @@ class WorkspaceController(object):
                 bound = cursor_pos.copy()
                 bound.backward_chars(1)
                 buff.select_range(bound, cursor_pos)
-                document_view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
+                active_document.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
             buff.end_user_action()
 
 

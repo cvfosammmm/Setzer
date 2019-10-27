@@ -363,12 +363,13 @@ class OpenDocsPopoverItem(Gtk.ListBoxRow):
         if modified_state == True: self.title += '*'
         if filename != None:
             fsplit = filename.rsplit('/', 1)
-            self.title += fsplit[1]
-            self.folder = fsplit[0]
-            self.has_title = True
-        else:
-            self.title += self.document.get_displayname()
-            self.has_title = False
+            if len(fsplit) > 1:
+                self.title += fsplit[1]
+                self.folder = fsplit[0]
+                self.has_title = True
+            else:
+                self.title += self.document.get_displayname()
+                self.has_title = False
         self.label.set_text(self.title)
         self.flabel.set_text(self.folder)
         self.mlabel.set_text(str(modified_state))

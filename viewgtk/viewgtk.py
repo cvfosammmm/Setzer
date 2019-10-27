@@ -23,8 +23,10 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 
 from viewgtk.viewgtk_headerbar import *
+from viewgtk.viewgtk_shortcutsbar import *
+from viewgtk.viewgtk_document_search import *
+from viewgtk.viewgtk_document_autocomplete import *
 from viewgtk.viewgtk_sidebar import *
-from viewgtk.viewgtk_document import *
 from viewgtk.viewgtk_preview import *
 
 import os

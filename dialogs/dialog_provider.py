@@ -29,25 +29,21 @@ import dialogs.save_document.save_document as save_document_dialog
 
 
 class DialogProvider(object):
+    dialogs = dict()
 
-    def __init__(self, main_window, workspace, settings):
-        self.main_window = main_window
-        self.workspace = workspace
-        self.settings = settings
+    def init(main_window, workspace, settings):
+        DialogProvider.dialogs['about'] = about_dialog.AboutDialog(main_window, settings)
+        DialogProvider.dialogs['building_failed'] = building_failed_dialog.BuildingFailedDialog(main_window)
+        DialogProvider.dialogs['build_save'] = build_save_dialog.BuildSaveDialog(main_window)
+        DialogProvider.dialogs['close_confirmation'] = close_confirmation_dialog.CloseConfirmationDialog(main_window, workspace)
+        DialogProvider.dialogs['document_wizard'] = document_wizard.DocumentWizard(main_window, workspace, settings)
+        DialogProvider.dialogs['interpreter_missing'] = interpreter_missing_dialog.InterpreterMissingDialog(main_window)
+        DialogProvider.dialogs['preferences'] = preferences_dialog.PreferencesDialog(main_window, settings)
+        DialogProvider.dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(main_window, workspace)
+        DialogProvider.dialogs['replace_confirmation'] = replace_confirmation_dialog.ReplaceConfirmationDialog(main_window)
+        DialogProvider.dialogs['save_document'] = save_document_dialog.SaveDocumentDialog(main_window, workspace)
 
-        self.dialogs = dict()
-        self.dialogs['about'] = about_dialog.AboutDialog(self.main_window, self.settings)
-        self.dialogs['building_failed'] = building_failed_dialog.BuildingFailedDialog(self.main_window)
-        self.dialogs['build_save'] = build_save_dialog.BuildSaveDialog(self.main_window)
-        self.dialogs['close_confirmation'] = close_confirmation_dialog.CloseConfirmationDialog(self.main_window, self.workspace, self)
-        self.dialogs['document_wizard'] = document_wizard.DocumentWizard(self.main_window, self.workspace, self.settings)
-        self.dialogs['interpreter_missing'] = interpreter_missing_dialog.InterpreterMissingDialog(self.main_window)
-        self.dialogs['preferences'] = preferences_dialog.PreferencesDialog(self.main_window, self.settings)
-        self.dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(self.main_window, self.workspace)
-        self.dialogs['replace_confirmation'] = replace_confirmation_dialog.ReplaceConfirmationDialog(self.main_window)
-        self.dialogs['save_document'] = save_document_dialog.SaveDocumentDialog(self.main_window, self.workspace)
-
-    def get_dialog(self, dialog_type):
-        return self.dialogs[dialog_type]
+    def get_dialog(dialog_type):
+        return DialogProvider.dialogs[dialog_type]
 
 

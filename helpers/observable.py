@@ -24,7 +24,7 @@ class Observable(object):
     def __init__(self):
         self.observers = set()
     
-    def add_change_code(self, change_code, parameter):
+    def add_change_code(self, change_code, parameter=None):
         ''' Observables call this method to notify observers of
             changes in their states. '''
         

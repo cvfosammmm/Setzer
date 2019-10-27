@@ -20,10 +20,8 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import GObject
 
-from viewgtk.viewgtk_shortcutsbar import *
 
-
-class BuildWidget(Gtk.HBox):
+class BuildWidgetView(Gtk.HBox):
     ''' Shows how long the build process takes '''
     
     def __init__(self):

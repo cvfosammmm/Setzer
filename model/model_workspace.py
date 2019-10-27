@@ -19,16 +19,19 @@ import os.path
 import time
 import pickle
 
-import model.model_document as model_document
+from document.document import Document
 from helpers.observable import *
 
 
 class Workspace(Observable):
     ''' A workspace contains a user's open documents. '''
 
-    def __init__(self):
+    def __init__(self, backend, settings, main_window):
         Observable.__init__(self)
-        
+
+        self.backend = backend
+        self.settings = settings
+        self.main_window = main_window
         self.pathname = os.path.expanduser('~') + '/.setzer'
 
         self.open_documents = list()
@@ -36,14 +39,14 @@ class Workspace(Observable):
         self.untitled_documents_no = 0
         
         self.active_document = None
-        
+
     def add_document(self, document):
         if self.open_documents.count(document) != 0: return False
+        if document.get_filename() == None:
+            document.set_displayname('Untitled Document ' + str(self.untitled_documents_no + 1))
+            self.untitled_documents_no += 1
         if document.get_buffer() != None:
             self.open_documents.append(document)
-            if document.get_filename() == None:
-                document.set_displayname('Untitled Document ' + str(self.untitled_documents_no + 1))
-                self.untitled_documents_no += 1
             self.add_change_code('new_document', document)
             self.update_recently_opened_document(document.get_filename(), notify=True)
 
@@ -101,10 +104,10 @@ class Workspace(Observable):
         except IOError: pass
         else:
             try: data = pickle.load(filehandle)
-            except EOFError: self.add_document(model_document.Document(self.pathname, with_buffer=True))
+            except EOFError: self.add_document(Document(self.backend, self.settings, self.main_window, self.pathname, with_buffer=True))
             else:
                 for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
-                    document = model_document.Document(self.pathname, with_buffer=True)
+                    document = Document(self.backend, self.settings, self.main_window, self.pathname, with_buffer=True)
                     document.set_filename(item['filename'])
                     if document.populate_from_filename() != False:
                         self.add_document(document)
@@ -118,10 +121,12 @@ class Workspace(Observable):
         else:
             open_documents = dict()
             for document in self.open_documents:
-                open_documents[document.get_filename()] = {
-                    'filename': document.get_filename(),
-                    'last_activated': document.get_last_activated()
-                }
+                filename = document.get_filename()
+                if filename != None:
+                    open_documents[filename] = {
+                        'filename': filename,
+                        'last_activated': document.get_last_activated()
+                    }
             data = {
                 'open_documents': open_documents,
                 'recently_opened_documents': self.recently_opened_documents

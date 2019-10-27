@@ -87,7 +87,8 @@ class ShortcutsController(object):
         self.main_controller.main_window.headerbar.center_button.clicked()
 
     def shortcut_build(self, accel_group=None, window=None, key=None, mask=None):
-        self.workspace_controller.document_controllers[self.workspace.get_active_document()].build_document()
+        if self.workspace.get_active_document() != None:
+            self.workspace.get_active_document().controller.build_document()
         return True
 
     def shortcut_sidebar(self, accel_group=None, window=None, key=None, mask=None):

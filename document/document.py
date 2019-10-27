@@ -23,16 +23,21 @@ import os.path
 import pickle
 import base64
 
-import model.model_buildlog as model_buildlog
+import document.document_builder as document_builder
+import document.document_controller as document_controller
+import document.document_presenter as document_presenter
+import document.document_viewgtk as document_view
+import document.build_log.build_log as build_log
+import document.build_widget.build_widget as build_widget
 from helpers.observable import *
 
 
 class Document(Observable):
 
-    def __init__(self, data_pathname, with_buffer=False, document_data=None):
+    def __init__(self, backend, settings, main_window, data_pathname, with_buffer=False, document_data=None):
         Observable.__init__(self)
-        
-        self.displayname = None
+
+        self.displayname = ''
         self.filename = None
         self.pdf_filename = None
         self.pdf_date = None
@@ -44,15 +49,22 @@ class Document(Observable):
         self.search_context = None
         if with_buffer: self.init_buffer()
         
-        self.build_log = model_buildlog.BuildLog()
-        
         # possible states: idle, ready_for_building
         # building_in_progress, building_to_stop
         self.state = 'idle'
         
         self.data_pathname = data_pathname
-        self.document_data = {'show_build_log': False} if document_data == None else document_data
+        self.document_data = {'show_build_log': None} if document_data == None else document_data
         
+        self.build_log = build_log.BuildLog()
+        self.build_widget = build_widget.BuildWidget()
+
+        self.view = document_view.DocumentView(self, self.build_log.view)
+        self.settings = settings
+        self.builder = document_builder.DocumentBuilder(self, backend, settings)
+        self.presenter = document_presenter.DocumentPresenter(self, self.view, settings, main_window)
+        self.controller = document_controller.DocumentController(self, self.view, settings, main_window)
+
     def set_search_text(self, search_text):
         self.search_settings.set_search_text(search_text)
         
@@ -74,6 +86,8 @@ class Document(Observable):
         self.search_settings = GtkSource.SearchSettings()
         self.search_context = GtkSource.SearchContext.new(self.source_buffer, self.search_settings)
         self.search_context.set_highlight(True)
+
+        self.add_change_code('buffer_ready')
         
     def set_use_dark_scheme(self, use_dark_scheme):
         if use_dark_scheme: self.source_buffer.set_style_scheme(self.source_style_scheme_dark)
@@ -126,6 +140,7 @@ class Document(Observable):
         
     def set_displayname(self, displayname):
         self.displayname = displayname
+        self.add_change_code('displayname_change')
         
     def set_show_build_log(self, show_build_log):
         if show_build_log != self.document_data['show_build_log']:
@@ -133,7 +148,10 @@ class Document(Observable):
             self.add_change_code('show_build_log_state_change', show_build_log)
 
     def get_show_build_log(self):
-        return self.document_data['show_build_log']
+        if self.document_data['show_build_log'] != None:
+            return self.document_data['show_build_log']
+        else:
+            return False
         
     def get_last_activated(self):
         return self.last_activated
