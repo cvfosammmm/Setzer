@@ -23,10 +23,10 @@ from gi.repository import Gtk
 from gi.repository import GtkSource, Pango
 
 import helpers.helpers as helpers
-from viewgtk.viewgtk_document_autocomplete import *
+import document.autocomplete.autocomplete_viewgtk as view
 
 
-class DocumentAutocompleteController(object):
+class Autocomplete(object):
 
     def __init__(self, document, document_view, main_window):
         self.document = document
@@ -161,7 +161,7 @@ class DocumentAutocompleteController(object):
                 except KeyError: pass
                 else:
                     for word in items:
-                        item = DocumentAutocompleteItem('\\' + word)
+                        item = view.DocumentAutocompleteItem('\\' + word)
                         self.document_view.autocomplete.prepend(item)
                         self.insert_iter_matched = True
                         self.document_view.autocomplete.select_first()

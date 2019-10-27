@@ -30,7 +30,6 @@ import viewgtk.viewgtk as view
 import controller.controller_settings as settingscontroller
 import controller.controller_workspace as workspacecontroller
 import controller.controller_shortcuts as shortcutscontroller
-import backend.backend as backend
 import helpers.helpers as helpers
 from dialogs.dialog_provider import DialogProvider
 
@@ -53,12 +52,10 @@ class MainApplicationController(Gtk.Application):
         self.toggle_dark_mode_action.connect('activate', self.toggle_dark_mode)
         self.add_action(self.toggle_dark_mode_action)
         
-        # backend
-        self.backend = backend.Backend()
         self.main_window = view.MainWindow(self)
 
         # init model
-        self.workspace = model_workspace.Workspace(self.backend, self.settings, self.main_window)
+        self.workspace = model_workspace.Workspace(self.settings, self.main_window)
         
         # init dialog provider
         DialogProvider.init(self.main_window, self.workspace, self.settings)
@@ -82,7 +79,7 @@ class MainApplicationController(Gtk.Application):
         self.observe_main_window()
 
         # init controller
-        self.workspace_controller = workspacecontroller.WorkspaceController(self.backend, self.workspace, self.main_window, self.settings, self)
+        self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace, self.main_window, self.settings, self)
         self.setup_hamburger_menu()
         self.shortcuts_controller = shortcutscontroller.ShortcutsController(self.workspace, self.workspace_controller, self.main_window, self)
 

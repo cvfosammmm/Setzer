@@ -98,7 +98,7 @@
                 "cp resources/org.cvfosammmm.Setzer.appdata.xml /app/share/metainfo/org.cvfosammmm.Setzer.appdata.xml",
                 "mkdir -p /app/bin",
                 "cp -R dialogs /app/bin/",
-                "cp -R backend /app/bin/",
+                "cp -R document /app/bin/",
                 "cp -R controller /app/bin/",
                 "cp -R helpers /app/bin/",
                 "cp -R model /app/bin/",

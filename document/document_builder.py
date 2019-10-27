@@ -15,19 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import backend.backend as backend
+import document.build_system.build_system as build_system
 from dialogs.dialog_provider import DialogProvider
 
 
 class DocumentBuilder(object):
-    ''' Mediator between workspace and backend. '''
+    ''' Mediator between document and build_system. '''
     
-    def __init__(self, document, backend, settings):
+    def __init__(self, document, settings):
         self.document = document
-        self.backend = backend
+        self.build_system = build_system.BuildSystem()
         self.settings = settings
         self.document.register_observer(self)
-        self.backend.register_observer(self)
+        self.build_system.register_observer(self)
 
     '''
     *** notification handlers, get called by observed document
@@ -43,12 +43,12 @@ class DocumentBuilder(object):
             synctex_arguments['line_offset'] = insert.get_line_offset()
             buffer = document.get_buffer()
             if buffer != None:
-                query = backend.Query(buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True), self, synctex_arguments, self.settings.get_value('preferences', 'build_command'))
-                self.backend.add_query(query)
+                query = build_system.Query(buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True), self, synctex_arguments, self.settings.get_value('preferences', 'build_command'))
+                self.build_system.add_query(query)
 
         if change_code == 'document_state_change' and parameter == 'building_to_stop':
             document = notifying_object
-            self.backend.stop_building_by_document(document)
+            self.build_system.stop_building_by_document(document)
         
         if change_code == 'building_started':
             query = parameter

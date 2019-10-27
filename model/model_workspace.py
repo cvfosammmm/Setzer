@@ -26,10 +26,9 @@ from helpers.observable import *
 class Workspace(Observable):
     ''' A workspace contains a user's open documents. '''
 
-    def __init__(self, backend, settings, main_window):
+    def __init__(self, settings, main_window):
         Observable.__init__(self)
 
-        self.backend = backend
         self.settings = settings
         self.main_window = main_window
         self.pathname = os.path.expanduser('~') + '/.setzer'
@@ -104,10 +103,10 @@ class Workspace(Observable):
         except IOError: pass
         else:
             try: data = pickle.load(filehandle)
-            except EOFError: self.add_document(Document(self.backend, self.settings, self.main_window, self.pathname, with_buffer=True))
+            except EOFError: self.add_document(Document(self.settings, self.main_window, self.pathname, with_buffer=True))
             else:
                 for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
-                    document = Document(self.backend, self.settings, self.main_window, self.pathname, with_buffer=True)
+                    document = Document(self.settings, self.main_window, self.pathname, with_buffer=True)
                     document.set_filename(item['filename'])
                     if document.populate_from_filename() != False:
                         self.add_document(document)

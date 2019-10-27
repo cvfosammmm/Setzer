@@ -21,9 +21,6 @@ gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk
 from gi.repository import Gtk
 
-import viewgtk.viewgtk as view
-import controller.controller_document_autocomplete as autocompletecontroller
-
 
 class DocumentController(object):
     
@@ -34,8 +31,6 @@ class DocumentController(object):
         self.settings = settings
         self.main_window = main_window
 
-        self.autocomplete_controller = autocompletecontroller.DocumentAutocompleteController(self.document, self.view, self.main_window)
-        
         self.observe_document()
         self.observe_document_view()
         self.observe_shortcuts_bar_bottom()
@@ -69,17 +64,17 @@ class DocumentController(object):
     '''
 
     def on_adjustment_value_changed(self, adjustment, user_data=None):
-        self.autocomplete_controller.update_autocomplete_position(False)
+        self.document.autocomplete.update_autocomplete_position(False)
         return False
 
     def on_mark_set(self, buffer, insert, mark, user_data=None):
-        self.autocomplete_controller.update_autocomplete_position(False)
+        self.document.autocomplete.update_autocomplete_position(False)
     
     def on_buffer_changed(self, buffer, user_data=None):
-        self.autocomplete_controller.update_autocomplete_position(True)
+        self.document.autocomplete.update_autocomplete_position(True)
     
     def on_mark_deleted(self, buffer, mark, user_data=None):
-        self.autocomplete_controller.update_autocomplete_position(False)
+        self.document.autocomplete.update_autocomplete_position(False)
     
     def on_build_button_click(self, button_object=None):
         self.document.build()
@@ -110,19 +105,19 @@ class DocumentController(object):
 
         if event.keyval == Gdk.keyval_from_name('Down'):
             if event.state & modifiers == 0:
-                return self.autocomplete_controller.on_down_press()
+                return self.document.autocomplete.on_down_press()
 
         if event.keyval == Gdk.keyval_from_name('Up'):
             if event.state & modifiers == 0:
-                return self.autocomplete_controller.on_up_press()
+                return self.document.autocomplete.on_up_press()
 
         if event.keyval == Gdk.keyval_from_name('Escape'):
             if event.state & modifiers == 0:
-                return self.autocomplete_controller.on_escape_press()
+                return self.document.autocomplete.on_escape_press()
 
         if event.keyval == Gdk.keyval_from_name('Return'):
             if event.state & modifiers == 0:
-                return self.autocomplete_controller.on_return_press()
+                return self.document.autocomplete.on_return_press()
 
         if event.keyval == Gdk.keyval_from_name('Tab') or event.keyval == Gdk.keyval_from_name('ISO_Left_Tab'):
             if event.state & modifiers == 0:
@@ -166,10 +161,10 @@ class DocumentController(object):
         return False
 
     def on_focus_out(self, widget, event, user_data=None):
-        self.autocomplete_controller.focus_hide()
+        self.document.autocomplete.focus_hide()
 
     def on_focus_in(self, widget, event, user_data=None):
-        self.autocomplete_controller.focus_show()
+        self.document.autocomplete.focus_show()
 
     '''
     *** actions

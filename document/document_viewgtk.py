@@ -23,8 +23,8 @@ from gi.repository import GtkSource
 from gi.repository import Pango
 
 from viewgtk.viewgtk_shortcutsbar import *
-from viewgtk.viewgtk_document_autocomplete import *
 import document.search.search_viewgtk as search_view
+import document.autocomplete.autocomplete_viewgtk as autocomplete_view
 
 
 class DocumentView(Gtk.HBox):
@@ -37,7 +37,7 @@ class DocumentView(Gtk.HBox):
         
         self.search_bar = search_view.SearchBar()
         self.shortcuts_bar_bottom = ShortcutsBarBottom()
-        self.autocomplete = DocumentAutocompleteView()
+        self.autocomplete = autocomplete_view.DocumentAutocompleteView()
         self.doclist_item = OpenDocsPopoverItem(document)
 
         self.source_view = GtkSource.View.new_with_buffer(document.get_buffer())

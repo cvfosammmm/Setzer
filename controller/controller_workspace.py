@@ -34,16 +34,15 @@ import time
 class WorkspaceController(object):
     ''' Mediator between workspace and view. '''
     
-    def __init__(self, backend, workspace, main_window, settings, main_controller):
+    def __init__(self, workspace, main_window, settings, main_controller):
 
         self.workspace = workspace
         self.main_window = main_window
-        self.backend = backend
         self.settings = settings
         self.main_controller = main_controller
 
-        self.sidebar_controller = sidebarcontroller.SidebarController(self.main_window.sidebar, self, self.main_window)
-        self.preview_controller = previewcontroller.PreviewController(self.main_window.preview, self, self.main_window)
+        self.sidebar_controller = sidebarcontroller.SidebarController(self.main_window.sidebar, self, main_window)
+        self.preview_controller = previewcontroller.PreviewController(self.main_window.preview, self, main_window)
 
         self.observe_workspace()
         self.observe_workspace_view()
@@ -193,7 +192,7 @@ class WorkspaceController(object):
             notebook.set_current_page(notebook.page_num(document.view))
             document.view.source_view.grab_focus()
             self.main_window.preview_paned_overlay.add_overlay(document.view.autocomplete)
-            document.controller.autocomplete_controller.update_autocomplete_position()
+            document.autocomplete.update_autocomplete_position()
 
             self.show_document_name(document)
             self.main_window.headerbar.open_docs_popover.document_list.invalidate_sort()
@@ -265,7 +264,7 @@ class WorkspaceController(object):
         if isinstance(document_candidate, Document):
             self.workspace.set_active_document(document_candidate)
         else:
-            document = Document(self.backend, self.settings, self.main_window, self.workspace.pathname, with_buffer=True)
+            document = Document(self.settings, self.main_window, self.workspace.pathname, with_buffer=True)
             document.set_filename(filename)
             document.populate_from_filename()
             self.workspace.add_document(document)
@@ -278,14 +277,14 @@ class WorkspaceController(object):
             if document_candidate != None:
                 self.workspace.set_active_document(document_candidate)
             else:
-                document = Document(self.backend, self.settings, self.main_window, self.workspace.pathname, with_buffer=True)
+                document = Document(self.settings, self.main_window, self.workspace.pathname, with_buffer=True)
                 document.set_filename(filename)
                 document.populate_from_filename()
                 self.workspace.add_document(document)
                 self.workspace.set_active_document(document)
 
     def on_new_document_button_click(self, button_object=None):
-        document = Document(self.backend, self.settings, self.main_window, self.workspace.pathname, with_buffer=True)
+        document = Document(self.settings, self.main_window, self.workspace.pathname, with_buffer=True)
         self.workspace.add_document(document)
         self.workspace.set_active_document(document)
 

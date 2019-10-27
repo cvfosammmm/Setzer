@@ -26,7 +26,7 @@ import tempfile
 import shutil
 
 
-class Backend(object):
+class BuildSystem(object):
 
     def __init__(self):
         self.observers = set()

@@ -30,13 +30,14 @@ import document.document_viewgtk as document_view
 import document.build_log.build_log as build_log
 import document.build_widget.build_widget as build_widget
 import document.search.search as search
+import document.autocomplete.autocomplete as autocomplete
 from helpers.observable import *
 from dialogs.dialog_provider import DialogProvider
 
 
 class Document(Observable):
 
-    def __init__(self, backend, settings, main_window, data_pathname, with_buffer=False, document_data=None):
+    def __init__(self, settings, main_window, data_pathname, with_buffer=False, document_data=None):
         Observable.__init__(self)
 
         self.displayname = ''
@@ -63,8 +64,8 @@ class Document(Observable):
 
         self.view = document_view.DocumentView(self, self.build_log.view)
         self.search = search.Search(self, self.view, self.view.search_bar, main_window)
-        self.settings = settings
-        self.builder = document_builder.DocumentBuilder(self, backend, settings)
+        self.autocomplete = autocomplete.Autocomplete(self, self.view, main_window)
+        self.builder = document_builder.DocumentBuilder(self, settings)
         self.presenter = document_presenter.DocumentPresenter(self, self.view, settings, main_window)
         self.controller = document_controller.DocumentController(self, self.view, settings, main_window)
 
@@ -216,8 +217,8 @@ class Document(Observable):
     
     def build(self):
         if self.filename == None:
-            if DialogProvider.get_dialog('build_save').run(document):
-                DialogProvider.get_dialog('save_document').run(document, '.tex')
+            if DialogProvider.get_dialog('build_save').run(self):
+                DialogProvider.get_dialog('save_document').run(self, '.tex')
             else:
                 return False
         if self.filename != None:
