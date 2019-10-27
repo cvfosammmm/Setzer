@@ -295,7 +295,6 @@ class OpenDocsPopover(Gtk.Popover):
         self.document_list = Gtk.ListBox()
         self.document_list.get_style_context().add_class('open-docs-popover')
         self.document_list.set_sort_func(self.sort_function)
-        self.document_list_items = dict()
 
         self.scrolled_window = Gtk.ScrolledWindow()
         self.scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
@@ -308,17 +307,11 @@ class OpenDocsPopover(Gtk.Popover):
         
         self.add(self.scrolled_window)
         
-    def add_document(self, document):
-        if self.document_list_items.get(document, None) != None: return False
-        list_item = OpenDocsPopoverItem(document)
-        self.document_list_items[document] = list_item
+    def add_document(self, list_item):
         self.document_list.add(list_item)
-        return list_item
 
-    def remove_document(self, document):
-        if self.document_list_items.get(document, None) == None: return False
-        self.document_list.remove(self.document_list_items[document])
-        del(self.document_list_items[document])
+    def remove_document(self, list_item):
+        self.document_list.remove(list_item)
 
     def sort_function(self, row1, row2, user_data=None):
         date1 = row1.document.get_last_activated()
@@ -329,55 +322,5 @@ class OpenDocsPopover(Gtk.Popover):
             return 0
         else:
             return -1
-        
-
-class OpenDocsPopoverItem(Gtk.ListBoxRow):
-    ''' An item in OpenDocsPopover. '''
-
-    def __init__(self, document):
-        Gtk.ListBoxRow.__init__(self)
-        self.set_selectable(False)
-        self.document = document
-
-        self.box = Gtk.HBox()
-        #box.pack_start(Gtk.Image.new_from_icon_name('text-x-generic-symbolic', Gtk.IconSize.MENU), False, False, 0)
-        self.label = Gtk.Label('')
-        self.label.set_ellipsize(Pango.EllipsizeMode.END)
-        self.label.set_halign(Gtk.Align.START)
-        self.flabel = Gtk.Label('')
-        self.mlabel = Gtk.Label('')
-        self.box.pack_start(self.label, False, False, 0)
-        self.document_close_button = Gtk.Button.new_from_icon_name('window-close-symbolic', Gtk.IconSize.MENU)
-        self.document_close_button.get_style_context().add_class('flat')
-        self.document_close_button.get_style_context().add_class('image-button')
-        self.document_close_button.set_relief(Gtk.ReliefStyle.NONE)
-        self.box.pack_end(self.document_close_button, False, False, 0)
-        self.add(self.box)
-
-        self.set_name(document.get_filename(), document.get_modified())
-        self.show_all()
-        
-    def set_name(self, filename, modified_state):
-        self.title = ''
-        self.folder = ''
-        if modified_state == True: self.title += '*'
-        if filename != None:
-            fsplit = filename.rsplit('/', 1)
-            if len(fsplit) > 1:
-                self.title += fsplit[1]
-                self.folder = fsplit[0]
-                self.has_title = True
-            else:
-                self.title += self.document.get_displayname()
-                self.has_title = False
-        self.label.set_text(self.title)
-        self.flabel.set_text(self.folder)
-        self.mlabel.set_text(str(modified_state))
-        
-    def get_has_title(self):
-        return self.has_title
-    
-    def get_title(self):
-        return self.title
 
 

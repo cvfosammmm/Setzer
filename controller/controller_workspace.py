@@ -134,9 +134,6 @@ class WorkspaceController(object):
         document_chooser.other_documents_button.connect('clicked', self.on_open_document_button_click)
         self.main_window.headerbar.open_document_blank_button.connect('clicked', self.on_open_document_button_click)
         
-    def observe_doclist_item(self, item):
-        item.document_close_button.connect('clicked', self.on_doclist_close_clicked, item.document)
-
     '''
     *** decorators
     '''
@@ -157,17 +154,16 @@ class WorkspaceController(object):
             document = parameter
             document.set_use_dark_scheme(helpers.is_dark_mode(self.main_window))
 
-            # init view
-            doclist_item = document.presenter.doclist_item
-            self.observe_doclist_item(doclist_item)
-
-            # show
+            doclist_item = document.view.doclist_item
+            self.main_window.headerbar.open_docs_popover.add_document(doclist_item)
+            doclist_item.document_close_button.connect('clicked', self.on_doclist_close_clicked, document)
             self.main_window.notebook.append_page(document.view)
-            
+
         if change_code == 'document_removed':
             document = parameter
             notebook = self.main_window.notebook
-            self.main_window.headerbar.open_docs_popover.remove_document(document)
+            doclist_item = document.view.doclist_item
+            self.main_window.headerbar.open_docs_popover.remove_document(doclist_item)
             self.main_window.notebook.remove(document.view)
             if self.workspace.active_document == None:
                 notebook.set_current_page(notebook.page_num(self.main_window.blank_slate))
@@ -350,7 +346,7 @@ class WorkspaceController(object):
     def on_menu_find_clicked(self, action=None, parameter=None):
         active_document = self.workspace.get_active_document()
         active_document.view.shortcuts_bar_bottom.button_find.set_active(True)
-        GLib.idle_add(self.active_document.controller.search_controller.search_entry_grab_focus, None)
+        GLib.idle_add(active_document.search.search_entry_grab_focus, None)
 
     @_assert_has_active_document
     def find_next(self, action=None, parameter=None):
@@ -368,7 +364,7 @@ class WorkspaceController(object):
     def on_menu_find_replace_clicked(self, action=None, parameter=None):
         active_document = self.workspace.get_active_document()
         active_document.view.shortcuts_bar_bottom.button_find_and_replace.set_active(True)
-        GLib.idle_add(active_document.controller.search_controller.search_entry_grab_focus, None)
+        GLib.idle_add(active_document.search.search_entry_grab_focus, None)
 
     @_assert_has_active_document
     def on_close_all_clicked(self, action=None, parameter=None):
@@ -438,7 +434,7 @@ class WorkspaceController(object):
             headerbar.center_button.hide()
             headerbar.center_label_welcome.show_all()
         else:
-            doclist_item = headerbar.open_docs_popover.document_list_items[document]
+            doclist_item = document.view.doclist_item
             
             if headerbar.name_binding != None: headerbar.name_binding.unbind()
             headerbar.document_name_label.set_text(doclist_item.label.get_text())

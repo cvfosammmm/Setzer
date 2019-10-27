@@ -15,27 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import gi
-gi.require_version('Gtk', '3.0')
-gi.require_version('GtkSource', '3.0')
-gi.require_version('Gdk', '3.0')
-from gi.repository import Gdk
-from gi.repository import GObject
-from gi.repository import GLib
-from gi.repository import Gtk
-from gi.repository import GtkSource
-
-import viewgtk.viewgtk as view
 import backend.backend as backend
-import controller.controller_document_autocomplete as autocompletecontroller
-import controller.controller_document_search as searchcontroller
-import helpers.helpers as helpers
 from dialogs.dialog_provider import DialogProvider
-
-import time
-import os.path
-import shutil
-import re
 
 
 class DocumentBuilder(object):

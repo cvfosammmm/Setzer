@@ -29,7 +29,7 @@ class DocumentPresenter(object):
         self.document = document
         self.view = document_view
         self.settings = settings
-        self.doclist_item = main_window.headerbar.open_docs_popover.add_document(self.document)
+        self.doclist_item = self.view.doclist_item
         self.modified_state = document.get_modified()
 
         self.document.build_widget.view.build_button.show_all()
@@ -77,7 +77,10 @@ class DocumentPresenter(object):
 
         if change_code == 'show_build_log_state_change':
             self.build_log_animate(parameter, True)
-            
+
+        if change_code == 'cleaned_up_build_files':
+            self.set_clean_button_state()
+
     def on_modified_change(self, buff):
         if buff.get_modified() != self.modified_state:
             self.modified_state = buff.get_modified()

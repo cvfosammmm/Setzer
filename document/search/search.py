@@ -17,32 +17,20 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-gi.require_version('GtkSource', '3.0')
-gi.require_version('Gdk', '3.0')
-from gi.repository import Gdk
-from gi.repository import GObject
 from gi.repository import GLib
 from gi.repository import Gtk
-from gi.repository import GtkSource
 
-import viewgtk.viewgtk as view
-import backend.backend as backend
-import helpers.helpers as helpers
 from dialogs.dialog_provider import DialogProvider
 
-import time
-import os.path
-import shutil
-import re
 
-
-class DocumentSearchController(object):
+class Search(object):
     ''' Control find, find and replace. '''
     
     def __init__(self, document, document_view, search_bar, main_window):
 
         self.search_bar = search_bar
         self.search_bar_mode = 'search'
+
         self.document_view = document_view
         self.document = document
         self.main_window = main_window

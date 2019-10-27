@@ -19,8 +19,6 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-from viewgtk.viewgtk_shortcutsbar import *
-
 
 class SearchBar(Gtk.Revealer):
     ''' Find text in a document '''

@@ -29,7 +29,9 @@ import document.document_presenter as document_presenter
 import document.document_viewgtk as document_view
 import document.build_log.build_log as build_log
 import document.build_widget.build_widget as build_widget
+import document.search.search as search
 from helpers.observable import *
+from dialogs.dialog_provider import DialogProvider
 
 
 class Document(Observable):
@@ -60,6 +62,7 @@ class Document(Observable):
         self.build_widget = build_widget.BuildWidget()
 
         self.view = document_view.DocumentView(self, self.build_log.view)
+        self.search = search.Search(self, self.view, self.view.search_bar, main_window)
         self.settings = settings
         self.builder = document_builder.DocumentBuilder(self, backend, settings)
         self.presenter = document_presenter.DocumentPresenter(self, self.view, settings, main_window)
@@ -211,4 +214,25 @@ class Document(Observable):
             except IOError: pass
             else: pickle.dump(self.document_data, filehandle)
     
+    def build(self):
+        if self.filename == None:
+            if DialogProvider.get_dialog('build_save').run(document):
+                DialogProvider.get_dialog('save_document').run(document, '.tex')
+            else:
+                return False
+        if self.filename != None:
+            self.change_state('ready_for_building')
+
+    def stop_building(self):
+        self.document.change_state('building_to_stop')
+        
+    def cleanup_build_files(self):
+        file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,'.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc']
+        pathname = self.get_filename().rsplit('/', 1)
+        for ending in file_endings:
+            filename = pathname[0] + '/' + pathname[1].rsplit('.', 1)[0] + ending
+            try: os.remove(filename)
+            except FileNotFoundError: pass
+        self.add_change_code('cleaned_up_build_files')
+
 
