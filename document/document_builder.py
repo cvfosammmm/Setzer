@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import document.build_system.build_system as build_system
-from helpers.service_locator import ServiceLocator
+from app.service_locator import ServiceLocator
 
 
 class DocumentBuilder(object):

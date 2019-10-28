@@ -23,7 +23,7 @@ from gi.repository import GLib
 
 from viewgtk.viewgtk_sidebar import *
 import helpers.helpers as helpers
-from helpers.service_locator import ServiceLocator
+from app.service_locator import ServiceLocator
 
 import math
 

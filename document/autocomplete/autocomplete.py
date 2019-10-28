@@ -24,7 +24,7 @@ from gi.repository import GtkSource, Pango
 
 import helpers.helpers as helpers
 import document.autocomplete.autocomplete_viewgtk as view
-from helpers.service_locator import ServiceLocator
+from app.service_locator import ServiceLocator
 
 
 class Autocomplete(object):

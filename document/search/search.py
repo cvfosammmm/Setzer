@@ -20,7 +20,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import GLib
 from gi.repository import Gtk
 
-from helpers.service_locator import ServiceLocator
+from app.service_locator import ServiceLocator
 
 
 class Search(object):

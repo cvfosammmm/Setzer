@@ -26,7 +26,7 @@ import viewgtk.viewgtk as view
 import controller.controller_sidebar as sidebarcontroller
 import controller.controller_preview as previewcontroller
 import helpers.helpers as helpers
-from helpers.service_locator import ServiceLocator
+from app.service_locator import ServiceLocator
 
 import time
 

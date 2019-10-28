@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 
-import controller.controller_settings as settingscontroller
+import app.settings as settingscontroller
 
 import dialogs.about.about as about_dialog
 import dialogs.build_save.build_save as build_save_dialog

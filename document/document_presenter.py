@@ -17,7 +17,7 @@
 
 
 import helpers.helpers as helpers
-from helpers.service_locator import ServiceLocator
+from app.service_locator import ServiceLocator
 
 import time
 import os.path

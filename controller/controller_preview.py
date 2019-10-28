@@ -32,7 +32,7 @@ import time
 import _thread as thread, queue
 
 import helpers.helpers as helpers
-from helpers.service_locator import ServiceLocator
+from app.service_locator import ServiceLocator
 
 
 class PreviewController(object):

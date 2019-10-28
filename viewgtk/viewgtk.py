@@ -26,7 +26,7 @@ from viewgtk.viewgtk_headerbar import *
 from viewgtk.viewgtk_shortcutsbar import *
 from viewgtk.viewgtk_sidebar import *
 from viewgtk.viewgtk_preview import *
-from helpers.service_locator import ServiceLocator
+from app.service_locator import ServiceLocator
 
 import os
 

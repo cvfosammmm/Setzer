@@ -32,7 +32,7 @@ import document.build_widget.build_widget as build_widget
 import document.search.search as search
 import document.autocomplete.autocomplete as autocomplete
 from helpers.observable import *
-from helpers.service_locator import ServiceLocator
+from app.service_locator import ServiceLocator
 
 
 class Document(Observable):

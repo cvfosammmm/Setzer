@@ -30,7 +30,7 @@ import viewgtk.viewgtk as view
 import controller.controller_workspace as workspacecontroller
 import controller.controller_shortcuts as shortcutscontroller
 import helpers.helpers as helpers
-from helpers.service_locator import ServiceLocator
+from app.service_locator import ServiceLocator
 
 
 class MainApplicationController(Gtk.Application):
