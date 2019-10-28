@@ -26,6 +26,7 @@ from viewgtk.viewgtk_headerbar import *
 from viewgtk.viewgtk_shortcutsbar import *
 from viewgtk.viewgtk_sidebar import *
 from viewgtk.viewgtk_preview import *
+from helpers.service_locator import ServiceLocator
 
 import os
 
@@ -34,6 +35,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def __init__(self, app):
         Gtk.Window.__init__(self, application=app)
+        settings = ServiceLocator.get_settings()
         self.set_size_request(-1, 550)
         self.add_events(Gdk.EventMask.KEY_PRESS_MASK)
         Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/icons')
@@ -64,12 +66,12 @@ class MainWindow(Gtk.ApplicationWindow):
         # preview
         self.preview = PreviewView()
         self.preview_visible = False
-        self.headerbar.preview_toggle.set_active(app.settings.get_value('window_state', 'show_preview'))
+        self.headerbar.preview_toggle.set_active(settings.get_value('window_state', 'show_preview'))
         
         # sidebar
         self.sidebar = Sidebar()
         self.sidebar_visible = False
-        self.shortcuts_bar.sidebar_toggle.set_active(app.settings.get_value('window_state', 'show_sidebar'))
+        self.shortcuts_bar.sidebar_toggle.set_active(settings.get_value('window_state', 'show_sidebar'))
 
         # paneds
         self.preview_paned_overlay = Gtk.Overlay()

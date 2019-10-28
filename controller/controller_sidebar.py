@@ -23,6 +23,7 @@ from gi.repository import GLib
 
 from viewgtk.viewgtk_sidebar import *
 import helpers.helpers as helpers
+from helpers.service_locator import ServiceLocator
 
 import math
 
@@ -30,13 +31,13 @@ import math
 class SidebarController(object):
     ''' Init and controll sidebar '''
     
-    def __init__(self, sidebar, workspace_controller, main_window):
+    def __init__(self, sidebar):
 
         self.sidebar = sidebar
-        self.workspace_controller = workspace_controller
-        self.main_window = main_window
-        
-        self.sidebar_position = self.workspace_controller.settings.get_value('window_state', 'sidebar_paned_position')
+        self.main_window = ServiceLocator.get_main_window()
+
+        settings = ServiceLocator.get_settings()
+        self.sidebar_position = settings.get_value('window_state', 'sidebar_paned_position')
         self.sidebar_animating = False
         self.hide_sidebar(False, False)
 

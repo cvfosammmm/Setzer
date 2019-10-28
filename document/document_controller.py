@@ -24,12 +24,10 @@ from gi.repository import Gtk
 
 class DocumentController(object):
     
-    def __init__(self, document, document_view, settings, main_window):
+    def __init__(self, document, document_view):
 
         self.document = document
         self.view = document_view
-        self.settings = settings
-        self.main_window = main_window
 
         self.observe_document()
         self.observe_document_view()

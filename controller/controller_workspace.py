@@ -26,7 +26,7 @@ import viewgtk.viewgtk as view
 import controller.controller_sidebar as sidebarcontroller
 import controller.controller_preview as previewcontroller
 import helpers.helpers as helpers
-from dialogs.dialog_provider import DialogProvider
+from helpers.service_locator import ServiceLocator
 
 import time
 
@@ -34,15 +34,13 @@ import time
 class WorkspaceController(object):
     ''' Mediator between workspace and view. '''
     
-    def __init__(self, workspace, main_window, settings, main_controller):
+    def __init__(self, workspace):
 
         self.workspace = workspace
-        self.main_window = main_window
-        self.settings = settings
-        self.main_controller = main_controller
+        self.main_window = ServiceLocator.get_main_window()
 
-        self.sidebar_controller = sidebarcontroller.SidebarController(self.main_window.sidebar, self, main_window)
-        self.preview_controller = previewcontroller.PreviewController(self.main_window.preview, self, main_window)
+        self.sidebar_controller = sidebarcontroller.SidebarController(self.main_window.sidebar)
+        self.preview_controller = previewcontroller.PreviewController(self.main_window.preview)
 
         self.observe_workspace()
         self.observe_workspace_view()
@@ -264,33 +262,33 @@ class WorkspaceController(object):
         if isinstance(document_candidate, Document):
             self.workspace.set_active_document(document_candidate)
         else:
-            document = Document(self.settings, self.main_window, self.workspace.pathname, with_buffer=True)
+            document = Document(self.workspace.pathname, with_buffer=True)
             document.set_filename(filename)
             document.populate_from_filename()
             self.workspace.add_document(document)
             self.workspace.set_active_document(document)
 
     def on_open_document_button_click(self, button_object=None):
-        filename = DialogProvider.get_dialog('open_document').run()
+        filename = ServiceLocator.get_dialog('open_document').run()
         if filename != None:
             document_candidate = self.workspace.get_document_by_filename(filename)
             if document_candidate != None:
                 self.workspace.set_active_document(document_candidate)
             else:
-                document = Document(self.settings, self.main_window, self.workspace.pathname, with_buffer=True)
+                document = Document(self.workspace.pathname, with_buffer=True)
                 document.set_filename(filename)
                 document.populate_from_filename()
                 self.workspace.add_document(document)
                 self.workspace.set_active_document(document)
 
     def on_new_document_button_click(self, button_object=None):
-        document = Document(self.settings, self.main_window, self.workspace.pathname, with_buffer=True)
+        document = Document(self.workspace.pathname, with_buffer=True)
         self.workspace.add_document(document)
         self.workspace.set_active_document(document)
 
     def on_doclist_close_clicked(self, button_object, document):
         if document.get_modified():
-            dialog = DialogProvider.get_dialog('close_confirmation')
+            dialog = ServiceLocator.get_dialog('close_confirmation')
             not_save_to_close = dialog.run([document])['not_save_to_close_documents']
             if document not in not_save_to_close:
                 self.workspace.remove_document(document)
@@ -321,9 +319,9 @@ class WorkspaceController(object):
         document = self.workspace.get_active_document()
         filename = document.get_filename()
         if filename != None:
-            DialogProvider.get_dialog('save_document').run(document, filename)
+            ServiceLocator.get_dialog('save_document').run(document, filename)
         else:
-            DialogProvider.get_dialog('save_document').run(document, '.tex')
+            ServiceLocator.get_dialog('save_document').run(document, '.tex')
         
     @_assert_has_active_document
     def on_save_all_clicked(self, action=None, parameter=None):
@@ -335,7 +333,7 @@ class WorkspaceController(object):
                 if document.get_filename() == None:
                     self.workspace.set_active_document(document)
                     return_to_active_document = True
-                    DialogProvider.get_dialog('save_document').run(document, '.tex')
+                    ServiceLocator.get_dialog('save_document').run(document, '.tex')
                 else:
                     document.save_to_disk()
             if return_to_active_document == True:
@@ -370,7 +368,7 @@ class WorkspaceController(object):
         active_document = self.workspace.get_active_document()
         documents = self.workspace.get_all_documents()
         unsaved_documents = self.workspace.get_unsaved_documents()
-        dialog = DialogProvider.get_dialog('close_confirmation')
+        dialog = ServiceLocator.get_dialog('close_confirmation')
         not_save_to_close_documents = dialog.run(unsaved_documents)['not_save_to_close_documents']
 
         for document in documents:
@@ -510,7 +508,7 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def start_wizard(self, action, parameter=None):
         document = self.workspace.get_active_document()
-        DialogProvider.get_dialog('document_wizard').run(document)
+        ServiceLocator.get_dialog('document_wizard').run(document)
 
     @_assert_has_active_document
     def insert_before_after(self, action, parameter):

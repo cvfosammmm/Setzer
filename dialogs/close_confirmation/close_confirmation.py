@@ -21,7 +21,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 from dialogs.dialog import Dialog
-import dialogs.dialog_provider as dialog_provider
+import helpers.service_locator as service_locator
 
 import os.path
 
@@ -57,7 +57,7 @@ class CloseConfirmationDialog(Dialog):
                     self.workspace.set_active_document(document)
                     return_to_active_document = True
 
-                    if not dialog_provider.DialogProvider.get_dialog('save_document').run(document, '.tex'):
+                    if not service_locator.ServiceLocator.get_dialog('save_document').run(document, '.tex'):
                         documents_not_save_to_close.append(document)
                 else:
                     document.save_to_disk()

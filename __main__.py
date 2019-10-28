@@ -27,11 +27,10 @@ import sys, time, os
 
 import model.model_workspace as model_workspace
 import viewgtk.viewgtk as view
-import controller.controller_settings as settingscontroller
 import controller.controller_workspace as workspacecontroller
 import controller.controller_shortcuts as shortcutscontroller
 import helpers.helpers as helpers
-from dialogs.dialog_provider import DialogProvider
+from helpers.service_locator import ServiceLocator
 
 
 class MainApplicationController(Gtk.Application):
@@ -42,44 +41,39 @@ class MainApplicationController(Gtk.Application):
     def do_activate(self):
         ''' Everything starts here. '''
         
-        # load settings
-        self.settings = settingscontroller.Settings()
+        settings = ServiceLocator.get_settings()
         
         # setup dark mode
-        dm_default = GLib.Variant.new_boolean(self.settings.get_value('preferences', 'prefer_dark_mode'))
-        self.settings.gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', dm_default)
+        dm_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'prefer_dark_mode'))
+        settings.gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', dm_default)
         self.toggle_dark_mode_action = Gio.SimpleAction.new_stateful('toggle-dark-mode', None, dm_default)
         self.toggle_dark_mode_action.connect('activate', self.toggle_dark_mode)
         self.add_action(self.toggle_dark_mode_action)
         
+        # init main window, model, dialogs
         self.main_window = view.MainWindow(self)
-
-        # init model
-        self.workspace = model_workspace.Workspace(self.settings, self.main_window)
-        
-        # init dialog provider
-        DialogProvider.init(self.main_window, self.workspace, self.settings)
+        self.workspace = model_workspace.Workspace()
+        ServiceLocator.init_main_window(self.main_window)
+        ServiceLocator.init_dialogs(self.main_window, self.workspace)
 
         # init view
-        self.main_window.set_default_size(self.settings.get_value('window_state', 'width'), 
-                                          self.settings.get_value('window_state', 'height'))
-        self.main_window.current_width = self.settings.get_value('window_state', 'width')
-        self.main_window.current_height = self.settings.get_value('window_state', 'height')
+        self.main_window.set_default_size(settings.get_value('window_state', 'width'), 
+                                          settings.get_value('window_state', 'height'))
+        self.main_window.current_width = settings.get_value('window_state', 'width')
+        self.main_window.current_height = settings.get_value('window_state', 'height')
         self.fg_color = helpers.theme_color_to_rgba(self.main_window.get_style_context(), 'theme_fg_color')
         self.bg_color = helpers.theme_color_to_rgba(self.main_window.get_style_context(), 'theme_bg_color')
         self.style_context = self.main_window.get_style_context()
-
         self.first_window_state_event = True
-        if self.settings.get_value('window_state', 'is_maximized'):
+        if settings.get_value('window_state', 'is_maximized'):
             self.main_window.maximize()
         else: 
             self.main_window.unmaximize()
-
         self.main_window.show_all()
         self.observe_main_window()
 
         # init controller
-        self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace, self.main_window, self.settings, self)
+        self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace)
         self.setup_hamburger_menu()
         self.shortcuts_controller = shortcutscontroller.ShortcutsController(self.workspace, self.workspace_controller, self.main_window, self)
 
@@ -140,31 +134,32 @@ class MainApplicationController(Gtk.Application):
     def save_window_state(self):
         ''' save window state variables '''
 
+        settings = ServiceLocator.get_settings()
         main_window = self.main_window
-        self.settings.set_value('window_state', 'width', main_window.current_width)
-        self.settings.set_value('window_state', 'height', main_window.current_height)
-        self.settings.set_value('window_state', 'is_maximized', main_window.ismaximized)
+        settings.set_value('window_state', 'width', main_window.current_width)
+        settings.set_value('window_state', 'height', main_window.current_height)
+        settings.set_value('window_state', 'is_maximized', main_window.ismaximized)
 
         sidebar_visible = self.main_window.shortcuts_bar.sidebar_toggle.get_active()
-        self.settings.set_value('window_state', 'show_sidebar', sidebar_visible)
+        settings.set_value('window_state', 'show_sidebar', sidebar_visible)
         if main_window.sidebar_visible:
             sidebar_position = main_window.sidebar_paned.get_position()
         elif self.workspace_controller.sidebar_controller.sidebar_position > 0:
             sidebar_position = self.workspace_controller.sidebar_controller.sidebar_position
         else:
             sidebar_position = -1
-        self.settings.set_value('window_state', 'sidebar_paned_position', sidebar_position)
+        settings.set_value('window_state', 'sidebar_paned_position', sidebar_position)
 
         preview_visible = self.main_window.headerbar.preview_toggle.get_active()
-        self.settings.set_value('window_state', 'show_preview', preview_visible)
+        settings.set_value('window_state', 'show_preview', preview_visible)
         if main_window.preview_visible:
             preview_position = main_window.preview_paned.get_position()
         elif self.workspace_controller.preview_controller.preview_position > 0:
             preview_position = self.workspace_controller.preview_controller.preview_position
         else:
             preview_position = -1
-        self.settings.set_value('window_state', 'preview_paned_position', preview_position)
-        self.settings.pickle()
+        settings.set_value('window_state', 'preview_paned_position', preview_position)
+        settings.pickle()
 
     def on_window_close(self, window=None, parameter=None):
         self.save_quit()
@@ -178,7 +173,7 @@ class MainApplicationController(Gtk.Application):
         documents = self.workspace.get_unsaved_documents()
         active_document = self.workspace.get_active_document()
 
-        if documents == None or active_document == None or not DialogProvider.get_dialog('close_confirmation').run(documents)['all_save_to_close']:
+        if documents == None or active_document == None or not ServiceLocator.get_dialog('close_confirmation').run(documents)['all_save_to_close']:
             self.save_window_state()
             self.workspace.save_to_disk()
             self.quit()
@@ -213,16 +208,17 @@ class MainApplicationController(Gtk.Application):
         self.add_action(self.workspace_controller.document_wizard_action)
         
     def show_preferences_dialog(self, action=None, parameter=''):
-        DialogProvider.get_dialog('preferences').run()
+        ServiceLocator.get_dialog('preferences').run()
 
     def show_about_dialog(self, action, parameter=''):
-        DialogProvider.get_dialog('about').run()
+        ServiceLocator.get_dialog('about').run()
         
     def toggle_dark_mode(self, action, parameter=None):
+        settings = ServiceLocator.get_settings()
         new_state = not action.get_state().get_boolean()
         action.set_state(GLib.Variant.new_boolean(new_state))
-        self.settings.gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', new_state)
-        self.settings.set_value('preferences', 'prefer_dark_mode', new_state)
+        settings.gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', new_state)
+        settings.set_value('preferences', 'prefer_dark_mode', new_state)
     
 
 main_controller = MainApplicationController()

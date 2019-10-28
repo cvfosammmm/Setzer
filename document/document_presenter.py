@@ -17,6 +17,7 @@
 
 
 import helpers.helpers as helpers
+from helpers.service_locator import ServiceLocator
 
 import time
 import os.path
@@ -25,10 +26,10 @@ import os.path
 class DocumentPresenter(object):
     ''' Mediator between document and view. '''
     
-    def __init__(self, document, document_view, settings, main_window):
+    def __init__(self, document, document_view):
         self.document = document
         self.view = document_view
-        self.settings = settings
+        self.settings = ServiceLocator.get_settings()
         self.doclist_item = self.view.doclist_item
         self.modified_state = document.get_modified()
 

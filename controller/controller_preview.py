@@ -32,21 +32,22 @@ import time
 import _thread as thread, queue
 
 import helpers.helpers as helpers
+from helpers.service_locator import ServiceLocator
 
 
 class PreviewController(object):
     ''' Init and controll preview widget '''
     
-    def __init__(self, preview_widget, workspace_controller, main_window):
+    def __init__(self, preview_widget):
 
         self.view = preview_widget
-        self.workspace_controller = workspace_controller
-        self.main_window = main_window
+        self.settings = ServiceLocator.get_settings()
+        self.main_window = ServiceLocator.get_main_window()
         self.active_document = None
 
-        preview_position = self.workspace_controller.settings.get_value('window_state', 'preview_paned_position')
-        sidebar_paned_pos = self.workspace_controller.settings.get_value('window_state', 'sidebar_paned_position')
-        if not self.workspace_controller.settings.get_value('window_state', 'show_sidebar'):
+        preview_position = self.settings.get_value('window_state', 'preview_paned_position')
+        sidebar_paned_pos = self.settings.get_value('window_state', 'sidebar_paned_position')
+        if not self.settings.get_value('window_state', 'show_sidebar'):
             self.preview_position = preview_position
         else:
             self.preview_position = preview_position - sidebar_paned_pos

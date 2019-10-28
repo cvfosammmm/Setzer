@@ -16,16 +16,16 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import document.build_system.build_system as build_system
-from dialogs.dialog_provider import DialogProvider
+from helpers.service_locator import ServiceLocator
 
 
 class DocumentBuilder(object):
     ''' Mediator between document and build_system. '''
     
-    def __init__(self, document, settings):
+    def __init__(self, document):
         self.document = document
         self.build_system = build_system.BuildSystem()
-        self.settings = settings
+        self.settings = ServiceLocator.get_settings()
         self.document.register_observer(self)
         self.build_system.register_observer(self)
 
@@ -78,14 +78,14 @@ class DocumentBuilder(object):
 
                 if result_blob['error'] == 'interpreter_missing':
                     self.document.change_state('idle')
-                    if DialogProvider.get_dialog('interpreter_missing').run(result_blob['error_arg']):
-                        DialogProvider.get_dialog('preferences').run()
+                    if ServiceLocator.get_dialog('interpreter_missing').run(result_blob['error_arg']):
+                        ServiceLocator.get_dialog('preferences').run()
                     return
 
                 if result_blob['error'] == 'interpreter_not_working':
                     self.document.change_state('idle')
-                    if DialogProvider.get_dialog('building_failed').run(result_blob['error_arg']):
-                        DialogProvider.get_dialog('preferences').run()
+                    if ServiceLocator.get_dialog('building_failed').run(result_blob['error_arg']):
+                        ServiceLocator.get_dialog('preferences').run()
                     return
 
                 try:

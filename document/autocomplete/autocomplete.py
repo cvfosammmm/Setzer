@@ -24,14 +24,15 @@ from gi.repository import GtkSource, Pango
 
 import helpers.helpers as helpers
 import document.autocomplete.autocomplete_viewgtk as view
+from helpers.service_locator import ServiceLocator
 
 
 class Autocomplete(object):
 
-    def __init__(self, document, document_view, main_window):
+    def __init__(self, document, document_view):
         self.document = document
         self.document_view = document_view
-        self.main_window = main_window
+        self.main_window = ServiceLocator.get_main_window()
 
         self.line_height = 0
         self.char_width = 0

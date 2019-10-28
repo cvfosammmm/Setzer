@@ -20,20 +20,19 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import GLib
 from gi.repository import Gtk
 
-from dialogs.dialog_provider import DialogProvider
+from helpers.service_locator import ServiceLocator
 
 
 class Search(object):
     ''' Control find, find and replace. '''
     
-    def __init__(self, document, document_view, search_bar, main_window):
+    def __init__(self, document, document_view, search_bar):
 
         self.search_bar = search_bar
         self.search_bar_mode = 'search'
 
         self.document_view = document_view
         self.document = document
-        self.main_window = main_window
 
         self.observe_search_bar()
         self.observe_shortcuts_bar()
@@ -88,7 +87,7 @@ class Search(object):
             number_of_occurences = search_context.get_occurrences_count()
             
             if number_of_occurences > 0:
-                dialog = DialogProvider.get_dialog('replace_confirmation')
+                dialog = ServiceLocator.get_dialog('replace_confirmation')
                 if dialog.run(original, replacement, number_of_occurences):
                     search_context.replace_all(replacement, -1)
 
