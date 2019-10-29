@@ -35,7 +35,14 @@ class HeaderBar(Gtk.HeaderBar):
         Gtk.HeaderBar.__init__(self)
 
         self.set_show_close_button(True)
-        
+
+        # sidebar toggle
+        self.sidebar_toggle = Gtk.ToggleButton()
+        self.sidebar_toggle.set_image(Gtk.Image.new_from_icon_name('builder-view-left-pane-symbolic', Gtk.IconSize.MENU))
+        self.sidebar_toggle.set_focus_on_click(False)
+        self.sidebar_toggle.set_tooltip_text('Toggle sidebar (F9)')
+        self.pack_start(self.sidebar_toggle)
+
         # open documents button
         self.document_chooser = DocumentChooser()
         self.open_document_button_label = Gtk.HBox()

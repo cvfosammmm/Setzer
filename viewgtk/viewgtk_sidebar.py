@@ -32,26 +32,26 @@ class Sidebar(Gtk.VBox):
         
         self.get_style_context().add_class('sidebar')
 
-        self.hbox = Gtk.HBox()
+        self.vbox = Gtk.VBox()
 
         # icons on left
         self.tabs = Gtk.Toolbar()
         self.tabs.set_style(Gtk.ToolbarStyle.ICONS)
-        self.tabs.set_orientation(Gtk.Orientation.VERTICAL)
+        self.tabs.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.tabs.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
         
         # pages view
         self.stack = Gtk.Stack()
         
-        self.hbox.pack_start(self.tabs, False, False, 0)
-        self.hbox.pack_start(self.stack, True, True, 0)
-        self.pack_start(self.hbox, True, True, 0)
+        self.vbox.pack_start(self.tabs, False, False, 0)
+        self.vbox.pack_start(self.stack, True, True, 0)
+        self.pack_start(self.vbox, True, True, 0)
         
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
                      
     def do_get_preferred_width(self):
-        return 200, 300
+        return 198, 300
 
 
 class SidebarPage(Gtk.ScrolledWindow):

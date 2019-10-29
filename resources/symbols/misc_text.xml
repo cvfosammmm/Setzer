@@ -18,6 +18,27 @@
   <symbol file="textquotestraightbase.png" command="\textquotestraightbase" package="textcomp" />
   <symbol file="textquotestraightdblbase.png" command="\textquotestraightdblbase" package="textcomp" />
   <symbol file="textquotesingle.png" command="\textquotesingle" package="textcomp" />
+  <symbol file="rbracketl.png" command="(" math="1" />
+  <symbol file="rbracketr.png" command=")" math="1" />
+  <symbol file="cbracketl.png" command="\{" math="1" />
+  <symbol file="cbracketr.png" command="\}" math="1" />
+  <symbol file="sbracketl.png" command="[" math="1" />
+  <symbol file="sbracketr.png" command="]" math="1" />
+  <symbol file="langle.png" command="\langle" math="1" />
+  <symbol file="rangle.png" command="\rangle" math="1" />
+  <symbol file="lceil.png" command="\lceil" math="1" />
+  <symbol file="rceil.png" command="\rceil" math="1" />
+  <symbol file="lfloor.png" command="\lfloor" math="1" />
+  <symbol file="rfloor.png" command="\rfloor" math="1" />
+  <symbol file="vertical.png" command="|" math="1" />
+  <symbol file="dvertical.png" command="\|" math="1" />
+  <symbol file="slash.png" command="/" math="1" />
+  <symbol file="backslash.png" command="\backslash" math="1" />
+  <symbol file="bracevert.png" command="\bracevert" math="1" />
+  <symbol file="ulcorner.png" command="\ulcorner" package="amssymb" math="1" />
+  <symbol file="urcorner.png" command="\urcorner" package="amssymb" math="1" />
+  <symbol file="llcorner.png" command="\llcorner" package="amssymb" math="1" />
+  <symbol file="lrcorner.png" command="\lrcorner" package="amssymb" math="1" />
   <symbol file="textdblhyphen.png" command="\textdblhyphen" package="textcomp" />
   <symbol file="textdblhyphenchar.png" command="\textdblhyphenchar" package="textcomp" />
   <symbol file="textasteriskcentered.png" command="\textasteriskcentered" />

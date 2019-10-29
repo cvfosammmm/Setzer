@@ -40,7 +40,6 @@ class MainWindow(Gtk.ApplicationWindow):
         self.add_events(Gdk.EventMask.KEY_PRESS_MASK)
         Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/icons')
         Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/arrows')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/delimiters')
         Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/greek_letters')
         Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/misc_math')
         Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/misc_text')
@@ -57,7 +56,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_titlebar(self.headerbar)
         
         # notebook
-        self.notebook_wrapper = Gtk.HBox()
+        self.notebook_wrapper = Gtk.VBox()
         self.notebook = DocumentViewWrapper()
         self.shortcuts_bar = ShortcutsBar()
         self.notebook_wrapper.pack_start(self.shortcuts_bar, False, False, 0)
@@ -71,7 +70,7 @@ class MainWindow(Gtk.ApplicationWindow):
         # sidebar
         self.sidebar = Sidebar()
         self.sidebar_visible = False
-        self.shortcuts_bar.sidebar_toggle.set_active(settings.get_value('window_state', 'show_sidebar'))
+        self.headerbar.sidebar_toggle.set_active(settings.get_value('window_state', 'show_sidebar'))
 
         # paneds
         self.preview_paned_overlay = Gtk.Overlay()

@@ -75,7 +75,7 @@ class ShortcutsBarBottom(Gtk.Toolbar):
         Gtk.Toolbar.__init__(self)
 
         self.set_style(Gtk.ToolbarStyle.ICONS)
-        self.set_orientation(Gtk.Orientation.VERTICAL)
+        self.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
         self.get_style_context().add_class('bottom')
 

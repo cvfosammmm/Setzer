@@ -26,28 +26,28 @@ import math
 import helpers.helpers as helpers
 
 
-class PreviewView(Gtk.Notebook):
+class PreviewView(Gtk.VBox):
 
     def __init__(self):
-        Gtk.Notebook.__init__(self)
-        self.set_show_tabs(False)
-        self.set_show_border(False)
-        
-        self.box = Gtk.VBox()
-        self.box.get_style_context().add_class('preview')
+        Gtk.VBox.__init__(self)
+        self.get_style_context().add_class('preview')
+
+        self.notebook = Gtk.Notebook()
+        self.notebook.set_show_tabs(False)
+        self.notebook.set_show_border(False)
         
         self.zoom_widget = PreviewZoomWidget()
         self.paging_widget = PreviewPagingWidget()
 
-        self.action_bar = Gtk.ActionBar()
-        self.action_bar.pack_end(self.zoom_widget)
-        self.action_bar.pack_start(self.paging_widget)
-        self.box.pack_end(self.action_bar, False, False, 0)
+        self.action_bar = Gtk.HBox()
+        self.action_bar.set_size_request(-1, 35)
+        self.action_bar.pack_end(self.zoom_widget, False, False, 0)
+        self.action_bar.pack_start(self.paging_widget, False, False, 0)
+        self.pack_start(self.action_bar, False, False, 0)
 
         self.scrolled_window = Gtk.ScrolledWindow()
         self.drawing_area = Gtk.DrawingArea()
         self.scrolled_window.add(self.drawing_area)
-        self.box.pack_start(self.scrolled_window, True, True, 0)
 
         self.blank_slate = Gtk.VBox()
         self.blank_slate.get_style_context().add_class('preview_blank')
@@ -64,10 +64,11 @@ class PreviewView(Gtk.Notebook):
         self.blank_slate.pack_start(body, False, False, 0)
         self.blank_slate.pack_start(Gtk.DrawingArea(), True, True, 0)
 
-        self.insert_page(self.blank_slate, None, 0)
-        self.insert_page(self.box, None, 1)
+        self.notebook.insert_page(self.blank_slate, None, 0)
+        self.notebook.insert_page(self.scrolled_window, None, 1)
+        self.pack_start(self.notebook, True, True, 0)
         self.show_all()
-        
+
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
                      

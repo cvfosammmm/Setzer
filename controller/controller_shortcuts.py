@@ -92,7 +92,7 @@ class ShortcutsController(object):
         return True
 
     def shortcut_sidebar(self, accel_group=None, window=None, key=None, mask=None):
-        toggle = self.main_window.shortcuts_bar.sidebar_toggle.get_child()
+        toggle = self.main_window.headerbar.sidebar_toggle.get_child()
         if toggle.get_sensitive():
             toggle.clicked()
         return True

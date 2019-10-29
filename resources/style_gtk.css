@@ -180,9 +180,8 @@ box.buildlog list {
 box.sidebar toolbar {
     padding: 0px;
     margin: 0px;
-    background-color: #fff;
-    background-color: @sidebar_bg;
     background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
 box.sidebar toolbar toolbutton {
     padding: 0px;
@@ -251,7 +250,7 @@ box.sidebar flowbox flowboxchild button.no_bottom_border {
 
 box.shortcutsbar {
     background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
-    border-right: 1px solid @borders;
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
 box.shortcutsbar toolbar {
     padding: 0px;
@@ -285,7 +284,7 @@ box.shortcutsbar toolbar button:active {
     border-color: @borders;
 }
 popover.menu-own-quotes-symbolic {
-    margin-top: 100px;
+    margin-left: 0px;
 }
 
 /*
@@ -298,18 +297,17 @@ box.preview scrolledwindow {
 box.preview label.page_counter {
     margin-left: 12px;
 }
-box.preview actionbar > revealer > box {
-    background-color: @theme_bg_color;
-    padding: 0px;
-    margin: 0px;
+box.preview > box {
+    background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
-box.preview actionbar > revealer > box button {
+box.preview > box button {
     border-width: 0px;
     margin: 0px;
     box-shadow: none;
     border-radius: 0px;
 }
-box.preview actionbar > revealer > box button.zoom_in_button {
+box.preview > box button.zoom_in_button {
     margin-right: 2px;
 }
 box.preview_blank {

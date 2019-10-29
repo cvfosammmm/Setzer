@@ -20,7 +20,6 @@ import subprocess, os
 
 folders = [
             'arrows',
-            'delimiters', 
             'greek_letters',
             'operators',
             'misc_math',

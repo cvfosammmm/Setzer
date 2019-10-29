@@ -67,10 +67,10 @@ class PreviewController(object):
         self.view.zoom_widget.zoom_out_button.connect('clicked', self.on_zoom_button_clicked, 'out')
         self.view.drawing_area.connect('draw', self.draw)
         self.view.scrolled_window.connect('scroll-event', self.on_scroll)
-        self.view.connect('size-allocate', self.on_size_allocate_view)
+        self.view.notebook.connect('size-allocate', self.on_size_allocate_view)
         self.view.drawing_area.connect('size-allocate', self.on_size_allocate_drawing_area)
         self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_adjustment_value_changed)
-    
+
         # document attributes
         self.filename = None
         self.pdf_date = None
@@ -93,13 +93,13 @@ class PreviewController(object):
 
         self.view.action_bar.show_all()
         self.view.zoom_widget.label.set_size_request(self.view.zoom_widget.label.get_allocated_width() + 6, -1)
-        GObject.timeout_add(100, self.check_filename_loop)
-        GObject.timeout_add(100, self.check_rendered_pages_loop)
+        GObject.timeout_add(50, self.check_filename_loop)
+        GObject.timeout_add(50, self.check_rendered_pages_loop)
         thread.start_new_thread(self.render_page_loop, ())
 
     def set_active_document(self, document):
         self.active_document = document
-        
+
     def check_filename_loop(self):
         if self.active_document != None:
             filename = self.active_document.get_pdf_filename()
@@ -112,10 +112,14 @@ class PreviewController(object):
                 self.load_pdf(self.filename)
                 self.render_pdf()
                 if position != None:
-                    x = (position['x'] * self.real_zoom_factor * self.ppi / 72) - self.view.get_allocated_width() / 2
-                    y = (position['y'] * self.real_zoom_factor * self.ppi / 72) - self.view.get_allocated_height() / 2
+                    x = (position['x'] * self.real_zoom_factor * self.ppi / 72) - self.view.notebook.get_allocated_width() / 2
+                    y = (position['y'] * self.real_zoom_factor * self.ppi / 72) - self.view.notebook.get_allocated_height() / 2
                     if position['page'] == 1 and y < 50: y = -10.0
                     self.scroll_to_page_queue.put((position['page'], 0, y))
+        if self.number_of_pages > 0:
+            self.view.zoom_widget.show_all()
+        else:
+            self.view.zoom_widget.hide()
         return True
         
     #@helpers.timer
@@ -141,7 +145,7 @@ class PreviewController(object):
     
     def setup_zoom_factors(self):
         if self.document_width_points != 0:
-            self.zoom_factor_fit_width = ((self.view.get_allocated_width() - 22) / self.ppi) / (self.document_width_points / 72)
+            self.zoom_factor_fit_width = ((self.view.notebook.get_allocated_width() - 22) / self.ppi) / (self.document_width_points / 72)
 
             self.zoom_factors_button = list()
             factors_button = [0.25*2**i for i in range(5)]
@@ -290,7 +294,7 @@ class PreviewController(object):
             self.view.paging_widget.label.set_text('Page ' + str(max(self.current_page, 1)) + ' of ' + str(total))
             self.current_page_lock.release()
         else:
-            self.view.paging_widget.label.set_text('')
+            self.view.paging_widget.label.set_text('Page 0 of 0')
     
     def load_pdf(self, filename):
         self.do_draw = False
@@ -320,11 +324,12 @@ class PreviewController(object):
 
             self.setup_zoom_factors()
             self.set_zoom_fit_to_width()
-            self.view.set_current_page(1)
+            self.view.notebook.set_current_page(1)
         else:
             self.document = None
             self.number_of_pages = 0
-            self.view.set_current_page(0)
+            self.update_paging_widget()
+            self.view.notebook.set_current_page(0)
         self.do_draw = True
 
     def set_canvas_size(self, document_height_pixels):
@@ -400,8 +405,8 @@ class PreviewController(object):
     def draw(self, drawing_area, cairo_context, data = None):
         if self.do_draw == True:
             ctx = cairo_context
-            bg_color = self.view.get_style_context().lookup_color('theme_bg_color')[1]
-            border_color = self.view.get_style_context().lookup_color('borders')[1]
+            bg_color = self.view.notebook.get_style_context().lookup_color('theme_bg_color')[1]
+            border_color = self.view.notebook.get_style_context().lookup_color('borders')[1]
 
             if len(self.rendered_pages) > 0:
                 ctx.rectangle(0, 0, drawing_area.get_allocated_width(), drawing_area.get_allocated_height())

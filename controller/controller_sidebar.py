@@ -54,8 +54,6 @@ class SidebarController(object):
                            'SidebarPageSymbolsList("relations", 30, ' + dm + ')'])
         self.pages.append(['operators', 'own-symbols-operators-symbolic', 'Operators', 
                            'SidebarPageSymbolsList("operators", 44, ' + dm + ')'])
-        self.pages.append(['delimiters', 'own-symbols-delimiters-symbolic', 'Delimiters', 
-                           'SidebarPageSymbolsList("delimiters", 10, ' + dm + ')'])
         self.pages.append(['misc_math', 'own-symbols-misc-math-symbolic', 'Misc. Math', 
                            'SidebarPageSymbolsList("misc_math", 38, ' + dm + ')'])
         self.pages.append(['misc_text', 'own-symbols-misc-text-symbolic', 'Misc. Symbols', 
@@ -167,7 +165,7 @@ class SidebarController(object):
                 else:
                     self.main_window.sidebar_paned.child_set_property(self.sidebar, 'shrink', False)
                     self.main_window.sidebar_visible = True
-                if set_toggle: self.main_window.shortcuts_bar.sidebar_toggle.set_active(show_sidebar)
+                if set_toggle: self.main_window.headerbar.sidebar_toggle.set_active(show_sidebar)
                 self.sidebar.set_size_request(-1, -1)
                 self.sidebar_animating = False
                 return False
@@ -200,7 +198,7 @@ class SidebarController(object):
                 self.sidebar.hide()
                 self.main_window.sidebar_visible = False
             self.sidebar.set_size_request(-1, -1)
-            if set_toggle: self.main_window.shortcuts_bar.sidebar_toggle.set_active(show_sidebar)
+            if set_toggle: self.main_window.headerbar.sidebar_toggle.set_active(show_sidebar)
 
     def ease(self, time):
         return (time - 1)**3 + 1;

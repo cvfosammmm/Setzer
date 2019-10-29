@@ -25,9 +25,9 @@ from gi.repository import GLib
 
 import sys, time, os
 
-import model.model_workspace as model_workspace
+from workspace.workspace import Workspace
 import viewgtk.viewgtk as view
-import controller.controller_workspace as workspacecontroller
+import controller.controller_workspace as workspace_controller
 import controller.controller_shortcuts as shortcutscontroller
 import helpers.helpers as helpers
 from app.service_locator import ServiceLocator
@@ -52,8 +52,8 @@ class MainApplicationController(Gtk.Application):
         
         # init main window, model, dialogs
         self.main_window = view.MainWindow(self)
-        self.workspace = model_workspace.Workspace()
         ServiceLocator.init_main_window(self.main_window)
+        self.workspace = Workspace()
         ServiceLocator.init_dialogs(self.main_window, self.workspace)
 
         # init view
@@ -73,7 +73,7 @@ class MainApplicationController(Gtk.Application):
         self.observe_main_window()
 
         # init controller
-        self.workspace_controller = workspacecontroller.WorkspaceController(self.workspace)
+        self.workspace_controller = workspace_controller.WorkspaceController(self.workspace)
         self.setup_hamburger_menu()
         self.shortcuts_controller = shortcutscontroller.ShortcutsController(self.workspace, self.workspace_controller, self.main_window, self)
 
@@ -140,7 +140,7 @@ class MainApplicationController(Gtk.Application):
         settings.set_value('window_state', 'height', main_window.current_height)
         settings.set_value('window_state', 'is_maximized', main_window.ismaximized)
 
-        sidebar_visible = self.main_window.shortcuts_bar.sidebar_toggle.get_active()
+        sidebar_visible = self.main_window.headerbar.sidebar_toggle.get_active()
         settings.set_value('window_state', 'show_sidebar', sidebar_visible)
         if main_window.sidebar_visible:
             sidebar_position = main_window.sidebar_paned.get_position()

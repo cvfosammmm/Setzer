@@ -22,10 +22,10 @@ from gi.repository import GLib
 from gi.repository import Gio
 
 
-class ShortcutsBar(Gtk.VBox):
+class ShortcutsBar(Gtk.HBox):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.HBox.__init__(self)
         self.get_style_context().add_class('shortcutsbar')
 
         self.current_bottom = None
@@ -37,17 +37,11 @@ class ShortcutsBar(Gtk.VBox):
     def create_top_toolbar(self):
         self.top_icons = Gtk.Toolbar()
         self.top_icons.set_style(Gtk.ToolbarStyle.ICONS)
-        self.top_icons.set_orientation(Gtk.Orientation.VERTICAL)
+        self.top_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.top_icons.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
         self.get_style_context().add_class('top')
         
     def populate_top_toolbar(self):
-        self.sidebar_toggle = Gtk.ToggleToolButton()
-        self.sidebar_toggle.set_icon_name('builder-view-left-pane-symbolic')
-        self.sidebar_toggle.set_focus_on_click(False)
-        self.sidebar_toggle.set_tooltip_text('Toggle sidebar (F9)')
-        self.top_icons.insert(self.sidebar_toggle, 0)
-
         menu = Gio.Menu()
         section = Gio.Menu()
 
@@ -86,7 +80,7 @@ class ShortcutsBar(Gtk.VBox):
 
         button_wrapper = Gtk.ToolItem()
         self.insert_object_button = Gtk.MenuButton()
-        self.insert_object_button.set_direction(Gtk.ArrowType.RIGHT)
+        self.insert_object_button.set_direction(Gtk.ArrowType.DOWN)
         self.insert_object_button.set_image(Gtk.Image.new_from_icon_name('own-insert-object-symbolic', Gtk.IconSize.MENU))
         self.insert_object_button.set_menu_model(menu)
         self.insert_object_button.set_focus_on_click(False)
@@ -117,7 +111,7 @@ class ShortcutsBar(Gtk.VBox):
         menu.append_section(None, section)
         button_wrapper = Gtk.ToolItem()
         self.quotes_button = Gtk.MenuButton()
-        self.quotes_button.set_direction(Gtk.ArrowType.RIGHT)
+        self.quotes_button.set_direction(Gtk.ArrowType.DOWN)
         self.quotes_button.set_image(Gtk.Image.new_from_icon_name('own-quotes-symbolic', Gtk.IconSize.MENU))
         self.quotes_button.set_menu_model(menu)
         self.quotes_button.set_focus_on_click(False)
