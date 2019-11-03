@@ -32,7 +32,6 @@ import document.build_widget.build_widget as build_widget
 import document.search.search as search
 import document.autocomplete.autocomplete as autocomplete
 from helpers.observable import *
-from app.service_locator import ServiceLocator
 
 
 class Document(Observable):
@@ -216,11 +215,6 @@ class Document(Observable):
             else: pickle.dump(self.document_data, filehandle)
     
     def build(self):
-        if self.filename == None:
-            if ServiceLocator.get_dialog('build_save').run(self):
-                ServiceLocator.get_dialog('save_document').run(self, '.tex')
-            else:
-                return False
         if self.filename != None:
             self.change_state('ready_for_building')
 

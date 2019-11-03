@@ -40,7 +40,7 @@ class PreviewView(Gtk.VBox):
         self.paging_widget = PreviewPagingWidget()
 
         self.action_bar = Gtk.HBox()
-        self.action_bar.set_size_request(-1, 35)
+        self.action_bar.set_size_request(-1, 37)
         self.action_bar.pack_end(self.zoom_widget, False, False, 0)
         self.action_bar.pack_start(self.paging_widget, False, False, 0)
         self.pack_start(self.action_bar, False, False, 0)

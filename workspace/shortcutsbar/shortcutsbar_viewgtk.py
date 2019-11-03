@@ -45,31 +45,31 @@ class ShortcutsBar(Gtk.HBox):
         menu = Gio.Menu()
         section = Gio.Menu()
 
-        section.append_item(Gio.MenuItem.new('Insert Figure (image inside freestanding block)', Gio.Action.print_detailed_name('app.insert-symbol', GLib.Variant('as', ['''\\begin{figure}
+        section.append_item(Gio.MenuItem.new('Insert Figure (image inside freestanding block)', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\begin{figure}
     \\begin{center}
         \\includegraphics[scale=1]{}
         \\caption{}
     \\end{center}
 \\end{figure}
 ''']))))
-        section.append_item(Gio.MenuItem.new('Insert Inline Image', Gio.Action.print_detailed_name('app.insert-symbol', GLib.Variant('as', ['\\includegraphics[scale=1]{}']))))
+        section.append_item(Gio.MenuItem.new('Insert Inline Image', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\includegraphics[scale=1]{}']))))
 
         codeblock_menu = Gio.Menu()
         codeblock_main_section = Gio.Menu()
         for language in ['Python', 'C', 'C++', 'Java', 'Perl', 'PHP', 'Ruby', 'TeX']:
-            codeblock_main_section.append_item(Gio.MenuItem.new(language, Gio.Action.print_detailed_name('app.insert-symbol', GLib.Variant('as', ['''\\lstset{language=''' + language + '''}
+            codeblock_main_section.append_item(Gio.MenuItem.new(language, Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\lstset{language=''' + language + '''}
 \\begin{lstlisting}
 
 \\end{lstlisting}
 ''']))))
         codeblock_menu.append_section(None, codeblock_main_section)
         codeblock_other_section = Gio.Menu()
-        codeblock_other_section.append_item(Gio.MenuItem.new('Other Language', Gio.Action.print_detailed_name('app.insert-symbol', GLib.Variant('as', ['''\\lstset{language=}
+        codeblock_other_section.append_item(Gio.MenuItem.new('Other Language', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\lstset{language=}
 \\begin{lstlisting}
 
 \\end{lstlisting}
 ''']))))
-        codeblock_other_section.append_item(Gio.MenuItem.new('Plain Text', Gio.Action.print_detailed_name('app.insert-symbol', GLib.Variant('as', ['''\\begin{lstlisting}
+        codeblock_other_section.append_item(Gio.MenuItem.new('Plain Text', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\begin{lstlisting}
 
 \\end{lstlisting}
 ''']))))
@@ -86,19 +86,20 @@ class ShortcutsBar(Gtk.HBox):
         self.insert_object_button.set_focus_on_click(False)
         self.insert_object_button.set_use_popover(True)
         self.insert_object_button.set_tooltip_text('Insert object')
+        self.insert_object_button.get_style_context().add_class('flat')
         button_wrapper.add(self.insert_object_button)
         self.insert_object_button.get_popover().get_style_context().add_class('menu-insert-object-symbolic')
         self.top_icons.insert(button_wrapper, 0)
         
         self.quotes_menu_data = list()
-        self.quotes_menu_data.append({'type': 'item', 'label': 'Primary Quotes (`` ... \'\')', 'action': 'app.insert-before-after', 'target_value': GLib.Variant('as', ['``', '\'\''])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'Secondary Quotes (` ... \')', 'action': 'app.insert-before-after', 'target_value': GLib.Variant('as', ['`', '\''])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'German Quotes (\\glqq ... \\grqq{})', 'action': 'app.insert-before-after', 'target_value': GLib.Variant('as', ['\\glqq ', '\\grqq{}'])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'German Single Quotes (\\glq ... \\grq{})', 'action': 'app.insert-before-after', 'target_value': GLib.Variant('as', ['\\glq ', '\\grq{}'])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'French Quotes (\\flqq ... \\frqq{})', 'action': 'app.insert-before-after', 'target_value': GLib.Variant('as', ['\\flqq ', '\\frqq{}'])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'French Single Quotes (\\flq ... \\frq{})', 'action': 'app.insert-before-after', 'target_value': GLib.Variant('as', ['\\flq ', '\\frq{}'])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'German Alt Quotes (\\frqq ... \\flqq{})', 'action': 'app.insert-before-after', 'target_value': GLib.Variant('as', ['\\frqq ', '\\flqq{}'])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'German Alt Single Quotes (\\frq ... \\frq{})', 'action': 'app.insert-before-after', 'target_value': GLib.Variant('as', ['\\frq ', '\\flq{}'])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'Primary Quotes (`` ... \'\')', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['``', '\'\''])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'Secondary Quotes (` ... \')', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['`', '\''])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'German Quotes (\\glqq ... \\grqq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\glqq ', '\\grqq{}'])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'German Single Quotes (\\glq ... \\grq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\glq ', '\\grq{}'])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'French Quotes (\\flqq ... \\frqq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\flqq ', '\\frqq{}'])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'French Single Quotes (\\flq ... \\frq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\flq ', '\\frq{}'])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'German Alt Quotes (\\frqq ... \\flqq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\frqq ', '\\flqq{}'])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'German Alt Single Quotes (\\frq ... \\frq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\frq ', '\\flq{}'])})
         menu = Gio.Menu()
         section = Gio.Menu()
         for menu_item_data in self.quotes_menu_data:
@@ -117,13 +118,14 @@ class ShortcutsBar(Gtk.HBox):
         self.quotes_button.set_focus_on_click(False)
         self.quotes_button.set_use_popover(True)
         self.quotes_button.set_tooltip_text('Quotes (Ctrl+")')
+        self.quotes_button.get_style_context().add_class('flat')
         button_wrapper.add(self.quotes_button)
         self.quotes_button.get_popover().get_style_context().add_class('menu-own-quotes-symbolic')
         self.top_icons.insert(button_wrapper, 0)
         
         self.italic_button = Gtk.ToolButton()
         self.italic_button.set_icon_name('format-text-italic-symbolic')
-        self.italic_button.set_action_name('app.insert-before-after')
+        self.italic_button.set_action_name('win.insert-before-after')
         self.italic_button.set_action_target_value(GLib.Variant('as', ['\\textit{', '}']))
         self.italic_button.set_focus_on_click(False)
         self.italic_button.set_tooltip_text('Italic (Ctrl+I)')
@@ -131,7 +133,7 @@ class ShortcutsBar(Gtk.HBox):
 
         self.bold_button = Gtk.ToolButton()
         self.bold_button.set_icon_name('format-text-bold-symbolic')
-        self.bold_button.set_action_name('app.insert-before-after')
+        self.bold_button.set_action_name('win.insert-before-after')
         self.bold_button.set_action_target_value(GLib.Variant('as', ['\\textbf{', '}']))
         self.bold_button.set_focus_on_click(False)
         self.bold_button.set_tooltip_text('Bold (Ctrl+B)')
@@ -139,7 +141,7 @@ class ShortcutsBar(Gtk.HBox):
 
         self.document_wizard_button = Gtk.ToolButton()
         self.document_wizard_button.set_icon_name('own-wizard-symbolic')
-        self.document_wizard_button.set_action_name('app.show-document-wizard')
+        self.document_wizard_button.set_action_name('win.show-document-wizard')
         self.document_wizard_button.set_focus_on_click(False)
         self.document_wizard_button.set_tooltip_text('Create a template document')
         self.top_icons.insert(self.document_wizard_button, 0)

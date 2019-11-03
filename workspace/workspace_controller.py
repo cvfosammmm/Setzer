@@ -22,9 +22,6 @@ from gi.repository import Gio
 from gi.repository import GLib
 
 from document.document import Document
-import viewgtk.viewgtk as view
-import controller.controller_sidebar as sidebarcontroller
-import controller.controller_preview as previewcontroller
 import helpers.helpers as helpers
 from app.service_locator import ServiceLocator
 
@@ -39,69 +36,28 @@ class WorkspaceController(object):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
 
-        self.sidebar_controller = sidebarcontroller.SidebarController(self.main_window.sidebar)
-        self.preview_controller = previewcontroller.PreviewController(self.main_window.preview)
-
-        self.observe_workspace()
         self.observe_workspace_view()
         
         self.untitled_documents_no = 0
 
-        self.show_document_name(None)
-        self.main_window.headerbar.save_document_button.hide()
-        self.main_window.headerbar.build_wrapper.hide()
-        self.main_window.headerbar.sidebar_toggle.hide()
-        self.main_window.headerbar.sidebar_toggle.set_sensitive(False)
-        self.main_window.headerbar.preview_toggle.set_sensitive(False)
-        self.main_window.headerbar.preview_toggle.hide()
-        
-        self.main_window.shortcuts_bar.hide()
-        self.main_window.sidebar.hide()
-        self.main_window.preview.hide()
-        
-        self.save_as_action = Gio.SimpleAction.new('save-as', None)
-        self.save_as_action.connect('activate', self.on_save_as_clicked)
-        self.save_as_action.set_enabled(False)
-        
-        self.save_all_action = Gio.SimpleAction.new('save-all', None)
-        self.save_all_action.connect('activate', self.on_save_all_clicked)
-        self.save_all_action.set_enabled(False)
-        
-        self.find_action = Gio.SimpleAction.new('find', None)
-        self.find_action.connect('activate', self.on_menu_find_clicked)
-        self.find_action.set_enabled(False)
-        
-        self.find_next_action = Gio.SimpleAction.new('find-next', None)
-        self.find_next_action.connect('activate', self.find_next)
-        self.find_next_action.set_enabled(False)
-        
-        self.find_prev_action = Gio.SimpleAction.new('find-prev', None)
-        self.find_prev_action.connect('activate', self.find_prev)
-        self.find_prev_action.set_enabled(False)
-        
-        self.find_replace_action = Gio.SimpleAction.new('find-replace', None)
-        self.find_replace_action.connect('activate', self.on_menu_find_replace_clicked)
-        self.find_replace_action.set_enabled(False)
-        
-        self.close_all_action = Gio.SimpleAction.new('close-all-documents', None)
-        self.close_all_action.connect('activate', self.on_close_all_clicked)
-        self.close_all_action.set_enabled(False)
-        
-        self.close_document_action = Gio.SimpleAction.new('close-active-document', None)
-        self.close_document_action.connect('activate', self.on_close_document_clicked)
-        self.close_document_action.set_enabled(False)
-        
-        self.insert_before_after_action = Gio.SimpleAction.new('insert-before-after', GLib.VariantType('as'))
-        self.insert_before_after_action.connect('activate', self.insert_before_after)
-        self.insert_before_after_action.set_enabled(False)
+        self.p_allocation = 0
+        self.pp_allocation = 0
+        self.s_allocation = 0
 
-        self.insert_symbol_action = Gio.SimpleAction.new('insert-symbol', GLib.VariantType('as'))
-        self.insert_symbol_action.connect('activate', self.insert_symbol)
-        self.insert_symbol_action.set_enabled(False)
-
-        self.document_wizard_action = Gio.SimpleAction.new('show-document-wizard', None)
-        self.document_wizard_action.connect('activate', self.start_wizard)
-        self.document_wizard_action.set_enabled(False)
+        self.main_window.save_as_action.connect('activate', self.on_save_as_clicked)
+        self.main_window.save_all_action.connect('activate', self.on_save_all_clicked)
+        self.main_window.find_action.connect('activate', self.on_menu_find_clicked)
+        self.main_window.find_next_action.connect('activate', self.find_next)
+        self.main_window.find_prev_action.connect('activate', self.find_prev)
+        self.main_window.find_replace_action.connect('activate', self.on_menu_find_replace_clicked)
+        self.main_window.close_all_action.connect('activate', self.on_close_all_clicked)
+        self.main_window.close_document_action.connect('activate', self.on_close_document_clicked)
+        self.main_window.insert_before_after_action.connect('activate', self.insert_before_after)
+        self.main_window.insert_symbol_action.connect('activate', self.insert_symbol)
+        self.main_window.document_wizard_action.connect('activate', self.start_wizard)
+        self.main_window.shortcuts_window_action.connect('activate', self.show_shortcuts_window)
+        self.main_window.show_preferences_action.connect('activate', self.show_preferences_dialog)
+        self.main_window.show_about_action.connect('activate', self.show_about_dialog)
 
         # populate workspace
         self.workspace.populate_from_disk()
@@ -109,17 +65,18 @@ class WorkspaceController(object):
         if len(open_documents) > 0:
             self.workspace.set_active_document(open_documents[-1])
 
-    def observe_workspace(self):
-        self.workspace.register_observer(self)
-        
     def observe_workspace_view(self):
         self.observe_document_chooser()
         self.main_window.headerbar.new_document_button.connect('clicked', self.on_new_document_button_click)
+        self.main_window.headerbar.open_docs_popover.document_list.connect('add', self.on_doclist_row_added)
         self.main_window.headerbar.open_docs_popover.document_list.connect('row-activated', self.on_doclist_row_activated)
         self.main_window.headerbar.open_docs_popover.connect('closed', self.on_doclist_row_popdown)
         self.main_window.headerbar.save_document_button.connect('clicked', self.on_save_button_click)
         self.main_window.headerbar.sidebar_toggle.connect('toggled', self.on_sidebar_toggle_toggled)
         self.main_window.headerbar.preview_toggle.connect('toggled', self.on_preview_toggle_toggled)
+        self.main_window.sidebar.connect('size-allocate', self.on_sidebar_size_allocate)
+        self.main_window.preview.connect('size-allocate', self.on_preview_size_allocate)
+        self.main_window.preview_paned.connect('size-allocate', self.on_preview_paned_size_allocate)
 
     def observe_document_chooser(self):
         document_chooser = self.main_window.headerbar.document_chooser
@@ -131,7 +88,7 @@ class WorkspaceController(object):
         auto_suggest_box.connect('row-activated', self.on_document_chooser_selection)
         document_chooser.other_documents_button.connect('clicked', self.on_open_document_button_click)
         self.main_window.headerbar.open_document_blank_button.connect('clicked', self.on_open_document_button_click)
-        
+
     '''
     *** decorators
     '''
@@ -142,110 +99,6 @@ class WorkspaceController(object):
                 return original_function(self, *args, **kwargs)
         return new_function    
 
-    '''
-    *** notification handlers, get called by observed workspace
-    '''
-
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code == 'new_document':
-            document = parameter
-            document.set_use_dark_scheme(helpers.is_dark_mode(self.main_window))
-
-            doclist_item = document.view.doclist_item
-            self.main_window.headerbar.open_docs_popover.add_document(doclist_item)
-            doclist_item.document_close_button.connect('clicked', self.on_doclist_close_clicked, document)
-            self.main_window.notebook.append_page(document.view)
-
-        if change_code == 'document_removed':
-            document = parameter
-            notebook = self.main_window.notebook
-            doclist_item = document.view.doclist_item
-            self.main_window.headerbar.open_docs_popover.remove_document(doclist_item)
-            self.main_window.notebook.remove(document.view)
-            if self.workspace.active_document == None:
-                notebook.set_current_page(notebook.page_num(self.main_window.blank_slate))
-                self.show_document_name(None)
-                self.main_window.headerbar.save_document_button.hide()
-                self.main_window.headerbar.build_wrapper.hide()
-                self.main_window.headerbar.preview_toggle.hide()
-                self.main_window.headerbar.preview_toggle.set_sensitive(False)
-                self.main_window.headerbar.sidebar_toggle.hide()
-                self.main_window.headerbar.sidebar_toggle.set_sensitive(False)
-                self.main_window.shortcuts_bar.hide()
-                self.save_as_action.set_enabled(False)
-                self.find_action.set_enabled(False)
-                self.find_next_action.set_enabled(False)
-                self.find_prev_action.set_enabled(False)
-                self.find_replace_action.set_enabled(False)
-                self.sidebar_controller.hide_sidebar(True, False)
-                self.preview_controller.hide_preview(True, False)
-                self.close_document_action.set_enabled(False)
-                self.insert_before_after_action.set_enabled(False)
-                self.insert_symbol_action.set_enabled(False)
-                self.document_wizard_action.set_enabled(True)
-                self.close_all_action.set_enabled(False)
-            
-        if change_code == 'new_active_document':
-            document = parameter
-            notebook = self.main_window.notebook
-            notebook.set_current_page(notebook.page_num(document.view))
-            document.view.source_view.grab_focus()
-            self.main_window.preview_paned_overlay.add_overlay(document.view.autocomplete)
-            document.autocomplete.update_autocomplete_position()
-
-            self.show_document_name(document)
-            self.main_window.headerbar.open_docs_popover.document_list.invalidate_sort()
-            if document.get_modified():
-                self.main_window.headerbar.save_document_button.set_sensitive(True)
-            elif document.get_filename() == None:
-                self.main_window.headerbar.save_document_button.set_sensitive(True)
-            else:
-                self.main_window.headerbar.save_document_button.set_sensitive(False)
-            self.main_window.headerbar.save_document_button.show_all()
-            self.main_window.headerbar.menu_button.show_all()
-            self.on_sidebar_toggle_toggled(self.main_window.headerbar.sidebar_toggle)
-            self.on_preview_toggle_toggled(self.main_window.headerbar.preview_toggle)
-
-            self.set_build_button_state()
-            self.main_window.headerbar.sidebar_toggle.set_sensitive(True)
-            self.main_window.headerbar.sidebar_toggle.show_all()
-            self.main_window.headerbar.preview_toggle.set_sensitive(True)
-            self.main_window.headerbar.preview_toggle.show_all()
-            self.main_window.shortcuts_bar.show_all()
-            self.set_shortcuts_bar_bottom()
-            
-            self.save_as_action.set_enabled(True)
-            self.find_action.set_enabled(True)
-            self.find_next_action.set_enabled(True)
-            self.find_prev_action.set_enabled(True)
-            self.find_replace_action.set_enabled(True)
-            self.close_document_action.set_enabled(True)
-            self.close_all_action.set_enabled(True)
-            self.insert_before_after_action.set_enabled(True)
-            self.insert_symbol_action.set_enabled(True)
-            self.document_wizard_action.set_enabled(True)
-            
-            self.preview_controller.set_active_document(document)
-        
-        if change_code == 'new_inactive_document':
-            document = parameter
-            notebook = self.main_window.notebook
-            self.main_window.preview_paned_overlay.remove(document.view.autocomplete)
-
-        if change_code == 'update_recently_opened_documents':
-            items = list()
-            data = parameter.values()
-            for item in sorted(data, key=lambda val: -val['date']):
-                items.append(item['filename'].rsplit('/', 1)[::-1])
-            self.main_window.headerbar.document_chooser.update_autosuggest(items)
-            if len(data) > 0:
-                self.main_window.headerbar.open_document_button.show_all()
-                self.main_window.headerbar.open_document_blank_button.hide()
-            else:
-                self.main_window.headerbar.open_document_button.hide()
-                self.main_window.headerbar.open_document_blank_button.show_all()
-        
     ''' 
     *** signal handlers: headerbar
     '''
@@ -288,6 +141,9 @@ class WorkspaceController(object):
         document = Document(self.workspace.pathname, with_buffer=True)
         self.workspace.add_document(document)
         self.workspace.set_active_document(document)
+
+    def on_doclist_row_added(self, doclist, row, data=None):
+        row.document_close_button.connect('clicked', self.on_doclist_close_clicked, row.document)
 
     def on_doclist_close_clicked(self, button_object, document):
         if document.get_modified():
@@ -386,16 +242,37 @@ class WorkspaceController(object):
         self.on_doclist_close_clicked(None, document)
         
     def on_sidebar_toggle_toggled(self, toggle_button, parameter=None):
-        if toggle_button.get_active() == True:
-            self.sidebar_controller.show_sidebar(True, True)
-        else:
-            self.sidebar_controller.hide_sidebar(True, True)
+        self.workspace.set_show_sidebar(toggle_button.get_active(), True)
 
     def on_preview_toggle_toggled(self, toggle_button, parameter=None):
-        if toggle_button.get_active() == True:
-            self.preview_controller.show_preview(True)
-        else:
-            self.preview_controller.hide_preview(True)
+        self.workspace.set_show_preview(toggle_button.get_active(), True)
+
+    def on_sidebar_size_allocate(self, sidebar, allocation):
+        if not self.workspace.presenter.sidebars_initialized: return
+        print("asd")
+        if allocation.width != self.s_allocation:
+            self.s_allocation = allocation.width
+            if self.workspace.show_sidebar and self.workspace.active_document != None:
+                if not self.workspace.presenter.sidebar_animating:
+                    self.workspace.set_sidebar_position(allocation.width)
+
+    def on_preview_size_allocate(self, preview, allocation):
+        if not self.workspace.presenter.sidebars_initialized: return
+        print("asd")
+        if allocation.width != self.p_allocation:
+            self.p_allocation = allocation.width
+            if self.workspace.show_preview and self.workspace.active_document != None:
+                if not self.workspace.presenter.preview_animating:
+                    self.workspace.set_preview_position(self.main_window.preview_paned.get_position())
+
+    def on_preview_paned_size_allocate(self, preview, allocation):
+        if not self.workspace.presenter.sidebars_initialized: return
+        print("asd")
+        if allocation.width != self.pp_allocation:
+            self.pp_allocation = allocation.width
+            if self.workspace.show_preview and self.workspace.active_document != None:
+                if not self.workspace.presenter.preview_animating:
+                    self.workspace.set_preview_position(self.main_window.preview_paned.get_position())
 
     '''
     *** actions
@@ -404,71 +281,6 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def switch_to_earliest_open_document(self):
         self.workspace.set_active_document(self.workspace.get_earliest_active_document())
-    
-    def set_build_button_state(self):
-        document = self.workspace.active_document
-        state = document.get_state()
-            
-        headerbar = self.main_window.headerbar
-        prev_widget = headerbar.build_wrapper.get_center_widget()
-        if prev_widget != None:
-            headerbar.build_wrapper.remove(prev_widget)
-        headerbar.build_wrapper.set_center_widget(document.build_widget.view)
-        headerbar.build_wrapper.show()
-        document.build_widget.view.show()
-        if document.build_widget.view.has_result():
-            document.build_widget.view.hide_timer(4000)
-
-    def set_shortcuts_bar_bottom(self):
-        document = self.workspace.active_document
-        shortcuts_bar = self.main_window.shortcuts_bar
-
-        if shortcuts_bar.current_bottom != None:
-            shortcuts_bar.remove(shortcuts_bar.current_bottom)
-        shortcuts_bar.current_bottom = document.view.shortcuts_bar_bottom
-        shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
-
-    def show_document_name(self, document):
-        headerbar = self.main_window.headerbar
-        if document == None:
-            headerbar.center_button.hide()
-            headerbar.center_label_welcome.show_all()
-        else:
-            doclist_item = document.view.doclist_item
-            
-            if headerbar.name_binding != None: headerbar.name_binding.unbind()
-            headerbar.document_name_label.set_text(doclist_item.label.get_text())
-            headerbar.name_binding = doclist_item.label.bind_property('label', headerbar.document_name_label, 'label', 0)
-            
-            if headerbar.folder_binding != None: headerbar.folder_binding.unbind()
-            headerbar.folder_binding = doclist_item.flabel.bind_property('label', headerbar.document_folder_label, 'label', 0, self.folder_transform_func)
-
-            if headerbar.mod_binding != None: headerbar.mod_binding.unbind()
-            headerbar.document_mod_label.set_text(doclist_item.mlabel.get_text())
-            headerbar.mod_binding = doclist_item.mlabel.bind_property('label', headerbar.document_mod_label, 'label', 0, self.modified_transform_func)
-
-            headerbar.center_label_welcome.hide()
-            headerbar.center_button.show_all()
-
-            self.folder_transform_func(headerbar.folder_binding, doclist_item.folder)
-            self.modified_transform_func(headerbar.mod_binding, doclist_item.mlabel.get_text())
-            
-    def modified_transform_func(self, binding, from_value, to_value=None):
-        headerbar = self.main_window.headerbar
-        if from_value == 'False' and headerbar.document_folder_label.get_text() != '':
-            headerbar.save_document_button.set_sensitive(False)
-            self.save_all_action.set_enabled(False)
-        else:
-            headerbar.save_document_button.set_sensitive(True)
-            self.save_all_action.set_enabled(True)
-
-    def folder_transform_func(self, binding, from_value, to_value=None):
-        headerbar = self.main_window.headerbar
-        headerbar.document_folder_label.set_text(from_value)
-        if from_value == '':
-            headerbar.document_folder_label.hide()
-        else:
-            headerbar.document_folder_label.show_all()
     
     @_assert_has_active_document
     def insert_symbol(self, action, parameter):
@@ -513,6 +325,15 @@ class WorkspaceController(object):
         document = self.workspace.get_active_document()
         ServiceLocator.get_dialog('document_wizard').run(document)
 
+    def show_shortcuts_window(self, action, parameter=''):
+        ServiceLocator.get_dialog('keyboard_shortcuts').run()
+
+    def show_preferences_dialog(self, action=None, parameter=''):
+        ServiceLocator.get_dialog('preferences').run()
+
+    def show_about_dialog(self, action, parameter=''):
+        ServiceLocator.get_dialog('about').run()
+        
     @_assert_has_active_document
     def insert_before_after(self, action, parameter):
         ''' wrap text around current selection. '''

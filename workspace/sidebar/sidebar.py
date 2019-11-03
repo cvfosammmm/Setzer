@@ -21,28 +21,21 @@ from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
 
-from viewgtk.viewgtk_sidebar import *
+from workspace.sidebar.sidebar_viewgtk import *
 import helpers.helpers as helpers
 from app.service_locator import ServiceLocator
 
 import math
 
 
-class SidebarController(object):
+class Sidebar(object):
     ''' Init and controll sidebar '''
     
-    def __init__(self, sidebar):
-
-        self.sidebar = sidebar
-        self.main_window = ServiceLocator.get_main_window()
-
-        settings = ServiceLocator.get_settings()
-        self.sidebar_position = settings.get_value('window_state', 'sidebar_paned_position')
-        self.sidebar_animating = False
-        self.hide_sidebar(False, False)
+    def __init__(self):
+        self.view = ServiceLocator.get_main_window().sidebar
 
         # detect dark mode
-        dm = 'True' if helpers.is_dark_mode(self.sidebar) else 'False'
+        dm = 'True' if helpers.is_dark_mode(self.view) else 'False'
 
         # tabbed pages: name, icon name, tooltip, widget
         self.pages = list()
@@ -61,7 +54,7 @@ class SidebarController(object):
         self.page_views = list()
         self.init_page_stack()
 
-        self.sidebar.show_all()
+        self.view.show_all()
 
     def init_page_stack(self):
         self.tab_buttons = list()
@@ -77,9 +70,9 @@ class SidebarController(object):
                 button.get_style_context().add_class('first')
 
             self.tab_buttons.append(button)
-            self.sidebar.tabs.insert(button, -1)
+            self.view.tabs.insert(button, -1)
             page_view = eval(page[3])
-            self.sidebar.stack.add_named(page_view, page[0])
+            self.view.stack.add_named(page_view, page[0])
             self.init_symbols_page(page_view)
             self.page_views.append(page_view)
             page_view.connect('size-allocate', self.on_stack_size_allocate)
@@ -90,15 +83,15 @@ class SidebarController(object):
             button = symbol[3]
             button.set_focus_on_click(False)
             button.get_child().set_size_request(page_view.symbol_width, -1)
-            button.set_action_name('app.insert-symbol')
             button.set_action_target_value(GLib.Variant('as', [symbol[1]]))
-        
+            button.set_action_name('win.insert-symbol')
+
     '''
     *** signal handlers for buttons in sidebar
     '''
     
     def on_tab_button_clicked(self, button, page_name):
-        self.sidebar.stack.set_visible_child_name(page_name)
+        self.view.stack.set_visible_child_name(page_name)
     
     '''
     *** manage borders of images
@@ -138,69 +131,5 @@ class SidebarController(object):
                         image[3].get_style_context().add_class('no_bottom_border')
                     else:
                         image[3].get_style_context().remove_class('no_bottom_border')
-
-    def hide_sidebar(self, animate=False, set_toggle=True):
-        if not self.sidebar_animating:
-            if self.main_window.sidebar_visible:
-                self.sidebar_position = self.main_window.sidebar_paned.get_position()
-            self.animate_sidebar(False, animate, set_toggle)
-    
-    def show_sidebar(self, animate=False, set_toggle=True):
-        if not self.sidebar_animating:
-            self.animate_sidebar(True, animate, set_toggle)
-
-    def animate_sidebar(self, show_sidebar=False, animate=False, set_toggle=True):
-        def set_position_on_tick(paned, frame_clock_cb, user_data=None):
-            show_sidebar, set_toggle = user_data
-            now = frame_clock_cb.get_frame_time()
-            if now < end_time and paned.get_position != end:
-                t = self.ease((now - start_time) / (end_time - start_time))
-                paned.set_position(int(start + t * (end - start)))
-                return True
-            else:
-                paned.set_position(end)
-                if not show_sidebar:
-                    self.sidebar.hide()
-                    self.main_window.sidebar_visible = False
-                else:
-                    self.main_window.sidebar_paned.child_set_property(self.sidebar, 'shrink', False)
-                    self.main_window.sidebar_visible = True
-                if set_toggle: self.main_window.headerbar.sidebar_toggle.set_active(show_sidebar)
-                self.sidebar.set_size_request(-1, -1)
-                self.sidebar_animating = False
-                return False
-
-        frame_clock = self.main_window.sidebar_paned.get_frame_clock()
-        duration = 200
-        if show_sidebar:
-            self.sidebar.show_all()
-            start = 0
-            end = self.sidebar_position
-            self.sidebar.set_size_request(end, -1)
-        else:
-            start = self.main_window.sidebar_paned.get_position()
-            end = 0
-            self.sidebar.set_size_request(start, -1)
-        if frame_clock != None and animate:
-            if self.main_window.sidebar_paned.get_position() != end:
-                start_time = frame_clock.get_frame_time()
-                end_time = start_time + 1000 * duration
-                self.sidebar_animating = True
-                self.main_window.sidebar_paned.add_tick_callback(set_position_on_tick, (show_sidebar, set_toggle))
-                self.main_window.sidebar_paned.child_set_property(self.sidebar, 'shrink', True)
-        else:
-            self.main_window.sidebar_paned.set_position(end)
-            if show_sidebar:
-                self.sidebar.show_all()
-                self.main_window.sidebar_visible = True
-                self.main_window.sidebar_paned.child_set_property(self.sidebar, 'shrink', False)
-            else:
-                self.sidebar.hide()
-                self.main_window.sidebar_visible = False
-            self.sidebar.set_size_request(-1, -1)
-            if set_toggle: self.main_window.headerbar.sidebar_toggle.set_active(show_sidebar)
-
-    def ease(self, time):
-        return (time - 1)**3 + 1;
 
 

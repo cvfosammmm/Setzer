@@ -17,7 +17,7 @@
 
 
 from dialogs.dialog import Dialog
-import dialogs.preferences.preferences_viewgtk as viewgtk
+import dialogs.preferences.preferences_viewgtk as view
 
 
 class PreferencesDialog(Dialog):
@@ -37,7 +37,7 @@ class PreferencesDialog(Dialog):
         del(self.view)
 
     def setup(self):
-        self.view = viewgtk.Preferences(self.main_window)
+        self.view = view.Preferences(self.main_window)
 
         self.view.option_cleanup_build_files.set_active(self.settings.get_value('preferences', 'cleanup_build_files'))
         self.view.option_cleanup_build_files.connect('toggled', self.on_check_button_toggle, 'cleanup_build_files')

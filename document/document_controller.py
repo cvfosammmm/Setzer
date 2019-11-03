@@ -21,6 +21,8 @@ gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk
 from gi.repository import Gtk
 
+from app.service_locator import ServiceLocator
+
 
 class DocumentController(object):
     
@@ -44,7 +46,7 @@ class DocumentController(object):
         self.document.get_buffer().connect('mark-deleted', self.on_mark_deleted)
         
     def observe_document_view(self):
-        self.document.build_widget.view.build_button.connect('clicked', self.on_build_button_click)
+        self.document.build_widget.view.build_button.connect('clicked', self.build_document_request)
         self.document.build_widget.view.stop_button.connect('clicked', self.on_stop_build_button_click)
         self.document.build_widget.view.clean_button.connect('clicked', self.on_clean_button_click)
         self.view.source_view.connect('focus-out-event', self.on_focus_out)
@@ -74,8 +76,14 @@ class DocumentController(object):
     def on_mark_deleted(self, buffer, mark, user_data=None):
         self.document.autocomplete.update_autocomplete_position(False)
     
-    def on_build_button_click(self, button_object=None):
-        self.document.build()
+    def build_document_request(self, button_object=None):
+        if self.document.filename == None:
+            if ServiceLocator.get_dialog('build_save').run(self.document):
+                ServiceLocator.get_dialog('save_document').run(self.document, '.tex')
+            else:
+                return False
+        if self.document.filename != None:
+            self.document.build()
 
     def on_stop_build_button_click(self, button_object=None):
         document = self.document

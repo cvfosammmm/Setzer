@@ -21,6 +21,13 @@ import pickle
 
 from document.document import Document
 from helpers.observable import *
+import workspace.workspace_presenter as workspace_presenter
+import workspace.workspace_controller as workspace_controller
+import workspace.preview.preview as preview
+import workspace.sidebar.sidebar as sidebar
+import workspace.headerbar.headerbar_presenter as headerbar_presenter
+import workspace.keyboard_shortcuts.shortcuts as shortcuts
+from app.service_locator import ServiceLocator
 
 
 class Workspace(Observable):
@@ -34,8 +41,22 @@ class Workspace(Observable):
         self.open_documents = list()
         self.recently_opened_documents = dict()
         self.untitled_documents_no = 0
-        
+
         self.active_document = None
+
+        settings = ServiceLocator.get_settings()
+        self.sidebar = sidebar.Sidebar()
+        self.show_sidebar = settings.get_value('window_state', 'show_sidebar')
+        self.sidebar_position = settings.get_value('window_state', 'sidebar_paned_position')
+        self.preview = preview.Preview()
+        self.show_preview = settings.get_value('window_state', 'show_preview')
+        self.preview_position = settings.get_value('window_state', 'preview_paned_position')
+
+    def init_workspace_controller(self):
+        self.presenter = workspace_presenter.WorkspacePresenter(self)
+        self.headerbar = headerbar_presenter.HeaderbarPresenter(self)
+        self.controller = workspace_controller.WorkspaceController(self)
+        self.shortcuts = shortcuts.Shortcuts(self, self.controller)
 
     def add_document(self, document):
         if self.open_documents.count(document) != 0: return False
@@ -140,5 +161,21 @@ class Workspace(Observable):
         
     def get_all_documents(self):
         return self.open_documents.copy() if len(self.open_documents) >= 1 else None
+
+    def set_show_sidebar(self, show_sidebar, animate=False):
+        if show_sidebar != self.show_sidebar:
+            self.show_sidebar = show_sidebar
+            self.add_change_code('set_show_sidebar', show_sidebar)
+
+    def set_sidebar_position(self, sidebar_position):
+        self.sidebar_position = sidebar_position
+
+    def set_preview_position(self, preview_position):
+        self.preview_position = preview_position
+
+    def set_show_preview(self, show_preview, animate=False):
+        if show_preview != self.show_preview:
+            self.show_preview = show_preview
+            self.add_change_code('set_show_preview', show_preview)
 
 

@@ -28,6 +28,7 @@ import dialogs.preferences.preferences as preferences_dialog
 import dialogs.open_document.open_document as open_document_dialog
 import dialogs.replace_confirmation.replace_confirmation as replace_confirmation_dialog
 import dialogs.save_document.save_document as save_document_dialog
+import dialogs.keyboard_shortcuts.keyboard_shortcuts as keyboard_shortcuts_dialog
 
 
 class ServiceLocator(object):
@@ -37,7 +38,7 @@ class ServiceLocator(object):
 
     def init_dialogs(main_window, workspace):
         settings = ServiceLocator.get_settings()
-        ServiceLocator.dialogs['about'] = about_dialog.AboutDialog(main_window, settings)
+        ServiceLocator.dialogs['about'] = about_dialog.AboutDialog(main_window)
         ServiceLocator.dialogs['building_failed'] = building_failed_dialog.BuildingFailedDialog(main_window)
         ServiceLocator.dialogs['build_save'] = build_save_dialog.BuildSaveDialog(main_window)
         ServiceLocator.dialogs['close_confirmation'] = close_confirmation_dialog.CloseConfirmationDialog(main_window, workspace)
@@ -47,6 +48,7 @@ class ServiceLocator(object):
         ServiceLocator.dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(main_window, workspace)
         ServiceLocator.dialogs['replace_confirmation'] = replace_confirmation_dialog.ReplaceConfirmationDialog(main_window)
         ServiceLocator.dialogs['save_document'] = save_document_dialog.SaveDocumentDialog(main_window, workspace)
+        ServiceLocator.dialogs['keyboard_shortcuts'] = keyboard_shortcuts_dialog.KeyboardShortcutsDialog(main_window)
     
     def init_main_window(main_window):
         ServiceLocator.main_window = main_window

@@ -23,7 +23,7 @@ from gi.repository import Gio
 from gi.repository import Gdk
 
 from dialogs.dialog import Dialog
-import dialogs.document_wizard.document_wizard_viewgtk as viewgtk
+import dialogs.document_wizard.document_wizard_viewgtk as view
 from dialogs.document_wizard.pages.page_document_class import DocumentClassPage
 from dialogs.document_wizard.pages.page_article_settings import ArticleSettingsPage
 from dialogs.document_wizard.pages.page_report_settings import ReportSettingsPage
@@ -46,7 +46,7 @@ class DocumentWizard(Dialog):
         self.current_values = dict()
         self.page_formats = {'US Letter': 'letterpaper', 'US Legal': 'legalpaper', 'A4': 'a4paper', 'A5': 'a5paper', 'B5': 'b5paper'}
 
-        self.view = viewgtk.DocumentWizardView(self.main_window)
+        self.view = view.DocumentWizardView(self.main_window)
 
         self.pages = list()
         self.pages.append(DocumentClassPage(self.current_values))

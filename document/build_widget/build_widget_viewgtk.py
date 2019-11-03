@@ -59,6 +59,8 @@ class BuildWidgetView(Gtk.HBox):
         self.pack_start(self.build_button, False, False, 0)
         self.pack_start(self.stop_button, False, False, 0)
         self.pack_start(self.clean_button, False, False, 0)
+
+        self.show_all()
         
     def start_timer(self):
         self.timer_active = True

@@ -25,7 +25,7 @@ from dialogs.dialog import Dialog
 import os.path
 
 
-class AboutDialog(Dialog):
+class KeyboardShortcutsDialog(Dialog):
 
     def __init__(self, main_window):
         self.main_window = main_window
@@ -36,18 +36,9 @@ class AboutDialog(Dialog):
         del(self.view)
 
     def setup(self):
-        self.view = Gtk.AboutDialog()
+        builder = Gtk.Builder()
+        builder.add_from_file(os.path.dirname(os.path.realpath(__file__)) + '/shortcuts_window.ui')
+        self.view = builder.get_object('shortcuts-window')
         self.view.set_transient_for(self.main_window)
-        self.view.set_modal(True)
-        self.view.set_program_name('Setzer')
-        self.view.set_version('0.0.2')
-        self.view.set_copyright('Copyright © 2018-2019 - the Setzer developers')
-        self.view.set_comments('Setzer is a LaTeX editor.')
-        self.view.set_license_type(Gtk.License.GPL_3_0)
-        self.view.set_website('https://www.cvfosammmm.org/setzer/')
-        self.view.set_website_label('https://www.cvfosammmm.org/setzer/')
-        self.view.set_authors(('Robert Griesel',))
-        logo = Gtk.Image.new_from_file(os.path.dirname(os.path.realpath(__file__)) + '/../../resources/images/org.cvfosammmm.Setzer.svg')
-        self.view.set_logo(logo.get_pixbuf())
         
 

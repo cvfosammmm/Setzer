@@ -37,10 +37,12 @@ class HeaderBar(Gtk.HeaderBar):
         self.set_show_close_button(True)
 
         # sidebar toggle
+        self.sidebar_toggle_revealer = Gtk.Revealer()
         self.sidebar_toggle = Gtk.ToggleButton()
         self.sidebar_toggle.set_image(Gtk.Image.new_from_icon_name('builder-view-left-pane-symbolic', Gtk.IconSize.MENU))
         self.sidebar_toggle.set_focus_on_click(False)
         self.sidebar_toggle.set_tooltip_text('Toggle sidebar (F9)')
+        #self.sidebar_toggle_revealer.add(self.sidebar_toggle)
         self.pack_start(self.sidebar_toggle)
 
         # open documents button
@@ -75,29 +77,29 @@ class HeaderBar(Gtk.HeaderBar):
         self.workspace_menu = Gio.Menu()
 
         section = Gio.Menu()
-        section.append_item(Gio.MenuItem.new('Save Document As...', 'app.save-as'))
-        section.append_item(Gio.MenuItem.new('Save All Documents', 'app.save-all'))
+        section.append_item(Gio.MenuItem.new('Save Document As...', 'win.save-as'))
+        section.append_item(Gio.MenuItem.new('Save All Documents', 'win.save-all'))
         self.workspace_menu.append_section(None, section)
 
         section = Gio.Menu()
         view_menu = Gio.Menu()
-        view_menu.append_item(Gio.MenuItem.new('Dark Mode', 'app.toggle-dark-mode'))
+        view_menu.append_item(Gio.MenuItem.new('Dark Mode', 'win.toggle-dark-mode'))
         section.append_submenu('View', view_menu)
         self.workspace_menu.append_section(None, section)
 
         preferences_section = Gio.Menu()
-        preferences_section.append_item(Gio.MenuItem.new('Preferences', 'app.show-preferences-dialog'))
+        preferences_section.append_item(Gio.MenuItem.new('Preferences', 'win.show-preferences-dialog'))
         self.workspace_menu.append_section(None, preferences_section)
 
         meta_section = Gio.Menu()
-        meta_section.append_item(Gio.MenuItem.new('Keyboard Shortcuts', 'app.show-shortcuts-window'))
-        meta_section.append_item(Gio.MenuItem.new('About', 'app.show-about-dialog'))
+        meta_section.append_item(Gio.MenuItem.new('Keyboard Shortcuts', 'win.show-shortcuts-window'))
+        meta_section.append_item(Gio.MenuItem.new('About', 'win.show-about-dialog'))
         self.workspace_menu.append_section(None, meta_section)
 
         section = Gio.Menu()
-        section.append_item(Gio.MenuItem.new('Close All Documents', 'app.close-all-documents'))
-        section.append_item(Gio.MenuItem.new('Close Document', 'app.close-active-document'))
-        section.append_item(Gio.MenuItem.new('Quit', 'app.quit'))
+        section.append_item(Gio.MenuItem.new('Close All Documents', 'win.close-all-documents'))
+        section.append_item(Gio.MenuItem.new('Close Document', 'win.close-active-document'))
+        section.append_item(Gio.MenuItem.new('Quit', 'win.quit'))
         self.workspace_menu.append_section(None, section)
         self.menu_button.set_menu_model(self.workspace_menu)
         self.pack_end(self.menu_button)
@@ -314,9 +316,6 @@ class OpenDocsPopover(Gtk.Popover):
         
         self.add(self.scrolled_window)
         
-    def add_document(self, list_item):
-        self.document_list.add(list_item)
-
     def remove_document(self, list_item):
         self.document_list.remove(list_item)
 

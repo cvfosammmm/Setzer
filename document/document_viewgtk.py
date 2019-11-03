@@ -22,7 +22,6 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 from gi.repository import Pango
 
-from viewgtk.viewgtk_shortcutsbar import *
 import document.search.search_viewgtk as search_view
 import document.autocomplete.autocomplete_viewgtk as autocomplete_view
 

@@ -51,7 +51,7 @@ class Sidebar(Gtk.VBox):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
                      
     def do_get_preferred_width(self):
-        return 198, 300
+        return 216, 300
 
 
 class SidebarPage(Gtk.ScrolledWindow):
@@ -82,7 +82,7 @@ class SidebarPageSymbolsList(SidebarPage):
         
         self.parent_folder = 'dark' if is_dark_mode else 'light'
 
-        xml_tree = ET.parse(os.path.dirname(__file__) + '/../resources/symbols/' + symbol_folder + '.xml')
+        xml_tree = ET.parse(os.path.dirname(__file__) + '/../../resources/symbols/' + symbol_folder + '.xml')
         xml_root = xml_tree.getroot()
         for symbol_tag in xml_root:
             self.symbols.append([symbol_tag.attrib['file'].rsplit('.')[0], symbol_tag.attrib['command'], symbol_tag.attrib.get('package', None)])
@@ -93,7 +93,7 @@ class SidebarPageSymbolsList(SidebarPage):
         
     def init_symbols_list(self):
         for symbol in self.symbols:
-            image = Gtk.Image.new_from_file(os.path.dirname(__file__) + '/../resources/symbols/' + self.parent_folder + '/' + self.symbol_folder + '/' + symbol[0] + '.png')
+            image = Gtk.Image.new_from_file(os.path.dirname(__file__) + '/../../resources/symbols/' + self.parent_folder + '/' + self.symbol_folder + '/' + symbol[0] + '.png')
             self.images.append([image, symbol])
             button = Gtk.Button()
             button.set_image(image)
@@ -109,6 +109,6 @@ class SidebarPageSymbolsList(SidebarPage):
         
         self.parent_folder = parent_folder
         for image in self.images:
-            image[0].set_from_file(os.path.dirname(__file__) + '/../resources/symbols/' + self.parent_folder + '/' + self.symbol_folder + '/' + image[1][0] + '.png')
+            image[0].set_from_file(os.path.dirname(__file__) + '/../../resources/symbols/' + self.parent_folder + '/' + self.symbol_folder + '/' + image[1][0] + '.png')
 
 

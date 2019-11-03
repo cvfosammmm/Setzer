@@ -22,10 +22,10 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
-from viewgtk.viewgtk_headerbar import *
-from viewgtk.viewgtk_shortcutsbar import *
-from viewgtk.viewgtk_sidebar import *
-from viewgtk.viewgtk_preview import *
+from workspace.headerbar.headerbar_viewgtk import *
+from workspace.shortcutsbar.shortcutsbar_viewgtk import *
+from workspace.preview.preview_viewgtk import *
+from workspace.sidebar.sidebar_viewgtk import *
 from app.service_locator import ServiceLocator
 
 import os
@@ -35,7 +35,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def __init__(self, app):
         Gtk.Window.__init__(self, application=app)
-        settings = ServiceLocator.get_settings()
+        self.app = app
         self.set_size_request(-1, 550)
         self.add_events(Gdk.EventMask.KEY_PRESS_MASK)
         Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/icons')
@@ -54,7 +54,7 @@ class MainWindow(Gtk.ApplicationWindow):
         # headerbar
         self.headerbar = HeaderBar()
         self.set_titlebar(self.headerbar)
-        
+
         # notebook
         self.notebook_wrapper = Gtk.VBox()
         self.notebook = DocumentViewWrapper()
@@ -64,13 +64,11 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # preview
         self.preview = PreviewView()
-        self.preview_visible = False
-        self.headerbar.preview_toggle.set_active(settings.get_value('window_state', 'show_preview'))
+        self.preview_visible = None
         
         # sidebar
         self.sidebar = Sidebar()
-        self.sidebar_visible = False
-        self.headerbar.sidebar_toggle.set_active(settings.get_value('window_state', 'show_sidebar'))
+        self.sidebar_visible = None
 
         # paneds
         self.preview_paned_overlay = Gtk.Overlay()
@@ -83,16 +81,66 @@ class MainWindow(Gtk.ApplicationWindow):
         self.sidebar_paned.pack1(self.sidebar, False, True)
         self.sidebar_paned.pack2(self.preview_paned_overlay, True, False)
         self.sidebar_paned.get_style_context().add_class('sidebar_paned')
-        self.add(self.sidebar_paned)
         
         # blank slate
         self.blank_slate = BlankSlate()
-        self.notebook.add(self.blank_slate)
+
+        # mode stack
+        self.mode_stack = Gtk.Stack()
+        self.mode_stack.add_named(self.blank_slate, 'blank_slate')
+        self.mode_stack.add_named(self.sidebar_paned, 'documents')
+        self.add(self.mode_stack)
 
         self.css_provider = Gtk.CssProvider()
         self.css_provider.load_from_path(os.path.dirname(__file__) + '/../resources/style_gtk.css')
         self.style_context = Gtk.StyleContext()
         self.style_context.add_provider_for_screen(self.get_screen(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+
+        # actions
+        self.save_as_action = Gio.SimpleAction.new('save-as', None)
+        self.add_action(self.save_as_action)
+
+        self.save_all_action = Gio.SimpleAction.new('save-all', None)
+        self.add_action(self.save_all_action)
+
+        self.find_action = Gio.SimpleAction.new('find', None)
+        self.add_action(self.find_action)
+
+        self.find_next_action = Gio.SimpleAction.new('find-next', None)
+        self.add_action(self.find_next_action)
+
+        self.find_prev_action = Gio.SimpleAction.new('find-prev', None)
+        self.add_action(self.find_prev_action)
+
+        self.find_replace_action = Gio.SimpleAction.new('find-replace', None)
+        self.add_action(self.find_replace_action)
+
+        self.close_all_action = Gio.SimpleAction.new('close-all-documents', None)
+        self.add_action(self.close_all_action)
+
+        self.close_document_action = Gio.SimpleAction.new('close-active-document', None)
+        self.add_action(self.close_document_action)
+
+        self.insert_before_after_action = Gio.SimpleAction.new('insert-before-after', GLib.VariantType('as'))
+        self.add_action(self.insert_before_after_action)
+
+        self.insert_symbol_action = Gio.SimpleAction.new('insert-symbol', GLib.VariantType('as'))
+        self.add_action(self.insert_symbol_action)
+
+        self.document_wizard_action = Gio.SimpleAction.new('show-document-wizard', None)
+        self.add_action(self.document_wizard_action)
+
+        self.shortcuts_window_action = Gio.SimpleAction.new('show-shortcuts-window', None)
+        self.add_action(self.shortcuts_window_action)
+
+        self.show_preferences_action = Gio.SimpleAction.new('show-preferences-dialog', None)
+        self.add_action(self.show_preferences_action)
+
+        self.show_about_action = Gio.SimpleAction.new('show-about-dialog', None)
+        self.add_action(self.show_about_action)
+
+        self.quit_action = Gio.SimpleAction.new('quit', None)
+        self.add_action(self.quit_action)
 
 
 class DocumentViewWrapper(Gtk.Notebook):

@@ -35,24 +35,16 @@ import helpers.helpers as helpers
 from app.service_locator import ServiceLocator
 
 
-class PreviewController(object):
+class Preview(object):
     ''' Init and controll preview widget '''
     
-    def __init__(self, preview_widget):
+    def __init__(self):
 
-        self.view = preview_widget
         self.settings = ServiceLocator.get_settings()
         self.main_window = ServiceLocator.get_main_window()
-        self.active_document = None
+        self.view = self.main_window.preview
 
-        preview_position = self.settings.get_value('window_state', 'preview_paned_position')
-        sidebar_paned_pos = self.settings.get_value('window_state', 'sidebar_paned_position')
-        if not self.settings.get_value('window_state', 'show_sidebar'):
-            self.preview_position = preview_position
-        else:
-            self.preview_position = preview_position - sidebar_paned_pos
-        self.preview_animating = False
-        self.hide_preview(False, False)
+        self.active_document = None
 
         self.ppi = self.get_ppi()
         self.zoom_factors_button = list()
@@ -92,7 +84,6 @@ class PreviewController(object):
         self.scroll_to_page_queue = queue.Queue()
 
         self.view.action_bar.show_all()
-        self.view.zoom_widget.label.set_size_request(self.view.zoom_widget.label.get_allocated_width() + 6, -1)
         GObject.timeout_add(50, self.check_filename_loop)
         GObject.timeout_add(50, self.check_rendered_pages_loop)
         thread.start_new_thread(self.render_page_loop, ())
@@ -101,6 +92,9 @@ class PreviewController(object):
         self.active_document = document
 
     def check_filename_loop(self):
+        if not self.view.notebook.get_allocated_width() > 100:
+            return True
+
         if self.active_document != None:
             filename = self.active_document.get_pdf_filename()
             date = self.active_document.get_pdf_date()
@@ -382,7 +376,7 @@ class PreviewController(object):
                     width_pixels = int(real_zoom_factor * ppi * page_size_points.width / 72)
                     height_pixels = int(real_zoom_factor * ppi * page_size_points.height / 72)
                     scale_factor = width_pixels / page_size_points[0]
-                    surface = cairo.ImageSurface(cairo.Format.ARGB32, width_pixels, height_pixels)
+                    surface = cairo.ImageSurface(cairo.Format.ARGB32, 500, 500)
                     ctx = cairo.Context(surface)
                     ctx.scale(scale_factor, scale_factor)
                     page.render(ctx)
@@ -490,75 +484,6 @@ class PreviewController(object):
                 else:
                     if(self.scroll_to_page_queue.empty()):
                         self.scroll_to_page(*todo)
-
-    def hide_preview(self, animate=False, set_toggle=True):
-        if not self.preview_animating:
-            if self.main_window.preview_visible:
-                self.preview_position = self.main_window.preview_paned.get_position()
-            self.animate_preview(False, animate, set_toggle)
-
-    def show_preview(self, animate=False, set_toggle=True):
-        if not self.preview_animating:
-            self.animate_preview(True, animate, set_toggle)
-        
-    def animate_preview(self, show_preview=False, animate=False, set_toggle=True):
-        def set_position_on_tick(paned, frame_clock_cb, user_data=None):
-            show_preview, set_toggle = user_data
-            now = frame_clock_cb.get_frame_time()
-            if now < end_time and paned.get_position != end:
-                t = self.ease((now - start_time) / (end_time - start_time))
-                paned.set_position(int(start + t * (end - start)))
-                return True
-            else:
-                paned.set_position(end)
-                if not show_preview:
-                    self.main_window.preview.hide()
-                    self.main_window.preview_visible = False
-                else:
-                    self.main_window.preview_paned.child_set_property(self.main_window.preview, 'shrink', False)
-                    self.main_window.preview_visible = True
-                if set_toggle: self.main_window.headerbar.preview_toggle.set_active(show_preview)
-                self.main_window.preview.set_size_request(-1, -1)
-                self.preview_animating = False
-                return False
-
-        frame_clock = self.main_window.preview_paned.get_frame_clock()
-        duration = 200
-        if show_preview:
-            self.main_window.preview.show_all()
-            start = self.main_window.preview_paned.get_allocated_width()
-            if self.main_window.preview_visible == False:
-                end = self.preview_position
-            else:
-                end = start
-            self.main_window.preview.set_size_request(start - end - 1, -1)
-        else:
-            start = self.main_window.preview_paned.get_position()
-            end = self.main_window.preview_paned.get_allocated_width()
-            self.main_window.preview.set_size_request(end - start - 1, -1)
-        if frame_clock != None and animate:
-            if start != end:
-                start_time = frame_clock.get_frame_time()
-                end_time = start_time + 1000 * duration
-                self.preview_animating = True
-                self.main_window.preview_paned.add_tick_callback(set_position_on_tick, (show_preview, set_toggle))
-                self.main_window.preview_paned.child_set_property(self.main_window.preview, 'shrink', True)
-        else:
-            self.main_window.preview_paned.set_position(end)
-            self.main_window.preview.set_size_request(-1, -1)
-            if show_preview:
-                self.main_window.preview.show_all()
-                self.main_window.preview_visible = True
-                self.main_window.preview_paned.child_set_property(self.main_window.preview, 'shrink', False)
-            else:
-                self.main_window.preview_paned.child_set_property(self.main_window.preview, 'shrink', True)
-                self.main_window.preview_paned.set_position(end)
-                self.main_window.preview.hide()
-                self.main_window.preview_visible = False
-            if set_toggle: self.main_window.headerbar.preview_toggle.set_active(show_preview)
-
-    def ease(self, time):
-        return (time - 1)**3 + 1;
 
 
 class RenderedPage(object):
