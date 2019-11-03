@@ -249,7 +249,6 @@ class WorkspaceController(object):
 
     def on_sidebar_size_allocate(self, sidebar, allocation):
         if not self.workspace.presenter.sidebars_initialized: return
-        print("asd")
         if allocation.width != self.s_allocation:
             self.s_allocation = allocation.width
             if self.workspace.show_sidebar and self.workspace.active_document != None:
@@ -258,7 +257,6 @@ class WorkspaceController(object):
 
     def on_preview_size_allocate(self, preview, allocation):
         if not self.workspace.presenter.sidebars_initialized: return
-        print("asd")
         if allocation.width != self.p_allocation:
             self.p_allocation = allocation.width
             if self.workspace.show_preview and self.workspace.active_document != None:
@@ -267,7 +265,6 @@ class WorkspaceController(object):
 
     def on_preview_paned_size_allocate(self, preview, allocation):
         if not self.workspace.presenter.sidebars_initialized: return
-        print("asd")
         if allocation.width != self.pp_allocation:
             self.pp_allocation = allocation.width
             if self.workspace.show_preview and self.workspace.active_document != None:

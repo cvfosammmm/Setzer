@@ -237,7 +237,6 @@ class WorkspacePresenter(object):
                 self.main_window.preview_paned.child_set_property(self.main_window.preview, 'shrink', True)
                 self.main_window.preview_visible = False
                 self.main_window.preview.hide()
-            print(end)
             self.main_window.preview_paned.set_position(end)
             if set_toggle: self.main_window.headerbar.preview_toggle.set_active(show_preview)
 
