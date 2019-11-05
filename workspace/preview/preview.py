@@ -87,6 +87,7 @@ class Preview(object):
         GObject.timeout_add(50, self.check_filename_loop)
         GObject.timeout_add(50, self.check_rendered_pages_loop)
         thread.start_new_thread(self.render_page_loop, ())
+        self.update_paging_widget()
 
     def set_active_document(self, document):
         self.active_document = document

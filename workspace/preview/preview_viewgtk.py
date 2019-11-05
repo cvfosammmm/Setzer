@@ -96,6 +96,7 @@ class PreviewZoomWidget(Gtk.HBox):
         self.pack_start(self.zoom_out_button, False, False, 0)
         self.pack_start(self.label, False, False, 0)
         self.pack_start(self.zoom_in_button, False, False, 0)
+        self.show_all()
 
 
 class PreviewPagingWidget(Gtk.HBox):
@@ -106,5 +107,6 @@ class PreviewPagingWidget(Gtk.HBox):
         self.label = Gtk.Label('')
         self.label.get_style_context().add_class('page_counter')
         self.pack_start(self.label, False, False, 0)
+        self.show_all()
 
 
