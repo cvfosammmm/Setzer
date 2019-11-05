@@ -139,11 +139,4 @@ class ShortcutsBar(Gtk.HBox):
         self.bold_button.set_tooltip_text('Bold (Ctrl+B)')
         self.top_icons.insert(self.bold_button, 0)
 
-        self.document_wizard_button = Gtk.ToolButton()
-        self.document_wizard_button.set_icon_name('own-wizard-symbolic')
-        self.document_wizard_button.set_action_name('win.show-document-wizard')
-        self.document_wizard_button.set_focus_on_click(False)
-        self.document_wizard_button.set_tooltip_text('Create a template document')
-        self.top_icons.insert(self.document_wizard_button, 0)
-
 

@@ -22,6 +22,7 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 from gi.repository import Pango
 
+import document.shortcutsbar.shortcutsbar_viewgtk as shortcutsbar_view
 import document.search.search_viewgtk as search_view
 import document.autocomplete.autocomplete_viewgtk as autocomplete_view
 
@@ -35,7 +36,8 @@ class DocumentView(Gtk.HBox):
         self.scrolled_window = Gtk.ScrolledWindow()
         
         self.search_bar = search_view.SearchBar()
-        self.shortcuts_bar_bottom = ShortcutsBarBottom()
+        self.shortcuts_bar_bottom = shortcutsbar_view.ShortcutsBarBottom()
+        self.wizard_button = shortcutsbar_view.WizardButton()
         self.autocomplete = autocomplete_view.DocumentAutocompleteView()
         self.doclist_item = OpenDocsPopoverItem(document)
 
@@ -66,33 +68,6 @@ class DocumentView(Gtk.HBox):
                      
     def do_get_preferred_width(self):
         return 200, 600
-
-
-class ShortcutsBarBottom(Gtk.Toolbar):
-
-    def __init__(self):
-        Gtk.Toolbar.__init__(self)
-
-        self.set_style(Gtk.ToolbarStyle.ICONS)
-        self.set_orientation(Gtk.Orientation.HORIZONTAL)
-        self.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
-        self.get_style_context().add_class('bottom')
-
-        self.button_build_log = Gtk.ToggleToolButton()
-        self.button_build_log.set_icon_name('utilities-system-monitor-symbolic')
-        self.button_build_log.set_tooltip_text('Build log (F8)')
-        self.insert(self.button_build_log, 0)
-
-        self.button_find_and_replace = Gtk.ToggleToolButton()
-        self.button_find_and_replace.set_icon_name('edit-find-replace-symbolic')
-        self.button_find_and_replace.set_tooltip_text('Find and Replace (Ctrl+H)')
-        self.insert(self.button_find_and_replace, 0)
-        
-        self.button_find = Gtk.ToggleToolButton()
-        self.button_find.set_icon_name('edit-find-symbolic')
-        self.button_find.set_tooltip_text('Find (Ctrl+F)')
-        self.insert(self.button_find, 0)
-        self.show_all()
 
 
 class OpenDocsPopoverItem(Gtk.ListBoxRow):

@@ -74,7 +74,7 @@ class WorkspacePresenter(object):
             else:
                 self.main_window.headerbar.save_document_button.set_sensitive(False)
 
-            self.set_shortcuts_bar_bottom()
+            self.setup_shortcuts_bar()
             self.workspace.preview.set_active_document(document)
             self.activate_documents_mode()
 
@@ -82,6 +82,7 @@ class WorkspacePresenter(object):
             document = parameter
 
             self.main_window.preview_paned_overlay.remove(document.view.autocomplete)
+            self.main_window.shortcuts_bar.top_icons.remove(document.view.wizard_button)
 
         if change_code == 'set_show_sidebar':
             self.animate_sidebar(parameter, True)
@@ -98,7 +99,7 @@ class WorkspacePresenter(object):
         self.main_window.mode_stack.set_visible_child_name('documents')
         self.set_document_actions_active(True)
 
-    def set_shortcuts_bar_bottom(self):
+    def setup_shortcuts_bar(self):
         document = self.workspace.active_document
         shortcuts_bar = self.main_window.shortcuts_bar
 
@@ -106,6 +107,7 @@ class WorkspacePresenter(object):
             shortcuts_bar.remove(shortcuts_bar.current_bottom)
         shortcuts_bar.current_bottom = document.view.shortcuts_bar_bottom
         shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
+        shortcuts_bar.top_icons.insert(document.view.wizard_button, 0)
 
     def set_document_actions_active(self, value):
         self.main_window.save_as_action.set_enabled(value)
