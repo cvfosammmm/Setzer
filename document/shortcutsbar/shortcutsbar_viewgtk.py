@@ -53,7 +53,7 @@ class WizardButton(Gtk.ToolButton):
         Gtk.ToolButton.__init__(self)
         self.icon_widget = Gtk.HBox()
         icon = Gtk.Image.new_from_icon_name('own-wizard-symbolic', Gtk.IconSize.MENU)
-        icon.set_margin_left(3)
+        icon.set_margin_left(4)
         self.icon_widget.pack_start(icon, False, False, 0)
         self.label_revealer = Gtk.Revealer()
         label = Gtk.Label('New Document Wizard')

@@ -37,7 +37,8 @@ class Autocomplete(object):
         self.line_height = 0
         self.char_width = 0
         self.update_char_size()
-        self.shortcuts_bar_width = 34
+        self.shortcuts_bar_height = 37
+        self.number_of_matches = 0
 
         self.insert_iter_offset = None
         self.insert_iter_matched = False
@@ -150,6 +151,7 @@ class Autocomplete(object):
     def update_autocomplete_position(self, can_show=False):
         buffer = self.document.get_buffer()
         if buffer != None:
+            self.number_of_matches = 0
             if self.autocomplete_visible == False and can_show == False: return
             insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
             if self.insert_iter_offset == None: self.insert_iter_offset = insert_iter.get_offset()
@@ -161,6 +163,7 @@ class Autocomplete(object):
                 try: items = self.proposals[self.current_word[1:]]
                 except KeyError: pass
                 else:
+                    self.number_of_matches = len(items)
                     for word in items:
                         item = view.DocumentAutocompleteItem('\\' + word)
                         self.document_view.autocomplete.prepend(item)
@@ -175,15 +178,15 @@ class Autocomplete(object):
                 gutter = self.document_view.source_view.get_window(Gtk.TextWindowType.LEFT)
                 x_offset = - self.document_view.scrolled_window.get_hadjustment().get_value()
                 y_offset = - self.document_view.scrolled_window.get_vadjustment().get_value()
-                x_position = x_offset + iter_location.x - 4 + self.shortcuts_bar_width + gutter.get_width() - len(self.current_word) * self.char_width
-                y_position = y_offset + iter_location.y + self.line_height + 0
+                x_position = x_offset + iter_location.x - 4 + gutter.get_width() - len(self.current_word) * self.char_width
+                y_position = y_offset + iter_location.y + self.line_height + self.shortcuts_bar_height
 
                 show_x = False
                 show_y = False
-                if y_position >= self.line_height - 1 and y_position <= self.document_view.scrolled_window.get_allocated_height() - self.autocomplete_height:
+                if y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - self.autocomplete_height:
                     self.document_view.autocomplete.set_margin_top(y_position)
                     show_y = True
-                elif y_position >= self.line_height - 1 and y_position <= self.document_view.scrolled_window.get_allocated_height():
+                elif y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
                     self.document_view.autocomplete.set_margin_top(y_position - self.autocomplete_height - self.line_height)
                     show_y = True
                 else:
@@ -199,7 +202,6 @@ class Autocomplete(object):
                     show_x = False
 
                 if show_x and show_y:
-                    self.document_view.autocomplete.hide()
                     self.document_view.autocomplete.show_all()
                     self.autocomplete_visible = True
                 else:
