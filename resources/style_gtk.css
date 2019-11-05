@@ -260,6 +260,9 @@ box.shortcutsbar toolbar button {
     border-radius: 0px;
     box-shadow: none;
 }
+box.shortcutsbar toolbar button label {
+    text-decoration: underline;
+}
 box.shortcutsbar toolbar button:checked {
     background: mix(@theme_base_color, @borders, 0.45);
 }

@@ -26,6 +26,7 @@ import base64
 import document.document_builder as document_builder
 import document.document_controller as document_controller
 import document.document_presenter as document_presenter
+import document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
 import document.document_viewgtk as document_view
 import document.build_log.build_log as build_log
 import document.build_widget.build_widget as build_widget
@@ -66,6 +67,7 @@ class Document(Observable):
         self.autocomplete = autocomplete.Autocomplete(self, self.view)
         self.builder = document_builder.DocumentBuilder(self)
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
+        self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
 
     def set_search_text(self, search_text):
@@ -90,7 +92,23 @@ class Document(Observable):
         self.search_context = GtkSource.SearchContext.new(self.source_buffer, self.search_settings)
         self.search_context.set_highlight(True)
 
+        self.source_buffer.connect('changed', self.on_buffer_change)
+        self.source_buffer.connect('insert-text', self.on_insert_text)
+        self.source_buffer.connect('delete-range', self.on_delete_range)
+
         self.add_change_code('buffer_ready')
+
+    def on_buffer_change(self, buffer):
+        if self.source_buffer.get_end_iter().get_offset() > 0:
+            self.add_change_code('document_not_empty')
+        else:
+            self.add_change_code('document_empty')
+        
+    def on_insert_text(self, buffer, location_iter, text, text_len):
+        pass
+        
+    def on_delete_range(self, buffer, start_iter, end_iter):
+        pass
         
     def set_use_dark_scheme(self, use_dark_scheme):
         if use_dark_scheme: self.source_buffer.set_style_scheme(self.source_style_scheme_dark)

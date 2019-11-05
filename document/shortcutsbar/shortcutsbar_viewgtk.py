@@ -51,7 +51,20 @@ class WizardButton(Gtk.ToolButton):
 
     def __init__(self):
         Gtk.ToolButton.__init__(self)
-        self.set_icon_name('own-wizard-symbolic')
+        self.icon_widget = Gtk.HBox()
+        icon = Gtk.Image.new_from_icon_name('own-wizard-symbolic', Gtk.IconSize.MENU)
+        icon.set_margin_left(3)
+        self.icon_widget.pack_start(icon, False, False, 0)
+        self.label_revealer = Gtk.Revealer()
+        label = Gtk.Label('New Document Wizard')
+        label.set_margin_left(6)
+        label.set_margin_right(4)
+        self.label_revealer.add(label)
+        self.label_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT)
+        self.label_revealer.set_reveal_child(True)
+        self.icon_widget.pack_start(self.label_revealer, False, False, 0)
+
+        self.set_icon_widget(self.icon_widget)
         self.set_action_name('win.show-document-wizard')
         self.set_focus_on_click(False)
         self.set_tooltip_text('Create a template document')

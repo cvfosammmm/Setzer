@@ -74,7 +74,7 @@ class WorkspacePresenter(object):
             else:
                 self.main_window.headerbar.save_document_button.set_sensitive(False)
 
-            self.setup_shortcuts_bar()
+            self.update_shortcuts_bar()
             self.workspace.preview.set_active_document(document)
             self.activate_documents_mode()
 
@@ -99,7 +99,7 @@ class WorkspacePresenter(object):
         self.main_window.mode_stack.set_visible_child_name('documents')
         self.set_document_actions_active(True)
 
-    def setup_shortcuts_bar(self):
+    def update_shortcuts_bar(self):
         document = self.workspace.active_document
         shortcuts_bar = self.main_window.shortcuts_bar
 
