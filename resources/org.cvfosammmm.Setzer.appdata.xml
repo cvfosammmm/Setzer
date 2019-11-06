@@ -47,6 +47,11 @@
 	</provides>
 
     <releases>
+        <release version="0.0.3" date="2019-11-6">
+            <description>
+                <p>New app layout, animated wizard button, big code refactor, ...</p>
+            </description>
+        </release>
         <release version="0.0.2" date="2019-10-22">
             <description>
                 <p>Set margins in wizard, improved icon, ...</p>
