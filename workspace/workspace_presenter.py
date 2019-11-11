@@ -134,8 +134,6 @@ class WorkspacePresenter(object):
             else:
                 view = self.workspace.active_document.build_log.view
             notebook = self.main_window.build_log_notebook
-            print(notebook.page_num(view))
-            view.show_all()
             notebook.show_all()
             notebook.set_current_page(notebook.page_num(view))
 

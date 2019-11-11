@@ -54,7 +54,7 @@ class Shortcuts(object):
         self.accel_group.connect(Gdk.keyval_from_name('F9'), 0, flags, self.shortcut_sidebar)
         self.accel_group.connect(Gdk.keyval_from_name('F10'), 0, flags, self.shortcut_preview)
         self.accel_group.connect(Gdk.keyval_from_name('s'), c_mask, flags, self.shortcut_save)
-        self.accel_group.connect(Gdk.keyval_from_name('s'), c_mask | s_mask, flags, self.shortcut_save_as)
+        #self.accel_group.connect(Gdk.keyval_from_name('s'), c_mask | s_mask, flags, self.shortcut_save_as)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask | s_mask, flags, self.shortcut_switch_document)
 
         # text search
@@ -62,6 +62,7 @@ class Shortcuts(object):
         self.main_window.app.set_accels_for_action('win.find-next', ['<Control>g'])
         self.main_window.app.set_accels_for_action('win.find-prev', ['<Control><Shift>g'])
         self.main_window.app.set_accels_for_action('win.find-replace', ['<Control>h'])
+        self.main_window.app.set_accels_for_action('win.save-as', ['<Control><Shift>s'])
 
         # document edit shortcuts
         self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), ['<Control>b'])
@@ -114,9 +115,6 @@ class Shortcuts(object):
 
     def shortcut_save(self, accel_group=None, window=None, key=None, mask=None):
         self.main_window.headerbar.save_document_button.clicked()
-
-    def shortcut_save_as(self, accel_group=None, window=None, key=None, mask=None):
-        self.workspace_controller.save_as_action.activate()
 
     def shortcut_quotes(self, accel_group=None, window=None, key=None, mask=None):
         self.workspace_controller.activate_quotes_popover()
