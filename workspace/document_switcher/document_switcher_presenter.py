@@ -76,6 +76,8 @@ class DocumentSwitcherPresenter(object):
         self.view.document_list.get_style_context().add_class('normal-mode')
         for item in self.view.document_list.get_children():
             item.document_close_button.show()
+            item.icon_box.show()
+            item.radio_button.hide()
         self.view.in_selection_mode = False
 
     def activate_selection_mode(self):
@@ -87,6 +89,8 @@ class DocumentSwitcherPresenter(object):
         self.view.document_list.get_style_context().add_class('selection-mode')
         for item in self.view.document_list.get_children():
             item.document_close_button.hide()
+            item.icon_box.hide()
+            item.radio_button.show()
         self.view.in_selection_mode = True
 
     def activate_set_master_document_button(self):

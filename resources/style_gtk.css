@@ -183,10 +183,12 @@ box.mbox button:hover {
     padding-top: 3px;
     padding-bottom: 3px;
 }
-.open-docs-popover list.selection-mode .icon {
-    opacity: 0.2;
+.open-docs-popover list.selection-mode .radio {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    opacity: 0;
 }
-.open-docs-popover list.selection-mode row:hover .icon {
+.open-docs-popover list.selection-mode row:hover .radio {
     opacity: 1;
 }
 
