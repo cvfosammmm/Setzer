@@ -240,8 +240,6 @@ class WorkspacePresenter(object):
             self.main_window.preview_paned.get_style_context().remove_class('hidden-separator')
             self.main_window.preview_paned.get_style_context().add_class('visible-separator')
             end = self.workspace.preview_position
-            if self.workspace.show_sidebar == False and self.main_window.sidebar.get_allocated_width() > 1:
-                end -= self.main_window.sidebar.get_allocated_width()
         else:
             self.main_window.preview_paned.get_style_context().add_class('hidden-separator')
             self.main_window.preview_paned.get_style_context().remove_class('visible-separator')
@@ -261,6 +259,8 @@ class WorkspacePresenter(object):
                 self.main_window.preview_paned.child_set_property(self.main_window.preview, 'shrink', True)
         else:
             if show_preview:
+                if self.workspace.show_sidebar == False and self.main_window.sidebar.get_allocated_width() > 1:
+                    end -= self.main_window.sidebar.get_allocated_width()
                 self.main_window.preview_paned.child_set_property(self.main_window.preview, 'shrink', False)
                 self.main_window.preview_visible = True
             else:
