@@ -30,11 +30,6 @@ class ShortcutsBarBottom(Gtk.Toolbar):
         self.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
         self.get_style_context().add_class('bottom')
 
-        self.button_build_log = Gtk.ToggleToolButton()
-        self.button_build_log.set_icon_name('utilities-system-monitor-symbolic')
-        self.button_build_log.set_tooltip_text('Build log (F8)')
-        self.insert(self.button_build_log, 0)
-
         self.button_find_and_replace = Gtk.ToggleToolButton()
         self.button_find_and_replace.set_icon_name('edit-find-replace-symbolic')
         self.button_find_and_replace.set_tooltip_text('Find and Replace (Ctrl+H)')

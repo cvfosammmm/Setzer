@@ -97,7 +97,7 @@ class DocumentBuilder(object):
                         build_log.add_item(item[0].strip(), item[1].strip(), item[2].strip())
                     build_log.signal_finish_adding()
                     if build_log.has_items(self.settings.get_value('preferences', 'autoshow_build_log')):
-                        self.document.set_show_build_log(True)
+                        self.document.workspace.set_show_build_log(True)
 
                 self.document.change_state('idle')
         

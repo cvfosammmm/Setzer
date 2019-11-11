@@ -27,6 +27,8 @@ from gi.repository import Pango
 import re
 import time
 
+import workspace.document_switcher.document_switcher_viewgtk as document_switcher_viewgtk
+
 
 class HeaderBar(Gtk.HeaderBar):
     ''' Title bar of the app, contains global controls '''
@@ -42,7 +44,6 @@ class HeaderBar(Gtk.HeaderBar):
         self.sidebar_toggle.set_image(Gtk.Image.new_from_icon_name('builder-view-left-pane-symbolic', Gtk.IconSize.MENU))
         self.sidebar_toggle.set_focus_on_click(False)
         self.sidebar_toggle.set_tooltip_text('Toggle sidebar (F9)')
-        #self.sidebar_toggle_revealer.add(self.sidebar_toggle)
         self.pack_start(self.sidebar_toggle)
 
         # open documents button
@@ -141,7 +142,7 @@ class HeaderBar(Gtk.HeaderBar):
         hbox.pack_start(self.document_arrow, False, False, 0)
         hbox.set_valign(Gtk.Align.CENTER)
         
-        self.open_docs_popover = OpenDocsPopover()
+        self.open_docs_popover = document_switcher_viewgtk.OpenDocsPopover()
         self.center_widget = Gtk.HBox()
         self.center_button = Gtk.MenuButton()
         self.center_button.get_style_context().add_class('flat')
@@ -293,40 +294,5 @@ class DocumentChooserEntry(Gtk.ListBoxRow):
         else:
             markup = self.folder
         self.folder_label.set_markup(markup)
-
-
-class OpenDocsPopover(Gtk.Popover):
-    ''' Shows open documents. '''
-    
-    def __init__(self):
-        Gtk.Popover.__init__(self)
-        
-        self.document_list = Gtk.ListBox()
-        self.document_list.get_style_context().add_class('open-docs-popover')
-        self.document_list.set_sort_func(self.sort_function)
-
-        self.scrolled_window = Gtk.ScrolledWindow()
-        self.scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        self.scrolled_window.add(self.document_list)
-        self.scrolled_window.set_max_content_height(395)
-        self.scrolled_window.set_max_content_width(398)
-        self.scrolled_window.set_propagate_natural_height(True)
-        self.scrolled_window.set_propagate_natural_width(True)
-        self.scrolled_window.show_all()
-        
-        self.add(self.scrolled_window)
-        
-    def remove_document(self, list_item):
-        self.document_list.remove(list_item)
-
-    def sort_function(self, row1, row2, user_data=None):
-        date1 = row1.document.get_last_activated()
-        date2 = row2.document.get_last_activated()
-        if date1 < date2:
-            return 1
-        elif date1 == date2:
-            return 0
-        else:
-            return -1
 
 

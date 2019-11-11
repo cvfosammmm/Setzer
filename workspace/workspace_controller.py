@@ -43,6 +43,7 @@ class WorkspaceController(object):
         self.p_allocation = 0
         self.pp_allocation = 0
         self.s_allocation = 0
+        self.bl_allocation = 0
 
         self.main_window.save_as_action.connect('activate', self.on_save_as_clicked)
         self.main_window.save_all_action.connect('activate', self.on_save_all_clicked)
@@ -58,6 +59,7 @@ class WorkspaceController(object):
         self.main_window.shortcuts_window_action.connect('activate', self.show_shortcuts_window)
         self.main_window.show_preferences_action.connect('activate', self.show_preferences_dialog)
         self.main_window.show_about_action.connect('activate', self.show_about_dialog)
+        self.main_window.close_build_log_action.connect('activate', self.close_build_log)
 
         # populate workspace
         self.workspace.populate_from_disk()
@@ -68,15 +70,14 @@ class WorkspaceController(object):
     def observe_workspace_view(self):
         self.observe_document_chooser()
         self.main_window.headerbar.new_document_button.connect('clicked', self.on_new_document_button_click)
-        self.main_window.headerbar.open_docs_popover.document_list.connect('add', self.on_doclist_row_added)
-        self.main_window.headerbar.open_docs_popover.document_list.connect('row-activated', self.on_doclist_row_activated)
-        self.main_window.headerbar.open_docs_popover.connect('closed', self.on_doclist_row_popdown)
         self.main_window.headerbar.save_document_button.connect('clicked', self.on_save_button_click)
         self.main_window.headerbar.sidebar_toggle.connect('toggled', self.on_sidebar_toggle_toggled)
         self.main_window.headerbar.preview_toggle.connect('toggled', self.on_preview_toggle_toggled)
         self.main_window.sidebar.connect('size-allocate', self.on_sidebar_size_allocate)
         self.main_window.preview.connect('size-allocate', self.on_preview_size_allocate)
         self.main_window.preview_paned.connect('size-allocate', self.on_preview_paned_size_allocate)
+        self.main_window.notebook_wrapper.connect('size-allocate', self.on_build_log_size_allocate)
+        self.main_window.shortcuts_bar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
 
     def observe_document_chooser(self):
         document_chooser = self.main_window.headerbar.document_chooser
@@ -118,7 +119,7 @@ class WorkspaceController(object):
         if isinstance(document_candidate, Document):
             self.workspace.set_active_document(document_candidate)
         else:
-            document = Document(self.workspace.pathname, with_buffer=True)
+            document = Document(self.workspace, self.workspace.pathname, with_buffer=True)
             document.set_filename(filename)
             document.populate_from_filename()
             self.workspace.add_document(document)
@@ -131,19 +132,16 @@ class WorkspaceController(object):
             if document_candidate != None:
                 self.workspace.set_active_document(document_candidate)
             else:
-                document = Document(self.workspace.pathname, with_buffer=True)
+                document = Document(self.workspace, self.workspace.pathname, with_buffer=True)
                 document.set_filename(filename)
                 document.populate_from_filename()
                 self.workspace.add_document(document)
                 self.workspace.set_active_document(document)
 
     def on_new_document_button_click(self, button_object=None):
-        document = Document(self.workspace.pathname, with_buffer=True)
+        document = Document(self.workspace, self.workspace.pathname, with_buffer=True)
         self.workspace.add_document(document)
         self.workspace.set_active_document(document)
-
-    def on_doclist_row_added(self, doclist, row, data=None):
-        row.document_close_button.connect('clicked', self.on_doclist_close_clicked, row.document)
 
     def on_doclist_close_clicked(self, button_object, document):
         if document.get_modified():
@@ -154,13 +152,9 @@ class WorkspaceController(object):
         else:
             self.workspace.remove_document(document)
         
-    def on_doclist_row_activated(self, box, row, data=None):
-        self.main_window.headerbar.open_docs_popover.popdown()
-        self.workspace.set_active_document(row.document)
+    def on_build_log_button_clicked(self, toggle_button, parameter=None):
+        self.workspace.set_show_build_log(toggle_button.get_active())
 
-    def on_doclist_row_popdown(self, popover, data=None):
-        self.main_window.headerbar.open_docs_popover.document_list.unselect_all()
-        
     @_assert_has_active_document
     def on_save_button_click(self, button_object=None):
         active_document = self.workspace.get_active_document()
@@ -263,6 +257,14 @@ class WorkspaceController(object):
                 if not self.workspace.presenter.preview_animating:
                     self.workspace.set_preview_position(self.main_window.preview_paned.get_position())
 
+    def on_build_log_size_allocate(self, build_log, allocation):
+        if not self.workspace.presenter.sidebars_initialized: return
+        if allocation.height != self.bl_allocation:
+            self.bl_allocation = allocation.height
+            if self.workspace.show_build_log and self.workspace.active_document != None:
+                if not self.workspace.presenter.build_log_animating:
+                    self.workspace.set_build_log_position(self.main_window.build_log_paned.get_position())
+
     def on_preview_paned_size_allocate(self, preview, allocation):
         if not self.workspace.presenter.sidebars_initialized: return
         if allocation.width != self.pp_allocation:
@@ -330,6 +332,9 @@ class WorkspaceController(object):
 
     def show_about_dialog(self, action, parameter=''):
         ServiceLocator.get_dialog('about').run()
+
+    def close_build_log(self, action, parameter=''):
+        self.workspace.set_show_build_log(False)
         
     @_assert_has_active_document
     def insert_before_after(self, action, parameter):

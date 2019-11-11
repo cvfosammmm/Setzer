@@ -39,10 +39,6 @@ class DocumentPresenter(object):
         self.document.register_observer(self)
         self.document.get_buffer().connect('modified-changed', self.on_modified_change)
         self.settings.register_observer(self)
-        self.build_log_animating = False
-        self.document.build_log.view.connect('size-allocate', self.build_log_on_size_allocate)
-        self.build_log_initialized = False
-        self.view.connect('draw', self.build_log_on_realize)
 
         self.build_button_state = ('idle', int(time.time()*1000))
         self.set_clean_button_state()
@@ -76,11 +72,14 @@ class DocumentPresenter(object):
             if (section, item) == ('preferences', 'cleanup_build_files'):
                 self.set_clean_button_state()
 
-        if change_code == 'show_build_log_state_change':
-            self.build_log_animate(parameter, True)
-
         if change_code == 'cleaned_up_build_files':
             self.set_clean_button_state()
+
+        if change_code == 'master_state_change':
+            if parameter == True:
+                self.doclist_item.get_style_context().add_class('master')
+            else:
+                self.doclist_item.get_style_context().remove_class('master')
 
     def on_modified_change(self, buff):
         if buff.get_modified() != self.modified_state:
@@ -132,58 +131,5 @@ class DocumentPresenter(object):
         else:
             self.document.build_widget.view.clean_button.show_all()
             self.document.build_widget.view.clean_button.set_sensitive(get_clean_button_state(self.document))
-
-    def build_log_on_realize(self, view, cr, user_data=None):
-        if self.build_log_initialized == False:
-            self.build_log_initialized = True
-            self.build_log_animate(self.document.get_show_build_log(), False)
-
-    def build_log_on_size_allocate(self, view, allocation, user_data=None):
-        if self.build_log_animating == False:
-            self.document.build_log.view.position = allocation.height
     
-    def build_log_animate(self, show_build_log=True, animate=False):
-        def set_position_on_tick(paned, frame_clock_cb, user_data=None):
-            def ease(time): return (time - 1)**3 + 1;
-
-            show_build_log = user_data
-            now = frame_clock_cb.get_frame_time()
-            if now < end_time and paned.get_position != end:
-                t = ease((now - start_time) / (end_time - start_time))
-                paned.set_position(int(start + t * (end - start)))
-                return True
-            else:
-                paned.set_position(end)
-                if not show_build_log:
-                    self.document.build_log.view.hide()
-                else:
-                    paned.child_set_property(self.document.build_log.view, 'shrink', False)
-                self.view.shortcuts_bar_bottom.button_build_log.set_active(show_build_log)
-                self.build_log_animating = False
-                return False
-
-        if self.build_log_animating == False:
-            frame_clock = self.view.document_paned.get_frame_clock()
-            duration = 200
-            if show_build_log:
-                self.document.build_log.view.show_all()
-                start = self.view.get_allocated_height()
-                end = self.view.get_allocated_height() - max(self.document.build_log.view.position, 200)
-            else:
-                start = self.view.document_paned.get_position()
-                end = self.view.get_allocated_height()
-                self.view.document_paned.child_set_property(self.document.build_log.view, 'shrink', True)
-            if frame_clock != None and animate:
-                start_time = frame_clock.get_frame_time()
-                end_time = start_time + 1000 * duration
-                self.build_log_animating = True
-                self.view.document_paned.add_tick_callback(set_position_on_tick, show_build_log)
-            else:
-                self.view.document_paned.set_position(end)
-                if not show_build_log:
-                    self.document.build_log.view.hide()
-                else:
-                    self.view.document_paned.child_set_property(self.document.build_log.view, 'shrink', False)
-                self.view.shortcuts_bar_bottom.button_build_log.set_active(show_build_log)
-
 

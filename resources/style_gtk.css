@@ -113,16 +113,20 @@ popover.documentchooser box.not_found label {
     background-color: @theme_bg_color;
 }
 .open-docs-popover .frame {
-    border: 0;
+    border-width: 0px;
 }
 .open-docs-popover {
     padding: 12px;
 }
+.open-docs-popover list {
+    margin: 1px;
+}
 .open-docs-popover row {
     border-radius: 3px;
-    padding: 3px 3px 3px 9px;
+    padding: 3px 3px 3px 6px;
+    outline: none;
 }
-.open-docs-popover button {
+.open-docs-popover list button {
     padding: 0px 0px;
     margin-top: 0;
     margin-bottom: 0;
@@ -131,12 +135,61 @@ popover.documentchooser box.not_found label {
     border-style: none;
     border-width: 0px;
     box-shadow: none;
+    outline: none;
 }
-.open-docs-popover button:hover:not(:backdrop) {
+.open-docs-popover list button:hover:not(:backdrop) {
     background-image: none;
     opacity: 1;
     border-style: none;
     border-width: 0px;
+}
+.open-docs-popover separator {
+    margin-top: 7px;
+    margin-left: 9px;
+    margin-right: 9px;
+}
+.open-docs-popover label.explaination {
+    margin-left: 9px;
+    margin-right: 9px;
+    color: mix(@theme_fg_color, @theme_bg_color, 0.3);
+    font-size: 12px;
+}
+.open-docs-popover label.explaination-header {
+    margin-left: 9px;
+    margin-right: 9px;
+    font-weight: bold;
+}
+box.mbox {
+    margin: 0px;
+    margin-top: 5px;
+    margin-bottom: 3px;
+}
+box.mbox button {
+    border-width: 0px;
+    box-shadow: none;
+    padding: 1px 6px 1px 6px;
+    margin: 0px 3px 0px 3px;
+    background: transparent;
+    outline: none;
+}
+box.mbox button:hover {
+    background: @theme_base_color;
+}
+.open-docs-popover list .icon {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+.open-docs-popover list.normal-mode .icon {
+    opacity: 0.2;
+}
+.open-docs-popover list.normal-mode row.master .icon {
+    opacity: 1;
+}
+.open-docs-popover list.selection-mode .icon {
+    opacity: 0.2;
+}
+.open-docs-popover list.selection-mode row:hover .icon {
+    opacity: 1;
 }
 
 /*
@@ -317,6 +370,12 @@ box.preview_blank label.body {
     margin-left: 50px;
     margin-right: 55px;
 }
+paned > paned.hidden-separator separator {
+    padding: 0px;
+}
+paned > paned.visible-separator separator {
+    padding: 4px;
+}
 
 /*
 ** search bar
@@ -417,11 +476,4 @@ box.document-wizard-page box.margins-box spinbutton.top {
 }
 box.document-wizard-page box.margins-box spinbutton.bottom {
     border-bottom: 0px;
-}
-
-paned.hidden-separator separator {
-    padding: 0px;
-}
-paned.visible-separator separator {
-    padding: 4px;
 }

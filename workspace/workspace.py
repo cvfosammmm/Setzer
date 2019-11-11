@@ -27,6 +27,7 @@ import workspace.preview.preview as preview
 import workspace.sidebar.sidebar as sidebar
 import workspace.headerbar.headerbar_presenter as headerbar_presenter
 import workspace.keyboard_shortcuts.shortcuts as shortcuts
+import workspace.document_switcher.document_switcher as document_switcher
 from app.service_locator import ServiceLocator
 
 
@@ -39,6 +40,8 @@ class Workspace(Observable):
         self.pathname = os.path.expanduser('~') + '/.setzer'
 
         self.open_documents = list()
+        self.master_documents = set()
+        self.set_one_document_as_master = False
         self.recently_opened_documents = dict()
         self.untitled_documents_no = 0
 
@@ -51,10 +54,13 @@ class Workspace(Observable):
         self.preview = preview.Preview()
         self.show_preview = settings.get_value('window_state', 'show_preview')
         self.preview_position = settings.get_value('window_state', 'preview_paned_position')
+        self.show_build_log = settings.get_value('window_state', 'show_build_log')
+        self.build_log_position = settings.get_value('window_state', 'build_log_paned_position')
 
     def init_workspace_controller(self):
         self.presenter = workspace_presenter.WorkspacePresenter(self)
         self.headerbar = headerbar_presenter.HeaderbarPresenter(self)
+        self.document_switcher = document_switcher.DocumentSwitcher(self)
         self.controller = workspace_controller.WorkspaceController(self)
         self.shortcuts = shortcuts.Shortcuts(self, self.controller)
 
@@ -65,6 +71,10 @@ class Workspace(Observable):
             self.untitled_documents_no += 1
         if document.get_buffer() != None:
             self.open_documents.append(document)
+            if self.set_one_document_as_master:
+                self.remove_master_document(document)
+            else:
+                self.add_master_document(document)
             self.add_change_code('new_document', document)
             self.update_recently_opened_document(document.get_filename(), notify=True)
 
@@ -77,8 +87,19 @@ class Workspace(Observable):
                 self.set_active_document(None)
             else:
                 self.set_active_document(candidate)
+        if self.set_one_document_as_master and document in self.master_documents:
+            self.set_all_documents_master()
+        self.remove_master_document(document)
         self.add_change_code('document_removed', document)
-        
+
+    def add_master_document(self, document):
+        self.master_documents.add(document)
+        document.set_is_master(True)
+
+    def remove_master_document(self, document):
+        self.master_documents.discard(document)
+        document.set_is_master(False)
+
     def get_document_by_filename(self, filename):
         for document in self.open_documents:
             if filename == document.get_filename():
@@ -122,10 +143,10 @@ class Workspace(Observable):
         except IOError: pass
         else:
             try: data = pickle.load(filehandle)
-            except EOFError: self.add_document(Document(self.pathname, with_buffer=True))
+            except EOFError: self.add_document(Document(self, self.pathname, with_buffer=True))
             else:
                 for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
-                    document = Document(self.pathname, with_buffer=True)
+                    document = Document(self, self.pathname, with_buffer=True)
                     document.set_filename(item['filename'])
                     if document.populate_from_filename() != False:
                         self.add_document(document)
@@ -162,6 +183,21 @@ class Workspace(Observable):
     def get_all_documents(self):
         return self.open_documents.copy() if len(self.open_documents) >= 1 else None
 
+    def set_one_document_master(self, master_document):
+        for document in self.open_documents:
+            if document == master_document:
+                self.add_master_document(document)
+            else:
+                self.remove_master_document(document)
+        self.set_one_document_as_master = True
+        self.add_change_code('master_state_change', 'one_document')
+
+    def set_all_documents_master(self):
+        for document in self.open_documents:
+            self.add_master_document(document)
+        self.set_one_document_as_master = False
+        self.add_change_code('master_state_change', 'all_documents')
+
     def set_show_sidebar(self, show_sidebar, animate=False):
         if show_sidebar != self.show_sidebar:
             self.show_sidebar = show_sidebar
@@ -173,9 +209,23 @@ class Workspace(Observable):
     def set_preview_position(self, preview_position):
         self.preview_position = preview_position
 
+    def set_build_log_position(self, build_log_position):
+        self.build_log_position = build_log_position
+
     def set_show_preview(self, show_preview, animate=False):
         if show_preview != self.show_preview:
             self.show_preview = show_preview
             self.add_change_code('set_show_preview', show_preview)
 
+    def set_show_build_log(self, show_build_log):
+        if show_build_log != self.show_build_log:
+            self.show_build_log = show_build_log
+            self.add_change_code('show_build_log_state_change', show_build_log)
+
+    def get_show_build_log(self):
+        if self.show_build_log != None:
+            return self.show_build_log
+        else:
+            return False
+        
 

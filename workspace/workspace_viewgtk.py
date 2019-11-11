@@ -62,6 +62,16 @@ class MainWindow(Gtk.ApplicationWindow):
         self.notebook_wrapper.pack_start(self.shortcuts_bar, False, False, 0)
         self.notebook_wrapper.pack_start(self.notebook, True, True, 0)
 
+        # build log
+        self.build_log_notebook = Gtk.Notebook()
+        self.build_log_notebook.set_show_tabs(False)
+        self.build_log_notebook.set_show_border(False)
+        self.build_log_notebook.set_scrollable(True)
+        self.build_log_paned = Gtk.VPaned()
+        self.build_log_paned.pack1(self.notebook_wrapper, True, False)
+        self.build_log_paned.pack2(self.build_log_notebook, False, True)
+        self.build_log_visible = None
+
         # preview
         self.preview = PreviewView()
         self.preview_visible = None
@@ -74,7 +84,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.preview_paned_overlay = Gtk.Overlay()
         self.overlay_widget = None
         self.preview_paned = Gtk.HPaned()
-        self.preview_paned.pack1(self.notebook_wrapper, True, False)
+        self.preview_paned.pack1(self.build_log_paned, True, False)
         self.preview_paned.pack2(self.preview, False, True)
         self.preview_paned_overlay.add(self.preview_paned)
         self.sidebar_paned = Gtk.HPaned()
@@ -141,6 +151,9 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.quit_action = Gio.SimpleAction.new('quit', None)
         self.add_action(self.quit_action)
+
+        self.close_build_log_action = Gio.SimpleAction.new('close-build-log', None)
+        self.add_action(self.close_build_log_action)
 
 
 class DocumentViewWrapper(Gtk.Notebook):

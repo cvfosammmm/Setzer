@@ -34,6 +34,7 @@ class WorkspacePresenter(object):
         self.sidebar = self.main_window.sidebar
         self.sidebar_animating = False
         self.preview_animating = False
+        self.build_log_animating = False
         self.activate_blank_slate_mode()
 
         def on_window_state(widget, event): self.on_realize()
@@ -50,11 +51,13 @@ class WorkspacePresenter(object):
             document.set_use_dark_scheme(helpers.is_dark_mode(self.main_window))
 
             self.main_window.notebook.append_page(document.view)
+            self.main_window.build_log_notebook.append_page(document.build_log.view)
 
         if change_code == 'document_removed':
             document = parameter
 
             self.main_window.notebook.remove(document.view)
+            self.main_window.build_log_notebook.remove(document.build_log.view)
             if self.workspace.active_document == None:
                 self.activate_blank_slate_mode()
 
@@ -75,7 +78,8 @@ class WorkspacePresenter(object):
                 self.main_window.headerbar.save_document_button.set_sensitive(False)
 
             self.update_shortcuts_bar()
-            self.workspace.preview.set_active_document(document)
+            self.set_preview_document()
+            self.set_build_log()
             self.activate_documents_mode()
 
         if change_code == 'new_inactive_document':
@@ -89,6 +93,13 @@ class WorkspacePresenter(object):
 
         if change_code == 'set_show_preview':
             self.animate_preview(parameter, True)
+
+        if change_code == 'show_build_log_state_change':
+            self.build_log_animate(parameter, True)
+
+        if change_code == 'master_state_change':
+            self.set_preview_document()
+            self.set_build_log()
 
     def activate_blank_slate_mode(self):
         self.main_window.mode_stack.set_visible_child_name('blank_slate')
@@ -109,6 +120,22 @@ class WorkspacePresenter(object):
         shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
         shortcuts_bar.top_icons.insert(document.view.wizard_button, 0)
 
+    def set_preview_document(self):
+        if self.workspace.get_active_document() != None:
+            if self.workspace.set_one_document_as_master:
+                self.workspace.preview.set_active_document(list(self.workspace.master_documents)[0])
+            else:
+                self.workspace.preview.set_active_document(self.workspace.active_document)
+
+    def set_build_log(self):
+        if self.workspace.get_active_document() != None:
+            if self.workspace.set_one_document_as_master:
+                view = list(self.workspace.master_documents)[0].build_log.view
+            else:
+                view = self.workspace.active_document.build_log.view
+            notebook = self.main_window.build_log_notebook
+            notebook.set_current_page(notebook.page_num(view))
+
     def set_document_actions_active(self, value):
         self.main_window.save_as_action.set_enabled(value)
         self.main_window.find_action.set_enabled(value)
@@ -125,6 +152,7 @@ class WorkspacePresenter(object):
         if self.sidebars_initialized == False:
             self.animate_sidebar(self.workspace.show_sidebar, False)
             self.animate_preview(self.workspace.show_preview, False)
+            self.build_log_animate(self.workspace.get_show_build_log(), False)
             self.sidebars_initialized = True
 
     def animate_sidebar(self, show_sidebar=False, animate=False, set_toggle=True):
@@ -241,6 +269,58 @@ class WorkspacePresenter(object):
                 self.main_window.preview.hide()
             self.main_window.preview_paned.set_position(end)
             if set_toggle: self.main_window.headerbar.preview_toggle.set_active(show_preview)
+
+    def build_log_animate(self, show_build_log=True, animate=False):
+        def set_position_on_tick(paned, frame_clock_cb, user_data=None):
+            def ease(time): return (time - 1)**3 + 1;
+
+            show_build_log = user_data
+            now = frame_clock_cb.get_frame_time()
+            if now < end_time and paned.get_position != end:
+                t = ease((now - start_time) / (end_time - start_time))
+                paned.set_position(int(start + t * (end - start)))
+                return True
+            else:
+                paned.set_position(end)
+                if not show_build_log:
+                    self.main_window.build_log_notebook.hide()
+                    self.main_window.build_log_visible = False
+                else:
+                    paned.child_set_property(self.main_window.build_log_notebook, 'shrink', False)
+                    self.main_window.build_log_visible = True
+                self.main_window.shortcuts_bar.button_build_log.set_active(show_build_log)
+                self.build_log_animating = False
+                return False
+
+        if self.build_log_animating: return
+        if self.main_window.build_log_visible == show_build_log: return
+
+        frame_clock = self.main_window.build_log_paned.get_frame_clock()
+        duration = 200
+
+        if show_build_log:
+            self.main_window.build_log_notebook.show_all()
+            start = self.main_window.build_log_paned.get_allocated_height()
+            end = self.workspace.build_log_position
+        else:
+            start = self.main_window.build_log_paned.get_position()
+            end = self.main_window.build_log_paned.get_allocated_height()
+            self.main_window.build_log_paned.child_set_property(self.main_window.build_log_notebook, 'shrink', True)
+        if frame_clock != None and animate:
+            start_time = frame_clock.get_frame_time()
+            end_time = start_time + 1000 * duration
+            self.build_log_animating = True
+            self.main_window.build_log_paned.add_tick_callback(set_position_on_tick, show_build_log)
+        else:
+            if show_build_log:
+                self.main_window.build_log_paned.child_set_property(self.main_window.build_log_notebook, 'shrink', False)
+                self.main_window.build_log_visible = True
+                self.main_window.build_log_paned.set_position(end)
+            else:
+                self.main_window.build_log_paned.child_set_property(self.main_window.build_log_notebook, 'shrink', True)
+                self.main_window.build_log_visible = False
+                self.main_window.build_log_notebook.hide()
+            self.main_window.shortcuts_bar.button_build_log.set_active(show_build_log)
 
     def ease(self, time):
         return (time - 1)**3 + 1;

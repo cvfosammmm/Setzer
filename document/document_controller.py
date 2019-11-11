@@ -33,7 +33,6 @@ class DocumentController(object):
 
         self.observe_document()
         self.observe_document_view()
-        self.observe_shortcuts_bar_bottom()
         self.observe_build_log()
         
         self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_adjustment_value_changed)
@@ -52,12 +51,8 @@ class DocumentController(object):
         self.view.source_view.connect('focus-out-event', self.on_focus_out)
         self.view.source_view.connect('focus-in-event', self.on_focus_in)
 
-    def observe_shortcuts_bar_bottom(self):
-        self.view.shortcuts_bar_bottom.button_build_log.connect('clicked', self.on_build_log_button_clicked)
-        
     def observe_build_log(self):
         self.document.build_log.view.list.connect('row-activated', self.on_build_log_row_activated)
-        self.document.build_log.view.close_button.connect('clicked', self.on_hide_build_log_clicked)
 
     '''
     *** signal handlers: changes in documents
@@ -171,15 +166,5 @@ class DocumentController(object):
 
     def on_focus_in(self, widget, event, user_data=None):
         self.document.autocomplete.focus_show()
-
-    '''
-    *** actions
-    '''
-
-    def on_build_log_button_clicked(self, toggle_button, parameter=None):
-        self.document.set_show_build_log(toggle_button.get_active())
-
-    def on_hide_build_log_clicked(self, button=None, user_data=None):
-        self.document.set_show_build_log(False)
 
 

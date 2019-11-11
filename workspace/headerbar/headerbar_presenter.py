@@ -33,20 +33,16 @@ class HeaderbarPresenter(object):
 
     def change_notification(self, change_code, notifying_object, parameter):
 
-        if change_code == 'new_document':
-            document = parameter
-            self.main_window.headerbar.open_docs_popover.document_list.add(document.view.doclist_item)
+        if change_code == 'new_document': pass
 
         if change_code == 'document_removed':
             document = parameter
-            self.main_window.headerbar.open_docs_popover.remove_document(document.view.doclist_item)
             if self.workspace.active_document == None:
                 self.activate_blank_slate_mode()
 
         if change_code == 'new_active_document':
             document = parameter
             self.show_document_name(document)
-            self.main_window.headerbar.open_docs_popover.document_list.invalidate_sort()
             self.activate_documents_mode()
 
         if change_code == 'update_recently_opened_documents':
@@ -61,6 +57,9 @@ class HeaderbarPresenter(object):
             else:
                 self.main_window.headerbar.open_document_button.hide()
                 self.main_window.headerbar.open_document_blank_button.show_all()
+
+        if change_code == 'master_state_change':
+            self.set_build_button_state()
 
     def activate_blank_slate_mode(self):
         self.set_build_button_state()
@@ -121,7 +120,10 @@ class HeaderbarPresenter(object):
             headerbar.document_folder_label.show_all()
 
     def set_build_button_state(self):
-        document = self.workspace.active_document
+        if self.workspace.set_one_document_as_master:
+            document = list(self.workspace.master_documents)[0]
+        else:
+            document = self.workspace.active_document
 
         headerbar = self.main_window.headerbar
         prev_widget = headerbar.build_wrapper.get_center_widget()

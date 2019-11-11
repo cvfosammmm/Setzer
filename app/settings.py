@@ -54,8 +54,10 @@ class Settings(Observable):
         self.defaults['window_state']['show_sidebar'] = False
         self.defaults['window_state']['sidebar_paned_position'] = -1
         self.defaults['window_state']['show_preview'] = False
+        self.defaults['window_state']['show_build_log'] = False
         self.defaults['window_state']['preview_paned_position'] = -1
         self.defaults['window_state']['notebook_paned_position'] = -1
+        self.defaults['window_state']['build_log_paned_position'] = -1
         
         self.defaults['app_document_wizard'] = dict()
         self.defaults['app_document_wizard']['presets'] = None

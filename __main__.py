@@ -129,6 +129,8 @@ class MainApplicationController(Gtk.Application):
         settings.set_value('window_state', 'sidebar_paned_position', self.workspace.sidebar_position)
         settings.set_value('window_state', 'show_preview', self.workspace.show_preview)
         settings.set_value('window_state', 'preview_paned_position', self.workspace.preview_position)
+        settings.set_value('window_state', 'show_build_log', self.workspace.show_build_log)
+        settings.set_value('window_state', 'build_log_paned_position', self.workspace.build_log_position)
         settings.pickle()
 
     def on_window_close(self, window=None, parameter=None):

@@ -52,14 +52,9 @@ class DocumentView(Gtk.HBox):
         self.source_view.set_left_margin(6)
         self.scrolled_window.add(self.source_view)
 
-        self.document_paned = Gtk.VPaned()
-        self.document_paned.get_style_context().add_class("document_paned")
-        self.document_paned.pack1(self.vbox, True, False)
-        self.document_paned.pack2(build_log_view, False, True)
-
         self.vbox.pack_start(self.scrolled_window, True, True, 0)
         self.vbox.pack_start(self.search_bar, False, False, 0)
-        self.pack_start(self.document_paned, True, True, 0)
+        self.pack_start(self.vbox, True, True, 0)
 
         self.show_all()
 
@@ -79,7 +74,11 @@ class OpenDocsPopoverItem(Gtk.ListBoxRow):
         self.document = document
 
         self.box = Gtk.HBox()
-        #box.pack_start(Gtk.Image.new_from_icon_name('text-x-generic-symbolic', Gtk.IconSize.MENU), False, False, 0)
+        self.icon = Gtk.Image.new_from_icon_name('text-x-generic-symbolic', Gtk.IconSize.MENU)
+        self.icon.set_margin_bottom(2)
+        self.icon.set_margin_right(6)
+        self.icon.get_style_context().add_class('icon')
+        self.box.pack_start(self.icon, False, False, 0)
         self.label = Gtk.Label('')
         self.label.set_ellipsize(Pango.EllipsizeMode.END)
         self.label.set_halign(Gtk.Align.START)

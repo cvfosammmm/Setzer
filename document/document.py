@@ -34,18 +34,22 @@ import document.search.search as search
 import document.autocomplete.autocomplete as autocomplete
 from helpers.observable import *
 
+import re
+
 
 class Document(Observable):
 
-    def __init__(self, data_pathname, with_buffer=False, document_data=None):
+    def __init__(self, workspace, data_pathname, with_buffer=False, document_data=None):
         Observable.__init__(self)
 
+        self.workspace = workspace
         self.displayname = ''
         self.filename = None
         self.pdf_filename = None
         self.pdf_date = None
         self.pdf_position = None
         self.last_activated = 0
+        self.is_master = True
         
         self.source_buffer = None
         self.search_settings = None
@@ -57,8 +61,8 @@ class Document(Observable):
         self.state = 'idle'
         
         self.data_pathname = data_pathname
-        self.document_data = {'show_build_log': None} if document_data == None else document_data
-        
+        self.document_data = dict() if document_data == None else document_data
+
         self.build_log = build_log.BuildLog()
         self.build_widget = build_widget.BuildWidget()
 
@@ -106,10 +110,10 @@ class Document(Observable):
         
     def on_insert_text(self, buffer, location_iter, text, text_len):
         pass
-        
+
     def on_delete_range(self, buffer, start_iter, end_iter):
         pass
-        
+
     def set_use_dark_scheme(self, use_dark_scheme):
         if use_dark_scheme: self.source_buffer.set_style_scheme(self.source_style_scheme_dark)
         else: self.source_buffer.set_style_scheme(self.source_style_scheme_light)
@@ -163,17 +167,6 @@ class Document(Observable):
         self.displayname = displayname
         self.add_change_code('displayname_change')
         
-    def set_show_build_log(self, show_build_log):
-        if show_build_log != self.document_data['show_build_log']:
-            self.document_data['show_build_log'] = show_build_log
-            self.add_change_code('show_build_log_state_change', show_build_log)
-
-    def get_show_build_log(self):
-        if self.document_data['show_build_log'] != None:
-            return self.document_data['show_build_log']
-        else:
-            return False
-        
     def get_last_activated(self):
         return self.last_activated
         
@@ -194,7 +187,7 @@ class Document(Observable):
             try: data = pickle.load(filehandle)
             except EOFError: pass
             else:
-                self.set_show_build_log(data['show_build_log'])
+                self.document_data = data
     
         with open(self.filename) as f:
             text = f.read()
@@ -247,5 +240,9 @@ class Document(Observable):
             try: os.remove(filename)
             except FileNotFoundError: pass
         self.add_change_code('cleaned_up_build_files')
+
+    def set_is_master(self, is_master):
+        self.is_master = is_master
+        self.add_change_code('master_state_change', is_master)
 
 

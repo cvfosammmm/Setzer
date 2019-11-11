@@ -32,15 +32,29 @@ class ShortcutsBar(Gtk.HBox):
 
         self.create_top_toolbar()
         self.populate_top_toolbar()
+        self.create_right_toolbar()
+        self.populate_right_toolbar()
         self.pack_start(self.top_icons, True, True, 0)
+        self.pack_end(self.right_icons, False, False, 0)
 
     def create_top_toolbar(self):
         self.top_icons = Gtk.Toolbar()
         self.top_icons.set_style(Gtk.ToolbarStyle.ICONS)
         self.top_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.top_icons.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
-        self.get_style_context().add_class('top')
         
+    def create_right_toolbar(self):
+        self.right_icons = Gtk.Toolbar()
+        self.right_icons.set_style(Gtk.ToolbarStyle.ICONS)
+        self.right_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.right_icons.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
+        
+    def populate_right_toolbar(self):
+        self.button_build_log = Gtk.ToggleToolButton()
+        self.button_build_log.set_icon_name('utilities-system-monitor-symbolic')
+        self.button_build_log.set_tooltip_text('Build log (F8)')
+        self.right_icons.insert(self.button_build_log, 0)
+
     def populate_top_toolbar(self):
         self.italic_button = Gtk.ToolButton()
         self.italic_button.set_icon_name('format-text-italic-symbolic')

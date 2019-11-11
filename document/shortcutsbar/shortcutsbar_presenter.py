@@ -35,11 +35,9 @@ class ShortcutsbarPresenter(object):
         if change_code == 'document_empty':
             document = parameter
             self.view.wizard_button.label_revealer.set_reveal_child(True)
-            #self.view.wizard_button.get_child().get_style_context().add_class('suggested-action')
 
         if change_code == 'document_not_empty':
             document = parameter
             self.view.wizard_button.label_revealer.set_reveal_child(False)
-            #self.view.wizard_button.get_child().get_style_context().remove_class('suggested-action')
 
 

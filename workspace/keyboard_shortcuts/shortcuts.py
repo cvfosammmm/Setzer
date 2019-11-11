@@ -82,7 +82,11 @@ class Shortcuts(object):
 
     def shortcut_build(self, accel_group=None, window=None, key=None, mask=None):
         if self.workspace.get_active_document() != None:
-            self.workspace.get_active_document().controller.build_document_request()
+            if self.workspace.set_one_document_as_master:
+                document = list(self.workspace.master_documents)[0]
+            else:
+                document = self.workspace.active_document
+            document.controller.build_document_request()
         return True
 
     def shortcut_sidebar(self, accel_group=None, window=None, key=None, mask=None):
