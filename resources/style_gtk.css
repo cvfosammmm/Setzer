@@ -114,16 +114,14 @@ popover.documentchooser box.not_found label {
 }
 .open-docs-popover .frame {
     border-width: 0px;
+    outline: none;
 }
 .open-docs-popover {
     padding: 12px;
 }
-.open-docs-popover list {
-    margin: 1px;
-}
 .open-docs-popover row {
     border-radius: 3px;
-    padding: 3px 3px 3px 6px;
+    padding: 3px 4px 3px 7px;
     outline: none;
 }
 .open-docs-popover list button {
