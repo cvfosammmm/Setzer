@@ -52,10 +52,14 @@ class HeaderbarPresenter(object):
                 items.append(item['filename'].rsplit('/', 1)[::-1])
             self.main_window.headerbar.document_chooser.update_autosuggest(items)
             if len(data) > 0:
+                self.main_window.headerbar.open_document_button.set_sensitive(True)
                 self.main_window.headerbar.open_document_button.show_all()
                 self.main_window.headerbar.open_document_blank_button.hide()
+                self.main_window.headerbar.open_document_blank_button.set_sensitive(False)
             else:
                 self.main_window.headerbar.open_document_button.hide()
+                self.main_window.headerbar.open_document_button.set_sensitive(False)
+                self.main_window.headerbar.open_document_blank_button.set_sensitive(True)
                 self.main_window.headerbar.open_document_blank_button.show_all()
 
         if change_code == 'master_state_change':
@@ -78,6 +82,7 @@ class HeaderbarPresenter(object):
         headerbar = self.main_window.headerbar
         if document == None:
             headerbar.center_button.hide()
+            headerbar.center_button.set_sensitive(False)
             headerbar.center_label_welcome.show_all()
         else:
             doclist_item = document.view.doclist_item
@@ -94,6 +99,7 @@ class HeaderbarPresenter(object):
             headerbar.mod_binding = doclist_item.mlabel.bind_property('label', headerbar.document_mod_label, 'label', 0, self.modified_transform_func)
 
             headerbar.center_label_welcome.hide()
+            headerbar.center_button.set_sensitive(True)
             headerbar.center_button.show_all()
 
             self.folder_transform_func(headerbar.folder_binding, doclist_item.folder)

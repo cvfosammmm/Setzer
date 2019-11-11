@@ -72,13 +72,15 @@ class Shortcuts(object):
         self.workspace_controller.on_open_document_button_click()
 
     def shortcut_doc_chooser(self, accel_group=None, window=None, key=None, mask=None):
-        self.main_window.headerbar.open_document_button.clicked()
+        if self.main_window.headerbar.open_document_button.get_sensitive():
+            self.main_window.headerbar.open_document_button.clicked()
 
     def shortcut_new(self, accel_group=None, window=None, key=None, mask=None):
         self.workspace_controller.on_new_document_button_click()
 
     def shortcut_show_open_docs(self, accel_group=None, window=None, key=None, mask=None):
-        self.main_window.headerbar.center_button.clicked()
+        if self.main_window.headerbar.center_button.get_sensitive():
+            self.main_window.headerbar.center_button.clicked()
 
     def shortcut_build(self, accel_group=None, window=None, key=None, mask=None):
         if self.workspace.get_active_document() != None:
