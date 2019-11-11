@@ -135,6 +135,7 @@ class WorkspacePresenter(object):
                 view = self.workspace.active_document.build_log.view
             notebook = self.main_window.build_log_notebook
             notebook.set_current_page(notebook.page_num(view))
+            notebook.show_all()
 
     def set_document_actions_active(self, value):
         self.main_window.save_as_action.set_enabled(value)
