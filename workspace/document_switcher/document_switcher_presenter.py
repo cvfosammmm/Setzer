@@ -67,7 +67,7 @@ class DocumentSwitcherPresenter(object):
     
     def activate_normal_mode(self):
         self.activate_set_master_document_button()
-        if self.workspace.set_one_document_as_master:
+        if self.workspace.master_document != None:
             self.view.unset_master_document_button.set_sensitive(True)
         else:
             self.view.unset_master_document_button.set_sensitive(False)

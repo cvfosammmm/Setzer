@@ -82,8 +82,8 @@ class Shortcuts(object):
 
     def shortcut_build(self, accel_group=None, window=None, key=None, mask=None):
         if self.workspace.get_active_document() != None:
-            if self.workspace.set_one_document_as_master:
-                document = list(self.workspace.master_documents)[0]
+            if self.workspace.master_document != None:
+                document = self.workspace.master_document
             else:
                 document = self.workspace.active_document
             document.controller.build_document_request()

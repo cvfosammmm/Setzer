@@ -49,7 +49,7 @@ class Document(Observable):
         self.pdf_date = None
         self.pdf_position = None
         self.last_activated = 0
-        self.is_master = True
+        self.is_master = False
         
         self.source_buffer = None
         self.search_settings = None

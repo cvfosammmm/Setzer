@@ -42,6 +42,7 @@ class DocumentPresenter(object):
 
         self.build_button_state = ('idle', int(time.time()*1000))
         self.set_clean_button_state()
+        self.set_is_master()
 
     '''
     *** notification handlers, get called by observed document
@@ -76,10 +77,7 @@ class DocumentPresenter(object):
             self.set_clean_button_state()
 
         if change_code == 'master_state_change':
-            if parameter == True:
-                self.doclist_item.get_style_context().add_class('master')
-            else:
-                self.doclist_item.get_style_context().remove_class('master')
+            self.set_is_master()
 
     def on_modified_change(self, buff):
         if buff.get_modified() != self.modified_state:
@@ -114,6 +112,16 @@ class DocumentPresenter(object):
                 build_widget.reset_timer()
                 build_widget.show_timer()
                 build_widget.start_timer()
+
+    def set_is_master(self):
+        if self.document.is_master == True:
+            self.doclist_item.icon.hide()
+            self.doclist_item.master_icon.show_all()
+            self.doclist_item.master_label.show_all()
+        else:
+            self.doclist_item.icon.show_all()
+            self.doclist_item.master_icon.hide()
+            self.doclist_item.master_label.hide()
 
     def set_clean_button_state(self):
         def get_clean_button_state(document):

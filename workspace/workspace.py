@@ -40,8 +40,7 @@ class Workspace(Observable):
         self.pathname = os.path.expanduser('~') + '/.setzer'
 
         self.open_documents = list()
-        self.master_documents = set()
-        self.set_one_document_as_master = False
+        self.master_document = None
         self.recently_opened_documents = dict()
         self.untitled_documents_no = 0
 
@@ -71,10 +70,6 @@ class Workspace(Observable):
             self.untitled_documents_no += 1
         if document.get_buffer() != None:
             self.open_documents.append(document)
-            if self.set_one_document_as_master:
-                self.remove_master_document(document)
-            else:
-                self.add_master_document(document)
             self.add_change_code('new_document', document)
             self.update_recently_opened_document(document.get_filename(), notify=True)
 
@@ -87,18 +82,9 @@ class Workspace(Observable):
                 self.set_active_document(None)
             else:
                 self.set_active_document(candidate)
-        if self.set_one_document_as_master and document in self.master_documents:
-            self.set_all_documents_master()
-        self.remove_master_document(document)
+        if document == self.master_document:
+            self.unset_master_document()
         self.add_change_code('document_removed', document)
-
-    def add_master_document(self, document):
-        self.master_documents.add(document)
-        document.set_is_master(True)
-
-    def remove_master_document(self, document):
-        self.master_documents.discard(document)
-        document.set_is_master(False)
 
     def get_document_by_filename(self, filename):
         for document in self.open_documents:
@@ -184,19 +170,19 @@ class Workspace(Observable):
         return self.open_documents.copy() if len(self.open_documents) >= 1 else None
 
     def set_one_document_master(self, master_document):
+        self.master_document = master_document
         for document in self.open_documents:
             if document == master_document:
-                self.add_master_document(document)
+                document.set_is_master(True)
             else:
-                self.remove_master_document(document)
-        self.set_one_document_as_master = True
+                document.set_is_master(False)
         self.add_change_code('master_state_change', 'one_document')
 
-    def set_all_documents_master(self):
+    def unset_master_document(self):
         for document in self.open_documents:
-            self.add_master_document(document)
-        self.set_one_document_as_master = False
-        self.add_change_code('master_state_change', 'all_documents')
+            document.set_is_master(False)
+        self.master_document = None
+        self.add_change_code('master_state_change', 'no_master_document')
 
     def set_show_sidebar(self, show_sidebar, animate=False):
         if show_sidebar != self.show_sidebar:

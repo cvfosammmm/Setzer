@@ -121,8 +121,11 @@ popover.documentchooser box.not_found label {
 }
 .open-docs-popover row {
     border-radius: 3px;
-    padding: 3px 4px 3px 7px;
+    padding: 3px 3px 3px 5px;
     outline: none;
+}
+.open-docs-popover list {
+    padding: 1px;
 }
 .open-docs-popover list button {
     padding: 0px 0px;
@@ -152,6 +155,9 @@ popover.documentchooser box.not_found label {
     color: mix(@theme_fg_color, @theme_bg_color, 0.3);
     font-size: 12px;
 }
+.open-docs-popover label.master-label {
+    opacity: 0.3;
+}
 .open-docs-popover label.explaination-header {
     margin-left: 9px;
     margin-right: 9px;
@@ -176,12 +182,6 @@ box.mbox button:hover {
 .open-docs-popover list .icon {
     padding-top: 3px;
     padding-bottom: 3px;
-}
-.open-docs-popover list.normal-mode .icon {
-    opacity: 0.2;
-}
-.open-docs-popover list.normal-mode row.master .icon {
-    opacity: 1;
 }
 .open-docs-popover list.selection-mode .icon {
     opacity: 0.2;

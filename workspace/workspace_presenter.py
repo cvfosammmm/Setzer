@@ -122,15 +122,15 @@ class WorkspacePresenter(object):
 
     def set_preview_document(self):
         if self.workspace.get_active_document() != None:
-            if self.workspace.set_one_document_as_master:
-                self.workspace.preview.set_active_document(list(self.workspace.master_documents)[0])
+            if self.workspace.master_document != None:
+                self.workspace.preview.set_active_document(self.workspace.master_document)
             else:
                 self.workspace.preview.set_active_document(self.workspace.active_document)
 
     def set_build_log(self):
         if self.workspace.get_active_document() != None:
-            if self.workspace.set_one_document_as_master:
-                view = list(self.workspace.master_documents)[0].build_log.view
+            if self.workspace.master_document != None:
+                view = self.workspace.master_document.build_log.view
             else:
                 view = self.workspace.active_document.build_log.view
             notebook = self.main_window.build_log_notebook

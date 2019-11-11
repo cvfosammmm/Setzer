@@ -120,8 +120,8 @@ class HeaderbarPresenter(object):
             headerbar.document_folder_label.show_all()
 
     def set_build_button_state(self):
-        if self.workspace.set_one_document_as_master:
-            document = list(self.workspace.master_documents)[0]
+        if self.workspace.master_document != None:
+            document = self.workspace.master_document
         else:
             document = self.workspace.active_document
 
