@@ -377,7 +377,7 @@ class Preview(object):
                     width_pixels = int(real_zoom_factor * ppi * page_size_points.width / 72)
                     height_pixels = int(real_zoom_factor * ppi * page_size_points.height / 72)
                     scale_factor = width_pixels / page_size_points[0]
-                    surface = cairo.ImageSurface(cairo.Format.ARGB32, 500, 500)
+                    surface = cairo.ImageSurface(cairo.Format.ARGB32, width_pixels, height_pixels)
                     ctx = cairo.Context(surface)
                     ctx.scale(scale_factor, scale_factor)
                     page.render(ctx)
