@@ -170,9 +170,9 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def on_save_as_clicked(self, action=None, parameter=None):
         document = self.workspace.get_active_document()
-        filename = document.get_filename().rsplit('/', 1)[1]
+        filename = document.get_filename()
         if filename != None:
-            ServiceLocator.get_dialog('save_document').run(document, filename)
+            ServiceLocator.get_dialog('save_document').run(document, filename.rsplit('/', 1)[1])
         else:
             ServiceLocator.get_dialog('save_document').run(document, '.tex')
         
