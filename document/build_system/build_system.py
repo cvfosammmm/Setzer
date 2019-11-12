@@ -128,7 +128,7 @@ class Query(object):
         arguments = list(map(lambda arg: arg.replace('%OUTDIR', self.directory_name), arguments))
         arguments = list(map(lambda arg: arg.replace('%FILENAME', tex_file.name), arguments))
         try:
-            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
         except FileNotFoundError:
             self.cleanup_build_files(tex_file.name)
             self.result_lock.acquire()
