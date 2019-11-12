@@ -25,6 +25,8 @@ import os.path
 import tempfile
 import shutil
 
+from app.service_locator import ServiceLocator
+
 
 class BuildSystem(object):
 
@@ -111,7 +113,9 @@ class Query(object):
         self.log_messages = list()
         self.synctex_args = synctex_arguments
         self.build_command = build_command
-        
+        self.doc_regex = ServiceLocator.get_build_log_doc_regex()
+        self.item_regex = ServiceLocator.get_build_log_item_regex()
+
     def build(self):
         # create temporary files
         tex_file = tempfile.NamedTemporaryFile(suffix='.tex', dir=self.directory_name)
@@ -213,40 +217,40 @@ class Query(object):
         try: file = open(log_filename, 'rb')
         except FileNotFoundError as e: raise e
         else:
-            for line in file:
-                try:
-                    line = line.decode('utf-8')
-                except UnicodeDecodeError:
-                    line = ''
-                else:
+            text = file.read().decode('utf-8', errors='ignore')
+            doc_texts = dict()
+            for match in self.doc_regex.finditer(text):
+                filename = match.group(1)
+                doc_texts[filename] = match.group(2)
+            doc_texts[self.tex_filename] = self.doc_regex.sub('', text)
+            for filename, text in doc_texts.items():
+                for match in self.item_regex.finditer(text):
+                    line = match.group(1)
+
                     if line.startswith('Overfull \hbox'):
                         line_number = line.rsplit(' ', 1)[1].split('--')[0]
-                        self.log_messages.append(('Badbox', line_number, line.split('\n')[0]))
+                        self.log_messages.append(('Badbox', filename, line_number, line.split('\n')[0]))
+
                     elif line.startswith('Underfull \hbox'):
                         line_number = line.rsplit(' ', 1)[1].split('--')[0]
-                        self.log_messages.append(('Badbox', line_number, line.split('\n')[0]))
+                        self.log_messages.append(('Badbox', filename, line_number, line.split('\n')[0]))
+
                     elif line.startswith('!'):
-                        while line.find('l.') == -1:
-                            try:
-                                next_line = next(file)
-                            except StopIteration:
-                                next_line = b'l.'
-                            try:
-                                line += next_line.decode('utf-8')
-                            except UnicodeDecodeError:
-                                line += ''
-                        line_number = line.rsplit('l.', 1)[1].split(' ')[0]
-                        line = line.split('\n')
-                        if line[0].startswith('! Undefined control sequence'):
-                            line = ' '.join([line[0], line[1].rsplit(' ', 1)[1]])
-                        else:
-                            line = line[0]
-                        self.log_messages.append(('Error', line_number, line))
+                        if line.find('l.') != -1:
+                            line_number = line.rsplit('l.', 1)[1].split(' ')[0]
+                            line = line.split('\n')
+                            if line[0].startswith('! Undefined control sequence'):
+                                line = ' '.join([line[0], line[1].rsplit(' ', 1)[1]])
+                            else:
+                                line = line[0]
+                            self.log_messages.append(('Error', filename, line_number, line))
+
                     elif line.startswith('LaTeX Warning:'):
                         pass
+
                     elif line.startswith('LaTeX Font Warning:'):
                         pass
-            
+
     def cleanup_build_files(self, tex_file_name):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' , '.ilg',
                         '.ind', '.log', '.nav', '.out', '.pdf', '.snm', '.synctex.gz', '.toc']

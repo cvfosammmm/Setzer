@@ -63,7 +63,7 @@ class Document(Observable):
         self.data_pathname = data_pathname
         self.document_data = dict() if document_data == None else document_data
 
-        self.build_log = build_log.BuildLog()
+        self.build_log = build_log.BuildLog(self)
         self.build_widget = build_widget.BuildWidget()
 
         self.view = document_view.DocumentView(self, self.build_log.view)

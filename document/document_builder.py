@@ -94,7 +94,7 @@ class DocumentBuilder(object):
                     pass
                 else:
                     for item in build_log_blob:
-                        build_log.add_item(item[0].strip(), item[1].strip(), item[2].strip())
+                        build_log.add_item(item[0].strip(), item[1].strip(), item[2].strip(), item[3].strip())
                     build_log.signal_finish_adding()
                     if build_log.has_items(self.settings.get_value('preferences', 'autoshow_build_log')):
                         self.document.workspace.set_show_build_log(True)

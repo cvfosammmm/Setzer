@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import re
 
 import app.settings as settingscontroller
 
@@ -35,6 +36,8 @@ class ServiceLocator(object):
 
     dialogs = dict()
     settings = None
+    build_log_doc_regex = re.compile('\\n\\n\((.*\.tex)\\n((.|\\n)*)\\n\\n\) \[')
+    build_log_item_regex = re.compile('(Overfull \\\\hbox.*|Underfull \\\\hbox.*|! Undefined control sequence\.\\n.*|! LaTeX Error.*\\n.*\\n.*\\n.*\\n.*\\n.*\\n.*|!.*\\n.*\\n.*\\n.*\\n.*\\n.*\\n.*|LaTeX Warning:.*|LaTeX Font Warning:.*)\\n')
 
     def init_dialogs(main_window, workspace):
         settings = ServiceLocator.get_settings()
@@ -58,6 +61,12 @@ class ServiceLocator(object):
 
     def get_main_window():
         return ServiceLocator.main_window
+    
+    def get_build_log_doc_regex():
+        return ServiceLocator.build_log_doc_regex
+    
+    def get_build_log_item_regex():
+        return ServiceLocator.build_log_item_regex
     
     def get_settings():
         if ServiceLocator.settings == None:

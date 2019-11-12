@@ -22,8 +22,9 @@ from helpers.observable import *
 
 class BuildLog(Observable):
 
-    def __init__(self):
+    def __init__(self, document):
         Observable.__init__(self)
+        self.document = document
 
         self.items = list()
         self.symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
@@ -31,8 +32,8 @@ class BuildLog(Observable):
         self.view = BuildLogView()
         self.presenter = BuildLogPresenter(self, self.view)
 
-    def add_item(self, item_type, line_number, message):
-        item = [item_type, line_number, message]
+    def add_item(self, item_type, filename, line_number, message):
+        item = [item_type, filename, line_number, message]
         self.items.append(item)
         self.add_change_code('build_log_new_item', item)
 

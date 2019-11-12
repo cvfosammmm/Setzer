@@ -36,7 +36,7 @@ class BuildLogPresenter(object):
         if change_code == 'build_log_new_item':
             item = parameter
             symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
-            row = BuildLogRowView(symbols[item[0]], item[0], "Line " + str(item[1]), item[2])
+            row = BuildLogRowView(symbols[item[0]], item[0], item[1].rsplit('/', 1)[1], "Line " + str(item[2]), item[3])
             self.view.list.prepend(row)
 
         if change_code == 'build_log_finished_adding':

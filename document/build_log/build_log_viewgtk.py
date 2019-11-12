@@ -18,6 +18,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from gi.repository import Pango
 
 
 class BuildLogView(Gtk.VBox):
@@ -73,7 +74,7 @@ class BuildLogView(Gtk.VBox):
 
 class BuildLogRowView(Gtk.HBox):
 
-    def __init__(self, icon_name, message_type, line_number, message):
+    def __init__(self, icon_name, message_type, filename, line_number, message):
         Gtk.HBox.__init__(self)
         
         try:
@@ -90,11 +91,18 @@ class BuildLogRowView(Gtk.HBox):
         self.icon.set_valign(0)
         self.icon_box.pack_start(self.icon, False, False, 0)
         self.label_message_type = Gtk.Label(message_type)
-        self.label_message_type.set_size_request(80, -1)
+        self.label_message_type.set_size_request(76, -1)
         self.label_message_type.set_xalign(0)
         self.label_message_type.set_yalign(0)
+        self.label_filename = Gtk.Label(filename)
+        self.label_filename.set_ellipsize(Pango.EllipsizeMode.START)
+        self.label_filename.set_max_width_chars(10)
+        self.label_filename.set_size_request(120, -1)
+        self.label_filename.set_margin_right(18)
+        self.label_filename.set_xalign(0)
+        self.label_filename.set_yalign(0)
         self.label_line_number = Gtk.Label(line_number)
-        self.label_line_number.set_size_request(80, -1)
+        self.label_line_number.set_size_request(76, -1)
         self.label_line_number.set_xalign(0)
         self.label_line_number.set_yalign(0)
         self.label_message = Gtk.Label()
@@ -105,6 +113,7 @@ class BuildLogRowView(Gtk.HBox):
         self.label_message.set_line_wrap(False)
         self.pack_start(self.icon_box, False, False, 0)
         self.pack_start(self.label_message_type, False, False, 0)
+        self.pack_start(self.label_filename, False, False, 0)
         self.pack_start(self.label_line_number, False, False, 0)
         self.pack_start(self.label_message, True, True, 0)
 
