@@ -73,56 +73,56 @@ class ArticleSettingsPage(Page):
     def load_presets(self, presets):
         try:
             value = presets['article']['page_format']
-        except KeyError:
+        except TypeError:
             value = self.current_values['article']['page_format']
         self.view.page_format_list.set_active_id(value)
 
         try:
             value = presets['article']['font_size']
-        except KeyError:
+        except TypeError:
             value = self.current_values['article']['font_size']
         self.view.font_size_entry.set_value(value)
 
         try:
             is_active = presets['article']['option_twocolumn']
-        except KeyError:
+        except TypeError:
             is_active = self.current_values['article']['option_twocolumn']
         self.view.option_twocolumn.set_active(is_active)
 
         try:
             value = presets['article']['margin_left']
-        except KeyError:
+        except TypeError:
             value = self.current_values['article']['margin_left']
         self.view.margins_button_left.set_value(value)
 
         try:
             value = presets['article']['margin_right']
-        except KeyError:
+        except TypeError:
             value = self.current_values['article']['margin_right']
         self.view.margins_button_right.set_value(value)
 
         try:
             value = presets['article']['margin_top']
-        except KeyError:
+        except TypeError:
             value = self.current_values['article']['margin_top']
         self.view.margins_button_top.set_value(value)
 
         try:
             value = presets['article']['margin_bottom']
-        except KeyError:
+        except TypeError:
             value = self.current_values['article']['margin_bottom']
         self.view.margins_button_bottom.set_value(value)
 
         try:
             is_active = presets['article']['option_default_margins']
-        except KeyError:
+        except TypeError:
             is_active = self.current_values['article']['option_default_margins']
         self.view.option_default_margins.set_active(is_active)
         self.option_default_margins_toggled(self.view.option_default_margins)
 
         try:
             is_landscape = presets['article']['is_landscape']
-        except KeyError:
+        except TypeError:
             is_landscape = self.current_values['article']['is_landscape']
         self.view.option_landscape.set_active(is_landscape)
 

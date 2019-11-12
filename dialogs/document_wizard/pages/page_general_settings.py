@@ -62,7 +62,7 @@ class GeneralSettingsPage(Page):
     def load_presets(self, presets):
         try:
             text = presets['author']
-        except KeyError:
+        except TypeError:
             text = self.current_values['author']
         self.view.author_entry.set_text(text)
         self.view.title_entry.set_text('')
@@ -71,7 +71,7 @@ class GeneralSettingsPage(Page):
         for name, option in self.view.option_packages.items():
             try:
                 is_active = presets['packages'][name]
-            except KeyError:
+            except TypeError:
                 is_active = self.current_values['packages'][name]
             option.set_active(is_active)
 

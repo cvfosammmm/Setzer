@@ -93,19 +93,19 @@ class BeamerSettingsPage(Page):
     def load_presets(self, presets):
         try:
             row = self.view.themes_list_rows[presets['beamer']['theme']]
-        except KeyError:
+        except TypeError:
             row = self.view.themes_list_rows[self.current_values['beamer']['theme']]
         self.view.themes_list.select_row(row)
 
         try:
             is_active = presets['beamer']['option_show_navigation']
-        except KeyError:
+        except TypeError:
             is_active = self.current_values['beamer']['option_show_navigation']
         self.view.option_show_navigation.set_active(is_active)
 
         try:
             is_active = presets['beamer']['option_top_align']
-        except KeyError:
+        except TypeError:
             is_active = self.current_values['beamer']['option_top_align']
         self.view.option_top_align.set_active(is_active)
 

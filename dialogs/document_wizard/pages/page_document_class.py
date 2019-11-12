@@ -42,7 +42,7 @@ class DocumentClassPage(Page):
     def load_presets(self, presets):
         try:
             row = self.view.list_rows[presets['document_class']]
-        except KeyError:
+        except TypeError:
             row = self.view.list_rows[self.current_values['document_class']]
         self.view.list.select_row(row)
 

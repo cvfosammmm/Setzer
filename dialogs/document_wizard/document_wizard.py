@@ -149,8 +149,7 @@ class DocumentWizard(Dialog):
     def load_presets(self):
         if self.presets == None:
             presets = self.settings.get_value('app_document_wizard', 'presets')
-            if presets == None: return
-            else: self.presets = pickle.loads(presets)
+            if presets != None: self.presets = pickle.loads(presets)
 
         for page in self.pages:
             page.load_presets(self.presets)
