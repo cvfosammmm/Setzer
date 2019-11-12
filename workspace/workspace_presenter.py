@@ -36,6 +36,8 @@ class WorkspacePresenter(object):
         self.preview_animating = False
         self.build_log_animating = False
         self.activate_blank_slate_mode()
+        self.main_window.build_log_notebook.append_page(workspace.build_log.view)
+        self.main_window.build_log_notebook.show_all()
 
         def on_window_state(widget, event): self.on_realize()
         self.main_window.connect('draw', on_window_state)
@@ -51,13 +53,12 @@ class WorkspacePresenter(object):
             document.set_use_dark_scheme(helpers.is_dark_mode(self.main_window))
 
             self.main_window.notebook.append_page(document.view)
-            self.main_window.build_log_notebook.append_page(document.build_log.view)
 
         if change_code == 'document_removed':
             document = parameter
 
             self.main_window.notebook.remove(document.view)
-            self.main_window.build_log_notebook.remove(document.build_log.view)
+            #self.main_window.build_log_notebook.remove(document.build_log.view)
             if self.workspace.active_document == None:
                 self.activate_blank_slate_mode()
 
@@ -79,7 +80,6 @@ class WorkspacePresenter(object):
 
             self.update_shortcuts_bar()
             self.set_preview_document()
-            self.set_build_log()
             self.activate_documents_mode()
 
         if change_code == 'new_inactive_document':
@@ -99,7 +99,6 @@ class WorkspacePresenter(object):
 
         if change_code == 'master_state_change':
             self.set_preview_document()
-            self.set_build_log()
 
     def activate_blank_slate_mode(self):
         self.main_window.mode_stack.set_visible_child_name('blank_slate')
@@ -126,16 +125,6 @@ class WorkspacePresenter(object):
                 self.workspace.preview.set_active_document(self.workspace.master_document)
             else:
                 self.workspace.preview.set_active_document(self.workspace.active_document)
-
-    def set_build_log(self):
-        if self.workspace.get_active_document() != None:
-            if self.workspace.master_document != None:
-                view = self.workspace.master_document.build_log.view
-            else:
-                view = self.workspace.active_document.build_log.view
-            notebook = self.main_window.build_log_notebook
-            notebook.show_all()
-            notebook.set_current_page(notebook.page_num(view))
 
     def set_document_actions_active(self, value):
         self.main_window.save_as_action.set_enabled(value)

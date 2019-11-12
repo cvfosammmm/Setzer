@@ -39,5 +39,7 @@ class Observable(object):
         
         self.observers.add(observer)
 
+    def unregister_observer(self, observer):        
+        self.observers.discard(observer)
 
 

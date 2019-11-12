@@ -29,7 +29,7 @@ import document.autocomplete.autocomplete_viewgtk as autocomplete_view
 
 class DocumentView(Gtk.HBox):
     
-    def __init__(self, document, build_log_view):
+    def __init__(self, document):
         Gtk.HBox.__init__(self)
         
         self.vbox = Gtk.VBox()        

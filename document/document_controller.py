@@ -33,7 +33,6 @@ class DocumentController(object):
 
         self.observe_document()
         self.observe_document_view()
-        self.observe_build_log()
         
         self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_adjustment_value_changed)
         self.view.scrolled_window.get_hadjustment().connect('value-changed', self.on_adjustment_value_changed)
@@ -50,9 +49,6 @@ class DocumentController(object):
         self.document.build_widget.view.clean_button.connect('clicked', self.on_clean_button_click)
         self.view.source_view.connect('focus-out-event', self.on_focus_out)
         self.view.source_view.connect('focus-in-event', self.on_focus_in)
-
-    def observe_build_log(self):
-        self.document.build_log.view.list.connect('row-activated', self.on_build_log_row_activated)
 
     '''
     *** signal handlers: changes in documents
@@ -91,15 +87,6 @@ class DocumentController(object):
         if document != None:
             if document.filename != None:
                 self.document.cleanup_build_files()
-
-    def on_build_log_row_activated(self, box, row, data=None):
-        buff = self.document.get_buffer()
-        if buff != None:
-            line_number = int(row.get_child().line_number) - 1
-            if line_number >= 0:
-                buff.place_cursor(buff.get_iter_at_line(line_number))
-            self.view.source_view.scroll_mark_onscreen(buff.get_insert())
-            self.view.source_view.grab_focus()
 
     def on_keypress(self, widget, event, data=None):
         modifiers = Gtk.accelerator_get_default_mod_mask()

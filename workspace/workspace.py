@@ -25,6 +25,7 @@ import workspace.workspace_presenter as workspace_presenter
 import workspace.workspace_controller as workspace_controller
 import workspace.preview.preview as preview
 import workspace.sidebar.sidebar as sidebar
+import workspace.build_log.build_log as build_log
 import workspace.headerbar.headerbar_presenter as headerbar_presenter
 import workspace.keyboard_shortcuts.shortcuts as shortcuts
 import workspace.document_switcher.document_switcher as document_switcher
@@ -53,6 +54,7 @@ class Workspace(Observable):
         self.preview = preview.Preview()
         self.show_preview = settings.get_value('window_state', 'show_preview')
         self.preview_position = settings.get_value('window_state', 'preview_paned_position')
+        self.build_log = build_log.BuildLog(self)
         self.show_build_log = settings.get_value('window_state', 'show_build_log')
         self.build_log_position = settings.get_value('window_state', 'build_log_paned_position')
 
@@ -103,7 +105,15 @@ class Workspace(Observable):
         if self.active_document != None:
             self.active_document.set_last_activated(time.time())
             self.add_change_code('new_active_document', document)
+        self.set_build_log()
         
+    def set_build_log(self):
+        if self.get_active_document() != None:
+            if self.master_document != None:
+                self.build_log.set_document(self.master_document)
+            else:
+                self.build_log.set_document(self.active_document)
+
     def get_last_active_document(self):
         for document in sorted(self.open_documents, key=lambda val: -val.last_activated):
             return document
@@ -129,10 +139,10 @@ class Workspace(Observable):
         except IOError: pass
         else:
             try: data = pickle.load(filehandle)
-            except EOFError: self.add_document(Document(self, self.pathname, with_buffer=True))
+            except EOFError: self.add_document(Document(self.pathname, with_buffer=True))
             else:
                 for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
-                    document = Document(self, self.pathname, with_buffer=True)
+                    document = Document(self.pathname, with_buffer=True)
                     document.set_filename(item['filename'])
                     if document.populate_from_filename() != False:
                         self.add_document(document)
@@ -177,12 +187,14 @@ class Workspace(Observable):
             else:
                 document.set_is_master(False)
         self.add_change_code('master_state_change', 'one_document')
+        self.set_build_log()
 
     def unset_master_document(self):
         for document in self.open_documents:
             document.set_is_master(False)
         self.master_document = None
         self.add_change_code('master_state_change', 'no_master_document')
+        self.set_build_log()
 
     def set_show_sidebar(self, show_sidebar, animate=False):
         if show_sidebar != self.show_sidebar:

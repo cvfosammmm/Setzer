@@ -73,9 +73,7 @@ class DocumentBuilder(object):
                     self.document.set_pdf(result_blob['pdf_filename'], result_blob['pdf_position'])
                 except KeyError: pass
 
-                build_log = self.document.build_log
-                build_log.clear_items()
-
+                build_log_items = list()
                 if result_blob['error'] == 'interpreter_missing':
                     self.document.change_state('idle')
                     if ServiceLocator.get_dialog('interpreter_missing').run(result_blob['error_arg']):
@@ -94,10 +92,8 @@ class DocumentBuilder(object):
                     pass
                 else:
                     for item in build_log_blob:
-                        build_log.add_item(item[0].strip(), item[1].strip(), item[2].strip(), item[3].strip())
-                    build_log.signal_finish_adding()
-                    if build_log.has_items(self.settings.get_value('preferences', 'autoshow_build_log')):
-                        self.document.workspace.set_show_build_log(True)
+                        build_log_items.append([item[0].strip(), item[1].strip(), item[2].strip(), item[3].strip()])
+                self.document.build_log_items = build_log_items
 
                 self.document.change_state('idle')
         

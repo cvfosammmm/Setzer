@@ -58,13 +58,16 @@ class DocumentPresenter(object):
             self.doclist_item.set_name(self.document.get_displayname(), self.modified_state)
 
         if change_code == 'document_state_change':
-            build_log = self.document.build_log
-            if build_log.has_items('errors'):
-                error_count = build_log.count_items('errors')
+            error_count = 0
+            for item in self.document.build_log_items:
+                if item[0] == 'Error':
+                    error_count += 1
+            if error_count > 0:
                 error_color = helpers.theme_color_to_css(self.document.view.get_style_context(), 'error_color')
                 message = '<span color="' + error_color + '">Failed</span> (' + str(error_count) + ' error' + ('s' if error_count > 1 else '') + ')!'
             else:
                 message = 'Success!'
+
             self.on_build_state_change(message)
             self.set_clean_button_state()
 

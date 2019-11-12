@@ -15,22 +15,59 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from document.build_log.build_log_viewgtk import *
-from document.build_log.build_log_presenter import *
+from workspace.build_log.build_log_viewgtk import *
+from workspace.build_log.build_log_presenter import *
 from helpers.observable import *
+from app.service_locator import ServiceLocator
 
 
 class BuildLog(Observable):
 
-    def __init__(self, document):
+    def __init__(self, workspace):
         Observable.__init__(self)
-        self.document = document
+        self.workspace = workspace
+        self.settings = ServiceLocator.get_settings()
+        self.document = None
 
         self.items = list()
         self.symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
 
         self.view = BuildLogView()
         self.presenter = BuildLogPresenter(self, self.view)
+        self.view.list.connect('row-activated', self.on_build_log_row_activated)
+
+    def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'document_state_change' and parameter == 'idle':
+            self.update_items(True)
+
+    def set_document(self, document):
+        if self.document != None:
+            self.document.unregister_observer(self)
+
+        self.document = document
+        self.update_items()
+        self.document.register_observer(self)
+
+    def update_items(self, check_autoshow=False):
+        self.clear_items()
+        for item in self.document.build_log_items:
+            self.add_item(item[0], item[1], item[2], item[3])
+        self.signal_finish_adding()
+
+        if check_autoshow and self.has_items(self.settings.get_value('preferences', 'autoshow_build_log')):
+            self.workspace.set_show_build_log(True)
+
+    def on_build_log_row_activated(self, box, row, data=None):
+        if self.document == None: return
+
+        buff = self.document.get_buffer()
+        if buff != None:
+            line_number = int(row.get_child().line_number) - 1
+            if line_number >= 0:
+                buff.place_cursor(buff.get_iter_at_line(line_number))
+            self.document.view.source_view.scroll_mark_onscreen(buff.get_insert())
+            self.document.view.source_view.grab_focus()
 
     def add_item(self, item_type, filename, line_number, message):
         item = [item_type, filename, line_number, message]

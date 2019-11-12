@@ -28,7 +28,6 @@ import document.document_controller as document_controller
 import document.document_presenter as document_presenter
 import document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
 import document.document_viewgtk as document_view
-import document.build_log.build_log as build_log
 import document.build_widget.build_widget as build_widget
 import document.search.search as search
 import document.autocomplete.autocomplete as autocomplete
@@ -39,10 +38,9 @@ import re
 
 class Document(Observable):
 
-    def __init__(self, workspace, data_pathname, with_buffer=False, document_data=None):
+    def __init__(self, data_pathname, with_buffer=False, document_data=None):
         Observable.__init__(self)
 
-        self.workspace = workspace
         self.displayname = ''
         self.filename = None
         self.pdf_filename = None
@@ -63,10 +61,10 @@ class Document(Observable):
         self.data_pathname = data_pathname
         self.document_data = dict() if document_data == None else document_data
 
-        self.build_log = build_log.BuildLog(self)
         self.build_widget = build_widget.BuildWidget()
+        self.build_log_items = list()
 
-        self.view = document_view.DocumentView(self, self.build_log.view)
+        self.view = document_view.DocumentView(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
         self.autocomplete = autocomplete.Autocomplete(self, self.view)
         self.builder = document_builder.DocumentBuilder(self)
