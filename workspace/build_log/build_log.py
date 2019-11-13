@@ -17,6 +17,7 @@
 
 from workspace.build_log.build_log_viewgtk import *
 from workspace.build_log.build_log_presenter import *
+from workspace.build_log.build_log_controller import *
 from helpers.observable import *
 from app.service_locator import ServiceLocator
 
@@ -34,7 +35,7 @@ class BuildLog(Observable):
 
         self.view = ServiceLocator.get_main_window().build_log
         self.presenter = BuildLogPresenter(self, self.view)
-        self.view.list.connect('row-activated', self.on_build_log_row_activated)
+        self.controller = BuildLogController(self, self.view)
 
     def change_notification(self, change_code, notifying_object, parameter):
 
@@ -55,33 +56,6 @@ class BuildLog(Observable):
 
         if just_built and self.has_items(self.settings.get_value('preferences', 'autoshow_build_log')):
             self.workspace.set_show_build_log(True)
-
-    def on_build_log_row_activated(self, box, row, data=None):
-        if self.document == None: return
-
-        item = row.get_child()
-        if item.filename == self.document.get_filename():
-            buff = self.document.get_buffer()
-            if buff != None:
-                line_number = item.line_number - 1
-                if line_number >= 0:
-                    buff.place_cursor(buff.get_iter_at_line(line_number))
-                self.document.view.source_view.scroll_mark_onscreen(buff.get_insert())
-                self.document.view.source_view.grab_focus()
-        else:
-            if item.filename != None:
-                document_candidate = self.workspace.get_document_by_filename(item.filename)
-                if document_candidate != None:
-                    self.workspace.set_active_document(document_candidate)
-                else:
-                    self.workspace.create_document_from_filename(item.filename, True)
-                buff = self.workspace.active_document.get_buffer()
-                if buff != None:
-                    line_number = item.line_number - 1
-                    if line_number >= 0:
-                        buff.place_cursor(buff.get_iter_at_line(line_number))
-                    self.workspace.active_document.view.source_view.scroll_mark_onscreen(buff.get_insert())
-                    self.workspace.active_document.view.source_view.grab_focus()
 
     def add_item(self, item_type, filename, line_number, message):
         item = [item_type, filename, line_number, message]
