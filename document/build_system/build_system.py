@@ -117,62 +117,63 @@ class Query(object):
         self.item_regex = ServiceLocator.get_build_log_item_regex()
 
     def build(self):
-        # create temporary files
-        tex_file = tempfile.NamedTemporaryFile(suffix='.tex', dir=self.directory_name)
-        with open(tex_file.name, 'w') as f: f.write(self.text)
-        pdf_filename = self.directory_name + '/' + os.path.basename(tex_file.name).rsplit('.tex', 1)[0] + '.pdf'
-        log_filename = self.directory_name + '/' + os.path.basename(tex_file.name).rsplit('.tex', 1)[0] + '.log'
+        with tempfile.TemporaryDirectory() as tmp_directory_name:
+            tex_file = tempfile.NamedTemporaryFile(suffix='.tex', dir=tmp_directory_name)
+            with open(tex_file.name, 'w') as f: f.write(self.text)
+            pdf_filename = tmp_directory_name + '/' + os.path.basename(tex_file.name).rsplit('.tex', 1)[0] + '.pdf'
+            log_filename = tmp_directory_name + '/' + os.path.basename(tex_file.name).rsplit('.tex', 1)[0] + '.log'
 
-        # build pdf
-        arguments = self.build_command.split()
-        arguments = list(map(lambda arg: arg.replace('%OUTDIR', self.directory_name), arguments))
-        arguments = list(map(lambda arg: arg.replace('%FILENAME', tex_file.name), arguments))
-        try:
-            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
-        except FileNotFoundError:
-            self.cleanup_build_files(tex_file.name)
-            self.result_lock.acquire()
-            self.result = {'document_controller': self.document_controller, 
-                           'error': 'interpreter_missing',
-                           'error_arg': arguments[0]}
-            self.result_lock.release()
-            return
-        self.process.wait()
+            # build pdf
+            arguments = self.build_command.split()
+            arguments = list(map(lambda arg: arg.replace('%OUTDIR', tmp_directory_name), arguments))
+            arguments = list(map(lambda arg: arg.replace('%FILENAME', tex_file.name), arguments))
+            try:
+                self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
+            except FileNotFoundError:
+                self.cleanup_build_files(tex_file.name)
+                self.result_lock.acquire()
+                self.result = {'document_controller': self.document_controller, 
+                               'error': 'interpreter_missing',
+                               'error_arg': arguments[0]}
+                self.result_lock.release()
+                return
+            self.process.wait()
 
-        # parse results
-        try: self.parse_build_log(log_filename)
-        except FileNotFoundError as e:
-            self.cleanup_build_files(tex_file.name)
-            self.result_lock.acquire()
-            self.result = {'document_controller': self.document_controller, 
-                           'error': 'interpreter_not_working',
-                           'error_arg': 'log file missing'}
-            self.result_lock.release()
-            return
+            # parse results
+            try: self.parse_build_log(log_filename)
+            except FileNotFoundError as e:
+                self.cleanup_build_files(tex_file.name)
+                self.result_lock.acquire()
+                self.result = {'document_controller': self.document_controller, 
+                               'error': 'interpreter_not_working',
+                               'error_arg': 'log file missing'}
+                self.result_lock.release()
+                return
         
-        pdf_position = self.parse_synctex(tex_file.name, pdf_filename)
-        if self.process != None:
-            results = self.process.communicate()
-            self.process = None
+            pdf_position = self.parse_synctex(tex_file.name, pdf_filename)
+            if self.process != None:
+                results = self.process.communicate()
+                self.process = None
 
-            try: shutil.move(pdf_filename, self.new_pdf_filename)
-            except FileNotFoundError: self.new_pdf_filename = None
+                try: shutil.move(pdf_filename, self.new_pdf_filename)
+                except FileNotFoundError: self.new_pdf_filename = None
 
-            self.rename_build_files(tex_file.name)
-            if self.document_controller.settings.get_value('preferences', 'cleanup_build_files'):
-                self.cleanup_build_files(self.tex_filename)
+                if self.document_controller.settings.get_value('preferences', 'cleanup_build_files'):
+                    self.cleanup_build_files(self.tex_filename)
+                else:
+                    self.rename_build_files(tex_file.name)
 
-            self.result_lock.acquire()
-            self.result = {'document_controller': self.document_controller, 
-                           'pdf_filename': self.new_pdf_filename, 
-                           'log_messages': self.log_messages, 
-                           'pdf_position': pdf_position,
-                           'error': None,
-                           'error_arg': None}
-            self.result_lock.release()
-        else:
-            self.cleanup_build_files(tex_file.name)
-        tex_file.close()
+                self.result_lock.acquire()
+                self.result = {'document_controller': self.document_controller, 
+                               'pdf_filename': self.new_pdf_filename, 
+                               'log_messages': self.log_messages, 
+                               'pdf_position': pdf_position,
+                               'error': None,
+                               'error_arg': None}
+                self.result_lock.release()
+            else:
+                self.cleanup_build_files(tex_file.name)
+            tex_file.close()
 
     def stop_building(self):
         if self.process != None:
