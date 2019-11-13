@@ -22,6 +22,7 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
+from workspace.build_log.build_log_viewgtk import *
 from workspace.headerbar.headerbar_viewgtk import *
 from workspace.shortcutsbar.shortcutsbar_viewgtk import *
 from workspace.preview.preview_viewgtk import *
@@ -63,13 +64,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.notebook_wrapper.pack_start(self.notebook, True, True, 0)
 
         # build log
-        self.build_log_notebook = Gtk.Notebook()
-        self.build_log_notebook.set_show_tabs(False)
-        self.build_log_notebook.set_show_border(False)
-        self.build_log_notebook.set_scrollable(True)
+        self.build_log = BuildLogView()
         self.build_log_paned = Gtk.VPaned()
         self.build_log_paned.pack1(self.notebook_wrapper, True, False)
-        self.build_log_paned.pack2(self.build_log_notebook, False, True)
+        self.build_log_paned.pack2(self.build_log, False, True)
         self.build_log_visible = None
 
         # preview

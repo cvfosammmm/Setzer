@@ -32,19 +32,17 @@ class BuildLog(Observable):
         self.items = list()
         self.symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
 
-        self.view = BuildLogView()
+        self.view = ServiceLocator.get_main_window().build_log
         self.presenter = BuildLogPresenter(self, self.view)
         self.view.list.connect('row-activated', self.on_build_log_row_activated)
 
     def change_notification(self, change_code, notifying_object, parameter):
 
         if change_code == 'document_state_change' and parameter == 'idle':
-            self.update_items(True)
+            if notifying_object == self.document:
+                self.update_items(True)
 
     def set_document(self, document):
-        if self.document != None:
-            self.document.unregister_observer(self)
-
         self.document = document
         self.update_items()
         self.document.register_observer(self)
@@ -61,13 +59,29 @@ class BuildLog(Observable):
     def on_build_log_row_activated(self, box, row, data=None):
         if self.document == None: return
 
-        buff = self.document.get_buffer()
-        if buff != None:
-            line_number = int(row.get_child().line_number) - 1
-            if line_number >= 0:
-                buff.place_cursor(buff.get_iter_at_line(line_number))
-            self.document.view.source_view.scroll_mark_onscreen(buff.get_insert())
-            self.document.view.source_view.grab_focus()
+        item = row.get_child()
+        if item.filename == self.document.get_filename():
+            buff = self.document.get_buffer()
+            if buff != None:
+                line_number = item.line_number - 1
+                if line_number >= 0:
+                    buff.place_cursor(buff.get_iter_at_line(line_number))
+                self.document.view.source_view.scroll_mark_onscreen(buff.get_insert())
+                self.document.view.source_view.grab_focus()
+        else:
+            if item.filename != None:
+                document_candidate = self.workspace.get_document_by_filename(item.filename)
+                if document_candidate != None:
+                    self.workspace.set_active_document(document_candidate)
+                else:
+                    self.workspace.create_document_from_filename(item.filename, True)
+                buff = self.workspace.active_document.get_buffer()
+                if buff != None:
+                    line_number = item.line_number - 1
+                    if line_number >= 0:
+                        buff.place_cursor(buff.get_iter_at_line(line_number))
+                    self.workspace.active_document.view.source_view.scroll_mark_onscreen(buff.get_insert())
+                    self.workspace.active_document.view.source_view.grab_focus()
 
     def add_item(self, item_type, filename, line_number, message):
         item = [item_type, filename, line_number, message]

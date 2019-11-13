@@ -35,21 +35,12 @@ class BuildLogPresenter(object):
 
         if change_code == 'build_log_new_item':
             item = parameter
-            symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
-            row = BuildLogRowView(symbols[item[0]], item[0], item[1].rsplit('/', 1)[1], "Line " + str(item[2]), item[3])
+            row = BuildLogRowView(item[0], item[1], item[2], item[3])
             self.view.list.prepend(row)
 
         if change_code == 'build_log_finished_adding':
             self.set_header_data(self.build_log.count_items('errors'), self.build_log.count_items('warnings') + self.build_log.count_items('badboxes'), True)
             self.view.list.show_all()
-            for row in self.view.list:
-                message_type = row.get_child().label_message_type.get_text()
-                line_number = row.get_child().line_number
-
-                if message_type != 'Error': return
-                elif line_number >= 0:
-                    row.activate()
-                    return
 
         if change_code == 'build_log_cleared_items':
             for entry in self.view.list.get_children():

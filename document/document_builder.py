@@ -92,7 +92,7 @@ class DocumentBuilder(object):
                     pass
                 else:
                     for item in build_log_blob:
-                        build_log_items.append([item[0].strip(), item[1].strip(), item[2].strip(), item[3].strip()])
+                        build_log_items.append(item)
                 self.document.build_log_items = build_log_items
 
                 self.document.change_state('idle')

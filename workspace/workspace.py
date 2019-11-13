@@ -88,6 +88,15 @@ class Workspace(Observable):
             self.unset_master_document()
         self.add_change_code('document_removed', document)
 
+    def create_document_from_filename(self, filename, activate=False):
+        document = Document(self.pathname, with_buffer=True)
+        document.set_filename(filename)
+        document.populate_from_filename()
+        self.add_document(document)
+
+        if activate:
+            self.set_active_document(document)
+
     def get_document_by_filename(self, filename):
         for document in self.open_documents:
             if filename == document.get_filename():

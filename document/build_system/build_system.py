@@ -220,30 +220,30 @@ class Query(object):
             text = file.read().decode('utf-8', errors='ignore')
             doc_texts = dict()
             for match in self.doc_regex.finditer(text):
-                filename = match.group(1)
-                doc_texts[filename] = match.group(2)
+                filename = match.group(2)
+                doc_texts[filename] = match.group(3)
             doc_texts[self.tex_filename] = self.doc_regex.sub('', text)
             for filename, text in doc_texts.items():
                 for match in self.item_regex.finditer(text):
                     line = match.group(1)
 
                     if line.startswith('Overfull \hbox'):
-                        line_number = line.rsplit(' ', 1)[1].split('--')[0]
-                        self.log_messages.append(('Badbox', filename, line_number, line.split('\n')[0]))
+                        line_number = int(line.rsplit(' ', 1)[1].split('--')[0].strip())
+                        self.log_messages.append(('Badbox', filename.strip(), line_number, line.split('\n')[0].strip()))
 
                     elif line.startswith('Underfull \hbox'):
-                        line_number = line.rsplit(' ', 1)[1].split('--')[0]
-                        self.log_messages.append(('Badbox', filename, line_number, line.split('\n')[0]))
+                        line_number = int(line.rsplit(' ', 1)[1].split('--')[0].strip())
+                        self.log_messages.append(('Badbox', filename.strip(), line_number, line.split('\n')[0].strip()))
 
                     elif line.startswith('!'):
                         if line.find('l.') != -1:
-                            line_number = line.rsplit('l.', 1)[1].split(' ')[0]
+                            line_number = int(line.rsplit('l.', 1)[1].split(' ')[0].strip())
                             line = line.split('\n')
                             if line[0].startswith('! Undefined control sequence'):
-                                line = ' '.join([line[0], line[1].rsplit(' ', 1)[1]])
+                                line = ' '.join([line[0], line[1].rsplit(' ', 1)[1]]).strip()
                             else:
-                                line = line[0]
-                            self.log_messages.append(('Error', filename, line_number, line))
+                                line = line[0].strip()
+                            self.log_messages.append(('Error', filename.strip(), line_number, line))
 
                     elif line.startswith('LaTeX Warning:'):
                         pass

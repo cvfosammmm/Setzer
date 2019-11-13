@@ -74,34 +74,37 @@ class BuildLogView(Gtk.VBox):
 
 class BuildLogRowView(Gtk.HBox):
 
-    def __init__(self, icon_name, message_type, filename, line_number, message):
+    def __init__(self, message_type, filename, line_number, message):
         Gtk.HBox.__init__(self)
-        
-        try:
-            self.line_number = int(line_number[5:].strip())
-        except ValueError:
-            self.line_number = 0
-            line_number = ''
+
+        symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
+
+        self.message_type = message_type
+        self.icon_name = symbols[message_type]
+        self.filename = filename
+        self.filename_display = filename.rsplit('/', 1)[1]
+        self.line_number = line_number
+        self.line_number_display = "Line " + str(line_number)
 
         self.icon_box = Gtk.VBox()
-        self.icon = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
+        self.icon = Gtk.Image.new_from_icon_name(self.icon_name, Gtk.IconSize.MENU)
         self.icon.set_margin_left(10)
         self.icon.set_margin_right(12)
         self.icon.set_margin_top(1)
         self.icon.set_valign(0)
         self.icon_box.pack_start(self.icon, False, False, 0)
-        self.label_message_type = Gtk.Label(message_type)
+        self.label_message_type = Gtk.Label(self.message_type)
         self.label_message_type.set_size_request(76, -1)
         self.label_message_type.set_xalign(0)
         self.label_message_type.set_yalign(0)
-        self.label_filename = Gtk.Label(filename)
+        self.label_filename = Gtk.Label(self.filename_display)
         self.label_filename.set_ellipsize(Pango.EllipsizeMode.START)
         self.label_filename.set_max_width_chars(10)
         self.label_filename.set_size_request(120, -1)
         self.label_filename.set_margin_right(18)
         self.label_filename.set_xalign(0)
         self.label_filename.set_yalign(0)
-        self.label_line_number = Gtk.Label(line_number)
+        self.label_line_number = Gtk.Label(self.line_number_display)
         self.label_line_number.set_size_request(76, -1)
         self.label_line_number.set_xalign(0)
         self.label_line_number.set_yalign(0)
