@@ -158,10 +158,9 @@ class Query(object):
             try: shutil.move(pdf_filename, self.new_pdf_filename)
             except FileNotFoundError: self.new_pdf_filename = None
 
+            self.rename_build_files(tex_file.name)
             if self.document_controller.settings.get_value('preferences', 'cleanup_build_files'):
-                self.cleanup_build_files(tex_file.name)
-            else:
-                self.rename_build_files(tex_file.name)
+                self.cleanup_build_files(self.tex_filename)
 
             self.result_lock.acquire()
             self.result = {'document_controller': self.document_controller, 
@@ -253,7 +252,7 @@ class Query(object):
 
     def cleanup_build_files(self, tex_file_name):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' , '.ilg',
-                        '.ind', '.log', '.nav', '.out', '.pdf', '.snm', '.synctex.gz', '.toc']
+                        '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc']
         for ending in file_endings:
             try: os.remove(tex_file_name.rsplit('.tex', 1)[0] + ending)
             except FileNotFoundError: pass
