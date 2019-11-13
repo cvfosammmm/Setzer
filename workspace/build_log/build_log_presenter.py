@@ -39,14 +39,14 @@ class BuildLogPresenter(object):
             self.view.list.prepend(row)
 
         if change_code == 'build_log_finished_adding':
-            self.set_header_data(self.build_log.count_items('errors'), self.build_log.count_items('warnings') + self.build_log.count_items('badboxes'), True)
+            self.set_header_data(self.build_log.count_items('errors'), self.build_log.count_items('warnings') + self.build_log.count_items('badboxes'), parameter)
             self.view.list.show_all()
 
         if change_code == 'build_log_cleared_items':
             for entry in self.view.list.get_children():
                 self.view.list.remove(entry)
 
-    def set_header_data (self, errors, warnings, tried_building=False):
+    def set_header_data(self, errors, warnings, tried_building=False):
         if tried_building:
             if errors == 0:
                 if warnings == 0:

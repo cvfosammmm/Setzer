@@ -95,6 +95,7 @@ class DocumentBuilder(object):
                         build_log_items.append(item)
                 self.document.build_log_items = build_log_items
 
+                self.document.has_been_built = True
                 self.document.change_state('idle')
         
 

@@ -48,6 +48,7 @@ class Document(Observable):
         self.pdf_position = None
         self.last_activated = 0
         self.is_master = False
+        self.has_been_built = False
         
         self.source_buffer = None
         self.search_settings = None

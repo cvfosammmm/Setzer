@@ -47,13 +47,13 @@ class BuildLog(Observable):
         self.update_items()
         self.document.register_observer(self)
 
-    def update_items(self, check_autoshow=False):
+    def update_items(self, just_built=False):
         self.clear_items()
         for item in self.document.build_log_items:
             self.add_item(item[0], item[1], item[2], item[3])
         self.signal_finish_adding()
 
-        if check_autoshow and self.has_items(self.settings.get_value('preferences', 'autoshow_build_log')):
+        if just_built and self.has_items(self.settings.get_value('preferences', 'autoshow_build_log')):
             self.workspace.set_show_build_log(True)
 
     def on_build_log_row_activated(self, box, row, data=None):
@@ -89,7 +89,7 @@ class BuildLog(Observable):
         self.add_change_code('build_log_new_item', item)
 
     def signal_finish_adding(self):
-        self.add_change_code('build_log_finished_adding', None)
+        self.add_change_code('build_log_finished_adding', self.document.has_been_built)
 
     def clear_items(self):
         self.items = list()
