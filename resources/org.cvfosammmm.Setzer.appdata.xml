@@ -47,6 +47,11 @@
 	</provides>
 
     <releases>
+        <release version="0.0.5" date="2019-11-14">
+            <description>
+                <p>Multiple documents in build log, build in temporary folder, ...</p>
+            </description>
+        </release>
         <release version="0.0.4" date="2019-11-11">
             <description>
                 <p>Master document function, ...</p>
