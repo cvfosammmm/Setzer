@@ -24,6 +24,7 @@ import os
 import os.path
 import tempfile
 import shutil
+import re
 
 from app.service_locator import ServiceLocator
 
@@ -115,6 +116,8 @@ class Query(object):
         self.build_command = build_command
         self.doc_regex = ServiceLocator.get_build_log_doc_regex()
         self.item_regex = ServiceLocator.get_build_log_item_regex()
+        self.badbox_line_number_regex = ServiceLocator.get_build_log_badbox_line_number_regex()
+        self.other_line_number_regex = ServiceLocator.get_build_log_other_line_number_regex()
 
     def build(self):
         with tempfile.TemporaryDirectory() as tmp_directory_name:
@@ -220,35 +223,38 @@ class Query(object):
             text = file.read().decode('utf-8', errors='ignore')
             doc_texts = dict()
             for match in self.doc_regex.finditer(text):
-                filename = match.group(2)
+                filename = match.group(2).strip()
                 doc_texts[filename] = match.group(3)
             doc_texts[self.tex_filename] = self.doc_regex.sub('', text)
             for filename, text in doc_texts.items():
                 for match in self.item_regex.finditer(text):
-                    line = match.group(1)
+                    lines = match.group(1)
 
-                    if line.startswith('Overfull \hbox'):
-                        line_number = int(line.rsplit(' ', 1)[1].split('--')[0].strip())
-                        self.log_messages.append(('Badbox', filename.strip(), line_number, line.split('\n')[0].strip()))
+                    if lines.startswith('Overfull \hbox'):
+                        line_number = int(self.badbox_line_number_regex.search(lines).group(1))
+                        text = lines.split('\n')[0].strip()
+                        self.log_messages.append(('Badbox', filename, line_number, text))
 
-                    elif line.startswith('Underfull \hbox'):
-                        line_number = int(line.rsplit(' ', 1)[1].split('--')[0].strip())
-                        self.log_messages.append(('Badbox', filename.strip(), line_number, line.split('\n')[0].strip()))
+                    elif lines.startswith('Underfull \hbox'):
+                        line_number = int(self.badbox_line_number_regex.search(lines).group(1))
+                        text = lines.split('\n')[0].strip()
+                        self.log_messages.append(('Badbox', filename, line_number, text))
 
-                    elif line.startswith('!'):
-                        if line.find('l.') != -1:
-                            line_number = int(line.rsplit('l.', 1)[1].split(' ')[0].strip())
-                            line = line.split('\n')
-                            if line[0].startswith('! Undefined control sequence'):
-                                line = ' '.join([line[0], line[1].rsplit(' ', 1)[1]]).strip()
+                    elif lines.startswith('!'):
+                        line_number_match = self.other_line_number_regex.search(lines)
+                        if line_number_match != None:
+                            line_number = line_number_match.group(1)
+                            lines = lines.split('\n')
+                            if lines[0].startswith('! Undefined control sequence'):
+                                line = ' '.join([lines[0], lines[1].rsplit(' ', 1)[1]]).strip()
                             else:
-                                line = line[0].strip()
-                            self.log_messages.append(('Error', filename.strip(), line_number, line))
+                                line = lines[0].strip()
+                            self.log_messages.append(('Error', filename, line_number, line))
 
-                    elif line.startswith('LaTeX Warning:'):
+                    elif lines.startswith('LaTeX Warning:'):
                         pass
 
-                    elif line.startswith('LaTeX Font Warning:'):
+                    elif lines.startswith('LaTeX Font Warning:'):
                         pass
 
     def cleanup_build_files(self, tex_file_name):
