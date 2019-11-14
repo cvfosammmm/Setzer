@@ -26,6 +26,7 @@ import tempfile
 import shutil
 import re
 
+import helpers.helpers as helpers
 from app.service_locator import ServiceLocator
 
 
@@ -216,16 +217,20 @@ class Query(object):
         else:
             return None
 
+    @helpers.timer
     def parse_build_log(self, log_filename):
         try: file = open(log_filename, 'rb')
         except FileNotFoundError as e: raise e
         else:
             text = file.read().decode('utf-8', errors='ignore')
             doc_texts = dict()
-            for match in self.doc_regex.finditer(text):
+
+            def repl(match):
                 filename = match.group(2).strip()
                 doc_texts[filename] = match.group(3)
-            doc_texts[self.tex_filename] = self.doc_regex.sub('', text)
+                return ''
+            text = self.doc_regex.sub(repl, text)
+
             for filename, text in doc_texts.items():
                 for match in self.item_regex.finditer(text):
                     lines = match.group(1)
