@@ -283,41 +283,7 @@ class WorkspaceController(object):
     
     @_assert_has_active_document
     def insert_symbol(self, action, parameter):
-        ''' insert text at the cursor. '''
-        
-        text = parameter[0]
-        active_document = self.workspace.get_active_document()
-        buff = active_document.get_buffer()
-
-        if buff != False:
-            buff.begin_user_action()
-
-            dotindex = text.find('•')
-            dotcount = text.count('•')
-            if dotcount == 1:
-                bounds = buff.get_selection_bounds()
-                selection = buff.get_text(bounds[0], bounds[1], True)
-                if len(selection) > 0:
-                    text = text.replace('•', selection, 1)
-                buff.delete_selection(False, False)
-                buff.insert_at_cursor(text)
-                start = buff.get_iter_at_mark(buff.get_insert())
-                start.backward_chars(abs(dotindex + len(selection) - len(text)))
-                buff.place_cursor(start)
-            elif dotcount > 0:
-                buff.delete_selection(False, False)
-                buff.insert_at_cursor(text)
-                start = buff.get_iter_at_mark(buff.get_insert())
-                start.backward_chars(abs(dotindex - len(text)))
-                end = start.copy()
-                end.forward_char()
-                buff.select_range(start, end)
-            else:
-                buff.delete_selection(False, False)
-                buff.insert_at_cursor(text)
-            active_document.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
-
-            buff.end_user_action()
+        self.workspace.get_active_document().insert_text_at_cursor(parameter[0])
 
     @_assert_has_active_document
     def start_wizard(self, action, parameter=None):
@@ -338,33 +304,6 @@ class WorkspaceController(object):
         
     @_assert_has_active_document
     def insert_before_after(self, action, parameter):
-        ''' wrap text around current selection. '''
-
-        before = parameter[0]
-        after = parameter[1]
-
-        active_document = self.workspace.get_active_document()
-        buff = active_document.get_buffer()
-        if buff != False:
-            bounds = buff.get_selection_bounds()
-            buff.begin_user_action()
-            if len(bounds) > 1:
-                text = before + buff.get_text(*bounds, 0) + after
-                buff.delete_selection(False, False)
-                buff.insert_at_cursor(text)
-                cursor_pos = buff.get_iter_at_mark(buff.get_insert())
-                cursor_pos.backward_chars(len(after))
-                buff.place_cursor(cursor_pos)
-                active_document.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
-            else:
-                text = before + '•' + after
-                buff.insert_at_cursor(text)
-                cursor_pos = buff.get_iter_at_mark(buff.get_insert())
-                cursor_pos.backward_chars(len(after))
-                bound = cursor_pos.copy()
-                bound.backward_chars(1)
-                buff.select_range(bound, cursor_pos)
-                active_document.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
-            buff.end_user_action()
+        active_document = self.workspace.get_active_document().insert_before_after(parameter[0], parameter[1])
 
 

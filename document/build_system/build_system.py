@@ -26,7 +26,6 @@ import tempfile
 import shutil
 import re
 
-import helpers.helpers as helpers
 from app.service_locator import ServiceLocator
 
 
@@ -217,7 +216,6 @@ class Query(object):
         else:
             return None
 
-    @helpers.timer
     def parse_build_log(self, log_filename):
         try: file = open(log_filename, 'rb')
         except FileNotFoundError as e: raise e

@@ -244,4 +244,107 @@ class Document(Observable):
         self.is_master = is_master
         self.add_change_code('master_state_change', is_master)
 
+    def insert_text_at_cursor(self, text, indent_lines=True):
+        buff = self.get_buffer()
+        if buff != False:
+            buff.begin_user_action()
+
+            dotcount = text.count('•')
+            insert_iter = buff.get_iter_at_mark(buff.get_insert())
+            bounds = buff.get_selection_bounds()
+            if dotcount == 1:
+                bounds = buff.get_selection_bounds()
+                if len(bounds) > 0:
+                    selection = buff.get_text(bounds[0], bounds[1], True)
+                    if len(selection) > 0:
+                        text = text.replace('•', selection, 1)
+
+            if indent_lines:
+                line_iter = buff.get_iter_at_line(insert_iter.get_line())
+                ws_line = buff.get_text(line_iter, insert_iter, False)
+                lines = text.splitlines()
+                ws_number = len(ws_line) - len(ws_line.lstrip())
+                whitespace = ws_line[:ws_number]
+                final_text = ''
+                for no, line in enumerate(lines):
+                    if no != 0:
+                        final_text += '\n' + whitespace
+                    final_text += line
+            else:
+                final_text = text
+
+            buff.delete_selection(False, False)
+            buff.insert_at_cursor(final_text)
+
+            dotindex = text.find('•')
+            if dotcount == 1:
+                start = buff.get_iter_at_mark(buff.get_insert())
+                start.backward_chars(abs(dotindex + len(selection) - len(text)))
+                buff.place_cursor(start)
+            elif dotcount > 0:
+                start = buff.get_iter_at_mark(buff.get_insert())
+                start.backward_chars(abs(dotindex - len(text)))
+                end = start.copy()
+                end.forward_char()
+                buff.select_range(start, end)
+            self.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
+
+            buff.end_user_action()
+
+    def replace_range(self, start_iter, end_iter, text, indent_lines=True):
+        buffer = self.get_buffer()
+        if buffer != None:
+            buffer.begin_user_action()
+
+            if indent_lines:
+                line_iter = buffer.get_iter_at_line(start_iter.get_line())
+                ws_line = buffer.get_text(line_iter, start_iter, False)
+                lines = text.splitlines()
+                ws_number = len(ws_line) - len(ws_line.lstrip())
+                whitespace = ws_line[:ws_number]
+                final_text = ''
+                for no, line in enumerate(lines):
+                    if no != 0:
+                        final_text += '\n' + whitespace
+                    final_text += line
+            else:
+                final_text = text
+
+            buffer.delete(start_iter, end_iter)
+            buffer.insert(start_iter, final_text)
+
+            dotindex = final_text.find('•')
+            if dotindex > -1:
+                start_iter.backward_chars(abs(dotindex - len(final_text)))
+                bound = start_iter.copy()
+                bound.forward_chars(1)
+                buffer.select_range(start_iter, bound)
+            buffer.end_user_action()
+
+    def insert_before_after(self, before, after):
+        ''' wrap text around current selection. '''
+
+        buff = self.get_buffer()
+        if buff != False:
+            bounds = buff.get_selection_bounds()
+            buff.begin_user_action()
+            if len(bounds) > 1:
+                text = before + buff.get_text(*bounds, 0) + after
+                buff.delete_selection(False, False)
+                buff.insert_at_cursor(text)
+                cursor_pos = buff.get_iter_at_mark(buff.get_insert())
+                cursor_pos.backward_chars(len(after))
+                buff.place_cursor(cursor_pos)
+                self.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
+            else:
+                text = before + '•' + after
+                buff.insert_at_cursor(text)
+                cursor_pos = buff.get_iter_at_mark(buff.get_insert())
+                cursor_pos.backward_chars(len(after))
+                bound = cursor_pos.copy()
+                bound.backward_chars(1)
+                buff.select_range(bound, cursor_pos)
+                self.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
+            buff.end_user_action()
+
 

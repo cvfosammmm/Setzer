@@ -130,21 +130,9 @@ class Autocomplete(object):
             start_iter.backward_chars(len(current_word))
             row = self.document_view.autocomplete.list.get_selected_row()
             text = row.get_child().label.get_text()
-
-            buffer.begin_user_action()
-            buffer.delete(start_iter, insert_iter)
             if text.startswith('\\begin'):
                 text += '\n•\n' + text.replace('\\begin', '\\end')
-            buffer.insert(start_iter, text)
-        
-            dotindex = text.find('•')
-            if dotindex > -1:
-                start_iter.backward_chars(abs(dotindex - len(text)))
-                bound = start_iter.copy()
-                bound.forward_chars(1)
-                buffer.select_range(start_iter, bound)
-            buffer.end_user_action()
-
+            self.document.replace_range(start_iter, insert_iter, text, indent_lines=True)
             self.document_view.autocomplete.hide()
             self.autocomplete_visible = False
 
