@@ -28,9 +28,8 @@ import os.path
 class OpenDocumentDialog(Dialog):
     ''' File chooser for opening documents '''
 
-    def __init__(self, main_window, workspace):
+    def __init__(self, main_window):
         self.main_window = main_window
-        self.workspace = workspace
 
     def run(self):
         self.setup()

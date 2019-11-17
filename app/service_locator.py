@@ -50,7 +50,7 @@ class ServiceLocator(object):
         ServiceLocator.dialogs['document_wizard'] = document_wizard.DocumentWizard(main_window, workspace, settings)
         ServiceLocator.dialogs['interpreter_missing'] = interpreter_missing_dialog.InterpreterMissingDialog(main_window)
         ServiceLocator.dialogs['preferences'] = preferences_dialog.PreferencesDialog(main_window, settings)
-        ServiceLocator.dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(main_window, workspace)
+        ServiceLocator.dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(main_window)
         ServiceLocator.dialogs['replace_confirmation'] = replace_confirmation_dialog.ReplaceConfirmationDialog(main_window)
         ServiceLocator.dialogs['save_document'] = save_document_dialog.SaveDocumentDialog(main_window, workspace)
         ServiceLocator.dialogs['keyboard_shortcuts'] = keyboard_shortcuts_dialog.KeyboardShortcutsDialog(main_window)

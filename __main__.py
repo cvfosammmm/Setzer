@@ -146,7 +146,7 @@ class MainApplicationController(Gtk.Application):
         documents = self.workspace.get_unsaved_documents()
         active_document = self.workspace.get_active_document()
 
-        if documents == None or active_document == None or not ServiceLocator.get_dialog('close_confirmation').run(documents)['all_save_to_close']:
+        if documents == None or active_document == None or ServiceLocator.get_dialog('close_confirmation').run(documents)['all_save_to_close']:
             self.save_window_state()
             self.workspace.save_to_disk()
             self.quit()
