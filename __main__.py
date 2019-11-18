@@ -118,8 +118,6 @@ class MainApplicationController(Gtk.Application):
         return False
 
     def save_window_state(self):
-        ''' save window state variables '''
-
         settings = ServiceLocator.get_settings()
         main_window = self.main_window
         settings.set_value('window_state', 'width', main_window.current_width)
