@@ -228,6 +228,7 @@ class Query(object):
                 doc_texts[filename] = match.group(3)
                 return ''
             text = self.doc_regex.sub(repl, text)
+            doc_texts[self.tex_filename] = text
 
             for filename, text in doc_texts.items():
                 for match in self.item_regex.finditer(text):
