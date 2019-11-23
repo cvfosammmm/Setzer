@@ -63,7 +63,6 @@ class Settings(Observable):
         self.defaults['app_document_wizard']['presets'] = None
         
         self.defaults['preferences'] = dict()
-        self.defaults['preferences']['build_command'] = 'xelatex -synctex=1 -interaction=nonstopmode -pdf -output-directory=%OUTDIR %FILENAME'
         self.defaults['preferences']['cleanup_build_files'] = True
         self.defaults['preferences']['autoshow_build_log'] = 'errors_warnings'
         self.defaults['preferences']['latex_interpreter'] = 'xelatex'

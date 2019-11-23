@@ -102,7 +102,7 @@ class BuildSystem(object):
 
 class Query(object):
 
-    def __init__(self, text, document_controller, synctex_arguments, build_command):
+    def __init__(self, text, document_controller, synctex_arguments, latex_interpreter):
         self.text = text
         self.document_controller = document_controller
         self.tex_filename = self.document_controller.document.get_filename()[:]
@@ -113,11 +113,17 @@ class Query(object):
         self.result_lock = thread.allocate_lock()
         self.log_messages = list()
         self.synctex_args = synctex_arguments
-        self.build_command = build_command
         self.doc_regex = ServiceLocator.get_build_log_doc_regex()
         self.item_regex = ServiceLocator.get_build_log_item_regex()
         self.badbox_line_number_regex = ServiceLocator.get_build_log_badbox_line_number_regex()
         self.other_line_number_regex = ServiceLocator.get_build_log_other_line_number_regex()
+
+        self.build_command_defaults = dict()
+        self.build_command_defaults['latexmk'] = 'latexmk -synctex=1 -interaction=nonstopmode -pdf'
+        self.build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode -pdf'
+        self.build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode -pdf'
+        self.build_command_defaults['lualatex'] = 'lualatex -synctex=1 -interaction=nonstopmode -pdf'
+        self.build_command = self.build_command_defaults[latex_interpreter]
 
     def build(self):
         with tempfile.TemporaryDirectory() as tmp_directory_name:
@@ -128,8 +134,8 @@ class Query(object):
 
             # build pdf
             arguments = self.build_command.split()
-            arguments = list(map(lambda arg: arg.replace('%OUTDIR', tmp_directory_name), arguments))
-            arguments = list(map(lambda arg: arg.replace('%FILENAME', tex_file.name), arguments))
+            arguments.append('-output-directory=' + tmp_directory_name)
+            arguments.append(tex_file.name)
             try:
                 self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
             except FileNotFoundError:

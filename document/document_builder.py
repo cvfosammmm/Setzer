@@ -43,7 +43,7 @@ class DocumentBuilder(object):
             synctex_arguments['line_offset'] = insert.get_line_offset()
             buffer = document.get_buffer()
             if buffer != None:
-                query = build_system.Query(buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True), self, synctex_arguments, self.settings.get_value('preferences', 'build_command'))
+                query = build_system.Query(buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True), self, synctex_arguments, self.settings.get_value('preferences', 'latex_interpreter'))
                 self.build_system.add_query(query)
 
         if change_code == 'document_state_change' and parameter == 'building_to_stop':

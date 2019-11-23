@@ -24,11 +24,6 @@ class PreferencesDialog(Dialog):
 
     def __init__(self, main_window, settings):
         self.main_window = main_window
-        self.build_command_defaults = dict()
-        self.build_command_defaults['latexmk'] = 'latexmk -synctex=1 -interaction=nonstopmode -pdf -output-directory=%OUTDIR %FILENAME'
-        self.build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode -pdf -output-directory=%OUTDIR %FILENAME'
-        self.build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode -pdf -output-directory=%OUTDIR %FILENAME'
-        self.build_command_defaults['lualatex'] = 'lualatex -synctex=1 -interaction=nonstopmode -pdf -output-directory=%OUTDIR %FILENAME'
         self.settings = settings
 
     def run(self):
@@ -59,12 +54,6 @@ class PreferencesDialog(Dialog):
         self.view.option_latex_interpreter_xelatex.connect('toggled', self.on_interpreter_changed, 'latex_interpreter', 'xelatex')
         self.view.option_latex_interpreter_lualatex.connect('toggled', self.on_interpreter_changed, 'latex_interpreter', 'lualatex')
 
-        self.view.build_command_entry.set_text(self.settings.get_value('preferences', 'build_command'))
-        self.view.build_command_entry.get_buffer().connect('deleted-text', self.text_deleted, 'build_command')
-        self.view.build_command_entry.get_buffer().connect('inserted-text', self.text_inserted, 'build_command')
-
-        self.view.build_command_reset_button.connect('clicked', self.reset_build_command)
-
     def on_check_button_toggle(self, button, preference_name):
         self.settings.set_value('preferences', preference_name, button.get_active())
         
@@ -79,9 +68,5 @@ class PreferencesDialog(Dialog):
 
     def on_interpreter_changed(self, button, preference_name, value):
         self.settings.set_value('preferences', preference_name, value)
-        self.view.build_command_entry.set_text(self.build_command_defaults[value])
-
-    def reset_build_command(self, button=None):
-        self.view.build_command_entry.set_text(self.build_command_defaults[self.settings.get_value('preferences', 'latex_interpreter')])
 
 
