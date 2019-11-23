@@ -45,12 +45,14 @@ class OpenDocumentDialog(Dialog):
         self.action = Gtk.FileChooserAction.OPEN
         self.buttons = ('_Cancel', Gtk.ResponseType.CANCEL, '_Open', Gtk.ResponseType.OK)
         self.view = Gtk.FileChooserDialog('Open', self.main_window, self.action, self.buttons)
-        
-        for widget in self.view.get_header_bar().get_children():
-            if isinstance(widget, Gtk.Button) and widget.get_label() == '_Open':
-                widget.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
-                widget.set_can_default(True)
-                widget.grab_default()
+
+        headerbar = self.view.get_header_bar()
+        if headerbar != None:
+            for widget in headerbar.get_children():
+                if isinstance(widget, Gtk.Button) and widget.get_label() == '_Open':
+                    widget.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
+                    widget.set_can_default(True)
+                    widget.grab_default()
 
         # file filtering
         file_filter1 = Gtk.FileFilter()
