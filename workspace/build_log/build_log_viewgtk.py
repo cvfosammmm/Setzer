@@ -55,20 +55,31 @@ class BuildLogView(Gtk.VBox):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
                      
     def sort_function(self, row1, row2, user_data=None):
-        line_number1 = row1.get_child().line_number
-        line_number2 = row2.get_child().line_number
         message_type1 = row1.get_child().label_message_type.get_text()
         message_type2 = row2.get_child().label_message_type.get_text()
-        
+
         if message_type1 != 'Error' and message_type2 == 'Error':
             return 1
         elif message_type1 == 'Error' and message_type2 != 'Error':
             return 0
-        if line_number1 == -1:
-            if line_number2 == -1:
-                return 0
-            else:
-                return 1
+        elif message_type1 == 'Error' and message_type2 == 'Error':
+            return self.line_number_sort(row1, row2)
+        if message_type1 != 'Warning' and message_type2 == 'Warning':
+            return 1
+        elif message_type1 == 'Warning' and message_type2 != 'Warning':
+            return 0
+        else:
+            return self.line_number_sort(row1, row2)
+
+    def line_number_sort(self, row1, row2, user_data=None):
+        line_number1 = row1.get_child().line_number
+        line_number2 = row2.get_child().line_number
+        if line_number1 != -1 and line_number2 == -1:
+            return -1
+        if line_number1 == -1 and line_number2 != -1:
+            return 1
+        if line_number1 == -1 and line_number2 == -1:
+            return 0
         if line_number1 > line_number2:
             return 1
         elif line_number1 == line_number2:
