@@ -26,6 +26,7 @@ import tempfile
 import shutil
 import re
 
+from helpers.helpers import timer
 from app.service_locator import ServiceLocator
 
 
@@ -126,7 +127,7 @@ class Query(object):
         self.build_command_defaults['lualatex'] = 'lualatex -synctex=1 -interaction=nonstopmode -pdf'
         self.build_command = self.build_command_defaults[self.latex_interpreter]
 
-        self.undefined_reference_count = 0
+        self.do_another_build = True
         self.error_count = 0
 
     def build(self):
@@ -137,9 +138,7 @@ class Query(object):
             log_filename = tmp_directory_name + '/' + os.path.basename(tex_file.name).rsplit('.tex', 1)[0] + '.log'
 
             # build pdf
-            do_another_build = True
-            last_undefined_reference_count = -1
-            while do_another_build and not self.force_building_to_stop:
+            while self.do_another_build and not self.force_building_to_stop:
                 arguments = self.build_command.split()
                 arguments.append('-output-directory=' + tmp_directory_name)
                 arguments.append(tex_file.name)
@@ -166,16 +165,6 @@ class Query(object):
                                    'error_arg': 'log file missing'}
                     self.result_lock.release()
                     return
-
-                # maybe do another build and try to resolve undefined references
-                do_another_build = False
-                if self.latex_interpreter != 'latexmk' and self.undefined_reference_count > 0:
-                    if self.error_count == 0:
-                        if last_undefined_reference_count == -1:
-                            do_another_build = True
-                        elif self.undefined_reference_count < last_undefined_reference_count:
-                            do_another_build = True
-                        last_undefined_reference_count = self.undefined_reference_count
         
             pdf_position = self.parse_synctex(tex_file.name, pdf_filename)
             if self.process != None:
@@ -241,6 +230,7 @@ class Query(object):
         else:
             return None
 
+    #@timer
     def parse_build_log(self, log_filename):
         try: file = open(log_filename, 'rb')
         except FileNotFoundError as e: raise e
@@ -249,64 +239,148 @@ class Query(object):
             doc_texts = dict()
 
             def repl(match):
-                filename = match.group(2).strip()
+                filename = os.path.normpath(self.directory_name + '/' + match.group(2).strip())
                 doc_texts[filename] = match.group(3)
                 return ''
             text = self.doc_regex.sub(repl, text)
             doc_texts[self.tex_filename] = text
 
             self.log_messages = list()
-            self.undefined_reference_count = 0
+            self.do_another_build = False
             self.error_count = 0
+
             for filename, text in doc_texts.items():
-                for match in self.item_regex.finditer(text):
-                    lines = match.group(1)
+                matches = self.item_regex.split(text)
+                buffer = ''
+                for match in reversed(matches):
+                    if not self.item_regex.fullmatch(match):
+                        buffer += match
+                    else:
+                        match += buffer
+                        buffer = ''
+                        matchiter = iter(match.splitlines())
+                        line = next(matchiter)
 
-                    if lines.startswith('Overfull \hbox'):
-                        line_number = int(self.badbox_line_number_regex.search(lines).group(1))
-                        text = lines.split('\n')[0].strip()
-                        self.log_messages.append(('Badbox', None, filename, line_number, text))
+                        if line.startswith('LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.'):
+                            self.do_another_build = True
 
-                    elif lines.startswith('Underfull \hbox'):
-                        line_number = int(self.badbox_line_number_regex.search(lines).group(1))
-                        text = lines.split('\n')[0].strip()
-                        self.log_messages.append(('Badbox', None, filename, line_number, text))
+                        elif line.startswith('Overfull \hbox'):
+                            line_number_match = self.badbox_line_number_regex.search(line)
+                            if line_number_match != None:
+                                line_number = int(line_number_match.group(1))
+                                text = line.strip()
+                                self.log_messages.append(('Badbox', None, filename, line_number, text))
 
-                    elif lines.startswith('!'):
-                        line_number_match = self.other_line_number_regex.search(lines)
-                        if line_number_match != None:
-                            line_number = int(line_number_match.group(2))
-                            lines = lines.split('\n')
-                            if lines[0].startswith('! Undefined control sequence'):
-                                line = ' '.join([lines[0], lines[1].rsplit(' ', 1)[1]]).strip()
-                            else:
-                                line = lines[0].strip()
-                            self.log_messages.append(('Error', None, filename, line_number, line))
-                        else:
-                            self.log_messages.append(('Error', None, filename, -1, lines.split('\n')[0].strip()))
-                        self.error_count += 1
+                        elif line.startswith('Underfull \hbox'):
+                            line_number_match = self.badbox_line_number_regex.search(line)
+                            if line_number_match != None:
+                                line_number = int(line_number_match.group(1))
+                                text = line.strip()
+                                self.log_messages.append(('Badbox', None, filename, line_number, text))
 
-                    elif lines.startswith('LaTeX Warning: Reference '):
-                        line_number_match = self.other_line_number_regex.search(lines)
-                        if line_number_match != None:
-                            line_number = int(line_number_match.group(2))
-                            lines = lines.split('\n')
-                            line = lines[0].strip()
-                            self.undefined_reference_count += 1
-                            self.log_messages.append(('Warning', 'Undefined Reference', filename, line_number, line))
-
-                    elif lines.startswith('LaTeX Warning:'):
-                        line_number_match = self.other_line_number_regex.search(lines)
-                        if line_number_match != None:
-                            line_number = int(line_number_match.group(2))
-                        else:
+                        elif line.startswith('! Undefined control sequence'):
+                            text = line.strip()
                             line_number = -1
-                        lines = lines.split('\n')
-                        line = lines[0].strip()
-                        self.log_messages.append(('Warning', None, filename, line_number, line))
+                            for i in range(10):
+                                line_number_match = self.other_line_number_regex.search(line)
+                                if line_number_match != None:
+                                    line_number = int(line_number_match.group(2))
+                                else:
+                                    try:
+                                        line = next(matchiter)
+                                    except StopIteration:
+                                        break
+                            self.log_messages.append(('Error', 'Undefined control sequence', filename, line_number, text))
+                            self.error_count += 1
 
-                    elif lines.startswith('LaTeX Font Warning:'):
-                        pass
+                        elif line.startswith('! LaTeX Error'):
+                            text = line[15:].strip()
+                            line_number = -1
+                            for i in range(10):
+                                line_number_match = self.other_line_number_regex.search(line)
+                                if line_number_match != None:
+                                    line_number = int(line_number_match.group(2))
+                                else:
+                                    try:
+                                        line = next(matchiter)
+                                    except StopIteration:
+                                        break
+                            self.log_messages.append(('Error', None, filename, line_number, text))
+                            self.error_count += 1
+
+                        elif line.startswith('LaTeX Warning: Reference '):
+                            text = line[15:].strip()
+                            line_number = -1
+                            for i in range(10):
+                                line_number_match = self.other_line_number_regex.search(line)
+                                if line_number_match != None:
+                                    line_number = int(line_number_match.group(2))
+                                else:
+                                    try:
+                                        line = next(matchiter)
+                                    except StopIteration:
+                                        break
+                            self.log_messages.append(('Warning', 'Undefined Reference', filename, line_number, text))
+
+                        elif line.startswith('Package '):
+                            text = line.split(':')[1].strip()
+                            line_number = -1
+                            self.log_messages.append(('Warning', None, filename, line_number, text))
+
+                        elif line.startswith('LaTeX Warning: '):
+                            text = line[15:].strip()
+                            line_number = -1
+                            if not line.startswith('LaTeX Warning: There were'):
+                                for i in range(10):
+                                    line_number_match = self.other_line_number_regex.search(line)
+                                    if line_number_match != None:
+                                        line_number = int(line_number_match.group(2))
+                                    else:
+                                        try:
+                                            line = next(matchiter)
+                                        except StopIteration:
+                                            break
+                            self.log_messages.append(('Warning', None, filename, line_number, text))
+
+                        elif line.startswith('No file ') or (line.startswith('File') and line.endswith(' does not exist.\n')):
+                            text = line.strip()
+                            line_number = -1
+                            if not line.startswith('No file ' + os.path.basename(log_filename).rsplit('.log', 1)[0]):
+                                self.log_messages.append(('Error', None, filename, line_number, text))
+                        elif line.startswith('! I can\'t find file\.'):
+                            text = line.strip()
+                            line_number = -1
+                            self.log_messages.append(('Error', None, filename, line_number, text))
+
+                        elif line.startswith('! File'):
+                            text = line[2:].strip()
+                            line_number = -1
+                            for i in range(10):
+                                line_number_match = self.other_line_number_regex.search(line)
+                                if line_number_match != None:
+                                    line_number = int(line_number_match.group(2))
+                                else:
+                                    try:
+                                        line = next(matchiter)
+                                    except StopIteration:
+                                        break
+                            self.log_messages.append(('Error', None, filename, line_number, text))
+                            self.error_count += 1
+
+                        elif line.startswith('! '):
+                            text = line[2:].strip()
+                            line_number = -1
+                            for i in range(10):
+                                line_number_match = self.other_line_number_regex.search(line)
+                                if line_number_match != None:
+                                    line_number = int(line_number_match.group(2))
+                                else:
+                                    try:
+                                        line = next(matchiter)
+                                    except StopIteration:
+                                        break
+                            self.log_messages.append(('Error', None, filename, line_number, text))
+                            self.error_count += 1
 
     def cleanup_build_files(self, tex_file_name):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' , '.ilg',
