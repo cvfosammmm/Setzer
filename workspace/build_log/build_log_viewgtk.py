@@ -64,6 +64,11 @@ class BuildLogView(Gtk.VBox):
             return 1
         elif message_type1 == 'Error' and message_type2 != 'Error':
             return 0
+        if line_number1 == -1:
+            if line_number2 == -1:
+                return 0
+            else:
+                return 1
         if line_number1 > line_number2:
             return 1
         elif line_number1 == line_number2:
@@ -84,7 +89,7 @@ class BuildLogRowView(Gtk.HBox):
         self.filename = filename
         self.filename_display = filename.rsplit('/', 1)[1]
         self.line_number = line_number
-        self.line_number_display = "Line " + str(line_number)
+        self.line_number_display = 'Line ' + str(line_number) if line_number >= 0 else ''
 
         self.icon_box = Gtk.VBox()
         self.icon = Gtk.Image.new_from_icon_name(self.icon_name, Gtk.IconSize.MENU)

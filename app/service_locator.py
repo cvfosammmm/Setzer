@@ -39,7 +39,7 @@ class ServiceLocator(object):
     build_log_doc_regex = re.compile('(\\n\\n\(|\\n\\n \()(.*\.tex)\\n((.|\\n)*)\\n\\n\) \[')
     build_log_item_regex = re.compile('(Overfull \\\\hbox.*|Underfull \\\\hbox.*|! Undefined control sequence\.\\n.*|! LaTeX Error.*\\n.*\\n.*\\n.*\\n.*\\n.*\\n.*|!.*\\n.*\\n.*\\n.*\\n.*\\n.*\\n.*|! I can\'t find file.*\n.*|LaTeX Warning: Reference .* undefined on .*|LaTeX Warning:.*\\n.*\\n.*\\n.*\\n.*\\n.*|LaTeX Font Warning:.*)\\n')
     build_log_badbox_line_number_regex = re.compile('lines ([0-9]+)--([0-9]+)')
-    build_log_other_line_number_regex = re.compile('l.([0-9]+) | input line ([0-9]+).')
+    build_log_other_line_number_regex = re.compile('(l.| input line )([0-9]+)( |.)')
 
     def init_dialogs(main_window, workspace):
         settings = ServiceLocator.get_settings()
