@@ -111,19 +111,23 @@ class Query(object):
         self.process = None
         self.result = None
         self.result_lock = thread.allocate_lock()
-        self.log_messages = list()
         self.synctex_args = synctex_arguments
         self.doc_regex = ServiceLocator.get_build_log_doc_regex()
         self.item_regex = ServiceLocator.get_build_log_item_regex()
         self.badbox_line_number_regex = ServiceLocator.get_build_log_badbox_line_number_regex()
         self.other_line_number_regex = ServiceLocator.get_build_log_other_line_number_regex()
+        self.force_building_to_stop = False
 
+        self.latex_interpreter = latex_interpreter
         self.build_command_defaults = dict()
         self.build_command_defaults['latexmk'] = 'latexmk -synctex=1 -interaction=nonstopmode -pdf'
         self.build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode -pdf'
         self.build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode -pdf'
         self.build_command_defaults['lualatex'] = 'lualatex -synctex=1 -interaction=nonstopmode -pdf'
-        self.build_command = self.build_command_defaults[latex_interpreter]
+        self.build_command = self.build_command_defaults[self.latex_interpreter]
+
+        self.undefined_reference_count = 0
+        self.error_count = 0
 
     def build(self):
         with tempfile.TemporaryDirectory() as tmp_directory_name:
@@ -133,31 +137,45 @@ class Query(object):
             log_filename = tmp_directory_name + '/' + os.path.basename(tex_file.name).rsplit('.tex', 1)[0] + '.log'
 
             # build pdf
-            arguments = self.build_command.split()
-            arguments.append('-output-directory=' + tmp_directory_name)
-            arguments.append(tex_file.name)
-            try:
-                self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
-            except FileNotFoundError:
-                self.cleanup_build_files(tex_file.name)
-                self.result_lock.acquire()
-                self.result = {'document_controller': self.document_controller, 
-                               'error': 'interpreter_missing',
-                               'error_arg': arguments[0]}
-                self.result_lock.release()
-                return
-            self.process.wait()
+            do_another_build = True
+            last_undefined_reference_count = -1
+            while do_another_build and not self.force_building_to_stop:
+                arguments = self.build_command.split()
+                arguments.append('-output-directory=' + tmp_directory_name)
+                arguments.append(tex_file.name)
+                try:
+                    self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
+                except FileNotFoundError:
+                    self.cleanup_build_files(tex_file.name)
+                    self.result_lock.acquire()
+                    self.result = {'document_controller': self.document_controller, 
+                                   'error': 'interpreter_missing',
+                                   'error_arg': arguments[0]}
+                    self.result_lock.release()
+                    return
+                self.process.wait()
 
-            # parse results
-            try: self.parse_build_log(log_filename)
-            except FileNotFoundError as e:
-                self.cleanup_build_files(tex_file.name)
-                self.result_lock.acquire()
-                self.result = {'document_controller': self.document_controller, 
-                               'error': 'interpreter_not_working',
-                               'error_arg': 'log file missing'}
-                self.result_lock.release()
-                return
+                # parse results
+                try: 
+                    self.parse_build_log(log_filename)
+                except FileNotFoundError as e:
+                    self.cleanup_build_files(tex_file.name)
+                    self.result_lock.acquire()
+                    self.result = {'document_controller': self.document_controller, 
+                                   'error': 'interpreter_not_working',
+                                   'error_arg': 'log file missing'}
+                    self.result_lock.release()
+                    return
+
+                # maybe do another build and try to resolve undefined references
+                do_another_build = False
+                if self.latex_interpreter != 'latexmk' and self.undefined_reference_count > 0:
+                    if self.error_count == 0:
+                        if last_undefined_reference_count == -1:
+                            do_another_build = True
+                        elif self.undefined_reference_count < last_undefined_reference_count:
+                            do_another_build = True
+                        last_undefined_reference_count = self.undefined_reference_count
         
             pdf_position = self.parse_synctex(tex_file.name, pdf_filename)
             if self.process != None:
@@ -188,6 +206,7 @@ class Query(object):
         if self.process != None:
             self.process.kill()
             self.process = None
+            self.force_building_to_stop = True
     
     def get_result(self):
         return_value = None
@@ -236,6 +255,9 @@ class Query(object):
             text = self.doc_regex.sub(repl, text)
             doc_texts[self.tex_filename] = text
 
+            self.log_messages = list()
+            self.undefined_reference_count = 0
+            self.error_count = 0
             for filename, text in doc_texts.items():
                 for match in self.item_regex.finditer(text):
                     lines = match.group(1)
@@ -243,12 +265,12 @@ class Query(object):
                     if lines.startswith('Overfull \hbox'):
                         line_number = int(self.badbox_line_number_regex.search(lines).group(1))
                         text = lines.split('\n')[0].strip()
-                        self.log_messages.append(('Badbox', filename, line_number, text))
+                        self.log_messages.append(('Badbox', None, filename, line_number, text))
 
                     elif lines.startswith('Underfull \hbox'):
                         line_number = int(self.badbox_line_number_regex.search(lines).group(1))
                         text = lines.split('\n')[0].strip()
-                        self.log_messages.append(('Badbox', filename, line_number, text))
+                        self.log_messages.append(('Badbox', None, filename, line_number, text))
 
                     elif lines.startswith('!'):
                         line_number_match = self.other_line_number_regex.search(lines)
@@ -259,15 +281,19 @@ class Query(object):
                                 line = ' '.join([lines[0], lines[1].rsplit(' ', 1)[1]]).strip()
                             else:
                                 line = lines[0].strip()
-                            self.log_messages.append(('Error', filename, line_number, line))
+                            self.log_messages.append(('Error', None, filename, line_number, line))
+                        else:
+                            self.log_messages.append(('Error', None, filename, -1, lines.split('\n')[0].strip()))
+                        self.error_count += 1
 
-                    elif lines.startswith('LaTeX Warning: Reference'):
+                    elif lines.startswith('LaTeX Warning: Reference '):
                         line_number_match = self.other_line_number_regex.search(lines)
                         if line_number_match != None:
                             line_number = int(line_number_match.group(2))
                             lines = lines.split('\n')
                             line = lines[0].strip()
-                            self.log_messages.append(('Warning', filename, line_number, line))
+                            self.undefined_reference_count += 1
+                            self.log_messages.append(('Warning', 'Undefined Reference', filename, line_number, line))
 
                     elif lines.startswith('LaTeX Warning:'):
                         pass

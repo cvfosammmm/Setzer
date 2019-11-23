@@ -35,7 +35,7 @@ class BuildLogPresenter(object):
 
         if change_code == 'build_log_new_item':
             item = parameter
-            row = BuildLogRowView(item[0], item[1], item[2], item[3])
+            row = BuildLogRowView(item[0], item[2], item[3], item[4])
             self.view.list.prepend(row)
 
         if change_code == 'build_log_finished_adding':

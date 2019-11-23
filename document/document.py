@@ -229,7 +229,7 @@ class Document(Observable):
             self.change_state('ready_for_building')
 
     def stop_building(self):
-        self.document.change_state('building_to_stop')
+        self.change_state('building_to_stop')
         
     def cleanup_build_files(self):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,'.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc']
