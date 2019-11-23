@@ -247,13 +247,21 @@ class Query(object):
                     elif lines.startswith('!'):
                         line_number_match = self.other_line_number_regex.search(lines)
                         if line_number_match != None:
-                            line_number = line_number_match.group(1)
+                            line_number = int(line_number_match.group(1))
                             lines = lines.split('\n')
                             if lines[0].startswith('! Undefined control sequence'):
                                 line = ' '.join([lines[0], lines[1].rsplit(' ', 1)[1]]).strip()
                             else:
                                 line = lines[0].strip()
                             self.log_messages.append(('Error', filename, line_number, line))
+
+                    elif lines.startswith('LaTeX Warning: Reference'):
+                        line_number_match = self.other_line_number_regex.search(lines)
+                        if line_number_match != None:
+                            line_number = int(line_number_match.group(2))
+                            lines = lines.split('\n')
+                            line = lines[0].strip()
+                            self.log_messages.append(('Warning', filename, line_number, line))
 
                     elif lines.startswith('LaTeX Warning:'):
                         pass
