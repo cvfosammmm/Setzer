@@ -63,24 +63,37 @@ class BuildLogView(Gtk.VBox):
         elif message_type1 == 'Error' and message_type2 != 'Error':
             return 0
         elif message_type1 == 'Error' and message_type2 == 'Error':
-            return self.line_number_sort(row1, row2)
+            return self.file_number_sort(row1, row2)
+
         if message_type1 != 'Warning' and message_type2 == 'Warning':
             return 1
         elif message_type1 == 'Warning' and message_type2 != 'Warning':
-            return 0
+            return -1
+        else:
+            return self.file_number_sort(row1, row2)
+
+    def file_number_sort(self, row1, row2):
+        file_no1 = row1.get_child().file_number
+        file_no2 = row2.get_child().file_number
+
+        if file_no1 > file_no2:
+            return 1
+        elif file_no1 < file_no2:
+            return -1
         else:
             return self.line_number_sort(row1, row2)
 
-    def line_number_sort(self, row1, row2, user_data=None):
+    def line_number_sort(self, row1, row2):
         line_number1 = row1.get_child().line_number
         line_number2 = row2.get_child().line_number
+
         if line_number1 != -1 and line_number2 == -1:
             return -1
-        if line_number1 == -1 and line_number2 != -1:
+        elif line_number1 == -1 and line_number2 != -1:
             return 1
-        if line_number1 == -1 and line_number2 == -1:
+        elif line_number1 == -1 and line_number2 == -1:
             return 0
-        if line_number1 > line_number2:
+        elif line_number1 > line_number2:
             return 1
         elif line_number1 == line_number2:
             return 0
@@ -90,7 +103,7 @@ class BuildLogView(Gtk.VBox):
 
 class BuildLogRowView(Gtk.HBox):
 
-    def __init__(self, message_type, filename, line_number, message):
+    def __init__(self, message_type, filename, file_number, line_number, message):
         Gtk.HBox.__init__(self)
 
         symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
@@ -99,6 +112,7 @@ class BuildLogRowView(Gtk.HBox):
         self.icon_name = symbols[message_type]
         self.filename = filename
         self.filename_display = filename.rsplit('/', 1)[1]
+        self.file_number = file_number
         self.line_number = line_number
         self.line_number_display = 'Line ' + str(line_number) if line_number >= 0 else ''
 

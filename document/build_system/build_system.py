@@ -156,7 +156,7 @@ class Query(object):
 
                 # parse results
                 try: 
-                    self.parse_build_log(log_filename)
+                    self.parse_build_log(log_filename, tex_file.name)
                 except FileNotFoundError as e:
                     self.cleanup_build_files(tex_file.name)
                     self.result_lock.acquire()
@@ -231,25 +231,52 @@ class Query(object):
             return None
 
     #@timer
-    def parse_build_log(self, log_filename):
+    def parse_build_log(self, log_filename, tex_filename):
         try: file = open(log_filename, 'rb')
         except FileNotFoundError as e: raise e
         else:
             text = file.read().decode('utf-8', errors='ignore')
             doc_texts = dict()
 
-            def repl(match):
-                filename = os.path.normpath(self.directory_name + '/' + match.group(2).strip())
-                doc_texts[filename] = match.group(3)
-                return ''
-            text = self.doc_regex.sub(repl, text)
+            matches = self.doc_regex.split(text)
+            buffer = ''
+            for match in reversed(matches):
+                if not self.doc_regex.fullmatch(match):
+                    buffer += match
+                else:
+                    match = match.strip() + buffer
+                    buffer = ''
+                    filename = self.doc_regex.match(match).group(2).strip()
+                    if not filename.startswith('/'):
+                        filename = os.path.normpath(self.directory_name + '/' + filename)
+                    if not filename == tex_filename:
+                        open_brackets = 0
+                        char_count = 0
+                        for char in match:
+                            if char == ')':
+                                open_brackets -= 1
+                            if char == '(':
+                                open_brackets += 1
+                            char_count += 1
+                            if open_brackets == 0:
+                                break
+                        match = match[:char_count]
+                        doc_texts[filename] = match
+                        text = text.replace(match, '')
+                    buffer = ''
             doc_texts[self.tex_filename] = text
 
             self.log_messages = list()
             self.do_another_build = False
             self.error_count = 0
 
+            file_no = 0
             for filename, text in doc_texts.items():
+                if filename == self.tex_filename:
+                    file_no = 0
+                else:
+                    file_no += 1
+
                 matches = self.item_regex.split(text)
                 buffer = ''
                 for match in reversed(matches):
@@ -260,7 +287,6 @@ class Query(object):
                         buffer = ''
                         matchiter = iter(match.splitlines())
                         line = next(matchiter)
-
                         if line.startswith('LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.'):
                             self.do_another_build = True
 
@@ -269,63 +295,63 @@ class Query(object):
                             if line_number_match != None:
                                 line_number = int(line_number_match.group(1))
                                 text = line.strip()
-                                self.log_messages.append(('Badbox', None, filename, line_number, text))
+                                self.log_messages.append(('Badbox', None, filename, file_no, line_number, text))
 
                         elif line.startswith('Underfull \hbox'):
                             line_number_match = self.badbox_line_number_regex.search(line)
                             if line_number_match != None:
                                 line_number = int(line_number_match.group(1))
                                 text = line.strip()
-                                self.log_messages.append(('Badbox', None, filename, line_number, text))
+                                self.log_messages.append(('Badbox', None, filename, file_no, line_number, text))
 
                         elif line.startswith('! Undefined control sequence'):
                             text = line.strip()
                             line_number = self.bl_get_line_number(line, matchiter)
-                            self.log_messages.append(('Error', 'Undefined control sequence', filename, line_number, text))
+                            self.log_messages.append(('Error', 'Undefined control sequence', filename, file_no, line_number, text))
                             self.error_count += 1
 
                         elif line.startswith('! LaTeX Error'):
                             text = line[15:].strip()
                             line_number = self.bl_get_line_number(line, matchiter)
-                            self.log_messages.append(('Error', None, filename, line_number, text))
+                            self.log_messages.append(('Error', None, filename, file_no, line_number, text))
                             self.error_count += 1
 
                         elif line.startswith('LaTeX Warning: Reference '):
                             text = line[15:].strip()
                             line_number = self.bl_get_line_number(line, matchiter)
-                            self.log_messages.append(('Warning', 'Undefined Reference', filename, line_number, text))
+                            self.log_messages.append(('Warning', 'Undefined Reference', filename, file_no, line_number, text))
 
                         elif line.startswith('Package '):
                             text = line.split(':')[1].strip()
                             line_number = -1
-                            self.log_messages.append(('Warning', None, filename, line_number, text))
+                            self.log_messages.append(('Warning', None, filename, file_no, line_number, text))
 
                         elif line.startswith('LaTeX Warning: '):
                             text = line[15:].strip()
                             line_number = self.bl_get_line_number(line, matchiter)
-                            self.log_messages.append(('Warning', None, filename, line_number, text))
+                            self.log_messages.append(('Warning', None, filename, file_no, line_number, text))
 
                         elif line.startswith('No file ') or (line.startswith('File') and line.endswith(' does not exist.\n')):
                             text = line.strip()
                             line_number = -1
                             if not line.startswith('No file ' + os.path.basename(log_filename).rsplit('.log', 1)[0]):
-                                self.log_messages.append(('Error', None, filename, line_number, text))
+                                self.log_messages.append(('Error', None, filename, file_no, line_number, text))
 
                         elif line.startswith('! I can\'t find file\.'):
                             text = line.strip()
                             line_number = -1
-                            self.log_messages.append(('Error', None, filename, line_number, text))
+                            self.log_messages.append(('Error', None, filename, file_no, line_number, text))
 
                         elif line.startswith('! File'):
                             text = line[2:].strip()
                             line_number = self.bl_get_line_number(line, matchiter)
-                            self.log_messages.append(('Error', None, filename, line_number, text))
+                            self.log_messages.append(('Error', None, filename, file_no, line_number, text))
                             self.error_count += 1
 
                         elif line.startswith('! '):
                             text = line[2:].strip()
                             line_number = self.bl_get_line_number(line, matchiter)
-                            self.log_messages.append(('Error', None, filename, line_number, text))
+                            self.log_messages.append(('Error', None, filename, file_no, line_number, text))
                             self.error_count += 1
 
     def bl_get_line_number(self, line, matchiter):

@@ -51,14 +51,14 @@ class BuildLog(Observable):
     def update_items(self, just_built=False):
         self.clear_items()
         for item in self.document.build_log_items:
-            self.add_item(item[0], item[1], item[2], item[3], item[4])
+            self.add_item(item[0], item[1], item[2], item[3], item[4], item[5])
         self.signal_finish_adding()
 
         if just_built and self.has_items(self.settings.get_value('preferences', 'autoshow_build_log')):
             self.workspace.set_show_build_log(True)
 
-    def add_item(self, item_type, specific_type, filename, line_number, message):
-        item = [item_type, specific_type, filename, line_number, message]
+    def add_item(self, item_type, specific_type, filename, file_no, line_number, message):
+        item = [item_type, specific_type, filename, file_no, line_number, message]
         self.items.append(item)
         self.add_change_code('build_log_new_item', item)
 
