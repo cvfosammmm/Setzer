@@ -47,6 +47,11 @@
 	</provides>
 
     <releases>
+        <release version="0.0.7" date="2019-11-24">
+            <description>
+                <p>Build multiple times to resolve undefined references, show warnings in build log, ...</p>
+            </description>
+        </release>
         <release version="0.0.6" date="2019-11-21">
             <description>
                 <p>Indent multi-line inserts, ...</p>

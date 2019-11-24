@@ -40,7 +40,7 @@ class AboutDialog(Dialog):
         self.view.set_transient_for(self.main_window)
         self.view.set_modal(True)
         self.view.set_program_name('Setzer')
-        self.view.set_version('0.0.6')
+        self.view.set_version('0.0.7')
         self.view.set_copyright('Copyright © 2018-2019 - the Setzer developers')
         self.view.set_comments('Setzer is a LaTeX editor.')
         self.view.set_license_type(Gtk.License.GPL_3_0)
