@@ -180,8 +180,6 @@ class Query(object):
                     try: shutil.move(pdf_filename, self.new_pdf_filename)
                     except FileNotFoundError: self.new_pdf_filename = None
                 else:
-                    try: os.remove(self.new_pdf_filename)
-                    except FileNotFoundError: pass
                     self.new_pdf_filename = None
                     pdf_position = None
 
