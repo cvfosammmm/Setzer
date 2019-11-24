@@ -280,46 +280,19 @@ class Query(object):
 
                         elif line.startswith('! Undefined control sequence'):
                             text = line.strip()
-                            line_number = -1
-                            for i in range(10):
-                                line_number_match = self.other_line_number_regex.search(line)
-                                if line_number_match != None:
-                                    line_number = int(line_number_match.group(2))
-                                else:
-                                    try:
-                                        line = next(matchiter)
-                                    except StopIteration:
-                                        break
+                            line_number = self.bl_get_line_number(line, matchiter)
                             self.log_messages.append(('Error', 'Undefined control sequence', filename, line_number, text))
                             self.error_count += 1
 
                         elif line.startswith('! LaTeX Error'):
                             text = line[15:].strip()
-                            line_number = -1
-                            for i in range(10):
-                                line_number_match = self.other_line_number_regex.search(line)
-                                if line_number_match != None:
-                                    line_number = int(line_number_match.group(2))
-                                else:
-                                    try:
-                                        line = next(matchiter)
-                                    except StopIteration:
-                                        break
+                            line_number = self.bl_get_line_number(line, matchiter)
                             self.log_messages.append(('Error', None, filename, line_number, text))
                             self.error_count += 1
 
                         elif line.startswith('LaTeX Warning: Reference '):
                             text = line[15:].strip()
-                            line_number = -1
-                            for i in range(10):
-                                line_number_match = self.other_line_number_regex.search(line)
-                                if line_number_match != None:
-                                    line_number = int(line_number_match.group(2))
-                                else:
-                                    try:
-                                        line = next(matchiter)
-                                    except StopIteration:
-                                        break
+                            line_number = self.bl_get_line_number(line, matchiter)
                             self.log_messages.append(('Warning', 'Undefined Reference', filename, line_number, text))
 
                         elif line.startswith('Package '):
@@ -329,17 +302,7 @@ class Query(object):
 
                         elif line.startswith('LaTeX Warning: '):
                             text = line[15:].strip()
-                            line_number = -1
-                            if not line.startswith('LaTeX Warning: There were'):
-                                for i in range(10):
-                                    line_number_match = self.other_line_number_regex.search(line)
-                                    if line_number_match != None:
-                                        line_number = int(line_number_match.group(2))
-                                    else:
-                                        try:
-                                            line = next(matchiter)
-                                        except StopIteration:
-                                            break
+                            line_number = self.bl_get_line_number(line, matchiter)
                             self.log_messages.append(('Warning', None, filename, line_number, text))
 
                         elif line.startswith('No file ') or (line.startswith('File') and line.endswith(' does not exist.\n')):
@@ -347,6 +310,7 @@ class Query(object):
                             line_number = -1
                             if not line.startswith('No file ' + os.path.basename(log_filename).rsplit('.log', 1)[0]):
                                 self.log_messages.append(('Error', None, filename, line_number, text))
+
                         elif line.startswith('! I can\'t find file\.'):
                             text = line.strip()
                             line_number = -1
@@ -354,33 +318,27 @@ class Query(object):
 
                         elif line.startswith('! File'):
                             text = line[2:].strip()
-                            line_number = -1
-                            for i in range(10):
-                                line_number_match = self.other_line_number_regex.search(line)
-                                if line_number_match != None:
-                                    line_number = int(line_number_match.group(2))
-                                else:
-                                    try:
-                                        line = next(matchiter)
-                                    except StopIteration:
-                                        break
+                            line_number = self.bl_get_line_number(line, matchiter)
                             self.log_messages.append(('Error', None, filename, line_number, text))
                             self.error_count += 1
 
                         elif line.startswith('! '):
                             text = line[2:].strip()
-                            line_number = -1
-                            for i in range(10):
-                                line_number_match = self.other_line_number_regex.search(line)
-                                if line_number_match != None:
-                                    line_number = int(line_number_match.group(2))
-                                else:
-                                    try:
-                                        line = next(matchiter)
-                                    except StopIteration:
-                                        break
+                            line_number = self.bl_get_line_number(line, matchiter)
                             self.log_messages.append(('Error', None, filename, line_number, text))
                             self.error_count += 1
+
+    def bl_get_line_number(self, line, matchiter):
+        for i in range(10):
+            line_number_match = self.other_line_number_regex.search(line)
+            if line_number_match != None:
+                return int(line_number_match.group(2))
+            else:
+                try:
+                    line = next(matchiter)
+                except StopIteration:
+                    return -1
+        return -1
 
     def cleanup_build_files(self, tex_file_name):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' , '.ilg',
