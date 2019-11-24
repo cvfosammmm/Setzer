@@ -171,13 +171,19 @@ class Query(object):
                 results = self.process.communicate()
                 self.process = None
 
-                try: shutil.move(pdf_filename, self.new_pdf_filename)
-                except FileNotFoundError: self.new_pdf_filename = None
-
                 if self.document_controller.settings.get_value('preferences', 'cleanup_build_files'):
                     self.cleanup_build_files(self.tex_filename)
                 else:
                     self.rename_build_files(tex_file.name)
+
+                if self.error_count == 0:
+                    try: shutil.move(pdf_filename, self.new_pdf_filename)
+                    except FileNotFoundError: self.new_pdf_filename = None
+                else:
+                    try: os.remove(self.new_pdf_filename)
+                    except FileNotFoundError: pass
+                    self.new_pdf_filename = None
+                    pdf_position = None
 
                 self.result_lock.acquire()
                 self.result = {'document_controller': self.document_controller, 
@@ -304,18 +310,6 @@ class Query(object):
                                 text = line.strip()
                                 self.log_messages.append(('Badbox', None, filename, file_no, line_number, text))
 
-                        elif line.startswith('! Undefined control sequence'):
-                            text = line.strip()
-                            line_number = self.bl_get_line_number(line, matchiter)
-                            self.log_messages.append(('Error', 'Undefined control sequence', filename, file_no, line_number, text))
-                            self.error_count += 1
-
-                        elif line.startswith('! LaTeX Error'):
-                            text = line[15:].strip()
-                            line_number = self.bl_get_line_number(line, matchiter)
-                            self.log_messages.append(('Error', None, filename, file_no, line_number, text))
-                            self.error_count += 1
-
                         elif line.startswith('LaTeX Warning: Reference '):
                             text = line[15:].strip()
                             line_number = self.bl_get_line_number(line, matchiter)
@@ -331,16 +325,30 @@ class Query(object):
                             line_number = self.bl_get_line_number(line, matchiter)
                             self.log_messages.append(('Warning', None, filename, file_no, line_number, text))
 
+                        elif line.startswith('! Undefined control sequence'):
+                            text = line.strip()
+                            line_number = self.bl_get_line_number(line, matchiter)
+                            self.log_messages.append(('Error', 'Undefined control sequence', filename, file_no, line_number, text))
+                            self.error_count += 1
+
+                        elif line.startswith('! LaTeX Error'):
+                            text = line[15:].strip()
+                            line_number = self.bl_get_line_number(line, matchiter)
+                            self.log_messages.append(('Error', None, filename, file_no, line_number, text))
+                            self.error_count += 1
+
                         elif line.startswith('No file ') or (line.startswith('File') and line.endswith(' does not exist.\n')):
                             text = line.strip()
                             line_number = -1
                             if not line.startswith('No file ' + os.path.basename(log_filename).rsplit('.log', 1)[0]):
                                 self.log_messages.append(('Error', None, filename, file_no, line_number, text))
+                                self.error_count += 1
 
                         elif line.startswith('! I can\'t find file\.'):
                             text = line.strip()
                             line_number = -1
                             self.log_messages.append(('Error', None, filename, file_no, line_number, text))
+                            self.error_count += 1
 
                         elif line.startswith('! File'):
                             text = line[2:].strip()
