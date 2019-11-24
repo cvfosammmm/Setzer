@@ -55,11 +55,11 @@ class ServiceLocator(object):
         ServiceLocator.dialogs['save_document'] = save_document_dialog.SaveDocumentDialog(main_window, workspace)
         ServiceLocator.dialogs['keyboard_shortcuts'] = keyboard_shortcuts_dialog.KeyboardShortcutsDialog(main_window)
     
-    def init_main_window(main_window):
-        ServiceLocator.main_window = main_window
-
     def get_dialog(dialog_type):
         return ServiceLocator.dialogs[dialog_type]
+
+    def init_main_window(main_window):
+        ServiceLocator.main_window = main_window
 
     def get_main_window():
         return ServiceLocator.main_window
