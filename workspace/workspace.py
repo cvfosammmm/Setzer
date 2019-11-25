@@ -89,7 +89,7 @@ class Workspace(Observable):
         self.add_change_code('document_removed', document)
 
     def create_document_from_filename(self, filename, activate=False):
-        document = Document(self.pathname, with_buffer=True)
+        document = Document(self.pathname)
         document.set_filename(filename)
         document.populate_from_filename()
         self.add_document(document)
@@ -148,10 +148,10 @@ class Workspace(Observable):
         except IOError: pass
         else:
             try: data = pickle.load(filehandle)
-            except EOFError: self.add_document(Document(self.pathname, with_buffer=True))
+            except EOFError: self.add_document(Document(self.pathname))
             else:
                 for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
-                    document = Document(self.pathname, with_buffer=True)
+                    document = Document(self.pathname)
                     document.set_filename(item['filename'])
                     if document.populate_from_filename() != False:
                         self.add_document(document)

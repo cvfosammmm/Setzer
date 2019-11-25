@@ -38,7 +38,7 @@ import re
 
 class Document(Observable):
 
-    def __init__(self, data_pathname, with_buffer=False, document_data=None):
+    def __init__(self, data_pathname):
         Observable.__init__(self)
 
         self.displayname = ''
@@ -53,14 +53,14 @@ class Document(Observable):
         self.source_buffer = None
         self.search_settings = None
         self.search_context = None
-        if with_buffer: self.init_buffer()
+        self.init_buffer()
         
         # possible states: idle, ready_for_building
         # building_in_progress, building_to_stop
         self.state = 'idle'
         
         self.data_pathname = data_pathname
-        self.document_data = dict() if document_data == None else document_data
+        self.document_data = dict()
 
         self.build_widget = build_widget.BuildWidget()
         self.build_log_items = list()

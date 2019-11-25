@@ -119,7 +119,7 @@ class WorkspaceController(object):
         if isinstance(document_candidate, Document):
             self.workspace.set_active_document(document_candidate)
         else:
-            document = Document(self.workspace.pathname, with_buffer=True)
+            document = Document(self.workspace.pathname)
             document.set_filename(filename)
             document.populate_from_filename()
             self.workspace.add_document(document)
@@ -132,14 +132,14 @@ class WorkspaceController(object):
             if document_candidate != None:
                 self.workspace.set_active_document(document_candidate)
             else:
-                document = Document(self.workspace.pathname, with_buffer=True)
+                document = Document(self.workspace.pathname)
                 document.set_filename(filename)
                 document.populate_from_filename()
                 self.workspace.add_document(document)
                 self.workspace.set_active_document(document)
 
     def on_new_document_button_click(self, button_object=None):
-        document = Document(self.workspace.pathname, with_buffer=True)
+        document = Document(self.workspace.pathname)
         self.workspace.add_document(document)
         self.workspace.set_active_document(document)
 
