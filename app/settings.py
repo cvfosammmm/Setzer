@@ -67,6 +67,10 @@ class Settings(Observable):
         self.defaults['preferences']['autoshow_build_log'] = 'errors_warnings'
         self.defaults['preferences']['latex_interpreter'] = 'xelatex'
         self.defaults['preferences']['prefer_dark_mode'] = False
+        self.defaults['preferences']['spaces_instead_of_tabs'] = True
+        self.defaults['preferences']['tab_width'] = 4
+        self.defaults['preferences']['show_line_numbers'] = True
+        self.defaults['preferences']['enable_line_wrapping'] = True
 
     def get_value(self, section, item):
         try: value = self.data[section][item]

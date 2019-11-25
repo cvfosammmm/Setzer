@@ -44,11 +44,7 @@ class DocumentView(Gtk.HBox):
         self.source_view = GtkSource.View.new_with_buffer(document.get_buffer())
         self.source_view.set_monospace(True)
         self.source_view.set_smart_home_end(True)
-        self.source_view.set_insert_spaces_instead_of_tabs(True)
         self.source_view.set_auto_indent(True)
-        self.source_view.set_tab_width(4)
-        self.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
-        self.source_view.set_show_line_numbers(True)
         self.source_view.set_left_margin(6)
         self.scrolled_window.add(self.source_view)
 

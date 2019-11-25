@@ -397,6 +397,19 @@ box.search_bar label.search_match_counter {
 }
 
 /*
+** preferences
+*/
+
+box.preferences-page checkbutton check {
+    margin-left: 1px;
+    margin-right: 6px;
+}
+box.preferences-page radiobutton radio {
+    margin-left: 1px;
+    margin-right: 6px;
+}
+
+/*
 ** document wizard
 */
 

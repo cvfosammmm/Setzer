@@ -15,6 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 import helpers.helpers as helpers
 from app.service_locator import ServiceLocator
@@ -35,6 +38,14 @@ class DocumentPresenter(object):
 
         self.document.build_widget.view.build_button.show_all()
         self.document.build_widget.view.stop_button.hide()
+
+        self.view.source_view.set_show_line_numbers(self.settings.get_value('preferences', 'show_line_numbers'))
+        self.view.source_view.set_insert_spaces_instead_of_tabs(self.settings.get_value('preferences', 'spaces_instead_of_tabs'))
+        self.view.source_view.set_tab_width(self.settings.get_value('preferences', 'tab_width'))
+        if self.settings.get_value('preferences', 'enable_line_wrapping'):
+            self.view.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+        else:
+            self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
 
         self.document.register_observer(self)
         self.document.get_buffer().connect('modified-changed', self.on_modified_change)
@@ -75,6 +86,17 @@ class DocumentPresenter(object):
             section, item, value = parameter
             if (section, item) == ('preferences', 'cleanup_build_files'):
                 self.set_clean_button_state()
+            if (section, item) == ('preferences', 'show_line_numbers'):
+                self.view.source_view.set_show_line_numbers(value)
+            if (section, item) == ('preferences', 'spaces_instead_of_tabs'):
+                self.view.source_view.set_insert_spaces_instead_of_tabs(value)
+            if (section, item) == ('preferences', 'tab_width'):
+                self.view.source_view.set_tab_width(value)
+            if (section, item) == ('preferences', 'enable_line_wrapping'):
+                if value == True:
+                    self.view.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+                else:
+                    self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
 
         if change_code == 'cleaned_up_build_files':
             self.set_clean_button_state()

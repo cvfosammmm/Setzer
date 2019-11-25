@@ -54,11 +54,26 @@ class PreferencesDialog(Dialog):
         self.view.option_latex_interpreter_xelatex.connect('toggled', self.on_interpreter_changed, 'latex_interpreter', 'xelatex')
         self.view.option_latex_interpreter_lualatex.connect('toggled', self.on_interpreter_changed, 'latex_interpreter', 'lualatex')
 
+        self.view.option_spaces_instead_of_tabs.set_active(self.settings.get_value('preferences', 'spaces_instead_of_tabs'))
+        self.view.option_spaces_instead_of_tabs.connect('toggled', self.on_check_button_toggle, 'spaces_instead_of_tabs')
+
+        self.view.tab_width_spinbutton.set_value(self.settings.get_value('preferences', 'tab_width'))
+        self.view.tab_width_spinbutton.connect('value-changed', self.spin_button_changed, 'tab_width')
+
+        self.view.option_show_line_numbers.set_active(self.settings.get_value('preferences', 'show_line_numbers'))
+        self.view.option_show_line_numbers.connect('toggled', self.on_check_button_toggle, 'show_line_numbers')
+
+        self.view.option_line_wrapping.set_active(self.settings.get_value('preferences', 'enable_line_wrapping'))
+        self.view.option_line_wrapping.connect('toggled', self.on_check_button_toggle, 'enable_line_wrapping')
+
     def on_check_button_toggle(self, button, preference_name):
         self.settings.set_value('preferences', preference_name, button.get_active())
         
     def on_radio_button_toggle(self, button, preference_name, value):
         self.settings.set_value('preferences', preference_name, value)
+
+    def spin_button_changed(self, button, preference_name):
+        self.settings.set_value('preferences', preference_name, button.get_value_as_int())
 
     def text_deleted(self, buffer, position, n_chars, preference_name):
         self.settings.set_value('preferences', preference_name, buffer.get_text())
