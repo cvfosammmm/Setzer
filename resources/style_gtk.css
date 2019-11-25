@@ -10,10 +10,6 @@ paned.sidebar_paned {
 ** document view
 */
 
-textview.view border.right {
-    padding-left: 100px;
-    background-color: #000;
-}
 box.autocomplete {
     background-color: @theme_bg_color;
     box-shadow: 0px 0px 1px mix(@borders, @theme_bg_color, 0.3);
