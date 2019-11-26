@@ -158,6 +158,7 @@ class WorkspacePresenter(object):
                 else:
                     self.main_window.sidebar_paned.child_set_property(self.sidebar, 'shrink', False)
                     self.main_window.sidebar_visible = True
+                    self.workspace.set_sidebar_position(paned.get_position())
                 if set_toggle: self.main_window.headerbar.sidebar_toggle.set_active(show_sidebar)
                 self.sidebar_animating = False
                 return False
@@ -170,6 +171,8 @@ class WorkspacePresenter(object):
 
         if show_sidebar:
             end = self.workspace.sidebar_position
+            if end == -1:
+                end = 216
         else:
             end = 0
 
@@ -213,6 +216,7 @@ class WorkspacePresenter(object):
                 else:
                     self.main_window.preview_paned.child_set_property(self.main_window.preview, 'shrink', False)
                     self.main_window.preview_visible = True
+                    self.workspace.set_preview_position(paned.get_position())
                 if set_toggle: self.main_window.headerbar.preview_toggle.set_active(show_preview)
                 self.preview_animating = False
                 return False
@@ -227,6 +231,8 @@ class WorkspacePresenter(object):
             self.main_window.preview_paned.get_style_context().remove_class('hidden-separator')
             self.main_window.preview_paned.get_style_context().add_class('visible-separator')
             end = self.workspace.preview_position
+            if end == -1:
+                end = self.main_window.preview_paned.get_allocated_width() / 2
         else:
             self.main_window.preview_paned.get_style_context().add_class('hidden-separator')
             self.main_window.preview_paned.get_style_context().remove_class('visible-separator')
@@ -275,6 +281,7 @@ class WorkspacePresenter(object):
                 else:
                     paned.child_set_property(self.main_window.build_log, 'shrink', False)
                     self.main_window.build_log_visible = True
+                    self.workspace.set_build_log_position(paned.get_position())
                 self.main_window.shortcuts_bar.button_build_log.set_active(show_build_log)
                 self.build_log_animating = False
                 return False
@@ -289,6 +296,8 @@ class WorkspacePresenter(object):
             self.main_window.build_log.show_all()
             start = self.main_window.build_log_paned.get_allocated_height()
             end = self.workspace.build_log_position
+            if end == -1:
+                end = self.main_window.build_log_paned.get_allocated_height() - 201
         else:
             start = self.main_window.build_log_paned.get_position()
             end = self.main_window.build_log_paned.get_allocated_height()
