@@ -32,6 +32,7 @@ import document.build_widget.build_widget as build_widget
 import document.search.search as search
 import document.autocomplete.autocomplete as autocomplete
 from helpers.observable import *
+from app.service_locator import ServiceLocator
 
 import re
 
@@ -65,6 +66,7 @@ class Document(Observable):
         self.build_widget = build_widget.BuildWidget()
         self.build_log_items = list()
 
+        self.settings = ServiceLocator.get_settings()
         self.view = document_view.DocumentView(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
         self.autocomplete = autocomplete.Autocomplete(self, self.view)
@@ -248,6 +250,11 @@ class Document(Observable):
         buff = self.get_buffer()
         if buff != False:
             buff.begin_user_action()
+
+            # replace tabs with spaces, if set in preferences
+            if self.settings.get_value('preferences', 'spaces_instead_of_tabs'):
+                number_of_spaces = self.settings.get_value('preferences', 'tab_width')
+                text = text.replace('\t', ' ' * number_of_spaces)
 
             dotcount = text.count('•')
             insert_iter = buff.get_iter_at_mark(buff.get_insert())

@@ -115,10 +115,10 @@ class ShortcutsBar(Gtk.HBox):
         section = Gio.Menu()
 
         section.append_item(Gio.MenuItem.new('Insert Figure (image inside freestanding block)', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\begin{figure}
-    \\begin{center}
-        \\includegraphics[scale=1]{}
-        \\caption{}
-    \\end{center}
+	\\begin{center}
+		\\includegraphics[scale=1]{}
+		\\caption{}
+	\\end{center}
 \\end{figure}
 ''']))))
         section.append_item(Gio.MenuItem.new('Insert Inline Image', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\includegraphics[scale=1]{}']))))

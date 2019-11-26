@@ -224,6 +224,12 @@ class DocumentWizard(Dialog):
             insert_start, insert_end = eval('self.get_insert_text_' + document_class + '()')
             insert_start_orig_len = len(insert_start)
 
+            # replace tabs with spaces, if set in preferences
+            if self.settings.get_value('preferences', 'spaces_instead_of_tabs'):
+                number_of_spaces = self.settings.get_value('preferences', 'tab_width')
+                insert_start = insert_start.replace('\t', ' ' * number_of_spaces)
+                insert_end = insert_end.replace('\t', ' ' * number_of_spaces)
+
             bounds = buff.get_bounds()
             buff.insert(bounds[0], insert_start)
             bounds = buff.get_bounds()
@@ -381,7 +387,7 @@ class DocumentWizard(Dialog):
 \\begin{document}
 
 \\begin{frame}
-  \\titlepage
+	\\titlepage
 \\end{frame}
 
 ''', '''
