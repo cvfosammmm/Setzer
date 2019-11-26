@@ -71,6 +71,7 @@ class Settings(Observable):
         self.defaults['preferences']['tab_width'] = 4
         self.defaults['preferences']['show_line_numbers'] = True
         self.defaults['preferences']['enable_line_wrapping'] = True
+        self.defaults['preferences']['highlight_current_line'] = False
 
     def get_value(self, section, item):
         try: value = self.data[section][item]
