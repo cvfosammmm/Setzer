@@ -127,7 +127,9 @@ class Query(object):
         self.build_command_defaults['lualatex'] = 'lualatex -synctex=1 -interaction=nonstopmode -pdf'
         self.build_command = self.build_command_defaults[self.latex_interpreter]
 
-        self.do_another_build = True
+        self.do_another_latex_build = True
+        self.do_a_bibtex_build = False
+        self.done_bibtex_build = False
         self.error_count = 0
 
     def build(self):
@@ -138,33 +140,52 @@ class Query(object):
             log_filename = tmp_directory_name + '/' + os.path.basename(tex_file.name).rsplit('.tex', 1)[0] + '.log'
 
             # build pdf
-            while self.do_another_build and not self.force_building_to_stop:
-                arguments = self.build_command.split()
-                arguments.append('-output-directory=' + tmp_directory_name)
-                arguments.append(tex_file.name)
-                try:
-                    self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
-                except FileNotFoundError:
-                    self.cleanup_build_files(tex_file.name)
-                    self.result_lock.acquire()
-                    self.result = {'document_controller': self.document_controller, 
-                                   'error': 'interpreter_missing',
-                                   'error_arg': arguments[0]}
-                    self.result_lock.release()
-                    return
-                self.process.wait()
+            while (self.do_another_latex_build or self.do_a_bibtex_build) and not self.force_building_to_stop:
+                if self.do_a_bibtex_build:
+                    arguments = ['bibtex']
+                    arguments.append(tex_file.name.rsplit('/', 1)[1][:-3] + 'aux')
+                    custom_env = os.environ.copy()
+                    custom_env['BIBINPUTS'] = self.directory_name + ':' + tmp_directory_name
+                    try:
+                        self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=tmp_directory_name, env=custom_env)
+                    except FileNotFoundError:
+                        self.cleanup_build_files(tex_file.name)
+                        self.result_lock.acquire()
+                        self.result = {'document_controller': self.document_controller, 
+                                       'error': 'interpreter_not_working',
+                                       'error_arg': self.latex_interpreter}
+                        self.result_lock.release()
+                        return
+                    self.process.wait()
+                    self.do_a_bibtex_build = False
+                    self.done_bibtex_build = True
+                else:
+                    arguments = self.build_command.split()
+                    arguments.append('-output-directory=' + tmp_directory_name)
+                    arguments.append(tex_file.name)
+                    try:
+                        self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
+                    except FileNotFoundError:
+                        self.cleanup_build_files(tex_file.name)
+                        self.result_lock.acquire()
+                        self.result = {'document_controller': self.document_controller, 
+                                       'error': 'interpreter_missing',
+                                       'error_arg': arguments[0]}
+                        self.result_lock.release()
+                        return
+                    self.process.wait()
 
-                # parse results
-                try: 
-                    self.parse_build_log(log_filename, tex_file.name)
-                except FileNotFoundError as e:
-                    self.cleanup_build_files(tex_file.name)
-                    self.result_lock.acquire()
-                    self.result = {'document_controller': self.document_controller, 
-                                   'error': 'interpreter_not_working',
-                                   'error_arg': 'log file missing'}
-                    self.result_lock.release()
-                    return
+                    # parse results
+                    try: 
+                        self.parse_build_log(log_filename, tex_file.name)
+                    except FileNotFoundError as e:
+                        self.cleanup_build_files(tex_file.name)
+                        self.result_lock.acquire()
+                        self.result = {'document_controller': self.document_controller, 
+                                       'error': 'interpreter_not_working',
+                                       'error_arg': 'log file missing'}
+                        self.result_lock.release()
+                        return
         
             pdf_position = self.parse_synctex(tex_file.name, pdf_filename)
             if self.process != None:
@@ -271,7 +292,8 @@ class Query(object):
             doc_texts[self.tex_filename] = text
 
             self.log_messages = list()
-            self.do_another_build = False
+            self.do_another_latex_build = False
+            self.do_a_bibtex_build = False
             self.error_count = 0
 
             file_no = 0
@@ -292,7 +314,11 @@ class Query(object):
                         matchiter = iter(match.splitlines())
                         line = next(matchiter)
                         if line.startswith('LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.'):
-                            self.do_another_build = True
+                            self.do_another_latex_build = True
+
+                        elif line.startswith('No file ' + tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1] + '.bbl.') and not self.done_bibtex_build:
+                            self.do_another_latex_build = True
+                            self.do_a_bibtex_build = True
 
                         elif line.startswith('Overfull \hbox'):
                             line_number_match = self.badbox_line_number_regex.search(line)
