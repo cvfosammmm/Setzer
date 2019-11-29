@@ -40,6 +40,7 @@ class ServiceLocator(object):
     build_log_item_regex = re.compile('((?:Overfull \\\\hbox|Underfull \\\\hbox|No file .*\.|File .* does not exist\.|! I can\'t find file\.|! File .* not found\.|(?:LaTeX|pdfTeX|LuaTeX|Package|Class) .*Warning.*:|LaTeX Font Warning:|! Undefined control sequence\.|! Package .* Error:|! (?:LaTeX|LuaTeX) Error:|No file .*\.bbl.).*\\n)')
     build_log_badbox_line_number_regex = re.compile('lines ([0-9]+)--([0-9]+)')
     build_log_other_line_number_regex = re.compile('(l.| input line )([0-9]+)( |.)')
+    bibtex_log_item_regex = re.compile('Warning--(.*)\n--line ([0-9]+) of file (.*)')
 
     def init_dialogs(main_window, workspace):
         settings = ServiceLocator.get_settings()
@@ -75,7 +76,10 @@ class ServiceLocator(object):
     
     def get_build_log_other_line_number_regex():
         return ServiceLocator.build_log_other_line_number_regex
-    
+
+    def get_bibtex_log_item_regex():
+        return ServiceLocator.bibtex_log_item_regex
+
     def get_settings():
         if ServiceLocator.settings == None:
             ServiceLocator.settings = settingscontroller.Settings()

@@ -113,10 +113,14 @@ class Query(object):
         self.result = None
         self.result_lock = thread.allocate_lock()
         self.synctex_args = synctex_arguments
+
+        self.log_messages = list()
+        self.bibtex_log_messages = list()
         self.doc_regex = ServiceLocator.get_build_log_doc_regex()
         self.item_regex = ServiceLocator.get_build_log_item_regex()
         self.badbox_line_number_regex = ServiceLocator.get_build_log_badbox_line_number_regex()
         self.other_line_number_regex = ServiceLocator.get_build_log_other_line_number_regex()
+        self.bibtex_log_item_regex = ServiceLocator.get_bibtex_log_item_regex()
         self.force_building_to_stop = False
 
         self.latex_interpreter = latex_interpreter
@@ -157,6 +161,7 @@ class Query(object):
                         self.result_lock.release()
                         return
                     self.process.wait()
+
                     self.do_a_bibtex_build = False
                     self.done_bibtex_build = True
                 else:
@@ -176,7 +181,7 @@ class Query(object):
                     self.process.wait()
 
                     # parse results
-                    try: 
+                    try:
                         self.parse_build_log(log_filename, tex_file.name)
                     except FileNotFoundError as e:
                         self.cleanup_build_files(tex_file.name)
@@ -187,6 +192,8 @@ class Query(object):
                         self.result_lock.release()
                         return
         
+            self.parse_bibtex_log(tex_file.name[:-3] + 'blg')
+
             pdf_position = self.parse_synctex(tex_file.name, pdf_filename)
             if self.process != None:
                 results = self.process.communicate()
@@ -207,7 +214,7 @@ class Query(object):
                 self.result_lock.acquire()
                 self.result = {'document_controller': self.document_controller, 
                                'pdf_filename': self.new_pdf_filename, 
-                               'log_messages': self.log_messages, 
+                               'log_messages': self.log_messages + self.bibtex_log_messages, 
                                'pdf_position': pdf_position,
                                'error': None,
                                'error_arg': None}
@@ -385,6 +392,25 @@ class Query(object):
                             line_number = self.bl_get_line_number(line, matchiter)
                             self.log_messages.append(('Error', None, filename, file_no, line_number, text))
                             self.error_count += 1
+
+    def parse_bibtex_log(self, log_filename):
+        try: file = open(log_filename, 'rb')
+        except FileNotFoundError as e: pass
+        else:
+            text = file.read().decode('utf-8', errors='ignore')
+
+            self.bibtex_log_messages = list()
+            file_numbers = dict()
+            for item in self.bibtex_log_item_regex.finditer(text):
+                text = item.group(1)
+                line_number = int(item.group(2).strip())
+                filename = self.directory_name + '/' + item.group(3)
+                try:
+                    file_no = file_numbers[filename]
+                except KeyError:
+                    file_no = 10000 + len(file_numbers)
+                    file_numbers[filename] = file_no
+                self.bibtex_log_messages.append(('Warning', None, filename, file_no, line_number, text))
 
     def bl_get_line_number(self, line, matchiter):
         for i in range(10):
