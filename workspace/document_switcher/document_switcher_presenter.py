@@ -94,7 +94,7 @@ class DocumentSwitcherPresenter(object):
         self.view.in_selection_mode = True
 
     def activate_set_master_document_button(self):
-        if len(self.workspace.open_documents) > 0:
+        if len(self.workspace.open_latex_documents) > 0:
             self.view.set_master_document_button.set_sensitive(True)
         else:
             self.view.set_master_document_button.set_sensitive(False)

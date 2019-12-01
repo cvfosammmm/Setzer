@@ -41,6 +41,7 @@ class Workspace(Observable):
         self.pathname = os.path.expanduser('~') + '/.setzer'
 
         self.open_documents = list()
+        self.open_latex_documents = list()
         self.master_document = None
         self.recently_opened_documents = dict()
         self.untitled_documents_no = 0
@@ -72,12 +73,15 @@ class Workspace(Observable):
             self.untitled_documents_no += 1
         if document.get_buffer() != None:
             self.open_documents.append(document)
+            if isinstance(document, LaTeXDocument):
+                self.open_latex_documents.append(document)
             self.add_change_code('new_document', document)
             self.update_recently_opened_document(document.get_filename(), notify=True)
 
     def remove_document(self, document):
         document.save_document_data()
         self.open_documents.remove(document)
+        self.open_latex_documents.remove(document)
         if self.active_document == document:
             candidate = self.get_last_active_document()
             if candidate == None:
