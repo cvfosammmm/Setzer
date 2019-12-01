@@ -47,6 +47,11 @@
 	</provides>
 
     <releases>
+        <release version="0.1.1" date="2019-12-1">
+            <description>
+                <p>BibTeX support in the build system, edit BibTeX files, ...</p>
+            </description>
+        </release>
         <release version="0.1.0" date="2019-11-27">
             <description>
                 <p>Editor settings in preferences dialog, ...</p>
