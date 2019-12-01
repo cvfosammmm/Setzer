@@ -81,7 +81,8 @@ class Workspace(Observable):
     def remove_document(self, document):
         document.save_document_data()
         self.open_documents.remove(document)
-        self.open_latex_documents.remove(document)
+        if isinstance(document, LaTeXDocument):
+            self.open_latex_documents.remove(document)
         if self.active_document == document:
             candidate = self.get_last_active_document()
             if candidate == None:
