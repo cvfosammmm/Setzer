@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import document.document as document_model
 from app.service_locator import ServiceLocator
 
 
@@ -75,6 +76,7 @@ class DocumentSwitcherPresenter(object):
         self.view.document_list.get_style_context().remove_class('selection-mode')
         self.view.document_list.get_style_context().add_class('normal-mode')
         for item in self.view.document_list.get_children():
+            item.show()
             item.document_close_button.show()
             item.icon_box.show()
             item.radio_button.hide()
@@ -91,6 +93,8 @@ class DocumentSwitcherPresenter(object):
             item.document_close_button.hide()
             item.icon_box.hide()
             item.radio_button.show()
+            if not isinstance(item.document, document_model.LaTeXDocument):
+                item.hide()
         self.view.in_selection_mode = True
 
     def activate_set_master_document_button(self):
