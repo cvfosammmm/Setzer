@@ -67,6 +67,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.new_document_button = Gtk.MenuButton()
         self.new_document_button_label = Gtk.HBox()
         image = Gtk.Image.new_from_icon_name('document-new-symbolic', Gtk.IconSize.BUTTON)
+        image.set_margin_right(6)
         self.new_document_button_label.pack_start(image, False, False, 0)
         image = Gtk.Image.new_from_icon_name('pan-down-symbolic', Gtk.IconSize.BUTTON)
         self.new_document_button_label.pack_start(image, False, False, 0)
