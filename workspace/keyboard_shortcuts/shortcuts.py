@@ -20,7 +20,6 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk
 from gi.repository import GLib
-from gi.repository import Gio
 from gi.repository import Gtk
 from app.service_locator import ServiceLocator
 
@@ -65,8 +64,6 @@ class Shortcuts(object):
         self.main_window.app.set_accels_for_action('win.save-as', ['<Control><Shift>s'])
 
         # document edit shortcuts
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), ['<Control>b'])
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), ['<Control>i'])
         self.accel_group.connect(Gdk.keyval_from_name('quotedbl'), c_mask, flags, self.shortcut_quotes)
         
     def shortcut_open(self, accel_group=None, window=None, key=None, mask=None):
@@ -77,7 +74,7 @@ class Shortcuts(object):
             self.main_window.headerbar.open_document_button.clicked()
 
     def shortcut_new(self, accel_group=None, window=None, key=None, mask=None):
-        self.workspace_controller.on_new_document_button_click()
+        self.main_window.headerbar.new_document_button.set_active(True)
 
     def shortcut_show_open_docs(self, accel_group=None, window=None, key=None, mask=None):
         if self.main_window.headerbar.center_button.get_sensitive():
@@ -89,7 +86,10 @@ class Shortcuts(object):
                 document = self.workspace.master_document
             else:
                 document = self.workspace.active_document
-            document.controller.build_document_request()
+            try:
+                document.build_widget.build_document_request()
+            except AttributeError:
+                pass
         return True
 
     def shortcut_sidebar(self, accel_group=None, window=None, key=None, mask=None):
@@ -105,9 +105,9 @@ class Shortcuts(object):
         return True
 
     def shortcut_build_log(self, accel_group=None, window=None, key=None, mask=None):
-        document = self.workspace.get_active_document()
-        if document != False:
-            document.set_show_build_log(not document.get_show_build_log())
+        toggle = self.main_window.shortcuts_bar.button_build_log.get_child()
+        if toggle.get_sensitive():
+            toggle.clicked()
         return True
 
     def shortcut_switch_document(self, accel_group=None, window=None, key=None, mask=None):

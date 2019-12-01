@@ -68,6 +68,12 @@
                 <property name="title" translatable="yes">Create .pdf-file from document</property>
               </object>
             </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="visible">1</property>
+            <property name="title" translatable="yes">Windows and Panels</property>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">1</property>
@@ -75,12 +81,6 @@
                 <property name="title" translatable="yes">Show build log</property>
               </object>
             </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkShortcutsGroup">
-            <property name="visible">1</property>
-            <property name="title" translatable="yes">Windows and Panels</property>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">1</property>

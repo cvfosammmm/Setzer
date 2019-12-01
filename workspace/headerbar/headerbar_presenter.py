@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+from document.document import Document, LaTeXDocument, BibTeXDocument
 from app.service_locator import ServiceLocator
 
 
@@ -43,7 +44,18 @@ class HeaderbarPresenter(object):
         if change_code == 'new_active_document':
             document = parameter
             self.show_document_name(document)
-            self.activate_documents_mode()
+
+            if document.get_modified():
+                self.main_window.headerbar.save_document_button.set_sensitive(True)
+            elif document.get_filename() == None:
+                self.main_window.headerbar.save_document_button.set_sensitive(True)
+            else:
+                self.main_window.headerbar.save_document_button.set_sensitive(False)
+
+            if isinstance(document, LaTeXDocument):
+                self.activate_latex_documents_mode()
+            elif isinstance(document, BibTeXDocument):
+                self.activate_bibtex_documents_mode()
 
         if change_code == 'update_recently_opened_documents':
             items = list()
@@ -70,13 +82,25 @@ class HeaderbarPresenter(object):
         self.show_document_name(None)
         self.main_window.headerbar.save_document_button.hide()
         self.main_window.headerbar.preview_toggle.hide()
+        self.main_window.headerbar.preview_toggle.set_sensitive(False)
         self.main_window.headerbar.sidebar_toggle.hide()
+        self.main_window.headerbar.sidebar_toggle.set_sensitive(False)
 
-    def activate_documents_mode(self):
+    def activate_latex_documents_mode(self):
         self.set_build_button_state()
         self.main_window.headerbar.save_document_button.show_all()
         self.main_window.headerbar.preview_toggle.show_all()
+        self.main_window.headerbar.preview_toggle.set_sensitive(True)
         self.main_window.headerbar.sidebar_toggle.show_all()
+        self.main_window.headerbar.sidebar_toggle.set_sensitive(True)
+
+    def activate_bibtex_documents_mode(self):
+        self.set_build_button_state()
+        self.main_window.headerbar.save_document_button.show_all()
+        self.main_window.headerbar.preview_toggle.hide()
+        self.main_window.headerbar.preview_toggle.set_sensitive(False)
+        self.main_window.headerbar.sidebar_toggle.hide()
+        self.main_window.headerbar.sidebar_toggle.set_sensitive(False)
 
     def show_document_name(self, document):
         headerbar = self.main_window.headerbar
@@ -135,9 +159,10 @@ class HeaderbarPresenter(object):
         prev_widget = headerbar.build_wrapper.get_center_widget()
         if prev_widget != None:
             headerbar.build_wrapper.remove(prev_widget)
-        if document != None:
-            headerbar.build_wrapper.set_center_widget(document.build_widget.view)
-            if document.build_widget.view.has_result():
-                document.build_widget.view.hide_timer(4000)
+        if isinstance(document, LaTeXDocument):
+            if document != None:
+                headerbar.build_wrapper.set_center_widget(document.build_widget.view)
+                if document.build_widget.view.has_result():
+                    document.build_widget.view.hide_timer(4000)
 
 

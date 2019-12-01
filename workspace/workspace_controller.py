@@ -21,7 +21,7 @@ from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
 
-from document.document import Document
+from document.document import Document, LaTeXDocument, BibTeXDocument
 import helpers.helpers as helpers
 from app.service_locator import ServiceLocator
 
@@ -45,6 +45,8 @@ class WorkspaceController(object):
         self.s_allocation = 0
         self.bl_allocation = 0
 
+        self.main_window.new_latex_document_action.connect('activate', self.on_new_latex_document_action_activated)
+        self.main_window.new_bibtex_document_action.connect('activate', self.on_new_bibtex_document_action_activated)
         self.main_window.save_as_action.connect('activate', self.on_save_as_clicked)
         self.main_window.save_all_action.connect('activate', self.on_save_all_clicked)
         self.main_window.find_action.connect('activate', self.on_menu_find_clicked)
@@ -69,7 +71,6 @@ class WorkspaceController(object):
 
     def observe_workspace_view(self):
         self.observe_document_chooser()
-        self.main_window.headerbar.new_document_button.connect('clicked', self.on_new_document_button_click)
         self.main_window.headerbar.save_document_button.connect('clicked', self.on_save_button_click)
         self.main_window.headerbar.sidebar_toggle.connect('toggled', self.on_sidebar_toggle_toggled)
         self.main_window.headerbar.preview_toggle.connect('toggled', self.on_preview_toggle_toggled)
@@ -119,11 +120,7 @@ class WorkspaceController(object):
         if isinstance(document_candidate, Document):
             self.workspace.set_active_document(document_candidate)
         else:
-            document = Document(self.workspace.pathname)
-            document.set_filename(filename)
-            document.populate_from_filename()
-            self.workspace.add_document(document)
-            self.workspace.set_active_document(document)
+            self.workspace.create_document_from_filename(filename, activate=True)
 
     def on_open_document_button_click(self, button_object=None):
         filename = ServiceLocator.get_dialog('open_document').run()
@@ -132,16 +129,13 @@ class WorkspaceController(object):
             if document_candidate != None:
                 self.workspace.set_active_document(document_candidate)
             else:
-                document = Document(self.workspace.pathname)
-                document.set_filename(filename)
-                document.populate_from_filename()
-                self.workspace.add_document(document)
-                self.workspace.set_active_document(document)
+                self.workspace.create_document_from_filename(filename, activate=True)
 
-    def on_new_document_button_click(self, button_object=None):
-        document = Document(self.workspace.pathname)
-        self.workspace.add_document(document)
-        self.workspace.set_active_document(document)
+    def on_new_latex_document_action_activated(self, action=None, parameter=None):
+        self.workspace.create_latex_document(activate=True)
+
+    def on_new_bibtex_document_action_activated(self, action=None, parameter=None):
+        self.workspace.create_bibtex_document(activate=True)
 
     def on_doclist_close_clicked(self, button_object, document):
         if document.get_modified():
@@ -170,11 +164,7 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def on_save_as_clicked(self, action=None, parameter=None):
         document = self.workspace.get_active_document()
-        filename = document.get_filename()
-        if filename != None:
-            ServiceLocator.get_dialog('save_document').run(document, filename.rsplit('/', 1)[1])
-        else:
-            ServiceLocator.get_dialog('save_document').run(document, '.tex')
+        ServiceLocator.get_dialog('save_document').run(document)
         
     @_assert_has_active_document
     def on_save_all_clicked(self, action=None, parameter=None):
@@ -186,7 +176,7 @@ class WorkspaceController(object):
                 if document.get_filename() == None:
                     self.workspace.set_active_document(document)
                     return_to_active_document = True
-                    ServiceLocator.get_dialog('save_document').run(document, '.tex')
+                    ServiceLocator.get_dialog('save_document').run(document)
                 else:
                     document.save_to_disk()
             if return_to_active_document == True:
@@ -229,7 +219,9 @@ class WorkspaceController(object):
                 self.workspace.remove_document(document)
 
     def activate_quotes_popover(self, action=None, parameter=None):
-        self.main_window.shortcuts_bar.quotes_button.set_active(True)
+        active_document = self.workspace.get_active_document()
+        if active_document != None and isinstance(active_document, LaTeXDocument):
+            self.main_window.shortcuts_bar.quotes_button.set_active(True)
 
     def on_close_document_clicked(self, action=None, parameter=None):
         document = self.workspace.get_active_document()

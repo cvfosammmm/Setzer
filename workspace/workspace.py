@@ -19,7 +19,7 @@ import os.path
 import time
 import pickle
 
-from document.document import Document
+from document.document import Document, LaTeXDocument, BibTeXDocument
 from helpers.observable import *
 import workspace.workspace_presenter as workspace_presenter
 import workspace.workspace_controller as workspace_controller
@@ -88,14 +88,33 @@ class Workspace(Observable):
             self.unset_master_document()
         self.add_change_code('document_removed', document)
 
-    def create_document_from_filename(self, filename, activate=False):
-        document = Document(self.pathname)
-        document.set_filename(filename)
-        document.populate_from_filename()
+    def create_latex_document(self, activate=False):
+        document = LaTeXDocument(self.pathname)
         self.add_document(document)
 
         if activate:
             self.set_active_document(document)
+
+    def create_bibtex_document(self, activate=False):
+        document = BibTeXDocument(self.pathname)
+        self.add_document(document)
+
+        if activate:
+            self.set_active_document(document)
+
+    def create_document_from_filename(self, filename, activate=False):
+        if filename[-4:] == '.tex':
+            document = LaTeXDocument(self.pathname)
+        elif filename[-4:] == '.bib':
+            document = BibTeXDocument(self.pathname)
+        else:
+            return
+        document.set_filename(filename)
+        document.populate_from_filename()
+        if document.populate_from_filename() != False:
+            self.add_document(document)
+            if activate:
+                self.set_active_document(document)
 
     def get_document_by_filename(self, filename):
         for document in self.open_documents:
@@ -119,9 +138,11 @@ class Workspace(Observable):
     def set_build_log(self):
         if self.get_active_document() != None:
             if self.master_document != None:
-                self.build_log.set_document(self.master_document)
+                document = self.master_document
             else:
-                self.build_log.set_document(self.active_document)
+                document = self.active_document
+            if isinstance(document, LaTeXDocument):
+                self.build_log.set_document(document)
 
     def get_last_active_document(self):
         for document in sorted(self.open_documents, key=lambda val: -val.last_activated):
@@ -148,13 +169,11 @@ class Workspace(Observable):
         except IOError: pass
         else:
             try: data = pickle.load(filehandle)
-            except EOFError: self.add_document(Document(self.pathname))
+            except EOFError:
+                return
             else:
                 for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
-                    document = Document(self.pathname)
-                    document.set_filename(item['filename'])
-                    if document.populate_from_filename() != False:
-                        self.add_document(document)
+                    self.create_document_from_filename(item['filename'])
                 for item in data['recently_opened_documents'].values():
                     self.update_recently_opened_document(item['filename'], item['date'], notify=False)
         self.add_change_code('update_recently_opened_documents', self.recently_opened_documents)
@@ -189,14 +208,15 @@ class Workspace(Observable):
         return self.open_documents.copy() if len(self.open_documents) >= 1 else None
 
     def set_one_document_master(self, master_document):
-        self.master_document = master_document
-        for document in self.open_documents:
-            if document == master_document:
-                document.set_is_master(True)
-            else:
-                document.set_is_master(False)
-        self.add_change_code('master_state_change', 'one_document')
-        self.set_build_log()
+        if isinstance(master_document, LaTeXDocument):
+            self.master_document = master_document
+            for document in self.open_documents:
+                if document == master_document:
+                    document.set_is_master(True)
+                else:
+                    document.set_is_master(False)
+            self.add_change_code('master_state_change', 'one_document')
+            self.set_build_log()
 
     def unset_master_document(self):
         for document in self.open_documents:

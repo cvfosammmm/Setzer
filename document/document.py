@@ -63,17 +63,10 @@ class Document(Observable):
         self.data_pathname = data_pathname
         self.document_data = dict()
 
-        self.build_widget = build_widget.BuildWidget()
-        self.build_log_items = list()
-
         self.settings = ServiceLocator.get_settings()
+
         self.view = document_view.DocumentView(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
-        self.autocomplete = autocomplete.Autocomplete(self, self.view)
-        self.builder = document_builder.DocumentBuilder(self)
-        self.presenter = document_presenter.DocumentPresenter(self, self.view)
-        self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
-        self.controller = document_controller.DocumentController(self, self.view)
 
     def set_search_text(self, search_text):
         self.search_settings.set_search_text(search_text)
@@ -353,5 +346,38 @@ class Document(Observable):
                 buff.select_range(bound, cursor_pos)
                 self.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
             buff.end_user_action()
+
+
+class LaTeXDocument(Document):
+
+    def __init__(self, data_pathname):
+        Document.__init__(self, data_pathname)
+
+        self.build_log_items = list()
+        self.build_widget = build_widget.BuildWidget(self)
+
+        self.autocomplete = autocomplete.Autocomplete(self, self.view)
+        self.builder = document_builder.DocumentBuilder(self)
+        self.presenter = document_presenter.DocumentPresenter(self, self.view)
+        self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
+        self.controller = document_controller.DocumentController(self, self.view)
+
+    def get_file_ending(self):
+        return 'tex'
+
+
+class BibTeXDocument(Document):
+
+    def __init__(self, data_pathname):
+        Document.__init__(self, data_pathname)
+
+        self.autocomplete = None
+        self.builder = None
+        self.presenter = document_presenter.DocumentPresenter(self, self.view)
+        self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
+        self.controller = document_controller.DocumentController(self, self.view)
+
+    def get_file_ending(self):
+        return 'bib'
 
 

@@ -25,6 +25,7 @@ from gi.repository import GtkSource
 from workspace.build_log.build_log_viewgtk import *
 from workspace.headerbar.headerbar_viewgtk import *
 from workspace.shortcutsbar.shortcutsbar_viewgtk import *
+from workspace.bibtex_shortcutsbar.bibtex_shortcutsbar_viewgtk import *
 from workspace.preview.preview_viewgtk import *
 from workspace.sidebar.sidebar_viewgtk import *
 from app.service_locator import ServiceLocator
@@ -63,6 +64,16 @@ class MainWindow(Gtk.ApplicationWindow):
         self.notebook_wrapper.pack_start(self.shortcuts_bar, False, False, 0)
         self.notebook_wrapper.pack_start(self.notebook, True, True, 0)
 
+        # bibtex notebook
+        self.bibtex_notebook = Gtk.Notebook()
+        self.bibtex_notebook.set_show_tabs(False)
+        self.bibtex_notebook.set_show_border(False)
+        self.bibtex_notebook.set_scrollable(True)
+        self.bibtex_shortcuts_bar = BibTeXShortcutsBar()
+        self.bibtex_notebook_wrapper = Gtk.VBox()
+        self.bibtex_notebook_wrapper.pack_start(self.bibtex_shortcuts_bar, False, False, 0)
+        self.bibtex_notebook_wrapper.pack_start(self.bibtex_notebook, True, True, 0)
+
         # build log
         self.build_log = BuildLogView()
         self.build_log_paned = Gtk.VPaned()
@@ -96,7 +107,8 @@ class MainWindow(Gtk.ApplicationWindow):
         # mode stack
         self.mode_stack = Gtk.Stack()
         self.mode_stack.add_named(self.blank_slate, 'blank_slate')
-        self.mode_stack.add_named(self.sidebar_paned, 'documents')
+        self.mode_stack.add_named(self.sidebar_paned, 'latex_documents')
+        self.mode_stack.add_named(self.bibtex_notebook_wrapper, 'bibtex_documents')
         self.add(self.mode_stack)
 
         self.css_provider = Gtk.CssProvider()
@@ -105,6 +117,12 @@ class MainWindow(Gtk.ApplicationWindow):
         self.style_context.add_provider_for_screen(self.get_screen(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
         # actions
+        self.new_latex_document_action = Gio.SimpleAction.new('new-latex-document', None)
+        self.add_action(self.new_latex_document_action)
+
+        self.new_bibtex_document_action = Gio.SimpleAction.new('new-bibtex-document', None)
+        self.add_action(self.new_bibtex_document_action)
+
         self.save_as_action = Gio.SimpleAction.new('save-as', None)
         self.add_action(self.save_as_action)
 

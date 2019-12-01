@@ -32,9 +32,13 @@ class SaveDocumentDialog(Dialog):
         self.main_window = main_window
         self.workspace = workspace
 
-    def run(self, document, filename):
+    def run(self, document):
         self.setup()
-        self.view.set_current_name(filename)
+        filename = document.get_filename()
+        if filename != None:
+            self.view.set_current_name(filename.rsplit('/', 1)[1])
+        else:
+            self.view.set_current_name('.' + document.get_file_ending())
         response = self.view.run()
         if response == Gtk.ResponseType.OK:
             filename = self.view.get_filename()

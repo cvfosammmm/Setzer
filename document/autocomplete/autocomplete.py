@@ -34,6 +34,8 @@ class Autocomplete(object):
         self.document_view = document_view
         self.main_window = ServiceLocator.get_main_window()
 
+        self.view = view.DocumentAutocompleteView()
+
         self.line_height = 0
         self.char_width = 0
         self.update_char_size()
@@ -50,8 +52,29 @@ class Autocomplete(object):
 
         self.load_data()
 
-        self.document_view.autocomplete.list.connect('row-activated', self.on_autocomplete_row_activated)
-        self.document_view.autocomplete.list.connect('row-selected', self.on_autocomplete_row_selected)
+        self.view.list.connect('row-activated', self.on_autocomplete_row_activated)
+        self.view.list.connect('row-selected', self.on_autocomplete_row_selected)
+
+        self.document_view.scrolled_window.get_vadjustment().connect('value-changed', self.on_adjustment_value_changed)
+        self.document_view.scrolled_window.get_hadjustment().connect('value-changed', self.on_adjustment_value_changed)
+        self.document_view.source_view.connect('focus-out-event', self.on_focus_out)
+        self.document_view.source_view.connect('focus-in-event', self.on_focus_in)
+        self.document.get_buffer().connect('changed', self.on_buffer_changed)
+        self.document.get_buffer().connect('mark-set', self.on_mark_set)
+        self.document.get_buffer().connect('mark-deleted', self.on_mark_deleted)
+
+    def on_adjustment_value_changed(self, adjustment, user_data=None):
+        self.update_autocomplete_position(False)
+        return False
+
+    def on_mark_set(self, buffer, insert, mark, user_data=None):
+        self.update_autocomplete_position(False)
+    
+    def on_buffer_changed(self, buffer, user_data=None):
+        self.update_autocomplete_position(True)
+    
+    def on_mark_deleted(self, buffer, mark, user_data=None):
+        self.update_autocomplete_position(False)
 
     def on_autocomplete_row_activated(self, box, row, user_data=None):
         self.document_view.source_view.grab_focus()
@@ -60,7 +83,13 @@ class Autocomplete(object):
     def on_autocomplete_row_selected(self, box, row, user_data=None):
         if row != None:
             text = row.get_child().text
-            self.document_view.autocomplete.infobox.set_text(self.commands[text[1:]]['description'])
+            self.view.infobox.set_text(self.commands[text[1:]]['description'])
+
+    def on_focus_out(self, widget, event, user_data=None):
+        self.focus_hide()
+
+    def on_focus_in(self, widget, event, user_data=None):
+        self.focus_show()
 
     def on_return_press(self):
         if self.autocomplete_visible == True:
@@ -71,7 +100,7 @@ class Autocomplete(object):
 
     def on_escape_press(self):
         if self.autocomplete_visible == True:
-            self.document_view.autocomplete.hide()
+            self.view.hide()
             self.autocomplete_visible = False
             return True
         else:
@@ -79,20 +108,20 @@ class Autocomplete(object):
 
     def on_up_press(self):
         if self.autocomplete_visible == True:
-            self.document_view.autocomplete.select_previous()
+            self.view.select_previous()
             return True
         else:
             return False
 
     def on_down_press(self):
         if self.autocomplete_visible == True:
-            self.document_view.autocomplete.select_next()
+            self.view.select_next()
             return True
         else:
             return False
 
     def focus_hide(self):
-        self.document_view.autocomplete.hide()
+        self.view.hide()
         if self.autocomplete_visible:
             self.autocomplete_focus_was_visible = True
         self.autocomplete_visible = False
@@ -100,7 +129,7 @@ class Autocomplete(object):
     def focus_show(self):
         if self.autocomplete_focus_was_visible:
             self.autocomplete_focus_was_visible = False
-            self.document_view.autocomplete.show_all()
+            self.view.show_all()
             self.autocomplete_visible = True
 
     def update_char_size(self):
@@ -128,12 +157,12 @@ class Autocomplete(object):
             current_word = self.get_current_word(insert_iter)
             start_iter = insert_iter.copy()
             start_iter.backward_chars(len(current_word))
-            row = self.document_view.autocomplete.list.get_selected_row()
+            row = self.view.list.get_selected_row()
             text = row.get_child().label.get_text()
             if text.startswith('\\begin'):
                 text += '\n•\n' + text.replace('\\begin', '\\end')
             self.document.replace_range(start_iter, insert_iter, text, indent_lines=True)
-            self.document_view.autocomplete.hide()
+            self.view.hide()
             self.autocomplete_visible = False
 
     def update_autocomplete_position(self, can_show=False):
@@ -147,20 +176,20 @@ class Autocomplete(object):
                 self.insert_iter_offset = insert_iter.get_offset()
                 self.current_word = self.get_current_word(insert_iter)
                 self.insert_iter_matched = False
-                self.document_view.autocomplete.empty_list()
+                self.view.empty_list()
                 try: items = self.proposals[self.current_word[1:]]
                 except KeyError: pass
                 else:
                     self.number_of_matches = len(items)
                     for word in items:
                         item = view.DocumentAutocompleteItem('\\' + word)
-                        self.document_view.autocomplete.prepend(item)
+                        self.view.prepend(item)
                         self.insert_iter_matched = True
-                        self.document_view.autocomplete.select_first()
+                        self.view.select_first()
 
             if self.insert_iter_matched:
-                self.autocomplete_height = self.document_view.autocomplete.get_allocated_height()
-                self.autocomplete_width = self.document_view.autocomplete.get_allocated_width()
+                self.autocomplete_height = self.view.get_allocated_height()
+                self.autocomplete_width = self.view.get_allocated_width()
 
                 iter_location = self.document_view.source_view.get_iter_location(insert_iter)
                 gutter = self.document_view.source_view.get_window(Gtk.TextWindowType.LEFT)
@@ -172,31 +201,31 @@ class Autocomplete(object):
                 show_x = False
                 show_y = False
                 if y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - self.autocomplete_height:
-                    self.document_view.autocomplete.set_margin_top(y_position)
+                    self.view.set_margin_top(y_position)
                     show_y = True
                 elif y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
-                    self.document_view.autocomplete.set_margin_top(y_position - self.autocomplete_height - self.line_height)
+                    self.view.set_margin_top(y_position - self.autocomplete_height - self.line_height)
                     show_y = True
                 else:
                     show_y = False
 
                 if x_position >= 0 and x_position <= self.main_window.preview_paned.get_allocated_width() - self.autocomplete_width:
-                    self.document_view.autocomplete.set_margin_left(x_position)
+                    self.view.set_margin_left(x_position)
                     show_x = True
                 elif x_position >= 0 and x_position <= self.main_window.preview_paned.get_allocated_width():
-                    self.document_view.autocomplete.set_margin_left(x_position - self.autocomplete_width)
+                    self.view.set_margin_left(x_position - self.autocomplete_width)
                     show_x = True
                 else:
                     show_x = False
 
                 if show_x and show_y:
-                    self.document_view.autocomplete.show_all()
+                    self.view.show_all()
                     self.autocomplete_visible = True
                 else:
-                    self.document_view.autocomplete.hide()
+                    self.view.hide()
                     self.autocomplete_visible = False
             else:
-                self.document_view.autocomplete.hide()
+                self.view.hide()
                 self.autocomplete_visible = False
 
     def save_data(self):

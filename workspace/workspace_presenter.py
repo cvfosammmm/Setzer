@@ -15,7 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from document.document import Document
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import GLib, Gio
+
+from document.document import Document, LaTeXDocument, BibTeXDocument
 import helpers.helpers as helpers
 from app.service_locator import ServiceLocator
 
@@ -50,40 +54,52 @@ class WorkspacePresenter(object):
             document = parameter
             document.set_use_dark_scheme(helpers.is_dark_mode(self.main_window))
 
-            self.main_window.notebook.append_page(document.view)
+            if isinstance(document, LaTeXDocument):
+                self.main_window.notebook.append_page(document.view)
+
+            elif isinstance(document, BibTeXDocument):
+                self.main_window.bibtex_notebook.append_page(document.view)
 
         if change_code == 'document_removed':
             document = parameter
 
-            self.main_window.notebook.remove(document.view)
+            if isinstance(document, LaTeXDocument):
+                self.main_window.notebook.remove(document.view)
+
+            elif isinstance(document, BibTeXDocument):
+                self.main_window.bibtex_notebook.remove(document.view)
+
             if self.workspace.active_document == None:
                 self.activate_blank_slate_mode()
 
         if change_code == 'new_active_document':
             document = parameter
-            notebook = self.main_window.notebook
 
-            notebook.set_current_page(notebook.page_num(document.view))
-            document.view.source_view.grab_focus()
-            self.main_window.preview_paned_overlay.add_overlay(document.view.autocomplete)
-            document.autocomplete.update_autocomplete_position()
+            if isinstance(document, LaTeXDocument):
+                notebook = self.main_window.notebook
+                notebook.set_current_page(notebook.page_num(document.view))
+                document.view.source_view.grab_focus()
+                self.main_window.preview_paned_overlay.add_overlay(document.autocomplete.view)
+                document.autocomplete.update_autocomplete_position()
 
-            if document.get_modified():
-                self.main_window.headerbar.save_document_button.set_sensitive(True)
-            elif document.get_filename() == None:
-                self.main_window.headerbar.save_document_button.set_sensitive(True)
-            else:
-                self.main_window.headerbar.save_document_button.set_sensitive(False)
+                self.update_latex_shortcuts_bar()
+                self.set_preview_document()
+                self.activate_latex_documents_mode()
 
-            self.update_shortcuts_bar()
-            self.set_preview_document()
-            self.activate_documents_mode()
+            elif isinstance(document, BibTeXDocument):
+                notebook = self.main_window.bibtex_notebook
+                notebook.set_current_page(notebook.page_num(document.view))
+                document.view.source_view.grab_focus()
+
+                self.update_bibtex_shortcuts_bar()
+                self.activate_bibtex_documents_mode()
 
         if change_code == 'new_inactive_document':
             document = parameter
 
-            self.main_window.preview_paned_overlay.remove(document.view.autocomplete)
-            self.main_window.shortcuts_bar.top_icons.remove(document.view.wizard_button)
+            if isinstance(document, LaTeXDocument):
+                self.main_window.preview_paned_overlay.remove(document.autocomplete.view)
+                self.main_window.shortcuts_bar.top_icons.remove(document.view.wizard_button)
 
         if change_code == 'set_show_sidebar':
             self.animate_sidebar(parameter, True)
@@ -100,13 +116,26 @@ class WorkspacePresenter(object):
     def activate_blank_slate_mode(self):
         self.main_window.mode_stack.set_visible_child_name('blank_slate')
         self.main_window.save_all_action.set_enabled(False)
+        self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(False)
         self.set_document_actions_active(False)
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), [])
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), [])
 
-    def activate_documents_mode(self):
-        self.main_window.mode_stack.set_visible_child_name('documents')
+    def activate_latex_documents_mode(self):
+        self.main_window.mode_stack.set_visible_child_name('latex_documents')
+        self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(True)
         self.set_document_actions_active(True)
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), ['<Control>b'])
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), ['<Control>i'])
 
-    def update_shortcuts_bar(self):
+    def activate_bibtex_documents_mode(self):
+        self.main_window.mode_stack.set_visible_child_name('bibtex_documents')
+        self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(False)
+        self.set_document_actions_active(True)
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), [])
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), [])
+
+    def update_latex_shortcuts_bar(self):
         document = self.workspace.active_document
         shortcuts_bar = self.main_window.shortcuts_bar
 
@@ -115,6 +144,15 @@ class WorkspacePresenter(object):
         shortcuts_bar.current_bottom = document.view.shortcuts_bar_bottom
         shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
         shortcuts_bar.top_icons.insert(document.view.wizard_button, 0)
+
+    def update_bibtex_shortcuts_bar(self):
+        document = self.workspace.active_document
+        shortcuts_bar = self.main_window.bibtex_shortcuts_bar
+
+        if shortcuts_bar.current_bottom != None:
+            shortcuts_bar.remove(shortcuts_bar.current_bottom)
+        shortcuts_bar.current_bottom = document.view.shortcuts_bar_bottom
+        shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
 
     def set_preview_document(self):
         if self.workspace.get_active_document() != None:

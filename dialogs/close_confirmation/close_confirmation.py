@@ -57,7 +57,7 @@ class CloseConfirmationDialog(Dialog):
                     self.workspace.set_active_document(document)
                     return_to_active_document = True
 
-                    if not service_locator.ServiceLocator.get_dialog('save_document').run(document, '.tex'):
+                    if not service_locator.ServiceLocator.get_dialog('save_document').run(document):
                         documents_not_save_to_close.append(document)
                 else:
                     document.save_to_disk()

@@ -64,10 +64,23 @@ class HeaderBar(Gtk.HeaderBar):
         self.open_document_blank_button.set_tooltip_text('Open a document (Ctrl+O)')
         self.pack_start(self.open_document_blank_button)
 
-        # new document button
-        self.new_document_button = Gtk.Button.new_from_icon_name('document-new-symbolic', Gtk.IconSize.MENU)
+        self.new_document_button = Gtk.MenuButton()
+        self.new_document_button_label = Gtk.HBox()
+        image = Gtk.Image.new_from_icon_name('document-new-symbolic', Gtk.IconSize.BUTTON)
+        self.new_document_button_label.pack_start(image, False, False, 0)
+        image = Gtk.Image.new_from_icon_name('pan-down-symbolic', Gtk.IconSize.BUTTON)
+        self.new_document_button_label.pack_start(image, False, False, 0)
+        self.new_document_button.add(self.new_document_button_label)
+        self.new_document_button.set_focus_on_click(False)
         self.new_document_button.set_tooltip_text('Create a new document (Ctrl+N)')
+        self.new_document_button.get_style_context().add_class("text-button")
+        self.new_document_button.get_style_context().add_class("image-button")
         self.pack_start(self.new_document_button)
+
+        self.new_document_menu = Gio.Menu()
+        self.new_document_menu.append_item(Gio.MenuItem.new('New LaTeX Document', 'win.new-latex-document'))
+        self.new_document_menu.append_item(Gio.MenuItem.new('New BibTeX Document', 'win.new-bibtex-document'))
+        self.new_document_button.set_menu_model(self.new_document_menu)
 
         # workspace menu
         self.menu_button = Gtk.MenuButton()
