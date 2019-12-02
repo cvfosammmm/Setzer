@@ -82,7 +82,7 @@ class ShortcutsBar(Gtk.HBox):
         bibliography_menu = Gio.Menu()
 
         section = Gio.Menu()
-        menu_item = Gio.MenuItem.new('Include BibTeX File', 'win.include-bibtex-file')
+        menu_item = Gio.MenuItem.new('Include BibTeX File...', 'win.include-bibtex-file')
         section.append_item(menu_item)
         bibliography_menu.append_section(None, section)
 

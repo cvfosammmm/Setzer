@@ -486,3 +486,10 @@ box.document-wizard-page box.margins-box spinbutton.top {
 box.document-wizard-page box.margins-box spinbutton.bottom {
     border-bottom: 0px;
 }
+
+.include-bibtex-file-dialog stack {
+    border: 1px solid @borders;
+}
+.include-bibtex-file-dialog button {
+    outline-width: 0px;
+}

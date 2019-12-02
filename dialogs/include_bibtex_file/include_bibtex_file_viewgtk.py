@@ -35,6 +35,7 @@ class IncludeBibTeXFileView(object):
         self.dialog.set_destroy_with_parent(True)
         self.dialog.set_default_size(400, 300)
         self.dialog.set_can_focus(False)
+        self.dialog.get_style_context().add_class('include-bibtex-file-dialog')
         self.topbox = self.dialog.get_content_area()
         self.topbox.set_border_width(0)
         self.topbox.set_size_request(400, -1)
