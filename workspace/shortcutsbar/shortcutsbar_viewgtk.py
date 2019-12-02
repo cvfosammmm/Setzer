@@ -76,6 +76,26 @@ class ShortcutsBar(Gtk.HBox):
 
         self.insert_quotes_button()
         self.insert_object_button()
+        self.insert_bibliography_button()
+
+    def insert_bibliography_button(self):
+        bibliography_menu = Gio.Menu()
+
+        section = Gio.Menu()
+        menu_item = Gio.MenuItem.new('Include BibTeX File', 'win.include-bibtex-file')
+        section.append_item(menu_item)
+        bibliography_menu.append_section(None, section)
+
+        self.bibliography_button = Gtk.MenuButton()
+        self.bibliography_button.set_image(Gtk.Image.new_from_icon_name('view-dual-symbolic', Gtk.IconSize.MENU))
+        self.bibliography_button.set_focus_on_click(False)
+        self.bibliography_button.set_tooltip_text('Bibliography')
+        self.bibliography_button.get_style_context().add_class('flat')
+        self.bibliography_button.set_menu_model(bibliography_menu)
+
+        button_wrapper = Gtk.ToolItem()
+        button_wrapper.add(self.bibliography_button)
+        self.top_icons.insert(button_wrapper, 0)
 
     def insert_quotes_button(self):
         self.quotes_menu_data = list()

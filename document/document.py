@@ -239,6 +239,11 @@ class Document(Observable):
         self.is_master = is_master
         self.add_change_code('master_state_change', is_master)
 
+    def insert_text_at_iter(self, insert_iter, text, indent_lines=True):
+        buff = self.get_buffer()
+        buff.place_cursor(insert_iter)
+        self.insert_text_at_cursor(text, indent_lines)
+
     def insert_text_at_cursor(self, text, indent_lines=True):
         buff = self.get_buffer()
         if buff != False:
@@ -254,6 +259,7 @@ class Document(Observable):
             bounds = buff.get_selection_bounds()
             if dotcount == 1:
                 bounds = buff.get_selection_bounds()
+                selection = ''
                 if len(bounds) > 0:
                     selection = buff.get_text(bounds[0], bounds[1], True)
                     if len(selection) > 0:

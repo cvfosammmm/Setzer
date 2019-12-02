@@ -58,6 +58,7 @@ class WorkspaceController(object):
         self.main_window.insert_before_after_action.connect('activate', self.insert_before_after)
         self.main_window.insert_symbol_action.connect('activate', self.insert_symbol)
         self.main_window.document_wizard_action.connect('activate', self.start_wizard)
+        self.main_window.include_bibtex_file_action.connect('activate', self.start_include_bibtex_file_dialog)
         self.main_window.shortcuts_window_action.connect('activate', self.show_shortcuts_window)
         self.main_window.show_preferences_action.connect('activate', self.show_preferences_dialog)
         self.main_window.show_about_action.connect('activate', self.show_about_dialog)
@@ -281,6 +282,11 @@ class WorkspaceController(object):
     def start_wizard(self, action, parameter=None):
         document = self.workspace.get_active_document()
         ServiceLocator.get_dialog('document_wizard').run(document)
+
+    @_assert_has_active_document
+    def start_include_bibtex_file_dialog(self, action, parameter=None):
+        document = self.workspace.get_active_document()
+        ServiceLocator.get_dialog('include_bibtex_file').run(document)
 
     def show_shortcuts_window(self, action, parameter=''):
         ServiceLocator.get_dialog('keyboard_shortcuts').run()
