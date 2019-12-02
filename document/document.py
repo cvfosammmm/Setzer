@@ -77,7 +77,7 @@ class Document(Observable):
         # set source language for syntax highlighting
         self.source_language_manager = GtkSource.LanguageManager()
         self.source_language_manager.set_search_path((os.path.dirname(__file__) + '/../resources/gtksourceview/language-specs',))
-        self.source_language = self.source_language_manager.get_language('latex')
+        self.source_language = self.source_language_manager.get_language(self.get_gsv_language_name())
         self.source_buffer.set_language(self.source_language)
         self.source_buffer.set_highlight_matching_brackets(False)
         
@@ -365,6 +365,9 @@ class LaTeXDocument(Document):
     def get_file_ending(self):
         return 'tex'
 
+    def get_gsv_language_name(self):
+        return 'latex'
+
 
 class BibTeXDocument(Document):
 
@@ -379,5 +382,8 @@ class BibTeXDocument(Document):
 
     def get_file_ending(self):
         return 'bib'
+
+    def get_gsv_language_name(self):
+        return 'bibtex'
 
 
