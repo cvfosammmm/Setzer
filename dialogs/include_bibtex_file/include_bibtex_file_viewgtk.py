@@ -66,10 +66,13 @@ class IncludeBibTeXFileView(object):
         self.style_buttons = dict()
         self.content.pack_start(self.style_switcher, False, False, 0)
 
+        self.preview_stack_wrapper = Gtk.HBox()
+        self.preview_stack_wrapper.get_style_context().add_class('stack-wrapper')
+        self.preview_stack_wrapper.set_margin_top(18)
+        self.preview_stack_wrapper.set_margin_bottom(18)
         self.preview_stack = Gtk.Stack()
-        self.preview_stack.set_margin_top(18)
-        self.preview_stack.set_margin_bottom(18)
-        self.content.pack_start(self.preview_stack, False, False, 0)
+        self.preview_stack_wrapper.pack_start(self.preview_stack, False, False, 0)
+        self.content.pack_start(self.preview_stack_wrapper, False, False, 0)
 
         self.topbox.pack_start(self.content, True, True, 0)
         self.topbox.show_all()

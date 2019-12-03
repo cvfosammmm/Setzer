@@ -32,6 +32,8 @@ class IncludeBibTeXFile(Dialog):
     def __init__(self, main_window, settings):
         self.main_window = main_window
         self.settings = settings
+        self.styles = ['plain', 'abbrv', 'alpha', 'apalike', 'ieeetr']
+        self.style_names = ['Plain', 'Abbrv', 'Alpha', 'Apalike', 'iEEEtr']
         self.current_values = dict()
 
         self.view = view.IncludeBibTeXFileView(self.main_window)
@@ -74,7 +76,7 @@ class IncludeBibTeXFile(Dialog):
         self.view.file_chooser_button.add_filter(file_filter1)
 
         first_button = None
-        for name in ['Plain', 'Abbrv', 'Alpha', 'Apalike', 'iEEEtr']:
+        for name in self.style_names:
             style = name.lower()
             self.view.style_buttons[style] = Gtk.RadioButton()
             if first_button == None: first_button = self.view.style_buttons[style]
@@ -100,6 +102,10 @@ class IncludeBibTeXFile(Dialog):
         self.current_values['filename'] = self.view.file_chooser_button.get_filename()
 
     def on_style_chosen(self, togglebutton, style):
+        if self.styles.index(style) > self.styles.index(self.current_values['style']):
+            self.view.preview_stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT)
+        else:
+            self.view.preview_stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT)
         self.view.preview_stack.set_visible_child_name(style)
         self.current_values['style'] = style
 
