@@ -50,7 +50,7 @@ class ServiceLocator(object):
         ServiceLocator.dialogs['build_save'] = build_save_dialog.BuildSaveDialog(main_window)
         ServiceLocator.dialogs['close_confirmation'] = close_confirmation_dialog.CloseConfirmationDialog(main_window, workspace)
         ServiceLocator.dialogs['document_wizard'] = document_wizard.DocumentWizard(main_window, workspace, settings)
-        ServiceLocator.dialogs['include_bibtex_file'] = include_bibtex_file_dialog.IncludeBibTeXFile(main_window)
+        ServiceLocator.dialogs['include_bibtex_file'] = include_bibtex_file_dialog.IncludeBibTeXFile(main_window, settings)
         ServiceLocator.dialogs['interpreter_missing'] = interpreter_missing_dialog.InterpreterMissingDialog(main_window)
         ServiceLocator.dialogs['preferences'] = preferences_dialog.PreferencesDialog(main_window, settings)
         ServiceLocator.dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(main_window)

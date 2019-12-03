@@ -62,6 +62,9 @@ class Settings(Observable):
         self.defaults['app_document_wizard'] = dict()
         self.defaults['app_document_wizard']['presets'] = None
         
+        self.defaults['app_include_bibtex_file_dialog'] = dict()
+        self.defaults['app_include_bibtex_file_dialog']['presets'] = None
+        
         self.defaults['preferences'] = dict()
         self.defaults['preferences']['cleanup_build_files'] = True
         self.defaults['preferences']['autoshow_build_log'] = 'errors_warnings'

@@ -29,8 +29,9 @@ import os
 
 class IncludeBibTeXFile(Dialog):
 
-    def __init__(self, main_window):
+    def __init__(self, main_window, settings):
         self.main_window = main_window
+        self.settings = settings
         self.current_values = dict()
 
         self.view = view.IncludeBibTeXFileView(self.main_window)
@@ -40,10 +41,13 @@ class IncludeBibTeXFile(Dialog):
     def run(self, document):
         self.document = document
 
+        self.init_current_values()
         if self.is_not_setup:
-            self.init_current_values()
             self.setup()
             self.is_not_setup = False
+
+        self.view.style_buttons[self.current_values['style']].set_active(True)
+        self.view.style_buttons[self.current_values['style']].toggled()
 
         self.view.create_button.set_sensitive(False)
         self.view.file_chooser_button.unselect_all()
@@ -55,8 +59,13 @@ class IncludeBibTeXFile(Dialog):
         self.view.dialog.hide()
 
     def init_current_values(self):
+        presets = self.settings.get_value('app_include_bibtex_file_dialog', 'presets')
+        if presets != None:
+            presets = pickle.loads(presets)
+            self.current_values['style'] = presets['style']
+        else:
+            self.current_values['style'] = 'plain'
         self.current_values['filename'] = ''
-        self.current_values['style'] = 'plain'
     
     def setup(self):
         file_filter1 = Gtk.FileFilter()
@@ -84,9 +93,6 @@ class IncludeBibTeXFile(Dialog):
             self.view.preview_stack.add_named(image, style)
         self.view.topbox.show_all()
 
-        first_button.set_active(True)
-        first_button.toggled()
-
         self.view.file_chooser_button.connect('file-set', self.on_file_chosen)
 
     def on_file_chosen(self, widget=None):
@@ -102,7 +108,7 @@ class IncludeBibTeXFile(Dialog):
         if len(file_arr) > 1:
             return file_arr[1].rsplit('.', 1)[0]
         else:
-            return '•'
+            return ''
 
     def get_style(self):
         return self.current_values['style']
@@ -111,6 +117,7 @@ class IncludeBibTeXFile(Dialog):
         buffer = self.document.get_buffer()
         end_iter = buffer.get_end_iter()
         result = end_iter.backward_search('\\end{document}', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
+        self.settings.set_value('app_include_bibtex_file_dialog', 'presets', pickle.dumps(self.current_values))
         if result != None:
             self.document.insert_text_at_iter(result[0], '''
 \\bibliographystyle{''' + self.get_style() + '''}
