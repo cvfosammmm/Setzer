@@ -239,6 +239,11 @@ class Document(Observable):
         self.is_master = is_master
         self.add_change_code('master_state_change', is_master)
 
+    def place_cursor(self, text_iter):
+        buff = self.get_buffer()
+        buff.place_cursor(text_iter)
+        self.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
+
     def insert_text_at_iter(self, insert_iter, text, indent_lines=True):
         buff = self.get_buffer()
         buff.place_cursor(insert_iter)

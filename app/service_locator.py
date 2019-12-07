@@ -20,6 +20,7 @@ import re
 import app.settings as settingscontroller
 
 import dialogs.about.about as about_dialog
+import dialogs.bibtex_wizard.bibtex_wizard as bibtex_wizard
 import dialogs.build_save.build_save as build_save_dialog
 import dialogs.building_failed.building_failed as building_failed_dialog
 import dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
@@ -46,6 +47,7 @@ class ServiceLocator(object):
     def init_dialogs(main_window, workspace):
         settings = ServiceLocator.get_settings()
         ServiceLocator.dialogs['about'] = about_dialog.AboutDialog(main_window)
+        ServiceLocator.dialogs['bibtex_wizard'] = bibtex_wizard.BibTeXWizard(main_window, workspace, settings)
         ServiceLocator.dialogs['building_failed'] = building_failed_dialog.BuildingFailedDialog(main_window)
         ServiceLocator.dialogs['build_save'] = build_save_dialog.BuildSaveDialog(main_window)
         ServiceLocator.dialogs['close_confirmation'] = close_confirmation_dialog.CloseConfirmationDialog(main_window, workspace)

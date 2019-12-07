@@ -59,6 +59,9 @@ class WorkspaceController(object):
         self.main_window.insert_symbol_action.connect('activate', self.insert_symbol)
         self.main_window.document_wizard_action.connect('activate', self.start_wizard)
         self.main_window.include_bibtex_file_action.connect('activate', self.start_include_bibtex_file_dialog)
+        self.main_window.create_new_bibtex_entry_action.connect('activate', self.start_create_new_bibtex_entry_dialog)
+        self.main_window.show_previous_bibtex_entries_action.connect('activate', self.start_show_previous_bibtex_entries_dialog)
+        self.main_window.search_online_for_bibtex_entries_action.connect('activate', self.start_search_online_for_bibtex_entries_dialog)
         self.main_window.shortcuts_window_action.connect('activate', self.show_shortcuts_window)
         self.main_window.show_preferences_action.connect('activate', self.show_preferences_dialog)
         self.main_window.show_about_action.connect('activate', self.show_about_dialog)
@@ -287,6 +290,21 @@ class WorkspaceController(object):
     def start_include_bibtex_file_dialog(self, action, parameter=None):
         document = self.workspace.get_active_document()
         ServiceLocator.get_dialog('include_bibtex_file').run(document)
+
+    @_assert_has_active_document
+    def start_create_new_bibtex_entry_dialog(self, action, parameter=None):
+        document = self.workspace.get_active_document()
+        ServiceLocator.get_dialog('bibtex_wizard').run('new_entry', document)
+
+    @_assert_has_active_document
+    def start_show_previous_bibtex_entries_dialog(self, action, parameter=None):
+        document = self.workspace.get_active_document()
+        ServiceLocator.get_dialog('bibtex_wizard').run('previous_entries', document)
+
+    @_assert_has_active_document
+    def start_search_online_for_bibtex_entries_dialog(self, action, parameter=None):
+        document = self.workspace.get_active_document()
+        ServiceLocator.get_dialog('bibtex_wizard').run('search_online', document)
 
     def show_shortcuts_window(self, action, parameter=''):
         ServiceLocator.get_dialog('keyboard_shortcuts').run()

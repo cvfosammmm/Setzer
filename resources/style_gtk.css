@@ -487,9 +487,20 @@ box.document-wizard-page box.margins-box spinbutton.bottom {
     border-bottom: 0px;
 }
 
+/* BibTeX */
+
 .include-bibtex-file-dialog .stack-wrapper {
     border: 1px solid @borders;
 }
 .include-bibtex-file-dialog button {
     outline-width: 0px;
 }
+.bibtex-wizard-list1 {
+    border: 1px solid @borders;
+}
+.bibtex-wizard-list1 row {
+    border-bottom: 1px solid mix(@borders, @theme_base_color, 0.68);
+    padding: 6px;
+}
+
+

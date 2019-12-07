@@ -156,6 +156,15 @@ class MainWindow(Gtk.ApplicationWindow):
         self.document_wizard_action = Gio.SimpleAction.new('show-document-wizard', None)
         self.add_action(self.document_wizard_action)
 
+        self.create_new_bibtex_entry_action = Gio.SimpleAction.new('create-new-bibtex-entry', None)
+        self.add_action(self.create_new_bibtex_entry_action)
+
+        self.show_previous_bibtex_entries_action = Gio.SimpleAction.new('show-previous-bibtex-entries', None)
+        self.add_action(self.show_previous_bibtex_entries_action)
+
+        self.search_online_for_bibtex_entries_action = Gio.SimpleAction.new('search-online-for-bibtex-entries', None)
+        self.add_action(self.search_online_for_bibtex_entries_action)
+
         self.include_bibtex_file_action = Gio.SimpleAction.new('include-bibtex-file', None)
         self.add_action(self.include_bibtex_file_action)
 

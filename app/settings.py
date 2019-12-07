@@ -62,6 +62,9 @@ class Settings(Observable):
         self.defaults['app_document_wizard'] = dict()
         self.defaults['app_document_wizard']['presets'] = None
         
+        self.defaults['app_bibtex_wizard'] = dict()
+        self.defaults['app_bibtex_wizard']['presets'] = None
+        
         self.defaults['app_include_bibtex_file_dialog'] = dict()
         self.defaults['app_include_bibtex_file_dialog']['presets'] = None
         
