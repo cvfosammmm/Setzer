@@ -37,15 +37,16 @@ class CreateNewEntryPage(Page):
         def row_selected(box, row, user_data=None):
             child_name = row.document_type
             self.view.preview_container.set_visible_child_name(child_name)
-            self.wizard.set_document_class(child_name)
+            self.wizard.set_document_type(child_name)
 
         self.view.list.connect('row-selected', row_selected)
 
     def load_presets(self, presets):
         try:
-            row = self.view.list_rows[presets['document_class']]
-        except TypeError:
-            row = self.view.list_rows[self.current_values['document_class']]
+            document_type = presets['document_type']
+        except KeyError:
+            document_type = self.current_values['document_type']
+        row = self.view.list_rows[document_type]
         self.view.list.select_row(row)
 
     def on_activation(self):

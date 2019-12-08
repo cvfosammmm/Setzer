@@ -145,7 +145,7 @@ class BibTeXWizard(Dialog):
         for page in self.pages: self.view.notebook.append_page(page.view)
 
         self.is_not_setup = True
-        self.document_class_set = False
+        self.document_type_set = False
 
     def run(self, dialog_type, document):
         self.document = document
@@ -173,7 +173,7 @@ class BibTeXWizard(Dialog):
         self.view.dialog.hide()
 
     def init_current_values(self):
-        self.current_values['document_class'] = 'article'
+        self.current_values['document_type'] = 'article'
         self.current_values['identifier'] = ''
         self.current_values['fields'] = dict()
         for key in self.fields.keys():
@@ -238,11 +238,11 @@ class BibTeXWizard(Dialog):
         else:
             self.view.create_button.set_sensitive(True)
 
-    def set_document_class(self, document_class):
-        if self.current_values['document_class'] != document_class or not self.document_class_set:
-            self.document_class_set = True
-            self.current_values['document_class'] = document_class
-            attributes = self.document_types[document_class]
+    def set_document_type(self, document_type):
+        if self.current_values['document_type'] != document_type or not self.document_type_set:
+            self.document_type_set = True
+            self.current_values['document_type'] = document_type
+            attributes = self.document_types[document_type]
 
             for required_field in self.fields.keys():
                 if required_field in attributes['keys_required']:
@@ -265,14 +265,14 @@ class BibTeXWizard(Dialog):
         buff = self.document.get_buffer()
         if buff != False:
             buff.begin_user_action()
-            document_class = self.current_values['document_class']
-            text = '@' + document_class + '{' + self.current_values['identifier'] + ''
+            document_type = self.current_values['document_type']
+            text = '@' + document_type + '{' + self.current_values['identifier'] + ''
 
-            for key in self.document_types[document_class]['keys_required']:
+            for key in self.document_types[document_type]['keys_required']:
                 value = self.current_values['fields'][key]
                 text += ',\n\t' + key + ' '*(16 - len(key)) + '= "' + value + '"'
 
-            for key in self.document_types[document_class]['keys_optional']:
+            for key in self.document_types[document_type]['keys_optional']:
                 value = self.current_values['fields'][key]
                 if value != '':
                     text += ',\n\t' + key + ' '*(16 - len(key)) + '= "' + value + '"'
