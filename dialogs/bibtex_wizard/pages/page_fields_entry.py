@@ -19,7 +19,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-from dialogs.document_wizard.pages.page import Page, PageView
+from dialogs.bibtex_wizard.pages.page import Page, PageView
 
 import os
 
@@ -67,6 +67,14 @@ class FieldsEntryPage(Page):
             entry_view.text_entry.get_buffer().connect('inserted-text', text_inserted, entry_view.field_name)
 
     def load_presets(self, presets):
+        try:
+            include_empty_optional = presets['include_empty_optional']
+        except KeyError: 
+            include_empty_optional = False
+        self.view.option_include_empty.set_active(include_empty_optional)
+        self.view.identifier_entry.text_entry.set_text('')
+        self.view.identifier_entry.text_entry.grab_focus()
+
         for entry_view in self.view.required_entry_views.values():
             entry_view.text_entry.set_text('')
 
@@ -96,7 +104,7 @@ class FieldsEntryPageView(Gtk.VBox):
         self.header1 = Gtk.Label()
         self.header1.set_xalign(0)
         self.header1.set_margin_bottom(12)
-        self.header1.get_style_context().add_class('document-wizard-header')
+        self.header1.get_style_context().add_class('bibtex-wizard-header')
         self.header1.set_text('Required fields')
 
         self.required_entry_views = dict()
@@ -111,9 +119,12 @@ class FieldsEntryPageView(Gtk.VBox):
         self.header2.set_xalign(0)
         self.header2.set_margin_bottom(12)
         self.header2.set_margin_top(18)
-        self.header2.get_style_context().add_class('document-wizard-header')
+        self.header2.get_style_context().add_class('bibtex-wizard-header')
         self.header2.set_text('Optional fields')
-        
+
+        self.option_include_empty = Gtk.CheckButton.new_with_label('Insert empty optional fields')
+        self.option_include_empty.set_margin_bottom(18)
+
         self.optional_entry_views = dict()
         self.optional_fields_entries = Gtk.VBox()
         for field_name, attributes in fields.items():
@@ -123,6 +134,7 @@ class FieldsEntryPageView(Gtk.VBox):
         self.vbox.pack_start(self.header1, False, False, 0)
         self.vbox.pack_start(self.required_fields_entries, False, False, 0)
         self.vbox.pack_start(self.header2, False, False, 0)
+        self.vbox.pack_start(self.option_include_empty, False, False, 0)
         self.vbox.pack_start(self.optional_fields_entries, False, False, 0)
         self.pack_start(self.scrolled_window, True, True, 0)
         self.show_all()

@@ -194,7 +194,11 @@ class BibTeXWizard(Dialog):
             page.load_presets(self.presets)
 
     def save_presets(self):
-        self.settings.set_value('app_bibtex_wizard', 'presets', pickle.dumps(self.current_values))
+        presets = dict()
+        presets['document_type'] = self.current_values['document_type']
+        presets['identifier'] = self.current_values['identifier']
+        presets['include_empty_optional'] = self.fields_entry_page.view.option_include_empty.get_active()
+        self.settings.set_value('app_bibtex_wizard', 'presets', pickle.dumps(presets))
 
     def goto_page_next(self, button=None, data=None):
         self.goto_page(1)
@@ -276,6 +280,8 @@ class BibTeXWizard(Dialog):
                 value = self.current_values['fields'][field]
                 if value != '':
                     text += ',\n\t' + field + ' '*(16 - len(field)) + '= "' + value + '"'
+                elif self.fields_entry_page.view.option_include_empty.get_active():
+                    text += ',\n\t' + field + ' '*(16 - len(field)) + '= ""'
 
             text += '\n}\n\n'
 

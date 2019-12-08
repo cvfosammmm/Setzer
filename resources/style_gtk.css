@@ -502,5 +502,14 @@ box.document-wizard-page box.margins-box spinbutton.bottom {
     border-bottom: 1px solid mix(@borders, @theme_base_color, 0.68);
     padding: 6px;
 }
+box.bibtex-wizard-page checkbutton check {
+    margin-left: 1px;
+    margin-right: 6px;
+}
+label.bibtex-wizard-header {
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 6px;
+}
 
 
