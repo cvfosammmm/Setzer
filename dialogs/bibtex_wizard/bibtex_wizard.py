@@ -157,6 +157,7 @@ class BibTeXWizard(Dialog):
 
         titles = {'new_entry': 'Create a new BibTeX Entry', 'previous_entries': 'Add BibTeX Entry', 'search_online': 'Add BibTeX Entry'}
         self.view.headerbar.set_title(titles[dialog_type])
+        self.view.create_button.set_sensitive(False)
 
         self.presets = None
         self.current_page = 0
@@ -226,9 +227,16 @@ class BibTeXWizard(Dialog):
                     self.view.next_button.clicked()
                     return True
                 elif self.current_page == 1:
-                    self.view.create_button.clicked()
-                    return True
+                    if self.view.create_button.get_sensitive():
+                        self.view.create_button.clicked()
+                        return True
         return False
+
+    def check_required_fields(self):
+        if len(self.fields_entry_page.blank_required_fields) > 0:
+            self.view.create_button.set_sensitive(False)
+        else:
+            self.view.create_button.set_sensitive(True)
 
     def set_document_class(self, document_class):
         if self.current_values['document_class'] != document_class or not self.document_class_set:
@@ -239,8 +247,13 @@ class BibTeXWizard(Dialog):
             for required_field in self.fields.keys():
                 if required_field in attributes['keys_required']:
                     self.fields_entry_page.view.required_entry_views[required_field].set_reveal_child(True)
+                    self.fields_entry_page.required_fields.append(required_field)
                 else:
                     self.fields_entry_page.view.required_entry_views[required_field].set_reveal_child(False)
+                    try: self.fields_entry_page.required_fields.remove(required_field)
+                    except ValueError: pass
+            self.fields_entry_page.required_fields.append('identifier')
+            self.fields_entry_page.blank_required_fields = self.fields_entry_page.required_fields.copy()
                     
             for optional_field in self.fields.keys():
                 if optional_field in attributes['keys_optional']:

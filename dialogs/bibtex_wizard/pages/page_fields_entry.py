@@ -30,19 +30,30 @@ class FieldsEntryPage(Page):
         self.wizard = wizard
         self.current_values = current_values
         self.view = FieldsEntryPageView(self.wizard.fields)
+        self.required_fields = list()
+        self.blank_required_fields = list()
 
     def observe_view(self):
         def text_deleted(buffer, position, n_chars, field_name):
+            text = buffer.get_text()
             if field_name == 'identifier':
-                self.current_values['identifier'] = buffer.get_text()
+                self.current_values['identifier'] = text
             else:
-                self.current_values['fields'][field_name] = buffer.get_text()
+                self.current_values['fields'][field_name] = text
+            if text == '' and field_name in self.required_fields:
+                self.blank_required_fields.append(field_name)
+            self.wizard.check_required_fields()
 
         def text_inserted(buffer, position, chars, n_chars, field_name):
+            text = buffer.get_text()
             if field_name == 'identifier':
-                self.current_values['identifier'] = buffer.get_text()
+                self.current_values['identifier'] = text
             else:
-                self.current_values['fields'][field_name] = buffer.get_text()
+                self.current_values['fields'][field_name] = text
+            if text != '':
+                try: self.blank_required_fields.remove(field_name)
+                except ValueError: pass
+            self.wizard.check_required_fields()
 
         self.view.identifier_entry.text_entry.get_buffer().connect('deleted-text', text_deleted, 'identifier')
         self.view.identifier_entry.text_entry.get_buffer().connect('inserted-text', text_inserted, 'identifier')
