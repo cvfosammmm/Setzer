@@ -85,7 +85,8 @@ class CreateNewEntryPageView(PageView):
             box = Gtk.VBox()
             label = Gtk.Label()
             label.set_line_wrap(True)
-            markup = attributes['description'] + '\n\n'
+            markup = '<b>@' + document_type + '</b>\n\n'
+            markup += attributes['description'] + '\n\n'
             markup += 'Required fields: '
             is_first = True
             for attribute in attributes['fields_required']:

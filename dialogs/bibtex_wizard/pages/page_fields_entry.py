@@ -85,10 +85,10 @@ class FieldsEntryPage(Page):
         pass
 
 
-class FieldsEntryPageView(Gtk.VBox):
+class FieldsEntryPageView(Gtk.Overlay):
 
     def __init__(self, fields):
-        Gtk.VBox.__init__(self)
+        Gtk.Overlay.__init__(self)
         self.get_style_context().add_class('bibtex-wizard-page')
 
         self.scrolled_window = Gtk.ScrolledWindow()
@@ -133,7 +133,7 @@ class FieldsEntryPageView(Gtk.VBox):
         self.vbox.pack_start(self.header2, False, False, 0)
         self.vbox.pack_start(self.option_include_empty, False, False, 0)
         self.vbox.pack_start(self.optional_fields_entries, False, False, 0)
-        self.pack_start(self.scrolled_window, True, True, 0)
+        self.add(self.scrolled_window)
         self.show_all()
 
 
