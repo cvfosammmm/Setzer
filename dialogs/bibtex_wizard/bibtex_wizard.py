@@ -72,30 +72,44 @@ class BibTeXWizard(Dialog):
         self.fields['title'] = {'type': '', 'description': ''}
         self.fields['journaltitle'] = {'type': '', 'description': ''}
         self.fields['date'] = {'type': '', 'description': ''}
-        self.fields['translator'] = {'type': '', 'description': ''}
-        self.fields['annotator'] = {'type': '', 'description': ''}
-        self.fields['commentator'] = {'type': '', 'description': ''}
-        self.fields['subtitle'] = {'type': '', 'description': ''}
-        self.fields['titleaddon'] = {'type': '', 'description': ''}
         self.fields['editor'] = {'type': '', 'description': ''}
         self.fields['editora'] = {'type': '', 'description': ''}
         self.fields['editorb'] = {'type': '', 'description': ''}
         self.fields['editorc'] = {'type': '', 'description': ''}
+        self.fields['translator'] = {'type': '', 'description': ''}
+        self.fields['annotator'] = {'type': '', 'description': ''}
+        self.fields['commentator'] = {'type': '', 'description': ''}
+        self.fields['introduction'] = {'type': '', 'description': ''}
+        self.fields['foreword'] = {'type': '', 'description': ''}
+        self.fields['afterword'] = {'type': '', 'description': ''}
+        self.fields['subtitle'] = {'type': '', 'description': ''}
+        self.fields['titleaddon'] = {'type': '', 'description': ''}
+        self.fields['maintitle'] = {'type': '', 'description': ''}
+        self.fields['mainsubtitle'] = {'type': '', 'description': ''}
+        self.fields['maintitleaddon'] = {'type': '', 'description': ''}
         self.fields['journalsubtitle'] = {'type': '', 'description': ''}
         self.fields['issuetitle'] = {'type': '', 'description': ''}
         self.fields['issuesubtitle'] = {'type': '', 'description': ''}
         self.fields['language'] = {'type': '', 'description': ''}
         self.fields['origlanguage'] = {'type': '', 'description': ''}
-        self.fields['series'] = {'type': '', 'description': ''}
         self.fields['volume'] = {'type': '', 'description': ''}
+        self.fields['part'] = {'type': '', 'description': ''}
+        self.fields['edition'] = {'type': '', 'description': ''}
+        self.fields['volumes'] = {'type': '', 'description': ''}
+        self.fields['series'] = {'type': '', 'description': ''}
         self.fields['number'] = {'type': '', 'description': ''}
+        self.fields['note'] = {'type': '', 'description': ''}
         self.fields['eid'] = {'type': '', 'description': ''}
         self.fields['issue'] = {'type': '', 'description': ''}
         self.fields['month'] = {'type': '', 'description': ''}
+        self.fields['publisher'] = {'type': '', 'description': ''}
+        self.fields['location'] = {'type': '', 'description': ''}
+        self.fields['isbn'] = {'type': '', 'description': ''}
+        self.fields['chapter'] = {'type': '', 'description': ''}
         self.fields['pages'] = {'type': '', 'description': ''}
         self.fields['version'] = {'type': '', 'description': ''}
-        self.fields['note'] = {'type': '', 'description': ''}
         self.fields['issn'] = {'type': '', 'description': ''}
+        self.fields['pagetotal'] = {'type': '', 'description': ''}
         self.fields['addendum'] = {'type': '', 'description': ''}
         self.fields['pubstate'] = {'type': '', 'description': ''}
         self.fields['doi'] = {'type': '', 'description': ''}
@@ -104,20 +118,6 @@ class BibTeXWizard(Dialog):
         self.fields['eprinttype'] = {'type': '', 'description': ''}
         self.fields['url'] = {'type': '', 'description': ''}
         self.fields['urldate'] = {'type': '', 'description': ''}
-        self.fields['introduction'] = {'type': '', 'description': ''}
-        self.fields['foreword'] = {'type': '', 'description': ''}
-        self.fields['afterword'] = {'type': '', 'description': ''}
-        self.fields['maintitle'] = {'type': '', 'description': ''}
-        self.fields['mainsubtitle'] = {'type': '', 'description': ''}
-        self.fields['maintitleaddon'] = {'type': '', 'description': ''}
-        self.fields['part'] = {'type': '', 'description': ''}
-        self.fields['edition'] = {'type': '', 'description': ''}
-        self.fields['volumes'] = {'type': '', 'description': ''}
-        self.fields['publisher'] = {'type': '', 'description': ''}
-        self.fields['location'] = {'type': '', 'description': ''}
-        self.fields['isbn'] = {'type': '', 'description': ''}
-        self.fields['chapter'] = {'type': '', 'description': ''}
-        self.fields['pagetotal'] = {'type': '', 'description': ''}
         self.fields['booktitle'] = {'type': '', 'description': ''}
         self.fields['bookauthor'] = {'type': '', 'description': ''}
         self.fields['booksubtitle'] = {'type': '', 'description': ''}
@@ -248,22 +248,26 @@ class BibTeXWizard(Dialog):
             self.current_values['document_type'] = document_type
             attributes = self.document_types[document_type]
 
-            for required_field in self.fields.keys():
-                if required_field in attributes['fields_required']:
-                    self.fields_entry_page.view.required_entry_views[required_field].set_reveal_child(True)
-                    self.fields_entry_page.required_fields.append(required_field)
-                else:
-                    self.fields_entry_page.view.required_entry_views[required_field].set_reveal_child(False)
-                    try: self.fields_entry_page.required_fields.remove(required_field)
-                    except ValueError: pass
+            for entry in self.fields_entry_page.view.required_fields_entries.get_children():
+                self.fields_entry_page.view.required_fields_entries.remove(entry)
+            self.fields_entry_page.required_fields = list()
+            view = self.fields_entry_page.view.identifier_entry
+            self.fields_entry_page.view.required_fields_entries.pack_start(view, False, False, 0)
+            view.show_all()
+            for required_field in attributes['fields_required']:
+                view = self.fields_entry_page.view.required_entry_views[required_field]
+                self.fields_entry_page.view.required_fields_entries.pack_start(view, False, False, 0)
+                view.show_all()
+                self.fields_entry_page.required_fields.append(required_field)
             self.fields_entry_page.required_fields.append('identifier')
             self.fields_entry_page.blank_required_fields = self.fields_entry_page.required_fields.copy()
-                    
-            for optional_field in self.fields.keys():
-                if optional_field in attributes['fields_optional']:
-                    self.fields_entry_page.view.optional_entry_views[optional_field].set_reveal_child(True)
-                else:
-                    self.fields_entry_page.view.optional_entry_views[optional_field].set_reveal_child(False)
+
+            for entry in self.fields_entry_page.view.optional_fields_entries.get_children():
+                self.fields_entry_page.view.optional_fields_entries.remove(entry)
+            for optional_field in attributes['fields_optional']:
+                view = self.fields_entry_page.view.optional_entry_views[optional_field]
+                self.fields_entry_page.view.optional_fields_entries.pack_start(view, False, False, 0)
+                view.show_all()
                     
     def insert_template(self, data=None):
         buff = self.document.get_buffer()

@@ -110,10 +110,8 @@ class FieldsEntryPageView(Gtk.VBox):
         self.required_entry_views = dict()
         self.required_fields_entries = Gtk.VBox()
         self.identifier_entry = FieldsEntryView('identifier')
-        self.required_fields_entries.pack_start(self.identifier_entry, False, False, 0)
         for field_name, attributes in fields.items():
             self.required_entry_views[field_name] = FieldsEntryView(field_name)
-            self.required_fields_entries.pack_start(self.required_entry_views[field_name], False, False, 0)
 
         self.header2 = Gtk.Label()
         self.header2.set_xalign(0)
@@ -129,7 +127,6 @@ class FieldsEntryPageView(Gtk.VBox):
         self.optional_fields_entries = Gtk.VBox()
         for field_name, attributes in fields.items():
             self.optional_entry_views[field_name] = FieldsEntryView(field_name)
-            self.optional_fields_entries.pack_start(self.optional_entry_views[field_name], False, False, 0)
 
         self.vbox.pack_start(self.header1, False, False, 0)
         self.vbox.pack_start(self.required_fields_entries, False, False, 0)
@@ -140,20 +137,17 @@ class FieldsEntryPageView(Gtk.VBox):
         self.show_all()
 
 
-class FieldsEntryView(Gtk.Revealer):
+class FieldsEntryView(Gtk.HBox):
 
     def __init__(self, field_name):
-        Gtk.Revealer.__init__(self)
-        self.box = Gtk.HBox()
+        Gtk.HBox.__init__(self)
         self.field_name = field_name
         self.label = Gtk.Label(field_name + ':')
         self.label.set_xalign(0)
         self.label.set_margin_right(6)
         self.text_entry = Gtk.Entry()
         self.text_entry.set_size_request(230, -1)
-        self.box.pack_start(self.label, True, True, 0)
-        self.box.pack_start(self.text_entry, False, False, 0)
-        self.add(self.box)
-        self.set_reveal_child(True)
+        self.pack_start(self.label, True, True, 0)
+        self.pack_start(self.text_entry, False, False, 0)
 
 
