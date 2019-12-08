@@ -88,14 +88,14 @@ class CreateNewEntryPageView(PageView):
             markup = attributes['description'] + '\n\n'
             markup += 'Required fields: '
             is_first = True
-            for attribute in attributes['keys_required']:
+            for attribute in attributes['fields_required']:
                 if not is_first:
                     markup += ', '
                 is_first = False
                 markup += attribute
             markup += '\n\nOptional fields: '
             is_first = True
-            for attribute in attributes['keys_optional']:
+            for attribute in attributes['fields_optional']:
                 if not is_first:
                     markup += ', '
                 is_first = False
