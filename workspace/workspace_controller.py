@@ -290,7 +290,6 @@ class WorkspaceController(object):
         end_iter = buffer.get_end_iter()
         result = end_iter.backward_search('\\usepackage', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
         if result != None:
-            print("asd")
             result[0].forward_to_line_end()
             document.insert_text_at_iter(result[0], '\n' + text)
         else:

@@ -257,9 +257,9 @@ class Document(Observable):
             dotcount = text.count('•')
             insert_iter = buff.get_iter_at_mark(buff.get_insert())
             bounds = buff.get_selection_bounds()
+            selection = ''
             if dotcount == 1:
                 bounds = buff.get_selection_bounds()
-                selection = ''
                 if len(bounds) > 0:
                     selection = buff.get_text(bounds[0], bounds[1], True)
                     if len(selection) > 0:
@@ -283,13 +283,11 @@ class Document(Observable):
             buff.insert_at_cursor(final_text)
 
             dotindex = text.find('•')
-            if dotcount == 1:
+            if dotcount > 0:
+                selection_len = len(selection) if dotcount == 1 else 0
                 start = buff.get_iter_at_mark(buff.get_insert())
-                start.backward_chars(abs(dotindex + len(selection) - len(text)))
+                start.backward_chars(abs(dotindex + selection_len - len(text)))
                 buff.place_cursor(start)
-            elif dotcount > 0:
-                start = buff.get_iter_at_mark(buff.get_insert())
-                start.backward_chars(abs(dotindex - len(text)))
                 end = start.copy()
                 end.forward_char()
                 buff.select_range(start, end)
