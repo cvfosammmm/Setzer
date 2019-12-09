@@ -82,7 +82,7 @@ class BibTeXShortcutsBar(Gtk.HBox):
 
         self.entry_button = Gtk.ToolButton()
         icon_widget = Gtk.HBox()
-        icon = Gtk.Image.new_from_icon_name('applications-internet', Gtk.IconSize.MENU)
+        icon = Gtk.Image.new_from_icon_name('globe-alt-symbolic', Gtk.IconSize.MENU)
         icon.set_margin_left(4)
         icon_widget.pack_start(icon, False, False, 0)
         label_revealer = Gtk.Revealer()

@@ -18,6 +18,7 @@
 from document.build_widget.build_widget_viewgtk import *
 from helpers.observable import *
 from app.service_locator import ServiceLocator
+import helpers.helpers as helpers
 
 import time
 import os.path

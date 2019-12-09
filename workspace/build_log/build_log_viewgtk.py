@@ -20,6 +20,8 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Pango
 
+import os.path
+
 
 class BuildLogView(Gtk.VBox):
 
@@ -111,7 +113,7 @@ class BuildLogRowView(Gtk.HBox):
         self.message_type = message_type
         self.icon_name = symbols[message_type]
         self.filename = filename
-        self.filename_display = filename.rsplit('/', 1)[1]
+        self.filename_display = os.path.basename(filename)
         self.file_number = file_number
         self.line_number = line_number
         self.line_number_display = 'Line ' + str(line_number) if line_number >= 0 else ''

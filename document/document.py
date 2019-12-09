@@ -65,9 +65,6 @@ class Document(Observable):
 
         self.settings = ServiceLocator.get_settings()
 
-        self.view = document_view.DocumentView(self)
-        self.search = search.Search(self, self.view, self.view.search_bar)
-
     def set_search_text(self, search_text):
         self.search_settings.set_search_text(search_text)
         
@@ -122,8 +119,7 @@ class Document(Observable):
         self.filename = filename
         self.add_change_code('filename_change', filename)
         if self.filename != None:
-            pathname = self.filename.rsplit('/', 1)
-            pdf_filename = pathname[0] + '/' + pathname[1].rsplit('.', 1)[0] + '.pdf'
+            pdf_filename = os.path.splitext(self.filename)[0] + '.pdf'
             if os.path.exists(pdf_filename):
                 self.set_pdf_filename(pdf_filename)
         
@@ -228,9 +224,8 @@ class Document(Observable):
         
     def cleanup_build_files(self):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,'.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc']
-        pathname = self.get_filename().rsplit('/', 1)
         for ending in file_endings:
-            filename = pathname[0] + '/' + pathname[1].rsplit('.', 1)[0] + ending
+            filename = os.path.splitext(self.get_filename())[0] + ending
             try: os.remove(filename)
             except FileNotFoundError: pass
         self.add_change_code('cleaned_up_build_files')
@@ -364,6 +359,9 @@ class LaTeXDocument(Document):
     def __init__(self, data_pathname):
         Document.__init__(self, data_pathname)
 
+        self.view = document_view.DocumentView(self, 'latex')
+        self.search = search.Search(self, self.view, self.view.search_bar)
+
         self.build_log_items = list()
         self.build_widget = build_widget.BuildWidget(self)
 
@@ -384,6 +382,9 @@ class BibTeXDocument(Document):
 
     def __init__(self, data_pathname):
         Document.__init__(self, data_pathname)
+
+        self.view = document_view.DocumentView(self, 'bibtex')
+        self.search = search.Search(self, self.view, self.view.search_bar)
 
         self.autocomplete = None
         self.builder = None

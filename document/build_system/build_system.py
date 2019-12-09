@@ -107,7 +107,7 @@ class Query(object):
         self.text = text
         self.document_controller = document_controller
         self.tex_filename = self.document_controller.document.get_filename()[:]
-        self.new_pdf_filename = self.document_controller.document.get_filename().rsplit('.', 1)[0] + '.pdf'
+        self.new_pdf_filename = os.path.splitext(self.tex_filename)[0] + '.pdf'
         self.directory_name = os.path.dirname(self.document_controller.document.get_filename())
         self.process = None
         self.result = None
@@ -428,15 +428,15 @@ class Query(object):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' , '.ilg',
                         '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc']
         for ending in file_endings:
-            try: os.remove(tex_file_name.rsplit('.tex', 1)[0] + ending)
+            try: os.remove(os.path.splitext(tex_file_name)[0] + ending)
             except FileNotFoundError: pass
 
     def rename_build_files(self, tex_file_name):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,
                         '.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc']
         for ending in file_endings:
-            move_from = tex_file_name.rsplit('.tex', 1)[0] + ending
-            move_to = self.tex_filename.rsplit('.tex', 1)[0] + ending
+            move_from = os.path.splitext(tex_file_name)[0] + ending
+            move_to = os.path.splitext(self.tex_filename)[0] + ending
             try: shutil.move(move_from, move_to)
             except FileNotFoundError: pass
 

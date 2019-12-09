@@ -18,6 +18,8 @@
 from document.document import Document, LaTeXDocument, BibTeXDocument
 from app.service_locator import ServiceLocator
 
+import os.path
+
 
 class HeaderbarPresenter(object):
     ''' Mediator between workspace and view. '''
@@ -61,7 +63,7 @@ class HeaderbarPresenter(object):
             items = list()
             data = parameter.values()
             for item in sorted(data, key=lambda val: -val['date']):
-                items.append(item['filename'].rsplit('/', 1)[::-1])
+                items.append(os.path.split(item['filename']))
             self.main_window.headerbar.document_chooser.update_autosuggest(items)
             if len(data) > 0:
                 self.main_window.headerbar.open_document_button.set_sensitive(True)

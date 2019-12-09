@@ -28,7 +28,7 @@ import document.search.search_viewgtk as search_view
 
 class DocumentView(Gtk.HBox):
     
-    def __init__(self, document):
+    def __init__(self, document, document_type):
         Gtk.HBox.__init__(self)
         
         self.vbox = Gtk.VBox()        
@@ -37,7 +37,7 @@ class DocumentView(Gtk.HBox):
         self.search_bar = search_view.SearchBar()
         self.shortcuts_bar_bottom = shortcutsbar_view.ShortcutsBarBottom()
         self.wizard_button = shortcutsbar_view.WizardButton()
-        self.doclist_item = OpenDocsPopoverItem(document)
+        self.doclist_item = OpenDocsPopoverItem(document, document_type)
 
         self.source_view = GtkSource.View.new_with_buffer(document.get_buffer())
         self.source_view.set_monospace(True)
@@ -62,14 +62,17 @@ class DocumentView(Gtk.HBox):
 class OpenDocsPopoverItem(Gtk.ListBoxRow):
     ''' An item in OpenDocsPopover. '''
 
-    def __init__(self, document):
+    def __init__(self, document, document_type):
         Gtk.ListBoxRow.__init__(self)
         self.set_selectable(False)
         self.document = document
 
         self.box = Gtk.HBox()
         self.icon_box = Gtk.HBox()
-        self.icon = Gtk.Image.new_from_icon_name('text-x-generic-symbolic', Gtk.IconSize.MENU)
+        if document_type == 'latex':
+            self.icon = Gtk.Image.new_from_icon_name('text-x-generic-symbolic', Gtk.IconSize.MENU)
+        else:
+            self.icon = Gtk.Image.new_from_icon_name('text-x-generic-symbolic', Gtk.IconSize.MENU)
         self.icon.set_margin_bottom(2)
         self.icon.set_margin_right(6)
         self.icon.set_margin_left(1)

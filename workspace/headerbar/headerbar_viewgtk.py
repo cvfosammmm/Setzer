@@ -266,7 +266,7 @@ class DocumentChooser(Gtk.Popover):
 class DocumentChooserEntry(Gtk.ListBoxRow):
     ''' an item in the document chooser '''
     
-    def __init__(self, filename, folder):
+    def __init__(self, folder, filename):
         Gtk.ListBoxRow.__init__(self)
         
         self.filename = filename
