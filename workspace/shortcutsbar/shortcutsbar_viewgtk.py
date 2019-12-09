@@ -84,7 +84,14 @@ class ShortcutsBar(Gtk.HBox):
         section = Gio.Menu()
         menu_item = Gio.MenuItem.new('Include BibTeX File...', 'win.include-bibtex-file')
         section.append_item(menu_item)
+        menu_item = Gio.MenuItem.new('Include \'natbib\' Package', Gio.Action.print_detailed_name('win.add-package', GLib.Variant('as', ['natbib'])))
+        section.append_item(menu_item)
         bibliography_menu.append_section(None, section)
+
+
+
+
+
 
         self.bibliography_button = Gtk.MenuButton()
         self.bibliography_button.set_image(Gtk.Image.new_from_icon_name('view-dual-symbolic', Gtk.IconSize.MENU))

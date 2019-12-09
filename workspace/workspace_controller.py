@@ -59,6 +59,7 @@ class WorkspaceController(object):
         self.main_window.insert_symbol_action.connect('activate', self.insert_symbol)
         self.main_window.document_wizard_action.connect('activate', self.start_wizard)
         self.main_window.include_bibtex_file_action.connect('activate', self.start_include_bibtex_file_dialog)
+        self.main_window.add_package_action.connect('activate', self.add_package)
         self.main_window.create_new_bibtex_entry_action.connect('activate', self.start_create_new_bibtex_entry_dialog)
         self.main_window.show_previous_bibtex_entries_action.connect('activate', self.start_show_previous_bibtex_entries_dialog)
         self.main_window.search_online_for_bibtex_entries_action.connect('activate', self.start_search_online_for_bibtex_entries_dialog)
@@ -280,6 +281,20 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def insert_symbol(self, action, parameter):
         self.workspace.get_active_document().insert_text_at_cursor(parameter[0])
+
+    @_assert_has_active_document
+    def add_package(self, action, parameter):
+        document = self.workspace.get_active_document()
+        text = '\\usepackage{' + parameter[0] + '}'
+        buffer = document.get_buffer()
+        end_iter = buffer.get_end_iter()
+        result = end_iter.backward_search('\\usepackage', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
+        if result != None:
+            print("asd")
+            result[0].forward_to_line_end()
+            document.insert_text_at_iter(result[0], '\n' + text)
+        else:
+            document.insert_text_at_cursor(text)
 
     @_assert_has_active_document
     def start_wizard(self, action, parameter=None):
