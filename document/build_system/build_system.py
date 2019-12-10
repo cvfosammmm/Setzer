@@ -351,7 +351,7 @@ class Query(object):
 
                         elif line.startswith('Package '):
                             text = line.split(':')[1].strip()
-                            line_number = -1
+                            line_number = self.bl_get_line_number(line, matchiter)
                             self.log_messages.append(('Warning', None, filename, file_no, line_number, text))
 
                         elif line.startswith('LaTeX Warning: '):
@@ -422,7 +422,7 @@ class Query(object):
                 return int(line_number_match.group(2))
             else:
                 try:
-                    line = next(matchiter)
+                    line += next(matchiter)
                 except StopIteration:
                     return -1
         return -1
