@@ -495,6 +495,10 @@ box.document-wizard-page box.margins-box spinbutton.bottom {
 .include-bibtex-file-dialog button {
     outline-width: 0px;
 }
+.include-bibtex-file-dialog checkbutton check {
+    margin-left: 1px;
+    margin-right: 6px;
+}
 .bibtex-wizard-list1 {
     border: 1px solid @borders;
 }
