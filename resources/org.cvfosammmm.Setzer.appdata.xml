@@ -47,6 +47,11 @@
 	</provides>
 
     <releases>
+        <release version="0.1.2" date="2019-12-15">
+            <description>
+                <p>Simple BibTeX wizard, more bibliography features in LaTeX editor, ...</p>
+            </description>
+        </release>
         <release version="0.1.1" date="2019-12-1">
             <description>
                 <p>BibTeX support in the build system, edit BibTeX files, ...</p>
