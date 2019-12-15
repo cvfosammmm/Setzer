@@ -48,16 +48,18 @@ class Workspace(Observable):
 
         self.active_document = None
 
-        settings = ServiceLocator.get_settings()
+        self.settings = ServiceLocator.get_settings()
+        self.inline_spellchecking = self.settings.get_value('preferences', 'inline_spellchecking')
+
         self.sidebar = sidebar.Sidebar()
-        self.show_sidebar = settings.get_value('window_state', 'show_sidebar')
-        self.sidebar_position = settings.get_value('window_state', 'sidebar_paned_position')
+        self.show_sidebar = self.settings.get_value('window_state', 'show_sidebar')
+        self.sidebar_position = self.settings.get_value('window_state', 'sidebar_paned_position')
         self.preview = preview.Preview()
-        self.show_preview = settings.get_value('window_state', 'show_preview')
-        self.preview_position = settings.get_value('window_state', 'preview_paned_position')
+        self.show_preview = self.settings.get_value('window_state', 'show_preview')
+        self.preview_position = self.settings.get_value('window_state', 'preview_paned_position')
         self.build_log = build_log.BuildLog(self)
-        self.show_build_log = settings.get_value('window_state', 'show_build_log')
-        self.build_log_position = settings.get_value('window_state', 'build_log_paned_position')
+        self.show_build_log = self.settings.get_value('window_state', 'show_build_log')
+        self.build_log_position = self.settings.get_value('window_state', 'build_log_paned_position')
 
     def init_workspace_controller(self):
         self.presenter = workspace_presenter.WorkspacePresenter(self)
@@ -75,6 +77,7 @@ class Workspace(Observable):
             self.open_documents.append(document)
             if isinstance(document, LaTeXDocument):
                 self.open_latex_documents.append(document)
+                document.spellchecker.set_enabled(self.inline_spellchecking)
             self.add_change_code('new_document', document)
             self.update_recently_opened_document(document.get_filename(), notify=True)
 
@@ -259,5 +262,12 @@ class Workspace(Observable):
             return self.show_build_log
         else:
             return False
+
+    def set_inline_spellchecking(self, value):
+        if self.inline_spellchecking != value:
+            self.inline_spellchecking = value
+            self.settings.set_value('preferences', 'inline_spellchecking', self.inline_spellchecking)
+            for document in self.open_latex_documents:
+                document.spellchecker.set_enabled(value)
         
 

@@ -67,6 +67,7 @@ class WorkspaceController(object):
         self.main_window.show_preferences_action.connect('activate', self.show_preferences_dialog)
         self.main_window.show_about_action.connect('activate', self.show_about_dialog)
         self.main_window.close_build_log_action.connect('activate', self.close_build_log)
+        self.main_window.toggle_spellchecking_action.connect('activate', self.on_spellchecking_toggle_toggled)
 
         # populate workspace
         self.workspace.populate_from_disk()
@@ -237,6 +238,11 @@ class WorkspaceController(object):
 
     def on_preview_toggle_toggled(self, toggle_button, parameter=None):
         self.workspace.set_show_preview(toggle_button.get_active(), True)
+
+    def on_spellchecking_toggle_toggled(self, action, parameter=None):
+        new_state = not action.get_state().get_boolean()
+        action.set_state(GLib.Variant.new_boolean(new_state))
+        self.workspace.set_inline_spellchecking(new_state)
 
     def on_sidebar_size_allocate(self, sidebar, allocation):
         if not self.workspace.presenter.sidebars_initialized: return

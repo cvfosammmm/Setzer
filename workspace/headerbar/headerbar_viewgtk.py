@@ -100,6 +100,10 @@ class HeaderBar(Gtk.HeaderBar):
         view_menu = Gio.Menu()
         view_menu.append_item(Gio.MenuItem.new('Dark Mode', 'win.toggle-dark-mode'))
         section.append_submenu('View', view_menu)
+
+        tools_menu = Gio.Menu()
+        tools_menu.append_item(Gio.MenuItem.new('Highlight Misspelled Words', 'win.toggle-spellchecking'))
+        section.append_submenu('Tools', tools_menu)
         self.workspace_menu.append_section(None, section)
 
         preferences_section = Gio.Menu()

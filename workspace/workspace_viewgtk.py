@@ -47,7 +47,7 @@ class MainWindow(Gtk.ApplicationWindow):
         Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/misc_text')
         Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/operators')
         Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/relations')
-       
+
         # window state variables
         self.current_width = 0
         self.current_height = 0
@@ -185,6 +185,11 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.close_build_log_action = Gio.SimpleAction.new('close-build-log', None)
         self.add_action(self.close_build_log_action)
+
+        settings = ServiceLocator.get_settings()
+        sc_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'inline_spellchecking'))
+        self.toggle_spellchecking_action = Gio.SimpleAction.new_stateful('toggle-spellchecking', None, sc_default)
+        self.add_action(self.toggle_spellchecking_action)
 
 
 class DocumentViewWrapper(Gtk.Notebook):

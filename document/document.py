@@ -31,6 +31,7 @@ import document.document_viewgtk as document_view
 import document.build_widget.build_widget as build_widget
 import document.search.search as search
 import document.autocomplete.autocomplete as autocomplete
+import document.spellchecker.spellchecker as spellchecker
 from helpers.observable import *
 from app.service_locator import ServiceLocator
 
@@ -368,6 +369,8 @@ class LaTeXDocument(Document):
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
+
+        self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
 
     def get_file_ending(self):
         return 'tex'
