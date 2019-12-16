@@ -32,8 +32,6 @@ class WorkspacePresenter(object):
         self.main_window = ServiceLocator.get_main_window()
         self.workspace.register_observer(self)
 
-        settings = ServiceLocator.get_settings()
-
         self.sidebars_initialized = False
         self.sidebar = self.main_window.sidebar
         self.sidebar_animating = False
@@ -112,6 +110,9 @@ class WorkspacePresenter(object):
 
         if change_code == 'master_state_change':
             self.set_preview_document()
+
+        if change_code == 'set_dark_mode':
+            ServiceLocator.get_settings().gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', parameter)
 
     def activate_blank_slate_mode(self):
         self.main_window.mode_stack.set_visible_child_name('blank_slate')

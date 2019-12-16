@@ -41,16 +41,10 @@ class MainApplicationController(Gtk.Application):
         
         settings = ServiceLocator.get_settings()
 
-        # setup dark mode
-        dm_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'prefer_dark_mode'))
-        self.toggle_dark_mode_action = Gio.SimpleAction.new_stateful('toggle-dark-mode', None, dm_default)
-        settings.gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', dm_default)
-        
         # init main window, model, dialogs
         self.main_window = view.MainWindow(self)
-        self.main_window.add_action(self.toggle_dark_mode_action)
-        self.toggle_dark_mode_action.connect('activate', self.toggle_dark_mode)
         ServiceLocator.init_main_window(self.main_window)
+
         self.workspace = Workspace()
         ServiceLocator.init_dialogs(self.main_window, self.workspace)
 
@@ -149,13 +143,6 @@ class MainApplicationController(Gtk.Application):
             self.workspace.save_to_disk()
             self.quit()
 
-    def toggle_dark_mode(self, action, parameter=None):
-        settings = ServiceLocator.get_settings()
-        new_state = not action.get_state().get_boolean()
-        action.set_state(GLib.Variant.new_boolean(new_state))
-        settings.gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', new_state)
-        settings.set_value('preferences', 'prefer_dark_mode', new_state)
-    
 
 main_controller = MainApplicationController()
 exit_status = main_controller.run(sys.argv)

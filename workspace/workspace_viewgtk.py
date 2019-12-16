@@ -187,9 +187,15 @@ class MainWindow(Gtk.ApplicationWindow):
         self.add_action(self.close_build_log_action)
 
         settings = ServiceLocator.get_settings()
+
         sc_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'inline_spellchecking'))
         self.toggle_spellchecking_action = Gio.SimpleAction.new_stateful('toggle-spellchecking', None, sc_default)
         self.add_action(self.toggle_spellchecking_action)
+
+        dm_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'prefer_dark_mode'))
+        self.toggle_dark_mode_action = Gio.SimpleAction.new_stateful('toggle-dark-mode', None, dm_default)
+        self.add_action(self.toggle_dark_mode_action)
+        settings.gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', dm_default)
 
 
 class DocumentViewWrapper(Gtk.Notebook):

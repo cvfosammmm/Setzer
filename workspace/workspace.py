@@ -50,6 +50,7 @@ class Workspace(Observable):
 
         self.settings = ServiceLocator.get_settings()
         self.inline_spellchecking = self.settings.get_value('preferences', 'inline_spellchecking')
+        self.dark_mode = self.settings.get_value('preferences', 'prefer_dark_mode')
 
         self.sidebar = sidebar.Sidebar()
         self.show_sidebar = self.settings.get_value('window_state', 'show_sidebar')
@@ -262,6 +263,12 @@ class Workspace(Observable):
             return self.show_build_log
         else:
             return False
+
+    def set_dark_mode(self, value):
+        if self.dark_mode != value:
+            self.dark_mode = value
+            self.settings.set_value('preferences', 'prefer_dark_mode', self.dark_mode)
+            self.add_change_code('set_dark_mode', value)
 
     def set_inline_spellchecking(self, value):
         if self.inline_spellchecking != value:
