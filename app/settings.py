@@ -17,8 +17,10 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
+gi.require_version('Gspell', '1')
 from gi.repository import Gtk
 from gi.repository import GObject
+from gi.repository import Gspell
 import os.path
 import pickle
 
@@ -79,6 +81,7 @@ class Settings(Observable):
         self.defaults['preferences']['enable_line_wrapping'] = True
         self.defaults['preferences']['highlight_current_line'] = False
         self.defaults['preferences']['inline_spellchecking'] = True
+        self.defaults['preferences']['spellchecking_language_code'] = Gspell.Language.get_default().get_code()
 
     def get_value(self, section, item):
         try: value = self.data[section][item]

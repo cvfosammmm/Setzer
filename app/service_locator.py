@@ -32,6 +32,7 @@ import dialogs.open_document.open_document as open_document_dialog
 import dialogs.replace_confirmation.replace_confirmation as replace_confirmation_dialog
 import dialogs.save_document.save_document as save_document_dialog
 import dialogs.keyboard_shortcuts.keyboard_shortcuts as keyboard_shortcuts_dialog
+import dialogs.spellchecking_language.spellchecking_language as spellchecking_language_dialog
 
 
 class ServiceLocator(object):
@@ -59,6 +60,7 @@ class ServiceLocator(object):
         ServiceLocator.dialogs['replace_confirmation'] = replace_confirmation_dialog.ReplaceConfirmationDialog(main_window)
         ServiceLocator.dialogs['save_document'] = save_document_dialog.SaveDocumentDialog(main_window, workspace)
         ServiceLocator.dialogs['keyboard_shortcuts'] = keyboard_shortcuts_dialog.KeyboardShortcutsDialog(main_window)
+        ServiceLocator.dialogs['spellchecking_language'] = spellchecking_language_dialog.SpellcheckingLanguageDialog(main_window, workspace)
     
     def get_dialog(dialog_type):
         return ServiceLocator.dialogs[dialog_type]

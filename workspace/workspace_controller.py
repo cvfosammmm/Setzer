@@ -68,6 +68,7 @@ class WorkspaceController(object):
         self.main_window.show_about_action.connect('activate', self.show_about_dialog)
         self.main_window.close_build_log_action.connect('activate', self.close_build_log)
         self.main_window.toggle_spellchecking_action.connect('activate', self.on_spellchecking_toggle_toggled)
+        self.main_window.set_spellchecking_language_action.connect('activate', self.start_spellchecking_language_dialog)
         self.main_window.toggle_dark_mode_action.connect('activate', self.on_dark_mode_toggle_toggled)
 
         # populate workspace
@@ -331,6 +332,9 @@ class WorkspaceController(object):
     def start_search_online_for_bibtex_entries_dialog(self, action, parameter=None):
         document = self.workspace.get_active_document()
         ServiceLocator.get_dialog('bibtex_wizard').run('search_online', document)
+
+    def start_spellchecking_language_dialog(self, action, parameter=None):
+        ServiceLocator.get_dialog('spellchecking_language').run()
 
     def show_shortcuts_window(self, action, parameter=''):
         ServiceLocator.get_dialog('keyboard_shortcuts').run()

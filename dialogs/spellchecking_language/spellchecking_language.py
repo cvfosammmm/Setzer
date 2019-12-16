@@ -15,25 +15,41 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+
 import gi
+gi.require_version('Gtk', '3.0')
 gi.require_version('Gspell', '1')
+from gi.repository import Gtk
 from gi.repository import Gspell
 
+from dialogs.dialog import Dialog
 
-class Spellchecker(object):
+import pickle
+import os
 
-    def __init__(self, source_view):
-        self.checker = Gspell.Checker()
-        self.spell_buffer = Gspell.TextBuffer.get_from_gtk_text_buffer(source_view.get_buffer())
-        self.spell_buffer.set_spell_checker(self.checker)
-        self.spell_view = Gspell.TextView.get_from_gtk_text_view(source_view)
-        self.spell_view.set_enable_language_menu(False)
 
-    def set_enabled(self, value):
-        self.spell_view.set_inline_spell_checking(value)
+class SpellcheckingLanguageDialog(Dialog):
 
-    def set_language(self, language_code):
-        language = Gspell.Language.lookup(language_code)
-        self.checker.set_language(language)
+    def __init__(self, main_window, workspace):
+        self.main_window = main_window
+        self.workspace = workspace
+        self.current_values = dict()
+
+    def run(self):
+        self.setup()
+
+        response = self.view.run()
+        if response == Gtk.ResponseType.OK:
+            self.set_language()
+
+        self.view.hide()
+        del(self.view)
+    
+    def setup(self):
+        self.view = Gspell.LanguageChooserDialog()
+        self.view.set_language_code(self.workspace.spellchecking_language_code)
+
+    def set_language(self):
+        self.workspace.set_spellchecking_language(self.view.get_language_code())
 
 

@@ -103,6 +103,7 @@ class HeaderBar(Gtk.HeaderBar):
 
         tools_menu = Gio.Menu()
         tools_menu.append_item(Gio.MenuItem.new('Highlight Misspelled Words', 'win.toggle-spellchecking'))
+        tools_menu.append_item(Gio.MenuItem.new('Set Spellchecking Language...', 'win.set-spellchecking-language'))
         section.append_submenu('Tools', tools_menu)
         self.workspace_menu.append_section(None, section)
 
@@ -213,7 +214,7 @@ class DocumentChooser(Gtk.Popover):
         outer_box.set_center_widget(box)
         self.not_found_slate.set_center_widget(outer_box)
         
-        self.other_documents_button = Gtk.Button.new_with_label('Other Documents ...')
+        self.other_documents_button = Gtk.Button.new_with_label('Other Documents...')
 
         self.notebook = Gtk.Notebook()
         self.notebook.set_show_tabs(False)
