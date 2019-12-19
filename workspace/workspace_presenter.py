@@ -117,6 +117,7 @@ class WorkspacePresenter(object):
     def activate_blank_slate_mode(self):
         self.main_window.mode_stack.set_visible_child_name('blank_slate')
         self.main_window.save_all_action.set_enabled(False)
+        self.main_window.spellchecking_action.set_enabled(False)
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(False)
         self.set_document_actions_active(False)
         self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), [])
@@ -126,6 +127,7 @@ class WorkspacePresenter(object):
         self.main_window.mode_stack.set_visible_child_name('latex_documents')
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(True)
         self.set_document_actions_active(True)
+        self.main_window.spellchecking_action.set_enabled(True)
         self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), ['<Control>b'])
         self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), ['<Control>i'])
 
@@ -133,6 +135,7 @@ class WorkspacePresenter(object):
         self.main_window.mode_stack.set_visible_child_name('bibtex_documents')
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(False)
         self.set_document_actions_active(True)
+        self.main_window.spellchecking_action.set_enabled(False)
         self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), [])
         self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), [])
 
