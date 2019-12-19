@@ -195,6 +195,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_spellchecking_language_action = Gio.SimpleAction.new('set-spellchecking-language', None)
         self.add_action(self.set_spellchecking_language_action)
 
+        self.spellchecking_action = Gio.SimpleAction.new('spellchecking', None)
+        self.add_action(self.spellchecking_action)
+
         dm_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'prefer_dark_mode'))
         self.toggle_dark_mode_action = Gio.SimpleAction.new_stateful('toggle-dark-mode', None, dm_default)
         self.add_action(self.toggle_dark_mode_action)

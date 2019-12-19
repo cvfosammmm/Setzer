@@ -15,26 +15,34 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+
 import gi
 gi.require_version('Gspell', '1')
 from gi.repository import Gspell
 
+from dialogs.dialog import Dialog
 
-class Spellchecker(object):
 
-    def __init__(self, source_view):
-        self.checker = Gspell.Checker()
-        self.spell_buffer = Gspell.TextBuffer.get_from_gtk_text_buffer(source_view.get_buffer())
-        self.spell_buffer.set_spell_checker(self.checker)
-        self.spell_view = Gspell.TextView.get_from_gtk_text_view(source_view)
-        self.spell_view.set_enable_language_menu(False)
-        self.spell_navigator = Gspell.NavigatorTextView.new(source_view)
+class SpellcheckingDialog(Dialog):
 
-    def set_enabled(self, value):
-        self.spell_view.set_inline_spell_checking(value)
+    def __init__(self, main_window, workspace):
+        self.main_window = main_window
+        self.workspace = workspace
+        self.current_values = dict()
 
-    def set_language(self, language_code):
-        language = Gspell.Language.lookup(language_code)
-        self.checker.set_language(language)
+    def run(self):
+        try:
+            navigator = self.workspace.get_active_document().spellchecker.spell_navigator
+        except AttributeError:
+            pass
+        else:
+            self.setup(navigator)
+
+            response = self.view.run()
+            self.view.hide()
+            del(self.view)
+    
+    def setup(self, navigator):
+        self.view = Gspell.CheckerDialog.new(self.main_window, navigator)
 
 
