@@ -55,13 +55,13 @@ class SpellcheckingLanguageDialog(Dialog):
         self.headerbar.set_title('Spellchecking Language')
         self.headerbar.show_all()
         action_area = self.view.get_action_area()
-        for button in action_area.get_children():
-            action_area.remove(button)
-            if button.get_label() == '_Cancel':
-                self.headerbar.pack_start(button)
-            else:
-                self.headerbar.pack_end(button)
-                button.get_style_context().add_class('suggested-action')
+        cancel_button = action_area.get_children()[0]
+        select_button = action_area.get_children()[1]
+        action_area.remove(cancel_button)
+        action_area.remove(select_button)
+        self.headerbar.pack_start(cancel_button)
+        self.headerbar.pack_end(select_button)
+        select_button.get_style_context().add_class('suggested-action')
         action_area.hide()
         self.view.set_titlebar(self.headerbar)
 
