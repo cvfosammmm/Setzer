@@ -102,9 +102,9 @@ class HeaderBar(Gtk.HeaderBar):
         section.append_submenu('View', view_menu)
 
         tools_menu = Gio.Menu()
-        tools_menu.append_item(Gio.MenuItem.new('Set Spellchecking Language...', 'win.set-spellchecking-language'))
-        tools_menu.append_item(Gio.MenuItem.new('Highlight Misspelled Words', 'win.toggle-spellchecking'))
         tools_menu.append_item(Gio.MenuItem.new('Check Spelling...', 'win.spellchecking'))
+        tools_menu.append_item(Gio.MenuItem.new('Automatic Spellchecking', 'win.toggle-spellchecking'))
+        tools_menu.append_item(Gio.MenuItem.new('Set Spellchecking Language...', 'win.set-spellchecking-language'))
         section.append_submenu('Tools', tools_menu)
         self.workspace_menu.append_section(None, section)
 
