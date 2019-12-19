@@ -48,6 +48,22 @@ class SpellcheckingLanguageDialog(Dialog):
     def setup(self):
         self.view = Gspell.LanguageChooserDialog()
         self.view.set_language_code(self.workspace.spellchecking_language_code)
+        self.view.set_modal(True)
+        self.view.set_transient_for(self.main_window)
+
+        self.headerbar = Gtk.HeaderBar()
+        self.headerbar.set_title('Spellchecking Language')
+        self.headerbar.show_all()
+        action_area = self.view.get_action_area()
+        for button in action_area.get_children():
+            action_area.remove(button)
+            if button.get_label() == '_Cancel':
+                self.headerbar.pack_start(button)
+            else:
+                self.headerbar.pack_end(button)
+                button.get_style_context().add_class('suggested-action')
+        action_area.hide()
+        self.view.set_titlebar(self.headerbar)
 
     def set_language(self):
         self.workspace.set_spellchecking_language(self.view.get_language_code())
