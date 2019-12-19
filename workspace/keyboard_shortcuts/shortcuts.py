@@ -62,6 +62,7 @@ class Shortcuts(object):
         self.main_window.app.set_accels_for_action('win.find-prev', ['<Control><Shift>g'])
         self.main_window.app.set_accels_for_action('win.find-replace', ['<Control>h'])
         self.main_window.app.set_accels_for_action('win.save-as', ['<Control><Shift>s'])
+        self.main_window.app.set_accels_for_action('win.spellchecking', ['F7'])
 
         # document edit shortcuts
         self.accel_group.connect(Gdk.keyval_from_name('quotedbl'), c_mask, flags, self.shortcut_quotes)

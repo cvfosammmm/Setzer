@@ -280,6 +280,19 @@
             </child>
           </object>
         </child>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="visible">1</property>
+            <property name="title" translatable="yes">Tools</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">1</property>
+                <property name="accelerator">F7</property>
+                <property name="title" translatable="yes">Spellchecking dialog</property>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
   </object>
