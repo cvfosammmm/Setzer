@@ -53,7 +53,6 @@ class Shortcuts(object):
         self.accel_group.connect(Gdk.keyval_from_name('F9'), 0, flags, self.shortcut_sidebar)
         self.accel_group.connect(Gdk.keyval_from_name('F10'), 0, flags, self.shortcut_preview)
         self.accel_group.connect(Gdk.keyval_from_name('s'), c_mask, flags, self.shortcut_save)
-        #self.accel_group.connect(Gdk.keyval_from_name('s'), c_mask | s_mask, flags, self.shortcut_save_as)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask | s_mask, flags, self.shortcut_switch_document)
 
         # text search
@@ -63,6 +62,7 @@ class Shortcuts(object):
         self.main_window.app.set_accels_for_action('win.find-replace', ['<Control>h'])
         self.main_window.app.set_accels_for_action('win.save-as', ['<Control><Shift>s'])
         self.main_window.app.set_accels_for_action('win.spellchecking', ['F7'])
+        self.main_window.app.set_accels_for_action('win.quit', ['<Control>q'])
 
         # document edit shortcuts
         self.accel_group.connect(Gdk.keyval_from_name('quotedbl'), c_mask, flags, self.shortcut_quotes)

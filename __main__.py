@@ -67,7 +67,6 @@ class MainApplicationController(Gtk.Application):
         # init controller
         self.workspace.init_workspace_controller()
         self.main_window.quit_action.connect('activate', self.on_quit_action)
-        self.workspace.shortcuts.accel_group.connect(Gdk.keyval_from_name('q'), Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.MASK, self.save_quit)
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
