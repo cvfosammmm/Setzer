@@ -41,12 +41,18 @@
 
 	<url type="homepage">https://www.cvfosammmm.org/setzer/</url>
 	<url type="bugtracker">https://github.com/cvfosammmm/Setzer/issues</url>
+	<url type="donation">https://www.patreon.com/cvfosammmm</url>
 
 	<provides>
 		<id>org.cvfosammmm.Setzer.desktop</id>
 	</provides>
 
     <releases>
+        <release version="0.1.3" date="2019-12-21">
+            <description>
+                <p>Initial spellchecking support, ...</p>
+            </description>
+        </release>
         <release version="0.1.2" date="2019-12-15">
             <description>
                 <p>Simple BibTeX wizard, more bibliography features in LaTeX editor, ...</p>
