@@ -41,6 +41,19 @@
             ]
         },
         {
+            "name": "gspell",
+            "cleanup": [
+                "/bin"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/gspell/1.8/gspell-1.8.2.tar.xz",
+                    "sha256": "bb9195c3a95bacf556d0203e9691f7489e0d3bc5ae1e5a440c89b2f2435d3ed6"
+                }
+            ]
+        },
+        {
             "name": "openjpeg",
             "buildsystem": "cmake-ninja",
             "sources": [
