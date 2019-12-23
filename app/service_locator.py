@@ -45,6 +45,7 @@ class ServiceLocator(object):
     build_log_badbox_line_number_regex = re.compile('lines ([0-9]+)--([0-9]+)')
     build_log_other_line_number_regex = re.compile('(l.| input line \n| input line )([0-9]+)( |.)')
     bibtex_log_item_regex = re.compile('Warning--(.*)\n--line ([0-9]+) of file (.*)')
+    symbols_regex = re.compile('\\\\label\{((?:\w|\:)*)\}')
 
     def init_dialogs(main_window, workspace):
         settings = ServiceLocator.get_settings()
@@ -87,6 +88,9 @@ class ServiceLocator(object):
 
     def get_bibtex_log_item_regex():
         return ServiceLocator.bibtex_log_item_regex
+
+    def get_symbols_regex():
+        return ServiceLocator.symbols_regex
 
     def get_settings():
         if ServiceLocator.settings == None:

@@ -32,6 +32,8 @@ import document.build_widget.build_widget as build_widget
 import document.search.search as search
 import document.autocomplete.autocomplete as autocomplete
 import document.spellchecker.spellchecker as spellchecker
+import document.parser.latex_parser as latex_parser
+import document.parser.bibtex_parser as bibtex_parser
 from helpers.observable import *
 from app.service_locator import ServiceLocator
 
@@ -101,10 +103,10 @@ class Document(Observable):
             self.add_change_code('document_empty')
         
     def on_insert_text(self, buffer, location_iter, text, text_len):
-        pass
+        self.parser.on_insert_text(location_iter, text, text_len)
 
     def on_delete_range(self, buffer, start_iter, end_iter):
-        pass
+        self.parser.on_delete_range(start_iter, end_iter)
 
     def set_use_dark_scheme(self, use_dark_scheme):
         if use_dark_scheme: self.source_buffer.set_style_scheme(self.source_style_scheme_dark)
@@ -193,15 +195,17 @@ class Document(Observable):
         if self.filename == None: return False
         if self.get_buffer() == None: return False
         else:
-            buff = self.get_buffer()
-            text = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), True)
-            with open(self.filename, 'w') as f:
-                f.write(text)
-                buff.set_modified(False)
+            text = self.get_text()
+            if text != None:
+                with open(self.filename, 'w') as f:
+                    f.write(text)
+                    buff.set_modified(False)
                 
-    def parse_result_blob(self):
-        result = MarkdownResult(self.result_blob)
-        self.set_result(result)
+    def get_text(self):
+        buff = self.get_buffer()
+        if buff != None:
+            return buff.get_text(buff.get_start_iter(), buff.get_end_iter(), True)
+        return None
         
     def get_state(self):
         return self.state
@@ -371,6 +375,7 @@ class LaTeXDocument(Document):
         self.controller = document_controller.DocumentController(self, self.view)
 
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
+        self.parser = latex_parser.LaTeXParser(self)
 
     def get_file_ending(self):
         return 'tex'
@@ -392,6 +397,8 @@ class BibTeXDocument(Document):
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
+
+        self.parser = bibtex_parser.BibTeXParser()
 
     def get_file_ending(self):
         return 'bib'
