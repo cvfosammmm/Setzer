@@ -57,6 +57,7 @@ class Document(Observable):
         self.source_buffer = None
         self.search_settings = None
         self.search_context = None
+        self.parser = None
         self.init_buffer()
         
         # possible states: idle, ready_for_building
@@ -90,23 +91,17 @@ class Document(Observable):
         self.search_context = GtkSource.SearchContext.new(self.source_buffer, self.search_settings)
         self.search_context.set_highlight(True)
 
-        self.source_buffer.connect('changed', self.on_buffer_change)
-        self.source_buffer.connect('insert-text', self.on_insert_text)
-        self.source_buffer.connect('delete-range', self.on_delete_range)
+        self.source_buffer.connect('changed', self.on_buffer_changed)
 
         self.add_change_code('buffer_ready')
 
-    def on_buffer_change(self, buffer):
+    def on_buffer_changed(self, buffer):
+        if self.parser != None:
+            self.parser.on_buffer_changed()
         if self.source_buffer.get_end_iter().get_offset() > 0:
             self.add_change_code('document_not_empty')
         else:
             self.add_change_code('document_empty')
-        
-    def on_insert_text(self, buffer, location_iter, text, text_len):
-        self.parser.on_insert_text(location_iter, text, text_len)
-
-    def on_delete_range(self, buffer, start_iter, end_iter):
-        self.parser.on_delete_range(start_iter, end_iter)
 
     def set_use_dark_scheme(self, use_dark_scheme):
         if use_dark_scheme: self.source_buffer.set_style_scheme(self.source_style_scheme_dark)
@@ -199,7 +194,7 @@ class Document(Observable):
             if text != None:
                 with open(self.filename, 'w') as f:
                     f.write(text)
-                    buff.set_modified(False)
+                    self.get_buffer().set_modified(False)
                 
     def get_text(self):
         buff = self.get_buffer()

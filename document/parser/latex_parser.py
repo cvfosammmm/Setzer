@@ -28,18 +28,15 @@ class LaTeXParser(Observable):
 
         self.labels = set()
 
+    def on_buffer_changed(self):
         self.parse_symbols()
 
-    def on_insert_text(self, location_iter, text, text_len):
-        self.parse_symbols()
-
-    def on_delete_range(self, start_iter, end_iter):
-        self.parse_symbols()
-
-    #@timer
+    @timer
     def parse_symbols(self):
+        labels = set()
         text = self.document.get_text()
         for match in ServiceLocator.get_symbols_regex().finditer(text):
-            self.labels = self.labels | {match.group(1)}
+            labels = labels | {match.group(1)}
+        self.labels = labels
 
 
