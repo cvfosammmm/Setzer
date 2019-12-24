@@ -85,17 +85,19 @@ class DocumentAutocompleteView(Gtk.VBox):
 
 class DocumentAutocompleteItem(Gtk.HBox):
 
-    def __init__(self, text):
+    def __init__(self, command):
         Gtk.HBox.__init__(self)
 
         self.set_halign(Gtk.Align.START)
         self.set_valign(Gtk.Align.START)
 
-        self.text = text
-        self.label = Gtk.Label(text)
+        self.command = command
+        self.label = Gtk.Label('\\' + command['command'])
         self.label.get_style_context().add_class('monospace')
         self.pack_start(self.label, True, True, 0)
         self.show_all()
 
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
+
+

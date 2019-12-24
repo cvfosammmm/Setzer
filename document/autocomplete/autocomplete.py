@@ -50,7 +50,10 @@ class Autocomplete(object):
         self.autocomplete_visible = False
         self.autocomplete_focus_was_visible = False
 
-        self.load_data()
+        self.static_proposals = dict()
+        self.dynamic_proposals = dict()
+        self.generate_proposals()
+        GObject.timeout_add(1000, self.generate_dynamic_proposals)
 
         self.view.list.connect('row-activated', self.on_autocomplete_row_activated)
         self.view.list.connect('row-selected', self.on_autocomplete_row_selected)
@@ -82,8 +85,8 @@ class Autocomplete(object):
 
     def on_autocomplete_row_selected(self, box, row, user_data=None):
         if row != None:
-            text = row.get_child().text
-            self.view.infobox.set_text(self.commands[text[1:]]['description'])
+            command = row.get_child().command
+            self.view.infobox.set_text(command['description'])
 
     def on_focus_out(self, widget, event, user_data=None):
         self.focus_hide()
@@ -177,15 +180,17 @@ class Autocomplete(object):
                 self.current_word = self.get_current_word(insert_iter)
                 self.insert_iter_matched = False
                 self.view.empty_list()
-                try: items = self.proposals[self.current_word[1:]]
+
+                items = list()
+                try: items += self.dynamic_proposals[self.current_word[1:]]
                 except KeyError: pass
-                else:
-                    self.number_of_matches = len(items)
-                    for word in items:
-                        item = view.DocumentAutocompleteItem('\\' + word)
-                        self.view.prepend(item)
-                        self.insert_iter_matched = True
-                        self.view.select_first()
+
+                self.number_of_matches = len(items)
+                for command in items:
+                    item = view.DocumentAutocompleteItem(command)
+                    self.view.prepend(item)
+                    self.insert_iter_matched = True
+                    self.view.select_first()
 
             if self.insert_iter_matched:
                 self.autocomplete_height = self.view.get_allocated_height()
@@ -231,7 +236,7 @@ class Autocomplete(object):
     def save_data(self):
         pass
         
-    def load_data(self):
+    def generate_proposals(self):
         self.commands = {
             'abstractname{•}': {'command': 'abstractname{•}', 'description': ''},
             'acute{•}': {'command': 'acute{•}', 'description': ''},
@@ -617,14 +622,29 @@ class Autocomplete(object):
             'xi': {'command': 'xi', 'description': 'Greek letter "xi"'},
             'zeta': {'command': 'zeta', 'description': 'Greek letter "zeta"'}}
         
-        self.proposals = dict()
+        self.static_proposals = dict()
         for command in self.commands.values():
-            command = command['command']
-            for i in range(1, len(command)):
+            for i in range(1, len(command['command'])):
                 try:
-                    if len(self.proposals[command[0:i]]) < 5:
-                        self.proposals[command[0:i]].append(command)
+                    if len(self.static_proposals[command['command'][0:i]]) < 5:
+                        self.static_proposals[command['command'][0:i]].append(command)
                 except KeyError:
-                    self.proposals[command[0:i]] = [command]
+                    self.static_proposals[command['command'][0:i]] = [command]
+
+    def generate_dynamic_proposals(self):
+        self.document.parser.symbols_lock.acquire()
+        labels = self.document.parser.symbols['labels'].copy()
+        self.document.parser.symbols_lock.release()
+
+        self.dynamic_proposals = self.static_proposals
+        for label in iter(labels):
+            command = {'command': 'ref{' + label + '}', 'description': 'Reference to \'' + label + '\''}
+            for i in range(1, len(command['command'])):
+                try:
+                    if len(self.dynamic_proposals[command['command'][0:i]]) < 5:
+                        self.dynamic_proposals[command['command'][0:i]].append(command)
+                except KeyError:
+                    self.dynamic_proposals[command['command'][0:i]] = [command]
+        return True
 
 

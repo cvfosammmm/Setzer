@@ -18,6 +18,7 @@
 from helpers.observable import *
 from helpers.helpers import timer
 from app.service_locator import ServiceLocator
+import _thread as thread, queue
 
 
 class LaTeXParser(Observable):
@@ -26,17 +27,22 @@ class LaTeXParser(Observable):
         Observable.__init__(self)
         self.document = document
 
-        self.labels = set()
+        self.symbols = dict()
+        self.symbols['labels'] = set()
+        self.symbols_lock = thread.allocate_lock()
 
     def on_buffer_changed(self):
         self.parse_symbols()
 
-    @timer
+    #@timer
     def parse_symbols(self):
         labels = set()
         text = self.document.get_text()
         for match in ServiceLocator.get_symbols_regex().finditer(text):
             labels = labels | {match.group(1)}
-        self.labels = labels
+
+        self.symbols_lock.acquire()
+        self.symbols['labels'] = labels
+        self.symbols_lock.release()
 
 
