@@ -53,7 +53,7 @@ class Autocomplete(object):
         self.static_proposals = dict()
         self.dynamic_proposals = dict()
         self.generate_proposals()
-        GObject.timeout_add(1000, self.generate_dynamic_proposals)
+        GObject.timeout_add(500, self.generate_dynamic_proposals)
 
         self.view.list.connect('row-activated', self.on_autocomplete_row_activated)
         self.view.list.connect('row-selected', self.on_autocomplete_row_selected)
@@ -193,7 +193,7 @@ class Autocomplete(object):
                     self.view.select_first()
 
             if self.insert_iter_matched:
-                self.autocomplete_height = self.view.get_allocated_height()
+                self.autocomplete_height = 114
                 self.autocomplete_width = self.view.get_allocated_width()
 
                 iter_location = self.document_view.source_view.get_iter_location(insert_iter)
