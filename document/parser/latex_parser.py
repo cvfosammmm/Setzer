@@ -29,6 +29,7 @@ class LaTeXParser(Observable):
 
         self.symbols = dict()
         self.symbols['labels'] = set()
+        self.symbols_changed = False
         self.symbols_lock = thread.allocate_lock()
 
     def on_buffer_changed(self):
@@ -43,6 +44,7 @@ class LaTeXParser(Observable):
 
         self.symbols_lock.acquire()
         self.symbols['labels'] = labels
+        self.symbols_changed = True
         self.symbols_lock.release()
 
 

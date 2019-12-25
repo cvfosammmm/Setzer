@@ -634,7 +634,9 @@ class Autocomplete(object):
     def generate_dynamic_proposals(self):
         self.document.parser.symbols_lock.acquire()
         labels = self.document.parser.symbols['labels'].copy()
+        symbols_changed = self.document.parser.symbols_changed
         self.document.parser.symbols_lock.release()
+        if not symbols_changed: return True
 
         self.dynamic_proposals = self.static_proposals
         for label in iter(labels):
