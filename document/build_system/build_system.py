@@ -397,6 +397,7 @@ class Query(object):
                             self.error_count += 1
 
     def parse_bibtex_log(self, log_filename):
+        
         try: file = open(log_filename, 'rb')
         except FileNotFoundError as e: pass
         else:
@@ -405,15 +406,27 @@ class Query(object):
             self.bibtex_log_messages = list()
             file_numbers = dict()
             for item in self.bibtex_log_item_regex.finditer(text):
-                text = item.group(1)
-                line_number = int(item.group(2).strip())
-                filename = self.directory_name + '/' + item.group(3)
-                try:
-                    file_no = file_numbers[filename]
-                except KeyError:
-                    file_no = 10000 + len(file_numbers)
-                    file_numbers[filename] = file_no
-                self.bibtex_log_messages.append(('Warning', None, filename, file_no, line_number, text))
+                line = item.group(0)
+
+                if line.startswith('I couldn\'t open style file'):
+                    self.error_count += 1
+                    text = 'I couldn\'t open style file ' + item.group(4) + '.bst'
+                    line_number = int(item.group(5).strip())
+                    self.bibtex_log_messages.append(('Error', None, self.tex_filename, 0, -1, text))
+                elif line.startswith('Warning--'):
+                    filename = os.path.basename(log_filename[:-3] + 'bib')
+                    try:
+                        file_no = file_numbers[filename]
+                    except KeyError:
+                        file_no = 10000 + len(file_numbers)
+                        file_numbers[filename] = file_no
+                    text = item.group(1)
+                    line_number = int(item.group(2).strip())
+                    self.bibtex_log_messages.append(('Warning', None, filename, file_no, line_number, text))
+
+            '''
+if errors none: (There were 2 error messages)
+'''
 
     def bl_get_line_number(self, line, matchiter):
         for i in range(10):
