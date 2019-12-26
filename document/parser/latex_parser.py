@@ -31,6 +31,7 @@ class LaTeXParser(Observable):
         self.symbols['labels'] = set()
         self.symbols['includes'] = set()
         self.symbols['inputs'] = set()
+        self.symbols['bibliographies'] = set()
         self.symbols_changed = False
         self.symbols_lock = thread.allocate_lock()
 
@@ -51,19 +52,25 @@ class LaTeXParser(Observable):
         labels = set()
         includes = set()
         inputs = set()
+        bibliographies = set()
         text = self.document.get_text()
         for match in ServiceLocator.get_symbols_regex().finditer(text):
             if match.group(1) == 'label':
-                labels = labels | {match.group(2)}
+                labels = labels | {match.group(2).strip()}
             elif match.group(1) == 'include':
-                includes = includes | {match.group(2)}
+                includes = includes | {match.group(2).strip()}
             elif match.group(1) == 'input':
-                inputs = inputs | {match.group(2)}
+                inputs = inputs | {match.group(2).strip()}
+            elif match.group(1) == 'bibliography':
+                bibfiles = match.group(2).strip().split(',')
+                for entry in bibfiles:
+                    bibliographies = bibliographies | {entry.strip()}
 
         self.symbols_lock.acquire()
         self.symbols['labels'] = labels
         self.symbols['includes'] = includes
         self.symbols['inputs'] = inputs
+        self.symbols['bibliographies'] = bibliographies
         self.symbols_changed = True
         self.symbols_lock.release()
 
