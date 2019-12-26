@@ -24,10 +24,7 @@ class BibTeXParser(Observable):
     def __init__(self):
         Observable.__init__(self)
 
-    def on_insert_text(self, buffer, location_iter, text, text_len):
-        pass
-
-    def on_delete_range(self, buffer, start_iter, end_iter):
+    def on_buffer_changed(self):
         pass
 
 
