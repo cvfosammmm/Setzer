@@ -29,21 +29,41 @@ class LaTeXParser(Observable):
 
         self.symbols = dict()
         self.symbols['labels'] = set()
+        self.symbols['includes'] = set()
+        self.symbols['inputs'] = set()
         self.symbols_changed = False
         self.symbols_lock = thread.allocate_lock()
 
     def on_buffer_changed(self):
         self.parse_symbols()
 
+    def get_labels(self):
+        self.document.parser.symbols_lock.acquire()
+        if self.symbols_changed:
+            result = self.symbols['labels'].copy()
+        else:
+            result = None
+        self.document.parser.symbols_lock.release()
+        return result
+
     #@timer
     def parse_symbols(self):
         labels = set()
+        includes = set()
+        inputs = set()
         text = self.document.get_text()
         for match in ServiceLocator.get_symbols_regex().finditer(text):
-            labels = labels | {match.group(1)}
+            if match.group(1) == 'label':
+                labels = labels | {match.group(2)}
+            elif match.group(1) == 'include':
+                includes = includes | {match.group(2)}
+            elif match.group(1) == 'input':
+                inputs = inputs | {match.group(2)}
 
         self.symbols_lock.acquire()
         self.symbols['labels'] = labels
+        self.symbols['includes'] = includes
+        self.symbols['inputs'] = inputs
         self.symbols_changed = True
         self.symbols_lock.release()
 

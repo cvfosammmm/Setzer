@@ -632,21 +632,17 @@ class Autocomplete(object):
                     self.static_proposals[command['command'][0:i]] = [command]
 
     def generate_dynamic_proposals(self):
-        self.document.parser.symbols_lock.acquire()
-        labels = self.document.parser.symbols['labels'].copy()
-        symbols_changed = self.document.parser.symbols_changed
-        self.document.parser.symbols_lock.release()
-        if not symbols_changed: return True
-
-        self.dynamic_proposals = self.static_proposals
-        for label in iter(labels):
-            command = {'command': 'ref{' + label + '}', 'description': 'Reference to \'' + label + '\''}
-            for i in range(1, len(command['command'])):
-                try:
-                    if len(self.dynamic_proposals[command['command'][0:i]]) < 5:
-                        self.dynamic_proposals[command['command'][0:i]].append(command)
-                except KeyError:
-                    self.dynamic_proposals[command['command'][0:i]] = [command]
+        labels = self.document.parser.get_labels()
+        if labels != None:
+            self.dynamic_proposals = self.static_proposals
+            for label in iter(labels):
+                command = {'command': 'ref{' + label + '}', 'description': 'Reference to \'' + label + '\''}
+                for i in range(1, len(command['command'])):
+                    try:
+                        if len(self.dynamic_proposals[command['command'][0:i]]) < 5:
+                            self.dynamic_proposals[command['command'][0:i]].append(command)
+                    except KeyError:
+                        self.dynamic_proposals[command['command'][0:i]] = [command]
         return True
 
 
