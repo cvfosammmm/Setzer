@@ -488,6 +488,8 @@ class Autocomplete(object):
             'newpage': {'command': 'newpage', 'description': ''},
             'nexists': {'command': 'nexists', 'description': ''},
             'nolinebreak': {'command': 'nolinebreak', 'description': ''},
+            'nocite{•}': {'command': 'nocite{•}', 'description': 'Include a non-cited item from the bibliography'},
+            'nocite{*}': {'command': 'nocite{*}', 'description': 'Include all non-cited items from the bibliography'},
             'nopagebreak': {'command': 'nopagebreak', 'description': ''},
             'nu': {'command': 'nu', 'description': 'Greek letter "nu"'},
             'og • fg{} ': {'command': 'og • fg{} ', 'description': ''},
