@@ -193,7 +193,8 @@ class Autocomplete(object):
                     self.view.select_first()
 
             if self.insert_iter_matched:
-                self.autocomplete_height = 114
+                self.autocomplete_height = self.view.get_allocated_height()
+                full_autocomplete_height = 114
                 self.autocomplete_width = self.view.get_allocated_width()
 
                 iter_location = self.document_view.source_view.get_iter_location(insert_iter)
@@ -205,7 +206,7 @@ class Autocomplete(object):
 
                 show_x = False
                 show_y = False
-                if y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - self.autocomplete_height:
+                if y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_autocomplete_height:
                     self.view.set_margin_top(y_position)
                     show_y = True
                 elif y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
