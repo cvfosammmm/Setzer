@@ -182,7 +182,7 @@ class Autocomplete(object):
                 self.view.empty_list()
 
                 items = list()
-                try: items += self.dynamic_proposals[self.current_word[1:]]
+                try: items = self.dynamic_proposals[self.current_word[1:]]
                 except KeyError: pass
 
                 self.number_of_matches = len(items)
@@ -637,6 +637,7 @@ class Autocomplete(object):
     def generate_dynamic_proposals(self):
         labels = self.document.parser.get_labels()
         if labels != None:
+            self.generate_proposals()
             self.dynamic_proposals = self.static_proposals
             for label in iter(labels):
                 command = {'command': 'ref{' + label + '}', 'description': 'Reference to \'' + label + '\''}

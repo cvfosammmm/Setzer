@@ -32,7 +32,7 @@ class LaTeXParser(Observable):
         self.symbols['includes'] = set()
         self.symbols['inputs'] = set()
         self.symbols['bibliographies'] = set()
-        self.symbols_changed = False
+        self.labels_changed = False
         self.symbols_lock = thread.allocate_lock()
 
     def on_buffer_changed(self):
@@ -40,10 +40,11 @@ class LaTeXParser(Observable):
 
     def get_labels(self):
         self.document.parser.symbols_lock.acquire()
-        if self.symbols_changed:
+        if self.labels_changed:
             result = self.symbols['labels'].copy()
         else:
             result = None
+        self.labels_changed = False
         self.document.parser.symbols_lock.release()
         return result
 
@@ -71,7 +72,7 @@ class LaTeXParser(Observable):
         self.symbols['includes'] = includes
         self.symbols['inputs'] = inputs
         self.symbols['bibliographies'] = bibliographies
-        self.symbols_changed = True
+        self.labels_changed = True
         self.symbols_lock.release()
 
 
