@@ -40,6 +40,7 @@ box.autocomplete label.infobox {
     padding-bottom: 2px;
     margin-top: 0px;
     padding-left: 3px;
+    padding-right: 3px;
     background-color: @theme_bg_color;
     font-size: 14px;
     color: @theme_fg_color;
