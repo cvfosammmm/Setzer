@@ -39,37 +39,52 @@ class LaTeXParser(Observable):
         self.labels_changed = True
         self.symbols_lock = thread.allocate_lock()
 
+        self.blocks = list()
+        self.blocks_changed = True
+        self.blocks_lock = thread.allocate_lock()
+
         self.parse_jobs = dict()
         self.parse_jobs['symbols'] = None
+        self.parse_jobs['blocks'] = None
         self.parse_symbols_job_running = False
+        self.parse_blocks_job_running = False
         self.parse_jobs_lock = thread.allocate_lock()
 
         GObject.timeout_add(50, self.compute_loop)
-        #GObject.timeout_add(50, self.results_loop)
 
     def on_buffer_changed(self):
         text = self.document.get_text()
         self.parse_jobs_lock.acquire()
         self.parse_jobs['symbols'] = ParseJob(time.time() + 1, text)
+        self.parse_jobs['blocks'] = ParseJob(time.time() + 1, text)
         self.parse_jobs_lock.release()
 
     def compute_loop(self):
         self.parse_jobs_lock.acquire()
         job = self.parse_jobs['symbols']
         self.parse_jobs_lock.release()
-
-        if job == None: return True
+        if job != None:
+            self.parse_jobs_lock.acquire()
+            parse_symbols_job_running = self.parse_symbols_job_running
+            self.parse_jobs_lock.release()
+            if not parse_symbols_job_running and job.starting_time < time.time():
+                self.parse_jobs_lock.acquire()
+                self.parse_jobs['symbols'] = None
+                self.parse_jobs_lock.release()
+                thread.start_new_thread(self.parse_symbols, (job.text, ))
 
         self.parse_jobs_lock.acquire()
-        parse_symbols_job_running = self.parse_symbols_job_running
+        job = self.parse_jobs['blocks']
         self.parse_jobs_lock.release()
-        if parse_symbols_job_running: return True
-
-        if job.starting_time < time.time():
+        if job != None:
             self.parse_jobs_lock.acquire()
-            self.parse_jobs['symbols'] = None
+            parse_blocks_job_running = self.parse_blocks_job_running
             self.parse_jobs_lock.release()
-            thread.start_new_thread(self.parse_symbols, (job.text, ))
+            if not parse_blocks_job_running and job.starting_time < time.time():
+                self.parse_jobs_lock.acquire()
+                self.parse_jobs['blocks'] = None
+                self.parse_jobs_lock.release()
+                thread.start_new_thread(self.parse_blocks, (job.text, ))
 
         return True
 
@@ -82,6 +97,40 @@ class LaTeXParser(Observable):
         self.labels_changed = False
         self.document.parser.symbols_lock.release()
         return result
+
+    #@timer
+    def parse_blocks(self, text):
+        self.parse_jobs_lock.acquire()
+        self.parse_blocks_job_running = True
+        self.parse_jobs_lock.release()
+
+        blocks = dict()
+        for match in ServiceLocator.get_blocks_regex().finditer(text):
+            if match.group(1) == 'begin':
+                try: blocks[match.group(2)].append([match.start(), None])
+                except KeyError: blocks[match.group(2)] = [[match.start(), None]]
+            else:
+                try: begins = blocks[match.group(2)]
+                except KeyError: pass
+                else:
+                    for block in reversed(begins):
+                        if block[1] == None:
+                            block[1] = match.start()
+                            break
+
+        blocks_list = list()
+        for single_list in blocks.values():
+            blocks_list += single_list
+        blocks_list = sorted(blocks_list, key=lambda block: block[0])
+
+        self.blocks_lock.acquire()
+        self.blocks = blocks_list
+        self.blocks_changed = True
+        self.blocks_lock.release()
+
+        self.parse_jobs_lock.acquire()
+        self.parse_blocks_job_running = False
+        self.parse_jobs_lock.release()
 
     #@timer
     def parse_symbols(self, text):
