@@ -119,13 +119,14 @@ class Workspace(Observable):
         elif filename[-4:] == '.bib':
             document = BibTeXDocument(self.pathname)
         else:
-            return
+            return None
         document.set_filename(filename)
         document.populate_from_filename()
         if document.populate_from_filename() != False:
             self.add_document(document)
             if activate:
                 self.set_active_document(document)
+        return document
 
     def get_document_by_filename(self, filename):
         for document in self.open_documents:
@@ -183,8 +184,14 @@ class Workspace(Observable):
             except EOFError:
                 return
             else:
+                try:
+                    master_document_filename = data['master_document_filename']
+                except KeyError:
+                    master_document_filename = None
                 for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
-                    self.create_document_from_filename(item['filename'])
+                    document = self.create_document_from_filename(item['filename'])
+                    if item['filename'] == master_document_filename and document != None:
+                        self.set_one_document_master(document)
                 for item in data['recently_opened_documents'].values():
                     self.update_recently_opened_document(item['filename'], item['date'], notify=False)
         self.add_change_code('update_recently_opened_documents', self.recently_opened_documents)
@@ -205,6 +212,8 @@ class Workspace(Observable):
                 'open_documents': open_documents,
                 'recently_opened_documents': self.recently_opened_documents
             }
+            if self.master_document != None:
+                data['master_document_filename'] = self.master_document.get_filename()
             pickle.dump(data, filehandle)
             
     def get_unsaved_documents(self):
