@@ -28,7 +28,6 @@ from workspace.shortcutsbar.shortcutsbar_viewgtk import *
 from workspace.bibtex_shortcutsbar.bibtex_shortcutsbar_viewgtk import *
 from workspace.preview.preview_viewgtk import *
 from workspace.sidebar.sidebar_viewgtk import *
-from app.service_locator import ServiceLocator
 
 import os
 

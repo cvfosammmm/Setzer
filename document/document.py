@@ -22,6 +22,7 @@ from gi.repository import GtkSource
 import os.path
 import pickle
 import base64
+import math
 
 import document.document_builder as document_builder
 import document.document_controller as document_controller
@@ -32,6 +33,7 @@ import document.build_widget.build_widget as build_widget
 import document.search.search as search
 import document.autocomplete.autocomplete as autocomplete
 import document.spellchecker.spellchecker as spellchecker
+import document.code_folding.code_folding as code_folding
 import document.parser.latex_parser as latex_parser
 import document.parser.bibtex_parser as bibtex_parser
 from helpers.observable import *
@@ -81,7 +83,8 @@ class Document(Observable):
         self.source_language = self.source_language_manager.get_language(self.get_gsv_language_name())
         self.source_buffer.set_language(self.source_language)
         self.source_buffer.set_highlight_matching_brackets(False)
-        
+        self.source_buffer.create_tag('invisible', invisible=1)
+
         self.source_style_scheme_manager = GtkSource.StyleSchemeManager()
         self.source_style_scheme_manager.set_search_path((os.path.dirname(__file__) + '/../resources/gtksourceview/styles',))
         self.source_style_scheme_light = self.source_style_scheme_manager.get_scheme('setzer')
@@ -367,6 +370,7 @@ class LaTeXDocument(Document):
         self.builder = document_builder.DocumentBuilder(self)
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
+        self.code_folding = code_folding.CodeFolding(self)
         self.controller = document_controller.DocumentController(self, self.view)
 
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)

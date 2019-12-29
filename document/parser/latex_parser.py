@@ -39,8 +39,11 @@ class LaTeXParser(Observable):
         self.labels_changed = True
         self.symbols_lock = thread.allocate_lock()
 
+        self.last_buffer_change = time.time()
+
         self.blocks = list()
         self.blocks_changed = True
+        self.last_blocks_change = time.time()
         self.blocks_lock = thread.allocate_lock()
 
         self.parse_jobs = dict()
@@ -50,13 +53,14 @@ class LaTeXParser(Observable):
         self.parse_blocks_job_running = False
         self.parse_jobs_lock = thread.allocate_lock()
 
-        GObject.timeout_add(50, self.compute_loop)
+        GObject.timeout_add(1, self.compute_loop)
 
     def on_buffer_changed(self):
+        self.last_buffer_change = time.time()
         text = self.document.get_text()
         self.parse_jobs_lock.acquire()
         self.parse_jobs['symbols'] = ParseJob(time.time() + 1, text)
-        self.parse_jobs['blocks'] = ParseJob(time.time() + 1, text)
+        self.parse_jobs['blocks'] = ParseJob(time.time(), text)
         self.parse_jobs_lock.release()
 
     def compute_loop(self):
@@ -89,13 +93,25 @@ class LaTeXParser(Observable):
         return True
 
     def get_labels(self):
-        self.document.parser.symbols_lock.acquire()
+        self.symbols_lock.acquire()
         if self.labels_changed:
             result = self.symbols['labels'].copy()
         else:
             result = None
         self.labels_changed = False
-        self.document.parser.symbols_lock.release()
+        self.symbols_lock.release()
+        return result
+
+    def get_blocks(self):
+        self.blocks_lock.acquire()
+        if self.last_buffer_change > self.last_blocks_change:
+            result = None
+        elif self.blocks_changed:
+            result = self.blocks.copy()
+        else:
+            result = None
+        self.blocks_changed = False
+        self.blocks_lock.release()
         return result
 
     #@timer
@@ -126,6 +142,7 @@ class LaTeXParser(Observable):
         self.blocks_lock.acquire()
         self.blocks = blocks_list
         self.blocks_changed = True
+        self.last_blocks_change = time.time()
         self.blocks_lock.release()
 
         self.parse_jobs_lock.acquire()

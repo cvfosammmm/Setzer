@@ -101,6 +101,15 @@ class Preferences(object):
         self.option_line_wrapping = Gtk.CheckButton('Enable line wrapping')
         self.page_editor.pack_start(self.option_line_wrapping, False, False, 0)
 
+        label = Gtk.Label()
+        label.set_markup('<b>Code Folding</b>')
+        label.set_xalign(0)
+        label.set_margin_top(18)
+        label.set_margin_bottom(6)
+        self.page_editor.pack_start(label, False, False, 0)
+        self.option_code_folding = Gtk.CheckButton('Enable code folding')
+        self.page_editor.pack_start(self.option_code_folding, False, False, 0)
+
     def build_page_build_system(self):
         self.page_build_system = Gtk.VBox()
         self.page_build_system.set_margin_start(18)

@@ -66,6 +66,9 @@ class PreferencesDialog(Dialog):
         self.view.option_line_wrapping.set_active(self.settings.get_value('preferences', 'enable_line_wrapping'))
         self.view.option_line_wrapping.connect('toggled', self.on_check_button_toggle, 'enable_line_wrapping')
 
+        self.view.option_code_folding.set_active(self.settings.get_value('preferences', 'enable_code_folding'))
+        self.view.option_code_folding.connect('toggled', self.on_check_button_toggle, 'enable_code_folding')
+
     def on_check_button_toggle(self, button, preference_name):
         self.settings.set_value('preferences', preference_name, button.get_active())
         
