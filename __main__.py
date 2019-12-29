@@ -42,7 +42,7 @@ class MainApplicationController(Gtk.Application):
         settings = ServiceLocator.get_settings()
 
         # init main window, model, dialogs
-        self.main_window = view.MainWindow(self)
+        self.main_window = view.MainWindow(self, settings)
         ServiceLocator.init_main_window(self.main_window)
 
         self.workspace = Workspace()

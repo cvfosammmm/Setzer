@@ -35,7 +35,7 @@ import os
 
 class MainWindow(Gtk.ApplicationWindow):
 
-    def __init__(self, app):
+    def __init__(self, app, settings):
         Gtk.Window.__init__(self, application=app)
         self.app = app
         self.set_size_request(-1, 550)
@@ -185,8 +185,6 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.close_build_log_action = Gio.SimpleAction.new('close-build-log', None)
         self.add_action(self.close_build_log_action)
-
-        settings = ServiceLocator.get_settings()
 
         sc_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'inline_spellchecking'))
         self.toggle_spellchecking_action = Gio.SimpleAction.new_stateful('toggle-spellchecking', None, sc_default)
