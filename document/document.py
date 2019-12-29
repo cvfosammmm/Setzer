@@ -22,7 +22,6 @@ from gi.repository import GtkSource
 import os.path
 import pickle
 import base64
-import math
 
 import document.document_builder as document_builder
 import document.document_controller as document_controller
@@ -38,8 +37,6 @@ import document.parser.latex_parser as latex_parser
 import document.parser.bibtex_parser as bibtex_parser
 from helpers.observable import *
 from app.service_locator import ServiceLocator
-
-import re
 
 
 class Document(Observable):
