@@ -54,7 +54,6 @@ class ServiceLocator(object):
         ServiceLocator.dialogs['bibtex_wizard'] = bibtex_wizard.BibTeXWizard(main_window, workspace, settings)
         ServiceLocator.dialogs['building_failed'] = building_failed_dialog.BuildingFailedDialog(main_window)
         ServiceLocator.dialogs['build_save'] = build_save_dialog.BuildSaveDialog(main_window)
-        ServiceLocator.dialogs['close_confirmation'] = close_confirmation_dialog.CloseConfirmationDialog(main_window, workspace)
         ServiceLocator.dialogs['document_wizard'] = document_wizard.DocumentWizard(main_window, workspace, settings)
         ServiceLocator.dialogs['include_bibtex_file'] = include_bibtex_file_dialog.IncludeBibTeXFile(main_window, settings)
         ServiceLocator.dialogs['interpreter_missing'] = interpreter_missing_dialog.InterpreterMissingDialog(main_window)
@@ -65,6 +64,7 @@ class ServiceLocator(object):
         ServiceLocator.dialogs['keyboard_shortcuts'] = keyboard_shortcuts_dialog.KeyboardShortcutsDialog(main_window)
         ServiceLocator.dialogs['spellchecking'] = spellchecking_dialog.SpellcheckingDialog(main_window, workspace)
         ServiceLocator.dialogs['spellchecking_language'] = spellchecking_language_dialog.SpellcheckingLanguageDialog(main_window, workspace)
+        ServiceLocator.dialogs['close_confirmation'] = close_confirmation_dialog.CloseConfirmationDialog(main_window, workspace, ServiceLocator.dialogs['save_document'])
     
     def get_dialog(dialog_type):
         return ServiceLocator.dialogs[dialog_type]
