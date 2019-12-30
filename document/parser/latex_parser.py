@@ -114,7 +114,7 @@ class LaTeXParser(Observable):
         self.blocks_lock.release()
         return result
 
-    #@timer
+    @timer
     def parse_blocks(self, text):
         self.parse_jobs_lock.acquire()
         self.parse_blocks_job_running = True
@@ -122,12 +122,12 @@ class LaTeXParser(Observable):
 
         text_length = len(text)
 
-        matches = {'begin': list(), 'end': list(), 'part': list(), 'chapter': list(), 'section': list(), 'subsection': list(), 'subsubsection': list()}
+        matches = {'begin': list(), 'end': list(), 'others': list()}
         for match in ServiceLocator.get_blocks_regex().finditer(text):
             if match.group(1) != None:
                 matches[match.group(1)].append(match)
             else:
-                matches[match.group(3)].append(match)
+                matches['others'].append(match)
 
         blocks = dict()
 
@@ -151,20 +151,31 @@ class LaTeXParser(Observable):
         for single_list in blocks.values():
             blocks_list += single_list
 
-        blocks = list()
+        blocks = [list(), list(), list(), list(), list()]
+        relevant_following_blocks = [list(), list(), list(), list(), list()]
+        levels = {'part': 0, 'chapter': 1, 'section': 2, 'subsection': 3, 'subsubsection': 4}
+        for match in reversed(matches['others']):
+            level = levels[match.group(3)]
+            block = [match.start(), None]
 
-        for match in matches['part']:
-            number_of_blocks = len(blocks)
-            if number_of_blocks >= 1:
-                blocks[number_of_blocks - 1][1] = match.start() - 1 # - 1 to go one line up
-            blocks.append([match.start(), None])
-        if end_document_offset != None and blocks[len(blocks) - 1][0] < end_document_offset:
-            blocks[len(blocks) - 1][1] = end_document_offset - 1 # - 1 to go one line up
-        else:
-            blocks[len(blocks) - 1][1] = text_length
-        blocks_list += blocks
+            if len(relevant_following_blocks[level]) >= 1:
+                # - 1 to go one line up
+                block[1] = relevant_following_blocks[level][len(relevant_following_blocks[level]) - 1][0] - 1
+            else:
+                if end_document_offset != None and block[0] < end_document_offset:
+                    # - 1 to go one line up
+                    block[1] = end_document_offset - 1
+                else:
+                    block[1] = text_length
 
+            blocks[level].append(block)
+            for i in range(level, 5):
+                relevant_following_blocks[i].append(block)
+
+        for single_list in blocks:
+            blocks_list += single_list
         blocks_list = sorted(blocks_list, key=lambda block: block[0])
+
         self.blocks_lock.acquire()
         self.blocks = blocks_list
         self.blocks_changed = True
