@@ -40,6 +40,7 @@ class CodeFolding(object):
 
         self.document = document
         self.source_view = document.view.source_view
+        self.tag_table = self.document.source_buffer.get_tag_table()
         self.view = code_folding_view.CodeFoldingView()
         self.presenter = code_folding_presenter.CodeFoldingPresenter(self, self.view)
         self.controller = code_folding_controller.CodeFoldingController(self, self.view)
@@ -77,17 +78,33 @@ class CodeFolding(object):
         else:
             is_folded = not region['is_folded']
         source_buffer = self.document.source_buffer
+        region_id = region['id']
+        tag = self.get_invisible_region_tag(region_id)
         mark_start = region['mark_start']
-        mark_end = region['mark_end']
         start_iter = source_buffer.get_iter_at_mark(mark_start)
+        mark_end = region['mark_end']
         end_iter = source_buffer.get_iter_at_mark(mark_end)
         end_iter.forward_char()
+
         if is_folded:
-            source_buffer.apply_tag_by_name('invisible', start_iter, end_iter)
+            source_buffer.apply_tag(tag, start_iter, end_iter)
         else:
-            source_buffer.remove_tag_by_name('invisible', start_iter, end_iter)
+            source_buffer.remove_tag(tag, start_iter, end_iter)
+            self.delete_invisible_region_tag(region_id)
+
         region['is_folded'] = is_folded
         self.query_data()
+
+    def get_invisible_region_tag(self, region_id):
+        tag = self.tag_table.lookup('invisible_region_' + str(region_id))
+        if tag == None:
+            tag = self.document.source_buffer.create_tag('invisible_region_' + str(region_id), invisible=1)
+        return tag
+
+    def delete_invisible_region_tag(self, region_id):
+        tag = self.tag_table.lookup('invisible_region_' + str(region_id))
+        if tag != None:
+            self.tag_table.remove(tag)
 
     def query_data(self):
         start_iter = self.document.source_buffer.get_start_iter()
@@ -125,7 +142,7 @@ class CodeFolding(object):
                 mark_end = Gtk.TextMark.new('folding_region_end_' + str(self.maximum_region_id), False)
                 self.document.source_buffer.add_mark(mark_start, start_iter)
                 self.document.source_buffer.add_mark(mark_end, end_iter)
-                region_dict = {'mark_start': mark_start, 'mark_end': mark_end, 'is_folded': False, 'starting_line': start_iter.get_line(), 'ending_line': end_iter.get_line()}
+                region_dict = {'mark_start': mark_start, 'mark_end': mark_end, 'is_folded': False, 'starting_line': start_iter.get_line(), 'ending_line': end_iter.get_line(), 'id': self.maximum_region_id}
                 folding_regions_by_region_id[self.maximum_region_id] = region_dict
                 self.maximum_region_id += 1
             folding_regions[start_iter.get_line()] = region_dict

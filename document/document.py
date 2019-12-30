@@ -80,7 +80,6 @@ class Document(Observable):
         self.source_language = self.source_language_manager.get_language(self.get_gsv_language_name())
         self.source_buffer.set_language(self.source_language)
         self.source_buffer.set_highlight_matching_brackets(False)
-        self.source_buffer.create_tag('invisible', invisible=1)
 
         self.source_style_scheme_manager = GtkSource.StyleSchemeManager()
         self.source_style_scheme_manager.set_search_path((os.path.dirname(__file__) + '/../resources/gtksourceview/styles',))
