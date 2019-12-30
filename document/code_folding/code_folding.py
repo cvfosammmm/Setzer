@@ -122,30 +122,31 @@ class CodeFolding(object):
         if blocks == None: return self.is_enabled
 
         for block in blocks:
-            start_iter = self.document.source_buffer.get_iter_at_offset(block[0])
-            start_iter.forward_to_line_end()
-            end_iter = self.document.source_buffer.get_iter_at_offset(block[1])
-            end_iter.forward_to_line_end()
-            marks = start_iter.get_marks()
-            block_in_buffer = False
-            for mark in marks:
-                if mark.get_name() != None and mark.get_name().startswith('folding_region_start'):
-                    block_in_buffer = True
-                    region_id = int(mark.get_name()[21:])
-            if block_in_buffer:
-                region_dict = self.get_folding_region_by_region_id(region_id)
-                region_dict['starting_line'] = start_iter.get_line()
-                region_dict['ending_line'] = end_iter.get_line()
-                folding_regions_by_region_id[region_id] = region_dict
-            else:
-                mark_start = Gtk.TextMark.new('folding_region_start_' + str(self.maximum_region_id), False)
-                mark_end = Gtk.TextMark.new('folding_region_end_' + str(self.maximum_region_id), False)
-                self.document.source_buffer.add_mark(mark_start, start_iter)
-                self.document.source_buffer.add_mark(mark_end, end_iter)
-                region_dict = {'mark_start': mark_start, 'mark_end': mark_end, 'is_folded': False, 'starting_line': start_iter.get_line(), 'ending_line': end_iter.get_line(), 'id': self.maximum_region_id}
-                folding_regions_by_region_id[self.maximum_region_id] = region_dict
-                self.maximum_region_id += 1
-            folding_regions[start_iter.get_line()] = region_dict
+            if block[1] != None:
+                start_iter = self.document.source_buffer.get_iter_at_offset(block[0])
+                start_iter.forward_to_line_end()
+                end_iter = self.document.source_buffer.get_iter_at_offset(block[1])
+                end_iter.forward_to_line_end()
+                marks = start_iter.get_marks()
+                block_in_buffer = False
+                for mark in marks:
+                    if mark.get_name() != None and mark.get_name().startswith('folding_region_start'):
+                        block_in_buffer = True
+                        region_id = int(mark.get_name()[21:])
+                if block_in_buffer:
+                    region_dict = self.get_folding_region_by_region_id(region_id)
+                    region_dict['starting_line'] = start_iter.get_line()
+                    region_dict['ending_line'] = end_iter.get_line()
+                    folding_regions_by_region_id[region_id] = region_dict
+                else:
+                    mark_start = Gtk.TextMark.new('folding_region_start_' + str(self.maximum_region_id), False)
+                    mark_end = Gtk.TextMark.new('folding_region_end_' + str(self.maximum_region_id), False)
+                    self.document.source_buffer.add_mark(mark_start, start_iter)
+                    self.document.source_buffer.add_mark(mark_end, end_iter)
+                    region_dict = {'mark_start': mark_start, 'mark_end': mark_end, 'is_folded': False, 'starting_line': start_iter.get_line(), 'ending_line': end_iter.get_line(), 'id': self.maximum_region_id}
+                    folding_regions_by_region_id[self.maximum_region_id] = region_dict
+                    self.maximum_region_id += 1
+                folding_regions[start_iter.get_line()] = region_dict
 
         regions_to_delete = [region_id for region_id in self.folding_regions_by_region_id if region_id not in folding_regions_by_region_id]
         for region_id in regions_to_delete:

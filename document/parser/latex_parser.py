@@ -120,25 +120,51 @@ class LaTeXParser(Observable):
         self.parse_blocks_job_running = True
         self.parse_jobs_lock.release()
 
-        blocks = dict()
+        text_length = len(text)
+
+        matches = {'begin': list(), 'end': list(), 'part': list(), 'chapter': list(), 'section': list(), 'subsection': list(), 'subsubsection': list()}
         for match in ServiceLocator.get_blocks_regex().finditer(text):
-            if match.group(1) == 'begin':
-                try: blocks[match.group(2)].append([match.start(), None])
-                except KeyError: blocks[match.group(2)] = [[match.start(), None]]
+            if match.group(1) != None:
+                matches[match.group(1)].append(match)
             else:
-                try: begins = blocks[match.group(2)]
-                except KeyError: pass
-                else:
-                    for block in reversed(begins):
-                        if block[1] == None:
-                            block[1] = match.start()
-                            break
+                matches[match.group(3)].append(match)
+
+        blocks = dict()
+
+        for match in matches['begin']:
+            try: blocks[match.group(2)].append([match.start(), None])
+            except KeyError: blocks[match.group(2)] = [[match.start(), None]]
+
+        end_document_offset = None
+        for match in matches['end']:
+            if match.group(2).strip() == 'document':
+                end_document_offset = match.start()
+            try: begins = blocks[match.group(2)]
+            except KeyError: pass
+            else:
+                for block in reversed(begins):
+                    if block[1] == None:
+                        block[1] = match.start()
+                        break
 
         blocks_list = list()
         for single_list in blocks.values():
             blocks_list += single_list
-        blocks_list = sorted(blocks_list, key=lambda block: block[0])
 
+        blocks = list()
+
+        for match in matches['part']:
+            number_of_blocks = len(blocks)
+            if number_of_blocks >= 1:
+                blocks[number_of_blocks - 1][1] = match.start() - 1 # - 1 to go one line up
+            blocks.append([match.start(), None])
+        if end_document_offset != None and blocks[len(blocks) - 1][0] < end_document_offset:
+            blocks[len(blocks) - 1][1] = end_document_offset - 1 # - 1 to go one line up
+        else:
+            blocks[len(blocks) - 1][1] = text_length
+        blocks_list += blocks
+
+        blocks_list = sorted(blocks_list, key=lambda block: block[0])
         self.blocks_lock.acquire()
         self.blocks = blocks_list
         self.blocks_changed = True
