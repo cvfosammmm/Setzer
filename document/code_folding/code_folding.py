@@ -40,6 +40,7 @@ class CodeFolding(object):
 
         self.document = document
         self.source_view = document.view.source_view
+        self.source_gutter = self.source_view.get_gutter(Gtk.TextWindowType.LEFT)
         self.tag_table = self.document.source_buffer.get_tag_table()
         self.view = code_folding_view.CodeFoldingView()
         self.presenter = code_folding_presenter.CodeFoldingPresenter(self, self.view)
@@ -93,7 +94,7 @@ class CodeFolding(object):
             self.delete_invisible_region_tag(region_id)
 
         region['is_folded'] = is_folded
-        self.query_data()
+        self.source_gutter.queue_draw()
 
     def get_invisible_region_tag(self, region_id):
         tag = self.tag_table.lookup('invisible_region_' + str(region_id))
@@ -105,11 +106,6 @@ class CodeFolding(object):
         tag = self.tag_table.lookup('invisible_region_' + str(region_id))
         if tag != None:
             self.tag_table.remove(tag)
-
-    def query_data(self):
-        start_iter = self.document.source_buffer.get_start_iter()
-        end_iter = self.document.source_buffer.get_end_iter()
-        self.view.query_data(start_iter, end_iter, GtkSource.GutterRendererState.NORMAL)
 
     def get_folding_region_by_region_id(self, region_id):
         return self.folding_regions_by_region_id[region_id]
@@ -157,7 +153,7 @@ class CodeFolding(object):
 
         self.folding_regions = folding_regions
         self.folding_regions_by_region_id = folding_regions_by_region_id
-        self.query_data()
+        self.source_gutter.queue_draw()
 
         return self.is_enabled
 
