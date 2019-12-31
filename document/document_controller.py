@@ -38,22 +38,24 @@ class DocumentController(object):
     def on_keypress(self, widget, event, data=None):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if self.document.autocomplete != None:
+        try: autocomplete = self.document.autocomplete
+        except AttributeError: autocomplete = None
+        if autocomplete != None:
             if event.keyval == Gdk.keyval_from_name('Down'):
                 if event.state & modifiers == 0:
-                    return self.document.autocomplete.on_down_press()
+                    return autocomplete.on_down_press()
 
             if event.keyval == Gdk.keyval_from_name('Up'):
                 if event.state & modifiers == 0:
-                    return self.document.autocomplete.on_up_press()
+                    return autocomplete.on_up_press()
 
             if event.keyval == Gdk.keyval_from_name('Escape'):
                 if event.state & modifiers == 0:
-                    return self.document.autocomplete.on_escape_press()
+                    return autocomplete.on_escape_press()
 
             if event.keyval == Gdk.keyval_from_name('Return'):
                 if event.state & modifiers == 0:
-                    return self.document.autocomplete.on_return_press()
+                    return autocomplete.on_return_press()
 
         if event.keyval == Gdk.keyval_from_name('Tab') or event.keyval == Gdk.keyval_from_name('ISO_Left_Tab'):
             if event.state & modifiers == 0:

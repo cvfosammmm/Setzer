@@ -77,8 +77,10 @@ class WorkspacePresenter(object):
                 notebook = self.main_window.notebook
                 notebook.set_current_page(notebook.page_num(document.view))
                 document.view.source_view.grab_focus()
-                self.main_window.preview_paned_overlay.add_overlay(document.autocomplete.view)
-                document.autocomplete.update_autocomplete_position()
+                try:
+                    self.main_window.preview_paned_overlay.add_overlay(document.autocomplete.view)
+                    document.autocomplete.update_autocomplete_position()
+                except AttributeError: pass
 
                 self.update_latex_shortcuts_bar()
                 self.set_preview_document()
@@ -96,7 +98,9 @@ class WorkspacePresenter(object):
             document = parameter
 
             if isinstance(document, LaTeXDocument):
-                self.main_window.preview_paned_overlay.remove(document.autocomplete.view)
+                try:
+                    self.main_window.preview_paned_overlay.remove(document.autocomplete.view)
+                except AttributeError: pass
                 self.main_window.shortcuts_bar.top_icons.remove(document.view.wizard_button)
 
         if change_code == 'set_show_sidebar':

@@ -114,7 +114,7 @@ class LaTeXParser(Observable):
         self.blocks_lock.release()
         return result
 
-    @timer
+    #@timer
     def parse_blocks(self, text):
         self.parse_jobs_lock.acquire()
         self.parse_blocks_job_running = True
