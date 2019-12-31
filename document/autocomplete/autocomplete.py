@@ -202,9 +202,13 @@ class Autocomplete(object):
 
                 iter_location = self.document_view.source_view.get_iter_location(insert_iter)
                 gutter = self.document_view.source_view.get_window(Gtk.TextWindowType.LEFT)
+                if gutter != None:
+                    gutter_width = gutter.get_width()
+                else:
+                    gutter_width = 0
                 x_offset = - self.document_view.scrolled_window.get_hadjustment().get_value()
                 y_offset = - self.document_view.scrolled_window.get_vadjustment().get_value()
-                x_position = x_offset + iter_location.x - 4 + gutter.get_width() - len(self.current_word) * self.char_width
+                x_position = x_offset + iter_location.x - 4 + gutter_width - len(self.current_word) * self.char_width
                 y_position = y_offset + iter_location.y + self.line_height + self.shortcuts_bar_height
 
                 show_x = False
