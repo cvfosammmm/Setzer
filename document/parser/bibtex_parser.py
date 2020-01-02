@@ -15,14 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from helpers.observable import *
 from app.service_locator import ServiceLocator
 
 
-class BibTeXParser(Observable):
+class BibTeXParser(object):
 
     def __init__(self):
-        Observable.__init__(self)
+        pass
 
     def on_buffer_changed(self):
         pass

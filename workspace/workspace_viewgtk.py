@@ -20,14 +20,16 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('GtkSource', '3.0')
 from gi.repository import Gdk
 from gi.repository import Gtk
+from gi.repository import Gio
+from gi.repository import GLib
 from gi.repository import GtkSource
 
-from workspace.build_log.build_log_viewgtk import *
-from workspace.headerbar.headerbar_viewgtk import *
-from workspace.shortcutsbar.shortcutsbar_viewgtk import *
-from workspace.bibtex_shortcutsbar.bibtex_shortcutsbar_viewgtk import *
-from workspace.preview.preview_viewgtk import *
-from workspace.sidebar.sidebar_viewgtk import *
+import workspace.build_log.build_log_viewgtk as build_log_view
+import workspace.headerbar.headerbar_viewgtk as headerbar_view
+import workspace.shortcutsbar.shortcutsbar_viewgtk as shortcutsbar_view
+import workspace.bibtex_shortcutsbar.bibtex_shortcutsbar_viewgtk as bibtex_shortcutsbar_view
+import workspace.preview.preview_viewgtk as preview_view
+import workspace.sidebar.sidebar_viewgtk as sidebar_view
 
 import os
 
@@ -53,13 +55,13 @@ class MainWindow(Gtk.ApplicationWindow):
         self.ismaximized = False
 
         # headerbar
-        self.headerbar = HeaderBar()
+        self.headerbar = headerbar_view.HeaderBar()
         self.set_titlebar(self.headerbar)
 
         # notebook
         self.notebook_wrapper = Gtk.VBox()
         self.notebook = DocumentViewWrapper()
-        self.shortcuts_bar = ShortcutsBar()
+        self.shortcuts_bar = shortcutsbar_view.ShortcutsBar()
         self.notebook_wrapper.pack_start(self.shortcuts_bar, False, False, 0)
         self.notebook_wrapper.pack_start(self.notebook, True, True, 0)
 
@@ -68,24 +70,24 @@ class MainWindow(Gtk.ApplicationWindow):
         self.bibtex_notebook.set_show_tabs(False)
         self.bibtex_notebook.set_show_border(False)
         self.bibtex_notebook.set_scrollable(True)
-        self.bibtex_shortcuts_bar = BibTeXShortcutsBar()
+        self.bibtex_shortcuts_bar = bibtex_shortcutsbar_view.BibTeXShortcutsBar()
         self.bibtex_notebook_wrapper = Gtk.VBox()
         self.bibtex_notebook_wrapper.pack_start(self.bibtex_shortcuts_bar, False, False, 0)
         self.bibtex_notebook_wrapper.pack_start(self.bibtex_notebook, True, True, 0)
 
         # build log
-        self.build_log = BuildLogView()
+        self.build_log = build_log_view.BuildLogView()
         self.build_log_paned = Gtk.VPaned()
         self.build_log_paned.pack1(self.notebook_wrapper, True, False)
         self.build_log_paned.pack2(self.build_log, False, True)
         self.build_log_visible = None
 
         # preview
-        self.preview = PreviewView()
+        self.preview = preview_view.PreviewView()
         self.preview_visible = None
-        
+
         # sidebar
-        self.sidebar = Sidebar()
+        self.sidebar = sidebar_view.Sidebar()
         self.sidebar_visible = None
 
         # paneds

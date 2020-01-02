@@ -20,7 +20,7 @@ import time
 import pickle
 
 from document.document import Document, LaTeXDocument, BibTeXDocument
-from helpers.observable import *
+from helpers.observable import Observable
 import workspace.workspace_presenter as workspace_presenter
 import workspace.workspace_controller as workspace_controller
 import workspace.preview.preview as preview

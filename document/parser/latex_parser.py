@@ -18,17 +18,15 @@
 import gi
 from gi.repository import GObject
 
-from helpers.observable import *
 from helpers.helpers import timer
 from app.service_locator import ServiceLocator
 import _thread as thread, queue
 import time
 
 
-class LaTeXParser(Observable):
+class LaTeXParser(object):
 
     def __init__(self, document):
-        Observable.__init__(self)
         self.document = document
 
         self.symbols = dict()

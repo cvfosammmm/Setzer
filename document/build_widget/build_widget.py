@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from document.build_widget.build_widget_viewgtk import *
-from helpers.observable import *
+import document.build_widget.build_widget_viewgtk as build_widget_view
+from helpers.observable import Observable
 from app.service_locator import ServiceLocator
 import helpers.helpers as helpers
 
@@ -33,7 +33,7 @@ class BuildWidget(Observable):
 
         self.items = list()
 
-        self.view = BuildWidgetView()
+        self.view = build_widget_view.BuildWidgetView()
         self.view.build_button.connect('clicked', self.build_document_request)
         self.view.stop_button.connect('clicked', self.on_stop_build_button_click)
         self.view.clean_button.connect('clicked', self.on_clean_button_click)

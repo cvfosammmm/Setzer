@@ -21,7 +21,7 @@ from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
 
-from workspace.sidebar.sidebar_viewgtk import *
+import workspace.sidebar.sidebar_viewgtk as sidebar_view
 import helpers.helpers as helpers
 from app.service_locator import ServiceLocator
 
@@ -40,17 +40,17 @@ class Sidebar(object):
         # tabbed pages: name, icon name, tooltip, widget
         self.pages = list()
         self.pages.append(['greek_letters', 'own-symbols-greek-letters-symbolic', 'Greek Letters', 
-                           'SidebarPageSymbolsList("greek_letters", 20, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("greek_letters", 20, ' + dm + ')'])
         self.pages.append(['arrows', 'own-symbols-arrows-symbolic', 'Arrows', 
-                           'SidebarPageSymbolsList("arrows", 42, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("arrows", 42, ' + dm + ')'])
         self.pages.append(['relations', 'own-symbols-relations-symbolic', 'Relations', 
-                           'SidebarPageSymbolsList("relations", 30, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("relations", 30, ' + dm + ')'])
         self.pages.append(['operators', 'own-symbols-operators-symbolic', 'Operators', 
-                           'SidebarPageSymbolsList("operators", 44, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("operators", 44, ' + dm + ')'])
         self.pages.append(['misc_math', 'own-symbols-misc-math-symbolic', 'Misc. Math', 
-                           'SidebarPageSymbolsList("misc_math", 38, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("misc_math", 38, ' + dm + ')'])
         self.pages.append(['misc_text', 'own-symbols-misc-text-symbolic', 'Misc. Symbols', 
-                           'SidebarPageSymbolsList("misc_text", 36, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("misc_text", 36, ' + dm + ')'])
         self.page_views = list()
         self.init_page_stack()
 
@@ -100,7 +100,7 @@ class Sidebar(object):
     def on_stack_size_allocate(self, symbol_page, allocation, data=None):
         if symbol_page.size != (allocation.width, allocation.height):
             symbol_page.size = (allocation.width, allocation.height)
-            if isinstance(symbol_page, SidebarPageSymbolsList):
+            if isinstance(symbol_page, sidebar_view.SidebarPageSymbolsList):
                 width_with_border = symbol_page.symbols[0][3].get_preferred_width()[0]
                 width_avail = (allocation.width + 1) # +1px for removed child borders
                 symbols_per_line = (width_avail // width_with_border)

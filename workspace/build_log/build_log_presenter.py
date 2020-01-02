@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from workspace.build_log.build_log_viewgtk import *
+import workspace.build_log.build_log_viewgtk as build_log_view
 
 
 class BuildLogPresenter(object):
@@ -35,7 +35,7 @@ class BuildLogPresenter(object):
 
         if change_code == 'build_log_new_item':
             item = parameter
-            row = BuildLogRowView(item[0], item[2], item[3], item[4], item[5])
+            row = build_log_view.BuildLogRowView(item[0], item[2], item[3], item[4], item[5])
             self.view.list.prepend(row)
 
         if change_code == 'build_log_finished_adding':

@@ -24,7 +24,7 @@ from gi.repository import Gspell
 import os.path
 import pickle
 
-from helpers.observable import *
+from helpers.observable import Observable
 
 
 class Settings(Observable):

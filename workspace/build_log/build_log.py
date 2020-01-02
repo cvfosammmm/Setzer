@@ -15,10 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from workspace.build_log.build_log_viewgtk import *
-from workspace.build_log.build_log_presenter import *
-from workspace.build_log.build_log_controller import *
-from helpers.observable import *
+import workspace.build_log.build_log_presenter as build_log_presenter
+import workspace.build_log.build_log_controller as build_log_controller
+from helpers.observable import Observable
 from app.service_locator import ServiceLocator
 
 
@@ -34,8 +33,8 @@ class BuildLog(Observable):
         self.symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
 
         self.view = ServiceLocator.get_main_window().build_log
-        self.presenter = BuildLogPresenter(self, self.view)
-        self.controller = BuildLogController(self, self.view)
+        self.presenter = build_log_presenter.BuildLogPresenter(self, self.view)
+        self.controller = build_log_controller.BuildLogController(self, self.view)
 
     def change_notification(self, change_code, notifying_object, parameter):
 

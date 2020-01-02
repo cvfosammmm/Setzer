@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from helpers.observable import *
+from helpers.observable import Observable
 import workspace.document_switcher.document_switcher_presenter as document_switcher_presenter
 import workspace.document_switcher.document_switcher_controller as document_switcher_controller
 

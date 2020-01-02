@@ -35,7 +35,7 @@ import document.spellchecker.spellchecker as spellchecker
 import document.code_folding.code_folding as code_folding
 import document.parser.latex_parser as latex_parser
 import document.parser.bibtex_parser as bibtex_parser
-from helpers.observable import *
+from helpers.observable import Observable
 from app.service_locator import ServiceLocator
 
 
