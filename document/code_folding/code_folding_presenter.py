@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+from helpers.helpers import timer
+
 
 class CodeFoldingPresenter(object):
 
@@ -22,9 +24,13 @@ class CodeFoldingPresenter(object):
         self.model = model
         self.view = view
 
+        self.line_invisible = dict()
+
         self.view.connect('query-data', self.query_data)
 
+    #@timer
     def query_data(self, renderer, start_iter, end_iter, state):
+        if self.line_invisible.get(start_iter.get_line(), False): return
         if start_iter.get_line() in self.model.folding_regions.keys():
             if self.model.folding_regions[start_iter.get_line()]['is_folded']:
                 renderer.set_pixbuf(self.view.pixbuf_folded)

@@ -38,6 +38,8 @@ class CodeFolding(object):
         self.folding_regions_by_region_id = dict()
         self.maximum_region_id = 0
 
+        self.line_invisible_tag_count = dict()
+
         self.document = document
         self.source_view = document.view.source_view
         self.source_gutter = self.source_view.get_gutter(Gtk.TextWindowType.LEFT)
@@ -89,9 +91,22 @@ class CodeFolding(object):
 
         if is_folded:
             source_buffer.apply_tag(tag, start_iter, end_iter)
+            for line in range(start_iter.get_line() + 1, end_iter.get_line()):
+                try:
+                    self.line_invisible_tag_count[line] += 1
+                except KeyError:
+                    self.line_invisible_tag_count[line] = 1
+                self.presenter.line_invisible[line] = True
         else:
             source_buffer.remove_tag(tag, start_iter, end_iter)
             self.delete_invisible_region_tag(region_id)
+            for line in range(start_iter.get_line() + 1, end_iter.get_line()):
+                try:
+                    self.line_invisible_tag_count[line] -= 1
+                except KeyError:
+                    self.line_invisible_tag_count[line] = 0
+                if self.line_invisible_tag_count[line] == 0:
+                    self.presenter.line_invisible[line] = False
 
         region['is_folded'] = is_folded
         self.source_gutter.queue_draw()
