@@ -91,10 +91,17 @@ class Document(Observable):
         self.search_context.set_highlight(True)
 
         self.source_buffer.connect('changed', self.on_buffer_changed)
+        self.source_buffer.connect('insert-text', self.on_insert_text)
 
         self.add_change_code('buffer_ready')
 
+    def on_insert_text(self, buffer, location, text, len):
+        pass
+
     def on_buffer_changed(self, buffer):
+        try: self.code_folding.on_buffer_changed(buffer)
+        except AttributeError: pass
+
         if self.parser != None:
             self.parser.on_buffer_changed()
         if self.source_buffer.get_end_iter().get_offset() > 0:

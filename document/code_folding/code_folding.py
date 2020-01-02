@@ -38,8 +38,6 @@ class CodeFolding(object):
         self.folding_regions_by_region_id = dict()
         self.maximum_region_id = 0
 
-        self.line_invisible_tag_count = dict()
-
         self.document = document
         self.source_view = document.view.source_view
         self.source_gutter = self.source_view.get_gutter(Gtk.TextWindowType.LEFT)
@@ -61,6 +59,10 @@ class CodeFolding(object):
         for region in self.folding_regions.values():
             self.toggle_folding_region(region, show_region_regardless_of_state=True)
         self.presenter.hide_folding_bar()
+
+    def on_buffer_changed(self, buffer):
+        for i in range(len(self.presenter.line_invisible), buffer.get_end_iter().get_line() + 1):
+            self.presenter.line_invisible[i] = False
 
     def on_click(self, widget, event):
         x, y = self.source_view.window_to_buffer_coords(Gtk.TextWindowType.LEFT, event.x, event.y)
@@ -91,24 +93,12 @@ class CodeFolding(object):
 
         if is_folded:
             source_buffer.apply_tag(tag, start_iter, end_iter)
-            for line in range(start_iter.get_line() + 1, end_iter.get_line()):
-                try:
-                    self.line_invisible_tag_count[line] += 1
-                except KeyError:
-                    self.line_invisible_tag_count[line] = 1
-                self.presenter.line_invisible[line] = True
         else:
             source_buffer.remove_tag(tag, start_iter, end_iter)
             self.delete_invisible_region_tag(region_id)
-            for line in range(start_iter.get_line() + 1, end_iter.get_line()):
-                try:
-                    self.line_invisible_tag_count[line] -= 1
-                except KeyError:
-                    self.line_invisible_tag_count[line] = 0
-                if self.line_invisible_tag_count[line] == 0:
-                    self.presenter.line_invisible[line] = False
 
         region['is_folded'] = is_folded
+        self.update_line_invisibility()
         self.source_gutter.queue_draw()
 
     def get_invisible_region_tag(self, region_id):
@@ -124,6 +114,20 @@ class CodeFolding(object):
 
     def get_folding_region_by_region_id(self, region_id):
         return self.folding_regions_by_region_id[region_id]
+
+    def update_line_invisibility(self):
+        source_buffer = self.document.source_buffer
+        for i in range(len(self.presenter.line_invisible)):
+            self.presenter.line_invisible[i] = False
+        for region in self.folding_regions.values():
+            mark_start = region['mark_start']
+            start_iter = source_buffer.get_iter_at_mark(mark_start)
+            mark_end = region['mark_end']
+            end_iter = source_buffer.get_iter_at_mark(mark_end)
+            end_iter.forward_char()
+            if region['is_folded']:
+                for line in range(start_iter.get_line() + 1, end_iter.get_line()):
+                    self.presenter.line_invisible[line] = True
 
     #@timer
     def update_folding_regions(self):
@@ -168,6 +172,7 @@ class CodeFolding(object):
 
         self.folding_regions = folding_regions
         self.folding_regions_by_region_id = folding_regions_by_region_id
+        self.update_line_invisibility()
         self.source_gutter.queue_draw()
 
         return self.is_enabled
