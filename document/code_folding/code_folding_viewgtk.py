@@ -30,9 +30,9 @@ class CodeFoldingView(GtkSource.GutterRendererPixbuf):
     def __init__(self):
         GtkSource.GutterRendererPixbuf.__init__(self)
         path = os.path.dirname(os.path.realpath(__file__)) + '/resources/'
-        self.pixbuf_unfolded = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'unfolded.png', 21, 18)
-        self.pixbuf_folded = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'folded.png', 21, 18)
-        self.pixbuf_neutral = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'neutral.png', 21, 18)
-        self.set_size(21)
+        self.pixbuf_unfolded = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'unfolded.png', 18, 18)
+        self.pixbuf_folded = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'folded.png', 18, 18)
+        self.pixbuf_neutral = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'neutral.png', 18, 18)
+        self.set_size(18)
 
 
