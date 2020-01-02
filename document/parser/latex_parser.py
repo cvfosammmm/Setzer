@@ -122,30 +122,30 @@ class LaTeXParser(Observable):
 
         text_length = len(text)
 
-        matches = {'begin': list(), 'end': list(), 'others': list()}
+        matches = {'begin_or_end': list(), 'others': list()}
         for match in ServiceLocator.get_blocks_regex().finditer(text):
             if match.group(1) != None:
-                matches[match.group(1)].append(match)
+                matches['begin_or_end'].append(match)
             else:
                 matches['others'].append(match)
 
         blocks = dict()
 
-        for match in matches['begin']:
-            try: blocks[match.group(2)].append([match.start(), None])
-            except KeyError: blocks[match.group(2)] = [[match.start(), None]]
-
         end_document_offset = None
-        for match in matches['end']:
-            if match.group(2).strip() == 'document':
-                end_document_offset = match.start()
-            try: begins = blocks[match.group(2)]
-            except KeyError: pass
+        for match in matches['begin_or_end']:
+            if match.group(1) == 'begin':
+                try: blocks[match.group(2)].append([match.start(), None])
+                except KeyError: blocks[match.group(2)] = [[match.start(), None]]
             else:
-                for block in reversed(begins):
-                    if block[1] == None:
-                        block[1] = match.start()
-                        break
+                if match.group(2).strip() == 'document':
+                    end_document_offset = match.start()
+                try: begins = blocks[match.group(2)]
+                except KeyError: pass
+                else:
+                    for block in reversed(begins):
+                        if block[1] == None:
+                            block[1] = match.start()
+                            break
 
         blocks_list = list()
         for single_list in blocks.values():
