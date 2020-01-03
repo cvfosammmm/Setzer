@@ -57,6 +57,7 @@ class WorkspaceController(object):
         self.main_window.close_document_action.connect('activate', self.on_close_document_clicked)
         self.main_window.insert_before_after_action.connect('activate', self.insert_before_after)
         self.main_window.insert_symbol_action.connect('activate', self.insert_symbol)
+        self.main_window.insert_before_document_end_action.connect('activate', self.insert_before_document_end)
         self.main_window.document_wizard_action.connect('activate', self.start_wizard)
         self.main_window.include_bibtex_file_action.connect('activate', self.start_include_bibtex_file_dialog)
         self.main_window.add_package_action.connect('activate', self.add_package)
@@ -295,6 +296,20 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def insert_symbol(self, action, parameter):
         self.workspace.get_active_document().insert_text_at_cursor(parameter[0])
+
+    @_assert_has_active_document
+    def insert_before_document_end(self, action, parameter):
+        document = self.workspace.get_active_document()
+        buffer = document.get_buffer()
+        end_iter = buffer.get_end_iter()
+        result = end_iter.backward_search('\\end{document}', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
+        if result != None:
+            document.insert_text_at_iter(result[0], '''
+''' + parameter[0] + '''
+
+''', False)
+        else:
+            document.insert_text_at_cursor(parameter[0])
 
     @_assert_has_active_document
     def add_package(self, action, parameter):

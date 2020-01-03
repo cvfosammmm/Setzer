@@ -154,6 +154,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.insert_symbol_action = Gio.SimpleAction.new('insert-symbol', GLib.VariantType('as'))
         self.add_action(self.insert_symbol_action)
 
+        self.insert_before_document_end_action = Gio.SimpleAction.new('insert-before-document-end', GLib.VariantType('as'))
+        self.add_action(self.insert_before_document_end_action)
+
         self.document_wizard_action = Gio.SimpleAction.new('show-document-wizard', None)
         self.add_action(self.document_wizard_action)
 

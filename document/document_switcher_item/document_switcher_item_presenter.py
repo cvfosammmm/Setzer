@@ -26,7 +26,6 @@ from app.service_locator import ServiceLocator
 class DocumentSwitcherItemPresenter(object):
     
     def __init__(self, document, doclist_item):
-        print(doclist_item.icon)
         self.document = document
         self.settings = ServiceLocator.get_settings()
         self.doclist_item = doclist_item

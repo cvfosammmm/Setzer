@@ -75,6 +75,7 @@ class ShortcutsBar(Gtk.HBox):
         self.top_icons.insert(self.bold_button, 0)
 
         self.insert_quotes_button()
+        self.insert_text_button()
         self.insert_object_button()
         self.insert_bibliography_button()
 
@@ -121,6 +122,9 @@ class ShortcutsBar(Gtk.HBox):
         section.append_submenu('Natbib Citations', natbib_submenu)
         bibliography_menu.append_section(None, section)
 
+        menu_item = Gio.MenuItem.new('Include non-cited BibTeX Entries with \'\\nocite\'', Gio.Action.print_detailed_name('win.insert-before-document-end', GLib.Variant('as', ['\\nocite{*}'])))
+        bibliography_menu.append_item(menu_item)
+
         self.bibliography_button = Gtk.MenuButton()
         self.bibliography_button.set_image(Gtk.Image.new_from_icon_name('view-dual-symbolic', Gtk.IconSize.MENU))
         self.bibliography_button.set_focus_on_click(False)
@@ -130,6 +134,22 @@ class ShortcutsBar(Gtk.HBox):
 
         button_wrapper = Gtk.ToolItem()
         button_wrapper.add(self.bibliography_button)
+        self.top_icons.insert(button_wrapper, 0)
+
+    def insert_text_button(self):
+        text_menu = Gio.Menu()
+        menu_item = Gio.MenuItem.new('Footnote', Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\footnote{', '}'])))
+        text_menu.append_item(menu_item)
+
+        self.text_button = Gtk.MenuButton()
+        self.text_button.set_image(Gtk.Image.new_from_icon_name('font-x-generic-symbolic', Gtk.IconSize.MENU))
+        self.text_button.set_focus_on_click(False)
+        self.text_button.set_tooltip_text('Text')
+        self.text_button.get_style_context().add_class('flat')
+        self.text_button.set_menu_model(text_menu)
+
+        button_wrapper = Gtk.ToolItem()
+        button_wrapper.add(self.text_button)
         self.top_icons.insert(button_wrapper, 0)
 
     def insert_quotes_button(self):
