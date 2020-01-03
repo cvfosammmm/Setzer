@@ -42,12 +42,12 @@ class DocumentSwitcherPresenter(object):
 
         if change_code == 'new_document':
             document = parameter
-            self.main_window.headerbar.open_docs_popover.document_list.add(document.view.doclist_item)
+            self.main_window.headerbar.open_docs_popover.document_list.add(document.document_switcher_item.view)
             self.activate_mode(self.document_switcher.mode)
 
         if change_code == 'document_removed':
             document = parameter
-            self.main_window.headerbar.open_docs_popover.remove_document(document.view.doclist_item)
+            self.main_window.headerbar.open_docs_popover.remove_document(document.document_switcher_item.view)
             self.activate_mode(self.document_switcher.mode)
 
         if change_code == 'new_active_document':

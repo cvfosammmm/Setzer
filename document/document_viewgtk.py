@@ -20,7 +20,6 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('GtkSource', '3.0')
 from gi.repository import Gtk
 from gi.repository import GtkSource
-from gi.repository import Pango
 
 import document.shortcutsbar.shortcutsbar_viewgtk as shortcutsbar_view
 import document.search.search_viewgtk as search_view
@@ -37,7 +36,6 @@ class DocumentView(Gtk.HBox):
         self.search_bar = search_view.SearchBar()
         self.shortcuts_bar_bottom = shortcutsbar_view.ShortcutsBarBottom()
         self.wizard_button = shortcutsbar_view.WizardButton()
-        self.doclist_item = OpenDocsPopoverItem(document, document_type)
 
         self.source_view = GtkSource.View.new_with_buffer(document.get_buffer())
         self.source_view.set_monospace(True)
@@ -57,82 +55,5 @@ class DocumentView(Gtk.HBox):
                      
     def do_get_preferred_width(self):
         return 200, 600
-
-
-class OpenDocsPopoverItem(Gtk.ListBoxRow):
-    ''' An item in OpenDocsPopover. '''
-
-    def __init__(self, document, document_type):
-        Gtk.ListBoxRow.__init__(self)
-        self.set_selectable(False)
-        self.document = document
-
-        self.box = Gtk.HBox()
-        self.icon_box = Gtk.HBox()
-        if document_type == 'latex':
-            self.icon = Gtk.Image.new_from_icon_name('text-x-generic-symbolic', Gtk.IconSize.MENU)
-        else:
-            self.icon = Gtk.Image.new_from_icon_name('text-x-generic-symbolic', Gtk.IconSize.MENU)
-        self.icon.set_margin_bottom(2)
-        self.icon.set_margin_right(6)
-        self.icon.set_margin_left(1)
-        self.icon.get_style_context().add_class('icon')
-        self.master_icon = Gtk.Image.new_from_icon_name('object-select-symbolic', Gtk.IconSize.MENU)
-        self.master_icon.set_margin_bottom(2)
-        self.master_icon.set_margin_right(7)
-        self.master_icon.set_margin_left(0)
-        self.master_icon.get_style_context().add_class('icon')
-        self.icon_box.pack_start(self.icon, False, False, 0)
-        self.icon_box.pack_start(self.master_icon, False, False, 0)
-        self.box.pack_start(self.icon_box, False, False, 0)
-        self.radio_button = Gtk.Image.new_from_icon_name('object-select-symbolic', Gtk.IconSize.MENU)
-        self.radio_button.set_margin_bottom(2)
-        self.radio_button.set_margin_right(7)
-        self.radio_button.set_margin_left(0)
-        self.radio_button.get_style_context().add_class('radio')
-        self.box.pack_start(self.radio_button, False, False, 0)
-        self.label = Gtk.Label('')
-        self.label.set_ellipsize(Pango.EllipsizeMode.END)
-        self.label.set_halign(Gtk.Align.START)
-        self.master_label = Gtk.Label('  (master)')
-        self.master_label.set_ellipsize(Pango.EllipsizeMode.END)
-        self.master_label.set_halign(Gtk.Align.START)
-        self.master_label.get_style_context().add_class('master-label')
-        self.flabel = Gtk.Label('')
-        self.mlabel = Gtk.Label('')
-        self.box.pack_start(self.label, False, False, 0)
-        self.box.pack_start(self.master_label, False, False, 0)
-        self.document_close_button = Gtk.Button.new_from_icon_name('window-close-symbolic', Gtk.IconSize.MENU)
-        self.document_close_button.get_style_context().add_class('flat')
-        self.document_close_button.get_style_context().add_class('image-button')
-        self.document_close_button.set_relief(Gtk.ReliefStyle.NONE)
-        self.box.pack_end(self.document_close_button, False, False, 0)
-        self.add(self.box)
-
-        self.set_name(document.get_filename(), document.get_modified())
-        self.show_all()
-        
-    def set_name(self, filename, modified_state):
-        self.title = ''
-        self.folder = ''
-        if modified_state == True: self.title += '*'
-        if filename != None:
-            fsplit = filename.rsplit('/', 1)
-            if len(fsplit) > 1:
-                self.title += fsplit[1]
-                self.folder = fsplit[0]
-                self.has_title = True
-            else:
-                self.title += self.document.get_displayname()
-                self.has_title = False
-        self.label.set_text(self.title)
-        self.flabel.set_text(self.folder)
-        self.mlabel.set_text(str(modified_state))
-        
-    def get_has_title(self):
-        return self.has_title
-    
-    def get_title(self):
-        return self.title
 
 

@@ -28,6 +28,7 @@ import document.document_controller as document_controller
 import document.document_presenter as document_presenter
 import document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
 import document.document_viewgtk as document_view
+import document.document_switcher_item.document_switcher_item as document_switcher_item
 import document.build_widget.build_widget as build_widget
 import document.search.search as search
 import document.autocomplete.autocomplete as autocomplete
@@ -364,6 +365,7 @@ class LaTeXDocument(Document):
         Document.__init__(self, data_pathname)
 
         self.view = document_view.DocumentView(self, 'latex')
+        self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
 
         self.build_log_items = list()
@@ -382,6 +384,9 @@ class LaTeXDocument(Document):
     def get_file_ending(self):
         return 'tex'
 
+    def get_type(self):
+        return 'latex'
+
     def get_gsv_language_name(self):
         return 'latex'
 
@@ -392,6 +397,7 @@ class BibTeXDocument(Document):
         Document.__init__(self, data_pathname)
 
         self.view = document_view.DocumentView(self, 'bibtex')
+        self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
 
         self.autocomplete = None
@@ -404,6 +410,9 @@ class BibTeXDocument(Document):
 
     def get_file_ending(self):
         return 'bib'
+
+    def get_type(self):
+        return 'bibtex'
 
     def get_gsv_language_name(self):
         return 'bibtex'

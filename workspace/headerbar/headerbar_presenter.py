@@ -111,7 +111,7 @@ class HeaderbarPresenter(object):
             headerbar.center_button.set_sensitive(False)
             headerbar.center_label_welcome.show_all()
         else:
-            doclist_item = document.view.doclist_item
+            doclist_item = document.document_switcher_item.view
             
             if headerbar.name_binding != None: headerbar.name_binding.unbind()
             headerbar.document_name_label.set_text(doclist_item.label.get_text())
