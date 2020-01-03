@@ -189,14 +189,14 @@ class ShortcutsBar(Gtk.HBox):
         menu = Gio.Menu()
         section = Gio.Menu()
 
-        section.append_item(Gio.MenuItem.new('Insert Figure (image inside freestanding block)', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\begin{figure}
+        section.append_item(Gio.MenuItem.new('Figure (image inside freestanding block)', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\begin{figure}
 	\\begin{center}
 		\\includegraphics[scale=1]{}
 		\\caption{}
 	\\end{center}
 \\end{figure}
 ''']))))
-        section.append_item(Gio.MenuItem.new('Insert Inline Image', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\includegraphics[scale=1]{}']))))
+        section.append_item(Gio.MenuItem.new('Inline Image', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\includegraphics[scale=1]{}']))))
 
         codeblock_menu = Gio.Menu()
         codeblock_main_section = Gio.Menu()
@@ -218,7 +218,7 @@ class ShortcutsBar(Gtk.HBox):
 \\end{lstlisting}
 ''']))))
         codeblock_menu.append_section(None, codeblock_other_section)
-        section.append_submenu('Insert Code Listing', codeblock_menu)
+        section.append_submenu('Code Listing', codeblock_menu)
 
         menu.append_section(None, section)
 
@@ -229,7 +229,7 @@ class ShortcutsBar(Gtk.HBox):
         self.insert_object_button.set_menu_model(menu)
         self.insert_object_button.set_focus_on_click(False)
         self.insert_object_button.set_use_popover(True)
-        self.insert_object_button.set_tooltip_text('Insert object')
+        self.insert_object_button.set_tooltip_text('Objects')
         self.insert_object_button.get_style_context().add_class('flat')
         button_wrapper.add(self.insert_object_button)
         self.insert_object_button.get_popover().get_style_context().add_class('menu-insert-object-symbolic')
