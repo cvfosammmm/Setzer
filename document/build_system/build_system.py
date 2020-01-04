@@ -154,11 +154,10 @@ class Query(object):
                         self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=tmp_directory_name, env=custom_env)
                     except FileNotFoundError:
                         self.cleanup_build_files(tex_file.name)
-                        self.result_lock.acquire()
-                        self.result = {'document_controller': self.document_controller, 
-                                       'error': 'interpreter_not_working',
-                                       'error_arg': self.latex_interpreter}
-                        self.result_lock.release()
+                        with self.result_lock:
+                            self.result = {'document_controller': self.document_controller, 
+                                           'error': 'interpreter_not_working',
+                                           'error_arg': self.latex_interpreter}
                         return
                     self.process.wait()
 
@@ -172,11 +171,10 @@ class Query(object):
                         self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
                     except FileNotFoundError:
                         self.cleanup_build_files(tex_file.name)
-                        self.result_lock.acquire()
-                        self.result = {'document_controller': self.document_controller, 
-                                       'error': 'interpreter_missing',
-                                       'error_arg': arguments[0]}
-                        self.result_lock.release()
+                        with self.result_lock:
+                            self.result = {'document_controller': self.document_controller, 
+                                           'error': 'interpreter_missing',
+                                           'error_arg': arguments[0]}
                         return
                     self.process.wait()
 
@@ -185,11 +183,10 @@ class Query(object):
                         self.parse_build_log(log_filename, tex_file.name)
                     except FileNotFoundError as e:
                         self.cleanup_build_files(tex_file.name)
-                        self.result_lock.acquire()
-                        self.result = {'document_controller': self.document_controller, 
-                                       'error': 'interpreter_not_working',
-                                       'error_arg': 'log file missing'}
-                        self.result_lock.release()
+                        with self.result_lock:
+                            self.result = {'document_controller': self.document_controller, 
+                                           'error': 'interpreter_not_working',
+                                           'error_arg': 'log file missing'}
                         return
         
             self.parse_bibtex_log(tex_file.name[:-3] + 'blg')
@@ -211,14 +208,13 @@ class Query(object):
                     self.new_pdf_filename = None
                     pdf_position = None
 
-                self.result_lock.acquire()
-                self.result = {'document_controller': self.document_controller, 
-                               'pdf_filename': self.new_pdf_filename, 
-                               'log_messages': self.log_messages + self.bibtex_log_messages, 
-                               'pdf_position': pdf_position,
-                               'error': None,
-                               'error_arg': None}
-                self.result_lock.release()
+                with self.result_lock:
+                    self.result = {'document_controller': self.document_controller, 
+                                   'pdf_filename': self.new_pdf_filename, 
+                                   'log_messages': self.log_messages + self.bibtex_log_messages, 
+                                   'pdf_position': pdf_position,
+                                   'error': None,
+                                   'error_arg': None}
             else:
                 self.cleanup_build_files(tex_file.name)
             tex_file.close()
@@ -231,10 +227,9 @@ class Query(object):
     
     def get_result(self):
         return_value = None
-        self.result_lock.acquire()
-        if self.result != None:
-            return_value = self.result
-        self.result_lock.release()
+        with self.result_lock:
+            if self.result != None:
+                return_value = self.result
         return return_value
     
     def parse_synctex(self, tex_name, pdf_name):

@@ -78,17 +78,16 @@ class BeamerSettingsPage(Page):
                 button.connect('clicked', preview_button_clicked, name, i)
 
     def load_beamer_images(self):
-        self.image_loading_lock.acquire()
-        for name in self.view.theme_names:
-            for i in range(0, 2):
-                pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.dirname(__file__) + '/../resources/beamerpreview_' + name + '_page_' + str(i) + '.png', 346, 260, False)
-                image = Gtk.Image.new_from_pixbuf(pixbuf)
-                self.view.preview_images[name].append(image)
-                pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.dirname(__file__) + '/../resources/beamerpreview_' + name + '_page_' + str(i) + '.png', 100, 75, False)
-                image = Gtk.Image.new_from_pixbuf(pixbuf)
-                self.view.preview_button_images[name].append(image)
-        self.view.preview_stack.show_all()
-        self.image_loading_lock.release()
+        with self.image_loading_lock:
+            for name in self.view.theme_names:
+                for i in range(0, 2):
+                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.dirname(__file__) + '/../resources/beamerpreview_' + name + '_page_' + str(i) + '.png', 346, 260, False)
+                    image = Gtk.Image.new_from_pixbuf(pixbuf)
+                    self.view.preview_images[name].append(image)
+                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.dirname(__file__) + '/../resources/beamerpreview_' + name + '_page_' + str(i) + '.png', 100, 75, False)
+                    image = Gtk.Image.new_from_pixbuf(pixbuf)
+                    self.view.preview_button_images[name].append(image)
+            self.view.preview_stack.show_all()
 
     def load_presets(self, presets):
         try:

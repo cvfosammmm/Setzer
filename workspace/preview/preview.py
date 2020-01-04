@@ -125,10 +125,9 @@ class Preview(object):
             except queue.Empty:
                 pass
             else:
-                self.page_render_count_lock.acquire()
-                try: render_count = self.page_render_count[todo['page_number']]
-                except: KeyError: render_count = 0
-                self.page_render_count_lock.release()
+                with self.page_render_count_lock:
+                    try: render_count = self.page_render_count[todo['page_number']]
+                    except: KeyError: render_count = 0
                 if todo['render_count'] == render_count:
                     self.rendered_pages[todo['page_number']].set_current_size_surface(todo['surface'])
                     self.view.drawing_area.queue_draw()
@@ -155,9 +154,8 @@ class Preview(object):
 
     def set_zoom_fit_to_width(self):
         old_real_zoom_factor = self.real_zoom_factor
-        self.current_page_lock.acquire()
-        old_yoffset = self.view.scrolled_window.get_vadjustment().get_value() - self.get_page_offset(self.current_page)
-        self.current_page_lock.release()
+        with self.current_page_lock:
+            old_yoffset = self.view.scrolled_window.get_vadjustment().get_value() - self.get_page_offset(self.current_page)
         
         self.zoom_factor = self.zoom_factor_fit_width
         self.real_zoom_factor = self.zoom_factor_fit_width
@@ -169,9 +167,8 @@ class Preview(object):
             if old_yoffset < 0: yoffset = -10.0
             else: yoffset = old_yoffset * self.real_zoom_factor / old_real_zoom_factor
 
-            self.current_page_lock.acquire()
-            self.scroll_to_page_queue.put((self.current_page, 0, yoffset))
-            self.current_page_lock.release()
+            with self.current_page_lock:
+                self.scroll_to_page_queue.put((self.current_page, 0, yoffset))
 
             self.update_paging_widget()
             self.view.zoom_widget.label.set_text('{:.1%}'.format(self.real_zoom_factor))
@@ -180,11 +177,10 @@ class Preview(object):
         lower_bound = self.zoom_factor_fit_width * 0.8
         upper_bound = self.zoom_factor_fit_width * 1.25
         old_real_zoom_factor = self.real_zoom_factor
-        self.current_page_lock.acquire()
-        old_yoffset = self.view.scrolled_window.get_vadjustment().get_value() - self.get_page_offset(self.current_page) + y
-        old_xoffset = self.view.scrolled_window.get_hadjustment().get_value() + x
-        old_page = self.current_page
-        self.current_page_lock.release()
+        with self.current_page_lock:
+            old_yoffset = self.view.scrolled_window.get_vadjustment().get_value() - self.get_page_offset(self.current_page) + y
+            old_xoffset = self.view.scrolled_window.get_hadjustment().get_value() + x
+            old_page = self.current_page
 
         if type == 'button':
             zoom_factors = self.zoom_factors_button
@@ -268,35 +264,31 @@ class Preview(object):
     '''
     
     def update_paging_widget(self):
-        self.current_page_lock.acquire()
-        self.current_page = 0
-        self.current_page_lock.release()
+        with self.current_page_lock:
+            self.current_page = 0
         offset = self.view.scrolled_window.get_vadjustment().get_value()
         size_iter = 10
         total = self.number_of_pages
-        self.current_page_lock.acquire()
-        while size_iter <= offset:
-            try:
-                size_iter += self.rendered_pages[self.current_page].current_size_y + 12
-            except KeyError:
-                break
-            else:
-                self.current_page += 1
-        self.current_page_lock.release()
+        with self.current_page_lock
+            while size_iter <= offset:
+                try:
+                    size_iter += self.rendered_pages[self.current_page].current_size_y + 12
+                except KeyError:
+                    break
+                else:
+                    self.current_page += 1
 
         if total > 0:
-            self.current_page_lock.acquire()
-            self.view.paging_widget.label.set_text('Page ' + str(max(self.current_page, 1)) + ' of ' + str(total))
-            self.current_page_lock.release()
+            with self.current_page_lock:
+                self.view.paging_widget.label.set_text('Page ' + str(max(self.current_page, 1)) + ' of ' + str(total))
         else:
             self.view.paging_widget.label.set_text('Page 0 of 0')
     
     def load_pdf(self, filename):
         self.do_draw = False
         if isinstance(filename, str) and os.path.exists(filename):
-            self.page_render_count_lock.acquire()
-            self.page_render_count = dict()
-            self.page_render_count_lock.release()
+            with self.page_render_count_lock:
+                self.page_render_count = dict()
             self.document = Poppler.Document.new_from_file('file:' + filename)
             self.number_of_pages = self.document.get_n_pages()
             self.update_paging_widget()
@@ -308,9 +300,8 @@ class Preview(object):
 
             for page_number in range(self.document.get_n_pages()):
                 page_size = self.document.get_page(page_number).get_size()
-                self.page_render_count_lock.acquire()
-                self.page_render_count[page_number] = 0
-                self.page_render_count_lock.release()
+                with self.page_render_count_lock:
+                    self.page_render_count[page_number] = 0
                 self.page_sizes_points.append([page_size.width, page_size.height])
                 self.rendered_pages[page_number] = RenderedPage()
                 self.document_height_points += page_size.height
@@ -345,10 +336,9 @@ class Preview(object):
                 width_pixels = int(self.real_zoom_factor * self.ppi * page_size[0] / 72)
                 height_pixels = int(self.real_zoom_factor * self.ppi * page_size[1] / 72)
                 document_height_pixels += height_pixels
-                self.page_render_count_lock.acquire()
-                self.page_render_count[page_number] += 1
-                self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'real_zoom_factor': self.real_zoom_factor, 'ppi': self.ppi})
-                self.page_render_count_lock.release()
+                with self.page_render_count_lock:
+                    self.page_render_count[page_number] += 1
+                    self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'real_zoom_factor': self.real_zoom_factor, 'ppi': self.ppi})
                 self.rendered_pages[page_number].set_current_size(width_pixels, height_pixels)
 
             self.set_canvas_size(document_height_pixels)
@@ -365,10 +355,9 @@ class Preview(object):
             try: todo = self.render_queue.get(block=False)
             except queue.Empty: time.sleep(0.1)
             else:
-                self.page_render_count_lock.acquire()
-                try: render_count = self.page_render_count[todo['page_number']]
-                except: KeyError: render_count = 0
-                self.page_render_count_lock.release()
+                with self.page_render_count_lock:
+                    try: render_count = self.page_render_count[todo['page_number']]
+                    except: KeyError: render_count = 0
                 if todo['render_count'] == render_count:
                     page = self.document.get_page(todo['page_number'])
                     page_size_points = page.get_size()

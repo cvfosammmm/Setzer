@@ -56,67 +56,57 @@ class LaTeXParser(object):
     def on_buffer_changed(self):
         self.last_buffer_change = time.time()
         text = self.document.get_text()
-        self.parse_jobs_lock.acquire()
-        self.parse_jobs['symbols'] = ParseJob(time.time() + 1, text)
-        self.parse_jobs['blocks'] = ParseJob(time.time(), text)
-        self.parse_jobs_lock.release()
+        with self.parse_jobs_lock:
+            self.parse_jobs['symbols'] = ParseJob(time.time() + 1, text)
+            self.parse_jobs['blocks'] = ParseJob(time.time(), text)
 
     def compute_loop(self):
-        self.parse_jobs_lock.acquire()
-        job = self.parse_jobs['symbols']
-        self.parse_jobs_lock.release()
+        with self.parse_jobs_lock:
+            job = self.parse_jobs['symbols']
         if job != None:
-            self.parse_jobs_lock.acquire()
-            parse_symbols_job_running = self.parse_symbols_job_running
-            self.parse_jobs_lock.release()
+            with self.parse_jobs_lock:
+                parse_symbols_job_running = self.parse_symbols_job_running
             if not parse_symbols_job_running and job.starting_time < time.time():
-                self.parse_jobs_lock.acquire()
-                self.parse_jobs['symbols'] = None
-                self.parse_jobs_lock.release()
+                with self.parse_jobs_lock:
+                    self.parse_jobs['symbols'] = None
                 thread.start_new_thread(self.parse_symbols, (job.text, ))
 
-        self.parse_jobs_lock.acquire()
-        job = self.parse_jobs['blocks']
-        self.parse_jobs_lock.release()
+        with self.parse_jobs_lock:
+            job = self.parse_jobs['blocks']
         if job != None:
-            self.parse_jobs_lock.acquire()
-            parse_blocks_job_running = self.parse_blocks_job_running
-            self.parse_jobs_lock.release()
+            with self.parse_jobs_lock:
+                parse_blocks_job_running = self.parse_blocks_job_running
             if not parse_blocks_job_running and job.starting_time < time.time():
-                self.parse_jobs_lock.acquire()
-                self.parse_jobs['blocks'] = None
-                self.parse_jobs_lock.release()
+                with self.parse_jobs_lock:
+                    self.parse_jobs['blocks'] = None
                 thread.start_new_thread(self.parse_blocks, (job.text, ))
 
         return True
 
     def get_labels(self):
-        self.symbols_lock.acquire()
-        if self.labels_changed:
-            result = self.symbols['labels'].copy()
-        else:
-            result = None
-        self.labels_changed = False
-        self.symbols_lock.release()
+        with self.symbols_lock:
+            if self.labels_changed:
+                result = self.symbols['labels'].copy()
+            else:
+                result = None
+            self.labels_changed = False
         return result
 
     def get_blocks(self):
-        self.blocks_lock.acquire()
-        if self.last_buffer_change > self.last_blocks_change:
-            result = None
-        elif self.blocks_changed:
-            result = self.blocks.copy()
-        else:
-            result = None
-        self.blocks_changed = False
-        self.blocks_lock.release()
+        with self.blocks_lock:
+            if self.last_buffer_change > self.last_blocks_change:
+                result = None
+            elif self.blocks_changed:
+                result = self.blocks.copy()
+            else:
+                result = None
+            self.blocks_changed = False
         return result
 
     #@timer
     def parse_blocks(self, text):
-        self.parse_jobs_lock.acquire()
-        self.parse_blocks_job_running = True
-        self.parse_jobs_lock.release()
+        with self.parse_jobs_lock:
+            self.parse_blocks_job_running = True
 
         text_length = len(text)
 
@@ -174,21 +164,18 @@ class LaTeXParser(object):
             blocks_list += single_list
         blocks_list = sorted(blocks_list, key=lambda block: block[0])
 
-        self.blocks_lock.acquire()
-        self.blocks = blocks_list
-        self.blocks_changed = True
-        self.last_blocks_change = time.time()
-        self.blocks_lock.release()
+        with self.blocks_lock:
+            self.blocks = blocks_list
+            self.blocks_changed = True
+            self.last_blocks_change = time.time()
 
-        self.parse_jobs_lock.acquire()
-        self.parse_blocks_job_running = False
-        self.parse_jobs_lock.release()
+        with self.parse_jobs_lock:
+            self.parse_blocks_job_running = False
 
     #@timer
     def parse_symbols(self, text):
-        self.parse_jobs_lock.acquire()
-        self.parse_symbols_job_running = True
-        self.parse_jobs_lock.release()
+        with self.parse_jobs_lock:
+            self.parse_symbols_job_running = True
         labels = set()
         includes = set()
         inputs = set()
@@ -205,16 +192,14 @@ class LaTeXParser(object):
                 for entry in bibfiles:
                     bibliographies = bibliographies | {entry.strip()}
 
-        self.symbols_lock.acquire()
-        self.symbols['labels'] = labels
-        self.symbols['includes'] = includes
-        self.symbols['inputs'] = inputs
-        self.symbols['bibliographies'] = bibliographies
-        self.labels_changed = True
-        self.symbols_lock.release()
-        self.parse_jobs_lock.acquire()
-        self.parse_symbols_job_running = False
-        self.parse_jobs_lock.release()
+        with self.symbols_lock:
+            self.symbols['labels'] = labels
+            self.symbols['includes'] = includes
+            self.symbols['inputs'] = inputs
+            self.symbols['bibliographies'] = bibliographies
+            self.labels_changed = True
+        with self.parse_jobs_lock:
+            self.parse_symbols_job_running = False
 
 
 class ParseJob():
