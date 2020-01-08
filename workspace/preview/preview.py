@@ -269,7 +269,7 @@ class Preview(object):
         offset = self.view.scrolled_window.get_vadjustment().get_value()
         size_iter = 10
         total = self.number_of_pages
-        with self.current_page_lock
+        with self.current_page_lock:
             while size_iter <= offset:
                 try:
                     size_iter += self.rendered_pages[self.current_page].current_size_y + 12
