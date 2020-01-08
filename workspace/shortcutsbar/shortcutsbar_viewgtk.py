@@ -220,6 +220,16 @@ class ShortcutsBar(Gtk.HBox):
         codeblock_menu.append_section(None, codeblock_other_section)
         section.append_submenu('Code Listing', codeblock_menu)
 
+        list_environments_menu = Gio.Menu()
+        codeblock_main_section = Gio.Menu()
+        for list_type in [['Bulleted List (itemize)', 'itemize'], ['Numbered List (enumerate)', 'enumerate'], ['List with Bold Labels (description)', 'description']]:
+            codeblock_main_section.append_item(Gio.MenuItem.new(list_type[0], Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\begin{' + list_type[1] + '}\n', '\n\\end{' + list_type[1] + '}\n']))))
+        list_environments_menu.append_section(None, codeblock_main_section)
+        item_section = Gio.Menu()
+        item_section.append_item(Gio.MenuItem.new('List Item', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\item •''']))))
+        list_environments_menu.append_section(None, item_section)
+        section.append_submenu('List Environments', list_environments_menu)
+
         menu.append_section(None, section)
 
         button_wrapper = Gtk.ToolItem()
