@@ -163,7 +163,7 @@ class Autocomplete(object):
             row = self.view.list.get_selected_row()
             text = row.get_child().label.get_text()
             if text.startswith('\\begin'):
-                text += '\n•\n' + text.replace('\\begin', '\\end')
+                text += '\n\t•\n' + text.replace('\\begin', '\\end')
             self.document.replace_range(start_iter, insert_iter, text, indent_lines=True)
             self.view.hide()
             self.autocomplete_visible = False

@@ -191,40 +191,39 @@ class ShortcutsBar(Gtk.HBox):
 
         section.append_item(Gio.MenuItem.new('Figure (image inside freestanding block)', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\begin{figure}
 	\\begin{center}
-		\\includegraphics[scale=1]{}
-		\\caption{}
+		\\includegraphics[scale=1]{•}
+		\\caption{•}
 	\\end{center}
 \\end{figure}
 ''']))))
-        section.append_item(Gio.MenuItem.new('Inline Image', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\includegraphics[scale=1]{}']))))
+        section.append_item(Gio.MenuItem.new('Inline Image', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\includegraphics[scale=1]{•}']))))
 
         codeblock_menu = Gio.Menu()
         codeblock_main_section = Gio.Menu()
         for language in ['Python', 'C', 'C++', 'Java', 'Perl', 'PHP', 'Ruby', 'TeX']:
-            codeblock_main_section.append_item(Gio.MenuItem.new(language, Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\lstset{language=''' + language + '''}
+            codeblock_main_section.append_item(Gio.MenuItem.new(language, Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['''\\lstset{language=''' + language + '''}
 \\begin{lstlisting}
-
-\\end{lstlisting}
-''']))))
+    ''', '''
+\\end{lstlisting}''']))))
         codeblock_menu.append_section(None, codeblock_main_section)
         codeblock_other_section = Gio.Menu()
-        codeblock_other_section.append_item(Gio.MenuItem.new('Other Language', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\lstset{language=}
+        codeblock_other_section.append_item(Gio.MenuItem.new('Other Language', Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['''\\lstset{language=}
 \\begin{lstlisting}
-
+    ''', '''
 \\end{lstlisting}
 ''']))))
-        codeblock_other_section.append_item(Gio.MenuItem.new('Plain Text', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\begin{lstlisting}
-
+        codeblock_other_section.append_item(Gio.MenuItem.new('Plain Text', Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['''\\begin{lstlisting}
+    ''', '''
 \\end{lstlisting}
 ''']))))
         codeblock_menu.append_section(None, codeblock_other_section)
         section.append_submenu('Code Listing', codeblock_menu)
 
         list_environments_menu = Gio.Menu()
-        codeblock_main_section = Gio.Menu()
+        list_environments_main_section = Gio.Menu()
         for list_type in [['Bulleted List (itemize)', 'itemize'], ['Numbered List (enumerate)', 'enumerate'], ['List with Bold Labels (description)', 'description']]:
-            codeblock_main_section.append_item(Gio.MenuItem.new(list_type[0], Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\begin{' + list_type[1] + '}\n\t', '\n\\end{' + list_type[1] + '}']))))
-        list_environments_menu.append_section(None, codeblock_main_section)
+            list_environments_main_section.append_item(Gio.MenuItem.new(list_type[0], Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\begin{' + list_type[1] + '}\n\t', '\n\\end{' + list_type[1] + '}']))))
+        list_environments_menu.append_section(None, list_environments_main_section)
         item_section = Gio.Menu()
         item_section.append_item(Gio.MenuItem.new('List Item', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\item •']))))
         list_environments_menu.append_section(None, item_section)

@@ -347,7 +347,6 @@ class Document(Observable):
         buff = self.get_buffer()
         if buff != False:
             bounds = buff.get_selection_bounds()
-            buff.begin_user_action()
 
             if len(bounds) > 1:
                 text = before + buff.get_text(*bounds, 0) + after
@@ -355,19 +354,6 @@ class Document(Observable):
             else:
                 text = before + '•' + after
                 self.insert_text_at_cursor(text)
-
-            #buff.insert_at_cursor(text)
-            #cursor_pos = buff.get_iter_at_mark(buff.get_insert())
-            #cursor_pos.backward_chars(len(after))
-
-            '''if len(bounds) > 1:
-                buff.place_cursor(cursor_pos)
-            else:
-                bound = cursor_pos.copy()
-                bound.backward_chars(1)
-                buff.select_range(bound, cursor_pos)'''
-            #self.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
-            buff.end_user_action()
 
 
 class LaTeXDocument(Document):
