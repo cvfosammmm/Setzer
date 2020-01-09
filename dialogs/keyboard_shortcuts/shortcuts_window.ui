@@ -126,7 +126,14 @@
               <object class="GtkShortcutsShortcut">
                 <property name="visible">1</property>
                 <property name="accelerator">&lt;ctrl&gt;quotedbl</property>
-                <property name="title" translatable="yes">Insert Quotes</property>
+                <property name="title" translatable="yes">Quotation Marks</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">1</property>
+                <property name="accelerator">&lt;ctrl&gt;&lt;shift&gt;I</property>
+                <property name="title" translatable="yes">List Item</property>
               </object>
             </child>
           </object>

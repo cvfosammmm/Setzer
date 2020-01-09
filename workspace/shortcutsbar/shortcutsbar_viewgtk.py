@@ -226,7 +226,7 @@ class ShortcutsBar(Gtk.HBox):
             codeblock_main_section.append_item(Gio.MenuItem.new(list_type[0], Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\begin{' + list_type[1] + '}\n', '\n\\end{' + list_type[1] + '}\n']))))
         list_environments_menu.append_section(None, codeblock_main_section)
         item_section = Gio.Menu()
-        item_section.append_item(Gio.MenuItem.new('List Item', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\item •''']))))
+        item_section.append_item(Gio.MenuItem.new('List Item', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\item •']))))
         list_environments_menu.append_section(None, item_section)
         section.append_submenu('List Environments', list_environments_menu)
 
