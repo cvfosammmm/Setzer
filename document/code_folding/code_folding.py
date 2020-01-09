@@ -37,6 +37,7 @@ class CodeFolding(object):
         self.folding_regions = dict()
         self.folding_regions_by_region_id = dict()
         self.maximum_region_id = 0
+        self.initial_folding_done = False
 
         self.document = document
         self.source_view = document.view.source_view
@@ -79,9 +80,11 @@ class CodeFolding(object):
         else:
             return False
 
-    def toggle_folding_region(self, region, show_region_regardless_of_state=False):
+    def toggle_folding_region(self, region, show_region_regardless_of_state=False, hide_regardless_of_start=False):
         if show_region_regardless_of_state:
             is_folded = False
+        elif show_region_regardless_of_state:
+            is_folded = True
         else:
             is_folded = not region['is_folded']
         source_buffer = self.document.source_buffer
@@ -174,9 +177,31 @@ class CodeFolding(object):
 
         self.folding_regions = folding_regions
         self.folding_regions_by_region_id = folding_regions_by_region_id
-        self.update_line_invisibility()
-        self.source_gutter.queue_draw()
+
+        if not self.initial_folding_done:
+            self.initial_folding()
+        else:
+            self.update_line_invisibility()
+            self.source_gutter.queue_draw()
 
         return self.is_enabled
+
+    def get_folded_regions(self):
+        folded_regions = list()
+        for region in self.folding_regions.values():
+            if region['is_folded']:
+                folded_regions.append({'starting_line': region['starting_line'], 'ending_line': region['ending_line']})
+        return folded_regions
+
+    def set_initial_folded_regions(self, folded_regions):
+        self.initial_folded_regions = folded_regions
+
+    def initial_folding(self):
+        for region in self.initial_folded_regions:
+            if region['starting_line'] in self.folding_regions:
+                if region['ending_line'] == self.folding_regions[region['starting_line']]['ending_line']:
+                    folding_region = self.folding_regions[region['starting_line']]
+                    self.toggle_folding_region(folding_region, False, True)
+        self.initial_folding_done = True
 
 

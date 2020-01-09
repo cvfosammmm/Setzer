@@ -190,6 +190,9 @@ class Workspace(Observable):
                     master_document_filename = None
                 for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
                     document = self.create_document_from_filename(item['filename'])
+                    try:
+                        document.set_initial_folded_regions(item['folded_regions'])
+                    except KeyError: pass
                     if item['filename'] == master_document_filename and document != None:
                         self.set_one_document_master(document)
                 for item in data['recently_opened_documents'].values():
@@ -206,7 +209,8 @@ class Workspace(Observable):
                 if filename != None:
                     open_documents[filename] = {
                         'filename': filename,
-                        'last_activated': document.get_last_activated()
+                        'last_activated': document.get_last_activated(),
+                        'folded_regions': document.get_folded_regions()
                     }
             data = {
                 'open_documents': open_documents,

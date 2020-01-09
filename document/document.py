@@ -208,6 +208,15 @@ class Document(Observable):
         if buff != None:
             return buff.get_text(buff.get_start_iter(), buff.get_end_iter(), True)
         return None
+
+    def get_folded_regions(self):
+        if isinstance(self, LaTeXDocument):
+            return self.code_folding.get_folded_regions()
+        else:
+            return []
+
+    def set_initial_folded_regions(self, folded_regions):
+        self.code_folding.set_initial_folded_regions(folded_regions)
         
     def get_state(self):
         return self.state
