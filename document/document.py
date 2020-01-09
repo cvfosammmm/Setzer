@@ -289,11 +289,11 @@ class Document(Observable):
             buff.delete_selection(False, False)
             buff.insert_at_cursor(final_text)
 
-            dotindex = text.find('•')
+            dotindex = final_text.find('•')
             if dotcount > 0:
                 selection_len = len(selection) if dotcount == 1 else 0
                 start = buff.get_iter_at_mark(buff.get_insert())
-                start.backward_chars(abs(dotindex + selection_len - len(text)))
+                start.backward_chars(abs(dotindex + selection_len - len(final_text)))
                 buff.place_cursor(start)
                 end = start.copy()
                 end.forward_char()
@@ -339,23 +339,25 @@ class Document(Observable):
         if buff != False:
             bounds = buff.get_selection_bounds()
             buff.begin_user_action()
+
             if len(bounds) > 1:
                 text = before + buff.get_text(*bounds, 0) + after
-                buff.delete_selection(False, False)
-                buff.insert_at_cursor(text)
-                cursor_pos = buff.get_iter_at_mark(buff.get_insert())
-                cursor_pos.backward_chars(len(after))
-                buff.place_cursor(cursor_pos)
-                self.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
+                self.replace_range(bounds[0], bounds[1], text)
             else:
                 text = before + '•' + after
-                buff.insert_at_cursor(text)
-                cursor_pos = buff.get_iter_at_mark(buff.get_insert())
-                cursor_pos.backward_chars(len(after))
+                self.insert_text_at_cursor(text)
+
+            #buff.insert_at_cursor(text)
+            #cursor_pos = buff.get_iter_at_mark(buff.get_insert())
+            #cursor_pos.backward_chars(len(after))
+
+            '''if len(bounds) > 1:
+                buff.place_cursor(cursor_pos)
+            else:
                 bound = cursor_pos.copy()
                 bound.backward_chars(1)
-                buff.select_range(bound, cursor_pos)
-                self.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
+                buff.select_range(bound, cursor_pos)'''
+            #self.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
             buff.end_user_action()
 
 
