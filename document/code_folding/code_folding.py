@@ -49,6 +49,8 @@ class CodeFolding(object):
         self.source_view.get_gutter(Gtk.TextWindowType.LEFT).insert(self.view, 3)
         self.source_view.connect('button-press-event', self.on_click)
 
+        self.on_buffer_changed(self.source_view.get_buffer())
+
     def enable_code_folding(self):
         self.is_enabled = True
         GObject.timeout_add(1, self.update_folding_regions)
