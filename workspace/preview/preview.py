@@ -54,6 +54,7 @@ class Preview(object):
         self.real_zoom_factor = 1.0
         self.do_draw = True #lock
         self.zoom_momentum = 0.0
+        self.hidpi_factor = self.view.get_scale_factor()
         
         self.view.zoom_widget.zoom_in_button.connect('clicked', self.on_zoom_button_clicked, 'in')
         self.view.zoom_widget.zoom_out_button.connect('clicked', self.on_zoom_button_clicked, 'out')
@@ -272,7 +273,7 @@ class Preview(object):
         with self.current_page_lock:
             while size_iter <= offset:
                 try:
-                    size_iter += self.rendered_pages[self.current_page].current_size_y + 12
+                    size_iter += self.rendered_pages[self.current_page].current_size_y / self.hidpi_factor + 12
                 except KeyError:
                     break
                 else:
@@ -321,7 +322,7 @@ class Preview(object):
     def set_canvas_size(self, document_height_pixels):
         self.canvas_width = int(self.real_zoom_factor * self.ppi * self.document_width_points / 72) + 22
         old_height = self.canvas_height
-        self.canvas_height = int(document_height_pixels) + self.document.get_n_pages() * 12 + 12
+        self.canvas_height = (int(document_height_pixels / self.hidpi_factor) + self.document.get_n_pages() * 12 + 12)
         if old_height == self.canvas_height: self.canvas_height += 1
 
     #@helpers.timer
@@ -333,12 +334,12 @@ class Preview(object):
             for page_number in range(number_of_pages):
                 self.rendered_pages[page_number].remove_current_size_surface()
                 page_size = self.page_sizes_points[page_number]
-                width_pixels = int(self.real_zoom_factor * self.ppi * page_size[0] / 72)
-                height_pixels = int(self.real_zoom_factor * self.ppi * page_size[1] / 72)
+                width_pixels = int(self.real_zoom_factor * self.ppi * self.hidpi_factor * page_size[0] / 72)
+                height_pixels = int(self.real_zoom_factor * self.ppi * self.hidpi_factor * page_size[1] / 72)
                 document_height_pixels += height_pixels
                 with self.page_render_count_lock:
                     self.page_render_count[page_number] += 1
-                    self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'real_zoom_factor': self.real_zoom_factor, 'ppi': self.ppi, 'hidpi_scale_factor': self.hidpi_scale_factor})
+                    self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'real_zoom_factor': self.real_zoom_factor, 'ppi': self.ppi})
                 self.rendered_pages[page_number].set_current_size(width_pixels, height_pixels)
 
             self.set_canvas_size(document_height_pixels)
@@ -363,16 +364,15 @@ class Preview(object):
                     page_size_points = page.get_size()
                     real_zoom_factor = todo['real_zoom_factor']
                     ppi = todo['ppi']
-                    hidpi_scale_factor = todo['hidpi_scale_factor']
-                    width_pixels = int(real_zoom_factor * ppi * page_size_points.width / 72) * hidpi_scale_factor
-                    height_pixels = int(real_zoom_factor * ppi * page_size_points.height / 72) * hidpi_scale_factor
-                    scale_factor = width_pixels / page_size_points[0] / hidpi_scale_factor
+                    width_pixels = int(real_zoom_factor * ppi * self.hidpi_factor * page_size_points.width / 72)
+                    height_pixels = int(real_zoom_factor * ppi * self.hidpi_factor * page_size_points.height / 72)
+                    scale_factor = width_pixels / page_size_points[0]
                     surface = cairo.ImageSurface(cairo.Format.ARGB32, width_pixels, height_pixels)
                     ctx = cairo.Context(surface)
                     ctx.scale(scale_factor, scale_factor)
                     page.render(ctx)
                     self.rendered_pages_queue.put({'page_number': todo['page_number'], 'render_count': todo['render_count'], 'surface': surface})
-
+        
     def get_ppi(self):
         ''' pixels per inch '''
         
@@ -388,6 +388,10 @@ class Preview(object):
             
     #@helpers.timer
     def draw(self, drawing_area, cairo_context, data = None):
+        if self.hidpi_factor != self.view.get_scale_factor():
+            self.hidpi_factor = self.view.get_scale_factor()
+            self.render_pdf()
+            return
         if self.do_draw == True:
             ctx = cairo_context
             bg_color = self.view.notebook.get_style_context().lookup_color('theme_bg_color')[1]
@@ -398,11 +402,11 @@ class Preview(object):
                 ctx.set_source_rgba(bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha)
                 ctx.fill()
                 
-                ctx.transform(cairo.Matrix(1, 0, 0, 1, 11, 11))
+                ctx.transform(cairo.Matrix(1 / self.hidpi_factor, 0, 0, 1 / self.hidpi_factor, 11, 11))
                 for page_number in range(self.number_of_pages):
                     size_x, size_y = self.rendered_pages[page_number].get_current_size()
                     ctx.set_source_rgba(border_color.red, border_color.green, border_color.blue, border_color.alpha)
-                    ctx.rectangle(-1, -1, 2 + size_x, 2 + size_y)
+                    ctx.rectangle(-1 * self.hidpi_factor, -1 * self.hidpi_factor, 2 * self.hidpi_factor + size_x, 2 * self.hidpi_factor + size_y)
                     ctx.fill()
                     ctx.set_source_rgba(1, 1, 1, 1)
                     ctx.rectangle(0, 0, size_x, size_y)
@@ -413,7 +417,7 @@ class Preview(object):
                     if isinstance(surface, cairo.ImageSurface):
                         ctx.set_source_surface(surface, 0, 0)
                         ctx.paint()
-                        ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, size_y + 12))
+                        ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, size_y + 12 * self.hidpi_factor))
                         self.rendered_pages[page_number].remove_previous_size_surface()
                     else:
                         surface = self.rendered_pages[page_number].get_previous_size_surface()
@@ -423,9 +427,9 @@ class Preview(object):
                             ctx.set_source_surface(surface, 0, 0)
                             ctx.paint()
                             ctx.set_matrix(matrix)
-                            ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, size_y + 12))
+                            ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, size_y + 12 * self.hidpi_factor))
                         else:
-                            ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, size_y + 12))
+                            ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, size_y + 12 * self.hidpi_factor))
             else:
                 ctx.rectangle(0, 0, drawing_area.get_allocated_width(), drawing_area.get_allocated_height())
                 ctx.set_source_rgba(bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha)
@@ -459,7 +463,6 @@ class Preview(object):
         return False
     
     def on_size_allocate_view(self, view=None, allocation=None):
-        self.hidpi_scale_factor = self.view.get_scale_factor()
         if self.real_zoom_factor == self.zoom_factor_fit_width:
             self.setup_zoom_factors()
             self.set_zoom_fit_to_width()
