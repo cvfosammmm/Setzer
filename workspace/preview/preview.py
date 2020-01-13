@@ -108,8 +108,8 @@ class Preview(object):
                 self.load_pdf(self.filename)
                 self.render_pdf()
                 if position != None:
-                    x = (position['x'] * self.real_zoom_factor * self.ppi / 72) - self.view.notebook.get_allocated_width() / 2
-                    y = (position['y'] * self.real_zoom_factor * self.ppi / 72) - self.view.notebook.get_allocated_height() / 2
+                    x = (position['x'] * self.real_zoom_factor * self.ppi * self.hidpi_factor / 72) - self.view.notebook.get_allocated_width() / 2
+                    y = (position['y'] * self.real_zoom_factor * self.ppi * self.hidpi_factor / 72) - self.view.notebook.get_allocated_height() / 2
                     if position['page'] == 1 and y < 50: y = -10.0
                     self.scroll_to_page_queue.put((position['page'], 0, y))
         if self.number_of_pages > 0:
@@ -140,7 +140,7 @@ class Preview(object):
     
     def setup_zoom_factors(self):
         if self.document_width_points != 0:
-            self.zoom_factor_fit_width = ((self.view.notebook.get_allocated_width() - 22) / self.ppi) / (self.document_width_points / 72)
+            self.zoom_factor_fit_width = ((self.view.notebook.get_allocated_width() - 22) / (self.ppi * self.hidpi_factor)) / (self.document_width_points / 72)
 
             self.zoom_factors_button = list()
             factors_button = [0.25*2**i for i in range(5)]
@@ -320,7 +320,7 @@ class Preview(object):
         self.do_draw = True
 
     def set_canvas_size(self, document_height_pixels):
-        self.canvas_width = int(self.real_zoom_factor * self.ppi * self.document_width_points / 72) + 22
+        self.canvas_width = int(self.real_zoom_factor * self.ppi * self.hidpi_factor * self.document_width_points / 72) + 22
         old_height = self.canvas_height
         self.canvas_height = (int(document_height_pixels / self.hidpi_factor) + self.document.get_n_pages() * 12 + 12)
         if old_height == self.canvas_height: self.canvas_height += 1
@@ -334,8 +334,8 @@ class Preview(object):
             for page_number in range(number_of_pages):
                 self.rendered_pages[page_number].remove_current_size_surface()
                 page_size = self.page_sizes_points[page_number]
-                width_pixels = int(self.real_zoom_factor * self.ppi * self.hidpi_factor * page_size[0] / 72)
-                height_pixels = int(self.real_zoom_factor * self.ppi * self.hidpi_factor * page_size[1] / 72)
+                width_pixels = int(self.real_zoom_factor * self.ppi * self.hidpi_factor * self.hidpi_factor * page_size[0] / 72)
+                height_pixels = int(self.real_zoom_factor * self.ppi * self.hidpi_factor * self.hidpi_factor * page_size[1] / 72)
                 document_height_pixels += height_pixels
                 with self.page_render_count_lock:
                     self.page_render_count[page_number] += 1
@@ -364,8 +364,8 @@ class Preview(object):
                     page_size_points = page.get_size()
                     real_zoom_factor = todo['real_zoom_factor']
                     ppi = todo['ppi']
-                    width_pixels = int(real_zoom_factor * ppi * self.hidpi_factor * page_size_points.width / 72)
-                    height_pixels = int(real_zoom_factor * ppi * self.hidpi_factor * page_size_points.height / 72)
+                    width_pixels = int(real_zoom_factor * ppi * self.hidpi_factor * self.hidpi_factor * page_size_points.width / 72)
+                    height_pixels = int(real_zoom_factor * ppi * self.hidpi_factor * self.hidpi_factor * page_size_points.height / 72)
                     scale_factor = width_pixels / page_size_points[0]
                     surface = cairo.ImageSurface(cairo.Format.ARGB32, width_pixels, height_pixels)
                     ctx = cairo.Context(surface)
@@ -379,19 +379,14 @@ class Preview(object):
         monitor = Gdk.Display.get_default().get_monitor_at_point(1, 1)
         width_inch = monitor.get_width_mm() / 25.4
         width_pixels = monitor.get_geometry().width
-        scale_factor = monitor.get_scale_factor()
         
         if width_inch > 0 and width_pixels > 0:
-            return int(scale_factor * width_pixels / width_inch)
+            return int(width_pixels / width_inch)
         else:
             return 96
             
     #@helpers.timer
     def draw(self, drawing_area, cairo_context, data = None):
-        if self.hidpi_factor != self.view.get_scale_factor():
-            self.hidpi_factor = self.view.get_scale_factor()
-            self.render_pdf()
-            return
         if self.do_draw == True:
             ctx = cairo_context
             bg_color = self.view.notebook.get_style_context().lookup_color('theme_bg_color')[1]
