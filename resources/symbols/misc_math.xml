@@ -1,105 +1,105 @@
 <symbols>
-  <symbol file="cdotp.png" command="\cdotp" math="1" />
-  <symbol file="colon.png" command="\colon" math="1" />
-  <symbol file="ldotp.png" command="\ldotp" math="1" />
-  <symbol file="vdots.png" command="\vdots" math="1" />
-  <symbol file="cdots.png" command="\cdots" math="1" />
-  <symbol file="ddots.png" command="\ddots" math="1" />
-  <symbol file="ldots.png" command="\ldots" math="1" />
-  <symbol file="neg.png" command="\neg" math="1" />
-  <symbol file="infty.png" command="\infty" math="1" />
-  <symbol file="prime.png" command="\prime" math="1" />
-  <symbol file="backprime.png" command="\backprime" package="amssymb" math="1" />
-  <symbol file="backslash.png" command="\backslash" math="1" />
-  <symbol file="diagdown.png" command="\diagdown" package="amssymb" math="1" />
-  <symbol file="diagup.png" command="\diagup" package="amssymb" math="1" />
-  <symbol file="surd.png" command="\surd" math="1" />
-  <symbol file="emptyset.png" command="\emptyset" math="1" />
-  <symbol file="varnothing.png" command="\varnothing" package="amssymb" math="1" />
-  <symbol file="sharp.png" command="\sharp" math="1" />
-  <symbol file="flat.png" command="\flat" math="1" />
-  <symbol file="natural.png" command="\natural" math="1" />
-  <symbol file="angle.png" command="\angle" math="1" />
-  <symbol file="sphericalangle.png" command="\sphericalangle" package="amssymb" math="1" />
-  <symbol file="measuredangle.png" command="\measuredangle" package="amssymb" math="1" />
-  <symbol file="Box.png" command="\Box" package="amssymb" math="1" />
-  <symbol file="square.png" command="\square" package="amssymb" math="1" />
-  <symbol file="triangle.png" command="\triangle" math="1" />
-  <symbol file="vartriangle.png" command="\vartriangle" package="amssymb" math="1" />
-  <symbol file="triangledown.png" command="\triangledown" package="amssymb" math="1" />
-  <symbol file="Diamond.png" command="\Diamond" package="amssymb" math="1" />
-  <symbol file="diamondsuit.png" command="\diamondsuit" math="1" />
-  <symbol file="lozenge.png" command="\lozenge" package="amssymb" math="1" />
-  <symbol file="heartsuit.png" command="\heartsuit" math="1" />
-  <symbol file="blacksquare.png" command="\blacksquare" package="amssymb" math="1" />
-  <symbol file="blacktriangle.png" command="\blacktriangle" package="amssymb" math="1" />
-  <symbol file="blacktriangledown.png" command="\blacktriangledown" package="amssymb" math="1" />
-  <symbol file="blacklozenge.png" command="\blacklozenge" package="amssymb" math="1" />
-  <symbol file="bigstar.png" command="\bigstar" package="amssymb" math="1" />
-  <symbol file="spadesuit.png" command="\spadesuit" math="1" />
-  <symbol file="clubsuit.png" command="\clubsuit" math="1" />
-  <symbol file="forall.png" command="\forall" math="1" />
-  <symbol file="exists.png" command="\exists" math="1" />
-  <symbol file="nexists.png" command="\nexists" package="amssymb" math="1" />
-  <symbol file="Finv.png" command="\Finv" package="amssymb" math="1" />
-  <symbol file="Game.png" command="\Game" package="amssymb" math="1" />
-  <symbol file="ni.png" command="\ni" math="1" />
-  <symbol file="in.png" command="\in" math="1" />
-  <symbol file="notin.png" command="\notin" math="1" />
-  <symbol file="complement.png" command="\complement" package="amssymb" math="1" />
-  <symbol file="mathbbN.png" command="\mathbb{N}" package="amsfonts" math="1" />
-  <symbol file="mathbbZ.png" command="\mathbb{Z}" package="amsfonts" math="1" />
-  <symbol file="mathbbQ.png" command="\mathbb{Q}" package="amsfonts" math="1" />
-  <symbol file="mathbbI.png" command="\mathbb{I}" package="amsfonts" math="1" />
-  <symbol file="mathbbR.png" command="\mathbb{R}" package="amsfonts" math="1" />
-  <symbol file="mathbbC.png" command="\mathbb{C}" package="amsfonts" math="1" />
-  <symbol file="Im.png" command="\Im" math="1" />
-  <symbol file="Re.png" command="\Re" math="1" />
-  <symbol file="aleph.png" command="\aleph" math="1" />
-  <symbol file="wp.png" command="\wp" math="1" />
-  <symbol file="hslash.png" command="\hslash" package="amssymb" math="1" />
-  <symbol file="hbar.png" command="\hbar" math="1" />
-  <symbol file="imath.png" command="\imath" math="1" />
-  <symbol file="jmath.png" command="\jmath" math="1" />
-  <symbol file="Bbbk.png" command="\Bbbk" package="amssymb" math="1" />
-  <symbol file="ell.png" command="\ell" math="1" />
-  <symbol file="circledR.png" command="\circledR" package="amssymb" math="1" />
-  <symbol file="circledS.png" command="\circledS" package="amssymb" math="1" />
-  <symbol file="bot.png" command="\bot" math="1" />
-  <symbol file="top.png" command="\top" math="1" />
-  <symbol file="partial.png" command="\partial" math="1" />
-  <symbol file="nabla.png" command="\nabla" math="1" />
-  <symbol file="eth.png" command="\eth" package="amssymb" math="1" />
-  <symbol file="mho.png" command="\mho" package="amssymb" math="1" />
-  <symbol file="acute.png" command="\acute{•}" gencommand="\acute{a}" math="1" />
-  <symbol file="grave.png" command="\grave{•}" gencommand="\grave{a}" math="1" />
-  <symbol file="check.png" command="\check{•}" gencommand="\check{a}" math="1" />
-  <symbol file="hat.png" command="\hat{•}" gencommand="\hat{a}" math="1" />
-  <symbol file="tilde.png" command="\tilde{•}" gencommand="\tilde{a}" math="1" />
-  <symbol file="bar.png" command="\bar{•}" gencommand="\bar{a}" math="1" />
-  <symbol file="vec.png" command="\vec{•}" gencommand="\vec{a}" math="1" />
-  <symbol file="breve.png" command="\breve{•}" gencommand="\breve{a}" math="1" />
-  <symbol file="dot.png" command="\dot{•}" gencommand="\dot{a}" math="1" />
-  <symbol file="ddot.png" command="\ddot{•}" gencommand="\ddot{a}" math="1" />
-  <symbol file="dddot.png" command="\dddot{•}" gencommand="\dddot{a}" package="amsmath" math="1" />
-  <symbol file="ddddot.png" command="\ddddot{•}" gencommand="\ddddot{a}" package="amsmath" math="1" />
-  <symbol file="mathring.png" command="\mathring{•}" gencommand="\mathring{a}" math="1" />
-  <symbol file="widetilde.png" command="\widetilde{•}" gencommand="\widetilde{abc}" math="1" />
-  <symbol file="widehat.png" command="\widehat{•}" gencommand="\widehat{abc}" math="1" />
-  <symbol file="overleftarrow.png" command="\overleftarrow{•}" gencommand="\overleftarrow{abc}" math="1" />
-  <symbol file="overrightarrow.png" command="\overrightarrow{•}" gencommand="\overrightarrow{abc}" math="1" />
-  <symbol file="overline.png" command="\overline{•}" gencommand="\overline{abc}" math="1" />
-  <symbol file="underline.png" command="\underline{•}" gencommand="\underline{abc}" math="1" />
-  <symbol file="overbrace.png" command="\overbrace{•}" gencommand="\overbrace{abc}" math="1" />
-  <symbol file="underbrace.png" command="\underbrace{•}" gencommand="\underbrace{abc}" math="1" />
-  <symbol file="overleftrightarrow.png" command="\overleftrightarrow{•}" gencommand="\overleftrightarrow{abc}" package="amsmath" math="1" />
-  <symbol file="underleftrightarrow.png" command="\underleftrightarrow{•}" gencommand="\underleftrightarrow{abc}" package="amsmath" math="1" />
-  <symbol file="underleftarrow.png" command="\underleftarrow{•}" gencommand="\underleftarrow{abc}" package="amsmath" math="1" />
-  <symbol file="underrightarrow.png" command="\underrightarrow{•}" gencommand="\underrightarrow{abc}" package="amsmath" math="1" />
-  <symbol file="xleftarrow.png" command="\xleftarrow{•}" gencommand="\xleftarrow{abc}" package="amsmath" math="1" />
-  <symbol file="xrightarrow.png" command="\xrightarrow{•}" gencommand="\xrightarrow{abc}" package="amsmath" math="1" />
-  <symbol file="stackrel.png" command="\stackrel{•}{•}" gencommand="\stackrel{abc}{=}" math="1" />
-  <symbol file="sqrt.png" command="\sqrt{•}" gencommand="\sqrt{a}" math="1" />
-  <symbol file="f1.png" command="f'" math="1" />
-  <symbol file="f2.png" command="f''" math="1" />
+  <symbol command="\cdotp" file="cdotp.png" math="1" />
+  <symbol command="\colon" file="colon.png" math="1" />
+  <symbol command="\ldotp" file="ldotp.png" math="1" />
+  <symbol command="\vdots" file="vdots.png" math="1" />
+  <symbol command="\cdots" file="cdots.png" math="1" />
+  <symbol command="\ddots" file="ddots.png" math="1" />
+  <symbol command="\ldots" file="ldots.png" math="1" />
+  <symbol command="\neg" file="neg.png" math="1" />
+  <symbol command="\infty" file="infty.png" math="1" />
+  <symbol command="\prime" file="prime.png" math="1" />
+  <symbol command="\backprime" file="backprime.png" math="1" package="amssymb" />
+  <symbol command="\backslash" file="backslash.png" math="1" />
+  <symbol command="\diagdown" file="diagdown.png" math="1" package="amssymb" />
+  <symbol command="\diagup" file="diagup.png" math="1" package="amssymb" />
+  <symbol command="\surd" file="surd.png" math="1" />
+  <symbol command="\emptyset" file="emptyset.png" math="1" />
+  <symbol command="\varnothing" file="varnothing.png" math="1" package="amssymb" />
+  <symbol command="\sharp" file="sharp.png" math="1" />
+  <symbol command="\flat" file="flat.png" math="1" />
+  <symbol command="\natural" file="natural.png" math="1" />
+  <symbol command="\angle" file="angle.png" math="1" />
+  <symbol command="\sphericalangle" file="sphericalangle.png" math="1" package="amssymb" />
+  <symbol command="\measuredangle" file="measuredangle.png" math="1" package="amssymb" />
+  <symbol command="\Box" file="Box.png" math="1" package="amssymb" />
+  <symbol command="\square" file="square.png" math="1" package="amssymb" />
+  <symbol command="\triangle" file="triangle.png" math="1" />
+  <symbol command="\vartriangle" file="vartriangle.png" math="1" package="amssymb" />
+  <symbol command="\triangledown" file="triangledown.png" math="1" package="amssymb" />
+  <symbol command="\Diamond" file="Diamond.png" math="1" package="amssymb" />
+  <symbol command="\diamondsuit" file="diamondsuit.png" math="1" />
+  <symbol command="\lozenge" file="lozenge.png" math="1" package="amssymb" />
+  <symbol command="\heartsuit" file="heartsuit.png" math="1" />
+  <symbol command="\blacksquare" file="blacksquare.png" math="1" package="amssymb" />
+  <symbol command="\blacktriangle" file="blacktriangle.png" math="1" package="amssymb" />
+  <symbol command="\blacktriangledown" file="blacktriangledown.png" math="1" package="amssymb" />
+  <symbol command="\blacklozenge" file="blacklozenge.png" math="1" package="amssymb" />
+  <symbol command="\bigstar" file="bigstar.png" math="1" package="amssymb" />
+  <symbol command="\spadesuit" file="spadesuit.png" math="1" />
+  <symbol command="\clubsuit" file="clubsuit.png" math="1" />
+  <symbol command="\forall" file="forall.png" math="1" />
+  <symbol command="\exists" file="exists.png" math="1" />
+  <symbol command="\nexists" file="nexists.png" math="1" package="amssymb" />
+  <symbol command="\Finv" file="Finv.png" math="1" package="amssymb" />
+  <symbol command="\Game" file="Game.png" math="1" package="amssymb" />
+  <symbol command="\ni" file="ni.png" math="1" />
+  <symbol command="\in" file="in.png" math="1" />
+  <symbol command="\notin" file="notin.png" math="1" />
+  <symbol command="\complement" file="complement.png" math="1" package="amssymb" />
+  <symbol command="\mathbb{N}" file="mathbbN.png" math="1" package="amsfonts" />
+  <symbol command="\mathbb{Z}" file="mathbbZ.png" math="1" package="amsfonts" />
+  <symbol command="\mathbb{Q}" file="mathbbQ.png" math="1" package="amsfonts" />
+  <symbol command="\mathbb{I}" file="mathbbI.png" math="1" package="amsfonts" />
+  <symbol command="\mathbb{R}" file="mathbbR.png" math="1" package="amsfonts" />
+  <symbol command="\mathbb{C}" file="mathbbC.png" math="1" package="amsfonts" />
+  <symbol command="\Im" file="Im.png" math="1" />
+  <symbol command="\Re" file="Re.png" math="1" />
+  <symbol command="\aleph" file="aleph.png" math="1" />
+  <symbol command="\wp" file="wp.png" math="1" />
+  <symbol command="\hslash" file="hslash.png" math="1" package="amssymb" />
+  <symbol command="\hbar" file="hbar.png" math="1" />
+  <symbol command="\imath" file="imath.png" math="1" />
+  <symbol command="\jmath" file="jmath.png" math="1" />
+  <symbol command="\Bbbk" file="Bbbk.png" math="1" package="amssymb" />
+  <symbol command="\ell" file="ell.png" math="1" />
+  <symbol command="\circledR" file="circledR.png" math="1" package="amssymb" />
+  <symbol command="\circledS" file="circledS.png" math="1" package="amssymb" />
+  <symbol command="\bot" file="bot.png" math="1" />
+  <symbol command="\top" file="top.png" math="1" />
+  <symbol command="\partial" file="partial.png" math="1" />
+  <symbol command="\nabla" file="nabla.png" math="1" />
+  <symbol command="\eth" file="eth.png" math="1" package="amssymb" />
+  <symbol command="\mho" file="mho.png" math="1" package="amssymb" />
+  <symbol command="\acute{&#8226;}" file="acute.png" gencommand="\acute{a}" math="1" />
+  <symbol command="\grave{&#8226;}" file="grave.png" gencommand="\grave{a}" math="1" />
+  <symbol command="\check{&#8226;}" file="check.png" gencommand="\check{a}" math="1" />
+  <symbol command="\hat{&#8226;}" file="hat.png" gencommand="\hat{a}" math="1" />
+  <symbol command="\tilde{&#8226;}" file="tilde.png" gencommand="\tilde{a}" math="1" />
+  <symbol command="\bar{&#8226;}" file="bar.png" gencommand="\bar{a}" math="1" />
+  <symbol command="\vec{&#8226;}" file="vec.png" gencommand="\vec{a}" math="1" />
+  <symbol command="\breve{&#8226;}" file="breve.png" gencommand="\breve{a}" math="1" />
+  <symbol command="\dot{&#8226;}" file="dot.png" gencommand="\dot{a}" math="1" />
+  <symbol command="\ddot{&#8226;}" file="ddot.png" gencommand="\ddot{a}" math="1" />
+  <symbol command="\dddot{&#8226;}" file="dddot.png" gencommand="\dddot{a}" math="1" package="amsmath" />
+  <symbol command="\ddddot{&#8226;}" file="ddddot.png" gencommand="\ddddot{a}" math="1" package="amsmath" />
+  <symbol command="\mathring{&#8226;}" file="mathring.png" gencommand="\mathring{a}" math="1" />
+  <symbol command="\widetilde{&#8226;}" file="widetilde.png" gencommand="\widetilde{abc}" math="1" />
+  <symbol command="\widehat{&#8226;}" file="widehat.png" gencommand="\widehat{abc}" math="1" />
+  <symbol command="\overleftarrow{&#8226;}" file="overleftarrow.png" gencommand="\overleftarrow{abc}" math="1" />
+  <symbol command="\overrightarrow{&#8226;}" file="overrightarrow.png" gencommand="\overrightarrow{abc}" math="1" />
+  <symbol command="\overline{&#8226;}" file="overline.png" gencommand="\overline{abc}" math="1" />
+  <symbol command="\underline{&#8226;}" file="underline.png" gencommand="\underline{abc}" math="1" />
+  <symbol command="\overbrace{&#8226;}" file="overbrace.png" gencommand="\overbrace{abc}" math="1" />
+  <symbol command="\underbrace{&#8226;}" file="underbrace.png" gencommand="\underbrace{abc}" math="1" />
+  <symbol command="\overleftrightarrow{&#8226;}" file="overleftrightarrow.png" gencommand="\overleftrightarrow{abc}" math="1" package="amsmath" />
+  <symbol command="\underleftrightarrow{&#8226;}" file="underleftrightarrow.png" gencommand="\underleftrightarrow{abc}" math="1" package="amsmath" />
+  <symbol command="\underleftarrow{&#8226;}" file="underleftarrow.png" gencommand="\underleftarrow{abc}" math="1" package="amsmath" />
+  <symbol command="\underrightarrow{&#8226;}" file="underrightarrow.png" gencommand="\underrightarrow{abc}" math="1" package="amsmath" />
+  <symbol command="\xleftarrow{&#8226;}" file="xleftarrow.png" gencommand="\xleftarrow{abc}" math="1" package="amsmath" />
+  <symbol command="\xrightarrow{&#8226;}" file="xrightarrow.png" gencommand="\xrightarrow{abc}" math="1" package="amsmath" />
+  <symbol command="\stackrel{&#8226;}{&#8226;}" file="stackrel.png" gencommand="\stackrel{abc}{=}" math="1" />
+  <symbol command="\sqrt{&#8226;}" file="sqrt.png" gencommand="\sqrt{a}" math="1" />
+  <symbol command="f'" file="f1.png" math="1" />
+  <symbol command="f''" file="f2.png" math="1" />
 </symbols>

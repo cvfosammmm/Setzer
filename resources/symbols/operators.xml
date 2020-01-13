@@ -1,82 +1,82 @@
 <symbols>
-  <symbol file="pm.png" command="\pm" math="1" />
-  <symbol file="mp.png" command="\mp" math="1" />
-  <symbol file="times.png" command="\times" math="1" />
-  <symbol file="div.png" command="\div" math="1" />
-  <symbol file="ast.png" command="\ast" math="1" />
-  <symbol file="star.png" command="\star" math="1" />
-  <symbol file="circ.png" command="\circ" math="1" />
-  <symbol file="bullet.png" command="\bullet" math="1" />
-  <symbol file="divideontimes.png" command="\divideontimes" package="amssymb" math="1" />
-  <symbol file="ltimes.png" command="\ltimes" package="amssymb" math="1" />
-  <symbol file="rtimes.png" command="\rtimes" package="amssymb" math="1" />
-  <symbol file="cdot.png" command="\cdot" math="1" />
-  <symbol file="dotplus.png" command="\dotplus" package="amssymb" math="1" />
-  <symbol file="leftthreetimes.png" command="\leftthreetimes" package="amssymb" math="1" />
-  <symbol file="rightthreetimes.png" command="\rightthreetimes" package="amssymb" math="1" />
-  <symbol file="amalg.png" command="\amalg" math="1" />
-  <symbol file="otimes.png" command="\otimes" math="1" />
-  <symbol file="oplus.png" command="\oplus" math="1" />
-  <symbol file="ominus.png" command="\ominus" math="1" />
-  <symbol file="oslash.png" command="\oslash" math="1" />
-  <symbol file="odot.png" command="\odot" math="1" />
-  <symbol file="circledcirc.png" command="\circledcirc" package="amssymb" math="1" />
-  <symbol file="circleddash.png" command="\circleddash" package="amssymb" math="1" />
-  <symbol file="circledast.png" command="\circledast" package="amssymb" math="1" />
-  <symbol file="bigcirc.png" command="\bigcirc" math="1" />
-  <symbol file="boxdot.png" command="\boxdot" package="amssymb" math="1" />
-  <symbol file="boxminus.png" command="\boxminus" package="amssymb" math="1" />
-  <symbol file="boxplus.png" command="\boxplus" package="amssymb" math="1" />
-  <symbol file="boxtimes.png" command="\boxtimes" package="amssymb" math="1" />
-  <symbol file="diamond.png" command="\diamond" math="1" />
-  <symbol file="bigtriangleup.png" command="\bigtriangleup" math="1" />
-  <symbol file="bigtriangledown.png" command="\bigtriangledown" math="1" />
-  <symbol file="triangleleft.png" command="\triangleleft" math="1" />
-  <symbol file="triangleright.png" command="\triangleright" math="1" />
-  <symbol file="lhd.png" command="\lhd" package="amssymb" math="1" />
-  <symbol file="rhd.png" command="\rhd" package="amssymb" math="1" />
-  <symbol file="unlhd.png" command="\unlhd" package="amssymb" math="1" />
-  <symbol file="unrhd.png" command="\unrhd" package="amssymb" math="1" />
-  <symbol file="cup.png" command="\cup" math="1" />
-  <symbol file="cap.png" command="\cap" math="1" />
-  <symbol file="uplus.png" command="\uplus" math="1" />
-  <symbol file="Cup.png" command="\Cup" package="amssymb" math="1" />
-  <symbol file="Cap.png" command="\Cap" package="amssymb" math="1" />
-  <symbol file="wr.png" command="\wr" math="1" />
-  <symbol file="setminus.png" command="\setminus" math="1" />
-  <symbol file="smallsetminus.png" command="\smallsetminus" package="amssymb" math="1" />
-  <symbol file="sqcap.png" command="\sqcap" math="1" />
-  <symbol file="sqcup.png" command="\sqcup" math="1" />
-  <symbol file="wedge.png" command="\wedge" math="1" />
-  <symbol file="vee.png" command="\vee" math="1" />
-  <symbol file="barwedge.png" command="\barwedge" package="amssymb" math="1" />
-  <symbol file="veebar.png" command="\veebar" package="amssymb" math="1" />
-  <symbol file="doublebarwedge.png" command="\doublebarwedge" package="amssymb" math="1" />
-  <symbol file="curlywedge.png" command="\curlywedge" package="amssymb" math="1" />
-  <symbol file="curlyvee.png" command="\curlyvee" package="amssymb" math="1" />
-  <symbol file="dagger.png" command="\dagger" package="amssymb" math="1" />
-  <symbol file="ddagger.png" command="\ddagger" package="amssymb" math="1" />
-  <symbol file="intercal.png" command="\intercal" package="amssymb" math="1" />
-  <symbol file="bigcap.png" command="\bigcap" math="1" />
-  <symbol file="bigcup.png" command="\bigcup" math="1" />
-  <symbol file="biguplus.png" command="\biguplus" math="1" />
-  <symbol file="bigsqcup.png" command="\bigsqcup" math="1" />
-  <symbol file="prod.png" command="\prod" math="1" />
-  <symbol file="coprod.png" command="\coprod" math="1" />
-  <symbol file="bigwedge.png" command="\bigwedge" math="1" />
-  <symbol file="bigvee.png" command="\bigvee" math="1" />
-  <symbol file="bigodot.png" command="\bigodot" math="1" />
-  <symbol file="bigoplus.png" command="\bigoplus" math="1" />
-  <symbol file="bigotimes.png" command="\bigotimes" math="1" />
-  <symbol file="sum.png" command="\sum" math="1" />
-  <symbol file="int.png" command="\int" math="1" />
-  <symbol file="oint.png" command="\oint" math="1" />
-  <symbol file="iint.png" command="\iint" gencommand="\scriptstyle\iint" package="amsmath" math="1" />
-  <symbol file="iiint.png" command="\iiint" gencommand="\scriptstyle\iiint" package="amsmath" math="1" />
-  <symbol file="iiiint.png" command="\iiiint" gencommand="\scriptstyle\iiiint" package="amsmath" math="1" />
-  <symbol file="idotsint.png" command="\idotsint" gencommand="\scriptstyle\idotsint" package="amsmath" math="1" />
-  <symbol file="varlimsup.png" command="\varlimsup" gencommand="\scriptstyle\varlimsup" package="amsmath" math="1" />
-  <symbol file="varliminf.png" command="\varliminf" gencommand="\scriptstyle\varliminf" package="amsmath" math="1" />
-  <symbol file="varinjlim.png" command="\varinjlim" gencommand="\scriptstyle\varinjlim" package="amsmath" math="1" />
-  <symbol file="varprojlim.png" command="\varprojlim" gencommand="\scriptstyle\varprojlim" package="amsmath" math="1" />
+  <symbol command="\pm" file="pm.png" math="1" />
+  <symbol command="\mp" file="mp.png" math="1" />
+  <symbol command="\times" file="times.png" math="1" />
+  <symbol command="\div" file="div.png" math="1" />
+  <symbol command="\ast" file="ast.png" math="1" />
+  <symbol command="\star" file="star.png" math="1" />
+  <symbol command="\circ" file="circ.png" math="1" />
+  <symbol command="\bullet" file="bullet.png" math="1" />
+  <symbol command="\divideontimes" file="divideontimes.png" math="1" package="amssymb" />
+  <symbol command="\ltimes" file="ltimes.png" math="1" package="amssymb" />
+  <symbol command="\rtimes" file="rtimes.png" math="1" package="amssymb" />
+  <symbol command="\cdot" file="cdot.png" math="1" />
+  <symbol command="\dotplus" file="dotplus.png" math="1" package="amssymb" />
+  <symbol command="\leftthreetimes" file="leftthreetimes.png" math="1" package="amssymb" />
+  <symbol command="\rightthreetimes" file="rightthreetimes.png" math="1" package="amssymb" />
+  <symbol command="\amalg" file="amalg.png" math="1" />
+  <symbol command="\otimes" file="otimes.png" math="1" />
+  <symbol command="\oplus" file="oplus.png" math="1" />
+  <symbol command="\ominus" file="ominus.png" math="1" />
+  <symbol command="\oslash" file="oslash.png" math="1" />
+  <symbol command="\odot" file="odot.png" math="1" />
+  <symbol command="\circledcirc" file="circledcirc.png" math="1" package="amssymb" />
+  <symbol command="\circleddash" file="circleddash.png" math="1" package="amssymb" />
+  <symbol command="\circledast" file="circledast.png" math="1" package="amssymb" />
+  <symbol command="\bigcirc" file="bigcirc.png" math="1" />
+  <symbol command="\boxdot" file="boxdot.png" math="1" package="amssymb" />
+  <symbol command="\boxminus" file="boxminus.png" math="1" package="amssymb" />
+  <symbol command="\boxplus" file="boxplus.png" math="1" package="amssymb" />
+  <symbol command="\boxtimes" file="boxtimes.png" math="1" package="amssymb" />
+  <symbol command="\diamond" file="diamond.png" math="1" />
+  <symbol command="\bigtriangleup" file="bigtriangleup.png" math="1" />
+  <symbol command="\bigtriangledown" file="bigtriangledown.png" math="1" />
+  <symbol command="\triangleleft" file="triangleleft.png" math="1" />
+  <symbol command="\triangleright" file="triangleright.png" math="1" />
+  <symbol command="\lhd" file="lhd.png" math="1" package="amssymb" />
+  <symbol command="\rhd" file="rhd.png" math="1" package="amssymb" />
+  <symbol command="\unlhd" file="unlhd.png" math="1" package="amssymb" />
+  <symbol command="\unrhd" file="unrhd.png" math="1" package="amssymb" />
+  <symbol command="\cup" file="cup.png" math="1" />
+  <symbol command="\cap" file="cap.png" math="1" />
+  <symbol command="\uplus" file="uplus.png" math="1" />
+  <symbol command="\Cup" file="Cup.png" math="1" package="amssymb" />
+  <symbol command="\Cap" file="Cap.png" math="1" package="amssymb" />
+  <symbol command="\wr" file="wr.png" math="1" />
+  <symbol command="\setminus" file="setminus.png" math="1" />
+  <symbol command="\smallsetminus" file="smallsetminus.png" math="1" package="amssymb" />
+  <symbol command="\sqcap" file="sqcap.png" math="1" />
+  <symbol command="\sqcup" file="sqcup.png" math="1" />
+  <symbol command="\wedge" file="wedge.png" math="1" />
+  <symbol command="\vee" file="vee.png" math="1" />
+  <symbol command="\barwedge" file="barwedge.png" math="1" package="amssymb" />
+  <symbol command="\veebar" file="veebar.png" math="1" package="amssymb" />
+  <symbol command="\doublebarwedge" file="doublebarwedge.png" math="1" package="amssymb" />
+  <symbol command="\curlywedge" file="curlywedge.png" math="1" package="amssymb" />
+  <symbol command="\curlyvee" file="curlyvee.png" math="1" package="amssymb" />
+  <symbol command="\dagger" file="dagger.png" math="1" package="amssymb" />
+  <symbol command="\ddagger" file="ddagger.png" math="1" package="amssymb" />
+  <symbol command="\intercal" file="intercal.png" math="1" package="amssymb" />
+  <symbol command="\bigcap" file="bigcap.png" math="1" />
+  <symbol command="\bigcup" file="bigcup.png" math="1" />
+  <symbol command="\biguplus" file="biguplus.png" math="1" />
+  <symbol command="\bigsqcup" file="bigsqcup.png" math="1" />
+  <symbol command="\prod" file="prod.png" math="1" />
+  <symbol command="\coprod" file="coprod.png" math="1" />
+  <symbol command="\bigwedge" file="bigwedge.png" math="1" />
+  <symbol command="\bigvee" file="bigvee.png" math="1" />
+  <symbol command="\bigodot" file="bigodot.png" math="1" />
+  <symbol command="\bigoplus" file="bigoplus.png" math="1" />
+  <symbol command="\bigotimes" file="bigotimes.png" math="1" />
+  <symbol command="\sum" file="sum.png" math="1" />
+  <symbol command="\int" file="int.png" math="1" />
+  <symbol command="\oint" file="oint.png" math="1" />
+  <symbol command="\iint" file="iint.png" gencommand="\scriptstyle\iint" math="1" package="amsmath" />
+  <symbol command="\iiint" file="iiint.png" gencommand="\scriptstyle\iiint" math="1" package="amsmath" />
+  <symbol command="\iiiint" file="iiiint.png" gencommand="\scriptstyle\iiiint" math="1" package="amsmath" />
+  <symbol command="\idotsint" file="idotsint.png" gencommand="\scriptstyle\idotsint" math="1" package="amsmath" />
+  <symbol command="\varlimsup" file="varlimsup.png" gencommand="\scriptstyle\varlimsup" math="1" package="amsmath" />
+  <symbol command="\varliminf" file="varliminf.png" gencommand="\scriptstyle\varliminf" math="1" package="amsmath" />
+  <symbol command="\varinjlim" file="varinjlim.png" gencommand="\scriptstyle\varinjlim" math="1" package="amsmath" />
+  <symbol command="\varprojlim" file="varprojlim.png" gencommand="\scriptstyle\varprojlim" math="1" package="amsmath" />
 </symbols>

@@ -17,6 +17,9 @@
 
 import xml.etree.ElementTree as ET
 import subprocess, os
+import re
+
+width_regex = re.compile('PNG image data, ([0-9]+) x [0-9]+')
 
 folders = [
             'arrows',
@@ -75,9 +78,23 @@ for folder in folders:
             arguments = ['dvipng', '-x', '1440', '-bg', 'Transparent', '-T', 'tight', '-z', '6', '-o', '../resources/symbols/' + theme['name'] + '/' + folder + '/' + attrib['file'], 'temp.dvi']
             process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             process.wait()
+
+            # get image size
+            '''arguments = ['file', '../resources/symbols/' + theme['name'] + '/' + folder + '/' + attrib['file']]
+            process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            process.wait()
+            output, _ = process.communicate()
+            output = output.decode('utf8')
+            width_match = width_regex.search(output)
             
+            process.kill()
+            child.set('original_width', width_match.group(1))
+            tree.write('../resources/symbols/' + folder + '.xml')'''
+
             # delete helper files
             os.remove('temp.tex')
             os.remove('temp.log')
             os.remove('temp.aux')
             os.remove('temp.dvi')
+
+
