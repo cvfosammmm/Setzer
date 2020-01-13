@@ -34,7 +34,7 @@ from app.service_locator import ServiceLocator
 class MainApplicationController(Gtk.Application):
 
     def __init__(self):
-        Gtk.Application.__init__(self)
+        Gtk.Application.__init__(self, application_id='org.cvfosammmm.Setzer')
 
     def do_activate(self):
         ''' Everything starts here. '''

@@ -338,7 +338,7 @@ class Preview(object):
                 document_height_pixels += height_pixels
                 with self.page_render_count_lock:
                     self.page_render_count[page_number] += 1
-                    self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'real_zoom_factor': self.real_zoom_factor, 'ppi': self.ppi})
+                    self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'real_zoom_factor': self.real_zoom_factor, 'ppi': self.ppi, 'hidpi_scale_factor': self.hidpi_scale_factor})
                 self.rendered_pages[page_number].set_current_size(width_pixels, height_pixels)
 
             self.set_canvas_size(document_height_pixels)
@@ -363,15 +363,16 @@ class Preview(object):
                     page_size_points = page.get_size()
                     real_zoom_factor = todo['real_zoom_factor']
                     ppi = todo['ppi']
-                    width_pixels = int(real_zoom_factor * ppi * page_size_points.width / 72)
-                    height_pixels = int(real_zoom_factor * ppi * page_size_points.height / 72)
-                    scale_factor = width_pixels / page_size_points[0]
+                    hidpi_scale_factor = todo['hidpi_scale_factor']
+                    width_pixels = int(real_zoom_factor * ppi * page_size_points.width / 72) * hidpi_scale_factor
+                    height_pixels = int(real_zoom_factor * ppi * page_size_points.height / 72) * hidpi_scale_factor
+                    scale_factor = width_pixels / page_size_points[0] / hidpi_scale_factor
                     surface = cairo.ImageSurface(cairo.Format.ARGB32, width_pixels, height_pixels)
                     ctx = cairo.Context(surface)
                     ctx.scale(scale_factor, scale_factor)
                     page.render(ctx)
                     self.rendered_pages_queue.put({'page_number': todo['page_number'], 'render_count': todo['render_count'], 'surface': surface})
-        
+
     def get_ppi(self):
         ''' pixels per inch '''
         
@@ -458,6 +459,7 @@ class Preview(object):
         return False
     
     def on_size_allocate_view(self, view=None, allocation=None):
+        self.hidpi_scale_factor = self.view.get_scale_factor()
         if self.real_zoom_factor == self.zoom_factor_fit_width:
             self.setup_zoom_factors()
             self.set_zoom_fit_to_width()
