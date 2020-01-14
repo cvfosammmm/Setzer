@@ -161,7 +161,7 @@ class ShortcutsBar(Gtk.HBox):
         text_menu.append_section(None, section)
 
         self.text_button = Gtk.MenuButton()
-        self.text_button.set_image(Gtk.Image.new_from_icon_name('font-x-generic-symbolic', Gtk.IconSize.MENU))
+        self.text_button.set_image(Gtk.Image.new_from_icon_name('text-symbolic', Gtk.IconSize.MENU))
         self.text_button.set_focus_on_click(False)
         self.text_button.set_tooltip_text('Text')
         self.text_button.get_style_context().add_class('flat')
