@@ -192,7 +192,8 @@ class Workspace(Observable):
                     document = self.create_document_from_filename(item['filename'])
                     try:
                         document.set_initial_folded_regions(item['folded_regions'])
-                    except KeyError: pass
+                    except KeyError:
+                        document.set_initial_folded_regions(None)
                     if item['filename'] == master_document_filename and document != None:
                         self.set_one_document_master(document)
                 for item in data['recently_opened_documents'].values():

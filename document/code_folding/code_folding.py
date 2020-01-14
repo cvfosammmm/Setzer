@@ -37,7 +37,9 @@ class CodeFolding(object):
         self.folding_regions = dict()
         self.folding_regions_by_region_id = dict()
         self.maximum_region_id = 0
+        self.initial_folded_regions_set = False
         self.initial_folding_done = False
+        self.initial_folding_regions_checked_count = 0
 
         self.document = document
         self.source_view = document.view.source_view
@@ -195,13 +197,19 @@ class CodeFolding(object):
 
     def set_initial_folded_regions(self, folded_regions):
         self.initial_folded_regions = folded_regions
+        self.initial_folded_regions_set = True
 
     def initial_folding(self):
-        for region in self.initial_folded_regions:
-            if region['starting_line'] in self.folding_regions:
-                if region['ending_line'] == self.folding_regions[region['starting_line']]['ending_line']:
-                    folding_region = self.folding_regions[region['starting_line']]
-                    self.toggle_folding_region(folding_region, False, True)
-        self.initial_folding_done = True
+        self.initial_folding_regions_checked_count += 1
+        if self.initial_folded_regions_set:
+            if self.initial_folded_regions != None:
+                for region in self.initial_folded_regions:
+                    if region['starting_line'] in self.folding_regions:
+                        if region['ending_line'] == self.folding_regions[region['starting_line']]['ending_line']:
+                            folding_region = self.folding_regions[region['starting_line']]
+                            self.toggle_folding_region(folding_region, False, True)
+            self.initial_folding_done = True
+        if self.initial_folding_regions_checked_count >= 3:
+            self.initial_folding_done = True
 
 
