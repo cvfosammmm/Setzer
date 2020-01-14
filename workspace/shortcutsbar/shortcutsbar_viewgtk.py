@@ -142,6 +142,13 @@ class ShortcutsBar(Gtk.HBox):
         menu_item = Gio.MenuItem.new('Footnote', Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\footnote{', '}'])))
         text_menu.append_item(menu_item)
 
+        # font size submenu
+        font_size_menu = Gio.Menu()
+        for font_size in ['tiny', 'scriptsize', 'footnotesize', 'small', 'normalsize', 'large', 'Large', 'LARGE', 'huge', 'Huge']:
+            menu_item = Gio.MenuItem.new(font_size, Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['{\\' + font_size + ' ', '}'])))
+            font_size_menu.append_item(menu_item)
+        text_menu.append_submenu('Font Sizes', font_size_menu)
+
         self.text_button = Gtk.MenuButton()
         self.text_button.set_image(Gtk.Image.new_from_icon_name('font-x-generic-symbolic', Gtk.IconSize.MENU))
         self.text_button.set_focus_on_click(False)
