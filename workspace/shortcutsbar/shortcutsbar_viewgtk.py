@@ -142,7 +142,14 @@ class ShortcutsBar(Gtk.HBox):
         menu_item = Gio.MenuItem.new('Footnote', Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\footnote{', '}'])))
         text_menu.append_item(menu_item)
 
-        # font size submenu
+        # font styles submenu
+        font_size_menu = Gio.Menu()
+        for font_style in [('Emphasis (\\emph)', 'emph'), ('Italics (\\textit)', 'textit'), ('Slanted (\\textsl)', 'textsl'), ('Bold (\\textbf)', 'textbf'), ('Typewriter (\\texttt)', 'texttt'), ('Small Caps (\\textsc)', 'textsc'), ('Sans Serif (\\textsf)', 'textsf'), ('Underline (\\underline)', 'underline')]:
+            menu_item = Gio.MenuItem.new(font_style[0], Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\' + font_style[1] + '{', '}'])))
+            font_size_menu.append_item(menu_item)
+        text_menu.append_submenu('Font Styles', font_size_menu)
+
+        # font sizes submenu
         font_size_menu = Gio.Menu()
         for font_size in ['tiny', 'scriptsize', 'footnotesize', 'small', 'normalsize', 'large', 'Large', 'LARGE', 'huge', 'Huge']:
             menu_item = Gio.MenuItem.new(font_size, Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['{\\' + font_size + ' ', '}'])))
