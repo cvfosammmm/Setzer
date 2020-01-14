@@ -75,6 +75,7 @@ class ShortcutsBar(Gtk.HBox):
         self.top_icons.insert(self.bold_button, 0)
 
         self.insert_quotes_button()
+        self.insert_math_button()
         self.insert_text_button()
         self.insert_object_button()
         self.insert_bibliography_button()
@@ -150,6 +151,55 @@ class ShortcutsBar(Gtk.HBox):
 
         button_wrapper = Gtk.ToolItem()
         button_wrapper.add(self.text_button)
+        self.top_icons.insert(button_wrapper, 0)
+
+    def insert_quotes_button(self):
+        self.quotes_menu_data = list()
+        self.quotes_menu_data.append({'type': 'item', 'label': 'Primary Quotes (`` ... \'\')', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['``', '\'\''])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'Secondary Quotes (` ... \')', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['`', '\''])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'German Quotes (\\glqq ... \\grqq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\glqq ', '\\grqq{}'])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'German Single Quotes (\\glq ... \\grq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\glq ', '\\grq{}'])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'French Quotes (\\flqq ... \\frqq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\flqq ', '\\frqq{}'])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'French Single Quotes (\\flq ... \\frq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\flq ', '\\frq{}'])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'German Alt Quotes (\\frqq ... \\flqq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\frqq ', '\\flqq{}'])})
+        self.quotes_menu_data.append({'type': 'item', 'label': 'German Alt Single Quotes (\\frq ... \\frq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\frq ', '\\flq{}'])})
+        menu = Gio.Menu()
+        section = Gio.Menu()
+        for menu_item_data in self.quotes_menu_data:
+            if menu_item_data['type'] == 'item':
+                menu_item = Gio.MenuItem.new(menu_item_data['label'], Gio.Action.print_detailed_name(menu_item_data['action'], menu_item_data['target_value']))
+                section.append_item(menu_item)
+            elif menu_item_data['type'] == 'section':
+                menu.append_section(None, section)
+                section = Gio.Menu()
+        menu.append_section(None, section)
+        button_wrapper = Gtk.ToolItem()
+        self.quotes_button = Gtk.MenuButton()
+        self.quotes_button.set_direction(Gtk.ArrowType.DOWN)
+        self.quotes_button.set_image(Gtk.Image.new_from_icon_name('own-quotes-symbolic', Gtk.IconSize.MENU))
+        self.quotes_button.set_menu_model(menu)
+        self.quotes_button.set_focus_on_click(False)
+        self.quotes_button.set_use_popover(True)
+        self.quotes_button.set_tooltip_text('Quotes (Ctrl+")')
+        self.quotes_button.get_style_context().add_class('flat')
+        button_wrapper.add(self.quotes_button)
+        self.quotes_button.get_popover().get_style_context().add_class('menu-own-quotes-symbolic')
+        self.top_icons.insert(button_wrapper, 0)
+
+    def insert_math_button(self):
+        math_menu = Gio.Menu()
+        menu_item = Gio.MenuItem.new('AMS Packages', Gio.Action.print_detailed_name('win.add-package', GLib.Variant('as', ['amsmath, amssymb, amsfonts, amsthm'])))
+        math_menu.append_item(menu_item)
+
+        self.math_button = Gtk.MenuButton()
+        self.math_button.set_image(Gtk.Image.new_from_icon_name('own-math-menu-symbolic', Gtk.IconSize.MENU))
+        self.math_button.set_focus_on_click(False)
+        self.math_button.set_tooltip_text('Math')
+        self.math_button.get_style_context().add_class('flat')
+        self.math_button.set_menu_model(math_menu)
+
+        button_wrapper = Gtk.ToolItem()
+        button_wrapper.add(self.math_button)
         self.top_icons.insert(button_wrapper, 0)
 
     def insert_quotes_button(self):
