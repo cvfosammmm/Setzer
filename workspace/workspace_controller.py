@@ -60,7 +60,7 @@ class WorkspaceController(object):
         self.main_window.insert_before_document_end_action.connect('activate', self.insert_before_document_end)
         self.main_window.document_wizard_action.connect('activate', self.start_wizard)
         self.main_window.include_bibtex_file_action.connect('activate', self.start_include_bibtex_file_dialog)
-        self.main_window.add_package_action.connect('activate', self.add_package)
+        self.main_window.add_packages_action.connect('activate', self.add_packages)
         self.main_window.create_new_bibtex_entry_action.connect('activate', self.start_create_new_bibtex_entry_dialog)
         self.main_window.show_previous_bibtex_entries_action.connect('activate', self.start_show_previous_bibtex_entries_dialog)
         self.main_window.search_online_for_bibtex_entries_action.connect('activate', self.start_search_online_for_bibtex_entries_dialog)
@@ -312,7 +312,7 @@ class WorkspaceController(object):
             document.insert_text_at_cursor(parameter[0])
 
     @_assert_has_active_document
-    def add_package(self, action, parameter):
+    def add_packages(self, action, parameter):
         document = self.workspace.get_active_document()
 
         first_package = True

@@ -172,8 +172,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self.include_bibtex_file_action = Gio.SimpleAction.new('include-bibtex-file', None)
         self.add_action(self.include_bibtex_file_action)
 
-        self.add_package_action = Gio.SimpleAction.new('add-packages', GLib.VariantType('as'))
-        self.add_action(self.add_package_action)
+        self.add_packages_action = Gio.SimpleAction.new('add-packages', GLib.VariantType('as'))
+        self.add_action(self.add_packages_action)
 
         self.shortcuts_window_action = Gio.SimpleAction.new('show-shortcuts-window', None)
         self.add_action(self.shortcuts_window_action)
