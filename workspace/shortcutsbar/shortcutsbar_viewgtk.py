@@ -86,7 +86,7 @@ class ShortcutsBar(Gtk.HBox):
         section = Gio.Menu()
         menu_item = Gio.MenuItem.new('Include BibTeX File...', 'win.include-bibtex-file')
         section.append_item(menu_item)
-        menu_item = Gio.MenuItem.new('Include \'natbib\' Package', Gio.Action.print_detailed_name('win.add-package', GLib.Variant('as', ['natbib'])))
+        menu_item = Gio.MenuItem.new('Include \'natbib\' Package', Gio.Action.print_detailed_name('win.add-packages', GLib.Variant('as', ['natbib'])))
         section.append_item(menu_item)
         bibliography_menu.append_section(None, section)
 
@@ -188,7 +188,7 @@ class ShortcutsBar(Gtk.HBox):
 
     def insert_math_button(self):
         math_menu = Gio.Menu()
-        menu_item = Gio.MenuItem.new('AMS Packages', Gio.Action.print_detailed_name('win.add-package', GLib.Variant('as', ['amsmath, amssymb, amsfonts, amsthm'])))
+        menu_item = Gio.MenuItem.new('Include AMS Packages', Gio.Action.print_detailed_name('win.add-packages', GLib.Variant('as', ['amsmath', 'amssymb', 'amsfonts', 'amsthm'])))
         math_menu.append_item(menu_item)
 
         self.math_button = Gtk.MenuButton()

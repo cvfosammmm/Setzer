@@ -314,7 +314,14 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def add_package(self, action, parameter):
         document = self.workspace.get_active_document()
-        text = '\\usepackage{' + parameter[0] + '}'
+
+        first_package = True
+        text = ''
+        for packagename in parameter:
+            if not first_package: text += '\n'
+            text += '\\usepackage{' + packagename + '}'
+            first_package = False
+        
         buffer = document.get_buffer()
         end_iter = buffer.get_end_iter()
         result = end_iter.backward_search('\\usepackage', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
