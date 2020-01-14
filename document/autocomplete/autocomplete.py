@@ -630,7 +630,18 @@ class Autocomplete(object):
             'widehat{•}': {'command': 'widehat{•}', 'description': ''},
             'Xi': {'command': 'Xi', 'description': 'Greek letter "Xi"'},
             'xi': {'command': 'xi', 'description': 'Greek letter "xi"'},
-            'zeta': {'command': 'zeta', 'description': 'Greek letter "zeta"'}}
+            'zeta': {'command': 'zeta', 'description': 'Greek letter "zeta"'},
+
+            'tiny': {'command': 'tiny', 'description': 'Make text \'tiny\' within current scope'},
+            'scriptsize': {'command': 'scriptsize', 'description': 'Make text \'scriptsize\' within current scope'},
+            'footnotesize': {'command': 'footnotesize', 'description': 'Make text \'footnotesize\' within current scope'},
+            'small': {'command': 'small', 'description': 'Make text \'small\' within current scope'},
+            'normalsize': {'command': 'normalsize', 'description': 'Make text \'normalsize\' within current scope'},
+            'large': {'command': 'large', 'description': 'Make text \'large\' within current scope'},
+            'Large': {'command': 'Large', 'description': 'Make text \'Large\' within current scope'},
+            'LARGE': {'command': 'LARGE', 'description': 'Make text \'LARGE\' within current scope'},
+            'huge': {'command': 'huge', 'description': 'Make text \'huge\' within current scope'},
+            'Huge': {'command': 'Huge', 'description': 'Make text \'Huge\' within current scope'}}
         
         self.static_proposals = dict()
         for command in self.commands.values():
