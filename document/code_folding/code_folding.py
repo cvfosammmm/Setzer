@@ -82,25 +82,27 @@ class CodeFolding(object):
         else:
             return False
 
-    def toggle_folding_region(self, region, show_region_regardless_of_state=False, hide_regardless_of_start=False):
+    def toggle_folding_region(self, region, show_region_regardless_of_state=False, hide_region_regardless_of_state=False):
         if show_region_regardless_of_state:
             is_folded = False
-        elif show_region_regardless_of_state:
+        elif hide_region_regardless_of_state:
             is_folded = True
         else:
             is_folded = not region['is_folded']
         source_buffer = self.document.source_buffer
         region_id = region['id']
         tag = self.get_invisible_region_tag(region_id)
-        mark_start = region['mark_start']
-        start_iter = source_buffer.get_iter_at_mark(mark_start)
-        mark_end = region['mark_end']
-        end_iter = source_buffer.get_iter_at_mark(mark_end)
-        end_iter.forward_char()
 
         if is_folded:
+            mark_start = region['mark_start']
+            start_iter = source_buffer.get_iter_at_mark(mark_start)
+            mark_end = region['mark_end']
+            end_iter = source_buffer.get_iter_at_mark(mark_end)
+            end_iter.forward_char()
             source_buffer.apply_tag(tag, start_iter, end_iter)
         else:
+            start_iter = source_buffer.get_start_iter()
+            end_iter = source_buffer.get_end_iter()
             source_buffer.remove_tag(tag, start_iter, end_iter)
             self.delete_invisible_region_tag(region_id)
 
@@ -127,13 +129,8 @@ class CodeFolding(object):
         for i in range(len(self.presenter.line_invisible)):
             self.presenter.line_invisible[i] = False
         for region in self.folding_regions.values():
-            mark_start = region['mark_start']
-            start_iter = source_buffer.get_iter_at_mark(mark_start)
-            mark_end = region['mark_end']
-            end_iter = source_buffer.get_iter_at_mark(mark_end)
-            end_iter.forward_char()
             if region['is_folded']:
-                for line in range(start_iter.get_line() + 1, end_iter.get_line()):
+                for line in range(region['starting_line'] + 1, region['ending_line'] + 1):
                     self.presenter.line_invisible[line] = True
 
     #@timer
@@ -207,7 +204,7 @@ class CodeFolding(object):
                     if region['starting_line'] in self.folding_regions:
                         if region['ending_line'] == self.folding_regions[region['starting_line']]['ending_line']:
                             folding_region = self.folding_regions[region['starting_line']]
-                            self.toggle_folding_region(folding_region, False, True)
+                            self.toggle_folding_region(folding_region, hide_region_regardless_of_state=True)
             self.initial_folding_done = True
         if self.initial_folding_regions_checked_count >= 3:
             self.initial_folding_done = True
