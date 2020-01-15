@@ -259,6 +259,11 @@ class ShortcutsBar(Gtk.HBox):
         section.append_item(Gio.MenuItem.new('Inline Image', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\includegraphics[scale=1]{•}']))))
 
         codeblock_menu = Gio.Menu()
+        codeblock_package_section = Gio.Menu()
+        item = Gio.MenuItem.new('Include \'listings\' Package', Gio.Action.print_detailed_name('win.add-packages', GLib.Variant('as', ['listings'])))
+        codeblock_package_section.append_item(item)
+        codeblock_menu.append_section(None, codeblock_package_section)
+
         codeblock_main_section = Gio.Menu()
         for language in ['Python', 'C', 'C++', 'Java', 'Perl', 'PHP', 'Ruby', 'TeX']:
             codeblock_main_section.append_item(Gio.MenuItem.new(language, Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['''\\lstset{language=''' + language + '''}
