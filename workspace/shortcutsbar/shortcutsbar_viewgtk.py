@@ -146,6 +146,7 @@ class ShortcutsBar(Gtk.HBox):
             model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', [citation_style[1]])))
             model_button.set_label(citation_style[0])
             model_button.get_child().set_halign(Gtk.Align.START)
+            box.pack_start(model_button, False, False, 0)
 
         separator = Gtk.SeparatorMenuItem()
         box.pack_start(separator, False, False, 0)
@@ -155,6 +156,7 @@ class ShortcutsBar(Gtk.HBox):
             model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', [citation_style[1]])))
             model_button.set_label(citation_style[0])
             model_button.get_child().set_halign(Gtk.Align.START)
+            box.pack_start(model_button, False, False, 0)
 
         stack.add_named(box, 'natbib_citations')
         box.show_all()
@@ -433,63 +435,149 @@ class ShortcutsBar(Gtk.HBox):
         self.top_icons.insert(button_wrapper, 0)
 
     def insert_object_button(self):
-        menu = Gio.Menu()
-        section = Gio.Menu()
+        popover = Gtk.PopoverMenu()
+        stack = popover.get_child()
 
-        section.append_item(Gio.MenuItem.new('Figure (image inside freestanding block)', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\begin{figure}
+        # main menu
+
+        box = Gtk.VBox()
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_left(10)
+        box.set_margin_right(10)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['''\\begin{figure}
 	\\begin{center}
 		\\includegraphics[scale=1]{•}
 		\\caption{•}
 	\\end{center}
 \\end{figure}
-''']))))
-        section.append_item(Gio.MenuItem.new('Inline Image', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\includegraphics[scale=1]{•}']))))
+'''])))
+        model_button.set_label('Figure (image inside freestanding block)')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
 
-        codeblock_menu = Gio.Menu()
-        codeblock_package_section = Gio.Menu()
-        item = Gio.MenuItem.new('Include \'listings\' Package', Gio.Action.print_detailed_name('win.add-packages', GLib.Variant('as', ['listings'])))
-        codeblock_package_section.append_item(item)
-        codeblock_menu.append_section(None, codeblock_package_section)
+        model_button = Gtk.ModelButton()
+        model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\includegraphics[scale=1]{•}'])))
+        model_button.set_label('Inline Image')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
 
-        codeblock_main_section = Gio.Menu()
+        model_button = Gtk.ModelButton()
+        model_button.set_property('menu-name', 'code_listing')
+        model_button.set_label('Code Listing')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_property('menu-name', 'list_environments')
+        model_button.set_label('List Environments')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        stack.add_named(box, 'main')
+        box.show_all()
+
+        # code listing submenu
+
+        box = Gtk.VBox()
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_left(10)
+        box.set_margin_right(10)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_property('centered', True)
+        model_button.set_property('menu-name', 'main')
+        model_button.set_label('Code Listing')
+        model_button.set_property('inverted', True)
+        box.pack_start(model_button, False, False, 0)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.add-packages', GLib.Variant('as', ['listings'])))
+        model_button.set_label('Include \'listings\' Package')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        separator = Gtk.SeparatorMenuItem()
+        box.pack_start(separator, False, False, 0)
+
         for language in ['Python', 'C', 'C++', 'Java', 'Perl', 'PHP', 'Ruby', 'TeX']:
-            codeblock_main_section.append_item(Gio.MenuItem.new(language, Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['''\\lstset{language=''' + language + '''}
+            model_button = Gtk.ModelButton()
+            model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['''\\lstset{language=''' + language + '''}
 \\begin{lstlisting}
     ''', '''
-\\end{lstlisting}''']))))
-        codeblock_menu.append_section(None, codeblock_main_section)
-        codeblock_other_section = Gio.Menu()
-        codeblock_other_section.append_item(Gio.MenuItem.new('Other Language', Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['''\\lstset{language=}
-\\begin{lstlisting}
-    ''', '''
-\\end{lstlisting}
-''']))))
-        codeblock_other_section.append_item(Gio.MenuItem.new('Plain Text', Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['''\\begin{lstlisting}
-    ''', '''
-\\end{lstlisting}
-''']))))
-        codeblock_menu.append_section(None, codeblock_other_section)
-        section.append_submenu('Code Listing', codeblock_menu)
+\\end{lstlisting}'''])))
+            model_button.set_label(language)
+            model_button.get_child().set_halign(Gtk.Align.START)
+            box.pack_start(model_button, False, False, 0)
 
-        list_environments_menu = Gio.Menu()
-        list_environments_main_section = Gio.Menu()
+        separator = Gtk.SeparatorMenuItem()
+        box.pack_start(separator, False, False, 0)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['''\\lstset{language=}
+\\begin{lstlisting}
+    ''', '''
+\\end{lstlisting}
+'''])))
+        model_button.set_label('Other Language')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['''\\begin{lstlisting}
+    ''', '''
+\\end{lstlisting}
+'''])))
+        model_button.set_label('Plain Text')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        stack.add_named(box, 'code_listing')
+        box.show_all()
+
+        # list environments submenu
+
+        box = Gtk.VBox()
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_left(10)
+        box.set_margin_right(10)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_property('centered', True)
+        model_button.set_property('menu-name', 'main')
+        model_button.set_label('List Environments')
+        model_button.set_property('inverted', True)
+        box.pack_start(model_button, False, False, 0)
+
         for list_type in [['Bulleted List (itemize)', 'itemize'], ['Numbered List (enumerate)', 'enumerate'], ['List with Bold Labels (description)', 'description']]:
-            list_environments_main_section.append_item(Gio.MenuItem.new(list_type[0], Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\begin{' + list_type[1] + '}\n\t', '\n\\end{' + list_type[1] + '}']))))
-        list_environments_menu.append_section(None, list_environments_main_section)
-        item_section = Gio.Menu()
-        item_section.append_item(Gio.MenuItem.new('List Item', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\item •']))))
-        list_environments_menu.append_section(None, item_section)
-        section.append_submenu('List Environments', list_environments_menu)
+            model_button = Gtk.ModelButton()
+            model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\begin{' + list_type[1] + '}\n\t', '\n\\end{' + list_type[1] + '}'])))
+            model_button.set_label(list_type[0])
+            model_button.get_child().set_halign(Gtk.Align.START)
+            box.pack_start(model_button, False, False, 0)
 
-        menu.append_section(None, section)
+        separator = Gtk.SeparatorMenuItem()
+        box.pack_start(separator, False, False, 0)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\item •'])))
+        model_button.set_label('List Item')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        stack.add_named(box, 'list_environments')
+        box.show_all()
 
         button_wrapper = Gtk.ToolItem()
         self.insert_object_button = Gtk.MenuButton()
         self.insert_object_button.set_direction(Gtk.ArrowType.DOWN)
         self.insert_object_button.set_image(Gtk.Image.new_from_icon_name('own-insert-object-symbolic', Gtk.IconSize.MENU))
-        self.insert_object_button.set_menu_model(menu)
+        self.insert_object_button.set_popover(popover)
         self.insert_object_button.set_focus_on_click(False)
-        self.insert_object_button.set_use_popover(True)
         self.insert_object_button.set_tooltip_text('Objects')
         self.insert_object_button.get_style_context().add_class('flat')
         button_wrapper.add(self.insert_object_button)
