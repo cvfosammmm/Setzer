@@ -63,8 +63,7 @@ class DocumentController(object):
                 insert = buffer.get_iter_at_mark(buffer.get_insert())
                 insert.forward_chars(1)
                 limit_iter = insert.copy()
-                limit_iter.forward_line()
-                limit_iter.forward_line()
+                limit_iter.forward_lines(3)
                 limit_iter.backward_chars(1)
                 result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
                 if result != None:
@@ -83,7 +82,7 @@ class DocumentController(object):
                 buffer = self.document.get_buffer()
                 insert = buffer.get_iter_at_mark(buffer.get_insert())
                 limit_iter = insert.copy()
-                limit_iter.backward_line()
+                limit_iter.backward_lines(3)
                 result = insert.backward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
                 if result != None:
                     buffer.select_range(result[0], result[1])
