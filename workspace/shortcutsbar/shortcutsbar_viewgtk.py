@@ -81,91 +81,185 @@ class ShortcutsBar(Gtk.HBox):
         self.insert_bibliography_button()
 
     def insert_bibliography_button(self):
-        bibliography_menu = Gio.Menu()
+        popover = Gtk.PopoverMenu()
+        stack = popover.get_child()
 
-        section = Gio.Menu()
-        menu_item = Gio.MenuItem.new('Include BibTeX File...', 'win.include-bibtex-file')
-        section.append_item(menu_item)
-        menu_item = Gio.MenuItem.new('Include \'natbib\' Package', Gio.Action.print_detailed_name('win.add-packages', GLib.Variant('as', ['natbib'])))
-        section.append_item(menu_item)
-        bibliography_menu.append_section(None, section)
+        box = Gtk.VBox()
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_left(10)
+        box.set_margin_right(10)
 
-        section = Gio.Menu()
-        menu_item = Gio.MenuItem.new('Citation', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\cite{•}'])))
-        section.append_item(menu_item)
-        menu_item = Gio.MenuItem.new('Citation with Page Number', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\cite[•]{•}'])))
-        section.append_item(menu_item)
-        natbib_submenu = Gio.Menu()
-        natbib_submenu1 = Gio.Menu()
-        menu_item = Gio.MenuItem.new('Abbreviated', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\citet{•}'])))
-        natbib_submenu1.append_item(menu_item)
-        menu_item = Gio.MenuItem.new('Abbreviated with Brackets', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\citep{•}'])))
-        natbib_submenu1.append_item(menu_item)
-        menu_item = Gio.MenuItem.new('Detailed', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\citet*{•}'])))
-        natbib_submenu1.append_item(menu_item)
-        menu_item = Gio.MenuItem.new('Detailed with Brackets', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\citep*{•}'])))
-        natbib_submenu1.append_item(menu_item)
-        menu_item = Gio.MenuItem.new('Alternative 1', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\citealt{•}'])))
-        natbib_submenu1.append_item(menu_item)
-        menu_item = Gio.MenuItem.new('Alternative 2', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\citealp{•}'])))
-        natbib_submenu1.append_item(menu_item)
-        natbib_submenu.append_section(None, natbib_submenu1)
-        natbib_submenu2 = Gio.Menu()
-        menu_item = Gio.MenuItem.new('Cite Author', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\citeauthor{•}'])))
-        natbib_submenu2.append_item(menu_item)
-        menu_item = Gio.MenuItem.new('Cite Author Detailed', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\citeauthor*{•}'])))
-        natbib_submenu2.append_item(menu_item)
-        menu_item = Gio.MenuItem.new('Cite Year', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\citeyear{•}'])))
-        natbib_submenu2.append_item(menu_item)
-        menu_item = Gio.MenuItem.new('Cite Year with Brackets', Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\citeyearpar{•}'])))
-        natbib_submenu2.append_item(menu_item)
-        natbib_submenu.append_section(None, natbib_submenu2)
-        section.append_submenu('Natbib Citations', natbib_submenu)
-        bibliography_menu.append_section(None, section)
+        model_button = Gtk.ModelButton()
+        model_button.set_action_name('win.include-bibtex-file')
+        model_button.set_label('Include BibTeX File...')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
 
-        menu_item = Gio.MenuItem.new('Include non-cited BibTeX Entries with \'\\nocite\'', Gio.Action.print_detailed_name('win.insert-before-document-end', GLib.Variant('as', ['\\nocite{*}'])))
-        bibliography_menu.append_item(menu_item)
+        model_button = Gtk.ModelButton()
+        model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.add-packages', GLib.Variant('as', ['natbib'])))
+        model_button.set_label('Include \'natbib\' Package')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        separator = Gtk.SeparatorMenuItem()
+        box.pack_start(separator, False, False, 0)
+
+        for citation_style in [('Citation', '\\cite{•}'), ('Citation with Page Number', '\\cite[•]{•}')]:
+            model_button = Gtk.ModelButton()
+            model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', [citation_style[1]])))
+            model_button.set_label(citation_style[0])
+            model_button.get_child().set_halign(Gtk.Align.START)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_property('menu-name', 'natbib_citations')
+        model_button.set_label('Natbib Citations')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-document-end', GLib.Variant('as', ['\\nocite{*}'])))
+        model_button.set_label('Include non-cited BibTeX Entries with \'\\nocite\'')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        stack.add_named(box, 'main')
+        box.show_all()
+
+        # natbib submenu
+
+        box = Gtk.VBox()
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_left(10)
+        box.set_margin_right(10)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_property('centered', True)
+        model_button.set_property('inverted', True)
+        model_button.set_property('menu-name', 'main')
+        model_button.set_label('Natbib Citations')
+        box.pack_start(model_button, False, False, 0)
+
+        for citation_style in [('Abbreviated', '\\citet{•}'), ('Abbreviated with Brackets', '\\citep{•}'), ('Detailed', '\\citet*{•}'), ('Detailed with Brackets', '\\citep*{•}'), ('Alternative 1', '\\citealt{•}'), ('Alternative 2', '\\citealp{•}')]:
+            model_button = Gtk.ModelButton()
+            model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', [citation_style[1]])))
+            model_button.set_label(citation_style[0])
+            model_button.get_child().set_halign(Gtk.Align.START)
+
+        separator = Gtk.SeparatorMenuItem()
+        box.pack_start(separator, False, False, 0)
+
+        for citation_style in [('Cite Author', '\\citeauthor{•}'), ('Cite Author Detailed', '\\citeauthor*{•}'), ('Cite Year', '\\citeyear{•}'), ('Cite Year with Brackets', '\\citeyearpar{•}')]:
+            model_button = Gtk.ModelButton()
+            model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', [citation_style[1]])))
+            model_button.set_label(citation_style[0])
+            model_button.get_child().set_halign(Gtk.Align.START)
+
+        stack.add_named(box, 'natbib_citations')
+        box.show_all()
 
         self.bibliography_button = Gtk.MenuButton()
         self.bibliography_button.set_image(Gtk.Image.new_from_icon_name('view-dual-symbolic', Gtk.IconSize.MENU))
         self.bibliography_button.set_focus_on_click(False)
         self.bibliography_button.set_tooltip_text('Bibliography')
         self.bibliography_button.get_style_context().add_class('flat')
-        self.bibliography_button.set_menu_model(bibliography_menu)
+        self.bibliography_button.set_popover(popover)
 
         button_wrapper = Gtk.ToolItem()
         button_wrapper.add(self.bibliography_button)
         self.top_icons.insert(button_wrapper, 0)
 
     def insert_text_button(self):
-        text_menu = Gio.Menu()
-        menu_item = Gio.MenuItem.new('Footnote', Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\footnote{', '}'])))
-        text_menu.append_item(menu_item)
+        popover = Gtk.PopoverMenu()
+        stack = popover.get_child()
 
-        section = Gio.Menu()
+        box = Gtk.VBox()
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_left(10)
+        box.set_margin_right(10)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\footnote{', '}'])))
+        model_button.set_label('Footnote')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        separator = Gtk.SeparatorMenuItem()
+        box.pack_start(separator, False, False, 0)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_property('menu-name', 'font_styles')
+        model_button.set_label('Font Styles')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_property('menu-name', 'font_sizes')
+        model_button.set_label('Font Sizes')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        stack.add_named(box, 'main')
+        box.show_all()
 
         # font styles submenu
-        font_size_menu = Gio.Menu()
+
+        box = Gtk.VBox()
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_left(10)
+        box.set_margin_right(10)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_property('centered', True)
+        model_button.set_property('inverted', True)
+        model_button.set_property('menu-name', 'main')
+        model_button.set_label('Font Styles')
+        box.pack_start(model_button, False, False, 0)
+
         for font_style in [('Emphasis (\\emph)', 'emph'), ('Italics (\\textit)', 'textit'), ('Slanted (\\textsl)', 'textsl'), ('Bold (\\textbf)', 'textbf'), ('Typewriter (\\texttt)', 'texttt'), ('Small Caps (\\textsc)', 'textsc'), ('Sans Serif (\\textsf)', 'textsf'), ('Underline (\\underline)', 'underline')]:
-            menu_item = Gio.MenuItem.new(font_style[0], Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\' + font_style[1] + '{', '}'])))
-            font_size_menu.append_item(menu_item)
-        section.append_submenu('Font Styles', font_size_menu)
+            model_button = Gtk.ModelButton()
+            model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\' + font_style[1] + '{', '}'])))
+            model_button.set_label(font_style[0])
+            model_button.get_child().set_halign(Gtk.Align.START)
+            box.pack_start(model_button, False, False, 0)
+
+        stack.add_named(box, 'font_styles')
+        box.show_all()
 
         # font sizes submenu
-        font_size_menu = Gio.Menu()
-        for font_size in ['tiny', 'scriptsize', 'footnotesize', 'small', 'normalsize', 'large', 'Large', 'LARGE', 'huge', 'Huge']:
-            menu_item = Gio.MenuItem.new(font_size, Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['{\\' + font_size + ' ', '}'])))
-            font_size_menu.append_item(menu_item)
-        section.append_submenu('Font Sizes', font_size_menu)
 
-        text_menu.append_section(None, section)
+        box = Gtk.VBox()
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_left(10)
+        box.set_margin_right(10)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_property('centered', True)
+        model_button.set_property('inverted', True)
+        model_button.set_property('menu-name', 'main')
+        model_button.set_label('Font Sizes')
+        box.pack_start(model_button, False, False, 0)
+
+        for font_size in ['tiny', 'scriptsize', 'footnotesize', 'small', 'normalsize', 'large', 'Large', 'LARGE', 'huge', 'Huge']:
+            model_button = Gtk.ModelButton()
+            model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['{\\' + font_size + ' ', '}'])))
+            model_button.set_label(font_size)
+            model_button.get_child().set_halign(Gtk.Align.START)
+            box.pack_start(model_button, False, False, 0)
+
+        stack.add_named(box, 'font_sizes')
+        box.show_all()
 
         self.text_button = Gtk.MenuButton()
         self.text_button.set_image(Gtk.Image.new_from_icon_name('text-symbolic', Gtk.IconSize.MENU))
         self.text_button.set_focus_on_click(False)
         self.text_button.set_tooltip_text('Text')
         self.text_button.get_style_context().add_class('flat')
-        self.text_button.set_menu_model(text_menu)
+        self.text_button.set_popover(popover)
 
         button_wrapper = Gtk.ToolItem()
         button_wrapper.add(self.text_button)
