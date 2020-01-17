@@ -172,32 +172,31 @@ class ShortcutsBar(Gtk.HBox):
         self.top_icons.insert(button_wrapper, 0)
 
     def insert_quotes_button(self):
-        self.quotes_menu_data = list()
-        self.quotes_menu_data.append({'type': 'item', 'label': 'Primary Quotes (`` ... \'\')', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['``', '\'\''])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'Secondary Quotes (` ... \')', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['`', '\''])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'German Quotes (\\glqq ... \\grqq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\glqq ', '\\grqq{}'])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'German Single Quotes (\\glq ... \\grq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\glq ', '\\grq{}'])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'French Quotes (\\flqq ... \\frqq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\flqq ', '\\frqq{}'])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'French Single Quotes (\\flq ... \\frq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\flq ', '\\frq{}'])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'German Alt Quotes (\\frqq ... \\flqq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\frqq ', '\\flqq{}'])})
-        self.quotes_menu_data.append({'type': 'item', 'label': 'German Alt Single Quotes (\\frq ... \\frq{})', 'action': 'win.insert-before-after', 'target_value': GLib.Variant('as', ['\\frq ', '\\flq{}'])})
-        menu = Gio.Menu()
-        section = Gio.Menu()
-        for menu_item_data in self.quotes_menu_data:
-            if menu_item_data['type'] == 'item':
-                menu_item = Gio.MenuItem.new(menu_item_data['label'], Gio.Action.print_detailed_name(menu_item_data['action'], menu_item_data['target_value']))
-                section.append_item(menu_item)
-            elif menu_item_data['type'] == 'section':
-                menu.append_section(None, section)
-                section = Gio.Menu()
-        menu.append_section(None, section)
+        popover = Gtk.PopoverMenu()
+        stack = popover.get_child()
+
+        box = Gtk.VBox()
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_left(10)
+        box.set_margin_right(10)
+
+        for item in [('Primary Quotes (`` ... \'\')', ['``', '\'\'']), ('Secondary Quotes (` ... \')', ['`', '\'']), ('German Quotes (\\glqq ... \\grqq{})', ['\\glqq ', '\\grqq{}']), ('German Single Quotes (\\glq ... \\grq{})', ['\\glq ', '\\grq{}']), ('French Quotes (\\flqq ... \\frqq{})', ['\\flqq ', '\\frqq{}']), ('French Single Quotes (\\flq ... \\frq{})', ['\\flq ', '\\frq{}']), ('German Alt Quotes (\\frqq ... \\flqq{})', ['\\frqq ', '\\flqq{}']), ('German Alt Single Quotes (\\frq ... \\frq{})', ['\\frq ', '\\flq{}'])]:
+            model_button = Gtk.ModelButton()
+            model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', item[1])))
+            model_button.set_label(item[0])
+            model_button.get_child().set_halign(Gtk.Align.START)
+            box.pack_start(model_button, False, False, 0)
+
+        stack.add_named(box, 'main')
+        box.show_all()
+
         button_wrapper = Gtk.ToolItem()
         self.quotes_button = Gtk.MenuButton()
         self.quotes_button.set_direction(Gtk.ArrowType.DOWN)
         self.quotes_button.set_image(Gtk.Image.new_from_icon_name('own-quotes-symbolic', Gtk.IconSize.MENU))
-        self.quotes_button.set_menu_model(menu)
+        self.quotes_button.set_popover(popover)
         self.quotes_button.set_focus_on_click(False)
-        self.quotes_button.set_use_popover(True)
         self.quotes_button.set_tooltip_text('Quotes (Ctrl+")')
         self.quotes_button.get_style_context().add_class('flat')
         button_wrapper.add(self.quotes_button)
@@ -205,41 +204,135 @@ class ShortcutsBar(Gtk.HBox):
         self.top_icons.insert(button_wrapper, 0)
 
     def insert_math_button(self):
-        math_menu = Gio.Menu()
+        popover = Gtk.PopoverMenu()
+        stack = popover.get_child()
 
-        # packages
-        section = Gio.Menu()
-        menu_item = Gio.MenuItem.new('Include AMS Packages', Gio.Action.print_detailed_name('win.add-packages', GLib.Variant('as', ['amsmath', 'amssymb', 'amsfonts', 'amsthm'])))
-        section.append_item(menu_item)
-        math_menu.append_section(None, section)
+        # main menu
 
-        # math environments
-        section = Gio.Menu()
-        menu_item = Gio.MenuItem.new('Inline Math Section ($ ... $)', Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['$ ', ' $'])))
-        section.append_item(menu_item)
-        menu_item = Gio.MenuItem.new('Display Math Section (\\[ ... \\])', Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['$ ', ' $'])))
-        section.append_item(menu_item)
-        math_environments_menu = Gio.Menu()
-        subsection = Gio.Menu()
+        box = Gtk.VBox()
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_left(10)
+        box.set_margin_right(10)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.add-packages', GLib.Variant('as', ['amsmath', 'amssymb', 'amsfonts', 'amsthm'])))
+        model_button.set_label('Include AMS Packages')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        separator = Gtk.SeparatorMenuItem()
+        box.pack_start(separator, False, False, 0)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['$ ', ' $'])))
+        model_button.set_label('Inline Math Section ($ ... $)')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+        model_button = Gtk.ModelButton()
+        model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['$ ', ' $'])))
+        model_button.set_label('Display Math Section (\\[ ... \\])')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+        model_button = Gtk.ModelButton()
+        model_button.set_property('menu-name', 'math_environments')
+        model_button.set_label('Math Environments')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        separator = Gtk.SeparatorMenuItem()
+        box.pack_start(separator, False, False, 0)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_property('menu-name', 'math_functions')
+        model_button.set_label('Math Functions')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        box.pack_start(model_button, False, False, 0)
+
+        stack.add_named(box, 'main')
+        box.show_all()
+
+        # submenu: math environments
+
+        box = Gtk.VBox()
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_left(10)
+        box.set_margin_right(10)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_property('centered', True)
+        model_button.set_property('menu-name', 'main')
+        model_button.set_label('Math Environments')
+        model_button.set_property('inverted', True)
+        box.pack_start(model_button, False, False, 0)
+
         for environment in ['equation', 'equation*', 'align', 'align*', 'alignat', 'alignat*', 'flalign', 'flalign*', 'gather', 'gather*', 'multline', 'multline*']:
-            menu_item = Gio.MenuItem.new(environment, Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'])))
-            subsection.append_item(menu_item)
-        math_environments_menu.append_section(None, subsection)
-        subsection = Gio.Menu()
+            model_button = Gtk.ModelButton()
+            model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'])))
+            model_button.set_label(environment)
+            model_button.get_child().set_halign(Gtk.Align.START)
+            box.pack_start(model_button, False, False, 0)
+
+        separator = Gtk.SeparatorMenuItem()
+        box.pack_start(separator, False, False, 0)
+
         for environment in ['cases', 'split']:
-            menu_item = Gio.MenuItem.new(environment, Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'])))
-            subsection.append_item(menu_item)
-        math_environments_menu.append_section(None, subsection)
-        section.append_submenu('Math Environments', math_environments_menu)
-        
-        math_menu.append_section(None, section)
+            model_button = Gtk.ModelButton()
+            model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'])))
+            model_button.set_label(environment)
+            model_button.get_child().set_halign(Gtk.Align.START)
+            box.pack_start(model_button, False, False, 0)
+
+        stack.add_named(box, 'math_environments')
+        box.show_all()
+
+        # submenu: math functions
+
+        box = Gtk.VBox()
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_left(10)
+        box.set_margin_right(10)
+
+        model_button = Gtk.ModelButton()
+        model_button.set_property('centered', True)
+        model_button.set_property('menu-name', 'main')
+        model_button.set_label('Math Functions')
+        model_button.set_property('inverted', True)
+        box.pack_start(model_button, False, False, 0)
+
+        hbox = Gtk.HBox()
+
+        vbox = Gtk.VBox()
+        for math_function in ['arccos', 'arcsin', 'arctan', 'cos', 'cosh', 'cot', 'coth', 'csc', 'deg', 'det', 'dim', 'exp', 'gcd', 'hom', 'inf']:
+            model_button = Gtk.ModelButton()
+            model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\' + math_function + ' '])))
+            model_button.set_label('\\' + math_function)
+            model_button.get_child().set_halign(Gtk.Align.START)
+            vbox.pack_start(model_button, False, False, 0)
+        hbox.pack_start(vbox, True, True, 0)
+
+        vbox = Gtk.VBox()
+        for math_function in ['ker', 'lg', 'lim', 'liminf', 'limsup', 'ln', 'log', 'max', 'min', 'sec', 'sin', 'sinh', 'sup', 'tan', 'tanh']:
+            model_button = Gtk.ModelButton()
+            model_button.set_detailed_action_name(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\' + math_function + ' '])))
+            model_button.set_label('\\' + math_function)
+            model_button.get_child().set_halign(Gtk.Align.START)
+            vbox.pack_start(model_button, False, False, 0)
+        hbox.pack_start(vbox, True, True, 0)
+
+        box.pack_start(hbox, False, False, 0)
+
+        stack.add_named(box, 'math_functions')
+        box.show_all()
 
         self.math_button = Gtk.MenuButton()
         self.math_button.set_image(Gtk.Image.new_from_icon_name('own-math-menu-symbolic', Gtk.IconSize.MENU))
         self.math_button.set_focus_on_click(False)
         self.math_button.set_tooltip_text('Math')
         self.math_button.get_style_context().add_class('flat')
-        self.math_button.set_menu_model(math_menu)
+        self.math_button.set_popover(popover)
 
         button_wrapper = Gtk.ToolItem()
         button_wrapper.add(self.math_button)
