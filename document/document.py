@@ -209,12 +209,6 @@ class Document(Observable):
             return buff.get_text(buff.get_start_iter(), buff.get_end_iter(), True)
         return None
 
-    def get_folded_regions(self):
-        if self.get_type() == 'latex':
-            return self.code_folding.get_folded_regions()
-        else:
-            return []
-
     def set_initial_folded_regions(self, folded_regions):
         self.code_folding.set_initial_folded_regions(folded_regions)
         
@@ -378,11 +372,17 @@ class LaTeXDocument(Document):
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = latex_parser.LaTeXParser(self)
 
+    def get_folded_regions(self):
+        return self.code_folding.get_folded_regions()
+
     def get_file_ending(self):
         return 'tex'
 
-    def get_type(self):
-        return 'latex'
+    def is_latex_document(self):
+        return True
+
+    def is_bibtex_document(self):
+        return False
 
     def get_gsv_language_name(self):
         return 'latex'
@@ -405,11 +405,17 @@ class BibTeXDocument(Document):
 
         self.parser = bibtex_parser.BibTeXParser()
 
+    def get_folded_regions(self):
+        return []
+
     def get_file_ending(self):
         return 'bib'
 
-    def get_type(self):
-        return 'bibtex'
+    def is_latex_document(self):
+        return False
+
+    def is_bibtex_document(self):
+        return True
 
     def get_gsv_language_name(self):
         return 'bibtex'

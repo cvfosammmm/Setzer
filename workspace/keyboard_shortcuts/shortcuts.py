@@ -34,12 +34,6 @@ class Shortcuts(object):
         
         self.setup_shortcuts()
 
-    def set_document_type(self, document_type):
-        if document_type == 'latex':
-            self.activate_latex_documents_mode()
-        elif document_type == 'bibtex':
-            self.activate_bibtex_documents_mode()
-
     def activate_latex_documents_mode(self):
         self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), ['<Control>b'])
         self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), ['<Control>i'])
@@ -134,7 +128,7 @@ class Shortcuts(object):
 
     def shortcut_quotes(self, accel_group=None, window=None, key=None, mask=None):
         active_document = self.workspace.get_active_document()
-        if active_document != None and active_document.get_type() == 'latex':
+        if active_document != None and active_document.is_latex_document():
             self.main_window.shortcuts_bar.quotes_button.set_active(True)
 
 

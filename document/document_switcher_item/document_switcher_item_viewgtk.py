@@ -31,7 +31,7 @@ class OpenDocsPopoverItem(Gtk.ListBoxRow):
 
         self.box = Gtk.HBox()
         self.icon_box = Gtk.HBox()
-        if document.get_type() == 'latex':
+        if document.is_latex_document():
             self.icon = Gtk.Image.new_from_icon_name('text-x-generic-symbolic', Gtk.IconSize.MENU)
         else:
             self.icon = Gtk.Image.new_from_icon_name('text-x-generic-symbolic', Gtk.IconSize.MENU)

@@ -89,7 +89,7 @@ class DocumentSwitcherPresenter(object):
             item.document_close_button.hide()
             item.icon_box.hide()
             item.radio_button.show()
-            if not item.document.get_type() == 'latex':
+            if not item.document.is_latex_document():
                 item.hide()
         self.view.in_selection_mode = True
 

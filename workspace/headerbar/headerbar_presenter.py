@@ -53,9 +53,9 @@ class HeaderbarPresenter(object):
             else:
                 self.main_window.headerbar.save_document_button.set_sensitive(False)
 
-            if document.get_type() == 'latex':
+            if document.is_latex_document():
                 self.activate_latex_documents_mode()
-            elif document.get_type() == 'bibtex':
+            elif document.is_bibtex_document():
                 self.activate_bibtex_documents_mode()
 
         if change_code == 'update_recently_opened_documents':
@@ -160,10 +160,9 @@ class HeaderbarPresenter(object):
         prev_widget = headerbar.build_wrapper.get_center_widget()
         if prev_widget != None:
             headerbar.build_wrapper.remove(prev_widget)
-        if document.get_type() == 'latex':
-            if document != None:
-                headerbar.build_wrapper.set_center_widget(document.build_widget.view)
-                if document.build_widget.view.has_result():
-                    document.build_widget.view.hide_timer(4000)
+        if document != None and document.is_latex_document():
+            headerbar.build_wrapper.set_center_widget(document.build_widget.view)
+            if document.build_widget.view.has_result():
+                document.build_widget.view.hide_timer(4000)
 
 
