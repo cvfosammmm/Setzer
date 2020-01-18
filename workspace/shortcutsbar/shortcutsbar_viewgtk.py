@@ -325,7 +325,7 @@ class ShortcutsBar(Gtk.HBox):
         for list_type in [['Bulleted List (itemize)', 'itemize'], ['Numbered List (enumerate)', 'enumerate'], ['List with Bold Labels (description)', 'description']]:
             self.add_action_button(box, list_type[0], 'win.insert-before-after', ['\\begin{' + list_type[1] + '}\n\t', '\n\\end{' + list_type[1] + '}'])
         self.add_separator(box)
-        self.add_action_button(box, 'List Item', 'win.insert-symbol', ['\\item •'])
+        self.add_action_button(box, 'List Item', 'win.insert-symbol', ['\\item •'], keyboard_shortcut='Ctrl+Shift+I')
         stack.add_named(box, 'list_environments')
         box.show_all()
 
@@ -347,14 +347,25 @@ class ShortcutsBar(Gtk.HBox):
         box.set_margin_left(10)
         box.set_margin_right(10)
 
-    def add_action_button(self, box, label, action_name, action_parameter=None):
+    def add_action_button(self, box, label, action_name, action_parameter=None, keyboard_shortcut=None):
         model_button = Gtk.ModelButton()
         if action_parameter:
             model_button.set_detailed_action_name(Gio.Action.print_detailed_name(action_name, GLib.Variant('as', action_parameter)))
         else:
             model_button.set_action_name(action_name)
-        model_button.set_label(label)
-        model_button.get_child().set_halign(Gtk.Align.START)
+        if keyboard_shortcut != None:
+            description = Gtk.Label(label)
+            description.set_halign(Gtk.Align.START)
+            shortcut = Gtk.Label(keyboard_shortcut)
+            shortcut.get_style_context().add_class('keyboard-shortcut')
+            button_box = Gtk.HBox()
+            button_box.pack_start(description, True, True, 0)
+            button_box.pack_end(shortcut, False, False, 0)
+            model_button.remove(model_button.get_child())
+            model_button.add(button_box)
+        else:
+            model_button.set_label(label)
+            model_button.get_child().set_halign(Gtk.Align.START)
         box.pack_start(model_button, False, False, 0)
 
     def add_menu_button(self, box, label, menu_name):
