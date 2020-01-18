@@ -158,13 +158,11 @@ class Workspace(Observable):
         if self.active_document != None:
             self.active_document.set_last_activated(time.time())
             self.add_change_code('new_active_document', document)
-
-        if self.active_document.is_latex_document():
-            self.shortcuts.activate_latex_documents_mode()
-        elif self.active_document.is_bibtex_document():
-            self.shortcuts.activate_bibtex_documents_mode()
-
-        self.set_build_log()
+            if self.active_document.is_latex_document():
+                self.shortcuts.activate_latex_documents_mode()
+            elif self.active_document.is_bibtex_document():
+                self.shortcuts.activate_bibtex_documents_mode()
+            self.set_build_log()
         
     def set_build_log(self):
         if self.get_active_document() != None:
