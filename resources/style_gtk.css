@@ -324,6 +324,7 @@ popover.menu-own-quotes-symbolic {
 }
 popover label.keyboard-shortcut {
     color: mix(@theme_base_color, @theme_fg_color, 0.6);
+    margin-left: 18px;
 }
 
 /*
