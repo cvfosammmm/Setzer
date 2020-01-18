@@ -131,7 +131,7 @@ class MainApplicationController(Gtk.Application):
     def on_quit_action(self, action=None, parameter=None):
         self.save_quit()
 
-    def save_quit(self, accel_group=None, window=None, key=None, mask=None):
+    def save_quit(self):
         for document in self.workspace.open_documents: document.save_document_data()
 
         documents = self.workspace.get_unsaved_documents()
