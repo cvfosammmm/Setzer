@@ -182,9 +182,9 @@ class Autocomplete(object):
                 self.view.empty_list()
 
                 items = list()
-                try: items = self.static_proposals[self.current_word[1:]]
+                try: items = self.static_proposals[self.current_word[1:].lower()]
                 except KeyError: pass
-                try: items += self.dynamic_proposals[self.current_word[1:]][:5 - len(items)]
+                try: items += self.dynamic_proposals[self.current_word[1:].lower()][:5 - len(items)]
                 except KeyError: pass
                 items.reverse()
 
@@ -647,10 +647,10 @@ class Autocomplete(object):
         for command in self.commands.values():
             for i in range(1, len(command['command'])):
                 try:
-                    if len(self.static_proposals[command['command'][0:i]]) < 5:
-                        self.static_proposals[command['command'][0:i]].append(command)
+                    if len(self.static_proposals[command['command'][0:i].lower()]) < 5:
+                        self.static_proposals[command['command'][0:i].lower()].append(command)
                 except KeyError:
-                    self.static_proposals[command['command'][0:i]] = [command]
+                    self.static_proposals[command['command'][0:i].lower()] = [command]
 
     def generate_dynamic_proposals(self):
         labels = self.document.parser.get_labels()
@@ -660,10 +660,10 @@ class Autocomplete(object):
                 command = {'command': 'ref{' + label + '}', 'description': 'Reference to \'' + label + '\''}
                 for i in range(1, len(command['command'])):
                     try:
-                        if len(self.dynamic_proposals[command['command'][0:i]]) < 5:
-                            self.dynamic_proposals[command['command'][0:i]].append(command)
+                        if len(self.dynamic_proposals[command['command'][0:i].lower()]) < 5:
+                            self.dynamic_proposals[command['command'][0:i].lower()].append(command)
                     except KeyError:
-                        self.dynamic_proposals[command['command'][0:i]] = [command]
+                        self.dynamic_proposals[command['command'][0:i].lower()] = [command]
         return True
 
 
