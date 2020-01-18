@@ -48,6 +48,11 @@
 	</provides>
 
     <releases>
+        <release version="0.1.7" date="2020-1-18">
+            <description>
+                <p>More commands in shortcuts bar, autocomplete now case insensitive, ...</p>
+            </description>
+        </release>
         <release version="0.1.6" date="2020-1-13">
             <description>
                 <p>HiDPI support in .pdf preview, presistent code folding, ...</p>
