@@ -67,9 +67,9 @@ class FieldsEntryPage(Page):
             entry_view.text_entry.get_buffer().connect('inserted-text', text_inserted, entry_view.field_name)
 
     def load_presets(self, presets):
-        try:
+        if presets != None and include_empty_optional in presets:
             include_empty_optional = presets['include_empty_optional']
-        except KeyError: 
+        else: 
             include_empty_optional = False
         self.view.option_include_empty.set_active(include_empty_optional)
         self.view.identifier_entry.text_entry.set_text('')

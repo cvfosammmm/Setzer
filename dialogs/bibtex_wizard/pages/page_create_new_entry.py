@@ -42,9 +42,9 @@ class CreateNewEntryPage(Page):
         self.view.list.connect('row-selected', row_selected)
 
     def load_presets(self, presets):
-        try:
+        if presets != None and document_type in presets:
             document_type = presets['document_type']
-        except KeyError:
+        else:
             document_type = self.current_values['document_type']
         row = self.view.list_rows[document_type]
         self.view.list.select_row(row)
