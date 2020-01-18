@@ -70,17 +70,16 @@ class CodeFolding(object):
             self.presenter.line_invisible[i] = False
 
     def on_click(self, widget, event):
-        x, y = self.source_view.window_to_buffer_coords(Gtk.TextWindowType.LEFT, event.x, event.y)
-        if event.window == self.source_view.get_window(Gtk.TextWindowType.LEFT):
-            line_iter, line_top = self.source_view.get_line_at_y(y)
-            line_number = line_iter.get_line()
-            if x >= -18 and line_number in self.folding_regions:
-                if event.type == Gdk.EventType.BUTTON_PRESS:
-                    self.toggle_folding_region(self.folding_regions[line_number])
-                return True
-            return False
-        else:
-            return False
+        if self.is_enabled:
+            x, y = self.source_view.window_to_buffer_coords(Gtk.TextWindowType.LEFT, event.x, event.y)
+            if event.window == self.source_view.get_window(Gtk.TextWindowType.LEFT):
+                line_iter, line_top = self.source_view.get_line_at_y(y)
+                line_number = line_iter.get_line()
+                if x >= -18 and line_number in self.folding_regions:
+                    if event.type == Gdk.EventType.BUTTON_PRESS:
+                        self.toggle_folding_region(self.folding_regions[line_number])
+                    return True
+        return False
 
     def toggle_folding_region(self, region, show_region_regardless_of_state=False, hide_region_regardless_of_state=False):
         if show_region_regardless_of_state:
