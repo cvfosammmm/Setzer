@@ -35,13 +35,38 @@ class Shortcuts(object):
         self.setup_shortcuts()
 
     def activate_latex_documents_mode(self):
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), ['<Control>b'])
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), ['<Control>i'])
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\item •'])), ['<Control><Shift>i'])
+        self.set_accels_for_insert_before_after_action(['\\textbf{', '}'], ['<Control>b'])
+        self.set_accels_for_insert_before_after_action(['\\textit{', '}'], ['<Control>i'])
+        self.set_accels_for_insert_before_after_action(['$ ', ' $'], ['<Control><Shift>m'])
+        self.set_accels_for_insert_before_after_action(['\\[ ', ' \\]'], ['<Alt><Shift>m'])
+        self.set_accels_for_insert_before_after_action(['\\begin{equation}\n\t', '\n\\end{equation}'], ['<Control><Shift>n'])
+        self.set_accels_for_insert_before_after_action(['_{', '}'], ['<Control><Shift>d'])
+        self.set_accels_for_insert_before_after_action(['^{', '}'], ['<Control><Shift>u'])
+        self.set_accels_for_insert_before_after_action(['\\sqrt{', '}'], ['<Control><Shift>q'])
+        self.set_accels_for_insert_symbol_action(['\\frac{•}{•}'], ['<Alt><Shift>f'])
+        self.set_accels_for_insert_symbol_action(['\\left •'], ['<Control><Shift>l'])
+        self.set_accels_for_insert_symbol_action(['\\right •'], ['<Control><Shift>r'])
+        self.set_accels_for_insert_symbol_action(['\\item •'], ['<Control><Shift>i'])
 
     def activate_bibtex_documents_mode(self):
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), [])
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), [])
+        self.set_accels_for_insert_before_after_action(['\\textbf{', '}'], [])
+        self.set_accels_for_insert_before_after_action(['\\textit{', '}'], [])
+        self.set_accels_for_insert_before_after_action(['$ ', ' $'], [])
+        self.set_accels_for_insert_before_after_action(['\\[ ', ' \\]'], [])
+        self.set_accels_for_insert_before_after_action(['\\begin{equation}\n\t', '\n\\end{equation}'], [])
+        self.set_accels_for_insert_before_after_action(['_{', '}'], [])
+        self.set_accels_for_insert_before_after_action(['^{', '}'], [])
+        self.set_accels_for_insert_before_after_action(['\\sqrt{', '}'], [])
+        self.set_accels_for_insert_symbol_action(['\\frac{•}{•}'], [])
+        self.set_accels_for_insert_symbol_action(['\\left •'], [])
+        self.set_accels_for_insert_symbol_action(['\\right •'], [])
+        self.set_accels_for_insert_symbol_action(['\\item •'], [])
+
+    def set_accels_for_insert_before_after_action(self, parameter, accels):
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', parameter)), accels)
+
+    def set_accels_for_insert_symbol_action(self, parameter, accels):
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', parameter)), accels)
 
     def setup_shortcuts(self):
         self.accel_group = Gtk.AccelGroup()
