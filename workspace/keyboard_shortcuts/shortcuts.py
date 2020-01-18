@@ -37,6 +37,9 @@ class Shortcuts(object):
     def activate_latex_documents_mode(self):
         self.set_accels_for_insert_before_after_action(['\\textbf{', '}'], ['<Control>b'])
         self.set_accels_for_insert_before_after_action(['\\textit{', '}'], ['<Control>i'])
+        self.set_accels_for_insert_before_after_action(['\\underline{', '}'], ['<Control>u'])
+        self.set_accels_for_insert_before_after_action(['\\emph{', '}'], ['<Control><Shift>e'])
+        self.set_accels_for_insert_before_after_action(['\\texttt{', '}'], ['<Control>m'])
         self.set_accels_for_insert_before_after_action(['$ ', ' $'], ['<Control><Shift>m'])
         self.set_accels_for_insert_before_after_action(['\\[ ', ' \\]'], ['<Alt><Shift>m'])
         self.set_accels_for_insert_before_after_action(['\\begin{equation}\n\t', '\n\\end{equation}'], ['<Control><Shift>n'])
@@ -51,6 +54,9 @@ class Shortcuts(object):
     def activate_bibtex_documents_mode(self):
         self.set_accels_for_insert_before_after_action(['\\textbf{', '}'], [])
         self.set_accels_for_insert_before_after_action(['\\textit{', '}'], [])
+        self.set_accels_for_insert_before_after_action(['\\underline{', '}'], [])
+        self.set_accels_for_insert_before_after_action(['\\emph{', '}'], [])
+        self.set_accels_for_insert_before_after_action(['\\texttt{', '}'], [])
         self.set_accels_for_insert_before_after_action(['$ ', ' $'], [])
         self.set_accels_for_insert_before_after_action(['\\[ ', ' \\]'], [])
         self.set_accels_for_insert_before_after_action(['\\begin{equation}\n\t', '\n\\end{equation}'], [])

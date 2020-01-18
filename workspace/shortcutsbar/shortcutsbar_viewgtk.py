@@ -136,8 +136,8 @@ class ShortcutsBar(Gtk.HBox):
         box = Gtk.VBox()
         self.set_box_margin(box)
         self.add_header_button(box, 'Font Styles')
-        for font_style in [('Emphasis (\\emph)', 'emph'), ('Italics (\\textit)', 'textit'), ('Slanted (\\textsl)', 'textsl'), ('Bold (\\textbf)', 'textbf'), ('Typewriter (\\texttt)', 'texttt'), ('Small Caps (\\textsc)', 'textsc'), ('Sans Serif (\\textsf)', 'textsf'), ('Underline (\\underline)', 'underline')]:
-            self.add_action_button(box, font_style[0], 'win.insert-before-after', ['\\' + font_style[1] + '{', '}'])
+        for font_style in [('Emphasis (\\emph)', 'emph', 'Ctrl+Shift+E'), ('Italics (\\textit)', 'textit', 'Ctrl+I'), ('Slanted (\\textsl)', 'textsl', None), ('Bold (\\textbf)', 'textbf', 'Ctrl+B'), ('Typewriter (\\texttt)', 'texttt', 'Ctrl+M'), ('Small Caps (\\textsc)', 'textsc', None), ('Sans Serif (\\textsf)', 'textsf', None), ('Underline (\\underline)', 'underline', 'Ctrl+U')]:
+            self.add_action_button(box, font_style[0], 'win.insert-before-after', ['\\' + font_style[1] + '{', '}'], keyboard_shortcut=font_style[2])
         stack.add_named(box, 'font_styles')
         box.show_all()
 
