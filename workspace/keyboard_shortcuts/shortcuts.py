@@ -20,6 +20,7 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk
 from gi.repository import GLib
+from gi.repository import Gio
 from gi.repository import Gtk
 from app.service_locator import ServiceLocator
 
@@ -27,15 +28,28 @@ from app.service_locator import ServiceLocator
 class Shortcuts(object):
     ''' Handle Keyboard shortcuts. '''
     
-    def __init__(self, workspace, workspace_controller):
+    def __init__(self, workspace):
         self.main_window = ServiceLocator.get_main_window()
         self.workspace = workspace
-        self.workspace_controller = workspace_controller
         
         self.setup_shortcuts()
 
+    def set_document_type(self, document_type):
+        if document_type == 'latex':
+            self.activate_latex_documents_mode()
+        elif document_type == 'bibtex':
+            self.activate_bibtex_documents_mode()
+
+    def activate_latex_documents_mode(self):
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), ['<Control>b'])
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), ['<Control>i'])
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\item •'])), ['<Control><Shift>i'])
+
+    def activate_bibtex_documents_mode(self):
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), [])
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), [])
+
     def setup_shortcuts(self):
-    
         self.accel_group = Gtk.AccelGroup()
         self.main_window.add_accel_group(self.accel_group)
         
@@ -68,7 +82,8 @@ class Shortcuts(object):
         self.accel_group.connect(Gdk.keyval_from_name('quotedbl'), c_mask, flags, self.shortcut_quotes)
         
     def shortcut_open(self, accel_group=None, window=None, key=None, mask=None):
-        self.workspace_controller.on_open_document_button_click()
+        filename = ServiceLocator.get_dialog('open_document').run()
+        self.workspace.open_document_by_filename(filename)
 
     def shortcut_doc_chooser(self, accel_group=None, window=None, key=None, mask=None):
         if self.main_window.headerbar.open_document_button.get_sensitive():
@@ -112,12 +127,14 @@ class Shortcuts(object):
         return True
 
     def shortcut_switch_document(self, accel_group=None, window=None, key=None, mask=None):
-        self.workspace_controller.switch_to_earliest_open_document()
+        self.workspace.switch_to_earliest_open_document()
 
     def shortcut_save(self, accel_group=None, window=None, key=None, mask=None):
         self.main_window.headerbar.save_document_button.clicked()
 
     def shortcut_quotes(self, accel_group=None, window=None, key=None, mask=None):
-        self.workspace_controller.activate_quotes_popover()
+        active_document = self.workspace.get_active_document()
+        if active_document != None and active_document.get_type() == 'latex':
+            self.main_window.shortcuts_bar.quotes_button.set_active(True)
 
 

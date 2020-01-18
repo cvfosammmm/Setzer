@@ -134,12 +134,7 @@ class WorkspaceController(object):
 
     def on_open_document_button_click(self, button_object=None):
         filename = ServiceLocator.get_dialog('open_document').run()
-        if filename != None:
-            document_candidate = self.workspace.get_document_by_filename(filename)
-            if document_candidate != None:
-                self.workspace.set_active_document(document_candidate)
-            else:
-                self.workspace.create_document_from_filename(filename, activate=True)
+        self.workspace.open_document_by_filename(filename)
 
     def on_new_latex_document_action_activated(self, action=None, parameter=None):
         self.workspace.create_latex_document(activate=True)
@@ -228,11 +223,6 @@ class WorkspaceController(object):
             if document not in not_save_to_close_documents:
                 self.workspace.remove_document(document)
 
-    def activate_quotes_popover(self, action=None, parameter=None):
-        active_document = self.workspace.get_active_document()
-        if active_document != None and isinstance(active_document, LaTeXDocument):
-            self.main_window.shortcuts_bar.quotes_button.set_active(True)
-
     def on_close_document_clicked(self, action=None, parameter=None):
         document = self.workspace.get_active_document()
         self.on_doclist_close_clicked(None, document)
@@ -288,10 +278,6 @@ class WorkspaceController(object):
     '''
     *** actions
     '''
-    
-    @_assert_has_active_document
-    def switch_to_earliest_open_document(self):
-        self.workspace.set_active_document(self.workspace.get_earliest_active_document())
     
     @_assert_has_active_document
     def insert_symbol(self, action, parameter):

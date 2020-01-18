@@ -62,14 +62,27 @@ class Workspace(Observable):
         self.build_log = build_log.BuildLog(self)
         self.show_build_log = self.settings.get_value('window_state', 'show_build_log')
         self.build_log_position = self.settings.get_value('window_state', 'build_log_paned_position')
+        self.shortcuts = shortcuts.Shortcuts(self)
 
     def init_workspace_controller(self):
         self.presenter = workspace_presenter.WorkspacePresenter(self)
         self.headerbar = headerbar_presenter.HeaderbarPresenter(self)
         self.document_switcher = document_switcher.DocumentSwitcher(self)
         self.controller = workspace_controller.WorkspaceController(self)
-        self.shortcuts = shortcuts.Shortcuts(self, self.controller)
 
+    def open_document_by_filename(self, filename):
+        if filename != None:
+            document_candidate = self.get_document_by_filename(filename)
+            if document_candidate != None:
+                self.set_active_document(document_candidate)
+            else:
+                self.create_document_from_filename(filename, activate=True)
+
+    def switch_to_earliest_open_document(self):
+        document = self.get_earliest_active_document()
+        if document != None:
+            self.set_active_document(document)
+    
     def add_document(self, document):
         if self.open_documents.count(document) != 0: return False
         if document.get_filename() == None:
@@ -145,6 +158,7 @@ class Workspace(Observable):
         if self.active_document != None:
             self.active_document.set_last_activated(time.time())
             self.add_change_code('new_active_document', document)
+        self.shortcuts.set_document_type(self.active_document.get_type())
         self.set_build_log()
         
     def set_build_log(self):

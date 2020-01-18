@@ -124,26 +124,18 @@ class WorkspacePresenter(object):
         self.main_window.spellchecking_action.set_enabled(False)
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(False)
         self.set_document_actions_active(False)
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), [])
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), [])
 
     def activate_latex_documents_mode(self):
         self.main_window.mode_stack.set_visible_child_name('latex_documents')
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(True)
         self.set_document_actions_active(True)
         self.main_window.spellchecking_action.set_enabled(True)
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), ['<Control>b'])
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), ['<Control>i'])
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\item •'])), ['<Control><Shift>i'])
 
     def activate_bibtex_documents_mode(self):
         self.main_window.mode_stack.set_visible_child_name('bibtex_documents')
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(False)
         self.set_document_actions_active(True)
         self.main_window.spellchecking_action.set_enabled(False)
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textbf{', '}'])), [])
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', ['\\textit{', '}'])), [])
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', ['\\item •'])), [])
 
     def update_latex_shortcuts_bar(self):
         document = self.workspace.active_document
@@ -181,6 +173,9 @@ class WorkspacePresenter(object):
         self.main_window.close_all_action.set_enabled(value)
         self.main_window.insert_before_after_action.set_enabled(value)
         self.main_window.insert_symbol_action.set_enabled(value)
+        self.main_window.insert_before_document_end_action.set_enabled(value)
+        self.main_window.include_bibtex_file_action.set_enabled(value)
+        self.main_window.add_packages_action.set_enabled(value)
         self.main_window.document_wizard_action.set_enabled(value)
 
     def on_realize(self, view=None, cr=None, user_data=None):
