@@ -80,7 +80,7 @@ class Shortcuts(object):
 
         # document edit shortcuts
         self.accel_group.connect(Gdk.keyval_from_name('quotedbl'), c_mask, flags, self.shortcut_quotes)
-        
+
     def shortcut_open(self, accel_group=None, window=None, key=None, mask=None):
         filename = ServiceLocator.get_dialog('open_document').run()
         self.workspace.open_document_by_filename(filename)

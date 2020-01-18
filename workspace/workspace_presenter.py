@@ -19,7 +19,6 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gio
 
-from document.document import Document, LaTeXDocument, BibTeXDocument
 import helpers.helpers as helpers
 from app.service_locator import ServiceLocator
 
@@ -52,19 +51,19 @@ class WorkspacePresenter(object):
             document = parameter
             document.set_use_dark_scheme(helpers.is_dark_mode(self.main_window))
 
-            if isinstance(document, LaTeXDocument):
+            if document.get_type() == 'latex':
                 self.main_window.notebook.append_page(document.view)
 
-            elif isinstance(document, BibTeXDocument):
+            elif document.get_type() == 'bibtex':
                 self.main_window.bibtex_notebook.append_page(document.view)
 
         if change_code == 'document_removed':
             document = parameter
 
-            if isinstance(document, LaTeXDocument):
+            if document.get_type() == 'latex':
                 self.main_window.notebook.remove(document.view)
 
-            elif isinstance(document, BibTeXDocument):
+            elif document.get_type() == 'bibtex':
                 self.main_window.bibtex_notebook.remove(document.view)
 
             if self.workspace.active_document == None:
@@ -73,7 +72,7 @@ class WorkspacePresenter(object):
         if change_code == 'new_active_document':
             document = parameter
 
-            if isinstance(document, LaTeXDocument):
+            if document.get_type() == 'latex':
                 notebook = self.main_window.notebook
                 notebook.set_current_page(notebook.page_num(document.view))
                 document.view.source_view.grab_focus()
@@ -86,7 +85,7 @@ class WorkspacePresenter(object):
                 self.set_preview_document()
                 self.activate_latex_documents_mode()
 
-            elif isinstance(document, BibTeXDocument):
+            elif document.get_type() == 'bibtex':
                 notebook = self.main_window.bibtex_notebook
                 notebook.set_current_page(notebook.page_num(document.view))
                 document.view.source_view.grab_focus()
@@ -97,7 +96,7 @@ class WorkspacePresenter(object):
         if change_code == 'new_inactive_document':
             document = parameter
 
-            if isinstance(document, LaTeXDocument):
+            if document.get_type() == 'latex':
                 try:
                     self.main_window.preview_paned_overlay.remove(document.autocomplete.view)
                 except AttributeError: pass

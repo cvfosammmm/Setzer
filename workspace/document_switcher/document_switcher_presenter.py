@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import document.document as document_model
 from app.service_locator import ServiceLocator
 
 
@@ -30,9 +29,6 @@ class DocumentSwitcherPresenter(object):
 
         self.workspace.register_observer(self)
         self.document_switcher.register_observer(self)
-
-        #self.main_window.set_master_document_action.set_enabled(True)
-        #self.main_window.unset_master_document_action.set_enabled(False)
 
     '''
     *** notification handlers
@@ -93,7 +89,7 @@ class DocumentSwitcherPresenter(object):
             item.document_close_button.hide()
             item.icon_box.hide()
             item.radio_button.show()
-            if not isinstance(item.document, document_model.LaTeXDocument):
+            if not item.document.get_type() == 'latex':
                 item.hide()
         self.view.in_selection_mode = True
 

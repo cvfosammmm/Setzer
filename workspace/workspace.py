@@ -90,7 +90,7 @@ class Workspace(Observable):
             self.untitled_documents_no += 1
         if document.get_buffer() != None:
             self.open_documents.append(document)
-            if isinstance(document, LaTeXDocument):
+            if document.get_type() == 'latex':
                 self.open_latex_documents.append(document)
                 document.spellchecker.set_enabled(self.inline_spellchecking)
                 document.spellchecker.set_language(self.spellchecking_language_code)
@@ -100,7 +100,7 @@ class Workspace(Observable):
     def remove_document(self, document):
         document.save_document_data()
         self.open_documents.remove(document)
-        if isinstance(document, LaTeXDocument):
+        if document.get_type() == 'latex':
             self.open_latex_documents.remove(document)
         if self.active_document == document:
             candidate = self.get_last_active_document()
@@ -167,7 +167,7 @@ class Workspace(Observable):
                 document = self.master_document
             else:
                 document = self.active_document
-            if isinstance(document, LaTeXDocument):
+            if document.get_type() == 'latex':
                 self.build_log.set_document(document)
 
     def get_last_active_document(self):
@@ -247,7 +247,7 @@ class Workspace(Observable):
         return self.open_documents.copy() if len(self.open_documents) >= 1 else None
 
     def set_one_document_master(self, master_document):
-        if isinstance(master_document, LaTeXDocument):
+        if master_document.get_type() == 'latex':
             self.master_document = master_document
             for document in self.open_documents:
                 if document == master_document:

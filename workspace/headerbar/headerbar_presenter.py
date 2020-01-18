@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from document.document import Document, LaTeXDocument, BibTeXDocument
 from app.service_locator import ServiceLocator
 
 import os.path
@@ -54,9 +53,9 @@ class HeaderbarPresenter(object):
             else:
                 self.main_window.headerbar.save_document_button.set_sensitive(False)
 
-            if isinstance(document, LaTeXDocument):
+            if document.get_type() == 'latex':
                 self.activate_latex_documents_mode()
-            elif isinstance(document, BibTeXDocument):
+            elif document.get_type() == 'bibtex':
                 self.activate_bibtex_documents_mode()
 
         if change_code == 'update_recently_opened_documents':
@@ -161,7 +160,7 @@ class HeaderbarPresenter(object):
         prev_widget = headerbar.build_wrapper.get_center_widget()
         if prev_widget != None:
             headerbar.build_wrapper.remove(prev_widget)
-        if isinstance(document, LaTeXDocument):
+        if document.get_type() == 'latex':
             if document != None:
                 headerbar.build_wrapper.set_center_widget(document.build_widget.view)
                 if document.build_widget.view.has_result():

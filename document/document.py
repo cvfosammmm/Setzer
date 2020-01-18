@@ -210,7 +210,7 @@ class Document(Observable):
         return None
 
     def get_folded_regions(self):
-        if isinstance(self, LaTeXDocument):
+        if self.get_type() == 'latex':
             return self.code_folding.get_folded_regions()
         else:
             return []

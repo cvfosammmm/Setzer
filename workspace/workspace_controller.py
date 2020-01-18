@@ -21,7 +21,6 @@ from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
 
-from document.document import Document, LaTeXDocument, BibTeXDocument
 import helpers.helpers as helpers
 from app.service_locator import ServiceLocator
 
@@ -127,7 +126,7 @@ class WorkspaceController(object):
         filename = row.folder + '/' + row.filename
         document_candidate = self.workspace.get_document_by_filename(filename)
 
-        if isinstance(document_candidate, Document):
+        if document_candidate != None:
             self.workspace.set_active_document(document_candidate)
         else:
             self.workspace.create_document_from_filename(filename, activate=True)
