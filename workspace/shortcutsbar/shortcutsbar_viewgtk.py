@@ -126,6 +126,7 @@ class ShortcutsBar(Gtk.HBox):
         box = Gtk.VBox()
         self.set_box_margin(box)
         self.add_action_button(box, 'Footnote', 'win.insert-before-after', ['\\footnote{', '}'])
+        self.add_menu_button(box, 'Cross References', 'cross_references')
         self.add_separator(box)
         self.add_menu_button(box, 'Font Styles', 'font_styles')
         self.add_menu_button(box, 'Font Sizes', 'font_sizes')
@@ -135,13 +136,13 @@ class ShortcutsBar(Gtk.HBox):
         stack.add_named(box, 'main')
         box.show_all()
 
-        # text environments submenu
+        # cross references submenu
         box = Gtk.VBox()
         self.set_box_margin(box)
-        self.add_header_button(box, 'Alignment')
-        for command in [('Centered', 'center'), ('Left-aligned', 'flushleft'), ('Right-aligned', 'flushright')]:
-            self.add_action_button(box, command[0], 'win.insert-before-after', ['\\begin{' + command[1] + '}\n\t', '\n\\end{' + command[1] + '}'])
-        stack.add_named(box, 'text_alignment')
+        self.add_header_button(box, 'Cross References')
+        for command in [('Label (\\label)', 'label'), ('Reference (\\ref)', 'ref'), ('Equation Reference(\\eqref)', 'eqref'), ('Page Reference (\\pageref)', 'pageref')]:
+            self.add_action_button(box, command[0], 'win.insert-symbol', ['\\' + command[1] + '{•}'])
+        stack.add_named(box, 'cross_references')
         box.show_all()
 
         # font styles submenu
@@ -160,6 +161,15 @@ class ShortcutsBar(Gtk.HBox):
         for font_size in ['tiny', 'scriptsize', 'footnotesize', 'small', 'normalsize', 'large', 'Large', 'LARGE', 'huge', 'Huge']:
             self.add_action_button(box, font_size, 'win.insert-before-after', ['{\\' + font_size + ' ', '}'])
         stack.add_named(box, 'font_sizes')
+        box.show_all()
+
+        # text alignment submenu
+        box = Gtk.VBox()
+        self.set_box_margin(box)
+        self.add_header_button(box, 'Alignment')
+        for command in [('Centered', 'center'), ('Left-aligned', 'flushleft'), ('Right-aligned', 'flushright')]:
+            self.add_action_button(box, command[0], 'win.insert-before-after', ['\\begin{' + command[1] + '}\n\t', '\n\\end{' + command[1] + '}'])
+        stack.add_named(box, 'text_alignment')
         box.show_all()
 
         # vertical spacing submenu
