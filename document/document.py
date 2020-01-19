@@ -278,7 +278,7 @@ class Document(Observable):
             if indent_lines:
                 line_iter = buff.get_iter_at_line(insert_iter.get_line())
                 ws_line = buff.get_text(line_iter, insert_iter, False)
-                lines = text.splitlines()
+                lines = text.split('\n')
                 ws_number = len(ws_line) - len(ws_line.lstrip())
                 whitespace = ws_line[:ws_number]
                 final_text = ''
@@ -313,7 +313,7 @@ class Document(Observable):
             if indent_lines:
                 line_iter = buffer.get_iter_at_line(start_iter.get_line())
                 ws_line = buffer.get_text(line_iter, start_iter, False)
-                lines = text.splitlines()
+                lines = text.split('\n')
                 ws_number = len(ws_line) - len(ws_line.lstrip())
                 whitespace = ws_line[:ws_number]
                 final_text = ''
