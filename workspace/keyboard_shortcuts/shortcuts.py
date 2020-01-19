@@ -43,6 +43,7 @@ class Shortcuts(object):
         self.set_accels_for_insert_before_after_action(['$ ', ' $'], ['<Control><Shift>m'])
         self.set_accels_for_insert_before_after_action(['\\[ ', ' \\]'], ['<Alt><Shift>m'])
         self.set_accels_for_insert_before_after_action(['\\begin{equation}\n\t', '\n\\end{equation}'], ['<Control><Shift>n'])
+        self.set_accels_for_insert_before_after_action(['\\begin{•}\n\t', '\n\\end{•}'], ['<Control>e'])
         self.set_accels_for_insert_before_after_action(['_{', '}'], ['<Control><Shift>d'])
         self.set_accels_for_insert_before_after_action(['^{', '}'], ['<Control><Shift>u'])
         self.set_accels_for_insert_before_after_action(['\\sqrt{', '}'], ['<Control><Shift>q'])
