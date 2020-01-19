@@ -132,19 +132,12 @@ class ShortcutsBar(Gtk.HBox):
         self.add_menu_button(box, 'International Accents', 'international_accents')
         self.add_separator(box)
         self.add_action_button(box, 'Environment', 'win.insert-before-after', ['\\begin{•}\n\t', '\n\\end{•}'], keyboard_shortcut='Ctrl+E')
+        self.add_action_button(box, 'Verbatim Environment', 'win.insert-before-after', ['\\begin{verbatim}\n\t', '\n\\end{verbatim}'])
+        self.add_menu_button(box, 'Quotations', 'quotations')
         self.add_separator(box)
         self.add_menu_button(box, 'Cross References', 'cross_references')
         self.add_action_button(box, 'Footnote', 'win.insert-before-after', ['\\footnote{', '}'])
         stack.add_named(box, 'main')
-        box.show_all()
-
-        # cross references submenu
-        box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Cross References')
-        for command in [('Label (\\label)', 'label'), ('Reference (\\ref)', 'ref'), ('Equation Reference(\\eqref)', 'eqref'), ('Page Reference (\\pageref)', 'pageref')]:
-            self.add_action_button(box, command[0], 'win.insert-symbol', ['\\' + command[1] + '{•}'])
-        stack.add_named(box, 'cross_references')
         box.show_all()
 
         # font styles submenu
@@ -192,6 +185,25 @@ class ShortcutsBar(Gtk.HBox):
         for command in ['\'', '`', '^', '"', '~', '=', '.', 'v', 'u', 'H']:
             self.add_action_button(box, '\\' + command + '{}', 'win.insert-before-after', ['\\' + command + '{', '}'])
         stack.add_named(box, 'international_accents')
+        box.show_all()
+
+        # quotations submenu
+        box = Gtk.VBox()
+        self.set_box_margin(box)
+        self.add_header_button(box, 'Quotations')
+        self.add_action_button(box, 'Short Quotation (quote)', 'win.insert-before-after', ['\\begin{quote}\n\t', '\n\\end{quote}'])
+        self.add_action_button(box, 'Longer Quotation (quotation)', 'win.insert-before-after', ['\\begin{quotation}\n\t', '\n\\end{quotation}'])
+        self.add_action_button(box, 'Poetry Quotation (verse)', 'win.insert-before-after', ['\\begin{verse}\n\t', '\n\\end{verse}'])
+        stack.add_named(box, 'quotations')
+        box.show_all()
+
+        # cross references submenu
+        box = Gtk.VBox()
+        self.set_box_margin(box)
+        self.add_header_button(box, 'Cross References')
+        for command in [('Label (\\label)', 'label'), ('Reference (\\ref)', 'ref'), ('Equation Reference(\\eqref)', 'eqref'), ('Page Reference (\\pageref)', 'pageref')]:
+            self.add_action_button(box, command[0], 'win.insert-symbol', ['\\' + command[1] + '{•}'])
+        stack.add_named(box, 'cross_references')
         box.show_all()
 
         self.text_button = Gtk.MenuButton()
