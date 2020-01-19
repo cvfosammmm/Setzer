@@ -50,6 +50,7 @@ class Shortcuts(object):
         self.set_accels_for_insert_symbol_action(['\\left •'], ['<Control><Shift>l'])
         self.set_accels_for_insert_symbol_action(['\\right •'], ['<Control><Shift>r'])
         self.set_accels_for_insert_symbol_action(['\\item •'], ['<Control><Shift>i'])
+        self.set_accels_for_insert_symbol_action(['\\\\\n'], ['<Control>Return'])
 
     def activate_bibtex_documents_mode(self):
         self.set_accels_for_insert_before_after_action(['\\textbf{', '}'], [])
@@ -67,6 +68,7 @@ class Shortcuts(object):
         self.set_accels_for_insert_symbol_action(['\\left •'], [])
         self.set_accels_for_insert_symbol_action(['\\right •'], [])
         self.set_accels_for_insert_symbol_action(['\\item •'], [])
+        self.set_accels_for_insert_symbol_action(['\\\\\n'], [])
 
     def set_accels_for_insert_before_after_action(self, parameter, accels):
         self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', parameter)), accels)

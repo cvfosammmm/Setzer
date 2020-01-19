@@ -129,6 +129,7 @@ class ShortcutsBar(Gtk.HBox):
         self.add_separator(box)
         self.add_menu_button(box, 'Font Styles', 'font_styles')
         self.add_menu_button(box, 'Font Sizes', 'font_sizes')
+        self.add_menu_button(box, 'Vertical Spacing', 'vertical_spacing')
         stack.add_named(box, 'main')
         box.show_all()
 
@@ -148,6 +149,17 @@ class ShortcutsBar(Gtk.HBox):
         for font_size in ['tiny', 'scriptsize', 'footnotesize', 'small', 'normalsize', 'large', 'Large', 'LARGE', 'huge', 'Huge']:
             self.add_action_button(box, font_size, 'win.insert-before-after', ['{\\' + font_size + ' ', '}'])
         stack.add_named(box, 'font_sizes')
+        box.show_all()
+
+        # vertical spacing submenu
+        box = Gtk.VBox()
+        self.set_box_margin(box)
+        self.add_header_button(box, 'Vertical Spacing')
+        for command in ['newpage', 'linebreak', 'pagebreak', 'bigskip', 'medskip', 'smallskip']:
+            self.add_action_button(box, '\\' + command, 'win.insert-symbol', ['\\' + command])
+        self.add_action_button(box, '\\vspace', 'win.insert-symbol', ['\\vspace{•}'])
+        self.add_action_button(box, 'New Line (\\\\)', 'win.insert-symbol', ['\\\\\n'], keyboard_shortcut='Strg+Return')
+        stack.add_named(box, 'vertical_spacing')
         box.show_all()
 
         self.text_button = Gtk.MenuButton()
