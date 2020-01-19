@@ -129,8 +129,19 @@ class ShortcutsBar(Gtk.HBox):
         self.add_separator(box)
         self.add_menu_button(box, 'Font Styles', 'font_styles')
         self.add_menu_button(box, 'Font Sizes', 'font_sizes')
+        self.add_menu_button(box, 'Alignment', 'text_alignment')
         self.add_menu_button(box, 'Vertical Spacing', 'vertical_spacing')
+        self.add_menu_button(box, 'International Accents', 'international_accents')
         stack.add_named(box, 'main')
+        box.show_all()
+
+        # text environments submenu
+        box = Gtk.VBox()
+        self.set_box_margin(box)
+        self.add_header_button(box, 'Alignment')
+        for command in [('Centered', 'center'), ('Left-aligned', 'flushleft'), ('Right-aligned', 'flushright')]:
+            self.add_action_button(box, command[0], 'win.insert-before-after', ['\\begin{' + command[1] + '}\n\t', '\n\\end{' + command[1] + '}'])
+        stack.add_named(box, 'text_alignment')
         box.show_all()
 
         # font styles submenu
@@ -160,6 +171,15 @@ class ShortcutsBar(Gtk.HBox):
         self.add_action_button(box, '\\vspace', 'win.insert-symbol', ['\\vspace{•}'])
         self.add_action_button(box, 'New Line (\\\\)', 'win.insert-symbol', ['\\\\\n'], keyboard_shortcut='Strg+Return')
         stack.add_named(box, 'vertical_spacing')
+        box.show_all()
+
+        # international accents submenu
+        box = Gtk.VBox()
+        self.set_box_margin(box)
+        self.add_header_button(box, 'International Accents')
+        for command in ['\'', '`', '^', '"', '~', '=', '.', 'v', 'u', 'H']:
+            self.add_action_button(box, '\\' + command + '{}', 'win.insert-before-after', ['\\' + command + '{', '}'])
+        stack.add_named(box, 'international_accents')
         box.show_all()
 
         self.text_button = Gtk.MenuButton()
