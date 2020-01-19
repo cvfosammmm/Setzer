@@ -79,6 +79,56 @@ class ShortcutsBar(Gtk.HBox):
         self.insert_text_button()
         self.insert_object_button()
         self.insert_bibliography_button()
+        self.insert_document_button()
+
+    def insert_document_button(self):
+        popover = Gtk.PopoverMenu()
+        stack = popover.get_child()
+
+        box = Gtk.VBox()
+        self.set_box_margin(box)
+        self.add_action_button(box, '\\documentclass', 'win.insert-symbol', ['\\documentclass[•]{•}'])
+        self.add_action_button(box, '\\usepackage{}', 'win.insert-symbol', ['\\usepackage{•}'])
+        self.add_menu_button(box, 'Document Info', 'document_info')
+        self.add_separator(box)
+        self.add_action_button(box, 'Document Environment', 'win.insert-before-after', ['\\begin{document}\n\t', '\n\\end{document}'])
+        self.add_action_button(box, 'Show Title (\\maketitle)', 'win.insert-symbol', ['\\maketitle'])
+        self.add_action_button(box, 'Table of Contents', 'win.insert-symbol', ['\\tableofcontents'])
+        self.add_separator(box)
+        self.add_menu_button(box, 'Include Files', 'include_files')
+        stack.add_named(box, 'main')
+        box.show_all()
+
+        # document info submenu
+        box = Gtk.VBox()
+        self.set_box_margin(box)
+        self.add_header_button(box, 'Document Info')
+        self.add_action_button(box, 'Author', 'win.insert-symbol', ['\\author{•}'])
+        self.add_action_button(box, 'Title', 'win.insert-symbol', ['\\title{•}'])
+        self.add_action_button(box, 'Date', 'win.insert-symbol', ['\\date{•}'])
+        self.add_action_button(box, 'Date Today', 'win.insert-symbol', ['\\date{\\today}'])
+        stack.add_named(box, 'document_info')
+        box.show_all()
+
+        # include files submenu
+        box = Gtk.VBox()
+        self.set_box_margin(box)
+        self.add_header_button(box, 'Include Files')
+        self.add_action_button(box, '\\input{}', 'win.insert-symbol', ['\\input{•}'])
+        self.add_action_button(box, '\\include{}', 'win.insert-symbol', ['\\include{•}'])
+        stack.add_named(box, 'include_files')
+        box.show_all()
+
+        self.document_button = Gtk.MenuButton()
+        self.document_button.set_image(Gtk.Image.new_from_icon_name('folder-documents-symbolic', Gtk.IconSize.MENU))
+        self.document_button.set_focus_on_click(False)
+        self.document_button.set_tooltip_text('Document')
+        self.document_button.get_style_context().add_class('flat')
+        self.document_button.set_popover(popover)
+
+        button_wrapper = Gtk.ToolItem()
+        button_wrapper.add(self.document_button)
+        self.top_icons.insert(button_wrapper, 0)
 
     def insert_bibliography_button(self):
         popover = Gtk.PopoverMenu()
@@ -130,6 +180,8 @@ class ShortcutsBar(Gtk.HBox):
         self.add_menu_button(box, 'Alignment', 'text_alignment')
         self.add_menu_button(box, 'Vertical Spacing', 'vertical_spacing')
         self.add_menu_button(box, 'International Accents', 'international_accents')
+        self.add_separator(box)
+        self.add_menu_button(box, 'Sectioning', 'sectioning')
         self.add_separator(box)
         self.add_action_button(box, 'Environment', 'win.insert-before-after', ['\\begin{•}\n\t', '\n\\end{•}'], keyboard_shortcut='Ctrl+E')
         self.add_action_button(box, 'Verbatim Environment', 'win.insert-before-after', ['\\begin{verbatim}\n\t', '\n\\end{verbatim}'])
@@ -185,6 +237,18 @@ class ShortcutsBar(Gtk.HBox):
         for command in ['\'', '`', '^', '"', '~', '=', '.', 'v', 'u', 'H']:
             self.add_action_button(box, '\\' + command + '{}', 'win.insert-before-after', ['\\' + command + '{', '}'])
         stack.add_named(box, 'international_accents')
+        box.show_all()
+
+        # sectioning submenu
+        box = Gtk.VBox()
+        self.set_box_margin(box)
+        self.add_header_button(box, 'Sectioning')
+        for citation_style in [('Part', '\\part{•}'), ('Chapter', '\\chapter{•}'), ('Section', '\\section{•}'), ('Subsection', '\\subsection{•}'), ('Subsubsection', '\\subsubsection{•}'), ('Paragraph', '\\paragraph{•}'), ('Subparagraph', '\\subparagraph{•}')]:
+            self.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
+        self.add_separator(box)
+        for citation_style in [('Part*', '\\part*{•}'), ('Chapter*', '\\chapter*{•}'), ('Section*', '\\section*{•}'), ('Subsection*', '\\subsection*{•}'), ('Subsubsection*', '\\subsubsection*{•}'), ('Paragraph*', '\\paragraph*{•}'), ('Subparagraph*', '\\subparagraph*{•}')]:
+            self.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
+        stack.add_named(box, 'sectioning')
         box.show_all()
 
         # quotations submenu
