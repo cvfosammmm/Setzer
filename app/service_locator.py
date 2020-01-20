@@ -18,6 +18,7 @@
 import re
 
 import app.settings as settingscontroller
+import helpers.popover_menu_builder as popover_menu_builder
 
 import dialogs.about.about as about_dialog
 import dialogs.bibtex_wizard.bibtex_wizard as bibtex_wizard
@@ -40,6 +41,7 @@ class ServiceLocator(object):
 
     dialogs = dict()
     settings = None
+    popover_menu_builder = None
     build_log_doc_regex = re.compile('( *\((.*\.tex))')
     build_log_item_regex = re.compile('((?:Overfull \\\\hbox|Underfull \\\\hbox|No file .*\.|File .* does not exist\.|! I can\'t find file\.|! File .* not found\.|(?:LaTeX|pdfTeX|LuaTeX|Package|Class) .*Warning.*:|LaTeX Font Warning:|! Undefined control sequence\.|! Package .* Error:|! (?:LaTeX|LuaTeX) Error:|No file .*\.bbl.).*\\n)')
     build_log_badbox_line_number_regex = re.compile('lines ([0-9]+)--([0-9]+)')
@@ -99,5 +101,10 @@ class ServiceLocator(object):
         if ServiceLocator.settings == None:
             ServiceLocator.settings = settingscontroller.Settings()
         return ServiceLocator.settings
+
+    def get_popover_menu_builder():
+        if ServiceLocator.popover_menu_builder == None:
+            ServiceLocator.popover_menu_builder = popover_menu_builder.PopoverMenuBuilder()
+        return ServiceLocator.popover_menu_builder
 
 

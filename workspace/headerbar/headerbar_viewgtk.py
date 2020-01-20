@@ -28,6 +28,7 @@ import re
 import time
 
 import workspace.document_switcher.document_switcher_viewgtk as document_switcher_viewgtk
+from app.service_locator import ServiceLocator
 
 
 class HeaderBar(Gtk.HeaderBar):
@@ -35,6 +36,7 @@ class HeaderBar(Gtk.HeaderBar):
         
     def __init__(self):
         Gtk.HeaderBar.__init__(self)
+        self.pmb = ServiceLocator.get_popover_menu_builder()
 
         self.set_show_close_button(True)
 
@@ -84,46 +86,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.new_document_button.set_menu_model(self.new_document_menu)
 
         # workspace menu
-        self.menu_button = Gtk.MenuButton()
-        image = Gtk.Image.new_from_icon_name('open-menu-symbolic', Gtk.IconSize.BUTTON)
-        self.menu_button.set_image(image)
-        self.menu_button.set_focus_on_click(False)
-
-        self.workspace_menu = Gio.Menu()
-
-        section = Gio.Menu()
-        section.append_item(Gio.MenuItem.new('Save Document As...', 'win.save-as'))
-        section.append_item(Gio.MenuItem.new('Save All Documents', 'win.save-all'))
-        self.workspace_menu.append_section(None, section)
-
-        section = Gio.Menu()
-        view_menu = Gio.Menu()
-        view_menu.append_item(Gio.MenuItem.new('Dark Mode', 'win.toggle-dark-mode'))
-        section.append_submenu('View', view_menu)
-
-        tools_menu = Gio.Menu()
-        tools_menu.append_item(Gio.MenuItem.new('Check Spelling...', 'win.spellchecking'))
-        tools_menu.append_item(Gio.MenuItem.new('Automatic Spellchecking', 'win.toggle-spellchecking'))
-        tools_menu.append_item(Gio.MenuItem.new('Set Spellchecking Language...', 'win.set-spellchecking-language'))
-        section.append_submenu('Tools', tools_menu)
-        self.workspace_menu.append_section(None, section)
-
-        preferences_section = Gio.Menu()
-        preferences_section.append_item(Gio.MenuItem.new('Preferences', 'win.show-preferences-dialog'))
-        self.workspace_menu.append_section(None, preferences_section)
-
-        meta_section = Gio.Menu()
-        meta_section.append_item(Gio.MenuItem.new('Keyboard Shortcuts', 'win.show-shortcuts-window'))
-        meta_section.append_item(Gio.MenuItem.new('About', 'win.show-about-dialog'))
-        self.workspace_menu.append_section(None, meta_section)
-
-        section = Gio.Menu()
-        section.append_item(Gio.MenuItem.new('Close All Documents', 'win.close-all-documents'))
-        section.append_item(Gio.MenuItem.new('Close Document', 'win.close-active-document'))
-        section.append_item(Gio.MenuItem.new('Quit', 'win.quit'))
-        self.workspace_menu.append_section(None, section)
-        self.menu_button.set_menu_model(self.workspace_menu)
-        self.pack_end(self.menu_button)
+        self.insert_workspace_menu()
 
         # save document button
         self.save_document_button = Gtk.Button.new_with_label('Save')
@@ -180,6 +143,54 @@ class HeaderBar(Gtk.HeaderBar):
         self.center_widget.set_valign(Gtk.Align.FILL)
         self.center_button.set_valign(Gtk.Align.FILL)
         self.center_label_welcome.set_valign(Gtk.Align.FILL)
+
+    def insert_workspace_menu(self):
+        popover = Gtk.PopoverMenu()
+        stack = popover.get_child()
+
+        box = Gtk.VBox()
+        self.pmb.set_box_margin(box)
+        self.pmb.add_action_button(box, 'Save Document As...', 'win.save-as')
+        self.pmb.add_action_button(box, 'Save All Documents', 'win.save-all')
+        self.pmb.add_separator(box)
+        self.pmb.add_menu_button(box, 'View', 'view')
+        self.pmb.add_menu_button(box, 'Tools', 'tools')
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, 'Preferences', 'win.show-preferences-dialog')
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, 'Keyboard Shortcuts', 'win.show-shortcuts-window')
+        self.pmb.add_action_button(box, 'About', 'win.show-about-dialog')
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, 'Close All Documents', 'win.close-all-documents')
+        self.pmb.add_action_button(box, 'Close Document', 'win.close-active-document')
+        self.pmb.add_action_button(box, 'Quit', 'win.quit')
+        stack.add_named(box, 'main')
+        box.show_all()
+
+        # view submenu
+        box = Gtk.VBox()
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'View')
+        self.pmb.add_action_button(box, 'Dark Mode', 'win.toggle-dark-mode')
+        stack.add_named(box, 'view')
+        box.show_all()
+
+        # tools submenu
+        box = Gtk.VBox()
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Tools')
+        self.pmb.add_action_button(box, 'Check Spelling...', 'win.spellchecking')
+        self.pmb.add_action_button(box, 'Automatic Spellchecking', 'win.toggle-spellchecking')
+        self.pmb.add_action_button(box, 'Set Spellchecking Language...', 'win.set-spellchecking-language')
+        stack.add_named(box, 'tools')
+        box.show_all()
+
+        self.menu_button = Gtk.MenuButton()
+        image = Gtk.Image.new_from_icon_name('open-menu-symbolic', Gtk.IconSize.BUTTON)
+        self.menu_button.set_image(image)
+        self.menu_button.set_focus_on_click(False)
+        self.menu_button.set_popover(popover)
+        self.pack_end(self.menu_button)
 
 
 class DocumentChooser(Gtk.Popover):

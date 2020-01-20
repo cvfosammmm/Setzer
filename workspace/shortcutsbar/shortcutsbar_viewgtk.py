@@ -21,12 +21,15 @@ from gi.repository import Gtk
 from gi.repository import GLib
 from gi.repository import Gio
 
+from app.service_locator import ServiceLocator
+
 
 class ShortcutsBar(Gtk.HBox):
 
     def __init__(self):
         Gtk.HBox.__init__(self)
         self.get_style_context().add_class('shortcutsbar')
+        self.pmb = ServiceLocator.get_popover_menu_builder()
 
         self.current_bottom = None
 
@@ -86,36 +89,36 @@ class ShortcutsBar(Gtk.HBox):
         stack = popover.get_child()
 
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_action_button(box, '\\documentclass', 'win.insert-symbol', ['\\documentclass[•]{•}'])
-        self.add_action_button(box, '\\usepackage{}', 'win.insert-symbol', ['\\usepackage{•}'])
-        self.add_menu_button(box, 'Document Info', 'document_info')
-        self.add_separator(box)
-        self.add_action_button(box, 'Document Environment', 'win.insert-before-after', ['\\begin{document}\n\t', '\n\\end{document}'])
-        self.add_action_button(box, 'Show Title (\\maketitle)', 'win.insert-symbol', ['\\maketitle'])
-        self.add_action_button(box, 'Table of Contents', 'win.insert-symbol', ['\\tableofcontents'])
-        self.add_separator(box)
-        self.add_menu_button(box, 'Include Files', 'include_files')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_action_button(box, '\\documentclass', 'win.insert-symbol', ['\\documentclass[•]{•}'])
+        self.pmb.add_action_button(box, '\\usepackage{}', 'win.insert-symbol', ['\\usepackage{•}'])
+        self.pmb.add_menu_button(box, 'Document Info', 'document_info')
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, 'Document Environment', 'win.insert-before-after', ['\\begin{document}\n\t', '\n\\end{document}'])
+        self.pmb.add_action_button(box, 'Show Title (\\maketitle)', 'win.insert-symbol', ['\\maketitle'])
+        self.pmb.add_action_button(box, 'Table of Contents', 'win.insert-symbol', ['\\tableofcontents'])
+        self.pmb.add_separator(box)
+        self.pmb.add_menu_button(box, 'Include Files', 'include_files')
         stack.add_named(box, 'main')
         box.show_all()
 
         # document info submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Document Info')
-        self.add_action_button(box, 'Author', 'win.insert-symbol', ['\\author{•}'])
-        self.add_action_button(box, 'Title', 'win.insert-symbol', ['\\title{•}'])
-        self.add_action_button(box, 'Date', 'win.insert-symbol', ['\\date{•}'])
-        self.add_action_button(box, 'Date Today', 'win.insert-symbol', ['\\date{\\today}'])
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Document Info')
+        self.pmb.add_action_button(box, 'Author', 'win.insert-symbol', ['\\author{•}'])
+        self.pmb.add_action_button(box, 'Title', 'win.insert-symbol', ['\\title{•}'])
+        self.pmb.add_action_button(box, 'Date', 'win.insert-symbol', ['\\date{•}'])
+        self.pmb.add_action_button(box, 'Date Today', 'win.insert-symbol', ['\\date{\\today}'])
         stack.add_named(box, 'document_info')
         box.show_all()
 
         # include files submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Include Files')
-        self.add_action_button(box, '\\input{}', 'win.insert-symbol', ['\\input{•}'])
-        self.add_action_button(box, '\\include{}', 'win.insert-symbol', ['\\include{•}'])
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Include Files')
+        self.pmb.add_action_button(box, '\\input{}', 'win.insert-symbol', ['\\input{•}'])
+        self.pmb.add_action_button(box, '\\include{}', 'win.insert-symbol', ['\\include{•}'])
         stack.add_named(box, 'include_files')
         box.show_all()
 
@@ -135,26 +138,26 @@ class ShortcutsBar(Gtk.HBox):
         stack = popover.get_child()
 
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_action_button(box, 'Include BibTeX File...', 'win.include-bibtex-file')
-        self.add_action_button(box, 'Include \'natbib\' Package', 'win.add-packages', ['natbib'])
-        self.add_separator(box)
+        self.pmb.set_box_margin(box)
+        self.pmb.add_action_button(box, 'Include BibTeX File...', 'win.include-bibtex-file')
+        self.pmb.add_action_button(box, 'Include \'natbib\' Package', 'win.add-packages', ['natbib'])
+        self.pmb.add_separator(box)
         for citation_style in [('Citation', '\\cite{•}'), ('Citation with Page Number', '\\cite[•]{•}')]:
-            self.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
-        self.add_menu_button(box, 'Natbib Citations', 'natbib_citations')
-        self.add_action_button(box, 'Include non-cited BibTeX Entries with \'\\nocite\'', 'win.insert-before-document-end', ['\\nocite{*}'])
+            self.pmb.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
+        self.pmb.add_menu_button(box, 'Natbib Citations', 'natbib_citations')
+        self.pmb.add_action_button(box, 'Include non-cited BibTeX Entries with \'\\nocite\'', 'win.insert-before-document-end', ['\\nocite{*}'])
         stack.add_named(box, 'main')
         box.show_all()
 
         # natbib submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Natbib Citations')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Natbib Citations')
         for citation_style in [('Abbreviated', '\\citet{•}'), ('Abbreviated with Brackets', '\\citep{•}'), ('Detailed', '\\citet*{•}'), ('Detailed with Brackets', '\\citep*{•}'), ('Alternative 1', '\\citealt{•}'), ('Alternative 2', '\\citealp{•}')]:
-            self.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
-        self.add_separator(box)
+            self.pmb.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
+        self.pmb.add_separator(box)
         for citation_style in [('Cite Author', '\\citeauthor{•}'), ('Cite Author Detailed', '\\citeauthor*{•}'), ('Cite Year', '\\citeyear{•}'), ('Cite Year with Brackets', '\\citeyearpar{•}')]:
-            self.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
+            self.pmb.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
         stack.add_named(box, 'natbib_citations')
         box.show_all()
 
@@ -174,99 +177,99 @@ class ShortcutsBar(Gtk.HBox):
         stack = popover.get_child()
 
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_menu_button(box, 'Font Styles', 'font_styles')
-        self.add_menu_button(box, 'Font Sizes', 'font_sizes')
-        self.add_menu_button(box, 'Alignment', 'text_alignment')
-        self.add_menu_button(box, 'Vertical Spacing', 'vertical_spacing')
-        self.add_menu_button(box, 'International Accents', 'international_accents')
-        self.add_separator(box)
-        self.add_menu_button(box, 'Sectioning', 'sectioning')
-        self.add_separator(box)
-        self.add_action_button(box, 'Environment', 'win.insert-before-after', ['\\begin{•}\n\t', '\n\\end{•}'], keyboard_shortcut='Ctrl+E')
-        self.add_action_button(box, 'Verbatim Environment', 'win.insert-before-after', ['\\begin{verbatim}\n\t', '\n\\end{verbatim}'])
-        self.add_menu_button(box, 'Quotations', 'quotations')
-        self.add_separator(box)
-        self.add_menu_button(box, 'Cross References', 'cross_references')
-        self.add_action_button(box, 'Footnote', 'win.insert-before-after', ['\\footnote{', '}'])
+        self.pmb.set_box_margin(box)
+        self.pmb.add_menu_button(box, 'Font Styles', 'font_styles')
+        self.pmb.add_menu_button(box, 'Font Sizes', 'font_sizes')
+        self.pmb.add_menu_button(box, 'Alignment', 'text_alignment')
+        self.pmb.add_menu_button(box, 'Vertical Spacing', 'vertical_spacing')
+        self.pmb.add_menu_button(box, 'International Accents', 'international_accents')
+        self.pmb.add_separator(box)
+        self.pmb.add_menu_button(box, 'Sectioning', 'sectioning')
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, 'Environment', 'win.insert-before-after', ['\\begin{•}\n\t', '\n\\end{•}'], keyboard_shortcut='Ctrl+E')
+        self.pmb.add_action_button(box, 'Verbatim Environment', 'win.insert-before-after', ['\\begin{verbatim}\n\t', '\n\\end{verbatim}'])
+        self.pmb.add_menu_button(box, 'Quotations', 'quotations')
+        self.pmb.add_separator(box)
+        self.pmb.add_menu_button(box, 'Cross References', 'cross_references')
+        self.pmb.add_action_button(box, 'Footnote', 'win.insert-before-after', ['\\footnote{', '}'])
         stack.add_named(box, 'main')
         box.show_all()
 
         # font styles submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Font Styles')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Font Styles')
         for font_style in [('Emphasis (\\emph)', 'emph', 'Ctrl+Shift+E'), ('Italics (\\textit)', 'textit', 'Ctrl+I'), ('Slanted (\\textsl)', 'textsl', None), ('Bold (\\textbf)', 'textbf', 'Ctrl+B'), ('Typewriter (\\texttt)', 'texttt', 'Ctrl+M'), ('Small Caps (\\textsc)', 'textsc', None), ('Sans Serif (\\textsf)', 'textsf', None), ('Underline (\\underline)', 'underline', 'Ctrl+U')]:
-            self.add_action_button(box, font_style[0], 'win.insert-before-after', ['\\' + font_style[1] + '{', '}'], keyboard_shortcut=font_style[2])
+            self.pmb.add_action_button(box, font_style[0], 'win.insert-before-after', ['\\' + font_style[1] + '{', '}'], keyboard_shortcut=font_style[2])
         stack.add_named(box, 'font_styles')
         box.show_all()
 
         # font sizes submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Font Sizes')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Font Sizes')
         for font_size in ['tiny', 'scriptsize', 'footnotesize', 'small', 'normalsize', 'large', 'Large', 'LARGE', 'huge', 'Huge']:
-            self.add_action_button(box, font_size, 'win.insert-before-after', ['{\\' + font_size + ' ', '}'])
+            self.pmb.add_action_button(box, font_size, 'win.insert-before-after', ['{\\' + font_size + ' ', '}'])
         stack.add_named(box, 'font_sizes')
         box.show_all()
 
         # text alignment submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Alignment')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Alignment')
         for command in [('Centered', 'center'), ('Left-aligned', 'flushleft'), ('Right-aligned', 'flushright')]:
-            self.add_action_button(box, command[0], 'win.insert-before-after', ['\\begin{' + command[1] + '}\n\t', '\n\\end{' + command[1] + '}'])
+            self.pmb.add_action_button(box, command[0], 'win.insert-before-after', ['\\begin{' + command[1] + '}\n\t', '\n\\end{' + command[1] + '}'])
         stack.add_named(box, 'text_alignment')
         box.show_all()
 
         # vertical spacing submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Vertical Spacing')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Vertical Spacing')
         for command in ['newpage', 'linebreak', 'pagebreak', 'bigskip', 'medskip', 'smallskip']:
-            self.add_action_button(box, '\\' + command, 'win.insert-symbol', ['\\' + command])
-        self.add_action_button(box, '\\vspace', 'win.insert-symbol', ['\\vspace{•}'])
-        self.add_action_button(box, 'New Line (\\\\)', 'win.insert-symbol', ['\\\\\n'], keyboard_shortcut='Strg+Return')
+            self.pmb.add_action_button(box, '\\' + command, 'win.insert-symbol', ['\\' + command])
+        self.pmb.add_action_button(box, '\\vspace', 'win.insert-symbol', ['\\vspace{•}'])
+        self.pmb.add_action_button(box, 'New Line (\\\\)', 'win.insert-symbol', ['\\\\\n'], keyboard_shortcut='Strg+Return')
         stack.add_named(box, 'vertical_spacing')
         box.show_all()
 
         # international accents submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'International Accents')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'International Accents')
         for command in ['\'', '`', '^', '"', '~', '=', '.', 'v', 'u', 'H']:
-            self.add_action_button(box, '\\' + command + '{}', 'win.insert-before-after', ['\\' + command + '{', '}'])
+            self.pmb.add_action_button(box, '\\' + command + '{}', 'win.insert-before-after', ['\\' + command + '{', '}'])
         stack.add_named(box, 'international_accents')
         box.show_all()
 
         # sectioning submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Sectioning')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Sectioning')
         for citation_style in [('Part', '\\part{•}'), ('Chapter', '\\chapter{•}'), ('Section', '\\section{•}'), ('Subsection', '\\subsection{•}'), ('Subsubsection', '\\subsubsection{•}'), ('Paragraph', '\\paragraph{•}'), ('Subparagraph', '\\subparagraph{•}')]:
-            self.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
-        self.add_separator(box)
+            self.pmb.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
+        self.pmb.add_separator(box)
         for citation_style in [('Part*', '\\part*{•}'), ('Chapter*', '\\chapter*{•}'), ('Section*', '\\section*{•}'), ('Subsection*', '\\subsection*{•}'), ('Subsubsection*', '\\subsubsection*{•}'), ('Paragraph*', '\\paragraph*{•}'), ('Subparagraph*', '\\subparagraph*{•}')]:
-            self.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
+            self.pmb.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
         stack.add_named(box, 'sectioning')
         box.show_all()
 
         # quotations submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Quotations')
-        self.add_action_button(box, 'Short Quotation (quote)', 'win.insert-before-after', ['\\begin{quote}\n\t', '\n\\end{quote}'])
-        self.add_action_button(box, 'Longer Quotation (quotation)', 'win.insert-before-after', ['\\begin{quotation}\n\t', '\n\\end{quotation}'])
-        self.add_action_button(box, 'Poetry Quotation (verse)', 'win.insert-before-after', ['\\begin{verse}\n\t', '\n\\end{verse}'])
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Quotations')
+        self.pmb.add_action_button(box, 'Short Quotation (quote)', 'win.insert-before-after', ['\\begin{quote}\n\t', '\n\\end{quote}'])
+        self.pmb.add_action_button(box, 'Longer Quotation (quotation)', 'win.insert-before-after', ['\\begin{quotation}\n\t', '\n\\end{quotation}'])
+        self.pmb.add_action_button(box, 'Poetry Quotation (verse)', 'win.insert-before-after', ['\\begin{verse}\n\t', '\n\\end{verse}'])
         stack.add_named(box, 'quotations')
         box.show_all()
 
         # cross references submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Cross References')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Cross References')
         for command in [('Label (\\label)', 'label'), ('Reference (\\ref)', 'ref'), ('Equation Reference(\\eqref)', 'eqref'), ('Page Reference (\\pageref)', 'pageref')]:
-            self.add_action_button(box, command[0], 'win.insert-symbol', ['\\' + command[1] + '{•}'])
+            self.pmb.add_action_button(box, command[0], 'win.insert-symbol', ['\\' + command[1] + '{•}'])
         stack.add_named(box, 'cross_references')
         box.show_all()
 
@@ -286,9 +289,9 @@ class ShortcutsBar(Gtk.HBox):
         stack = popover.get_child()
 
         box = Gtk.VBox()
-        self.set_box_margin(box)
+        self.pmb.set_box_margin(box)
         for item in [('Primary Quotes (`` ... \'\')', ['``', '\'\'']), ('Secondary Quotes (` ... \')', ['`', '\'']), ('German Quotes (\\glqq ... \\grqq{})', ['\\glqq ', '\\grqq{}']), ('German Single Quotes (\\glq ... \\grq{})', ['\\glq ', '\\grq{}']), ('French Quotes (\\flqq ... \\frqq{})', ['\\flqq ', '\\frqq{}']), ('French Single Quotes (\\flq ... \\frq{})', ['\\flq ', '\\frq{}']), ('German Alt Quotes (\\frqq ... \\flqq{})', ['\\frqq ', '\\flqq{}']), ('German Alt Single Quotes (\\frq ... \\frq{})', ['\\frq ', '\\flq{}'])]:
-            self.add_action_button(box, item[0], 'win.insert-before-after', item[1])
+            self.pmb.add_action_button(box, item[0], 'win.insert-before-after', item[1])
         stack.add_named(box, 'main')
         box.show_all()
 
@@ -310,52 +313,52 @@ class ShortcutsBar(Gtk.HBox):
 
         # main menu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_action_button(box, 'Include AMS Packages', 'win.add-packages', ['amsmath', 'amssymb', 'amsfonts', 'amsthm'])
-        self.add_separator(box)
-        self.add_action_button(box, 'Inline Math Section ($ ... $)', 'win.insert-before-after', ['$ ', ' $'], keyboard_shortcut='Ctrl+Shift+M')
-        self.add_action_button(box, 'Display Math Section (\\[ ... \\])', 'win.insert-before-after', ['\\[ ', ' \\]'], keyboard_shortcut='Alt+Shift+M')
-        self.add_menu_button(box, 'Math Environments', 'math_environments')
-        self.add_separator(box)
-        self.add_action_button(box, 'Subscript (_{})', 'win.insert-before-after', ['_{', '}'], keyboard_shortcut='Ctrl+Shift+D')
-        self.add_action_button(box, 'Superscript (^{})', 'win.insert-before-after', ['^{', '}'], keyboard_shortcut='Ctrl+Shift+U')
-        self.add_action_button(box, 'Fraction (\\frac)', 'win.insert-symbol', ['\\frac{•}{•}'], keyboard_shortcut='Alt+Shift+F')
-        self.add_action_button(box, 'Square Root (\\sqrt)', 'win.insert-before-after', ['\\sqrt{', '}'], keyboard_shortcut='Ctrl+Shift+Q')
-        self.add_action_button(box, '\\left', 'win.insert-symbol', ['\\left •'], keyboard_shortcut='Ctrl+Shift+L')
-        self.add_action_button(box, '\\right', 'win.insert-symbol', ['\\right •'], keyboard_shortcut='Ctrl+Shift+R')
-        self.add_separator(box)
-        self.add_menu_button(box, 'Math Functions', 'math_functions')
-        self.add_menu_button(box, 'Math Font Styles', 'math_font_styles')
-        self.add_menu_button(box, 'Math Stacking Symbols', 'math_stacking_symbols')
-        self.add_menu_button(box, 'Math Accents', 'math_accents')
-        self.add_menu_button(box, 'Math Spaces', 'math_spaces')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_action_button(box, 'Include AMS Packages', 'win.add-packages', ['amsmath', 'amssymb', 'amsfonts', 'amsthm'])
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, 'Inline Math Section ($ ... $)', 'win.insert-before-after', ['$ ', ' $'], keyboard_shortcut='Ctrl+Shift+M')
+        self.pmb.add_action_button(box, 'Display Math Section (\\[ ... \\])', 'win.insert-before-after', ['\\[ ', ' \\]'], keyboard_shortcut='Alt+Shift+M')
+        self.pmb.add_menu_button(box, 'Math Environments', 'math_environments')
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, 'Subscript (_{})', 'win.insert-before-after', ['_{', '}'], keyboard_shortcut='Ctrl+Shift+D')
+        self.pmb.add_action_button(box, 'Superscript (^{})', 'win.insert-before-after', ['^{', '}'], keyboard_shortcut='Ctrl+Shift+U')
+        self.pmb.add_action_button(box, 'Fraction (\\frac)', 'win.insert-symbol', ['\\frac{•}{•}'], keyboard_shortcut='Alt+Shift+F')
+        self.pmb.add_action_button(box, 'Square Root (\\sqrt)', 'win.insert-before-after', ['\\sqrt{', '}'], keyboard_shortcut='Ctrl+Shift+Q')
+        self.pmb.add_action_button(box, '\\left', 'win.insert-symbol', ['\\left •'], keyboard_shortcut='Ctrl+Shift+L')
+        self.pmb.add_action_button(box, '\\right', 'win.insert-symbol', ['\\right •'], keyboard_shortcut='Ctrl+Shift+R')
+        self.pmb.add_separator(box)
+        self.pmb.add_menu_button(box, 'Math Functions', 'math_functions')
+        self.pmb.add_menu_button(box, 'Math Font Styles', 'math_font_styles')
+        self.pmb.add_menu_button(box, 'Math Stacking Symbols', 'math_stacking_symbols')
+        self.pmb.add_menu_button(box, 'Math Accents', 'math_accents')
+        self.pmb.add_menu_button(box, 'Math Spaces', 'math_spaces')
         stack.add_named(box, 'main')
         box.show_all()
 
         # submenu: math environments
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Math Environments')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Math Environments')
         for environment in ['equation', 'equation*', 'align', 'align*', 'alignat', 'alignat*', 'flalign', 'flalign*', 'gather', 'gather*', 'multline', 'multline*']:
-            self.add_action_button(box, environment, 'win.insert-before-after', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'], keyboard_shortcut=('Ctrl+Shift+N' if environment == 'equation' else None))
-        self.add_separator(box)
+            self.pmb.add_action_button(box, environment, 'win.insert-before-after', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'], keyboard_shortcut=('Ctrl+Shift+N' if environment == 'equation' else None))
+        self.pmb.add_separator(box)
         for environment in ['cases', 'split']:
-            self.add_action_button(box, environment, 'win.insert-before-after', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'])
+            self.pmb.add_action_button(box, environment, 'win.insert-before-after', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'])
         stack.add_named(box, 'math_environments')
         box.show_all()
 
         # submenu: math functions
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Math Functions')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Math Functions')
         hbox = Gtk.HBox()
         vbox = Gtk.VBox()
         for math_function in ['arccos', 'arcsin', 'arctan', 'cos', 'cosh', 'cot', 'coth', 'csc', 'deg', 'det', 'dim', 'exp', 'gcd', 'hom', 'inf']:
-            self.add_action_button(vbox, '\\' + math_function, 'win.insert-symbol', ['\\' + math_function + ' '])
+            self.pmb.add_action_button(vbox, '\\' + math_function, 'win.insert-symbol', ['\\' + math_function + ' '])
         hbox.pack_start(vbox, True, True, 0)
         vbox = Gtk.VBox()
         for math_function in ['ker', 'lg', 'lim', 'liminf', 'limsup', 'ln', 'log', 'max', 'min', 'sec', 'sin', 'sinh', 'sup', 'tan', 'tanh']:
-            self.add_action_button(vbox, '\\' + math_function, 'win.insert-symbol', ['\\' + math_function + ' '])
+            self.pmb.add_action_button(vbox, '\\' + math_function, 'win.insert-symbol', ['\\' + math_function + ' '])
         hbox.pack_start(vbox, True, True, 0)
         box.pack_start(hbox, False, False, 0)
         stack.add_named(box, 'math_functions')
@@ -363,39 +366,39 @@ class ShortcutsBar(Gtk.HBox):
 
         # submenu: math font styles
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Math Font Styles')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Math Font Styles')
         for math_function in [('Roman', 'mathrm'), ('Italic', 'mathit'), ('Bold', 'mathbf'), ('Sans Serif', 'mathsf'), ('Typewriter', 'mathtt'), ('Calligraphic', 'mathcal'), ('Blackboard Bold', 'mathbb'), ('Fraktur', 'mathfrak')]:
-            self.add_action_button(box, math_function[0] + ' (\\' + math_function[1] + ')', 'win.insert-before-after', ['\\' + math_function[1] + '{', '}'])
+            self.pmb.add_action_button(box, math_function[0] + ' (\\' + math_function[1] + ')', 'win.insert-before-after', ['\\' + math_function[1] + '{', '}'])
         stack.add_named(box, 'math_font_styles')
         box.show_all()
 
         # submenu: math stacking symbols
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Math Stacking Symbols')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Math Stacking Symbols')
         for math_stacking_symbol in ['overline', 'underline', 'overbrace', 'underbrace', 'overleftarrow', 'overrightarrow']:
-            self.add_action_button(box, '\\' + math_stacking_symbol + '{}', 'win.insert-before-after', ['\\' + math_stacking_symbol + '{', '}'])
+            self.pmb.add_action_button(box, '\\' + math_stacking_symbol + '{}', 'win.insert-before-after', ['\\' + math_stacking_symbol + '{', '}'])
         for math_stacking_symbol in ['stackrel', 'overset', 'underset']:
-            self.add_action_button(box, '\\' + math_stacking_symbol + '{}{}', 'win.insert-before-after', ['\\' + math_stacking_symbol + '{•}{', '}'])
+            self.pmb.add_action_button(box, '\\' + math_stacking_symbol + '{}{}', 'win.insert-before-after', ['\\' + math_stacking_symbol + '{•}{', '}'])
         stack.add_named(box, 'math_stacking_symbols')
         box.show_all()
 
         # submenu: math accents
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Math Accents')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Math Accents')
         for math_accent in ['acute', 'grave', 'tilde', 'bar', 'vec', 'hat', 'check', 'breve', 'dot', 'ddot']:
-            self.add_action_button(box, '\\' + math_accent + '{}', 'win.insert-before-after', ['\\' + math_accent + '{', '}'])
+            self.pmb.add_action_button(box, '\\' + math_accent + '{}', 'win.insert-before-after', ['\\' + math_accent + '{', '}'])
         stack.add_named(box, 'math_accents')
         box.show_all()
 
         # submenu: math spaces
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Math Spaces')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Math Spaces')
         for math_space in [('\\!', 'Negative'), ('\\,', 'Thin'), ('\\:', 'Medium'), ('\\;', 'Thick'), ('\\ ', 'Interword'), ('\\enspace ', 'Enspace'), ('\\quad ', 'One Quad'), ('\\qquad ', 'Two Quads')]:
-            self.add_action_button(box, math_space[1], 'win.insert-symbol', [math_space[0]])
+            self.pmb.add_action_button(box, math_space[1], 'win.insert-symbol', [math_space[0]])
         stack.add_named(box, 'math_spaces')
         box.show_all()
 
@@ -416,36 +419,36 @@ class ShortcutsBar(Gtk.HBox):
 
         # main menu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_action_button(box, 'Figure (image inside freestanding block)', 'win.insert-symbol', ['\\begin{figure}\n\t\\begin{center}\n\t\t\\includegraphics[scale=1]{•}\n\t\t\\caption{•}\n\t\\end{center}\n\\end{figure}'])
-        self.add_action_button(box, 'Inline Image', 'win.insert-symbol', ['\\includegraphics[scale=1]{•}'])
-        self.add_menu_button(box, 'Code Listing', 'code_listing')
-        self.add_menu_button(box, 'List Environments', 'list_environments')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_action_button(box, 'Figure (image inside freestanding block)', 'win.insert-symbol', ['\\begin{figure}\n\t\\begin{center}\n\t\t\\includegraphics[scale=1]{•}\n\t\t\\caption{•}\n\t\\end{center}\n\\end{figure}'])
+        self.pmb.add_action_button(box, 'Inline Image', 'win.insert-symbol', ['\\includegraphics[scale=1]{•}'])
+        self.pmb.add_menu_button(box, 'Code Listing', 'code_listing')
+        self.pmb.add_menu_button(box, 'List Environments', 'list_environments')
         stack.add_named(box, 'main')
         box.show_all()
 
         # code listing submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'Code Listing')
-        self.add_action_button(box, 'Include \'listings\' Package', 'win.add-packages', ['listings'])
-        self.add_separator(box)
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Code Listing')
+        self.pmb.add_action_button(box, 'Include \'listings\' Package', 'win.add-packages', ['listings'])
+        self.pmb.add_separator(box)
         for language in ['Python', 'C', 'C++', 'Java', 'Perl', 'PHP', 'Ruby', 'TeX']:
-            self.add_action_button(box, language, 'win.insert-before-after', ['\\lstset{language=' + language + '}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
-        self.add_separator(box)
-        self.add_action_button(box, 'Other Language', 'win.insert-before-after', ['\\lstset{language=•}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
-        self.add_action_button(box, 'Plain Text', 'win.insert-before-after', ['\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
+            self.pmb.add_action_button(box, language, 'win.insert-before-after', ['\\lstset{language=' + language + '}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, 'Other Language', 'win.insert-before-after', ['\\lstset{language=•}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
+        self.pmb.add_action_button(box, 'Plain Text', 'win.insert-before-after', ['\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
         stack.add_named(box, 'code_listing')
         box.show_all()
 
         # list environments submenu
         box = Gtk.VBox()
-        self.set_box_margin(box)
-        self.add_header_button(box, 'List Environments')
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'List Environments')
         for list_type in [['Bulleted List (itemize)', 'itemize'], ['Numbered List (enumerate)', 'enumerate'], ['List with Bold Labels (description)', 'description']]:
-            self.add_action_button(box, list_type[0], 'win.insert-before-after', ['\\begin{' + list_type[1] + '}\n\t', '\n\\end{' + list_type[1] + '}'])
-        self.add_separator(box)
-        self.add_action_button(box, 'List Item', 'win.insert-symbol', ['\\item •'], keyboard_shortcut='Ctrl+Shift+I')
+            self.pmb.add_action_button(box, list_type[0], 'win.insert-before-after', ['\\begin{' + list_type[1] + '}\n\t', '\n\\end{' + list_type[1] + '}'])
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, 'List Item', 'win.insert-symbol', ['\\item •'], keyboard_shortcut='Ctrl+Shift+I')
         stack.add_named(box, 'list_environments')
         box.show_all()
 
@@ -460,51 +463,5 @@ class ShortcutsBar(Gtk.HBox):
         button_wrapper.add(self.insert_object_button)
         self.insert_object_button.get_popover().get_style_context().add_class('menu-insert-object-symbolic')
         self.top_icons.insert(button_wrapper, 0)
-        
-    def set_box_margin(self, box):
-        box.set_margin_top(10)
-        box.set_margin_bottom(10)
-        box.set_margin_left(10)
-        box.set_margin_right(10)
-
-    def add_action_button(self, box, label, action_name, action_parameter=None, keyboard_shortcut=None):
-        model_button = Gtk.ModelButton()
-        if action_parameter:
-            model_button.set_detailed_action_name(Gio.Action.print_detailed_name(action_name, GLib.Variant('as', action_parameter)))
-        else:
-            model_button.set_action_name(action_name)
-        if keyboard_shortcut != None:
-            description = Gtk.Label(label)
-            description.set_halign(Gtk.Align.START)
-            shortcut = Gtk.Label(keyboard_shortcut)
-            shortcut.get_style_context().add_class('keyboard-shortcut')
-            button_box = Gtk.HBox()
-            button_box.pack_start(description, True, True, 0)
-            button_box.pack_end(shortcut, False, False, 0)
-            model_button.remove(model_button.get_child())
-            model_button.add(button_box)
-        else:
-            model_button.set_label(label)
-            model_button.get_child().set_halign(Gtk.Align.START)
-        box.pack_start(model_button, False, False, 0)
-
-    def add_menu_button(self, box, label, menu_name):
-        model_button = Gtk.ModelButton()
-        model_button.set_property('menu-name', menu_name)
-        model_button.set_label(label)
-        model_button.get_child().set_halign(Gtk.Align.START)
-        box.pack_start(model_button, False, False, 0)
-
-    def add_header_button(self, box, label):
-        model_button = Gtk.ModelButton()
-        model_button.set_property('centered', True)
-        model_button.set_property('menu-name', 'main')
-        model_button.set_label(label)
-        model_button.set_property('inverted', True)
-        box.pack_start(model_button, False, False, 0)
-
-    def add_separator(self, box):
-        separator = Gtk.SeparatorMenuItem()
-        box.pack_start(separator, False, False, 0)
 
 
