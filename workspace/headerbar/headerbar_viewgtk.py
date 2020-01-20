@@ -150,7 +150,7 @@ class HeaderBar(Gtk.HeaderBar):
 
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
-        self.pmb.add_action_button(box, 'Save Document As...', 'win.save-as')
+        self.pmb.add_action_button(box, 'Save Document As...', 'win.save-as', keyboard_shortcut='Ctrl+Shift+S')
         self.pmb.add_action_button(box, 'Save All Documents', 'win.save-all')
         self.pmb.add_separator(box)
         self.pmb.add_menu_button(box, 'View', 'view')
@@ -163,7 +163,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.pmb.add_separator(box)
         self.pmb.add_action_button(box, 'Close All Documents', 'win.close-all-documents')
         self.pmb.add_action_button(box, 'Close Document', 'win.close-active-document')
-        self.pmb.add_action_button(box, 'Quit', 'win.quit')
+        self.pmb.add_action_button(box, 'Quit', 'win.quit', keyboard_shortcut='Ctrl+Q')
         stack.add_named(box, 'main')
         box.show_all()
 
