@@ -119,7 +119,6 @@ popover.documentchooser box.not_found label {
 .open-docs-popover row {
     border-radius: 3px;
     padding: 3px 3px 3px 5px;
-    outline: none;
 }
 .open-docs-popover list {
     padding: 1px;

@@ -130,7 +130,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.center_button = Gtk.MenuButton()
         self.center_button.get_style_context().add_class('flat')
         self.center_button.get_style_context().add_class('open-docs-popover-button')
-        self.center_button.set_tooltip_text('Show open documents')
+        self.center_button.set_tooltip_text('Show open documents (Ctrl+T)')
         self.center_button.set_focus_on_click(False)
         self.center_button.add(hbox)
         self.center_button.set_use_popover(True)
