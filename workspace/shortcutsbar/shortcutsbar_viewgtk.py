@@ -198,9 +198,10 @@ class ShortcutsBar(Gtk.HBox):
         # font styles submenu
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
-        self.pmb.add_header_button(box, 'Font Styles')
-        for font_style in [('Emphasis (\\emph)', 'emph', 'Ctrl+Shift+E'), ('Italics (\\textit)', 'textit', 'Ctrl+I'), ('Slanted (\\textsl)', 'textsl', None), ('Bold (\\textbf)', 'textbf', 'Ctrl+B'), ('Typewriter (\\texttt)', 'texttt', 'Ctrl+M'), ('Small Caps (\\textsc)', 'textsc', None), ('Sans Serif (\\textsf)', 'textsf', None), ('Underline (\\underline)', 'underline', 'Ctrl+U')]:
-            self.pmb.add_action_button(box, font_style[0], 'win.insert-before-after', ['\\' + font_style[1] + '{', '}'], keyboard_shortcut=font_style[2])
+        self.pmb.add_header_button(box, 'Font Styles') #TODO reorder items wie üblich
+        for font_style in [('Bold (\\textbf)', 'textbf', 'format-text-bold-symbolic', 'Ctrl+B'), ('Italics (\\textit)', 'textit', 'format-text-italic-symbolic', 'Ctrl+I'), ('Underline (\\underline)', 'underline', 'format-text-underline-symbolic', 'Ctrl+U'), ('Emphasis (\\emph)', 'emph', 'placeholder', 'Ctrl+Shift+E'), ('Slanted (\\textsl)', 'textsl', 'placeholder', None), ('Typewriter (\\texttt)', 'texttt', 'placeholder', 'Ctrl+M'), ('Small Caps (\\textsc)', 'textsc', 'placeholder', None), ('Sans Serif (\\textsf)', 'textsf', 'placeholder', None)]:
+            icon_name = font_style[2]
+            self.pmb.add_action_button(box, font_style[0], 'win.insert-before-after', ['\\' + font_style[1] + '{', '}'], icon_name=icon_name, keyboard_shortcut=font_style[3])
         stack.add_named(box, 'font_styles')
         box.show_all()
 
@@ -217,8 +218,8 @@ class ShortcutsBar(Gtk.HBox):
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, 'Alignment')
-        for command in [('Centered', 'center'), ('Left-aligned', 'flushleft'), ('Right-aligned', 'flushright')]:
-            self.pmb.add_action_button(box, command[0], 'win.insert-before-after', ['\\begin{' + command[1] + '}\n\t', '\n\\end{' + command[1] + '}'])
+        for command in [('Centered', 'center', 'format-justify-center-symbolic'), ('Left-aligned', 'flushleft', 'format-justify-left-symbolic'), ('Right-aligned', 'flushright', 'format-justify-right-symbolic')]:
+            self.pmb.add_action_button(box, command[0], 'win.insert-before-after', ['\\begin{' + command[1] + '}\n\t', '\n\\end{' + command[1] + '}'], icon_name=command[2])
         stack.add_named(box, 'text_alignment')
         box.show_all()
 
