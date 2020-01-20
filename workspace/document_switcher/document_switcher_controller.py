@@ -24,15 +24,14 @@ class DocumentSwitcherController(object):
     def __init__(self, document_switcher, workspace):
         self.document_switcher = document_switcher
         self.workspace = workspace
-        self.main_window = ServiceLocator.get_main_window()
-        self.view = self.main_window.headerbar.open_docs_popover
+        self.view = ServiceLocator.get_main_window().headerbar.open_docs_popover
 
         self.observe_document_switcher_view()
 
     def observe_document_switcher_view(self):
-        self.main_window.headerbar.open_docs_popover.document_list.connect('add', self.on_doclist_row_added)
-        self.main_window.headerbar.open_docs_popover.document_list.connect('row-activated', self.on_doclist_row_activated)
-        self.main_window.headerbar.open_docs_popover.connect('closed', self.on_doclist_row_popdown)
+        self.view.document_list.connect('add', self.on_doclist_row_added)
+        self.view.document_list.connect('row-activated', self.on_doclist_row_activated)
+        self.view.connect('closed', self.on_doclist_row_popdown)
         self.view.set_master_document_button.connect('clicked', self.set_selection_mode)
         self.view.unset_master_document_button.connect('clicked', self.unset_master_document)
 
@@ -44,7 +43,7 @@ class DocumentSwitcherController(object):
             self.document_switcher.set_mode('normal')
             self.workspace.set_one_document_master(row.document)
         else:
-            self.main_window.headerbar.open_docs_popover.popdown()
+            self.view.popdown()
             self.workspace.set_active_document(row.document)
 
     def on_doclist_row_popup(self, popover, data=None):
@@ -52,7 +51,7 @@ class DocumentSwitcherController(object):
 
     def on_doclist_row_popdown(self, popover, data=None):
         self.document_switcher.set_mode('normal')
-        self.main_window.headerbar.open_docs_popover.document_list.unselect_all()
+        self.view.document_list.unselect_all()
 
     def set_selection_mode(self, action, parameter=None):
         self.document_switcher.set_mode('selection')

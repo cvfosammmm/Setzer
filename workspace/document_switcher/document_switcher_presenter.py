@@ -24,8 +24,7 @@ class DocumentSwitcherPresenter(object):
     def __init__(self, document_switcher, workspace):
         self.document_switcher = document_switcher
         self.workspace = workspace
-        self.main_window = ServiceLocator.get_main_window()
-        self.view = self.main_window.headerbar.open_docs_popover
+        self.view = ServiceLocator.get_main_window().headerbar.open_docs_popover
 
         self.workspace.register_observer(self)
         self.document_switcher.register_observer(self)
@@ -38,17 +37,17 @@ class DocumentSwitcherPresenter(object):
 
         if change_code == 'new_document':
             document = parameter
-            self.main_window.headerbar.open_docs_popover.document_list.add(document.document_switcher_item.view)
+            self.view.document_list.add(document.document_switcher_item.view)
             self.activate_mode(self.document_switcher.mode)
 
         if change_code == 'document_removed':
             document = parameter
-            self.main_window.headerbar.open_docs_popover.remove_document(document.document_switcher_item.view)
+            self.view.remove_document(document.document_switcher_item.view)
             self.activate_mode(self.document_switcher.mode)
 
         if change_code == 'new_active_document':
             document = parameter
-            self.main_window.headerbar.open_docs_popover.document_list.invalidate_sort()
+            self.view.document_list.invalidate_sort()
 
         if change_code == 'docswitcher_mode_change':
             self.activate_mode(parameter)
