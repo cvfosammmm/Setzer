@@ -162,7 +162,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.pmb.add_action_button(box, 'About', 'win.show-about-dialog')
         self.pmb.add_separator(box)
         self.pmb.add_action_button(box, 'Close All Documents', 'win.close-all-documents')
-        self.pmb.add_action_button(box, 'Close Document', 'win.close-active-document')
+        self.pmb.add_action_button(box, 'Close Document', 'win.close-active-document', keyboard_shortcut='Ctrl+W')
         self.pmb.add_action_button(box, 'Quit', 'win.quit', keyboard_shortcut='Ctrl+Q')
         stack.add_named(box, 'main')
         box.show_all()

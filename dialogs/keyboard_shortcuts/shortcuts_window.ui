@@ -64,8 +64,8 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">1</property>
-                <property name="accelerator">F6</property>
-                <property name="title" translatable="yes">Create .pdf-file from document</property>
+                <property name="accelerator">&lt;ctrl&gt;W</property>
+                <property name="title" translatable="yes">Close the current document</property>
               </object>
             </child>
           </object>
@@ -74,6 +74,13 @@
           <object class="GtkShortcutsGroup">
             <property name="visible">1</property>
             <property name="title" translatable="yes">Tools</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">1</property>
+                <property name="accelerator">F6</property>
+                <property name="title" translatable="yes">Build .pdf-file from document</property>
+              </object>
+            </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">1</property>
