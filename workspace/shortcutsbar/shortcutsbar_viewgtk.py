@@ -238,8 +238,8 @@ class ShortcutsBar(Gtk.HBox):
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, 'International Accents')
-        for command in ['\'', '`', '^', '"', '~', '=', '.', 'v', 'u', 'H']:
-            self.pmb.add_action_button(box, '\\' + command + '{}', 'win.insert-before-after', ['\\' + command + '{', '}'])
+        for command in [('\'', 'menu-accents-1-symbolic'), ('`', 'menu-accents-2-symbolic'), ('^', 'menu-accents-3-symbolic'), ('"', 'menu-accents-4-symbolic'), ('~', 'menu-accents-5-symbolic'), ('=', 'menu-accents-6-symbolic'), ('.', 'menu-accents-7-symbolic'), ('v', 'menu-accents-8-symbolic'), ('u', 'menu-accents-9-symbolic'), ('H', 'menu-accents-10-symbolic')]:
+            self.pmb.add_action_button(box, '\\' + command[0] + '{}', 'win.insert-before-after', ['\\' + command[0] + '{', '}'], icon_name=command[1])
         stack.add_named(box, 'international_accents')
         box.show_all()
 
@@ -369,8 +369,8 @@ class ShortcutsBar(Gtk.HBox):
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, 'Math Font Styles')
-        for math_function in [('Roman', 'mathrm'), ('Italic', 'mathit'), ('Bold', 'mathbf'), ('Sans Serif', 'mathsf'), ('Typewriter', 'mathtt'), ('Calligraphic', 'mathcal'), ('Blackboard Bold', 'mathbb'), ('Fraktur', 'mathfrak')]:
-            self.pmb.add_action_button(box, math_function[0] + ' (\\' + math_function[1] + ')', 'win.insert-before-after', ['\\' + math_function[1] + '{', '}'])
+        for command in [('Bold', 'mathbf', 'menu-math-font-styles-1-symbolic'), ('Italic', 'mathit', 'menu-math-font-styles-2-symbolic'), ('Roman', 'mathrm', 'menu-math-font-styles-3-symbolic'), ('Sans Serif', 'mathsf', 'menu-math-font-styles-4-symbolic'), ('Typewriter', 'mathtt', 'menu-math-font-styles-5-symbolic'), ('Calligraphic', 'mathcal', 'menu-math-font-styles-6-symbolic'), ('Blackboard Bold', 'mathbb', 'menu-math-font-styles-7-symbolic'), ('Fraktur', 'mathfrak', 'menu-math-font-styles-8-symbolic')]:
+            self.pmb.add_action_button(box, command[0] + ' (\\' + command[1] + ')', 'win.insert-before-after', ['\\' + command[1] + '{', '}'], icon_name=command[2])
         stack.add_named(box, 'math_font_styles')
         box.show_all()
 
@@ -389,8 +389,8 @@ class ShortcutsBar(Gtk.HBox):
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, 'Math Accents')
-        for math_accent in ['acute', 'grave', 'tilde', 'bar', 'vec', 'hat', 'check', 'breve', 'dot', 'ddot']:
-            self.pmb.add_action_button(box, '\\' + math_accent + '{}', 'win.insert-before-after', ['\\' + math_accent + '{', '}'])
+        for math_accent in [('dot', 'menu-math-accents-1-symbolic'), ('ddot', 'menu-math-accents-2-symbolic'), ('vec', 'menu-math-accents-3-symbolic'), ('bar', 'menu-math-accents-4-symbolic'), ('tilde', 'menu-math-accents-5-symbolic'), ('hat', 'menu-math-accents-6-symbolic'), ('check', 'menu-math-accents-7-symbolic'), ('breve', 'menu-math-accents-8-symbolic'), ('acute', 'menu-math-accents-9-symbolic'), ('grave', 'menu-math-accents-10-symbolic')]:
+            self.pmb.add_action_button(box, '\\' + math_accent[0] + '{}', 'win.insert-before-after', ['\\' + math_accent[0] + '{', '}'], icon_name=math_accent[1])
         stack.add_named(box, 'math_accents')
         box.show_all()
 
