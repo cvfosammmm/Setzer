@@ -174,6 +174,7 @@ class WorkspacePresenter(object):
         self.main_window.insert_symbol_action.set_enabled(value)
         self.main_window.insert_before_document_end_action.set_enabled(value)
         self.main_window.include_bibtex_file_action.set_enabled(value)
+        self.main_window.include_latex_file_action.set_enabled(value)
         self.main_window.add_packages_action.set_enabled(value)
         self.main_window.document_wizard_action.set_enabled(value)
 

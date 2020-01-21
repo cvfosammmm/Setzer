@@ -59,6 +59,7 @@ class WorkspaceController(object):
         self.main_window.insert_before_document_end_action.connect('activate', self.insert_before_document_end)
         self.main_window.document_wizard_action.connect('activate', self.start_wizard)
         self.main_window.include_bibtex_file_action.connect('activate', self.start_include_bibtex_file_dialog)
+        self.main_window.include_latex_file_action.connect('activate', self.start_include_latex_file_dialog)
         self.main_window.add_packages_action.connect('activate', self.add_packages)
         self.main_window.create_new_bibtex_entry_action.connect('activate', self.start_create_new_bibtex_entry_dialog)
         self.main_window.show_previous_bibtex_entries_action.connect('activate', self.start_show_previous_bibtex_entries_dialog)
@@ -325,6 +326,11 @@ class WorkspaceController(object):
     def start_include_bibtex_file_dialog(self, action, parameter=None):
         document = self.workspace.get_active_document()
         ServiceLocator.get_dialog('include_bibtex_file').run(document)
+
+    @_assert_has_active_document
+    def start_include_latex_file_dialog(self, action, parameter=None):
+        document = self.workspace.get_active_document()
+        ServiceLocator.get_dialog('include_latex_file').run(document)
 
     @_assert_has_active_document
     def start_create_new_bibtex_entry_dialog(self, action, parameter=None):

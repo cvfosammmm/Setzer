@@ -98,7 +98,7 @@ class ShortcutsBar(Gtk.HBox):
         self.pmb.add_action_button(box, 'Show Title (\\maketitle)', 'win.insert-symbol', ['\\maketitle'])
         self.pmb.add_action_button(box, 'Table of Contents', 'win.insert-symbol', ['\\tableofcontents'])
         self.pmb.add_separator(box)
-        self.pmb.add_menu_button(box, 'Include Files', 'include_files')
+        self.pmb.add_action_button(box, 'Include LaTeX File (\\input)...', 'win.include-latex-file')
         stack.add_named(box, 'main')
         box.show_all()
 
@@ -111,15 +111,6 @@ class ShortcutsBar(Gtk.HBox):
         self.pmb.add_action_button(box, 'Date', 'win.insert-symbol', ['\\date{•}'])
         self.pmb.add_action_button(box, 'Date Today', 'win.insert-symbol', ['\\date{\\today}'])
         stack.add_named(box, 'document_info')
-        box.show_all()
-
-        # include files submenu
-        box = Gtk.VBox()
-        self.pmb.set_box_margin(box)
-        self.pmb.add_header_button(box, 'Include Files')
-        self.pmb.add_action_button(box, '\\input{}', 'win.insert-symbol', ['\\input{•}'])
-        self.pmb.add_action_button(box, '\\include{}', 'win.insert-symbol', ['\\include{•}'])
-        stack.add_named(box, 'include_files')
         box.show_all()
 
         self.document_button = Gtk.MenuButton()

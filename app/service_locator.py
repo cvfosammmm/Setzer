@@ -27,6 +27,7 @@ import dialogs.building_failed.building_failed as building_failed_dialog
 import dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
 import dialogs.document_wizard.document_wizard as document_wizard
 import dialogs.include_bibtex_file.include_bibtex_file as include_bibtex_file_dialog
+import dialogs.include_latex_file.include_latex_file as include_latex_file_dialog
 import dialogs.interpreter_missing.interpreter_missing as interpreter_missing_dialog
 import dialogs.preferences.preferences as preferences_dialog
 import dialogs.open_document.open_document as open_document_dialog
@@ -57,6 +58,7 @@ class ServiceLocator(object):
         ServiceLocator.dialogs['build_save'] = build_save_dialog.BuildSaveDialog(main_window)
         ServiceLocator.dialogs['document_wizard'] = document_wizard.DocumentWizard(main_window, workspace, settings)
         ServiceLocator.dialogs['include_bibtex_file'] = include_bibtex_file_dialog.IncludeBibTeXFile(main_window, settings)
+        ServiceLocator.dialogs['include_latex_file'] = include_latex_file_dialog.IncludeLaTeXFile(main_window)
         ServiceLocator.dialogs['interpreter_missing'] = interpreter_missing_dialog.InterpreterMissingDialog(main_window)
         ServiceLocator.dialogs['preferences'] = preferences_dialog.PreferencesDialog(main_window, settings)
         ServiceLocator.dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(main_window)
