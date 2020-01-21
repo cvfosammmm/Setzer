@@ -47,6 +47,7 @@ class IncludeLaTeXFile(Dialog):
 
         self.view.pathtype_buttons[self.current_values['pathtype']].set_active(True)
         self.view.pathtype_buttons[self.current_values['pathtype']].toggled()
+        self.view.pathtype_info_button.set_active(False)
 
         self.view.create_button.set_sensitive(False)
         self.view.file_chooser_button.unselect_all()
@@ -81,6 +82,7 @@ class IncludeLaTeXFile(Dialog):
                 self.view.pathtype_buttons[pathtype].join_group(first_button)
             self.view.pathtype_switcher.pack_start(self.view.pathtype_buttons[pathtype], False, False, 0)
             self.view.pathtype_buttons[pathtype].connect('toggled', self.on_pathtype_chosen, pathtype)
+            self.view.pathtype_info_button.connect('toggled', self.on_info_button_toggled)
 
         self.view.topbox.show_all()
 
@@ -89,6 +91,9 @@ class IncludeLaTeXFile(Dialog):
     def on_file_chosen(self, widget=None):
         self.view.create_button.set_sensitive(True)
         self.current_values['filename'] = self.view.file_chooser_button.get_filename()
+
+    def on_info_button_toggled(self, button):
+        self.view.description_revealer.set_reveal_child(button.get_active())
 
     def on_pathtype_chosen(self, button, pathtype):
         self.current_values['pathtype'] = pathtype
