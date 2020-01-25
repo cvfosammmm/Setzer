@@ -96,17 +96,15 @@ class BeamerSettingsPage(Page):
             row = self.view.themes_list_rows[self.current_values['beamer']['theme']]
         self.view.themes_list.select_row(row)
 
-        try:
-            is_active = presets['beamer']['option_show_navigation']
-        except TypeError:
-            is_active = self.current_values['beamer']['option_show_navigation']
-        self.view.option_show_navigation.set_active(is_active)
-
-        try:
-            is_active = presets['beamer']['option_top_align']
-        except TypeError:
-            is_active = self.current_values['beamer']['option_top_align']
-        self.view.option_top_align.set_active(is_active)
+        for setter_function, value_name in [
+            (self.view.option_show_navigation.set_active, 'option_show_navigation'),
+            (self.view.option_top_align.set_active, 'option_top_align')
+        ]:
+            try:
+                value = presets['beamer'][value_name]
+            except TypeError:
+                value = self.current_values['beamer'][value_name]
+            setter_function(value)
 
     def on_activation(self):
         GLib.idle_add(self.view.themes_list.get_selected_row().grab_focus)

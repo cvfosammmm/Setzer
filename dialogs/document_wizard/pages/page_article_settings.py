@@ -71,60 +71,24 @@ class ArticleSettingsPage(Page):
             self.current_values['article']['option_' + option_name] = button.get_active()
 
     def load_presets(self, presets):
-        try:
-            value = presets['article']['page_format']
-        except TypeError:
-            value = self.current_values['article']['page_format']
-        self.view.page_format_list.set_active_id(value)
+        for setter_function, value_name in [
+            (self.view.page_format_list.set_active_id, 'page_format'),
+            (self.view.font_size_entry.set_value, 'font_size'),
+            (self.view.margins_button_left.set_value, 'margin_left'),
+            (self.view.margins_button_right.set_value, 'margin_right'),
+            (self.view.margins_button_top.set_value, 'margin_top'),
+            (self.view.margins_button_bottom.set_value, 'margin_bottom'),
+            (self.view.option_twocolumn.set_active, 'option_twocolumn'),
+            (self.view.option_default_margins.set_active, 'option_default_margins'),
+            (self.view.option_landscape.set_active, 'is_landscape')
+        ]:
+            try:
+                value = presets['article'][value_name]
+            except TypeError:
+                value = self.current_values['article'][value_name]
+            setter_function(value)
 
-        try:
-            value = presets['article']['font_size']
-        except TypeError:
-            value = self.current_values['article']['font_size']
-        self.view.font_size_entry.set_value(value)
-
-        try:
-            is_active = presets['article']['option_twocolumn']
-        except TypeError:
-            is_active = self.current_values['article']['option_twocolumn']
-        self.view.option_twocolumn.set_active(is_active)
-
-        try:
-            value = presets['article']['margin_left']
-        except TypeError:
-            value = self.current_values['article']['margin_left']
-        self.view.margins_button_left.set_value(value)
-
-        try:
-            value = presets['article']['margin_right']
-        except TypeError:
-            value = self.current_values['article']['margin_right']
-        self.view.margins_button_right.set_value(value)
-
-        try:
-            value = presets['article']['margin_top']
-        except TypeError:
-            value = self.current_values['article']['margin_top']
-        self.view.margins_button_top.set_value(value)
-
-        try:
-            value = presets['article']['margin_bottom']
-        except TypeError:
-            value = self.current_values['article']['margin_bottom']
-        self.view.margins_button_bottom.set_value(value)
-
-        try:
-            is_active = presets['article']['option_default_margins']
-        except TypeError:
-            is_active = self.current_values['article']['option_default_margins']
-        self.view.option_default_margins.set_active(is_active)
         self.option_default_margins_toggled(self.view.option_default_margins)
-
-        try:
-            is_landscape = presets['article']['is_landscape']
-        except TypeError:
-            is_landscape = self.current_values['article']['is_landscape']
-        self.view.option_landscape.set_active(is_landscape)
 
     def on_activation(self):
         GLib.idle_add(self.view.page_format_list.grab_focus)

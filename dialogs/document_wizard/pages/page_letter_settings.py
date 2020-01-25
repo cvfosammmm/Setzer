@@ -59,47 +59,21 @@ class LetterSettingsPage(Page):
             self.current_values['letter']['option_' + option_name] = button.get_active()
 
     def load_presets(self, presets):
-        try:
-            value = presets['letter']['page_format']
-        except TypeError:
-            value = self.current_values['letter']['page_format']
-        self.view.page_format_list.set_active_id(value)
+        for setter_function, value_name in [
+            (self.view.page_format_list.set_active_id, 'page_format'),
+            (self.view.font_size_entry.set_value, 'font_size'),
+            (self.view.margins_button_left.set_value, 'margin_left'),
+            (self.view.margins_button_right.set_value, 'margin_right'),
+            (self.view.margins_button_top.set_value, 'margin_top'),
+            (self.view.margins_button_bottom.set_value, 'margin_bottom'),
+            (self.view.option_default_margins.set_active, 'option_default_margins')
+        ]:
+            try:
+                value = presets['letter'][value_name]
+            except TypeError:
+                value = self.current_values['letter'][value_name]
+            setter_function(value)
 
-        try:
-            value = presets['letter']['font_size']
-        except TypeError:
-            value = self.current_values['letter']['font_size']
-        self.view.font_size_entry.set_value(value)
-
-        try:
-            value = presets['letter']['margin_left']
-        except TypeError:
-            value = self.current_values['letter']['margin_left']
-        self.view.margins_button_left.set_value(value)
-
-        try:
-            value = presets['letter']['margin_right']
-        except TypeError:
-            value = self.current_values['letter']['margin_right']
-        self.view.margins_button_right.set_value(value)
-
-        try:
-            value = presets['letter']['margin_top']
-        except TypeError:
-            value = self.current_values['letter']['margin_top']
-        self.view.margins_button_top.set_value(value)
-
-        try:
-            value = presets['letter']['margin_bottom']
-        except TypeError:
-            value = self.current_values['letter']['margin_bottom']
-        self.view.margins_button_bottom.set_value(value)
-
-        try:
-            is_active = presets['letter']['option_default_margins']
-        except TypeError:
-            is_active = self.current_values['letter']['option_default_margins']
-        self.view.option_default_margins.set_active(is_active)
         self.option_default_margins_toggled(self.view.option_default_margins)
 
     def on_activation(self):
