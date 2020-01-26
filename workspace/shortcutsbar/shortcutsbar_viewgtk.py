@@ -114,7 +114,7 @@ class ShortcutsBar(Gtk.HBox):
         box.show_all()
 
         self.document_button = Gtk.MenuButton()
-        self.document_button.set_image(Gtk.Image.new_from_icon_name('folder-documents-symbolic', Gtk.IconSize.MENU))
+        self.document_button.set_image(Gtk.Image.new_from_icon_name('application-x-addon-symbolic', Gtk.IconSize.MENU))
         self.document_button.set_focus_on_click(False)
         self.document_button.set_tooltip_text('Document')
         self.document_button.get_style_context().add_class('flat')
