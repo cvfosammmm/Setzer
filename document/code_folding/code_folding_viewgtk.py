@@ -16,29 +16,15 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
 gi.require_version('GtkSource', '3.0')
-from gi.repository import Gtk
 from gi.repository import GtkSource
 from gi.repository import GdkPixbuf
-
-import os.path
-
-from app.service_locator import ServiceLocator
 
 
 class CodeFoldingView(GtkSource.GutterRendererPixbuf):
 
     def __init__(self):
         GtkSource.GutterRendererPixbuf.__init__(self)
-        self.create_pixbufs()
-
-    def create_pixbufs(self, dark_mode=False):
-        path = os.path.dirname(os.path.realpath(__file__)) + '/resources/'
-        suffix = '_dark' if dark_mode else ''
-        self.pixbuf_unfolded = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'unfolded' + suffix + '.png', 18, 18)
-        self.pixbuf_folded = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'folded' + suffix + '.png', 18, 18)
-        self.pixbuf_neutral = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'neutral' + suffix + '.png', 18, 18)
         self.set_size(18)
 
 

@@ -30,11 +30,11 @@ class CodeFoldingPresenter(object):
         if self.line_invisible[start_iter.get_line()]: return
         if start_iter.get_line() in self.model.folding_regions.keys():
             if self.model.folding_regions[start_iter.get_line()]['is_folded']:
-                renderer.set_pixbuf(self.view.pixbuf_folded)
+                renderer.set_icon_name('own-folded-symbolic')
             else:
-                renderer.set_pixbuf(self.view.pixbuf_unfolded)
+                renderer.set_icon_name('own-unfolded-symbolic')
         else:
-            renderer.set_pixbuf(self.view.pixbuf_neutral)
+            renderer.set_icon_name('own-no-folding-symbolic')
 
     def show_folding_bar(self):
         self.view.set_visible(True)
