@@ -24,15 +24,21 @@ from gi.repository import GdkPixbuf
 
 import os.path
 
+from app.service_locator import ServiceLocator
+
 
 class CodeFoldingView(GtkSource.GutterRendererPixbuf):
 
     def __init__(self):
         GtkSource.GutterRendererPixbuf.__init__(self)
+        self.create_pixbufs()
+
+    def create_pixbufs(self, dark_mode=False):
         path = os.path.dirname(os.path.realpath(__file__)) + '/resources/'
-        self.pixbuf_unfolded = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'unfolded.png', 18, 18)
-        self.pixbuf_folded = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'folded.png', 18, 18)
-        self.pixbuf_neutral = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'neutral.png', 18, 18)
+        suffix = '_dark' if dark_mode else ''
+        self.pixbuf_unfolded = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'unfolded' + suffix + '.png', 18, 18)
+        self.pixbuf_folded = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'folded' + suffix + '.png', 18, 18)
+        self.pixbuf_neutral = GdkPixbuf.Pixbuf.new_from_file_at_size(path + 'neutral' + suffix + '.png', 18, 18)
         self.set_size(18)
 
 

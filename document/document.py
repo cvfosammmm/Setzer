@@ -110,6 +110,12 @@ class Document(Observable):
         else:
             self.add_change_code('document_empty')
 
+    def set_dark_mode(self, dark_mode):
+        self.set_use_dark_scheme(dark_mode)
+        try:
+            self.code_folding.view.create_pixbufs(dark_mode)
+        except AttributeError: pass
+    
     def set_use_dark_scheme(self, use_dark_scheme):
         if use_dark_scheme: self.source_buffer.set_style_scheme(self.source_style_scheme_dark)
         else: self.source_buffer.set_style_scheme(self.source_style_scheme_light)

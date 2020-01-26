@@ -46,6 +46,7 @@ class CodeFolding(object):
         self.source_gutter = self.source_view.get_gutter(Gtk.TextWindowType.LEFT)
         self.tag_table = self.document.source_buffer.get_tag_table()
         self.view = code_folding_view.CodeFoldingView()
+        self.view.create_pixbufs(document.settings.get_value('preferences', 'prefer_dark_mode'))
         self.presenter = code_folding_presenter.CodeFoldingPresenter(self, self.view)
         self.controller = code_folding_controller.CodeFoldingController(self, self.view)
 
