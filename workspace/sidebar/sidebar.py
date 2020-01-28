@@ -102,8 +102,8 @@ class Sidebar(object):
             symbol_page.size = (allocation.width, allocation.height)
             if isinstance(symbol_page, sidebar_view.SidebarPageSymbolsList):
                 width_with_border = symbol_page.symbol_width + 11
-                width_avail = (allocation.width) # +1px for removed child borders
-                symbols_per_line = (width_avail // width_with_border)
+                width_avail = allocation.width
+                symbols_per_line = width_avail // width_with_border
                 number_of_lines = math.ceil(len(symbol_page.symbols) / symbols_per_line)
 
                 height_with_border = symbol_page.symbols[0][5].get_preferred_height()[0]

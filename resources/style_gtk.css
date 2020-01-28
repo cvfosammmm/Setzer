@@ -255,9 +255,6 @@ box.sidebar toolbar button:active {
 box.sidebar > box {
     background-color: @theme_base_color;
 }
-box.sidebar stack {
-    border-left: 1px solid @borders;
-}
 box.sidebar flowbox flowboxchild {
     padding: 0px;
 }
