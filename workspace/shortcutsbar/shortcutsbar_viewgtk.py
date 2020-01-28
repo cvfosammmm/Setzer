@@ -189,8 +189,8 @@ class ShortcutsBar(Gtk.HBox):
         # font styles submenu
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
-        self.pmb.add_header_button(box, 'Font Styles') #TODO reorder items wie üblich
-        for font_style in [('Bold (\\textbf)', 'textbf', 'format-text-bold-symbolic', 'Ctrl+B'), ('Italics (\\textit)', 'textit', 'format-text-italic-symbolic', 'Ctrl+I'), ('Underline (\\underline)', 'underline', 'format-text-underline-symbolic', 'Ctrl+U'), ('Emphasis (\\emph)', 'emph', 'placeholder', 'Ctrl+Shift+E'), ('Slanted (\\textsl)', 'textsl', 'placeholder', None), ('Typewriter (\\texttt)', 'texttt', 'placeholder', 'Ctrl+M'), ('Small Caps (\\textsc)', 'textsc', 'placeholder', None), ('Sans Serif (\\textsf)', 'textsf', 'placeholder', None)]:
+        self.pmb.add_header_button(box, 'Font Styles')
+        for font_style in [('Bold (\\textbf)', 'textbf', 'format-text-bold-symbolic', 'Ctrl+B'), ('Italic (\\textit)', 'textit', 'format-text-italic-symbolic', 'Ctrl+I'), ('Underline (\\underline)', 'underline', 'format-text-underline-symbolic', 'Ctrl+U'), ('Sans Serif (\\textsf)', 'textsf', 'placeholder', None), ('Typewriter (\\texttt)', 'texttt', 'placeholder', 'Ctrl+M'), ('Small Caps (\\textsc)', 'textsc', 'placeholder', None), ('Slanted (\\textsl)', 'textsl', 'placeholder', None), ('Emphasis (\\emph)', 'emph', 'placeholder', 'Ctrl+Shift+E')]:
             icon_name = font_style[2]
             self.pmb.add_action_button(box, font_style[0], 'win.insert-before-after', ['\\' + font_style[1] + '{', '}'], icon_name=icon_name, keyboard_shortcut=font_style[3])
         stack.add_named(box, 'font_styles')
