@@ -270,7 +270,7 @@ box.sidebar flowbox flowboxchild button {
     border-top-width: 0px;
     border-color: mix(@borders, @theme_base_color, 0.68);
     margin: 0px;
-    padding-top: 5px;
+    padding: 5px;
     border-radius: 0px;
     box-shadow: none;
 }

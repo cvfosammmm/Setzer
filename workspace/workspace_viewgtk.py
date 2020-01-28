@@ -42,12 +42,12 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_size_request(-1, 550)
         self.add_events(Gdk.EventMask.KEY_PRESS_MASK)
         Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/icons')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/arrows')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/greek_letters')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/misc_math')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/misc_text')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/operators')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/light/relations')
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/arrows')
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/greek_letters')
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/misc_math')
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/misc_text')
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/operators')
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/relations')
 
         # window state variables
         self.current_width = 0

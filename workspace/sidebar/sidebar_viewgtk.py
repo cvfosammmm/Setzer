@@ -34,7 +34,7 @@ class Sidebar(Gtk.VBox):
 
         self.vbox = Gtk.VBox()
 
-        # icons on left
+        # icons on top
         self.tabs = Gtk.Toolbar()
         self.tabs.set_style(Gtk.ToolbarStyle.ICONS)
         self.tabs.set_orientation(Gtk.Orientation.HORIZONTAL)
@@ -85,7 +85,7 @@ class SidebarPageSymbolsList(SidebarPage):
         xml_tree = ET.parse(os.path.dirname(__file__) + '/../../resources/symbols/' + symbol_folder + '.xml')
         xml_root = xml_tree.getroot()
         for symbol_tag in xml_root:
-            self.symbols.append([symbol_tag.attrib['file'].rsplit('.')[0], symbol_tag.attrib['command'], symbol_tag.attrib.get('package', None)])
+            self.symbols.append([symbol_tag.attrib['file'].rsplit('.')[0], symbol_tag.attrib['command'], symbol_tag.attrib.get('package', None), int(symbol_tag.attrib.get('original_width', 10)), int(symbol_tag.attrib.get('original_height', 10))])
         
         self.init_symbols_list()
 
@@ -93,7 +93,10 @@ class SidebarPageSymbolsList(SidebarPage):
         
     def init_symbols_list(self):
         for symbol in self.symbols:
-            image = Gtk.Image.new_from_file(os.path.dirname(__file__) + '/../../resources/symbols/' + self.parent_folder + '/' + self.symbol_folder + '/' + symbol[0] + '.png')
+            size = max(symbol[3], symbol[4])
+
+            image = Gtk.Image.new_from_icon_name('sidebar-' + symbol[0] + '-symbolic', 0)
+            image.set_pixel_size(int(size * 1.5))
             self.images.append([image, symbol])
             button = Gtk.Button()
             button.set_image(image)
@@ -103,12 +106,5 @@ class SidebarPageSymbolsList(SidebarPage):
             button.set_tooltip_text(tooltip_text)
             symbol.append(button)
             self.flowbox.insert(button, -1)
-            
-    def change_parent_folder(self, parent_folder):
-        ''' change icons, called on theme changes '''
-        
-        self.parent_folder = parent_folder
-        for image in self.images:
-            image[0].set_from_file(os.path.dirname(__file__) + '/../../resources/symbols/' + self.parent_folder + '/' + self.symbol_folder + '/' + image[1][0] + '.png')
 
 

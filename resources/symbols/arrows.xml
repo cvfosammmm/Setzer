@@ -1,67 +1,67 @@
 <symbols>
-  <symbol command="\leftarrow" file="leftarrow.png" math="1" />
-  <symbol command="\leftrightarrow" file="leftrightarrow.png" math="1" />
-  <symbol command="\rightarrow" file="rightarrow.png" math="1" />
-  <symbol command="\mapsto" file="mapsto.png" math="1" />
-  <symbol command="\longleftarrow" file="longleftarrow.png" math="1" />
-  <symbol command="\longleftrightarrow" file="longleftrightarrow.png" math="1" />
-  <symbol command="\longrightarrow" file="longrightarrow.png" math="1" />
-  <symbol command="\longmapsto" file="longmapsto.png" math="1" />
-  <symbol command="\downarrow" file="downarrow.png" math="1" />
-  <symbol command="\updownarrow" file="updownarrow.png" math="1" />
-  <symbol command="\uparrow" file="uparrow.png" math="1" />
-  <symbol command="\nwarrow" file="nwarrow.png" math="1" />
-  <symbol command="\searrow" file="searrow.png" math="1" />
-  <symbol command="\nearrow" file="nearrow.png" math="1" />
-  <symbol command="\swarrow" file="swarrow.png" math="1" />
-  <symbol command="\nleftarrow" file="nleftarrow.png" math="1" package="amssymb" />
-  <symbol command="\nleftrightarrow" file="nleftrightarrow.png" math="1" package="amssymb" />
-  <symbol command="\nrightarrow" file="nrightarrow.png" math="1" package="amssymb" />
-  <symbol command="\hookleftarrow" file="hookleftarrow.png" math="1" />
-  <symbol command="\hookrightarrow" file="hookrightarrow.png" math="1" />
-  <symbol command="\twoheadleftarrow" file="twoheadleftarrow.png" math="1" package="amssymb" />
-  <symbol command="\twoheadrightarrow" file="twoheadrightarrow.png" math="1" package="amssymb" />
-  <symbol command="\leftarrowtail" file="leftarrowtail.png" math="1" package="amssymb" />
-  <symbol command="\rightarrowtail" file="rightarrowtail.png" math="1" package="amssymb" />
-  <symbol command="\Leftarrow" file="Leftarrow.png" math="1" />
-  <symbol command="\Leftrightarrow" file="Leftrightarrow.png" math="1" />
-  <symbol command="\Rightarrow" file="Rightarrow.png" math="1" />
-  <symbol command="\Longleftarrow" file="Longleftarrow.png" math="1" />
-  <symbol command="\Longleftrightarrow" file="Longleftrightarrow.png" math="1" />
-  <symbol command="\Longrightarrow" file="Longrightarrow.png" math="1" />
-  <symbol command="\Updownarrow" file="Updownarrow.png" math="1" />
-  <symbol command="\Uparrow" file="Uparrow.png" math="1" />
-  <symbol command="\Downarrow" file="Downarrow.png" math="1" />
-  <symbol command="\nLeftarrow" file="nLeftarrow.png" math="1" package="amssymb" />
-  <symbol command="\nLeftrightarrow" file="nLeftrightarrow.png" math="1" package="amssymb" />
-  <symbol command="\nRightarrow" file="nRightarrow.png" math="1" package="amssymb" />
-  <symbol command="\leftleftarrows" file="leftleftarrows.png" math="1" package="amssymb" />
-  <symbol command="\leftrightarrows" file="leftrightarrows.png" math="1" package="amssymb" />
-  <symbol command="\rightleftarrows" file="rightleftarrows.png" math="1" package="amssymb" />
-  <symbol command="\rightrightarrows" file="rightrightarrows.png" math="1" package="amssymb" />
-  <symbol command="\downdownarrows" file="downdownarrows.png" math="1" package="amssymb" />
-  <symbol command="\upuparrows" file="upuparrows.png" math="1" package="amssymb" />
-  <symbol command="\circlearrowleft" file="circlearrowleft.png" math="1" package="amssymb" />
-  <symbol command="\circlearrowright" file="circlearrowright.png" math="1" package="amssymb" />
-  <symbol command="\curvearrowleft" file="curvearrowleft.png" math="1" package="amssymb" />
-  <symbol command="\curvearrowright" file="curvearrowright.png" math="1" package="amssymb" />
-  <symbol command="\Lsh" file="Lsh.png" math="1" package="amssymb" />
-  <symbol command="\Rsh" file="Rsh.png" math="1" package="amssymb" />
-  <symbol command="\looparrowleft" file="looparrowleft.png" math="1" package="amssymb" />
-  <symbol command="\looparrowright" file="looparrowright.png" math="1" package="amssymb" />
-  <symbol command="\dashleftarrow" file="dashleftarrow.png" math="1" package="amssymb" />
-  <symbol command="\dashrightarrow" file="dashrightarrow.png" math="1" package="amssymb" />
-  <symbol command="\leftrightsquigarrow" file="leftrightsquigarrow.png" math="1" package="amssymb" />
-  <symbol command="\rightsquigarrow" file="rightsquigarrow.png" math="1" package="amssymb" />
-  <symbol command="\Lleftarrow" file="Lleftarrow.png" math="1" package="amssymb" />
-  <symbol command="\leftharpoondown" file="leftharpoondown.png" math="1" />
-  <symbol command="\rightharpoondown" file="rightharpoondown.png" math="1" />
-  <symbol command="\leftharpoonup" file="leftharpoonup.png" math="1" />
-  <symbol command="\rightharpoonup" file="rightharpoonup.png" math="1" />
-  <symbol command="\rightleftharpoons" file="rightleftharpoons.png" math="1" />
-  <symbol command="\leftrightharpoons" file="leftrightharpoons.png" math="1" package="amssymb" />
-  <symbol command="\downharpoonleft" file="downharpoonleft.png" math="1" package="amssymb" />
-  <symbol command="\upharpoonleft" file="upharpoonleft.png" math="1" package="amssymb" />
-  <symbol command="\downharpoonright" file="downharpoonright.png" math="1" package="amssymb" />
-  <symbol command="\upharpoonright" file="upharpoonright.png" math="1" package="amssymb" />
+  <symbol command="\leftarrow" file="leftarrow.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\leftrightarrow" file="leftrightarrow.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\rightarrow" file="rightarrow.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\mapsto" file="mapsto.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\longleftarrow" file="longleftarrow.png" math="1" original_height="28" original_width="28" />
+  <symbol command="\longleftrightarrow" file="longleftrightarrow.png" math="1" original_height="32" original_width="32" />
+  <symbol command="\longrightarrow" file="longrightarrow.png" math="1" original_height="28" original_width="28" />
+  <symbol command="\longmapsto" file="longmapsto.png" math="1" original_height="28" original_width="28" />
+  <symbol command="\downarrow" file="downarrow.png" math="1" original_height="17" original_width="17" />
+  <symbol command="\updownarrow" file="updownarrow.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\uparrow" file="uparrow.png" math="1" original_height="17" original_width="17" />
+  <symbol command="\nwarrow" file="nwarrow.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\searrow" file="searrow.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\nearrow" file="nearrow.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\swarrow" file="swarrow.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\nleftarrow" file="nleftarrow.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\nleftrightarrow" file="nleftrightarrow.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\nrightarrow" file="nrightarrow.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\hookleftarrow" file="hookleftarrow.png" math="1" original_height="20" original_width="20" />
+  <symbol command="\hookrightarrow" file="hookrightarrow.png" math="1" original_height="20" original_width="20" />
+  <symbol command="\twoheadleftarrow" file="twoheadleftarrow.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\twoheadrightarrow" file="twoheadrightarrow.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\leftarrowtail" file="leftarrowtail.png" math="1" original_height="20" original_width="20" package="amssymb" />
+  <symbol command="\rightarrowtail" file="rightarrowtail.png" math="1" original_height="20" original_width="20" package="amssymb" />
+  <symbol command="\Leftarrow" file="Leftarrow.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\Leftrightarrow" file="Leftrightarrow.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\Rightarrow" file="Rightarrow.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\Longleftarrow" file="Longleftarrow.png" math="1" original_height="28" original_width="28" />
+  <symbol command="\Longleftrightarrow" file="Longleftrightarrow.png" math="1" original_height="32" original_width="32" />
+  <symbol command="\Longrightarrow" file="Longrightarrow.png" math="1" original_height="28" original_width="28" />
+  <symbol command="\Updownarrow" file="Updownarrow.png" math="1" original_height="19" original_width="19" />
+  <symbol command="\Uparrow" file="Uparrow.png" math="1" original_height="17" original_width="17" />
+  <symbol command="\Downarrow" file="Downarrow.png" math="1" original_height="17" original_width="17" />
+  <symbol command="\nLeftarrow" file="nLeftarrow.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\nLeftrightarrow" file="nLeftrightarrow.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\nRightarrow" file="nRightarrow.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\leftleftarrows" file="leftleftarrows.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\leftrightarrows" file="leftrightarrows.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\rightleftarrows" file="rightleftarrows.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\rightrightarrows" file="rightrightarrows.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\downdownarrows" file="downdownarrows.png" math="1" original_height="17" original_width="17" package="amssymb" />
+  <symbol command="\upuparrows" file="upuparrows.png" math="1" original_height="17" original_width="17" package="amssymb" />
+  <symbol command="\circlearrowleft" file="circlearrowleft.png" math="1" original_height="15" original_width="15" package="amssymb" />
+  <symbol command="\circlearrowright" file="circlearrowright.png" math="1" original_height="15" original_width="15" package="amssymb" />
+  <symbol command="\curvearrowleft" file="curvearrowleft.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\curvearrowright" file="curvearrowright.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\Lsh" file="Lsh.png" math="1" original_height="14" original_width="14" package="amssymb" />
+  <symbol command="\Rsh" file="Rsh.png" math="1" original_height="14" original_width="14" package="amssymb" />
+  <symbol command="\looparrowleft" file="looparrowleft.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\looparrowright" file="looparrowright.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\dashleftarrow" file="dashleftarrow.png" math="1" original_height="27" original_width="27" package="amssymb" />
+  <symbol command="\dashrightarrow" file="dashrightarrow.png" math="1" original_height="27" original_width="27" package="amssymb" />
+  <symbol command="\leftrightsquigarrow" file="leftrightsquigarrow.png" math="1" original_height="25" original_width="25" package="amssymb" />
+  <symbol command="\rightsquigarrow" file="rightsquigarrow.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\Lleftarrow" file="Lleftarrow.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\leftharpoondown" file="leftharpoondown.png" math="1" original_height="18" original_width="18" />
+  <symbol command="\rightharpoondown" file="rightharpoondown.png" math="1" original_height="18" original_width="18" />
+  <symbol command="\leftharpoonup" file="leftharpoonup.png" math="1" original_height="18" original_width="18" />
+  <symbol command="\rightharpoonup" file="rightharpoonup.png" math="1" original_height="18" original_width="18" />
+  <symbol command="\rightleftharpoons" file="rightleftharpoons.png" math="1" original_height="18" original_width="18" />
+  <symbol command="\leftrightharpoons" file="leftrightharpoons.png" math="1" original_height="19" original_width="19" package="amssymb" />
+  <symbol command="\downharpoonleft" file="downharpoonleft.png" math="1" original_height="17" original_width="17" package="amssymb" />
+  <symbol command="\upharpoonleft" file="upharpoonleft.png" math="1" original_height="17" original_width="17" package="amssymb" />
+  <symbol command="\downharpoonright" file="downharpoonright.png" math="1" original_height="17" original_width="17" package="amssymb" />
+  <symbol command="\upharpoonright" file="upharpoonright.png" math="1" original_height="17" original_width="17" package="amssymb" />
 </symbols>

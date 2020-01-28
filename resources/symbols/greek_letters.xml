@@ -1,53 +1,53 @@
 <symbols>
-  <symbol command="\alpha" file="alpha.png" math="1" />
-  <symbol command="\beta" file="beta.png" math="1" />
-  <symbol command="\gamma" file="gamma.png" math="1" />
-  <symbol command="\delta" file="delta.png" math="1" />
-  <symbol command="\epsilon" file="epsilon.png" math="1" />
-  <symbol command="\varepsilon" file="varepsilon.png" math="1" />
-  <symbol command="\zeta" file="zeta.png" math="1" />
-  <symbol command="\eta" file="eta.png" math="1" />
-  <symbol command="\theta" file="theta.png" math="1" />
-  <symbol command="\vartheta" file="vartheta.png" math="1" />
-  <symbol command="\iota" file="iota.png" math="1" />
-  <symbol command="\kappa" file="kappa.png" math="1" />
-  <symbol command="\lambda" file="lambda.png" math="1" />
-  <symbol command="\mu" file="mu.png" math="1" />
-  <symbol command="\nu" file="nu.png" math="1" />
-  <symbol command="\xi" file="xi.png" math="1" />
-  <symbol command="\pi" file="pi.png" math="1" />
-  <symbol command="\varpi" file="varpi.png" math="1" />
-  <symbol command="\rho" file="rho.png" math="1" />
-  <symbol command="\varrho" file="varrho.png" math="1" />
-  <symbol command="\sigma" file="sigma.png" math="1" />
-  <symbol command="\varsigma" file="varsigma.png" math="1" />
-  <symbol command="\tau" file="tau.png" math="1" />
-  <symbol command="\upsilon" file="upsilon.png" math="1" />
-  <symbol command="\phi" file="phi.png" math="1" />
-  <symbol command="\varphi" file="varphi.png" math="1" />
-  <symbol command="\chi" file="chi.png" math="1" />
-  <symbol command="\psi" file="psi.png" math="1" />
-  <symbol command="\omega" file="omega.png" math="1" />
-  <symbol command="\Gamma" file="Gamma.png" math="1" />
-  <symbol command="\varGamma" file="varGamma.png" math="1" package="amsmath" />
-  <symbol command="\Delta" file="Delta.png" math="1" />
-  <symbol command="\varDelta" file="varDelta.png" math="1" package="amsmath" />
-  <symbol command="\Theta" file="Theta.png" math="1" />
-  <symbol command="\varTheta" file="varTheta.png" math="1" package="amsmath" />
-  <symbol command="\Lambda" file="Lambda.png" math="1" />
-  <symbol command="\varLambda" file="varLambda.png" math="1" package="amsmath" />
-  <symbol command="\Xi" file="Xi.png" math="1" />
-  <symbol command="\varXi" file="varXi.png" math="1" package="amsmath" />
-  <symbol command="\Pi" file="Pi.png" math="1" />
-  <symbol command="\varPi" file="varPi.png" math="1" package="amsmath" />
-  <symbol command="\Sigma" file="Sigma.png" math="1" />
-  <symbol command="\varSigma" file="varSigma.png" math="1" package="amsmath" />
-  <symbol command="\Upsilon" file="Upsilon.png" math="1" />
-  <symbol command="\varUpsilon" file="varUpsilon.png" math="1" package="amsmath" />
-  <symbol command="\Phi" file="Phi.png" math="1" />
-  <symbol command="\varPhi" file="varPhi.png" math="1" package="amsmath" />
-  <symbol command="\Psi" file="Psi.png" math="1" />
-  <symbol command="\varPsi" file="varPsi.png" math="1" package="amsmath" />
-  <symbol command="\Omega" file="Omega.png" math="1" />
-  <symbol command="\varOmega" file="varOmega.png" math="1" package="amsmath" />
+  <symbol command="\alpha" file="alpha.png" math="1" original_height="13" original_width="13" />
+  <symbol command="\beta" file="beta.png" math="1" original_height="17" original_width="17" />
+  <symbol command="\gamma" file="gamma.png" math="1" original_height="13" original_width="13" />
+  <symbol command="\delta" file="delta.png" math="1" original_height="14" original_width="14" />
+  <symbol command="\epsilon" file="epsilon.png" math="1" original_height="10" original_width="10" />
+  <symbol command="\varepsilon" file="varepsilon.png" math="1" original_height="10" original_width="10" />
+  <symbol command="\zeta" file="zeta.png" math="1" original_height="17" original_width="17" />
+  <symbol command="\eta" file="eta.png" math="1" original_height="13" original_width="13" />
+  <symbol command="\theta" file="theta.png" math="1" original_height="14" original_width="14" />
+  <symbol command="\vartheta" file="vartheta.png" math="1" original_height="14" original_width="14" />
+  <symbol command="\iota" file="iota.png" math="1" original_height="10" original_width="10" />
+  <symbol command="\kappa" file="kappa.png" math="1" original_height="12" original_width="12" />
+  <symbol command="\lambda" file="lambda.png" math="1" original_height="14" original_width="14" />
+  <symbol command="\mu" file="mu.png" math="1" original_height="13" original_width="13" />
+  <symbol command="\nu" file="nu.png" math="1" original_height="11" original_width="11" />
+  <symbol command="\xi" file="xi.png" math="1" original_height="17" original_width="17" />
+  <symbol command="\pi" file="pi.png" math="1" original_height="12" original_width="12" />
+  <symbol command="\varpi" file="varpi.png" math="1" original_height="16" original_width="16" />
+  <symbol command="\rho" file="rho.png" math="1" original_height="13" original_width="13" />
+  <symbol command="\varrho" file="varrho.png" math="1" original_height="13" original_width="13" />
+  <symbol command="\sigma" file="sigma.png" math="1" original_height="12" original_width="12" />
+  <symbol command="\varsigma" file="varsigma.png" math="1" original_height="11" original_width="11" />
+  <symbol command="\tau" file="tau.png" math="1" original_height="11" original_width="11" />
+  <symbol command="\upsilon" file="upsilon.png" math="1" original_height="12" original_width="12" />
+  <symbol command="\phi" file="phi.png" math="1" original_height="17" original_width="17" />
+  <symbol command="\varphi" file="varphi.png" math="1" original_height="13" original_width="13" />
+  <symbol command="\chi" file="chi.png" math="1" original_height="13" original_width="13" />
+  <symbol command="\psi" file="psi.png" math="1" original_height="17" original_width="17" />
+  <symbol command="\omega" file="omega.png" math="1" original_height="13" original_width="13" />
+  <symbol command="\Gamma" file="Gamma.png" math="1" original_height="14" original_width="14" />
+  <symbol command="\varGamma" file="varGamma.png" math="1" original_height="14" original_width="14" package="amsmath" />
+  <symbol command="\Delta" file="Delta.png" math="1" original_height="16" original_width="16" />
+  <symbol command="\varDelta" file="varDelta.png" math="1" original_height="16" original_width="16" package="amsmath" />
+  <symbol command="\Theta" file="Theta.png" math="1" original_height="15" original_width="15" />
+  <symbol command="\varTheta" file="varTheta.png" math="1" original_height="15" original_width="15" package="amsmath" />
+  <symbol command="\Lambda" file="Lambda.png" math="1" original_height="14" original_width="14" />
+  <symbol command="\varLambda" file="varLambda.png" math="1" original_height="14" original_width="14" package="amsmath" />
+  <symbol command="\Xi" file="Xi.png" math="1" original_height="14" original_width="14" />
+  <symbol command="\varXi" file="varXi.png" math="1" original_height="15" original_width="15" package="amsmath" />
+  <symbol command="\Pi" file="Pi.png" math="1" original_height="14" original_width="14" />
+  <symbol command="\varPi" file="varPi.png" math="1" original_height="17" original_width="17" package="amsmath" />
+  <symbol command="\Sigma" file="Sigma.png" math="1" original_height="14" original_width="14" />
+  <symbol command="\varSigma" file="varSigma.png" math="1" original_height="16" original_width="16" package="amsmath" />
+  <symbol command="\Upsilon" file="Upsilon.png" math="1" original_height="15" original_width="15" />
+  <symbol command="\varUpsilon" file="varUpsilon.png" math="1" original_height="14" original_width="14" package="amsmath" />
+  <symbol command="\Phi" file="Phi.png" math="1" original_height="14" original_width="14" />
+  <symbol command="\varPhi" file="varPhi.png" math="1" original_height="14" original_width="14" package="amsmath" />
+  <symbol command="\Psi" file="Psi.png" math="1" original_height="15" original_width="15" />
+  <symbol command="\varPsi" file="varPsi.png" math="1" original_height="14" original_width="14" package="amsmath" />
+  <symbol command="\Omega" file="Omega.png" math="1" original_height="14" original_width="14" />
+  <symbol command="\varOmega" file="varOmega.png" math="1" original_height="16" original_width="16" package="amsmath" />
 </symbols>

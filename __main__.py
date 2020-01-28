@@ -104,10 +104,6 @@ class MainApplicationController(Gtk.Application):
                 is_dark_mode = helpers.is_dark_mode(main_window)
                 for document in documents:
                     document.set_dark_mode(is_dark_mode)
-                
-                parent_folder = 'dark' if is_dark_mode else 'light'
-                for page_view in self.workspace.sidebar.page_views:
-                    page_view.change_parent_folder(parent_folder)
         return False
 
     def save_window_state(self):

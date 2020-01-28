@@ -40,17 +40,17 @@ class Sidebar(object):
         # tabbed pages: name, icon name, tooltip, widget
         self.pages = list()
         self.pages.append(['greek_letters', 'own-symbols-greek-letters-symbolic', 'Greek Letters', 
-                           'sidebar_view.SidebarPageSymbolsList("greek_letters", 20, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("greek_letters", 25, ' + dm + ')'])
         self.pages.append(['arrows', 'own-symbols-arrows-symbolic', 'Arrows', 
-                           'sidebar_view.SidebarPageSymbolsList("arrows", 42, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("arrows", 48, ' + dm + ')'])
         self.pages.append(['relations', 'own-symbols-relations-symbolic', 'Relations', 
-                           'sidebar_view.SidebarPageSymbolsList("relations", 30, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("relations", 39, ' + dm + ')'])
         self.pages.append(['operators', 'own-symbols-operators-symbolic', 'Operators', 
-                           'sidebar_view.SidebarPageSymbolsList("operators", 44, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("operators", 47, ' + dm + ')'])
         self.pages.append(['misc_math', 'own-symbols-misc-math-symbolic', 'Misc. Math', 
-                           'sidebar_view.SidebarPageSymbolsList("misc_math", 38, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("misc_math", 42, ' + dm + ')'])
         self.pages.append(['misc_text', 'own-symbols-misc-text-symbolic', 'Misc. Symbols', 
-                           'sidebar_view.SidebarPageSymbolsList("misc_text", 36, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("misc_text", 38, ' + dm + ')'])
         self.page_views = list()
         self.init_page_stack()
 
@@ -80,9 +80,9 @@ class Sidebar(object):
 
     def init_symbols_page(self, page_view):
         for symbol in page_view.symbols:
-            button = symbol[3]
+            button = symbol[5]
             button.set_focus_on_click(False)
-            button.get_child().set_size_request(page_view.symbol_width, -1)
+            button.set_size_request(page_view.symbol_width + 11, -1)
             button.set_action_target_value(GLib.Variant('as', [symbol[1]]))
             button.set_action_name('win.insert-symbol')
 
@@ -101,12 +101,12 @@ class Sidebar(object):
         if symbol_page.size != (allocation.width, allocation.height):
             symbol_page.size = (allocation.width, allocation.height)
             if isinstance(symbol_page, sidebar_view.SidebarPageSymbolsList):
-                width_with_border = symbol_page.symbols[0][3].get_preferred_width()[0]
-                width_avail = (allocation.width + 1) # +1px for removed child borders
+                width_with_border = symbol_page.symbol_width + 11
+                width_avail = (allocation.width) # +1px for removed child borders
                 symbols_per_line = (width_avail // width_with_border)
                 number_of_lines = math.ceil(len(symbol_page.symbols) / symbols_per_line)
 
-                height_with_border = symbol_page.symbols[0][3].get_preferred_height()[0]
+                height_with_border = symbol_page.symbols[0][5].get_preferred_height()[0]
                 for line_no in range(1, number_of_lines):
                     # get max for each element
                     max_height = 0
@@ -116,20 +116,20 @@ class Sidebar(object):
                         except IndexError:
                             el_height = 0
                         else:
-                            el_height = symbol[3].get_preferred_height()[0]
-                            if symbol[3].get_style_context().has_class('no_bottom_border'):
+                            el_height = symbol[5].get_preferred_height()[0]
+                            if symbol[5].get_style_context().has_class('no_bottom_border'):
                                 el_height += 1
                         if el_height > max_height: max_height = el_height
                     height_with_border += max_height
                 height_avail = (allocation.height + 1) # +1px for removed child borders
                 for number, image in enumerate(symbol_page.symbols):
                     if (number % symbols_per_line) == (symbols_per_line - 1):
-                        image[3].get_style_context().add_class('no_right_border')
+                        image[5].get_style_context().add_class('no_right_border')
                     else:
-                        image[3].get_style_context().remove_class('no_right_border')
+                        image[5].get_style_context().remove_class('no_right_border')
                     if (number >= (number_of_lines - 1) * symbols_per_line) and (height_avail <= height_with_border):
-                        image[3].get_style_context().add_class('no_bottom_border')
+                        image[5].get_style_context().add_class('no_bottom_border')
                     else:
-                        image[3].get_style_context().remove_class('no_bottom_border')
+                        image[5].get_style_context().remove_class('no_bottom_border')
 
 
