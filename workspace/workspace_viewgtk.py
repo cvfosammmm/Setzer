@@ -175,6 +175,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.include_latex_file_action = Gio.SimpleAction.new('include-latex-file', None)
         self.add_action(self.include_latex_file_action)
 
+        self.add_remove_packages_dialog_action = Gio.SimpleAction.new('add-remove-packages-dialog', None)
+        self.add_action(self.add_remove_packages_dialog_action)
+
         self.add_packages_action = Gio.SimpleAction.new('add-packages', GLib.VariantType('as'))
         self.add_action(self.add_packages_action)
 

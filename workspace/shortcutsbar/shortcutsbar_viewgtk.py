@@ -91,7 +91,7 @@ class ShortcutsBar(Gtk.HBox):
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
         self.pmb.add_action_button(box, '\\documentclass', 'win.insert-symbol', ['\\documentclass[•]{•}'])
-        self.pmb.add_action_button(box, '\\usepackage{}', 'win.insert-symbol', ['\\usepackage{•}'])
+        self.pmb.add_action_button(box, 'Add / Remove Packages...', 'win.add-remove-packages-dialog')
         self.pmb.add_menu_button(box, 'Document Info', 'document_info')
         self.pmb.add_separator(box)
         self.pmb.add_action_button(box, 'Document Environment', 'win.insert-before-after', ['\\begin{document}\n\t', '\n\\end{document}'])

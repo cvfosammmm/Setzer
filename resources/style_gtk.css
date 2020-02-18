@@ -488,6 +488,28 @@ box.document-wizard-page box.margins-box spinbutton.bottom {
     border-bottom: 0px;
 }
 
+
+/* Add / Remove Packages */
+
+box.add-remove-packages-add-box {
+    padding: 18px;
+    border-bottom: 1px dotted @borders;
+}
+box.add-remove-packages-add-box scrolledwindow {
+    border: 1px solid @borders;
+}
+box.add-remove-packages-add-box list row {
+    border-bottom: 1px solid mix(@borders, @theme_base_color, 0.68);
+    padding: 6px;
+}
+box.add-remove-packages-remove-box scrolledwindow {
+    border: 1px solid @borders;
+}
+box.add-remove-packages-remove-box list row {
+    border-bottom: 1px solid mix(@borders, @theme_base_color, 0.68);
+    padding: 6px;
+}
+
 /* BibTeX */
 
 .include-bibtex-file-dialog .stack-wrapper {

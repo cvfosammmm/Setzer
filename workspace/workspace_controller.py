@@ -60,6 +60,7 @@ class WorkspaceController(object):
         self.main_window.document_wizard_action.connect('activate', self.start_wizard)
         self.main_window.include_bibtex_file_action.connect('activate', self.start_include_bibtex_file_dialog)
         self.main_window.include_latex_file_action.connect('activate', self.start_include_latex_file_dialog)
+        self.main_window.add_remove_packages_dialog_action.connect('activate', self.start_add_remove_packages_dialog)
         self.main_window.add_packages_action.connect('activate', self.add_packages)
         self.main_window.create_new_bibtex_entry_action.connect('activate', self.start_create_new_bibtex_entry_dialog)
         self.main_window.show_previous_bibtex_entries_action.connect('activate', self.start_show_previous_bibtex_entries_dialog)
@@ -202,8 +203,8 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def find_prev(self, action=None, parameter=None):
         active_document = self.workspace.get_active_document()
-        if active_document.controller.document_view.source_view.has_focus() or active_document.controller.document_view.search_bar.entry.has_focus() or active_document.controller.document_view.search_bar.replace_entry.has_focus():
-            active_document.controller.document_view.search_bar.entry.emit('previous-match')
+        if active_document.view.source_view.has_focus() or active_document.view.search_bar.entry.has_focus() or active_document.view.search_bar.replace_entry.has_focus():
+            active_document.view.search_bar.entry.emit('previous-match')
 
     @_assert_has_active_document
     def on_menu_find_replace_clicked(self, action=None, parameter=None):
@@ -299,6 +300,8 @@ class WorkspaceController(object):
 
     @_assert_has_active_document
     def add_packages(self, action, parameter):
+        if parameter == None: return
+
         document = self.workspace.get_active_document()
 
         first_package = True
@@ -315,7 +318,31 @@ class WorkspaceController(object):
             result[0].forward_to_line_end()
             document.insert_text_at_iter(result[0], '\n' + text)
         else:
-            document.insert_text_at_cursor(text)
+            end_iter = buffer.get_end_iter()
+            result = end_iter.backward_search('\\documentclass', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
+            if result != None:
+                result[0].forward_to_line_end()
+                document.insert_text_at_iter(result[0], '\n' + text)
+            else:
+                document.insert_text_at_cursor(text)
+
+    @_assert_has_active_document
+    def remove_packages(self, action, parameter):
+        if parameter == None: return
+        document = self.workspace.get_active_document()
+
+        packages_dict = document.parser.symbols['packages_detailed']
+        for package in parameter:
+            try:
+                match_obj = packages_dict[package]
+            except KeyError: return
+            start_iter = document.source_buffer.get_iter_at_offset(match_obj.start())
+            end_iter = document.source_buffer.get_iter_at_offset(match_obj.end())
+            text = document.source_buffer.get_text(start_iter, end_iter, False)
+            if text == match_obj.group(0):  
+                if start_iter.get_line_offset() == 0:
+                    start_iter.backward_char()
+                document.source_buffer.delete(start_iter, end_iter)
 
     @_assert_has_active_document
     def start_wizard(self, action, parameter=None):
@@ -331,6 +358,11 @@ class WorkspaceController(object):
     def start_include_latex_file_dialog(self, action, parameter=None):
         document = self.workspace.get_active_document()
         ServiceLocator.get_dialog('include_latex_file').run(document)
+
+    @_assert_has_active_document
+    def start_add_remove_packages_dialog(self, action, parameter=None):
+        document = self.workspace.get_active_document()
+        ServiceLocator.get_dialog('add_remove_packages').run(document)
 
     @_assert_has_active_document
     def start_create_new_bibtex_entry_dialog(self, action, parameter=None):

@@ -121,6 +121,7 @@ class WorkspacePresenter(object):
         self.main_window.mode_stack.set_visible_child_name('blank_slate')
         self.main_window.save_all_action.set_enabled(False)
         self.main_window.spellchecking_action.set_enabled(False)
+        self.main_window.add_remove_packages_dialog_action.set_enabled(False)
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(False)
         self.set_document_actions_active(False)
 
@@ -129,12 +130,14 @@ class WorkspacePresenter(object):
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(True)
         self.set_document_actions_active(True)
         self.main_window.spellchecking_action.set_enabled(True)
+        self.main_window.add_remove_packages_dialog_action.set_enabled(True)
 
     def activate_bibtex_documents_mode(self):
         self.main_window.mode_stack.set_visible_child_name('bibtex_documents')
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(False)
         self.set_document_actions_active(True)
         self.main_window.spellchecking_action.set_enabled(False)
+        self.main_window.add_remove_packages_dialog_action.set_enabled(False)
 
     def update_latex_shortcuts_bar(self):
         document = self.workspace.active_document

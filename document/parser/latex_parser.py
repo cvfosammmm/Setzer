@@ -34,6 +34,8 @@ class LaTeXParser(object):
         self.symbols['includes'] = set()
         self.symbols['inputs'] = set()
         self.symbols['bibliographies'] = set()
+        self.symbols['packages'] = set()
+        self.symbols['packages_detailed'] = dict()
         self.labels_changed = True
         self.symbols_lock = thread.allocate_lock()
 
@@ -57,7 +59,7 @@ class LaTeXParser(object):
         self.last_buffer_change = time.time()
         text = self.document.get_text()
         with self.parse_jobs_lock:
-            self.parse_jobs['symbols'] = ParseJob(time.time() + 1, text)
+            self.parse_jobs['symbols'] = ParseJob(time.time() + 0.1, text)
             self.parse_jobs['blocks'] = ParseJob(time.time(), text)
 
     def compute_loop(self):
@@ -180,6 +182,8 @@ class LaTeXParser(object):
         includes = set()
         inputs = set()
         bibliographies = set()
+        packages = set()
+        packages_detailed = dict()
         for match in ServiceLocator.get_symbols_regex().finditer(text):
             if match.group(1) == 'label':
                 labels = labels | {match.group(2).strip()}
@@ -191,12 +195,17 @@ class LaTeXParser(object):
                 bibfiles = match.group(2).strip().split(',')
                 for entry in bibfiles:
                     bibliographies = bibliographies | {entry.strip()}
+            elif match.group(3) == 'usepackage':
+                packages = packages | {match.group(4).strip()}
+                packages_detailed[match.group(4).strip()] = match
 
         with self.symbols_lock:
             self.symbols['labels'] = labels
             self.symbols['includes'] = includes
             self.symbols['inputs'] = inputs
             self.symbols['bibliographies'] = bibliographies
+            self.symbols['packages'] = packages
+            self.symbols['packages_detailed'] = packages_detailed
             self.labels_changed = True
         with self.parse_jobs_lock:
             self.parse_symbols_job_running = False
