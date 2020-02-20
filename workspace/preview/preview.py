@@ -128,7 +128,7 @@ class Preview(object):
             else:
                 with self.page_render_count_lock:
                     try: render_count = self.page_render_count[todo['page_number']]
-                    except: KeyError: render_count = 0
+                    except KeyError: render_count = 0
                 if todo['render_count'] == render_count:
                     self.rendered_pages[todo['page_number']].set_current_size_surface(todo['surface'])
                     self.view.drawing_area.queue_draw()

@@ -20,8 +20,7 @@ gi.require_version('GtkSource', '3.0')
 from gi.repository import GtkSource
 
 import os.path
-import pickle
-import base64
+import time
 
 import document.document_builder as document_builder
 import document.document_controller as document_controller
@@ -36,13 +35,15 @@ import document.spellchecker.spellchecker as spellchecker
 import document.code_folding.code_folding as code_folding
 import document.parser.latex_parser as latex_parser
 import document.parser.bibtex_parser as bibtex_parser
+import document.state_manager.state_manager_latex as state_manager_latex
+import document.state_manager.state_manager_bibtex as state_manager_bibtex
 from helpers.observable import Observable
 from app.service_locator import ServiceLocator
 
 
 class Document(Observable):
 
-    def __init__(self, data_pathname):
+    def __init__(self):
         Observable.__init__(self)
 
         self.displayname = ''
@@ -63,10 +64,9 @@ class Document(Observable):
         # possible states: idle, ready_for_building
         # building_in_progress, building_to_stop
         self.state = 'idle'
+        self.last_build_start_time = None
+        self.build_time = None
         
-        self.data_pathname = data_pathname
-        self.document_data = dict()
-
         self.settings = ServiceLocator.get_settings()
 
     def set_search_text(self, search_text):
@@ -179,14 +179,6 @@ class Document(Observable):
         if not os.path.isfile(self.filename): return False
         if self.get_buffer() == None: return False
 
-        try: filehandle = open(self.data_pathname + '/' + base64.urlsafe_b64encode(str.encode(self.filename)).decode() + '.pickle', 'rb')
-        except IOError: pass
-        else:
-            try: data = pickle.load(filehandle)
-            except EOFError: pass
-            else:
-                self.document_data = data
-    
         with open(self.filename) as f:
             text = f.read()
             source_buffer = self.get_buffer()
@@ -220,14 +212,20 @@ class Document(Observable):
 
     def change_state(self, state):
         self.state = state
+
+        if state == 'ready_for_building':
+            self.build_time = None
+        elif state == 'building_in_progress':
+            self.last_build_start_time = time.time()
+        elif state == 'building_to_stop':
+            pass
+        elif state == 'idle':
+            pass
         self.add_change_code('document_state_change', self.state)
 
-    def save_document_data(self):
-        if self.filename != None:
-            try: filehandle = open(self.data_pathname + '/' + base64.urlsafe_b64encode(str.encode(self.filename)).decode() + '.pickle', 'wb')
-            except IOError: pass
-            else: pickle.dump(self.document_data, filehandle)
-    
+    def show_build_state(self, message):
+        self.add_change_code('build_state', message)
+
     def build(self):
         if self.filename != None:
             self.change_state('ready_for_building')
@@ -355,9 +353,10 @@ class Document(Observable):
 
 class LaTeXDocument(Document):
 
-    def __init__(self, data_pathname):
-        Document.__init__(self, data_pathname)
+    def __init__(self):
+        Document.__init__(self)
 
+        self.state_manager = state_manager_latex.StateManagerLaTeX(self)
         self.view = document_view.DocumentView(self, 'latex')
         self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
@@ -393,9 +392,10 @@ class LaTeXDocument(Document):
 
 class BibTeXDocument(Document):
 
-    def __init__(self, data_pathname):
-        Document.__init__(self, data_pathname)
+    def __init__(self):
+        Document.__init__(self)
 
+        self.state_manager = state_manager_bibtex.StateManagerBibTeX(self)
         self.view = document_view.DocumentView(self, 'bibtex')
         self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
         self.search = search.Search(self, self.view, self.view.search_bar)

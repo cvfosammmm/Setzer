@@ -48,11 +48,15 @@ class BuildLogPresenter(object):
 
     def set_header_data(self, errors, warnings, tried_building=False):
         if tried_building:
+            if self.build_log.document.build_time != None:
+                time_string = '{:.2f}s, '.format(self.build_log.document.build_time)
+            else:
+                time_string = ''
             if errors == 0:
                 if warnings == 0:
-                    self.view.header_label.set_markup('<b>Building successful</b> (no warnings or badboxes).')
+                    self.view.header_label.set_markup('<b>Building successful</b> (' + time_string + 'no warnings or badboxes).')
                 else:
-                    self.view.header_label.set_markup('<b>Building successful</b> (' + str(warnings) + ' warning' + ('s' if warnings > 1 else '') + ' or badbox' + ('es' if warnings > 1 else '') + ').')
+                    self.view.header_label.set_markup('<b>Building successful</b> (' + time_string + str(warnings) + ' warning' + ('s' if warnings > 1 else '') + ' or badbox' + ('es' if warnings > 1 else '') + ').')
             else:
                 if warnings == 0:
                     self.view.header_label.set_markup('<b>Building failed with ' + str(errors) + ' error' + ('s' if errors > 1 else '') + '</b> (no warnings or badboxes).')

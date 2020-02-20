@@ -92,7 +92,7 @@ class BuildWidgetView(Gtk.HBox):
     
     def has_result(self):
         text = self.label.get_text()
-        if text in ['ok/x errors/canceled!']:
+        if text[:6] in ['Succes', 'Failed']:
             return True
         else:
             return False

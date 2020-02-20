@@ -15,8 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import time
+
 import document.build_system.build_system as build_system
 from app.service_locator import ServiceLocator
+import helpers.helpers as helpers
 
 
 class DocumentBuilder(object):
@@ -64,6 +67,7 @@ class DocumentBuilder(object):
         if change_code == 'building_stopped':
             document = parameter
             if self.document == document:
+                self.document.show_build_state('')
                 self.document.change_state('idle')
 
         if change_code == 'building_finished':
@@ -75,12 +79,14 @@ class DocumentBuilder(object):
 
                 build_log_items = list()
                 if result_blob['error'] == 'interpreter_missing':
+                    self.document.show_build_state('')
                     self.document.change_state('idle')
                     if ServiceLocator.get_dialog('interpreter_missing').run(result_blob['error_arg']):
                         ServiceLocator.get_dialog('preferences').run()
                     return
 
                 if result_blob['error'] == 'interpreter_not_working':
+                    self.document.show_build_state('')
                     self.document.change_state('idle')
                     if ServiceLocator.get_dialog('building_failed').run(result_blob['error_arg']):
                         ServiceLocator.get_dialog('preferences').run()
@@ -94,6 +100,18 @@ class DocumentBuilder(object):
                     for item in build_log_blob:
                         build_log_items.append(item)
                 self.document.build_log_items = build_log_items
+                self.document.build_time = time.time() - self.document.last_build_start_time
+
+                error_count = 0
+                for item in self.document.build_log_items:
+                    if item[0] == 'Error':
+                        error_count += 1
+                if error_count > 0:
+                    error_color = helpers.theme_color_to_css(self.document.view.get_style_context(), 'error_color')
+                    message = '<span color="' + error_color + '">Failed</span> (' + str(error_count) + ' error' + ('s' if error_count > 1 else '') + ')!'
+                    self.document.show_build_state(message)
+                else:
+                    self.document.show_build_state('Success!')
 
                 self.document.has_been_built = True
                 self.document.change_state('idle')

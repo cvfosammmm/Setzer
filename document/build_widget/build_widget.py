@@ -18,7 +18,6 @@
 import document.build_widget.build_widget_viewgtk as build_widget_view
 from helpers.observable import Observable
 from app.service_locator import ServiceLocator
-import helpers.helpers as helpers
 
 import time
 import os.path
@@ -61,20 +60,14 @@ class BuildWidget(Observable):
                 self.set_clean_button_state()
 
         if change_code == 'document_state_change':
-            error_count = 0
-            for item in self.document.build_log_items:
-                if item[0] == 'Error':
-                    error_count += 1
-            if error_count > 0:
-                error_color = helpers.theme_color_to_css(self.document.view.get_style_context(), 'error_color')
-                message = '<span color="' + error_color + '">Failed</span> (' + str(error_count) + ' error' + ('s' if error_count > 1 else '') + ')!'
-            else:
-                message = 'Success!'
-
-            self.on_build_state_change(message)
+            self.on_build_state_change()
             self.set_clean_button_state()
 
-    def on_build_state_change(self, message=''):
+        if change_code == 'build_state':
+            message = parameter
+            self.show_message(message)
+
+    def on_build_state_change(self):
         document = self.document
         state = document.get_state()
         selfstate = self.build_button_state
@@ -90,10 +83,6 @@ class BuildWidget(Observable):
                 self.view.build_button.set_sensitive(True)
                 self.view.build_button.show_all()
                 self.view.stop_button.hide()
-                self.view.stop_timer()
-                self.view.show_result(message)
-                if self.view.get_parent() != None:
-                    self.view.hide_timer(4000)
             else:
                 self.view.build_button.set_sensitive(False)
                 self.view.build_button.hide()
@@ -101,6 +90,12 @@ class BuildWidget(Observable):
                 self.view.reset_timer()
                 self.view.show_timer()
                 self.view.start_timer()
+
+    def show_message(self, message=''):
+        self.view.stop_timer()
+        self.view.show_result(message)
+        if self.view.get_parent() != None:
+            self.view.hide_timer(4000)
 
     def build_document_request(self, button_object=None):
         if self.document.filename == None:

@@ -16,6 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import re
+import os.path
 
 import app.settings as settingscontroller
 import helpers.popover_menu_builder as popover_menu_builder
@@ -110,5 +111,8 @@ class ServiceLocator(object):
         if ServiceLocator.popover_menu_builder == None:
             ServiceLocator.popover_menu_builder = popover_menu_builder.PopoverMenuBuilder()
         return ServiceLocator.popover_menu_builder
+
+    def get_dot_folder():
+        return os.path.expanduser('~') + '/.setzer'
 
 

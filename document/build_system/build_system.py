@@ -176,6 +176,7 @@ class Query(object):
                                            'error': 'interpreter_missing',
                                            'error_arg': arguments[0]}
                         return
+                    results = self.process.communicate()
                     self.process.wait()
 
                     # parse results
@@ -193,7 +194,6 @@ class Query(object):
 
             pdf_position = self.parse_synctex(tex_file.name, pdf_filename)
             if self.process != None:
-                results = self.process.communicate()
                 self.process = None
 
                 if self.document_controller.settings.get_value('preferences', 'cleanup_build_files'):
@@ -209,9 +209,9 @@ class Query(object):
                     pdf_position = None
 
                 with self.result_lock:
-                    self.result = {'document_controller': self.document_controller, 
+                    self.result = {'document_controller': self.document_controller,
                                    'pdf_filename': self.new_pdf_filename, 
-                                   'log_messages': self.log_messages + self.bibtex_log_messages, 
+                                   'log_messages': self.log_messages + self.bibtex_log_messages,
                                    'pdf_position': pdf_position,
                                    'error': None,
                                    'error_arg': None}

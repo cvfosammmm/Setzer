@@ -37,8 +37,7 @@ class Workspace(Observable):
 
     def __init__(self):
         Observable.__init__(self)
-
-        self.pathname = os.path.expanduser('~') + '/.setzer'
+        self.pathname = ServiceLocator.get_dot_folder()
 
         self.open_documents = list()
         self.open_latex_documents = list()
@@ -98,7 +97,7 @@ class Workspace(Observable):
             self.update_recently_opened_document(document.get_filename(), notify=True)
 
     def remove_document(self, document):
-        document.save_document_data()
+        document.state_manager.save_document_state()
         self.open_documents.remove(document)
         if document.is_latex_document():
             self.open_latex_documents.remove(document)
@@ -113,14 +112,14 @@ class Workspace(Observable):
         self.add_change_code('document_removed', document)
 
     def create_latex_document(self, activate=False):
-        document = LaTeXDocument(self.pathname)
+        document = LaTeXDocument()
         self.add_document(document)
 
         if activate:
             self.set_active_document(document)
 
     def create_bibtex_document(self, activate=False):
-        document = BibTeXDocument(self.pathname)
+        document = BibTeXDocument()
         self.add_document(document)
 
         if activate:
@@ -128,9 +127,9 @@ class Workspace(Observable):
 
     def create_document_from_filename(self, filename, activate=False):
         if filename[-4:] == '.tex':
-            document = LaTeXDocument(self.pathname)
+            document = LaTeXDocument()
         elif filename[-4:] == '.bib':
-            document = BibTeXDocument(self.pathname)
+            document = BibTeXDocument()
         else:
             return None
         document.set_filename(filename)

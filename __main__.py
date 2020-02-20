@@ -128,7 +128,7 @@ class MainApplicationController(Gtk.Application):
         self.save_quit()
 
     def save_quit(self):
-        for document in self.workspace.open_documents: document.save_document_data()
+        for document in self.workspace.open_documents: document.state_manager.save_document_state()
 
         documents = self.workspace.get_unsaved_documents()
         active_document = self.workspace.get_active_document()
