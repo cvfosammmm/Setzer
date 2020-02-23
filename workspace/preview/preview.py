@@ -290,28 +290,35 @@ class Preview(object):
         if isinstance(filename, str) and os.path.exists(filename):
             with self.page_render_count_lock:
                 self.page_render_count = dict()
-            self.document = Poppler.Document.new_from_file('file:' + filename)
-            self.number_of_pages = self.document.get_n_pages()
-            self.update_paging_widget()
+            try:
+                self.document = Poppler.Document.new_from_file('file:' + filename)
+            except gi.repository.GLib.Error:
+                self.document = None
+                self.number_of_pages = 0
+                self.update_paging_widget()
+                self.view.notebook.set_current_page(0)
+            else:
+                self.number_of_pages = self.document.get_n_pages()
+                self.update_paging_widget()
 
-            self.document_width_points = 0
-            self.document_height_points = 0
-            self.page_sizes_points = list()
-            self.rendered_pages = dict()
+                self.document_width_points = 0
+                self.document_height_points = 0
+                self.page_sizes_points = list()
+                self.rendered_pages = dict()
 
-            for page_number in range(self.document.get_n_pages()):
-                page_size = self.document.get_page(page_number).get_size()
-                with self.page_render_count_lock:
-                    self.page_render_count[page_number] = 0
-                self.page_sizes_points.append([page_size.width, page_size.height])
-                self.rendered_pages[page_number] = RenderedPage()
-                self.document_height_points += page_size.height
-                if page_size.width > self.document_width_points:
-                    self.document_width_points = page_size.width
+                for page_number in range(self.document.get_n_pages()):
+                    page_size = self.document.get_page(page_number).get_size()
+                    with self.page_render_count_lock:
+                        self.page_render_count[page_number] = 0
+                    self.page_sizes_points.append([page_size.width, page_size.height])
+                    self.rendered_pages[page_number] = RenderedPage()
+                    self.document_height_points += page_size.height
+                    if page_size.width > self.document_width_points:
+                        self.document_width_points = page_size.width
 
-            self.setup_zoom_factors()
-            self.set_zoom_fit_to_width()
-            self.view.notebook.set_current_page(1)
+                self.setup_zoom_factors()
+                self.set_zoom_fit_to_width()
+                self.view.notebook.set_current_page(1)
         else:
             self.document = None
             self.number_of_pages = 0
