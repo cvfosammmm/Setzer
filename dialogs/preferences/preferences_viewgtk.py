@@ -107,7 +107,7 @@ class Preferences(object):
         label.set_margin_top(18)
         label.set_margin_bottom(6)
         self.page_editor.pack_start(label, False, False, 0)
-        self.option_code_folding = Gtk.CheckButton('Enable code folding (experimental)')
+        self.option_code_folding = Gtk.CheckButton('Enable code folding')
         self.page_editor.pack_start(self.option_code_folding, False, False, 0)
 
     def build_page_build_system(self):

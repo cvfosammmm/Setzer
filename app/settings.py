@@ -78,7 +78,7 @@ class Settings(Observable):
         self.defaults['preferences']['spaces_instead_of_tabs'] = True
         self.defaults['preferences']['tab_width'] = 4
         self.defaults['preferences']['show_line_numbers'] = True
-        self.defaults['preferences']['enable_code_folding'] = False
+        self.defaults['preferences']['enable_code_folding'] = True
         self.defaults['preferences']['enable_line_wrapping'] = True
         self.defaults['preferences']['highlight_current_line'] = False
         self.defaults['preferences']['inline_spellchecking'] = True
