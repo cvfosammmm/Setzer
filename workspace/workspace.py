@@ -93,6 +93,7 @@ class Workspace(Observable):
                 self.open_latex_documents.append(document)
                 document.spellchecker.set_enabled(self.inline_spellchecking)
                 document.spellchecker.set_language(self.spellchecking_language_code)
+            document.state_manager.load_document_state()
             self.add_change_code('new_document', document)
             self.update_recently_opened_document(document.get_filename(), notify=True)
 
@@ -206,10 +207,6 @@ class Workspace(Observable):
                     master_document_filename = None
                 for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
                     document = self.create_document_from_filename(item['filename'])
-                    try:
-                        document.set_initial_folded_regions(item['folded_regions'])
-                    except KeyError:
-                        document.set_initial_folded_regions(None)
                     if item['filename'] == master_document_filename and document != None:
                         self.set_one_document_master(document)
                 for item in data['recently_opened_documents'].values():
@@ -226,8 +223,7 @@ class Workspace(Observable):
                 if filename != None:
                     open_documents[filename] = {
                         'filename': filename,
-                        'last_activated': document.get_last_activated(),
-                        'folded_regions': document.get_folded_regions()
+                        'last_activated': document.get_last_activated()
                     }
             data = {
                 'open_documents': open_documents,

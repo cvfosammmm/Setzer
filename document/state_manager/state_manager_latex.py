@@ -17,6 +17,8 @@
 
 import pickle
 import base64
+import time
+import os.path
 
 from app.service_locator import ServiceLocator
 
@@ -34,10 +36,24 @@ class StateManagerLaTeX():
             try: document_data = pickle.load(filehandle)
             except EOFError: pass
             else:
-                pass
+                try:
+                    save_date = document_data['save_date']
+                except KeyError:
+                    pass
+                else:
+                    if save_date > os.path.getmtime(self.document.filename) - 10:
+                        self.load_code_folding_state(document_data)
+
+    def load_code_folding_state(self, document_data):
+        try:
+            self.document.set_initial_folded_regions(document_data['folded_regions'])
+        except KeyError:
+            self.document.set_initial_folded_regions(None)
 
     def save_document_state(self):
         document_data = dict()
+        document_data['save_date'] = time.time()
+        document_data['folded_regions'] = self.document.get_folded_regions()
 
         if self.document.filename != None:
             try: filehandle = open(self.data_pathname + '/' + base64.urlsafe_b64encode(str.encode(self.document.filename)).decode() + '.pickle', 'wb')
