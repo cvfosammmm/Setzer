@@ -50,25 +50,18 @@ class DocumentBuilder(object):
                 self.build_system.add_query(query)
 
         if change_code == 'document_state_change' and parameter == 'building_to_stop':
-            document = notifying_object
-            self.build_system.stop_building_by_document(document)
+            self.build_system.stop_building()
         
         if change_code == 'building_started':
-            query = parameter
-            if self.document == query.get_document():
-                self.document.change_state('building_in_progress')
+            self.document.change_state('building_in_progress')
                 
         if change_code == 'reset_timer':
-            document = parameter
-            if self.document == document:
-                self.document.view.build_widget.reset_timer()
-                self.document.view.build_widget.label.set_text('0:00')
+            self.document.build_widget.view.reset_timer()
+            self.document.build_widget.view.label.set_text('0:00')
 
         if change_code == 'building_stopped':
-            document = parameter
-            if self.document == document:
-                self.document.show_build_state('')
-                self.document.change_state('idle')
+            self.document.show_build_state('')
+            self.document.change_state('idle')
 
         if change_code == 'building_finished':
             result_blob = parameter

@@ -34,7 +34,7 @@ class BuildSystem(object):
 
     def __init__(self):
         self.observers = set()
-        self.active_queries = dict() # put computation tasks on here
+        self.active_query = None
         self.change_code_queue = queue.Queue() # change code for observers are put on here
         GObject.timeout_add(50, self.results_loop)
         GObject.timeout_add(50, self.change_code_loop)
@@ -44,13 +44,8 @@ class BuildSystem(object):
 
         if not self.change_code_queue.empty():
             change_code = self.change_code_queue.get(block=False)
-            observers = change_code['observers']
-            if observers == 'all':
-                for observer in self.observers:
-                    observer.change_notification(change_code['change_code'], self, change_code['parameter'])
-            else:
-                for observer in observers:
-                    observer.change_notification(change_code['change_code'], self, change_code['parameter'])
+            for observer in self.observers:
+                observer.change_notification(change_code['change_code'], self, change_code['parameter'])
         return True
     
     def register_observer(self, observer):
@@ -61,44 +56,32 @@ class BuildSystem(object):
         
         self.observers.add(observer)
 
-    def add_change_code(self, change_code, parameter, observers='all'):
-        self.change_code_queue.put({'change_code': change_code, 'parameter': parameter, 'observers': observers})
+    def add_change_code(self, change_code, parameter=None):
+        self.change_code_queue.put({'change_code': change_code, 'parameter': parameter})
                 
     def results_loop(self):
         ''' wait for results and add them to their documents '''
 
-        for document, query in self.active_queries.items():
-            result_blob = query.get_result()
+        if self.active_query != None:
+            result_blob = self.active_query.get_result()
             if result_blob != None:
-                document = query.get_document()
-                del self.active_queries[document]
-                self.add_change_code('building_finished', result_blob, {result_blob['document_controller']})
-                break
+                self.active_query = None
+                self.add_change_code('building_finished', result_blob)
         return True
     
     def add_query(self, query):
-        document = query.get_document()
-        if document in self.active_queries:
-            query.stop_building()
-            del self.active_queries[document]
-            self.add_change_code('reset_timer', document, {query.document_controller})
-        self.active_queries[document] = query
+        if self.active_query != None:
+            self.active_query.stop_building()
+        self.active_query = query
         thread.start_new_thread(query.build, ())
-        self.add_change_code('building_started', query, {query.document_controller})
-        
-    def stop_building_by_document(self, document):
-        if document in self.active_queries:
-            query = self.active_queries[document]
-            query.stop_building()
-            del self.active_queries[document]
-            self.add_change_code('building_stopped', document, {query.document_controller})
+        self.add_change_code('reset_timer')
+        self.add_change_code('building_started')
         
     def stop_building(self):
-        for document in self.active_queries:
-            query = self.active_queries[document]
-            query.stop_building()
-            del self.active_queries[document]
-            self.add_change_code('building_stopped', document, {query.document_controller})
+        if self.active_query != None:
+            self.active_query.stop_building()
+            self.active_query = None
+        self.add_change_code('building_stopped')
     
 
 class Query(object):
@@ -176,8 +159,11 @@ class Query(object):
                                            'error': 'interpreter_missing',
                                            'error_arg': arguments[0]}
                         return
-                    results = self.process.communicate()
-                    self.process.wait()
+                    _ = self.process.communicate()
+                    try:
+                        self.process.wait()
+                    except AttributeError:
+                        pass
 
                     # parse results
                     try:
