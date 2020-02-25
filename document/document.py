@@ -53,7 +53,6 @@ class Document(Observable):
         self.pdf_position = None
         self.last_activated = 0
         self.is_master = False
-        self.has_been_built = False
         
         self.source_buffer = None
         self.search_settings = None
@@ -64,8 +63,6 @@ class Document(Observable):
         # possible states: idle, ready_for_building
         # building_in_progress, building_to_stop
         self.state = 'idle'
-        self.last_build_start_time = None
-        self.build_time = None
         
         self.settings = ServiceLocator.get_settings()
 
@@ -362,6 +359,9 @@ class LaTeXDocument(Document):
         self.search = search.Search(self, self.view, self.view.search_bar)
 
         self.build_log_items = list()
+        self.has_been_built = False
+        self.last_build_start_time = None
+        self.build_time = None
         self.build_widget = build_widget.BuildWidget(self)
 
         self.autocomplete = autocomplete.Autocomplete(self, self.view)

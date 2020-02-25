@@ -43,6 +43,7 @@ class StateManagerLaTeX():
                 else:
                     if save_date > os.path.getmtime(self.document.filename) - 10:
                         self.load_code_folding_state(document_data)
+                        self.load_build_log_state(document_data)
 
     def load_code_folding_state(self, document_data):
         try:
@@ -50,10 +51,27 @@ class StateManagerLaTeX():
         except KeyError:
             self.document.set_initial_folded_regions(None)
 
+    def load_build_log_state(self, document_data):
+        try:
+            self.document.build_log_items = document_data['build_log_items']
+        except KeyError:
+            self.document.build_log_items = list()
+        try:
+            self.document.has_been_built = document_data['has_been_built']
+        except KeyError:
+            self.document.has_been_built = list()
+        try:
+            self.document.build_time = document_data['build_time']
+        except KeyError:
+            self.document.build_time = None
+
     def save_document_state(self):
         document_data = dict()
         document_data['save_date'] = time.time()
         document_data['folded_regions'] = self.document.get_folded_regions()
+        document_data['build_log_items'] = self.document.build_log_items
+        document_data['has_been_built'] = self.document.has_been_built
+        document_data['build_time'] = self.document.build_time
 
         if self.document.filename != None:
             try: filehandle = open(self.data_pathname + '/' + base64.urlsafe_b64encode(str.encode(self.document.filename)).decode() + '.pickle', 'wb')
