@@ -44,6 +44,7 @@ class StateManagerLaTeX():
                     if save_date > os.path.getmtime(self.document.filename) - 10:
                         self.load_code_folding_state(document_data)
                         self.load_build_log_state(document_data)
+                        self.load_preview_state(document_data)
 
     def load_code_folding_state(self, document_data):
         try:
@@ -65,6 +66,29 @@ class StateManagerLaTeX():
         except KeyError:
             self.document.build_time = None
 
+    def load_preview_state(self, document_data):
+        try:
+            pdf_filename = document_data['pdf_filename']
+        except KeyError:
+            pdf_filename = None
+        try:
+            pdf_date = document_data['pdf_date']
+        except KeyError:
+            pdf_date = None
+        try:
+            pdf_position = document_data['pdf_position']
+        except KeyError:
+            pdf_position = None
+
+        if pdf_filename == None: return
+        if not os.path.isfile(pdf_filename): return
+        if pdf_date == None: return
+        if pdf_date <= os.path.getmtime(pdf_filename) - 10: return
+
+        self.document.preview.pdf_filename = pdf_filename
+        self.document.preview.pdf_date = pdf_date
+        self.document.preview.pdf_position = pdf_position
+
     def save_document_state(self):
         document_data = dict()
         document_data['save_date'] = time.time()
@@ -72,6 +96,10 @@ class StateManagerLaTeX():
         document_data['build_log_items'] = self.document.build_log_items
         document_data['has_been_built'] = self.document.has_been_built
         document_data['build_time'] = self.document.build_time
+
+        document_data['pdf_filename'] = self.document.preview.pdf_filename
+        document_data['pdf_date'] = self.document.preview.pdf_date
+        document_data['pdf_position'] = self.document.preview.pdf_position
 
         if self.document.filename != None:
             try: filehandle = open(self.data_pathname + '/' + base64.urlsafe_b64encode(str.encode(self.document.filename)).decode() + '.pickle', 'wb')

@@ -25,6 +25,23 @@ class DocumentSwitcherItem(Observable):
     def __init__(self, document):
         Observable.__init__(self)
         self.document = document
+
+
+class DocumentSwitcherItemLaTeX(DocumentSwitcherItem):
+
+    def __init__(self, document):
+        DocumentSwitcherItem.__init__(self, document)
+
         self.view = document_switcher_item_view.OpenDocsPopoverItem(document)
-        self.presenter = document_switcher_item_presenter.DocumentSwitcherItemPresenter(self.document, self.view)
+        self.presenter = document_switcher_item_presenter.DocumentSwitcherItemPresenterLaTeX(self.document, self.view)
+
+
+class DocumentSwitcherItemBibTeX(DocumentSwitcherItem):
+
+    def __init__(self, document):
+        DocumentSwitcherItem.__init__(self, document)
+
+        self.view = document_switcher_item_view.OpenDocsPopoverItem(document)
+        self.presenter = document_switcher_item_presenter.DocumentSwitcherItemPresenterBibTeX(self.document, self.view)
+
 

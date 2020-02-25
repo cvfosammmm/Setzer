@@ -34,6 +34,17 @@ class DocumentSwitcherItemPresenter(object):
         self.document.register_observer(self)
         self.document.get_buffer().connect('modified-changed', self.on_modified_change)
 
+    def on_modified_change(self, buff):
+        if buff.get_modified() != self.modified_state:
+            self.modified_state = buff.get_modified()
+            self.doclist_item.set_name(self.document.get_displayname(), self.modified_state)
+            
+
+class DocumentSwitcherItemPresenterLaTeX(DocumentSwitcherItemPresenter):
+    
+    def __init__(self, document, doclist_item):
+        DocumentSwitcherItemPresenter.__init__(self, document, doclist_item)
+
         self.set_is_master()
 
     '''
@@ -51,11 +62,6 @@ class DocumentSwitcherItemPresenter(object):
         if change_code == 'master_state_change':
             self.set_is_master()
 
-    def on_modified_change(self, buff):
-        if buff.get_modified() != self.modified_state:
-            self.modified_state = buff.get_modified()
-            self.doclist_item.set_name(self.document.get_displayname(), self.modified_state)
-            
     def set_is_master(self):
         if self.document.is_master == True:
             self.doclist_item.icon.hide()
@@ -66,4 +72,26 @@ class DocumentSwitcherItemPresenter(object):
             self.doclist_item.master_icon.hide()
             self.doclist_item.master_label.hide()
 
+
+class DocumentSwitcherItemPresenterBibTeX(DocumentSwitcherItemPresenter):
+    
+    def __init__(self, document, doclist_item):
+        DocumentSwitcherItemPresenter.__init__(self, document, doclist_item)
+
+        self.doclist_item.icon.show_all()
+        self.doclist_item.master_icon.hide()
+        self.doclist_item.master_label.hide()
+
+    '''
+    *** notification handlers, get called by observed document
+    '''
+
+    def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'filename_change':
+            self.doclist_item.set_name(self.document.get_displayname(), self.modified_state)
+
+        if change_code == 'displayname_change':
+            self.doclist_item.set_name(self.document.get_displayname(), self.modified_state)
+            
 

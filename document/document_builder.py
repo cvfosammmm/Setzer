@@ -67,8 +67,12 @@ class DocumentBuilder(object):
             result_blob = parameter
             if self == result_blob['document_controller']:
                 try:
-                    self.document.set_pdf(result_blob['pdf_filename'], result_blob['pdf_position'])
+                    self.document.preview.set_pdf_filename(result_blob['pdf_filename'])
                 except KeyError: pass
+                else:
+                    try:
+                        self.document.preview.set_pdf_position(result_blob['pdf_position'])
+                    except KeyError: pass
 
                 build_log_items = list()
                 if result_blob['error'] == 'interpreter_missing':

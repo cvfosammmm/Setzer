@@ -35,6 +35,7 @@ import document.spellchecker.spellchecker as spellchecker
 import document.code_folding.code_folding as code_folding
 import document.parser.latex_parser as latex_parser
 import document.parser.bibtex_parser as bibtex_parser
+import document.preview.preview as preview
 import document.state_manager.state_manager_latex as state_manager_latex
 import document.state_manager.state_manager_bibtex as state_manager_bibtex
 from helpers.observable import Observable
@@ -48,21 +49,13 @@ class Document(Observable):
 
         self.displayname = ''
         self.filename = None
-        self.pdf_filename = None
-        self.pdf_date = None
-        self.pdf_position = None
         self.last_activated = 0
-        self.is_master = False
         
         self.source_buffer = None
         self.search_settings = None
         self.search_context = None
         self.parser = None
         self.init_buffer()
-        
-        # possible states: idle, ready_for_building
-        # building_in_progress, building_to_stop
-        self.state = 'idle'
         
         self.settings = ServiceLocator.get_settings()
 
@@ -120,38 +113,6 @@ class Document(Observable):
     def get_filename(self):
         return self.filename
         
-    def set_filename(self, filename):
-        self.filename = filename
-        self.add_change_code('filename_change', filename)
-        if self.filename != None:
-            pdf_filename = os.path.splitext(self.filename)[0] + '.pdf'
-            if os.path.exists(pdf_filename):
-                self.set_pdf_filename(pdf_filename)
-        
-    def get_pdf_filename(self):
-        return self.pdf_filename
-        
-    def set_pdf_filename(self, pdf_filename):
-        self.pdf_filename = pdf_filename
-        self.set_pdf_date()
-        self.add_change_code('pdf_update', pdf_filename)
-        
-    def set_pdf(self, pdf_filename, pdf_position=None):
-        self.pdf_filename = pdf_filename
-        self.set_pdf_date()
-        self.pdf_position = pdf_position
-        self.add_change_code('pdf_update', pdf_filename)
-        
-    def get_pdf_position(self):
-        return self.pdf_position
-        
-    def set_pdf_date(self):
-        if self.pdf_filename != None:
-            self.pdf_date = os.path.getmtime(self.pdf_filename)
-    
-    def get_pdf_date(self):
-        return self.pdf_date
-        
     def get_displayname(self):
         if self.filename != None:
             return self.get_filename()
@@ -206,41 +167,6 @@ class Document(Observable):
         
     def get_state(self):
         return self.state
-
-    def change_state(self, state):
-        self.state = state
-
-        if state == 'ready_for_building':
-            self.build_time = None
-        elif state == 'building_in_progress':
-            self.last_build_start_time = time.time()
-        elif state == 'building_to_stop':
-            pass
-        elif state == 'idle':
-            pass
-        self.add_change_code('document_state_change', self.state)
-
-    def show_build_state(self, message):
-        self.add_change_code('build_state', message)
-
-    def build(self):
-        if self.filename != None:
-            self.change_state('ready_for_building')
-
-    def stop_building(self):
-        self.change_state('building_to_stop')
-        
-    def cleanup_build_files(self):
-        file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,'.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc']
-        for ending in file_endings:
-            filename = os.path.splitext(self.get_filename())[0] + ending
-            try: os.remove(filename)
-            except FileNotFoundError: pass
-        self.add_change_code('cleaned_up_build_files')
-
-    def set_is_master(self, is_master):
-        self.is_master = is_master
-        self.add_change_code('master_state_change', is_master)
 
     def place_cursor(self, text_iter):
         buff = self.get_buffer()
@@ -352,10 +278,16 @@ class LaTeXDocument(Document):
 
     def __init__(self):
         Document.__init__(self)
+        self.is_master = False
 
+        # possible states: idle, ready_for_building
+        # building_in_progress, building_to_stop
+        self.state = 'idle'
+        
+        self.preview = preview.Preview(self)
         self.state_manager = state_manager_latex.StateManagerLaTeX(self)
         self.view = document_view.DocumentView(self, 'latex')
-        self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
+        self.document_switcher_item = document_switcher_item.DocumentSwitcherItemLaTeX(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
 
         self.build_log_items = list()
@@ -373,6 +305,46 @@ class LaTeXDocument(Document):
 
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = latex_parser.LaTeXParser(self)
+
+    def set_filename(self, filename):
+        self.filename = filename
+        self.add_change_code('filename_change', filename)
+        self.preview.set_pdf_filename_from_tex_filename(filename)
+
+    def change_state(self, state):
+        self.state = state
+
+        if state == 'ready_for_building':
+            self.build_time = None
+        elif state == 'building_in_progress':
+            self.last_build_start_time = time.time()
+        elif state == 'building_to_stop':
+            pass
+        elif state == 'idle':
+            pass
+        self.add_change_code('document_state_change', self.state)
+
+    def show_build_state(self, message):
+        self.add_change_code('build_state', message)
+
+    def build(self):
+        if self.filename != None:
+            self.change_state('ready_for_building')
+
+    def stop_building(self):
+        self.change_state('building_to_stop')
+        
+    def cleanup_build_files(self):
+        file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,'.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc']
+        for ending in file_endings:
+            filename = os.path.splitext(self.get_filename())[0] + ending
+            try: os.remove(filename)
+            except FileNotFoundError: pass
+        self.add_change_code('cleaned_up_build_files')
+
+    def set_is_master(self, is_master):
+        self.is_master = is_master
+        self.add_change_code('master_state_change', is_master)
 
     def get_folded_regions(self):
         return self.code_folding.get_folded_regions()
@@ -394,10 +366,11 @@ class BibTeXDocument(Document):
 
     def __init__(self):
         Document.__init__(self)
+        self.is_master = False
 
         self.state_manager = state_manager_bibtex.StateManagerBibTeX(self)
         self.view = document_view.DocumentView(self, 'bibtex')
-        self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
+        self.document_switcher_item = document_switcher_item.DocumentSwitcherItemBibTeX(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
 
         self.autocomplete = None
@@ -407,6 +380,10 @@ class BibTeXDocument(Document):
         self.controller = document_controller.DocumentController(self, self.view)
 
         self.parser = bibtex_parser.BibTeXParser()
+
+    def set_filename(self, filename):
+        self.filename = filename
+        self.add_change_code('filename_change', filename)
 
     def get_folded_regions(self):
         return []

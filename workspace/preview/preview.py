@@ -98,9 +98,11 @@ class Preview(object):
             return True
 
         if self.active_document != None:
-            filename = self.active_document.get_pdf_filename()
-            date = self.active_document.get_pdf_date()
-            position = self.active_document.get_pdf_position()
+            if not self.active_document.is_latex_document(): return True
+
+            filename = self.active_document.preview.get_pdf_filename()
+            date = self.active_document.preview.get_pdf_date()
+            position = self.active_document.preview.get_pdf_position()
             if self.filename != filename or self.pdf_date != date or self.pdf_position != position:
                 self.filename = filename
                 self.pdf_date = date
@@ -164,7 +166,7 @@ class Preview(object):
         if old_real_zoom_factor != self.real_zoom_factor:
             self.render_pdf()
             self.view.drawing_area.queue_draw()
-            
+
             if old_yoffset < 0: yoffset = -10.0
             else: yoffset = old_yoffset * self.real_zoom_factor / old_real_zoom_factor
 

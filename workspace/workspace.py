@@ -247,7 +247,7 @@ class Workspace(Observable):
     def set_one_document_master(self, master_document):
         if master_document.is_latex_document():
             self.master_document = master_document
-            for document in self.open_documents:
+            for document in self.open_latex_documents:
                 if document == master_document:
                     document.set_is_master(True)
                 else:
@@ -256,7 +256,7 @@ class Workspace(Observable):
             self.set_build_log()
 
     def unset_master_document(self):
-        for document in self.open_documents:
+        for document in self.open_latex_documents:
             document.set_is_master(False)
         self.master_document = None
         self.add_change_code('master_state_change', 'no_master_document')
