@@ -110,6 +110,10 @@ class Document(Observable):
     def get_buffer(self):
         return self.source_buffer
 
+    def set_filename(self, filename):
+        self.filename = filename
+        self.add_change_code('filename_change', filename)
+
     def get_filename(self):
         return self.filename
         
@@ -145,6 +149,7 @@ class Document(Observable):
             source_buffer.end_not_undoable_action()
             source_buffer.set_modified(False)
             source_buffer.place_cursor(source_buffer.get_start_iter())
+        return True
                 
     def save_to_disk(self):
         if self.filename == None: return False
@@ -306,11 +311,6 @@ class LaTeXDocument(Document):
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = latex_parser.LaTeXParser(self)
 
-    def set_filename(self, filename):
-        self.filename = filename
-        self.add_change_code('filename_change', filename)
-        self.preview.set_pdf_filename_from_tex_filename(filename)
-
     def change_state(self, state):
         self.state = state
 
@@ -380,10 +380,6 @@ class BibTeXDocument(Document):
         self.controller = document_controller.DocumentController(self, self.view)
 
         self.parser = bibtex_parser.BibTeXParser()
-
-    def set_filename(self, filename):
-        self.filename = filename
-        self.add_change_code('filename_change', filename)
 
     def get_folded_regions(self):
         return []

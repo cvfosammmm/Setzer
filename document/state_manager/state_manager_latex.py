@@ -76,18 +76,21 @@ class StateManagerLaTeX():
         except KeyError:
             pdf_date = None
         try:
-            pdf_position = document_data['pdf_position']
+            xoffset = document_data['xoffset']
         except KeyError:
-            pdf_position = None
+            xoffset = None
+        try:
+            yoffset = document_data['yoffset']
+        except KeyError:
+            yoffset = None
 
         if pdf_filename == None: return
         if not os.path.isfile(pdf_filename): return
         if pdf_date == None: return
         if pdf_date <= os.path.getmtime(pdf_filename) - 10: return
 
-        self.document.preview.pdf_filename = pdf_filename
-        self.document.preview.pdf_date = pdf_date
-        self.document.preview.pdf_position = pdf_position
+        self.document.preview.set_pdf_filename(pdf_filename)
+        self.document.preview.set_pdf_position_from_offsets(xoffset, yoffset)
 
     def save_document_state(self):
         document_data = dict()
@@ -99,7 +102,8 @@ class StateManagerLaTeX():
 
         document_data['pdf_filename'] = self.document.preview.pdf_filename
         document_data['pdf_date'] = self.document.preview.pdf_date
-        document_data['pdf_position'] = self.document.preview.pdf_position
+        document_data['xoffset'] = self.document.preview.xoffset
+        document_data['yoffset'] = self.document.preview.yoffset
 
         if self.document.filename != None:
             try: filehandle = open(self.data_pathname + '/' + base64.urlsafe_b64encode(str.encode(self.document.filename)).decode() + '.pickle', 'wb')

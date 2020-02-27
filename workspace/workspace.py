@@ -134,11 +134,12 @@ class Workspace(Observable):
         else:
             return None
         document.set_filename(filename)
-        document.populate_from_filename()
-        if document.populate_from_filename() != False:
+        response = document.populate_from_filename()
+        if response != False:
             self.add_document(document)
             if activate:
                 self.set_active_document(document)
+        document.preview.set_pdf_filename_from_tex_filename(filename)
         return document
 
     def get_document_by_filename(self, filename):

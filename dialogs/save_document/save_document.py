@@ -45,6 +45,7 @@ class SaveDocumentDialog(Dialog):
             filename = self.view.get_filename()
             document.set_filename(filename)
             document.save_to_disk()
+            document.preview.set_pdf_filename_from_tex_filename(filename)
             self.workspace.update_recently_opened_document(filename)
             return_value = True
         else:

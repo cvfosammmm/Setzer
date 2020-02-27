@@ -22,6 +22,8 @@ from gi.repository import Poppler
 import os.path
 import math
 
+import document.preview.preview_viewgtk as preview_view
+import document.preview.preview_presenter as preview_presenter
 from helpers.observable import Observable
 
 
@@ -42,6 +44,9 @@ class Preview(Observable):
         self.yoffset = None
         self.zoom_level = None
 
+        self.view = preview_view.PreviewView()
+        self.presenter = preview_presenter.PreviewPresenter(self, self.view)
+
     def get_pdf_filename(self):
         return self.pdf_filename
         
@@ -55,7 +60,6 @@ class Preview(Observable):
         self.pdf_filename = pdf_filename
         self.set_pdf_date()
         self.load_pdf()
-        self.add_change_code('pdf_update', pdf_filename)
 
     def reset_pdf_data(self):
         self.pdf_filename = None
@@ -67,11 +71,18 @@ class Preview(Observable):
         self.xoffset = None
         self.yoffset = None
         self.zoom_level = None
+        self.add_change_code('pdf_changed')
 
     def set_pdf_position(self, position):
         if position != None:
             self.xoffset = self.page_height * (position['page'] - 1) + position['x']
             self.yoffset = position['y']
+        self.add_change_code('position_changed')
+
+    def set_pdf_position_from_offsets(self, xoffset, yoffset):
+        self.xoffset = xoffset
+        self.yoffset = yoffset
+        self.add_change_code('position_changed')
 
     def get_pdf_position(self):
         if self.xoffset != None and self.yoffset != None:
@@ -88,6 +99,8 @@ class Preview(Observable):
     def load_pdf(self):
         try:
             self.poppler_document = Poppler.Document.new_from_file('file:' + self.pdf_filename)
+        except TypeError:
+            self.reset_pdf_data()
         except gi.repository.GLib.Error:
             self.reset_pdf_data()
         else:
@@ -98,5 +111,6 @@ class Preview(Observable):
             self.xoffset = 0
             self.yoffset = 0
             self.zoom_level = 1.0
+            self.add_change_code('pdf_changed')
 
 
