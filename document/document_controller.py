@@ -15,11 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import os.path
+
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk
 from gi.repository import Gtk
+from gi.repository import GObject
+
+from app.service_locator import ServiceLocator
 
 
 class DocumentController(object):
@@ -30,6 +35,7 @@ class DocumentController(object):
         self.view = document_view
 
         self.view.source_view.connect('key-press-event', self.on_keypress)
+        GObject.timeout_add(500, self.save_date_loop)
         
     '''
     *** signal handlers: changes in documents
@@ -96,5 +102,14 @@ class DocumentController(object):
                     self.view.source_view.scroll_to_iter(result[0], 0, False, 0, 0)
                     return True
         return False
+
+    def save_date_loop(self):
+        if self.document.save_date <= os.path.getmtime(self.document.filename) - 0.001:
+            if ServiceLocator.get_dialog('document_changed_on_disk').run(self.document):
+                self.document.populate_from_filename()
+            else:
+                self.document.source_buffer.set_modified(False)
+            self.document.update_save_date()
+        return True
 
 

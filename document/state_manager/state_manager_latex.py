@@ -17,7 +17,6 @@
 
 import pickle
 import base64
-import time
 import os.path
 
 from app.service_locator import ServiceLocator
@@ -30,6 +29,8 @@ class StateManagerLaTeX():
         self.data_pathname = ServiceLocator.get_dot_folder()
 
     def load_document_state(self):
+        if self.document.filename == None: return
+
         try: filehandle = open(self.data_pathname + '/' + base64.urlsafe_b64encode(str.encode(self.document.filename)).decode() + '.pickle', 'rb')
         except IOError: pass
         else:
@@ -41,7 +42,7 @@ class StateManagerLaTeX():
                 except KeyError:
                     pass
                 else:
-                    if save_date > os.path.getmtime(self.document.filename) - 10:
+                    if save_date > os.path.getmtime(self.document.filename) - 0.001:
                         self.load_code_folding_state(document_data)
                         self.load_build_log_state(document_data)
                         self.load_preview_state(document_data)
@@ -94,7 +95,7 @@ class StateManagerLaTeX():
 
     def save_document_state(self):
         document_data = dict()
-        document_data['save_date'] = time.time()
+        document_data['save_date'] = self.document.save_date
         document_data['folded_regions'] = self.document.get_folded_regions()
         document_data['build_log_items'] = self.document.build_log_items
         document_data['has_been_built'] = self.document.has_been_built

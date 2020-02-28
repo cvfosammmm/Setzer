@@ -51,6 +51,7 @@ class Document(Observable):
 
         self.displayname = ''
         self.filename = None
+        self.save_date = None
         self.last_activated = 0
         
         self.source_buffer = None
@@ -142,12 +143,13 @@ class Document(Observable):
 
         with open(self.filename) as f:
             text = f.read()
-            source_buffer = self.get_buffer()
-            source_buffer.begin_not_undoable_action()
-            source_buffer.set_text(text)
-            source_buffer.end_not_undoable_action()
-            source_buffer.set_modified(False)
-            source_buffer.place_cursor(source_buffer.get_start_iter())
+        source_buffer = self.get_buffer()
+        source_buffer.begin_not_undoable_action()
+        source_buffer.set_text(text)
+        source_buffer.end_not_undoable_action()
+        source_buffer.set_modified(False)
+        source_buffer.place_cursor(source_buffer.get_start_iter())
+        self.update_save_date()
         return True
                 
     def save_to_disk(self):
@@ -158,8 +160,12 @@ class Document(Observable):
             if text != None:
                 with open(self.filename, 'w') as f:
                     f.write(text)
-                    self.get_buffer().set_modified(False)
-                
+                self.update_save_date()
+                self.get_buffer().set_modified(False)
+
+    def update_save_date(self):
+        self.save_date = os.path.getmtime(self.filename)
+
     def get_text(self):
         buff = self.get_buffer()
         if buff != None:
