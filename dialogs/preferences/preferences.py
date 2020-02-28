@@ -69,6 +69,12 @@ class PreferencesDialog(Dialog):
         self.view.option_code_folding.set_active(self.settings.get_value('preferences', 'enable_code_folding'))
         self.view.option_code_folding.connect('toggled', self.on_check_button_toggle, 'enable_code_folding')
 
+        self.view.option_highlight_current_line.set_active(self.settings.get_value('preferences', 'highlight_current_line'))
+        self.view.option_highlight_current_line.connect('toggled', self.on_check_button_toggle, 'highlight_current_line')
+
+        self.view.option_highlight_matching_brackets.set_active(self.settings.get_value('preferences', 'highlight_matching_brackets'))
+        self.view.option_highlight_matching_brackets.connect('toggled', self.on_check_button_toggle, 'highlight_matching_brackets')
+
     def on_check_button_toggle(self, button, preference_name):
         self.settings.set_value('preferences', preference_name, button.get_active())
         

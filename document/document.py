@@ -47,6 +47,8 @@ class Document(Observable):
     def __init__(self):
         Observable.__init__(self)
 
+        self.settings = ServiceLocator.get_settings()
+
         self.displayname = ''
         self.filename = None
         self.last_activated = 0
@@ -57,8 +59,6 @@ class Document(Observable):
         self.parser = None
         self.init_buffer()
         
-        self.settings = ServiceLocator.get_settings()
-
     def set_search_text(self, search_text):
         self.search_settings.set_search_text(search_text)
         
@@ -70,7 +70,6 @@ class Document(Observable):
         self.source_language_manager.set_search_path((os.path.dirname(__file__) + '/../resources/gtksourceview/language-specs',))
         self.source_language = self.source_language_manager.get_language(self.get_gsv_language_name())
         self.source_buffer.set_language(self.source_language)
-        self.source_buffer.set_highlight_matching_brackets(False)
 
         self.source_style_scheme_manager = GtkSource.StyleSchemeManager()
         self.source_style_scheme_manager.set_search_path((os.path.dirname(__file__) + '/../resources/gtksourceview/styles',))

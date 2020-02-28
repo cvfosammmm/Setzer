@@ -81,6 +81,7 @@ class Settings(Observable):
         self.defaults['preferences']['enable_code_folding'] = True
         self.defaults['preferences']['enable_line_wrapping'] = True
         self.defaults['preferences']['highlight_current_line'] = False
+        self.defaults['preferences']['highlight_matching_brackets'] = False
         self.defaults['preferences']['inline_spellchecking'] = True
         self.defaults['preferences']['spellchecking_language_code'] = Gspell.Language.get_default().get_code()
 
