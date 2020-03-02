@@ -110,7 +110,7 @@ class Query(object):
         self.build_command_defaults = dict()
         self.build_command_defaults['latexmk'] = 'latexmk -synctex=1 -interaction=nonstopmode -pdf'
         self.build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode -pdf'
-        self.build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode -pdf'
+        self.build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode'
         self.build_command_defaults['lualatex'] = 'lualatex -synctex=1 -interaction=nonstopmode -pdf'
         self.build_command = self.build_command_defaults[self.latex_interpreter]
 
@@ -334,6 +334,8 @@ class Query(object):
                             text = line.split(':')[1].strip()
                             line_number = self.bl_get_line_number(line, matchiter)
                             self.log_messages.append(('Warning', None, filename, file_no, line_number, text))
+                            if text == 'Rerun to get transparencies right.':
+                                self.do_another_latex_build = True
 
                         elif line.startswith('LaTeX Warning: '):
                             text = line[15:].strip()
