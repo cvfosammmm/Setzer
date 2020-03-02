@@ -47,6 +47,7 @@ class AddRemovePackagesDialog(Dialog):
         self.packages['parskip'] = {'command': 'parskip', 'description': 'paragraphs without indentation.'}
         self.packages['textcomp'] = {'command': 'textcomp', 'description': 'contains symbols to be used in textmode. (recommended)'}
         self.packages['theorem'] = {'command': 'theorem', 'description': 'define theorem environments (like "definition", "lemma", ...) with custom styling.'}
+        self.packages['transparent'] = {'command': 'transparent', 'description': 'set transparency for sections in your document.'}
         self.packages['url'] = {'command': 'url', 'description': 'type urls with the \\url{..} command without escaping them. (recommended)'}
         self.packages['xcolor'] = {'command': 'xcolor', 'description': 'enables colored text. (recommended)'}
 
