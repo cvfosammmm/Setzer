@@ -24,7 +24,7 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import GObject
 
-from app.service_locator import ServiceLocator
+from setzer.app.service_locator import ServiceLocator
 
 
 class DocumentController(object):

@@ -21,7 +21,7 @@ from gi.repository import Gtk
 from gi.repository import GLib
 from gi.repository import GdkPixbuf
 
-from dialogs.document_wizard.pages.page import Page, PageView
+from setzer.dialogs.document_wizard.pages.page import Page, PageView
 
 import os
 import _thread as thread

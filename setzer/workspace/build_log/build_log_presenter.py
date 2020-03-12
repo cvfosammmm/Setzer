@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import workspace.build_log.build_log_viewgtk as build_log_view
+import setzer.workspace.build_log.build_log_viewgtk as build_log_view
 
 
 class BuildLogPresenter(object):

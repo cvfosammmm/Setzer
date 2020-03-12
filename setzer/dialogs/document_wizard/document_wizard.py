@@ -22,15 +22,15 @@ from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import Gdk
 
-from dialogs.dialog import Dialog
-import dialogs.document_wizard.document_wizard_viewgtk as view
-from dialogs.document_wizard.pages.page_document_class import DocumentClassPage
-from dialogs.document_wizard.pages.page_article_settings import ArticleSettingsPage
-from dialogs.document_wizard.pages.page_report_settings import ReportSettingsPage
-from dialogs.document_wizard.pages.page_book_settings import BookSettingsPage
-from dialogs.document_wizard.pages.page_letter_settings import LetterSettingsPage
-from dialogs.document_wizard.pages.page_beamer_settings import BeamerSettingsPage
-from dialogs.document_wizard.pages.page_general_settings import GeneralSettingsPage
+from setzer.dialogs.dialog import Dialog
+import setzer.dialogs.document_wizard.document_wizard_viewgtk as view
+from setzer.dialogs.document_wizard.pages.page_document_class import DocumentClassPage
+from setzer.dialogs.document_wizard.pages.page_article_settings import ArticleSettingsPage
+from setzer.dialogs.document_wizard.pages.page_report_settings import ReportSettingsPage
+from setzer.dialogs.document_wizard.pages.page_book_settings import BookSettingsPage
+from setzer.dialogs.document_wizard.pages.page_letter_settings import LetterSettingsPage
+from setzer.dialogs.document_wizard.pages.page_beamer_settings import BeamerSettingsPage
+from setzer.dialogs.document_wizard.pages.page_general_settings import GeneralSettingsPage
 
 import pickle
 import os

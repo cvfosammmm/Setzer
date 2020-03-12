@@ -21,8 +21,8 @@ gi.require_version('GtkSource', '3.0')
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
-import document.shortcutsbar.shortcutsbar_viewgtk as shortcutsbar_view
-import document.search.search_viewgtk as search_view
+import setzer.document.shortcutsbar.shortcutsbar_viewgtk as shortcutsbar_view
+import setzer.document.search.search_viewgtk as search_view
 
 
 class DocumentView(Gtk.HBox):

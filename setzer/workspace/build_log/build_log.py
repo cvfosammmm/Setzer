@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import workspace.build_log.build_log_presenter as build_log_presenter
-import workspace.build_log.build_log_controller as build_log_controller
-from helpers.observable import Observable
-from app.service_locator import ServiceLocator
+import setzer.workspace.build_log.build_log_presenter as build_log_presenter
+import setzer.workspace.build_log.build_log_controller as build_log_controller
+from setzer.helpers.observable import Observable
+from setzer.app.service_locator import ServiceLocator
 
 
 class BuildLog(Observable):

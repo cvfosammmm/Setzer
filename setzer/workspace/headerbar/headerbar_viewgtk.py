@@ -27,8 +27,8 @@ from gi.repository import Pango
 import re
 import time
 
-import workspace.document_switcher.document_switcher_viewgtk as document_switcher_viewgtk
-from app.service_locator import ServiceLocator
+import setzer.workspace.document_switcher.document_switcher_viewgtk as document_switcher_viewgtk
+from setzer.app.service_locator import ServiceLocator
 
 
 class HeaderBar(Gtk.HeaderBar):

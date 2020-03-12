@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import document.document_switcher_item.document_switcher_item_presenter as document_switcher_item_presenter
-import document.document_switcher_item.document_switcher_item_viewgtk as document_switcher_item_view
-from helpers.observable import Observable
+import setzer.document.document_switcher_item.document_switcher_item_presenter as document_switcher_item_presenter
+import setzer.document.document_switcher_item.document_switcher_item_viewgtk as document_switcher_item_view
+from setzer.helpers.observable import Observable
 
 
 class DocumentSwitcherItem(Observable):

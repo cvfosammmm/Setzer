@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import document.build_widget.build_widget_viewgtk as build_widget_view
-from helpers.observable import Observable
-from app.service_locator import ServiceLocator
+import setzer.document.build_widget.build_widget_viewgtk as build_widget_view
+from setzer.helpers.observable import Observable
+from setzer.app.service_locator import ServiceLocator
 
 import time
 import os.path

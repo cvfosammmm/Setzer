@@ -23,10 +23,10 @@ from gi.repository import Gdk
 from gi.repository import GObject
 from gi.repository import GtkSource
 
-import document.code_folding.code_folding_viewgtk as code_folding_view
-import document.code_folding.code_folding_controller as code_folding_controller
-import document.code_folding.code_folding_presenter as code_folding_presenter
-from helpers.helpers import timer
+import setzer.document.code_folding.code_folding_viewgtk as code_folding_view
+import setzer.document.code_folding.code_folding_controller as code_folding_controller
+import setzer.document.code_folding.code_folding_presenter as code_folding_presenter
+from setzer.helpers.helpers import timer
 
 
 class CodeFolding(object):

@@ -19,8 +19,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gio
 
-import helpers.helpers as helpers
-from app.service_locator import ServiceLocator
+import setzer.helpers.helpers as helpers
+from setzer.app.service_locator import ServiceLocator
 
 
 class WorkspacePresenter(object):

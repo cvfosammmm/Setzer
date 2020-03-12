@@ -22,24 +22,24 @@ from gi.repository import GtkSource
 import os.path
 import time
 
-import document.document_builder as document_builder
-import document.document_controller as document_controller
-import document.document_presenter as document_presenter
-import document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
-import document.document_viewgtk as document_view
-import document.document_switcher_item.document_switcher_item as document_switcher_item
-import document.build_widget.build_widget as build_widget
-import document.search.search as search
-import document.autocomplete.autocomplete as autocomplete
-import document.spellchecker.spellchecker as spellchecker
-import document.code_folding.code_folding as code_folding
-import document.parser.latex_parser as latex_parser
-import document.parser.bibtex_parser as bibtex_parser
-import document.preview.preview as preview
-import document.state_manager.state_manager_latex as state_manager_latex
-import document.state_manager.state_manager_bibtex as state_manager_bibtex
-from helpers.observable import Observable
-from app.service_locator import ServiceLocator
+import setzer.document.document_builder as document_builder
+import setzer.document.document_controller as document_controller
+import setzer.document.document_presenter as document_presenter
+import setzer.document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
+import setzer.document.document_viewgtk as document_view
+import setzer.document.document_switcher_item.document_switcher_item as document_switcher_item
+import setzer.document.build_widget.build_widget as build_widget
+import setzer.document.search.search as search
+import setzer.document.autocomplete.autocomplete as autocomplete
+import setzer.document.spellchecker.spellchecker as spellchecker
+import setzer.document.code_folding.code_folding as code_folding
+import setzer.document.parser.latex_parser as latex_parser
+import setzer.document.parser.bibtex_parser as bibtex_parser
+import setzer.document.preview.preview as preview
+import setzer.document.state_manager.state_manager_latex as state_manager_latex
+import setzer.document.state_manager.state_manager_bibtex as state_manager_bibtex
+from setzer.helpers.observable import Observable
+from setzer.app.service_locator import ServiceLocator
 
 
 class Document(Observable):

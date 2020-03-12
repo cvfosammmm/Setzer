@@ -26,8 +26,8 @@ import tempfile
 import shutil
 import re
 
-from helpers.helpers import timer
-from app.service_locator import ServiceLocator
+from setzer.helpers.helpers import timer
+from setzer.app.service_locator import ServiceLocator
 
 
 class BuildSystem(object):

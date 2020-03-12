@@ -16,8 +16,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 
-from dialogs.dialog import Dialog
-import dialogs.preferences.preferences_viewgtk as view
+from setzer.dialogs.dialog import Dialog
+import setzer.dialogs.preferences.preferences_viewgtk as view
 
 
 class PreferencesDialog(Dialog):

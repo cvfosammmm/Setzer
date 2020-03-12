@@ -31,8 +31,8 @@ import os.path
 import time
 import _thread as thread, queue
 
-import helpers.helpers as helpers
-from app.service_locator import ServiceLocator
+import setzer.helpers.helpers as helpers
+from setzer.app.service_locator import ServiceLocator
 
 
 class Preview(object):

@@ -20,8 +20,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-from dialogs.dialog import Dialog
-import dialogs.include_bibtex_file.include_bibtex_file_viewgtk as view
+from setzer.dialogs.dialog import Dialog
+import setzer.dialogs.include_bibtex_file.include_bibtex_file_viewgtk as view
 
 import pickle
 import os

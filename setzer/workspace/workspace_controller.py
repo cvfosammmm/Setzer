@@ -21,8 +21,8 @@ from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
 
-import helpers.helpers as helpers
-from app.service_locator import ServiceLocator
+import setzer.helpers.helpers as helpers
+from setzer.app.service_locator import ServiceLocator
 
 import time
 

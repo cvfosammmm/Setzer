@@ -17,9 +17,9 @@
 
 import time
 
-import document.build_system.build_system as build_system
-from app.service_locator import ServiceLocator
-import helpers.helpers as helpers
+import setzer.document.build_system.build_system as build_system
+from setzer.app.service_locator import ServiceLocator
+import setzer.helpers.helpers as helpers
 
 
 class DocumentBuilder(object):

@@ -25,10 +25,10 @@ from gi.repository import GLib
 
 import sys, time
 
-from workspace.workspace import Workspace
-import workspace.workspace_viewgtk as view
-import helpers.helpers as helpers
-from app.service_locator import ServiceLocator
+from setzer.workspace.workspace import Workspace
+import setzer.workspace.workspace_viewgtk as view
+import setzer.helpers.helpers as helpers
+from setzer.app.service_locator import ServiceLocator
 
 
 class MainApplicationController(Gtk.Application):

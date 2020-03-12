@@ -22,9 +22,9 @@ from gi.repository import Poppler
 import os.path
 import math
 
-import document.preview.preview_viewgtk as preview_view
-import document.preview.preview_presenter as preview_presenter
-from helpers.observable import Observable
+import setzer.document.preview.preview_viewgtk as preview_view
+import setzer.document.preview.preview_presenter as preview_presenter
+from setzer.helpers.observable import Observable
 
 
 class Preview(Observable):

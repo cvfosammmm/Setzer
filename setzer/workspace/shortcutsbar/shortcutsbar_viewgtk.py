@@ -21,7 +21,7 @@ from gi.repository import Gtk
 from gi.repository import GLib
 from gi.repository import Gio
 
-from app.service_locator import ServiceLocator
+from setzer.app.service_locator import ServiceLocator
 
 
 class ShortcutsBar(Gtk.HBox):

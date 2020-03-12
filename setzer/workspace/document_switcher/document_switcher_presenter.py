@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from app.service_locator import ServiceLocator
+from setzer.app.service_locator import ServiceLocator
 
 
 class DocumentSwitcherPresenter(object):

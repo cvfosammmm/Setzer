@@ -24,12 +24,12 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GtkSource
 
-import workspace.build_log.build_log_viewgtk as build_log_view
-import workspace.headerbar.headerbar_viewgtk as headerbar_view
-import workspace.shortcutsbar.shortcutsbar_viewgtk as shortcutsbar_view
-import workspace.bibtex_shortcutsbar.bibtex_shortcutsbar_viewgtk as bibtex_shortcutsbar_view
-import workspace.preview.preview_viewgtk as preview_view
-import workspace.sidebar.sidebar_viewgtk as sidebar_view
+import setzer.workspace.build_log.build_log_viewgtk as build_log_view
+import setzer.workspace.headerbar.headerbar_viewgtk as headerbar_view
+import setzer.workspace.shortcutsbar.shortcutsbar_viewgtk as shortcutsbar_view
+import setzer.workspace.bibtex_shortcutsbar.bibtex_shortcutsbar_viewgtk as bibtex_shortcutsbar_view
+import setzer.workspace.preview.preview_viewgtk as preview_view
+import setzer.workspace.sidebar.sidebar_viewgtk as sidebar_view
 
 import os
 

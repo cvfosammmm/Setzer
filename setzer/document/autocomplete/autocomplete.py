@@ -22,9 +22,9 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource, Pango
 
-import helpers.helpers as helpers
-import document.autocomplete.autocomplete_viewgtk as view
-from app.service_locator import ServiceLocator
+import setzer.helpers.helpers as helpers
+import setzer.document.autocomplete.autocomplete_viewgtk as view
+from setzer.app.service_locator import ServiceLocator
 
 
 class Autocomplete(object):

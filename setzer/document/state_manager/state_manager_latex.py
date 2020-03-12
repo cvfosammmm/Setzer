@@ -19,7 +19,7 @@ import pickle
 import base64
 import os.path
 
-from app.service_locator import ServiceLocator
+from setzer.app.service_locator import ServiceLocator
 
 
 class StateManagerLaTeX():

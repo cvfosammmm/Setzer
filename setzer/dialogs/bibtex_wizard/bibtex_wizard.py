@@ -22,10 +22,10 @@ from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import Gdk
 
-from dialogs.dialog import Dialog
-import dialogs.bibtex_wizard.bibtex_wizard_viewgtk as view
-from dialogs.bibtex_wizard.pages.page_create_new_entry import CreateNewEntryPage
-from dialogs.bibtex_wizard.pages.page_fields_entry import FieldsEntryPage
+from setzer.dialogs.dialog import Dialog
+import setzer.dialogs.bibtex_wizard.bibtex_wizard_viewgtk as view
+from setzer.dialogs.bibtex_wizard.pages.page_create_new_entry import CreateNewEntryPage
+from setzer.dialogs.bibtex_wizard.pages.page_fields_entry import FieldsEntryPage
 
 import pickle
 import os

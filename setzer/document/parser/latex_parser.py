@@ -18,8 +18,8 @@
 import gi
 from gi.repository import GObject
 
-from helpers.helpers import timer
-from app.service_locator import ServiceLocator
+from setzer.helpers.helpers import timer
+from setzer.app.service_locator import ServiceLocator
 import _thread as thread, queue
 import time
 

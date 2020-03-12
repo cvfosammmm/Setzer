@@ -18,27 +18,27 @@
 import re
 import os.path
 
-import app.settings as settingscontroller
-import helpers.popover_menu_builder as popover_menu_builder
+import setzer.app.settings as settingscontroller
+import setzer.helpers.popover_menu_builder as popover_menu_builder
 
-import dialogs.about.about as about_dialog
-import dialogs.add_remove_packages.add_remove_packages as add_remove_packages_dialog
-import dialogs.bibtex_wizard.bibtex_wizard as bibtex_wizard
-import dialogs.build_save.build_save as build_save_dialog
-import dialogs.building_failed.building_failed as building_failed_dialog
-import dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
-import dialogs.document_wizard.document_wizard as document_wizard
-import dialogs.document_changed_on_disk.document_changed_on_disk as document_changed_on_disk_dialog
-import dialogs.include_bibtex_file.include_bibtex_file as include_bibtex_file_dialog
-import dialogs.include_latex_file.include_latex_file as include_latex_file_dialog
-import dialogs.interpreter_missing.interpreter_missing as interpreter_missing_dialog
-import dialogs.preferences.preferences as preferences_dialog
-import dialogs.open_document.open_document as open_document_dialog
-import dialogs.replace_confirmation.replace_confirmation as replace_confirmation_dialog
-import dialogs.save_document.save_document as save_document_dialog
-import dialogs.keyboard_shortcuts.keyboard_shortcuts as keyboard_shortcuts_dialog
-import dialogs.spellchecking_language.spellchecking_language as spellchecking_language_dialog
-import dialogs.spellchecking.spellchecking as spellchecking_dialog
+import setzer.dialogs.about.about as about_dialog
+import setzer.dialogs.add_remove_packages.add_remove_packages as add_remove_packages_dialog
+import setzer.dialogs.bibtex_wizard.bibtex_wizard as bibtex_wizard
+import setzer.dialogs.build_save.build_save as build_save_dialog
+import setzer.dialogs.building_failed.building_failed as building_failed_dialog
+import setzer.dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
+import setzer.dialogs.document_wizard.document_wizard as document_wizard
+import setzer.dialogs.document_changed_on_disk.document_changed_on_disk as document_changed_on_disk_dialog
+import setzer.dialogs.include_bibtex_file.include_bibtex_file as include_bibtex_file_dialog
+import setzer.dialogs.include_latex_file.include_latex_file as include_latex_file_dialog
+import setzer.dialogs.interpreter_missing.interpreter_missing as interpreter_missing_dialog
+import setzer.dialogs.preferences.preferences as preferences_dialog
+import setzer.dialogs.open_document.open_document as open_document_dialog
+import setzer.dialogs.replace_confirmation.replace_confirmation as replace_confirmation_dialog
+import setzer.dialogs.save_document.save_document as save_document_dialog
+import setzer.dialogs.keyboard_shortcuts.keyboard_shortcuts as keyboard_shortcuts_dialog
+import setzer.dialogs.spellchecking_language.spellchecking_language as spellchecking_language_dialog
+import setzer.dialogs.spellchecking.spellchecking as spellchecking_dialog
 
 
 class ServiceLocator(object):

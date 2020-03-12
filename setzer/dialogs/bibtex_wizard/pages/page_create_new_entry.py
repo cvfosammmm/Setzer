@@ -20,7 +20,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import GLib
 from gi.repository import Gtk
 
-from dialogs.bibtex_wizard.pages.page import Page, PageView
+from setzer.dialogs.bibtex_wizard.pages.page import Page, PageView
 
 import os
 

@@ -22,7 +22,7 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 import math
 
-import helpers.helpers as helpers
+import setzer.helpers.helpers as helpers
 
 
 class PreviewView(Gtk.VBox):

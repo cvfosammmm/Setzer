@@ -22,8 +22,8 @@ from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
 
-from dialogs.dialog import Dialog
-import dialogs.add_remove_packages.add_remove_packages_viewgtk as view
+from setzer.dialogs.dialog import Dialog
+import setzer.dialogs.add_remove_packages.add_remove_packages_viewgtk as view
 
 import pickle
 import os

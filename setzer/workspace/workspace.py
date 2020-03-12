@@ -19,17 +19,17 @@ import os.path
 import time
 import pickle
 
-from document.document import Document, LaTeXDocument, BibTeXDocument
-from helpers.observable import Observable
-import workspace.workspace_presenter as workspace_presenter
-import workspace.workspace_controller as workspace_controller
-import workspace.preview.preview as preview
-import workspace.sidebar.sidebar as sidebar
-import workspace.build_log.build_log as build_log
-import workspace.headerbar.headerbar_presenter as headerbar_presenter
-import workspace.keyboard_shortcuts.shortcuts as shortcuts
-import workspace.document_switcher.document_switcher as document_switcher
-from app.service_locator import ServiceLocator
+from setzer.document.document import Document, LaTeXDocument, BibTeXDocument
+from setzer.helpers.observable import Observable
+import setzer.workspace.workspace_presenter as workspace_presenter
+import setzer.workspace.workspace_controller as workspace_controller
+import setzer.workspace.preview.preview as preview
+import setzer.workspace.sidebar.sidebar as sidebar
+import setzer.workspace.build_log.build_log as build_log
+import setzer.workspace.headerbar.headerbar_presenter as headerbar_presenter
+import setzer.workspace.keyboard_shortcuts.shortcuts as shortcuts
+import setzer.workspace.document_switcher.document_switcher as document_switcher
+from setzer.app.service_locator import ServiceLocator
 
 
 class Workspace(Observable):

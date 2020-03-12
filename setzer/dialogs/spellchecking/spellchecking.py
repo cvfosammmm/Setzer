@@ -20,7 +20,7 @@ import gi
 gi.require_version('Gspell', '1')
 from gi.repository import Gspell
 
-from dialogs.dialog import Dialog
+from setzer.dialogs.dialog import Dialog
 
 
 class SpellcheckingDialog(Dialog):
