@@ -44,9 +44,20 @@ class DocumentBuilder(object):
             synctex_arguments = dict()
             synctex_arguments['line'] = insert.get_line()
             synctex_arguments['line_offset'] = insert.get_line_offset()
+            latex_interpreter = self.settings.get_value('preferences', 'latex_interpreter')
+            build_option_system_commands = self.settings.get_value('preferences', 'build_option_system_commands')
+            additional_arguments = ''
+            lualatex_prefix = ' -' if latex_interpreter == 'lualatex' else ' '
+            latexmk_prefix = ' -latexoption=' if latex_interpreter == 'latexmk' else ' '
+            if build_option_system_commands == 'disable':
+                additional_arguments += lualatex_prefix + '-no-shell-escape'
+            elif build_option_system_commands == 'restricted':
+                additional_arguments += lualatex_prefix + '-shell-restricted'
+            elif build_option_system_commands == 'enable':
+                additional_arguments += lualatex_prefix + '-shell-escape'
             buffer = document.get_buffer()
             if buffer != None:
-                query = build_system.Query(buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True), self, synctex_arguments, self.settings.get_value('preferences', 'latex_interpreter'))
+                query = build_system.Query(buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True), self, synctex_arguments, latex_interpreter, additional_arguments)
                 self.build_system.add_query(query)
 
         if change_code == 'document_state_change' and parameter == 'building_to_stop':

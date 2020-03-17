@@ -45,6 +45,14 @@ class PreferencesDialog(Dialog):
         self.view.option_autoshow_build_log_errors_warnings.connect('toggled', self.on_radio_button_toggle, 'autoshow_build_log', 'errors_warnings')
         self.view.option_autoshow_build_log_all.connect('toggled', self.on_radio_button_toggle, 'autoshow_build_log', 'all')
 
+        self.view.option_system_commands_disable.set_active(self.settings.get_value('preferences', 'build_option_system_commands') == 'disable')
+        self.view.option_system_commands_restricted.set_active(self.settings.get_value('preferences', 'build_option_system_commands') == 'restricted')
+        self.view.option_system_commands_full.set_active(self.settings.get_value('preferences', 'build_option_system_commands') == 'enable')
+
+        self.view.option_system_commands_disable.connect('toggled', self.on_radio_button_toggle, 'build_option_system_commands', 'disable')
+        self.view.option_system_commands_restricted.connect('toggled', self.on_radio_button_toggle, 'build_option_system_commands', 'restricted')
+        self.view.option_system_commands_full.connect('toggled', self.on_radio_button_toggle, 'build_option_system_commands', 'enable')
+
         self.view.option_latex_interpreter_latexmk.set_active(self.settings.get_value('preferences', 'latex_interpreter') == 'latexmk')
         self.view.option_latex_interpreter_pdflatex.set_active(self.settings.get_value('preferences', 'latex_interpreter') == 'pdflatex')
         self.view.option_latex_interpreter_xelatex.set_active(self.settings.get_value('preferences', 'latex_interpreter') == 'xelatex')

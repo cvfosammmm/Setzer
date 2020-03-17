@@ -409,6 +409,12 @@ box.preferences-page radiobutton radio {
     margin-left: 1px;
     margin-right: 6px;
 }
+box.preferences-page checkbutton {
+}
+box.preferences-page .description {
+    color: mix(@theme_fg_color, @theme_bg_color, 0.3);
+    font-size: 13px;
+}
 
 /*
 ** document wizard

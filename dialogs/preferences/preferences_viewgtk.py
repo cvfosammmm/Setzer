@@ -168,6 +168,25 @@ class Preferences(object):
         self.page_build_system.pack_start(self.option_autoshow_build_log_errors_warnings, False, False, 0)
         self.page_build_system.pack_start(self.option_autoshow_build_log_all, False, False, 0)
     
+        label = Gtk.Label()
+        label.set_markup('<b>Embedded system commands</b>')
+        label.set_xalign(0)
+        label.set_margin_top(18)
+        label.set_margin_bottom(6)
+        self.page_build_system.pack_start(label, False, False, 0)
+        label = Gtk.Label()
+        label.set_markup('Warning: enable this only when you have to. It can cause security problems\nwhen building files from untrusted sources.')
+        label.set_xalign(0)
+        label.set_margin_bottom(9)
+        label.get_style_context().add_class('description')
+        self.page_build_system.pack_start(label, False, False, 0)
+        self.option_system_commands_disable = Gtk.RadioButton('Disable (recommended)')
+        self.option_system_commands_restricted = Gtk.RadioButton.new_with_label_from_widget(self.option_system_commands_disable, 'Enable restricted \\write18{SHELL COMMAND}')
+        self.option_system_commands_full = Gtk.RadioButton.new_with_label_from_widget(self.option_system_commands_disable, 'Fully enable \\write18{SHELL COMMAND}')
+        self.page_build_system.pack_start(self.option_system_commands_disable, False, False, 0)
+        self.page_build_system.pack_start(self.option_system_commands_restricted, False, False, 0)
+        self.page_build_system.pack_start(self.option_system_commands_full, False, False, 0)
+
     def run(self):
         return self.dialog.run()
         

@@ -84,6 +84,7 @@ class Settings(Observable):
         self.defaults['preferences']['highlight_matching_brackets'] = False
         self.defaults['preferences']['inline_spellchecking'] = True
         self.defaults['preferences']['spellchecking_language_code'] = Gspell.Language.get_default().get_code()
+        self.defaults['preferences']['build_option_system_commands'] = 'disable'
 
     def get_value(self, section, item):
         try: value = self.data[section][item]

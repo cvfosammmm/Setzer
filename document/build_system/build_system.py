@@ -86,7 +86,7 @@ class BuildSystem(object):
 
 class Query(object):
 
-    def __init__(self, text, document_controller, synctex_arguments, latex_interpreter):
+    def __init__(self, text, document_controller, synctex_arguments, latex_interpreter, additional_arguments):
         self.text = text
         self.document_controller = document_controller
         self.tex_filename = self.document_controller.document.get_filename()[:]
@@ -96,6 +96,7 @@ class Query(object):
         self.result = None
         self.result_lock = thread.allocate_lock()
         self.synctex_args = synctex_arguments
+        self.additional_arguments = additional_arguments
 
         self.log_messages = list()
         self.bibtex_log_messages = list()
@@ -112,7 +113,7 @@ class Query(object):
         self.build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode -pdf'
         self.build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode'
         self.build_command_defaults['lualatex'] = 'lualatex -synctex=1 -interaction=nonstopmode -pdf'
-        self.build_command = self.build_command_defaults[self.latex_interpreter]
+        self.build_command = self.build_command_defaults[self.latex_interpreter] + self.additional_arguments
 
         self.do_another_latex_build = True
         self.do_a_bibtex_build = False
