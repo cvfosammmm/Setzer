@@ -65,7 +65,7 @@ class OpenDocsPopover(Gtk.Popover):
         self.master_explaination1.set_margin_top(9)
         self.master_explaination1.set_xalign(0)
         self.master_explaination1.get_style_context().add_class('explaination-header')
-        self.master_explaination2 = Gtk.Label('The master document will get built, no matter which document you \nare currently editing, and it will always display in the .pdf preview. \nThe build log will also refer to the master document. \nThis is often useful for working on large projects where typically a \ntop level document (the master) will contain multiple lower level \nfiles via include statements.')
+        self.master_explaination2 = Gtk.Label('The master document will get built, no matter which document\nyou are currently editing, and it will always display in the .pdf\npreview. The build log will also refer to the master document.\nThis is often useful for working on large projects where typically\na top level document (the master) will contain multiple lower\nlevel files via include statements.')
         self.master_explaination2.set_xalign(0)
         self.master_explaination2.get_style_context().add_class('explaination')
         self.master_explaination2.set_margin_top(14)

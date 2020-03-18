@@ -149,7 +149,7 @@ popover.documentchooser box.not_found label {
     margin-left: 9px;
     margin-right: 9px;
     color: mix(@theme_fg_color, @theme_bg_color, 0.3);
-    font-size: 12px;
+    font-size: 13px;
 }
 .open-docs-popover label.master-label {
     opacity: 0.3;
@@ -453,7 +453,7 @@ label.document-wizard-subheader {
 }
 label.document-wizard-option-desc {
     color: mix(@theme_fg_color, @theme_bg_color, 0.3);
-    font-size: 12px;
+    font-size: 13px;
     margin-left: 26px;
     margin-bottom: 6px;
 }
