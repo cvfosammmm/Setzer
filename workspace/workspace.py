@@ -185,14 +185,18 @@ class Workspace(Observable):
         return None
 
     def update_recently_opened_document(self, filename, date=None, notify=True):
-        if not isinstance(filename, str): return False
-        if not os.path.isfile(filename): return False
-        if date == None: date = time.time()
-        if len(self.recently_opened_documents) >= 1000: 
-            del(self.recently_opened_documents[sorted(self.recently_opened_documents.values(), key=lambda val: -val['date'])[0]['filename']])
-        self.recently_opened_documents[filename] = {'filename': filename, 'date': date}
+        if not isinstance(filename, str) or not os.path.isfile(filename):
+            self.remove_recently_opened_document(filename)
+        else:
+            if date == None: date = time.time()
+            if len(self.recently_opened_documents) >= 1000: 
+                del(self.recently_opened_documents[sorted(self.recently_opened_documents.values(), key=lambda val: -val['date'])[0]['filename']])
+            self.recently_opened_documents[filename] = {'filename': filename, 'date': date}
         if notify:
             self.add_change_code('update_recently_opened_documents', self.recently_opened_documents)
+
+    def remove_recently_opened_document(self, filename):
+        del(self.recently_opened_documents[filename])
     
     def populate_from_disk(self):
         try: filehandle = open(self.pathname + '/workspace.pickle', 'rb')
