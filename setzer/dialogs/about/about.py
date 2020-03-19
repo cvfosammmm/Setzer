@@ -47,7 +47,6 @@ class AboutDialog(Dialog):
         self.view.set_website('https://www.cvfosammmm.org/setzer/')
         self.view.set_website_label('https://www.cvfosammmm.org/setzer/')
         self.view.set_authors(('Robert Griesel',))
-        logo = Gtk.Image.new_from_file(os.path.dirname(os.path.realpath(__file__)) + '/../../resources/images/org.cvfosammmm.Setzer.svg')
-        self.view.set_logo(logo.get_pixbuf())
+        self.view.set_logo_icon_name('org.cvfosammmm.Setzer')
         
 
