@@ -104,6 +104,7 @@ class DocumentController(object):
         return False
 
     def save_date_loop(self):
+        if self.document.filename == None: return True
         if self.document.save_date <= os.path.getmtime(self.document.filename) - 0.001:
             if ServiceLocator.get_dialog('document_changed_on_disk').run(self.document):
                 self.document.populate_from_filename()
