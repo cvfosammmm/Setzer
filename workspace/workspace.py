@@ -196,8 +196,11 @@ class Workspace(Observable):
             self.add_change_code('update_recently_opened_documents', self.recently_opened_documents)
 
     def remove_recently_opened_document(self, filename):
-        del(self.recently_opened_documents[filename])
-    
+        try:
+            del(self.recently_opened_documents[filename])
+        except KeyError:
+            pass
+
     def populate_from_disk(self):
         try: filehandle = open(self.pathname + '/workspace.pickle', 'rb')
         except IOError: pass
