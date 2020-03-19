@@ -90,22 +90,9 @@
         },
         {
             "name": "setzer",
-            "buildsystem": "simple",
-            "build-commands": [
-                "mkdir -p /app/share/applications",
-                "cp resources/org.cvfosammmm.Setzer.desktop /app/share/applications/org.cvfosammmm.Setzer.desktop",
-                "mkdir -p /app/share/icons/hicolor/scalable/apps",
-                "cp resources/images/org.cvfosammmm.Setzer.svg /app/share/icons/hicolor/scalable/apps/org.cvfosammmm.Setzer.svg",
-                "mkdir -p /app/share/metainfo",
-                "cp resources/org.cvfosammmm.Setzer.appdata.xml /app/share/metainfo/org.cvfosammmm.Setzer.appdata.xml",
-                "mkdir -p /app/bin",
-                "cp -R app /app/bin/",
-                "cp -R dialogs /app/bin/",
-                "cp -R document /app/bin/",
-                "cp -R helpers /app/bin/",
-                "cp -R resources /app/bin/",
-                "cp -R workspace /app/bin/",
-                "install -D __main__.py /app/bin/setzer"
+            "buildsystem": "meson",
+            "config-opts": [
+                "--buildtype=release"
             ],
             "sources": [
                 {

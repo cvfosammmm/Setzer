@@ -61,7 +61,7 @@ def generate_tex(border_h, border_v):
     
 
 for folder in folders:
-    tree = ET.parse('../resources/symbols/' + folder + '.xml')
+    tree = ET.parse('../setzer/resources/symbols/' + folder + '.xml')
     root = tree.getroot()
 
     for child in root:
@@ -97,17 +97,17 @@ for folder in folders:
         process.kill()
 
         # make svg
-        try: os.mkdir('../resources/symbols')
+        try: os.mkdir('../setzer/resources/symbols')
         except FileExistsError: pass
-        try: os.mkdir('../resources/symbols/' + folder)
+        try: os.mkdir('../setzer/resources/symbols/' + folder)
         except FileExistsError: pass
 
-        arguments = ['pdf2svg', 'temp.pdf', '../resources/symbols/' + folder + '/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
+        arguments = ['pdf2svg', 'temp.pdf', '../setzer/resources/symbols/' + folder + '/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
         process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         process.wait()
 
         # get image size
-        arguments = ['inkscape', '--export-png=temp.png', '../resources/symbols/' + folder + '/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
+        arguments = ['inkscape', '--export-png=temp.png', '../setzer/resources/symbols/' + folder + '/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
         process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         process.wait()
         output, _ = process.communicate()
@@ -117,7 +117,7 @@ for folder in folders:
         process.kill()
         child.set('original_width', width_match.group(1))
         child.set('original_height', width_match.group(2))
-        tree.write('../resources/symbols/' + folder + '.xml')
+        tree.write('../setzer/resources/symbols/' + folder + '.xml')
 
         # delete helper files
         os.remove('temp.tex')

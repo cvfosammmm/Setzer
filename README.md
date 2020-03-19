@@ -6,7 +6,7 @@ Website: <a href="https://www.cvfosammmm.org/setzer/">https://www.cvfosammmm.org
 
 <a href="https://flathub.org/apps/details/org.cvfosammmm.Setzer"><img src="https://www.cvfosammmm.org/setzer/images/flathub-badge-en.svg" width="150" height="50"></a>
 
-![Screenshot](https://github.com/cvfosammmm/Setzer/raw/master/resources/images/screenshot.png)
+![Screenshot](https://github.com/cvfosammmm/Setzer/raw/master/data/screenshot.png)
 
 Setzer is a LaTeX editor written in Python with Gtk. I'm happy if you give it a try and provide feedback via the issue tracker here on GitHub, be it about design, code architecture, bugs, feature requests, ... I try to respond to issues immediately.
 
