@@ -40,7 +40,7 @@ class BuildWidgetView(Gtk.HBox):
         self.stop_button.set_focus_on_click(False)
         self.stop_button.set_tooltip_text('Stop building')
 
-        self.clean_button = Gtk.Button.new_from_icon_name('edit-clear-all-symbolic', Gtk.IconSize.MENU)
+        self.clean_button = Gtk.Button.new_from_icon_name('brush-symbolic', Gtk.IconSize.MENU)
         self.clean_button.set_focus_on_click(False)
         self.clean_button.set_tooltip_text('Cleanup build files')
 
