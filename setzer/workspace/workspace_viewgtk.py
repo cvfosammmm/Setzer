@@ -28,7 +28,7 @@ import setzer.workspace.build_log.build_log_viewgtk as build_log_view
 import setzer.workspace.headerbar.headerbar_viewgtk as headerbar_view
 import setzer.workspace.shortcutsbar.shortcutsbar_viewgtk as shortcutsbar_view
 import setzer.workspace.bibtex_shortcutsbar.bibtex_shortcutsbar_viewgtk as bibtex_shortcutsbar_view
-import setzer.workspace.preview.preview_viewgtk as preview_view
+import setzer.workspace.preview_panel.preview_panel_viewgtk as preview_panel_view
 import setzer.workspace.sidebar.sidebar_viewgtk as sidebar_view
 
 import os
@@ -83,7 +83,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.build_log_visible = None
 
         # preview
-        self.preview = preview_view.PreviewView()
+        self.preview_panel = preview_panel_view.PreviewPanelView()
         self.preview_visible = None
 
         # sidebar
@@ -95,7 +95,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.overlay_widget = None
         self.preview_paned = Gtk.HPaned()
         self.preview_paned.pack1(self.build_log_paned, True, False)
-        self.preview_paned.pack2(self.preview, False, True)
+        self.preview_paned.pack2(self.preview_panel, False, True)
         self.preview_paned_overlay.add(self.preview_paned)
         self.sidebar_paned = Gtk.HPaned()
         self.sidebar_paned.pack1(self.sidebar, False, True)

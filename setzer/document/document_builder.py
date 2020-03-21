@@ -82,7 +82,7 @@ class DocumentBuilder(object):
                 except KeyError: pass
                 else:
                     try:
-                        self.document.preview.set_pdf_position(result_blob['pdf_position'])
+                        self.document.preview.set_pdf_position(result_blob['pdf_position'], scroll=True)
                     except KeyError: pass
 
                 build_log_items = list()

@@ -86,7 +86,7 @@ class WorkspaceController(object):
         self.main_window.headerbar.sidebar_toggle.connect('toggled', self.on_sidebar_toggle_toggled)
         self.main_window.headerbar.preview_toggle.connect('toggled', self.on_preview_toggle_toggled)
         self.main_window.sidebar.connect('size-allocate', self.on_sidebar_size_allocate)
-        self.main_window.preview.connect('size-allocate', self.on_preview_size_allocate)
+        self.main_window.preview_panel.connect('size-allocate', self.on_preview_size_allocate)
         self.main_window.preview_paned.connect('size-allocate', self.on_preview_paned_size_allocate)
         self.main_window.notebook_wrapper.connect('size-allocate', self.on_build_log_size_allocate)
         self.main_window.shortcuts_bar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
