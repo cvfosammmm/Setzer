@@ -30,13 +30,13 @@ class PreviewLayouter(Observable):
         self.view = view
 
         self.ppp = self.get_ppp() # pixels per point
-        self.vertical_margin_points = 8
-        self.horizontal_margin_points = 8
+        self.vertical_margin_points = 0
+        self.horizontal_margin_points = 0
         self.vertical_margin = None
         self.horizontal_margin = None
         self.page_width = None
         self.page_height = None
-        self.page_gap_points = 9
+        self.page_gap_points = 5
         self.page_gap = None
         self.border_width = None
         self.scale_factor = None
@@ -77,8 +77,9 @@ class PreviewLayouter(Observable):
         if not self.preview.pdf_loaded: return
 
         self.vertical_margin = int(self.ppp * self.vertical_margin_points)
-        self.horizontal_margin = int(self.ppp * self.horizontal_margin_points)
         self.page_width = int(round(self.preview.zoom_level * self.ppp * self.preview.page_width))
+        self.horizontal_margin = int(self.ppp * self.horizontal_margin_points)
+        self.horizontal_margin = int(max((self.view.get_allocated_width() - self.page_width) / 2, self.horizontal_margin))
         self.page_height = int(self.preview.zoom_level * self.ppp * self.preview.page_height)
         self.page_gap = int(self.ppp * self.page_gap_points)
         self.border_width = 1
@@ -96,10 +97,13 @@ class PreviewLayouter(Observable):
         self.add_change_code('layout_changed')
 
     def update_fit_to_width(self):
+        self.horizontal_margin = int(self.ppp * self.horizontal_margin_points)
+        self.horizontal_margin = int(max((self.view.get_allocated_width() - self.page_width) / 2, self.horizontal_margin))
+
         if self.view.get_allocated_width() < 300: return
         old_level = self.preview.zoom_level_fit_to_width
         try:
-            level = (self.view.get_allocated_width() - 2 * int(self.vertical_margin_points * self.ppp)) / (self.preview.page_width * self.ppp)
+            level = (self.view.get_allocated_width() - 2 * int(self.horizontal_margin_points * self.ppp)) / (self.preview.page_width * self.ppp)
         except TypeError:
             pass
         else:

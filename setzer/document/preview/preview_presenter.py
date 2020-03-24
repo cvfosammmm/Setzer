@@ -112,17 +112,17 @@ class PreviewPresenter(object):
 
             for page in self.layouter.pages:
                 ctx.set_source_rgba(border_color.red, border_color.green, border_color.blue, border_color.alpha)
-                ctx.rectangle(page['x'] - self.layouter.border_width, page['y'] - self.layouter.border_width, page['width'] + 2 * self.layouter.border_width, page['height'] + 2 * self.layouter.border_width)
+                ctx.rectangle(self.layouter.horizontal_margin - self.layouter.border_width, page['y'] - self.layouter.border_width, page['width'] + 2 * self.layouter.border_width, page['height'] + 2 * self.layouter.border_width)
                 ctx.fill()
                 ctx.set_source_rgba(1, 1, 1, 1)
-                ctx.rectangle(page['x'], page['y'], page['width'], page['height'])
+                ctx.rectangle(self.layouter.horizontal_margin, page['y'], page['width'], page['height'])
                 ctx.fill()
 
             for page_number, rendered_page_data in self.page_renderer.rendered_pages.items():
                 surface = rendered_page_data[0]
                 if isinstance(surface, cairo.ImageSurface):
                     page = self.layouter.pages[page_number]
-                    ctx.set_source_surface(surface, page['x'], page['y'])
+                    ctx.set_source_surface(surface, self.layouter.horizontal_margin, page['y'])
                     ctx.paint()
                     #ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, size_y + 12 * self.hidpi_factor))
                     #self.rendered_pages[page_number].remove_previous_size_surface()
