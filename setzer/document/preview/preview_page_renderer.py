@@ -23,6 +23,7 @@ import cairo
 
 import _thread as thread, queue
 import time
+import copy
 
 from setzer.helpers.observable import Observable
 
@@ -34,6 +35,7 @@ class PreviewPageRenderer(Observable):
         self.preview = preview
         self.layouter = layouter
 
+        self.visible_pages_lock = thread.allocate_lock()
         self.visible_pages = list()
         self.page_width = None
         self.pdf_date = None
@@ -42,6 +44,8 @@ class PreviewPageRenderer(Observable):
         self.preview.register_observer(self)
         self.layouter.register_observer(self)
 
+        self.page_render_count = dict()
+        self.page_render_count_lock = thread.allocate_lock()
         self.render_queue = queue.Queue()
         self.rendered_pages_queue = queue.Queue()
         thread.start_new_thread(self.render_page_loop, ())
@@ -60,10 +64,18 @@ class PreviewPageRenderer(Observable):
             try: todo = self.render_queue.get(block=False)
             except queue.Empty: time.sleep(0.05)
             else:
-                with self.preview.poppler_document_lock:
-                    page = self.preview.poppler_document.get_page(todo['page_number'])
-                    page.render(todo['ctx'])
-                self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [todo['surface'], todo['page_width'], todo['pdf_date']]})
+                with self.visible_pages_lock:
+                    visible_pages = self.visible_pages.copy()
+                with self.page_render_count_lock:
+                    render_count = self.page_render_count[todo['page_number']]
+                if todo['render_count'] == render_count and todo['page_number'] in visible_pages:
+                    with self.preview.poppler_document_lock:
+                        page = self.preview.poppler_document.get_page(todo['page_number'])
+                        page.render(todo['ctx'])
+                    with self.page_render_count_lock:
+                        render_count = self.page_render_count[todo['page_number']]
+                    if todo['render_count'] == render_count:
+                        self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [todo['surface'], todo['page_width'], todo['pdf_date']]})
 
     def rendered_pages_loop(self):
         while self.rendered_pages_queue.empty() == False:
@@ -79,7 +91,8 @@ class PreviewPageRenderer(Observable):
         page_width = self.layouter.page_width
         pdf_date = self.preview.pdf_date
         if pdf_date == self.pdf_date and visible_pages == self.visible_pages and page_width == self.page_width: return
-        self.visible_pages = visible_pages
+        with self.visible_pages_lock:
+            self.visible_pages = visible_pages
         self.page_width = page_width
         self.pdf_date = pdf_date
 
@@ -91,7 +104,13 @@ class PreviewPageRenderer(Observable):
                 surface = cairo.ImageSurface(cairo.Format.ARGB32, width_pixels, height_pixels)
                 ctx = cairo.Context(surface)
                 ctx.scale(scale_factor, scale_factor)
-                self.render_queue.put({'page_number': page_number, 'surface': surface, 'ctx': ctx, 'page_width': page_width, 'pdf_date': pdf_date}) #TODO render_count
+
+                with self.page_render_count_lock:
+                    try:
+                        self.page_render_count[page_number] += 1
+                    except KeyError:
+                        self.page_render_count[page_number] = 1
+                    self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'surface': surface, 'ctx': ctx, 'page_width': page_width, 'pdf_date': pdf_date})
 
         for page_number in [page_number for page_number in self.rendered_pages if page_number not in visible_pages]:
             del(self.rendered_pages[page_number])
