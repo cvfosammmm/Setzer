@@ -40,7 +40,7 @@ class WorkspacePresenter(object):
 
         def on_window_state(widget, event): self.on_realize()
         self.main_window.connect('draw', on_window_state)
-        
+
     '''
     *** notification handlers, get called by observed workspace
     '''
@@ -82,7 +82,6 @@ class WorkspacePresenter(object):
                 except AttributeError: pass
 
                 self.update_latex_shortcuts_bar()
-                self.set_preview_document()
                 self.activate_latex_documents_mode()
 
             elif document.is_bibtex_document():
@@ -110,9 +109,6 @@ class WorkspacePresenter(object):
 
         if change_code == 'show_build_log_state_change':
             self.build_log_animate(parameter, True)
-
-        if change_code == 'master_state_change':
-            self.set_preview_document()
 
         if change_code == 'set_dark_mode':
             ServiceLocator.get_settings().gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', parameter)
@@ -157,13 +153,6 @@ class WorkspacePresenter(object):
             shortcuts_bar.remove(shortcuts_bar.current_bottom)
         shortcuts_bar.current_bottom = document.view.shortcuts_bar_bottom
         shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
-
-    def set_preview_document(self):
-        if self.workspace.get_active_document() != None:
-            if self.workspace.master_document != None:
-                self.workspace.preview.set_active_document(self.workspace.master_document)
-            else:
-                self.workspace.preview.set_active_document(self.workspace.active_document)
 
     def set_document_actions_active(self, value):
         self.main_window.save_as_action.set_enabled(value)
@@ -257,10 +246,10 @@ class WorkspacePresenter(object):
             else:
                 paned.set_position(end)
                 if not show_preview:
-                    self.main_window.preview.hide()
+                    self.main_window.preview_panel.hide()
                     self.main_window.preview_visible = False
                 else:
-                    self.main_window.preview_paned.child_set_property(self.main_window.preview, 'shrink', False)
+                    self.main_window.preview_paned.child_set_property(self.main_window.preview_panel, 'shrink', False)
                     self.main_window.preview_visible = True
                     self.workspace.set_preview_position(paned.get_position())
                 if set_toggle: self.main_window.headerbar.preview_toggle.set_active(show_preview)
@@ -287,7 +276,7 @@ class WorkspacePresenter(object):
         if frame_clock != None and animate:
             if show_preview:
                 start = self.main_window.preview_paned.get_allocated_width()
-                self.main_window.preview.show_all()
+                self.main_window.preview_panel.show_all()
             else:
                 start = self.workspace.preview_position
             if start != end:
@@ -295,17 +284,17 @@ class WorkspacePresenter(object):
                 end_time = start_time + 1000 * duration
                 self.preview_animating = True
                 self.main_window.preview_paned.add_tick_callback(set_position_on_tick, (show_preview, set_toggle))
-                self.main_window.preview_paned.child_set_property(self.main_window.preview, 'shrink', True)
+                self.main_window.preview_paned.child_set_property(self.main_window.preview_panel, 'shrink', True)
         else:
             if show_preview:
                 if self.workspace.show_sidebar == False and self.main_window.sidebar.get_allocated_width() > 1:
                     end -= self.main_window.sidebar.get_allocated_width()
-                self.main_window.preview_paned.child_set_property(self.main_window.preview, 'shrink', False)
+                self.main_window.preview_paned.child_set_property(self.main_window.preview_panel, 'shrink', False)
                 self.main_window.preview_visible = True
             else:
-                self.main_window.preview_paned.child_set_property(self.main_window.preview, 'shrink', True)
+                self.main_window.preview_paned.child_set_property(self.main_window.preview_panel, 'shrink', True)
                 self.main_window.preview_visible = False
-                self.main_window.preview.hide()
+                self.main_window.preview_panel.hide()
             self.main_window.preview_paned.set_position(end)
             if set_toggle: self.main_window.headerbar.preview_toggle.set_active(show_preview)
 

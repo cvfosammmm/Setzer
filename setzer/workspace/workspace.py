@@ -23,7 +23,7 @@ from setzer.document.document import Document, LaTeXDocument, BibTeXDocument
 from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
-import setzer.workspace.preview.preview as preview
+import setzer.workspace.preview_panel.preview_panel_presenter as preview_panel_presenter
 import setzer.workspace.sidebar.sidebar as sidebar
 import setzer.workspace.build_log.build_log as build_log
 import setzer.workspace.headerbar.headerbar_presenter as headerbar_presenter
@@ -55,7 +55,6 @@ class Workspace(Observable):
         self.sidebar = sidebar.Sidebar()
         self.show_sidebar = self.settings.get_value('window_state', 'show_sidebar')
         self.sidebar_position = self.settings.get_value('window_state', 'sidebar_paned_position')
-        self.preview = preview.Preview()
         self.show_preview = self.settings.get_value('window_state', 'show_preview')
         self.preview_position = self.settings.get_value('window_state', 'preview_paned_position')
         self.build_log = build_log.BuildLog(self)
@@ -66,6 +65,7 @@ class Workspace(Observable):
     def init_workspace_controller(self):
         self.presenter = workspace_presenter.WorkspacePresenter(self)
         self.headerbar = headerbar_presenter.HeaderbarPresenter(self)
+        self.preview_panel = preview_panel_presenter.PreviewPanelPresenter(self)
         self.document_switcher = document_switcher.DocumentSwitcher(self)
         self.controller = workspace_controller.WorkspaceController(self)
 

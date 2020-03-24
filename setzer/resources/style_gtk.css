@@ -330,9 +330,6 @@ popover label.keyboard-shortcut {
 box.preview scrolledwindow {
     background-color: #fff;
 }
-box.preview label.page_counter {
-    margin-left: 12px;
-}
 box.preview > box {
     background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
     border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
