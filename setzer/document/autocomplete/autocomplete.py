@@ -648,7 +648,7 @@ class Autocomplete(object):
         
         self.static_proposals = dict()
         for command in self.commands.values():
-            for i in range(1, len(command['command'])):
+            for i in range(1, len(command['command']) + 1):
                 try:
                     if len(self.static_proposals[command['command'][0:i].lower()]) < 5:
                         self.static_proposals[command['command'][0:i].lower()].append(command)
@@ -661,7 +661,7 @@ class Autocomplete(object):
             self.dynamic_proposals = dict()
             for label in iter(labels):
                 command = {'command': 'ref{' + label + '}', 'description': 'Reference to \'' + label + '\''}
-                for i in range(1, len(command['command'])):
+                for i in range(1, len(command['command']) + 1):
                     try:
                         if len(self.dynamic_proposals[command['command'][0:i].lower()]) < 5:
                             self.dynamic_proposals[command['command'][0:i].lower()].append(command)
