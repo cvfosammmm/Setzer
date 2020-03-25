@@ -139,7 +139,6 @@ class Preview(Observable):
                 page_size = self.poppler_document.get_page(0).get_size()
             self.page_width = page_size.width
             self.page_height = page_size.height
-            self.zoom_levels = [0.25, 0.5, 1.0, 2.0, 4.0]
             self.pdf_loaded = True
             self.add_change_code('pdf_changed')
             self.set_zoom_fit_to_width()

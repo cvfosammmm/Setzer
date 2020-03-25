@@ -72,15 +72,12 @@ class PreviewPageRenderer(Observable):
                     with self.preview.poppler_document_lock:
                         page = self.preview.poppler_document.get_page(todo['page_number'])
                         page.render(todo['ctx'])
-                    with self.page_render_count_lock:
-                        render_count = self.page_render_count[todo['page_number']]
-                    if todo['render_count'] == render_count:
-                        self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [todo['surface'], todo['page_width'], todo['pdf_date']]})
+                    self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [todo['surface'], todo['page_width'], todo['pdf_date']]})
 
     def rendered_pages_loop(self):
         while self.rendered_pages_queue.empty() == False:
             try: todo = self.rendered_pages_queue.get(block=False)
-            except queue.Empty: time.sleep(0.05)
+            except queue.Empty: pass
             else:
                 self.rendered_pages[todo['page_number']] = todo['item']
                 self.add_change_code('rendered_pages_changed')
@@ -95,6 +92,17 @@ class PreviewPageRenderer(Observable):
             self.visible_pages = visible_pages
         self.page_width = page_width
         self.pdf_date = pdf_date
+
+        changed = False
+        for page_number in [page_number for page_number in self.rendered_pages if page_number not in visible_pages]:
+            del(self.rendered_pages[page_number])
+            changed = True
+        for page_number in [page_number for page_number in self.rendered_pages if page_number in visible_pages]:
+            if self.rendered_pages[page_number][2] != pdf_date:
+                del(self.rendered_pages[page_number])
+                changed = True
+        if changed:
+            self.add_change_code('rendered_pages_changed')
 
         for page_number in visible_pages:
             if page_number not in self.rendered_pages or self.rendered_pages[page_number][1] != page_width or self.rendered_pages[page_number][2] != pdf_date:
@@ -111,8 +119,5 @@ class PreviewPageRenderer(Observable):
                     except KeyError:
                         self.page_render_count[page_number] = 1
                     self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'surface': surface, 'ctx': ctx, 'page_width': page_width, 'pdf_date': pdf_date})
-
-        for page_number in [page_number for page_number in self.rendered_pages if page_number not in visible_pages]:
-            del(self.rendered_pages[page_number])
 
 
