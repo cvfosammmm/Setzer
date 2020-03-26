@@ -69,7 +69,6 @@ class PreviewLayouter(Observable):
                 self.scale_factor = None
                 self.visible_pages = list()
                 self.current_page = None
-                self.pages = None
                 self.add_change_code('layout_changed')
             self.compute_visible_pages()
 
@@ -88,14 +87,6 @@ class PreviewLayouter(Observable):
         self.page_gap = int(self.ppp * self.page_gap_points)
         self.border_width = 1
         self.scale_factor = self.preview.zoom_level * self.ppp
-        self.pages = list()
-        for n in range(0, self.preview.number_of_pages):
-            page = dict()
-            page['x'] = self.horizontal_margin
-            page['y'] = n * (self.page_height + self.page_gap) + self.vertical_margin
-            page['width'] = self.page_width
-            page['height'] = self.page_height
-            self.pages.append(page)
         self.canvas_width = self.page_width + 2 * self.horizontal_margin
         self.canvas_height = self.preview.number_of_pages * (self.page_height + self.page_gap) - self.page_gap + 2 * self.vertical_margin
         self.has_layout = True

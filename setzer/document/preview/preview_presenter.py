@@ -16,12 +16,15 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
+gi.require_version('Gtk', '3.0')
 gi.require_version('Poppler', '0.18')
 from gi.repository import Poppler
+from gi.repository import GObject
 import cairo
 
 import os.path
 import math
+import queue
 
 
 class PreviewPresenter(object):
@@ -33,6 +36,9 @@ class PreviewPresenter(object):
         self.view = view
 
         self.view.drawing_area.connect('draw', self.draw)
+        self.scrolling_queue = queue.Queue()
+        self.view.drawing_area.connect('size-allocate', self.scrolling_loop)
+        GObject.timeout_add(50, self.scrolling_loop)
         self.preview.register_observer(self)
         self.layouter.register_observer(self)
         self.page_renderer.register_observer(self)
@@ -92,10 +98,25 @@ class PreviewPresenter(object):
         if self.layouter.has_layout:
             self.view.drawing_area.set_size_request(self.layouter.canvas_width, self.layouter.canvas_height)
 
-    def scroll_to_position(self, position): #TODO umbenennen zu synctex kram, move to preview
+    def scroll_to_position(self, position):
         if self.layouter.has_layout:
-            yoffset = max((self.layouter.page_gap + self.layouter.page_height) * (position['page'] - 1) + self.layouter.vertical_margin + (position['y'] + position['height'] / 2) * self.layouter.scale_factor - self.view.scrolled_window.get_allocated_height() / 2, 0)
-            self.view.scrolled_window.get_vadjustment().set_value(yoffset)
+            yoffset = max((self.layouter.page_gap + self.layouter.page_height) * (position['page'] - 1) + self.layouter.vertical_margin + position['y'] * self.layouter.scale_factor, 0)
+            xoffset = self.layouter.vertical_margin + position['x'] * self.layouter.scale_factor
+            self.scrolling_queue.put((xoffset, yoffset))
+
+    def scrolling_loop(self, widget=None, allocation=None):
+        if int(self.view.drawing_area.get_allocated_height()) == int(self.layouter.canvas_height):
+            while self.scrolling_queue.empty() == False:
+                try: todo = self.scrolling_queue.get(block=False)
+                except queue.Empty: pass
+                else:
+                    if(self.scrolling_queue.empty()):
+                        self.scroll_to_offsets(*todo)
+        return True
+
+    def scroll_to_offsets(self, xoffset, yoffset):
+        self.view.scrolled_window.get_hadjustment().set_value(xoffset)
+        self.view.scrolled_window.get_vadjustment().set_value(yoffset)
 
     #@helpers.timer
     def draw(self, drawing_area, cairo_context, data = None):
@@ -109,12 +130,12 @@ class PreviewPresenter(object):
             ctx.fill()
 
             ctx.transform(cairo.Matrix(1, 0, 0, 1, self.layouter.horizontal_margin, self.layouter.vertical_margin))
-            for page_number, page in enumerate(self.layouter.pages):
+            for page_number in range(0, self.preview.number_of_pages):
                 ctx.set_source_rgba(border_color.red, border_color.green, border_color.blue, border_color.alpha)
-                ctx.rectangle(- self.layouter.border_width, - self.layouter.border_width, page['width'] + 2 * self.layouter.border_width, page['height'] + 2 * self.layouter.border_width)
+                ctx.rectangle(- self.layouter.border_width, - self.layouter.border_width, self.layouter.page_width + 2 * self.layouter.border_width, self.layouter.page_height + 2 * self.layouter.border_width)
                 ctx.fill()
                 ctx.set_source_rgba(1, 1, 1, 1)
-                ctx.rectangle(0, 0, page['width'], page['height'])
+                ctx.rectangle(0, 0, self.layouter.page_width, self.layouter.page_height)
                 ctx.fill()
 
                 if page_number in self.page_renderer.rendered_pages:
@@ -122,7 +143,6 @@ class PreviewPresenter(object):
                     surface = rendered_page_data[0]
                     page_width = rendered_page_data[1]
                     if isinstance(surface, cairo.ImageSurface):
-                        page = self.layouter.pages[page_number]
                         if page_width == self.layouter.page_width:
                             ctx.set_source_surface(surface, 0, 0)
                             ctx.paint()
@@ -133,6 +153,6 @@ class PreviewPresenter(object):
                             ctx.set_source_surface(surface, 0, 0)
                             ctx.paint()
                             ctx.set_matrix(matrix)
-                ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, page['height'] + self.layouter.page_gap))
+                ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, self.layouter.page_height + self.layouter.page_gap))
 
 
