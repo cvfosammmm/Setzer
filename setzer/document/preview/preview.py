@@ -105,10 +105,14 @@ class Preview(Observable):
             page = math.floor(self.yoffset / self.page_height) + 1
             return {'page': page, 'x': self.xoffset, 'y': self.yoffset - (page - 1) * self.page_height}
 
+    def scroll_to_position_from_offsets(self, xoffset=0, yoffset=0):
+        if self.layouter.has_layout:
+            page = math.floor(yoffset / self.page_height) + 1
+            self.presenter.scroll_to_position({'page': page, 'x': xoffset, 'y': yoffset - (page - 1) * self.page_height})
+
     def scroll_to_synctex_position(self, position): #TODO add horizontal (centering)
         if self.layouter.has_layout:
-            yoffset = max((self.layouter.page_gap + self.layouter.page_height) * (position['page'] - 1) + self.layouter.vertical_margin, 0)
-            self.presenter.scroll_to_position({'page': position['page'], 'x': 0, 'y': (position['y'] + position['height'] / 2) * self.layouter.scale_factor - self.view.scrolled_window.get_allocated_height() / 2})
+            self.presenter.scroll_to_position({'page': position['page'], 'x': 0, 'y': max((position['y'] + position['height'] / 2) * self.layouter.scale_factor - self.view.scrolled_window.get_allocated_height() / 2, 0)})
 
     def set_pdf_date(self):
         if self.pdf_filename != None:

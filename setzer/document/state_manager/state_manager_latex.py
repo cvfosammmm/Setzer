@@ -91,7 +91,7 @@ class StateManagerLaTeX():
         if pdf_date <= os.path.getmtime(pdf_filename) - 10: return
 
         self.document.preview.set_pdf_filename(pdf_filename)
-        #self.document.preview.set_pdf_position_from_offsets(xoffset, yoffset)
+        self.document.preview.scroll_to_position_from_offsets(xoffset, yoffset)
 
     def save_document_state(self):
         document_data = dict()
