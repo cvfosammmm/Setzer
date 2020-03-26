@@ -27,9 +27,7 @@ class PreviewController(object):
         self.view.zoom_widget.zoom_out_button.connect('clicked', self.on_zoom_button_clicked, 'out')
         self.view.connect('size-allocate', self.on_size_allocate)
         self.view.scrolled_window.get_hadjustment().connect('value-changed', self.on_hadjustment_changed)
-        self.view.scrolled_window.get_hadjustment().connect('changed', self.on_hadjustment_changed)
         self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_vadjustment_changed)
-        self.view.scrolled_window.get_vadjustment().connect('changed', self.on_vadjustment_changed)
 
     def on_zoom_button_clicked(self, button, direction):
         if direction == 'in':

@@ -100,9 +100,7 @@ class PreviewPresenter(object):
 
     def scroll_to_position(self, position):
         if self.layouter.has_layout:
-            yoffset = max((self.layouter.page_gap + self.layouter.page_height) * (position['page'] - 1) + self.layouter.vertical_margin + position['y'] * self.layouter.scale_factor, 0)
-            xoffset = self.layouter.vertical_margin + position['x'] * self.layouter.scale_factor
-            self.scrolling_queue.put((xoffset, yoffset))
+            self.scrolling_queue.put(position)
 
     def scrolling_loop(self, widget=None, allocation=None):
         if int(self.view.drawing_area.get_allocated_height()) == int(self.layouter.canvas_height):
@@ -111,10 +109,12 @@ class PreviewPresenter(object):
                 except queue.Empty: pass
                 else:
                     if(self.scrolling_queue.empty()):
-                        self.scroll_to_offsets(*todo)
+                        self.scroll_now(todo)
         return True
 
-    def scroll_to_offsets(self, xoffset, yoffset):
+    def scroll_now(self, position):
+        yoffset = max((self.layouter.page_gap + self.layouter.page_height) * (position['page'] - 1) + self.layouter.vertical_margin + position['y'] * self.layouter.scale_factor, 0)
+        xoffset = self.layouter.vertical_margin + position['x'] * self.layouter.scale_factor
         self.view.scrolled_window.get_hadjustment().set_value(xoffset)
         self.view.scrolled_window.get_vadjustment().set_value(yoffset)
 

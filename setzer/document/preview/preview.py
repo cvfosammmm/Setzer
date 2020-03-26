@@ -169,7 +169,7 @@ class Preview(Observable):
         if level != self.zoom_level:
             self.zoom_level = level
             position = self.get_pdf_position()
-            self.add_change_code('zoom_level_changed')
             self.presenter.scroll_to_position(position)
+            self.add_change_code('zoom_level_changed')
 
 
