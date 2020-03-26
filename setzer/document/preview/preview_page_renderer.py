@@ -94,11 +94,11 @@ class PreviewPageRenderer(Observable):
         self.pdf_date = pdf_date
 
         changed = False
-        for page_number in [page_number for page_number in self.rendered_pages if page_number not in visible_pages]:
-            del(self.rendered_pages[page_number])
-            changed = True
-        for page_number in [page_number for page_number in self.rendered_pages if page_number in visible_pages]:
-            if self.rendered_pages[page_number][2] != pdf_date:
+        for page_number in list(self.rendered_pages):
+            if page_number not in visible_pages:
+                del(self.rendered_pages[page_number])
+                changed = True
+            elif self.rendered_pages[page_number][2] != pdf_date:
                 del(self.rendered_pages[page_number])
                 changed = True
         if changed:

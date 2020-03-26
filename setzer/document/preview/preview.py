@@ -95,23 +95,20 @@ class Preview(Observable):
             self.presenter.scroll_to_position(position)
         else:
             if position != None:
-                self.xoffset = self.page_height * (position['page'] - 1) + position['x']
-                self.yoffset = position['y']
+                self.xoffset = position['x']
+                self.yoffset = self.page_height * (position['page'] - 1) + position['y']
             self.add_change_code('position_changed')
 
-    def set_pdf_position_from_offsets(self, xoffset=None, yoffset=None, scroll=False):
-        if scroll:
-            self.view.scrolled_window.get_vadjustment().set_value(1000)
-        else:
-            value_changed = False
-            if xoffset != None and xoffset != self.xoffset:
-                self.xoffset = xoffset
-                value_changed = True
-            if yoffset != None and yoffset != self.yoffset:
-                self.yoffset = yoffset
-                value_changed = True
-            if value_changed:
-                self.add_change_code('position_changed')
+    def set_pdf_position_from_offsets(self, xoffset=None, yoffset=None):
+        value_changed = False
+        if xoffset != None and xoffset != self.xoffset:
+            self.xoffset = xoffset
+            value_changed = True
+        if yoffset != None and yoffset != self.yoffset:
+            self.yoffset = yoffset
+            value_changed = True
+        if value_changed:
+            self.add_change_code('position_changed')
 
     def get_pdf_position(self):
         if self.xoffset != None and self.yoffset != None:

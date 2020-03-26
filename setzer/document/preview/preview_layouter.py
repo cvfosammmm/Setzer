@@ -39,6 +39,8 @@ class PreviewLayouter(Observable):
         self.page_gap_points = 5
         self.page_gap = None
         self.border_width = None
+        self.canvas_width = None
+        self.canvas_height = None
         self.scale_factor = None
         self.visible_pages = list()
         self.current_page = None
@@ -62,6 +64,8 @@ class PreviewLayouter(Observable):
                 self.page_height = None
                 self.page_gap = None
                 self.border_width = None
+                self.canvas_width = None
+                self.canvas_height = None
                 self.scale_factor = None
                 self.visible_pages = list()
                 self.current_page = None
@@ -92,6 +96,8 @@ class PreviewLayouter(Observable):
             page['width'] = self.page_width
             page['height'] = self.page_height
             self.pages.append(page)
+        self.canvas_width = self.page_width + 2 * self.horizontal_margin
+        self.canvas_height = self.preview.number_of_pages * (self.page_height + self.page_gap) - self.page_gap + 2 * self.vertical_margin
         self.has_layout = True
         self.update_fit_to_width()
         self.add_change_code('layout_changed')

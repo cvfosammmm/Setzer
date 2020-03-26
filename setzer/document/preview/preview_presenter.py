@@ -90,11 +90,9 @@ class PreviewPresenter(object):
     
     def set_canvas_size(self):
         if self.layouter.has_layout:
-            canvas_width = self.layouter.page_width + 2 * self.layouter.horizontal_margin
-            canvas_height = self.preview.number_of_pages * (self.layouter.page_height + self.layouter.page_gap) - self.layouter.page_gap + 2 * self.layouter.horizontal_margin
-            self.view.drawing_area.set_size_request(canvas_width, canvas_height)
+            self.view.drawing_area.set_size_request(self.layouter.canvas_width, self.layouter.canvas_height)
 
-    def scroll_to_position(self, position):
+    def scroll_to_position(self, position): #TODO umbenennen zu synctex kram, move to preview
         if self.layouter.has_layout:
             yoffset = max((self.layouter.page_gap + self.layouter.page_height) * (position['page'] - 1) + self.layouter.vertical_margin + (position['y'] + position['height'] / 2) * self.layouter.scale_factor - self.view.scrolled_window.get_allocated_height() / 2, 0)
             self.view.scrolled_window.get_vadjustment().set_value(yoffset)
@@ -110,27 +108,31 @@ class PreviewPresenter(object):
             ctx.set_source_rgba(bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha)
             ctx.fill()
 
-            for page in self.layouter.pages:
+            ctx.transform(cairo.Matrix(1, 0, 0, 1, self.layouter.horizontal_margin, self.layouter.vertical_margin))
+            for page_number, page in enumerate(self.layouter.pages):
                 ctx.set_source_rgba(border_color.red, border_color.green, border_color.blue, border_color.alpha)
-                ctx.rectangle(self.layouter.horizontal_margin - self.layouter.border_width, page['y'] - self.layouter.border_width, page['width'] + 2 * self.layouter.border_width, page['height'] + 2 * self.layouter.border_width)
+                ctx.rectangle(- self.layouter.border_width, - self.layouter.border_width, page['width'] + 2 * self.layouter.border_width, page['height'] + 2 * self.layouter.border_width)
                 ctx.fill()
                 ctx.set_source_rgba(1, 1, 1, 1)
-                ctx.rectangle(self.layouter.horizontal_margin, page['y'], page['width'], page['height'])
+                ctx.rectangle(0, 0, page['width'], page['height'])
                 ctx.fill()
 
-            for page_number, rendered_page_data in self.page_renderer.rendered_pages.items():
-                surface = rendered_page_data[0]
-                page_width = rendered_page_data[1]
-                if isinstance(surface, cairo.ImageSurface):
-                    page = self.layouter.pages[page_number]
-                    if page_width == self.layouter.page_width:
-                        ctx.set_source_surface(surface, self.layouter.horizontal_margin, page['y'])
-                        ctx.paint()
-                    else:
-                        factor = self.layouter.page_width / page_width
-                        ctx.scale(factor, factor)
-                        ctx.set_source_surface(surface, self.layouter.horizontal_margin / factor, page['y'] / factor)
-                        ctx.paint()
-                        ctx.identity_matrix()
+                if page_number in self.page_renderer.rendered_pages:
+                    rendered_page_data = self.page_renderer.rendered_pages[page_number]
+                    surface = rendered_page_data[0]
+                    page_width = rendered_page_data[1]
+                    if isinstance(surface, cairo.ImageSurface):
+                        page = self.layouter.pages[page_number]
+                        if page_width == self.layouter.page_width:
+                            ctx.set_source_surface(surface, 0, 0)
+                            ctx.paint()
+                        else:
+                            matrix = ctx.get_matrix()
+                            factor = self.layouter.page_width / page_width
+                            ctx.scale(factor, factor)
+                            ctx.set_source_surface(surface, 0, 0)
+                            ctx.paint()
+                            ctx.set_matrix(matrix)
+                ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, page['height'] + self.layouter.page_gap))
 
 
