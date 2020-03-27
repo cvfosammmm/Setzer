@@ -47,6 +47,7 @@ class PreviewPageRenderer(Observable):
         self.page_render_count = dict()
         self.page_render_count_lock = thread.allocate_lock()
         self.render_queue = queue.Queue()
+        self.render_queue_low_priority = queue.Queue()
         self.rendered_pages_queue = queue.Queue()
         thread.start_new_thread(self.render_page_loop, ())
         GObject.timeout_add(50, self.rendered_pages_loop)
@@ -62,25 +63,30 @@ class PreviewPageRenderer(Observable):
     def render_page_loop(self):
         while True:
             try: todo = self.render_queue.get(block=False)
-            except queue.Empty: time.sleep(0.05)
-            else:
-                with self.visible_pages_lock:
-                    visible_pages = self.visible_pages.copy()
+            except queue.Empty:
+                try: todo = self.render_queue_low_priority.get(block=False)
+                except queue.Empty:
+                    todo = None
+                    time.sleep(0.05)
+            if todo != None:
                 with self.page_render_count_lock:
                     render_count = self.page_render_count[todo['page_number']]
-                if todo['render_count'] == render_count and todo['page_number'] in visible_pages:
+                if todo['render_count'] == render_count:
                     with self.preview.poppler_document_lock:
                         page = self.preview.poppler_document.get_page(todo['page_number'])
                         page.render(todo['ctx'])
                     self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [todo['surface'], todo['page_width'], todo['pdf_date']]})
 
     def rendered_pages_loop(self):
+        changed = False
         while self.rendered_pages_queue.empty() == False:
             try: todo = self.rendered_pages_queue.get(block=False)
             except queue.Empty: pass
             else:
                 self.rendered_pages[todo['page_number']] = todo['item']
-                self.add_change_code('rendered_pages_changed')
+                changed = True
+        if changed:
+            self.add_change_code('rendered_pages_changed')
         return True
 
     def update_rendered_pages(self):
@@ -94,30 +100,29 @@ class PreviewPageRenderer(Observable):
         self.pdf_date = pdf_date
 
         changed = False
-        '''for page_number in list(self.rendered_pages):
-            if page_number not in visible_pages:
-                del(self.rendered_pages[page_number])
-                changed = True
-            elif self.rendered_pages[page_number][2] != pdf_date:
+        for page_number in list(self.rendered_pages):
+            if self.rendered_pages[page_number][2] != pdf_date:
                 del(self.rendered_pages[page_number])
                 changed = True
         if changed:
-            self.add_change_code('rendered_pages_changed')'''
+            self.add_change_code('rendered_pages_changed')
 
-        for page_number in visible_pages:
+        width_pixels = self.layouter.page_width
+        height_pixels = self.layouter.page_height
+        scale_factor = self.layouter.scale_factor
+        for page_number in range(0, self.preview.number_of_pages):
             if page_number not in self.rendered_pages or self.rendered_pages[page_number][1] != page_width or self.rendered_pages[page_number][2] != pdf_date:
-                width_pixels = self.layouter.page_width
-                height_pixels = self.layouter.page_height
-                scale_factor = self.layouter.scale_factor
                 surface = cairo.ImageSurface(cairo.Format.ARGB32, width_pixels, height_pixels)
                 ctx = cairo.Context(surface)
                 ctx.scale(scale_factor, scale_factor)
-
                 with self.page_render_count_lock:
                     try:
                         self.page_render_count[page_number] += 1
                     except KeyError:
                         self.page_render_count[page_number] = 1
-                    self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'surface': surface, 'ctx': ctx, 'page_width': page_width, 'pdf_date': pdf_date})
+                    if page_number in visible_pages:
+                        self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'surface': surface, 'ctx': ctx, 'page_width': page_width, 'pdf_date': pdf_date})
+                    else:
+                        self.render_queue_low_priority.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'surface': surface, 'ctx': ctx, 'page_width': page_width, 'pdf_date': pdf_date})
 
 
