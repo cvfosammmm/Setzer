@@ -100,7 +100,7 @@ class Preview(Observable):
         self.zoom_level = None
         self.add_change_code('pdf_changed')
 
-    def set_pdf_position_from_offsets(self, xoffset=None, yoffset=None): #TODO rename (pdf raus)
+    def set_position_from_offsets(self, xoffset=None, yoffset=None):
         value_changed = False
         if xoffset != None and xoffset != self.xoffset:
             self.xoffset = xoffset
@@ -111,7 +111,7 @@ class Preview(Observable):
         if value_changed:
             self.add_change_code('position_changed')
 
-    def get_pdf_position(self):
+    def get_position(self):
         if self.xoffset != None and self.yoffset != None:
             page = math.floor(self.yoffset / self.page_height) + 1
             return {'page': page, 'x': self.xoffset, 'y': self.yoffset - (page - 1) * self.page_height}
@@ -121,9 +121,9 @@ class Preview(Observable):
             page = math.floor(yoffset / self.page_height) + 1
             self.presenter.scroll_to_position({'page': page, 'x': xoffset, 'y': yoffset - (page - 1) * self.page_height})
 
-    def scroll_to_synctex_position(self, position): #TODO add horizontal (centering)
+    def scroll_to_synctex_position(self, position):
         if self.layouter.has_layout:
-            self.presenter.scroll_to_position({'page': position['page'], 'x': 0, 'y': max((position['y'] + position['height'] / 2) * self.layouter.scale_factor - self.view.scrolled_window.get_allocated_height() / 2, 0)})
+            self.presenter.scroll_to_position({'page': position['page'], 'x': max((self.layouter.page_width / 2 + self.layouter.horizontal_margin - self.view.scrolled_window.get_allocated_width() / 2) / self.layouter.scale_factor, 0), 'y': max(((position['y'] + position['height'] / 2) * self.layouter.scale_factor - self.view.scrolled_window.get_allocated_height() / 2) / self.layouter.scale_factor, 0)})
 
     def set_pdf_date(self):
         if self.pdf_filename != None:
@@ -179,7 +179,7 @@ class Preview(Observable):
     def set_zoom_level(self, level):
         if level != self.zoom_level:
             self.zoom_level = level
-            position = self.get_pdf_position()
+            position = self.get_position()
             self.presenter.scroll_to_position(position)
             self.add_change_code('zoom_level_changed')
 
