@@ -58,9 +58,9 @@ class PreviewPresenter(object):
 
         if change_code == 'layout_changed':
             self.set_canvas_size()
-            self.update_current_page()
+            if self.scrolling_queue.empty():
+                self.update_current_page()
             self.update_zoom_level()
-            pass
 
         if change_code == 'rendered_pages_changed':
             self.view.drawing_area.queue_draw()
