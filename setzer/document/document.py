@@ -53,7 +53,7 @@ class Document(Observable):
         self.filename = None
         self.save_date = None
         self.last_activated = 0
-        
+
         self.source_buffer = None
         self.search_settings = None
         self.search_context = None
@@ -289,6 +289,7 @@ class LaTeXDocument(Document):
     def __init__(self):
         Document.__init__(self)
         self.is_master = False
+        self.has_visible_build_system = False
 
         # possible states: idle, ready_for_building
         # building_in_progress, building_to_stop
@@ -350,6 +351,11 @@ class LaTeXDocument(Document):
     def set_is_master(self, is_master):
         self.is_master = is_master
         self.add_change_code('master_state_change', is_master)
+
+    def set_has_visible_build_system(self, has_visible_build_system):
+        if self.has_visible_build_system != has_visible_build_system:
+            self.has_visible_build_system = has_visible_build_system
+            self.add_change_code('build_system_visibility_change', has_visible_build_system)
 
     def get_folded_regions(self):
         return self.code_folding.get_folded_regions()

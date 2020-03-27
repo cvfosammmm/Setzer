@@ -60,6 +60,17 @@ class Preview(Observable):
         self.page_renderer = preview_page_renderer.PreviewPageRenderer(self, self.layouter)
         self.presenter = preview_presenter.PreviewPresenter(self, self.layouter, self.page_renderer, self.view)
 
+        self.document.register_observer(self)
+
+    def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'build_system_visibility_change':
+            is_visible = parameter
+            if is_visible:
+                self.page_renderer.activate()
+            else:
+                self.page_renderer.deactivate()
+
     def get_pdf_filename(self):
         return self.pdf_filename
         

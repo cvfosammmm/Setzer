@@ -154,17 +154,22 @@ class Workspace(Observable):
     def set_active_document(self, document):
         if self.active_document != None:
             self.add_change_code('new_inactive_document', self.active_document)
+            previously_active_document = self.active_document
+            self.active_document = document
+            self.set_has_visible_build_system(previously_active_document)
+        else:
+            self.active_document = document
 
-        self.active_document = document
         if self.active_document != None:
             self.active_document.set_last_activated(time.time())
+            self.set_has_visible_build_system(self.active_document)
             self.add_change_code('new_active_document', document)
             if self.active_document.is_latex_document():
                 self.shortcuts.activate_latex_documents_mode()
             elif self.active_document.is_bibtex_document():
                 self.shortcuts.activate_bibtex_documents_mode()
             self.set_build_log()
-        
+
     def set_build_log(self):
         if self.get_active_document() != None:
             if self.master_document != None:
@@ -260,6 +265,7 @@ class Workspace(Observable):
                     document.set_is_master(True)
                 else:
                     document.set_is_master(False)
+                self.set_has_visible_build_system(document)
             self.add_change_code('master_state_change', 'one_document')
             self.set_build_log()
 
@@ -267,8 +273,19 @@ class Workspace(Observable):
         for document in self.open_latex_documents:
             document.set_is_master(False)
         self.master_document = None
+        self.set_has_visible_build_system(document)
+        self.set_has_visible_build_system(self.active_document)
         self.add_change_code('master_state_change', 'no_master_document')
         self.set_build_log()
+
+    def set_has_visible_build_system(self, document):
+        if document.is_latex_document():
+            if document == self.master_document:
+                document.set_has_visible_build_system(True)
+            elif document == self.active_document and self.master_document == None:
+                document.set_has_visible_build_system(True)
+            else:
+                document.set_has_visible_build_system(False)
 
     def set_show_sidebar(self, show_sidebar, animate=False):
         if show_sidebar != self.show_sidebar:

@@ -40,12 +40,14 @@ class PreviewPageRenderer(Observable):
         self.page_width = None
         self.pdf_date = None
         self.rendered_pages = dict()
+        self.is_active_lock = thread.allocate_lock()
+        self.is_active = False
 
         self.preview.register_observer(self)
         self.layouter.register_observer(self)
 
-        self.page_render_count = dict()
         self.page_render_count_lock = thread.allocate_lock()
+        self.page_render_count = dict()
         self.render_queue = queue.Queue()
         self.render_queue_low_priority = queue.Queue()
         self.rendered_pages_queue = queue.Queue()
@@ -60,24 +62,46 @@ class PreviewPageRenderer(Observable):
             else:
                 self.rendered_pages = dict()
 
+    def activate(self):
+        with self.is_active_lock:
+            self.is_active = True
+        self.update_rendered_pages()
+
+    def deactivate(self):
+        with self.is_active_lock:
+            self.is_active = False
+        self.rendered_pages = dict()
+        with self.visible_pages_lock:
+            self.visible_pages = list()
+        self.page_width = None
+        self.pdf_date = None
+
     def render_page_loop(self):
         while True:
-            try: todo = self.render_queue.get(block=False)
-            except queue.Empty:
-                try: todo = self.render_queue_low_priority.get(block=False)
+            with self.is_active_lock:
+                is_active = self.is_active
+            if is_active:
+                try: todo = self.render_queue.get(block=False)
                 except queue.Empty:
-                    todo = None
-                    time.sleep(0.05)
-            if todo != None:
-                with self.page_render_count_lock:
-                    render_count = self.page_render_count[todo['page_number']]
-                if todo['render_count'] == render_count:
-                    with self.preview.poppler_document_lock:
-                        page = self.preview.poppler_document.get_page(todo['page_number'])
-                        page.render(todo['ctx'])
-                    self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [todo['surface'], todo['page_width'], todo['pdf_date']]})
+                    try: todo = self.render_queue_low_priority.get(block=False)
+                    except queue.Empty:
+                        todo = None
+                        time.sleep(0.05)
+                if todo != None:
+                    with self.page_render_count_lock:
+                        render_count = self.page_render_count[todo['page_number']]
+                    if todo['render_count'] == render_count:
+                        with self.preview.poppler_document_lock:
+                            page = self.preview.poppler_document.get_page(todo['page_number'])
+                            page.render(todo['ctx'])
+                        self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [todo['surface'], todo['page_width'], todo['pdf_date']]})
+            else:
+                time.sleep(0.05)
 
     def rendered_pages_loop(self):
+        with self.is_active_lock:
+            if not self.is_active: return True
+
         changed = False
         while self.rendered_pages_queue.empty() == False:
             try: todo = self.rendered_pages_queue.get(block=False)
@@ -90,6 +114,9 @@ class PreviewPageRenderer(Observable):
         return True
 
     def update_rendered_pages(self):
+        with self.is_active_lock:
+            if not self.is_active: return
+
         visible_pages = self.layouter.get_visible_pages()
         page_width = self.layouter.page_width
         pdf_date = self.preview.pdf_date
