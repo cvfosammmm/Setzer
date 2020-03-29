@@ -23,7 +23,6 @@ import cairo
 
 import _thread as thread, queue
 import time
-import copy
 
 from setzer.helpers.observable import Observable
 
@@ -92,9 +91,12 @@ class PreviewPageRenderer(Observable):
                         render_count = self.page_render_count[todo['page_number']]
                     if todo['render_count'] == render_count:
                         with self.preview.poppler_document_lock:
+                            surface = cairo.ImageSurface(cairo.Format.ARGB32, todo['page_width'], todo['page_height'])
+                            ctx = cairo.Context(surface)
+                            ctx.scale(todo['scale_factor'], todo['scale_factor'])
                             page = self.preview.poppler_document.get_page(todo['page_number'])
-                            page.render(todo['ctx'])
-                        self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [todo['surface'], todo['page_width'], todo['pdf_date']]})
+                            page.render(ctx)
+                        self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [surface, todo['page_width'], todo['pdf_date']]})
             else:
                 time.sleep(0.05)
 
@@ -107,6 +109,9 @@ class PreviewPageRenderer(Observable):
             try: todo = self.rendered_pages_queue.get(block=False)
             except queue.Empty: pass
             else:
+                try:
+                    del(self.rendered_pages[todo['page_number']])
+                except KeyError: pass
                 self.rendered_pages[todo['page_number']] = todo['item']
                 changed = True
         if changed:
@@ -119,6 +124,7 @@ class PreviewPageRenderer(Observable):
 
         visible_pages = self.layouter.get_visible_pages()
         page_width = self.layouter.page_width
+        page_height = self.layouter.page_height
         pdf_date = self.preview.pdf_date
         if pdf_date == self.pdf_date and visible_pages == self.visible_pages and page_width == self.page_width: return
         with self.visible_pages_lock:
@@ -134,22 +140,17 @@ class PreviewPageRenderer(Observable):
         if changed:
             self.add_change_code('rendered_pages_changed')
 
-        width_pixels = self.layouter.page_width
-        height_pixels = self.layouter.page_height
         scale_factor = self.layouter.scale_factor
         for page_number in range(0, self.preview.number_of_pages):
             if page_number not in self.rendered_pages or self.rendered_pages[page_number][1] != page_width or self.rendered_pages[page_number][2] != pdf_date:
-                surface = cairo.ImageSurface(cairo.Format.ARGB32, width_pixels, height_pixels)
-                ctx = cairo.Context(surface)
-                ctx.scale(scale_factor, scale_factor)
                 with self.page_render_count_lock:
                     try:
                         self.page_render_count[page_number] += 1
                     except KeyError:
                         self.page_render_count[page_number] = 1
-                    if page_number in visible_pages:
-                        self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'surface': surface, 'ctx': ctx, 'page_width': page_width, 'pdf_date': pdf_date})
+                    if visible_pages != None and page_number >= visible_pages[0] and page_number <= visible_pages[1]:
+                        self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'scale_factor': scale_factor, 'page_width': page_width, 'page_height': page_height, 'pdf_date': pdf_date})
                     else:
-                        self.render_queue_low_priority.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'surface': surface, 'ctx': ctx, 'page_width': page_width, 'pdf_date': pdf_date})
+                        self.render_queue_low_priority.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'scale_factor': scale_factor, 'page_width': page_width, 'page_height': page_height, 'pdf_date': pdf_date})
 
 

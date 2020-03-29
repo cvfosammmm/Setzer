@@ -116,6 +116,11 @@ class Preview(Observable):
             page = math.floor(self.yoffset / self.page_height) + 1
             return {'page': page, 'x': self.xoffset, 'y': self.yoffset - (page - 1) * self.page_height}
 
+    def get_position_by_screen_offset(self, xoffset, yoffset):
+        if self.xoffset != None and self.yoffset != None:
+            page = math.floor(self.yoffset / self.page_height) + 1
+            return {'page': page, 'x': self.xoffset + xoffset, 'y': self.yoffset - (page - 1) * self.page_height + yoffset}
+
     def scroll_to_position_from_offsets(self, xoffset=0, yoffset=0):
         if self.layouter.has_layout:
             page = math.floor(yoffset / self.page_height) + 1
@@ -144,8 +149,8 @@ class Preview(Observable):
             with self.poppler_document_lock:
                 self.number_of_pages = self.poppler_document.get_n_pages()
                 page_size = self.poppler_document.get_page(0).get_size()
-            self.page_width = page_size.width
-            self.page_height = page_size.height
+                self.page_width = page_size.width
+                self.page_height = page_size.height
             self.pdf_loaded = True
             self.add_change_code('pdf_changed')
             self.set_zoom_fit_to_width()
@@ -176,10 +181,10 @@ class Preview(Observable):
         except ValueError:
             self.set_zoom_level(min(self.zoom_levels))
 
-    def set_zoom_level(self, level):
+    def set_zoom_level(self, level, xoffset=0, yoffset=0):
         if level != self.zoom_level:
             self.zoom_level = level
-            position = self.get_position()
+            position = self.get_position_by_screen_offset(xoffset, yoffset)
             self.presenter.scroll_to_position(position)
             self.add_change_code('zoom_level_changed')
 

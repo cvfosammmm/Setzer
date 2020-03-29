@@ -17,8 +17,6 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-gi.require_version('Poppler', '0.18')
-from gi.repository import Poppler
 from gi.repository import GObject
 import cairo
 
@@ -105,11 +103,10 @@ class PreviewPresenter(object):
     def scrolling_loop(self, widget=None, allocation=None):
         if int(self.view.drawing_area.get_allocated_height()) == int(self.layouter.canvas_height):
             while self.scrolling_queue.empty() == False:
-                try: todo = self.scrolling_queue.get(block=False)
-                except queue.Empty: pass
-                else:
-                    if(self.scrolling_queue.empty()):
-                        self.scroll_now(todo)
+                todo = self.scrolling_queue.get(block=False)
+                if self.scrolling_queue.empty():
+                    self.scroll_now(todo)
+                    self.preview.add_change_code('position_changed')
         return True
 
     def scroll_now(self, position):
