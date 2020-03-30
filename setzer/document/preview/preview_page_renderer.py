@@ -23,6 +23,7 @@ import cairo
 
 import _thread as thread, queue
 import time
+import math
 
 from setzer.helpers.observable import Observable
 
@@ -33,6 +34,7 @@ class PreviewPageRenderer(Observable):
         Observable.__init__(self)
         self.preview = preview
         self.layouter = layouter
+        self.maximum_rendered_pixels = 20000000
 
         self.visible_pages_lock = thread.allocate_lock()
         self.visible_pages = list()
@@ -122,9 +124,15 @@ class PreviewPageRenderer(Observable):
         with self.is_active_lock:
             if not self.is_active: return
 
-        visible_pages = self.layouter.get_visible_pages()
         page_width = self.layouter.page_width
         page_height = self.layouter.page_height
+
+        current_page = self.layouter.get_current_page() - 1
+        visible_pages = [current_page, min(current_page + math.floor(self.preview.view.get_allocated_height() / page_height) + 1, self.preview.number_of_pages - 1)]
+
+        max_additional_pages = max(math.floor(self.maximum_rendered_pixels / (page_width * page_height) - visible_pages[1] + visible_pages[0]), 0)
+        visible_pages_additional = [max(int(visible_pages[0] - max_additional_pages / 2), 0), min(int(visible_pages[1] + max_additional_pages / 2), self.preview.number_of_pages - 1)]
+
         pdf_date = self.preview.pdf_date
         if pdf_date == self.pdf_date and visible_pages == self.visible_pages and page_width == self.page_width: return
         with self.visible_pages_lock:
@@ -134,7 +142,7 @@ class PreviewPageRenderer(Observable):
 
         changed = False
         for page_number in list(self.rendered_pages):
-            if self.rendered_pages[page_number][2] != pdf_date:
+            if self.rendered_pages[page_number][2] != pdf_date or page_number < visible_pages_additional[0] or page_number > visible_pages_additional[1]:
                 del(self.rendered_pages[page_number])
                 changed = True
         if changed:
@@ -150,7 +158,7 @@ class PreviewPageRenderer(Observable):
                         self.page_render_count[page_number] = 1
                     if visible_pages != None and page_number >= visible_pages[0] and page_number <= visible_pages[1]:
                         self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'scale_factor': scale_factor, 'page_width': page_width, 'page_height': page_height, 'pdf_date': pdf_date})
-                    else:
+                    elif page_number >= visible_pages_additional[0] and page_number <= visible_pages_additional[1]:
                         self.render_queue_low_priority.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'scale_factor': scale_factor, 'page_width': page_width, 'page_height': page_height, 'pdf_date': pdf_date})
 
 

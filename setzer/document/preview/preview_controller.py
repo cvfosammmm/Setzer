@@ -70,7 +70,7 @@ class PreviewController(object):
     
     def on_vadjustment_changed(self, adjustment):
         if self.layouter.has_layout:
-            self.layouter.compute_visible_pages()
+            self.layouter.compute_current_page()
             yoffset = max(self.layouter.current_page - 1, 0) * self.preview.page_height
             yoffset += min(max(adjustment.get_value() - self.layouter.vertical_margin - max(self.layouter.current_page - 1, 0) * (self.layouter.page_height + self.layouter.page_gap), 0), self.layouter.page_height) / self.layouter.scale_factor
             self.preview.set_position_from_offsets(None, yoffset)

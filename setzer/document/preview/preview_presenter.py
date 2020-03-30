@@ -84,7 +84,7 @@ class PreviewPresenter(object):
 
     def update_current_page(self):
         if self.layouter.has_layout:
-            self.view.paging_widget.label_current_page.set_text(str(self.layouter.current_page))
+            self.view.paging_widget.label_current_page.set_text(str(self.layouter.get_current_page()))
         else:
             self.view.paging_widget.label_current_page.set_text("0")
 

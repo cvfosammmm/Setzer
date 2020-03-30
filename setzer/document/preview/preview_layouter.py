@@ -42,7 +42,6 @@ class PreviewLayouter(Observable):
         self.canvas_width = None
         self.canvas_height = None
         self.scale_factor = None
-        self.visible_pages = None
         self.current_page = None
         self.has_layout = False
 
@@ -67,13 +66,12 @@ class PreviewLayouter(Observable):
                 self.canvas_width = None
                 self.canvas_height = None
                 self.scale_factor = None
-                self.visible_pages = None
                 self.current_page = None
                 self.add_change_code('layout_changed')
-            self.compute_visible_pages()
+            self.compute_current_page()
 
         if change_code == 'position_changed':
-            self.compute_visible_pages()
+            self.compute_current_page()
 
     def update_layout(self):
         if self.preview.zoom_level == None: return
@@ -123,7 +121,7 @@ class PreviewLayouter(Observable):
 
         return hidpi_factor * ppi / 72
 
-    def compute_visible_pages(self):
+    def compute_current_page(self):
         if self.has_layout and self.preview.presenter.scrolling_queue.empty():
             current_page = 0
             offset = self.view.scrolled_window.get_vadjustment().get_value()
@@ -133,13 +131,7 @@ class PreviewLayouter(Observable):
                 current_page += 1
             self.current_page = max(current_page, 1)
 
-            screen_height = self.view.scrolled_window.get_allocated_height()
-            yoffset = (self.preview.yoffset / self.preview.page_height) * (self.page_height + self.page_gap)
-            first_page = max(int((yoffset - self.vertical_margin) / (self.page_height + self.page_gap)) - 1, 0)
-            last_page = min(int(first_page + screen_height / self.page_height + 2), self.preview.number_of_pages - 1)
-            self.visible_pages = [first_page, last_page + 1]
-
-    def get_visible_pages(self):
-        return self.visible_pages
+    def get_current_page(self):
+        return self.current_page
 
 
