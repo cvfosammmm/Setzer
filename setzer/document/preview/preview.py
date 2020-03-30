@@ -28,6 +28,7 @@ import setzer.document.preview.preview_layouter as preview_layouter
 import setzer.document.preview.preview_presenter as preview_presenter
 import setzer.document.preview.preview_controller as preview_controller
 import setzer.document.preview.preview_page_renderer as preview_page_renderer
+import setzer.document.preview.zoom_widget.zoom_widget as zoom_widget
 from setzer.helpers.observable import Observable
 
 
@@ -59,6 +60,7 @@ class Preview(Observable):
         self.controller = preview_controller.PreviewController(self, self.layouter, self.view)
         self.page_renderer = preview_page_renderer.PreviewPageRenderer(self, self.layouter)
         self.presenter = preview_presenter.PreviewPresenter(self, self.layouter, self.page_renderer, self.view)
+        self.zoom_widget = zoom_widget.ZoomWidget(self, self.view.zoom_widget)
 
         self.document.register_observer(self)
 

@@ -58,7 +58,6 @@ class PreviewPresenter(object):
             self.set_canvas_size()
             if self.scrolling_queue.empty():
                 self.update_current_page()
-            self.update_zoom_level()
 
         if change_code == 'rendered_pages_changed':
             self.view.drawing_area.queue_draw()
@@ -88,10 +87,6 @@ class PreviewPresenter(object):
         else:
             self.view.paging_widget.label_current_page.set_text("0")
 
-    def update_zoom_level(self):
-        if self.layouter.has_layout and self.preview.zoom_level != None:
-            self.view.zoom_widget.label.set_text('{0:.1f}%'.format(self.preview.zoom_level * 100))
-    
     def set_canvas_size(self):
         if self.layouter.has_layout:
             self.view.drawing_area.set_size_request(self.layouter.canvas_width, self.layouter.canvas_height)
