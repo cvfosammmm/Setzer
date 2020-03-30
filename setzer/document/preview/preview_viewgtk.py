@@ -99,7 +99,7 @@ class PreviewPagingWidget(Gtk.HBox):
 
     def __init__(self):
         Gtk.HBox.__init__(self)
-        self.set_margin_left(12)
+        self.set_margin_left(9)
 
         self.pack_start(Gtk.Label('Page '), False, False, 0)
         self.label_current_page = Gtk.Label('')

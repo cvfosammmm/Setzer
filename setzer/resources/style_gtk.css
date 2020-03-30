@@ -341,8 +341,11 @@ box.preview > box button {
     border-radius: 0px;
     padding: 6px;
 }
-box.preview > box button.zoom_in_button {
-    margin-right: 2px;
+box.preview > box button:checked {
+    background: mix(@theme_base_color, @borders, 0.45);
+}
+box.preview > box button:active {
+    background: mix(@theme_base_color, @borders, 0.45);
 }
 box.preview_blank {
     background-color: @theme_bg_color;
