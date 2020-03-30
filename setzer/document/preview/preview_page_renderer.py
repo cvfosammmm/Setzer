@@ -91,7 +91,9 @@ class PreviewPageRenderer(Observable):
                 if todo != None:
                     with self.page_render_count_lock:
                         render_count = self.page_render_count[todo['page_number']]
-                    if todo['render_count'] == render_count:
+                    with self.visible_pages_lock:
+                        is_visible = (todo['page_number'] >= self.visible_pages_additional[0] and todo['page_number'] <= self.visible_pages_additional[1])
+                    if todo['render_count'] == render_count and is_visible:
                         with self.preview.poppler_document_lock:
                             surface = cairo.ImageSurface(cairo.Format.ARGB32, todo['page_width'], todo['page_height'])
                             ctx = cairo.Context(surface)
@@ -104,7 +106,8 @@ class PreviewPageRenderer(Observable):
 
     def rendered_pages_loop(self):
         with self.is_active_lock:
-            if not self.is_active: return True
+            is_active = self.is_active
+        if not is_active: return True
 
         changed = False
         while self.rendered_pages_queue.empty() == False:
@@ -122,7 +125,8 @@ class PreviewPageRenderer(Observable):
 
     def update_rendered_pages(self):
         with self.is_active_lock:
-            if not self.is_active: return
+            is_active = self.is_active
+        if not is_active: return
 
         page_width = self.layouter.page_width
         page_height = self.layouter.page_height
@@ -134,9 +138,15 @@ class PreviewPageRenderer(Observable):
         visible_pages_additional = [max(int(visible_pages[0] - max_additional_pages / 2), 0), min(int(visible_pages[1] + max_additional_pages / 2), self.preview.number_of_pages - 1)]
 
         pdf_date = self.preview.pdf_date
-        if pdf_date == self.pdf_date and visible_pages == self.visible_pages and page_width == self.page_width: return
+        with self.visible_pages_lock:
+            if pdf_date == self.pdf_date and visible_pages == self.visible_pages and visible_pages_additional == self.visible_pages_additional and page_width == self.page_width:
+                do_return = True
+            else:
+                do_return = False
+        if do_return: return
         with self.visible_pages_lock:
             self.visible_pages = visible_pages
+            self.visible_pages_additional = visible_pages_additional
         self.page_width = page_width
         self.pdf_date = pdf_date
 
