@@ -165,6 +165,24 @@ class Preview(Observable):
             else:
                 self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0]
 
+    def set_zoom_fit_to_text_width(self):
+        with self.poppler_document_lock:
+            current_min = self.page_width
+            for page_number in range(0, min(self.number_of_pages, 3)):
+                page = self.poppler_document.get_page(page_number)
+                layout = page.get_text_layout()
+                for rect in layout[1]:
+                    if rect.x1 < current_min:
+                        current_min = rect.x1
+            current_min -= 20
+            current_max = self.page_width - current_min
+        zoom_level = self.zoom_level_fit_to_width * (self.page_width / (current_max - current_min))
+        x = self.view.get_allocated_width() / 2
+        y = self.view.get_allocated_height() / 2
+        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        self.set_zoom_level(zoom_level, xoffset, yoffset)
+
     def set_zoom_fit_to_width(self):
         if self.zoom_level_fit_to_width != None:
             self.set_zoom_level(self.zoom_level_fit_to_width)
