@@ -92,6 +92,8 @@ class PreviewLayouter(Observable):
         self.add_change_code('layout_changed')
 
     def update_fit_to_width(self):
+        if not self.has_layout: return
+
         self.horizontal_margin = int(self.ppp * self.horizontal_margin_points)
         self.horizontal_margin = int(max((self.view.get_allocated_width() - self.page_width) / 2, self.horizontal_margin))
 

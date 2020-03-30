@@ -131,7 +131,10 @@ class PreviewPageRenderer(Observable):
         page_width = self.layouter.page_width
         page_height = self.layouter.page_height
 
-        current_page = self.layouter.get_current_page() - 1
+        current_page = self.layouter.get_current_page()
+        if current_page == None: return
+        else: current_page -= 1
+
         visible_pages = [current_page, min(current_page + math.floor(self.preview.view.get_allocated_height() / page_height) + 1, self.preview.number_of_pages - 1)]
 
         max_additional_pages = max(math.floor(self.maximum_rendered_pixels / (page_width * page_height) - visible_pages[1] + visible_pages[0]), 0)

@@ -26,12 +26,10 @@ class PreviewView(Gtk.VBox):
         Gtk.VBox.__init__(self)
         self.get_style_context().add_class('preview')
 
-        self.zoom_widget = PreviewZoomWidget()
         self.paging_widget = PreviewPagingWidget()
 
         self.action_bar = Gtk.HBox()
         self.action_bar.set_size_request(-1, 37)
-        self.action_bar.pack_end(self.zoom_widget, False, False, 0)
         self.action_bar.pack_start(self.paging_widget, False, False, 0)
         self.pack_start(self.action_bar, False, False, 0)
 
@@ -70,29 +68,6 @@ class BlankSlateView(Gtk.VBox):
         body.set_line_wrap(True)
         self.pack_start(body, False, False, 0)
         self.pack_start(Gtk.DrawingArea(), True, True, 0)
-
-
-class PreviewZoomWidget(Gtk.HBox):
-
-    def __init__(self):
-        Gtk.HBox.__init__(self)
-        self.get_style_context().add_class('zoom_widget')
-        
-        self.zoom_out_button = Gtk.Button.new_from_icon_name('zoom-out-symbolic', Gtk.IconSize.MENU)
-        self.zoom_out_button.get_style_context().add_class('flat')
-        self.zoom_out_button.set_can_focus(False)
-        self.zoom_in_button = Gtk.Button.new_from_icon_name('zoom-in-symbolic', Gtk.IconSize.MENU)
-        self.zoom_in_button.get_style_context().add_class('flat')
-        self.zoom_in_button.get_style_context().add_class('zoom_in_button')
-        self.zoom_in_button.set_can_focus(False)
-        
-        self.label = Gtk.Label('100.0%')
-        self.label.set_xalign(0.5)
-        
-        self.pack_start(self.zoom_out_button, False, False, 0)
-        self.pack_start(self.label, False, False, 0)
-        self.pack_start(self.zoom_in_button, False, False, 0)
-        self.show_all()
 
 
 class PreviewPagingWidget(Gtk.HBox):

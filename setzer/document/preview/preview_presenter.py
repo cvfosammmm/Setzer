@@ -68,12 +68,10 @@ class PreviewPresenter(object):
     def show_blank_slate(self):
         self.view.stack.set_visible_child_name('blank_slate')
         self.view.blank_slate.show_all()
-        self.view.zoom_widget.hide()
 
     def show_pdf(self):
         self.view.stack.set_visible_child_name('pdf')
         self.view.scrolled_window.show_all()
-        self.view.zoom_widget.show_all()
 
     def update_number_of_pages(self):
         if self.preview.pdf_filename != None:
@@ -86,6 +84,7 @@ class PreviewPresenter(object):
             self.view.paging_widget.label_current_page.set_text(str(self.layouter.get_current_page()))
         else:
             self.view.paging_widget.label_current_page.set_text("0")
+        self.view.paging_widget.queue_draw()
 
     def set_canvas_size(self):
         if self.layouter.has_layout:
@@ -96,7 +95,7 @@ class PreviewPresenter(object):
             self.scrolling_queue.put(position)
 
     def scrolling_loop(self, widget=None, allocation=None):
-        if int(self.view.drawing_area.get_allocated_height()) == int(self.layouter.canvas_height):
+        if self.layouter.has_layout and int(self.view.drawing_area.get_allocated_height()) == int(self.layouter.canvas_height):
             while self.scrolling_queue.empty() == False:
                 todo = self.scrolling_queue.get(block=False)
                 if self.scrolling_queue.empty():

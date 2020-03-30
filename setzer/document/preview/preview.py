@@ -60,7 +60,7 @@ class Preview(Observable):
         self.controller = preview_controller.PreviewController(self, self.layouter, self.view)
         self.page_renderer = preview_page_renderer.PreviewPageRenderer(self, self.layouter)
         self.presenter = preview_presenter.PreviewPresenter(self, self.layouter, self.page_renderer, self.view)
-        self.zoom_widget = zoom_widget.ZoomWidget(self, self.view.zoom_widget)
+        self.zoom_widget = zoom_widget.ZoomWidget(self)
 
         self.document.register_observer(self)
 

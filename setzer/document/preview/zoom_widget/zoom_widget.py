@@ -15,12 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import setzer.document.preview.zoom_widget.zoom_widget_viewgtk as view
+
 
 class ZoomWidget(object):
 
-    def __init__(self, preview, view):
+    def __init__(self, preview):
         self.preview = preview
-        self.view = view
+        self.view = view.PreviewZoomWidget()
+        self.preview.view.action_bar.pack_end(self.view, False, False, 0)
 
         self.preview.register_observer(self)
 
@@ -28,8 +31,15 @@ class ZoomWidget(object):
         self.view.zoom_out_button.connect('clicked', self.on_zoom_button_clicked, 'out')
 
         self.update_zoom_level()
+        self.view.hide()
 
     def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'pdf_changed':
+            if self.preview.pdf_loaded:
+                self.view.show_all()
+            else:
+                self.view.hide()
 
         if change_code == 'zoom_level_changed':
             self.update_zoom_level()
