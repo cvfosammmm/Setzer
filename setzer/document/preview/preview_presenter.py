@@ -131,7 +131,7 @@ class PreviewPresenter(object):
                 if page_number in self.page_renderer.rendered_pages:
                     rendered_page_data = self.page_renderer.rendered_pages[page_number]
                     surface = rendered_page_data[0]
-                    page_width = rendered_page_data[1]
+                    page_width = rendered_page_data[1] * self.layouter.hidpi_factor
                     if isinstance(surface, cairo.ImageSurface):
                         if page_width == self.layouter.page_width:
                             ctx.set_source_surface(surface, 0, 0)

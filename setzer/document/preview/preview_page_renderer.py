@@ -95,9 +95,9 @@ class PreviewPageRenderer(Observable):
                         is_visible = (todo['page_number'] >= self.visible_pages_additional[0] and todo['page_number'] <= self.visible_pages_additional[1])
                     if todo['render_count'] == render_count and is_visible:
                         with self.preview.poppler_document_lock:
-                            surface = cairo.ImageSurface(cairo.Format.ARGB32, todo['page_width'], todo['page_height'])
+                            surface = cairo.ImageSurface(cairo.Format.ARGB32, todo['page_width'] * todo['hidpi_factor'], todo['page_height'] * 2)
                             ctx = cairo.Context(surface)
-                            ctx.scale(todo['scale_factor'], todo['scale_factor'])
+                            ctx.scale(todo['scale_factor'] * todo['hidpi_factor'], todo['scale_factor'] * todo['hidpi_factor'])
                             page = self.preview.poppler_document.get_page(todo['page_number'])
                             page.render(ctx)
                         self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [surface, todo['page_width'], todo['pdf_date']]})
@@ -128,6 +128,7 @@ class PreviewPageRenderer(Observable):
             is_active = self.is_active
         if not is_active: return
 
+        hidpi_factor = self.layouter.hidpi_factor
         page_width = self.layouter.page_width
         page_height = self.layouter.page_height
 
@@ -137,7 +138,7 @@ class PreviewPageRenderer(Observable):
 
         visible_pages = [current_page, min(current_page + math.floor(self.preview.view.get_allocated_height() / page_height) + 1, self.preview.number_of_pages - 1)]
 
-        max_additional_pages = max(math.floor(self.maximum_rendered_pixels / (page_width * page_height) - visible_pages[1] + visible_pages[0]), 0)
+        max_additional_pages = max(math.floor(self.maximum_rendered_pixels / (page_width * page_height * hidpi_factor * hidpi_factor) - visible_pages[1] + visible_pages[0]), 0)
         visible_pages_additional = [max(int(visible_pages[0] - max_additional_pages / 2), 0), min(int(visible_pages[1] + max_additional_pages / 2), self.preview.number_of_pages - 1)]
 
         pdf_date = self.preview.pdf_date
@@ -170,8 +171,8 @@ class PreviewPageRenderer(Observable):
                     except KeyError:
                         self.page_render_count[page_number] = 1
                     if visible_pages != None and page_number >= visible_pages[0] and page_number <= visible_pages[1]:
-                        self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'scale_factor': scale_factor, 'page_width': page_width, 'page_height': page_height, 'pdf_date': pdf_date})
+                        self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'scale_factor': scale_factor, 'hidpi_factor': hidpi_factor, 'page_width': page_width, 'page_height': page_height, 'pdf_date': pdf_date})
                     elif page_number >= visible_pages_additional[0] and page_number <= visible_pages_additional[1]:
-                        self.render_queue_low_priority.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'scale_factor': scale_factor, 'page_width': page_width, 'page_height': page_height, 'pdf_date': pdf_date})
+                        self.render_queue_low_priority.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'scale_factor': scale_factor, 'hidpi_factor': hidpi_factor, 'page_width': page_width, 'page_height': page_height, 'pdf_date': pdf_date})
 
 

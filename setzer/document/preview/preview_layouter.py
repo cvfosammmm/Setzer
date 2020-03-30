@@ -29,6 +29,7 @@ class PreviewLayouter(Observable):
         self.preview = preview
         self.view = view
 
+        self.hidpi_factor = self.view.get_scale_factor()
         self.ppp = self.get_ppp() # pixels per point
         self.vertical_margin_points = 0
         self.horizontal_margin_points = 0
@@ -119,9 +120,8 @@ class PreviewLayouter(Observable):
             ppi = int(width_pixels / width_inch)
         else:
             ppi = 96
-        hidpi_factor = self.view.get_scale_factor()
 
-        return hidpi_factor * ppi / 72
+        return self.hidpi_factor * ppi / 72
 
     def compute_current_page(self):
         if self.has_layout and self.preview.presenter.scrolling_queue.empty():
