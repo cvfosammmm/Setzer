@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+
 import setzer.document.preview.zoom_widget.zoom_widget_viewgtk as view
 
 
@@ -33,6 +37,21 @@ class ZoomWidget(object):
         self.update_zoom_level()
         self.view.hide()
 
+        model_button = Gtk.ModelButton()
+        model_button.set_label('Fit to Width')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        model_button.connect('clicked', self.on_fit_to_width_button_clicked)
+        self.view.zoom_button_box.pack_start(model_button, False, False, 0)
+        separator = Gtk.SeparatorMenuItem()
+        self.view.zoom_button_box.pack_start(separator, False, False, 0)
+        for level in self.preview.zoom_levels:
+            model_button = Gtk.ModelButton()
+            model_button.set_label('{0:.0f}%'.format(level * 100))
+            model_button.get_child().set_halign(Gtk.Align.START)
+            model_button.connect('clicked', self.on_set_zoom_button_clicked, level)
+            self.view.zoom_button_box.pack_start(model_button, False, False, 0)
+        self.view.zoom_button_box.show_all()
+
     def change_notification(self, change_code, notifying_object, parameter):
 
         if change_code == 'pdf_changed':
@@ -49,6 +68,12 @@ class ZoomWidget(object):
             self.preview.zoom_in()
         else:
             self.preview.zoom_out()
+
+    def on_fit_to_width_button_clicked(self, button):
+        self.preview.set_zoom_fit_to_width_auto_offset()
+
+    def on_set_zoom_button_clicked(self, button, level):
+        self.preview.set_zoom_level_auto_offset(level)
 
     def update_zoom_level(self):
         if self.preview.layouter.has_layout and self.preview.zoom_level != None:

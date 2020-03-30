@@ -27,18 +27,39 @@ class PreviewZoomWidget(Gtk.HBox):
         self.get_style_context().add_class('zoom_widget')
         
         self.zoom_out_button = Gtk.Button.new_from_icon_name('zoom-out-symbolic', Gtk.IconSize.MENU)
+        self.zoom_out_button.set_tooltip_text('Zoom out')
         self.zoom_out_button.get_style_context().add_class('flat')
         self.zoom_out_button.set_can_focus(False)
         self.zoom_in_button = Gtk.Button.new_from_icon_name('zoom-in-symbolic', Gtk.IconSize.MENU)
+        self.zoom_in_button.set_tooltip_text('Zoom in')
         self.zoom_in_button.get_style_context().add_class('flat')
         self.zoom_in_button.get_style_context().add_class('zoom_in_button')
         self.zoom_in_button.set_can_focus(False)
-        
+
+        popover = Gtk.PopoverMenu()
+        stack = popover.get_child()
+
+        self.zoom_button_box = Gtk.VBox()
+        self.zoom_button_box.set_margin_top(10)
+        self.zoom_button_box.set_margin_bottom(10)
+        self.zoom_button_box.set_margin_left(10)
+        self.zoom_button_box.set_margin_right(10)
+        stack.add_named(self.zoom_button_box, 'main')
+
         self.label = Gtk.Label('100.0%')
         self.label.set_xalign(0.5)
+        self.zoom_level_button = Gtk.MenuButton()
+        self.zoom_level_button.set_direction(Gtk.ArrowType.DOWN)
+        self.zoom_level_button.set_focus_on_click(False)
+        self.zoom_level_button.set_popover(popover)
+        self.zoom_level_button.set_tooltip_text('Set zoom level')
+        self.zoom_level_button.get_style_context().add_class('flat')
+        self.zoom_level_button.get_style_context().add_class('zoom_level_button')
+        self.zoom_level_button.set_can_focus(False)
+        self.zoom_level_button.add(self.label)
         
         self.pack_start(self.zoom_out_button, False, False, 0)
-        self.pack_start(self.label, False, False, 0)
+        self.pack_start(self.zoom_level_button, False, False, 0)
         self.pack_start(self.zoom_in_button, False, False, 0)
         self.show_all()
 

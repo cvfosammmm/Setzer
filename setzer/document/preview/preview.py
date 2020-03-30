@@ -48,7 +48,7 @@ class Preview(Observable):
         self.page_height = None
         self.xoffset = 0
         self.yoffset = 0
-        self.zoom_levels = [0.25, 0.354, 0.5, 0.71, 1.0, 1.414, 2.0, 2.828, 4.0]
+        self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0]
         self.zoom_level_fit_to_width = None
         self.zoom_level = None
         self.pdf_loaded = False
@@ -161,9 +161,9 @@ class Preview(Observable):
         if level != self.zoom_level_fit_to_width:
             self.zoom_level_fit_to_width = level
             if level != None:
-                self.zoom_levels = [0.25, 0.354, 0.5, 0.71, 1.0, 1.414, 2.0, 2.828, 4.0, level]
+                self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0, level]
             else:
-                self.zoom_levels = [0.25, 0.354, 0.5, 0.71, 1.0, 1.414, 2.0, 2.828, 4.0]
+                self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0]
 
     def set_zoom_fit_to_width(self):
         if self.zoom_level_fit_to_width != None:
@@ -171,6 +171,17 @@ class Preview(Observable):
         else:
             self.set_zoom_level(1.0)
     
+    def set_zoom_fit_to_width_auto_offset(self):
+        if self.zoom_level_fit_to_width != None:
+            zoom_level = self.zoom_level_fit_to_width
+        else:
+            zoom_level = 1.0
+        x = self.view.get_allocated_width() / 2
+        y = self.view.get_allocated_height() / 2
+        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        self.set_zoom_level(zoom_level, xoffset, yoffset)
+
     def zoom_in(self):
         try:
             zoom_level = min([level for level in self.zoom_levels if level > self.zoom_level])
@@ -187,6 +198,13 @@ class Preview(Observable):
             zoom_level = max([level for level in self.zoom_levels if level < self.zoom_level])
         except ValueError:
             zoom_level = min(self.zoom_levels)
+        x = self.view.get_allocated_width() / 2
+        y = self.view.get_allocated_height() / 2
+        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        self.set_zoom_level(zoom_level, xoffset, yoffset)
+
+    def set_zoom_level_auto_offset(self, zoom_level):
         x = self.view.get_allocated_width() / 2
         y = self.view.get_allocated_height() / 2
         xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)

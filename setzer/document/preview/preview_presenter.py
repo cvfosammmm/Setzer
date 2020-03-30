@@ -84,7 +84,6 @@ class PreviewPresenter(object):
             self.view.paging_widget.label_current_page.set_text(str(self.layouter.get_current_page()))
         else:
             self.view.paging_widget.label_current_page.set_text("0")
-        self.view.paging_widget.queue_draw()
 
     def set_canvas_size(self):
         if self.layouter.has_layout:
