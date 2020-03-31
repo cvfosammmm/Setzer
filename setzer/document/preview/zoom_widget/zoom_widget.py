@@ -47,6 +47,11 @@ class ZoomWidget(object):
         model_button.get_child().set_halign(Gtk.Align.START)
         model_button.connect('clicked', self.on_fit_to_text_width_button_clicked)
         self.view.zoom_button_box.pack_start(model_button, False, False, 0)
+        model_button = Gtk.ModelButton()
+        model_button.set_label('Fit to Height')
+        model_button.get_child().set_halign(Gtk.Align.START)
+        model_button.connect('clicked', self.on_fit_to_height_button_clicked)
+        self.view.zoom_button_box.pack_start(model_button, False, False, 0)
         separator = Gtk.SeparatorMenuItem()
         self.view.zoom_button_box.pack_start(separator, False, False, 0)
         for level in self.preview.zoom_levels:
@@ -79,6 +84,9 @@ class ZoomWidget(object):
 
     def on_fit_to_text_width_button_clicked(self, button):
         self.preview.set_zoom_fit_to_text_width()
+
+    def on_fit_to_height_button_clicked(self, button):
+        self.preview.set_zoom_fit_to_height()
 
     def on_set_zoom_button_clicked(self, button, level):
         self.preview.set_zoom_level_auto_offset(level)

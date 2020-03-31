@@ -53,6 +53,7 @@ class Preview(Observable):
         self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0]
         self.zoom_level_fit_to_width = None
         self.zoom_level_fit_to_text_width = None
+        self.zoom_level_fit_to_height = None
         self.zoom_level = None
         self.pdf_loaded = False
 
@@ -178,6 +179,16 @@ class Preview(Observable):
                 self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0]
 
     #@helpers.timer
+    def set_zoom_fit_to_height(self):
+        zoom_level = (self.view.scrolled_window.get_allocated_height() + self.layouter.border_width) / (self.page_height * self.layouter.ppp)
+        if zoom_level == self.zoom_level: return
+
+        xoffset = ((self.page_width * zoom_level * self.layouter.ppp - self.view.get_allocated_width()) / 2) / (zoom_level * self.layouter.ppp) - self.xoffset
+        y = self.view.get_allocated_height() / 2
+        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        self.zoom_level_fit_to_height = zoom_level
+        self.set_zoom_level(zoom_level, xoffset, yoffset)
+
     def set_zoom_fit_to_text_width(self):
         zoom_level = self.zoom_level_fit_to_width * (self.page_width / (self.page_width - 2 * self.vertical_margin))
         if zoom_level == self.zoom_level: return
