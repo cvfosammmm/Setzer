@@ -53,7 +53,7 @@ class PreviewController(object):
         return False
     
     def on_size_allocate(self, view=None, allocation=None):
-        self.layouter.update_fit_to_width()
+        self.layouter.update_zoom_levels()
 
     def on_hadjustment_changed(self, adjustment):
         if self.layouter.has_layout:

@@ -89,10 +89,10 @@ class PreviewLayouter(Observable):
         self.canvas_width = self.page_width + 2 * self.horizontal_margin
         self.canvas_height = self.preview.number_of_pages * (self.page_height + self.page_gap) - self.page_gap + 2 * self.vertical_margin
         self.has_layout = True
-        self.update_fit_to_width()
+        self.update_zoom_levels()
         self.add_change_code('layout_changed')
 
-    def update_fit_to_width(self):
+    def update_zoom_levels(self):
         if not self.has_layout: return
 
         self.horizontal_margin = int(self.ppp * self.horizontal_margin_points)
@@ -111,6 +111,8 @@ class PreviewLayouter(Observable):
             self.preview.set_zoom_fit_to_width()
         elif self.preview.zoom_level != None and self.preview.zoom_level_fit_to_text_width != None and self.preview.zoom_level_fit_to_text_width == self.preview.zoom_level:
             self.preview.set_zoom_fit_to_text_width()
+        elif self.preview.zoom_level != None and self.preview.zoom_level_fit_to_height != None and self.preview.zoom_level_fit_to_height == self.preview.zoom_level:
+            self.preview.set_zoom_fit_to_height()
         elif self.preview.first_show:
             self.preview.first_show = False
             self.preview.set_zoom_fit_to_width()
