@@ -106,8 +106,11 @@ class PreviewLayouter(Observable):
             pass
         else:
             self.preview.update_fit_to_width_zoom_level(level)
+
         if old_level != None and self.preview.zoom_level == old_level:
             self.preview.set_zoom_fit_to_width()
+        elif self.preview.zoom_level != None and self.preview.zoom_level_fit_to_text_width != None and self.preview.zoom_level_fit_to_text_width == self.preview.zoom_level:
+            self.preview.set_zoom_fit_to_text_width()
         elif self.preview.first_show:
             self.preview.first_show = False
             self.preview.set_zoom_fit_to_width()
