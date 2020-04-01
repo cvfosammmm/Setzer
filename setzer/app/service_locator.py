@@ -17,6 +17,7 @@
 
 import re
 import os.path
+from xdg.BaseDirectory import xdg_config_home
 
 import setzer.app.settings as settingscontroller
 import setzer.helpers.popover_menu_builder as popover_menu_builder
@@ -124,8 +125,8 @@ class ServiceLocator(object):
             ServiceLocator.popover_menu_builder = popover_menu_builder.PopoverMenuBuilder()
         return ServiceLocator.popover_menu_builder
 
-    def get_dot_folder():
-        return os.path.expanduser('~') + '/.setzer'
+    def get_config_folder():
+        return os.path.join(xdg_config_home, 'setzer')
 
     def init_setzer_version(setzer_version):
         ServiceLocator.setzer_version = setzer_version

@@ -89,6 +89,20 @@
             ]
         },
         {
+            "name": "python3-pyxdg",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} pyxdg"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/39/03/12eb9062f43adb94e30f366743cb5c83fd15fef026500cd4de42c7c12280/pyxdg-0.26-py2.py3-none-any.whl",
+                    "sha256": "1948ff8e2db02156c0cccd2529b43c0cff56ebaa71f5f021bbd755bc1419190e"
+                }
+            ]
+        },
+        {
             "name": "setzer",
             "buildsystem": "meson",
             "config-opts": [

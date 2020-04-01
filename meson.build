@@ -13,6 +13,7 @@ dependency('gspell-1')
 # python configuration
 python_modules = [
   'gi',
+  'xdg',
 ]
 if meson.version().version_compare('>=0.51')
   py = import('python').find_installation(modules: python_modules)
