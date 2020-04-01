@@ -18,6 +18,8 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import Gio
 
 
 class PreviewView(Gtk.VBox):
@@ -34,6 +36,20 @@ class PreviewView(Gtk.VBox):
         self.pack_start(self.action_bar, False, False, 0)
 
         self.drawing_area = Gtk.DrawingArea()
+        self.drawing_area.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
+
+        self.menu_item_zoom_in = Gtk.MenuItem.new_with_label('Zoom In')
+        self.menu_item_zoom_out = Gtk.MenuItem.new_with_label('Zoom Out')
+        self.menu_item_zoom_fit_to_width = Gtk.MenuItem.new_with_label('Fit to Width')
+        self.menu_item_zoom_fit_to_text_width = Gtk.MenuItem.new_with_label('Fit to Text Width')
+        self.menu_item_zoom_fit_to_height = Gtk.MenuItem.new_with_label('Fit to Height')
+        self.context_menu = Gtk.Menu()
+        self.context_menu.append(self.menu_item_zoom_in)
+        self.context_menu.append(self.menu_item_zoom_out)
+        self.context_menu.append(self.menu_item_zoom_fit_to_width)
+        self.context_menu.append(self.menu_item_zoom_fit_to_text_width)
+        self.context_menu.append(self.menu_item_zoom_fit_to_height)
+
         self.scrolled_window = Gtk.ScrolledWindow()
         self.scrolled_window.add(self.drawing_area)
 
