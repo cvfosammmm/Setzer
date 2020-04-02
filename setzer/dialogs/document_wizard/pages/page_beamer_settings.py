@@ -29,8 +29,9 @@ import _thread as thread
 
 class BeamerSettingsPage(Page):
 
-    def __init__(self, current_values):
+    def __init__(self, current_values, resources_path):
         self.current_values = current_values
+        self.resources_path = resources_path
         self.view = BeamerSettingsPageView()
 
         self.image_loading_lock = thread.allocate_lock()
@@ -81,10 +82,10 @@ class BeamerSettingsPage(Page):
         with self.image_loading_lock:
             for name in self.view.theme_names:
                 for i in range(0, 2):
-                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.dirname(__file__) + '/../resources/beamerpreview_' + name + '_page_' + str(i) + '.png', 346, 260, False)
+                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.join(self.resources_path, 'document_wizard', 'beamerpreview_' + name + '_page_' + str(i) + '.png'), 346, 260, False)
                     image = Gtk.Image.new_from_pixbuf(pixbuf)
                     self.view.preview_images[name].append(image)
-                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.dirname(__file__) + '/../resources/beamerpreview_' + name + '_page_' + str(i) + '.png', 100, 75, False)
+                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.join(self.resources_path, 'document_wizard', 'beamerpreview_' + name + '_page_' + str(i) + '.png'), 100, 75, False)
                     image = Gtk.Image.new_from_pixbuf(pixbuf)
                     self.view.preview_button_images[name].append(image)
             self.view.preview_stack.show_all()

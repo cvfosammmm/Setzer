@@ -26,14 +26,30 @@ else
 endif
 
 # configure folders
+prefix = get_option('prefix')
 bindir = get_option('bindir')
 datadir = get_option('datadir')
 pymdir = py.get_install_dir()
+resourcesdir = join_paths(datadir, 'Setzer')
+
+config = configuration_data()
+config.set('resources_path', join_paths(prefix, resourcesdir, 'resources'))
+config.set('app_icons_path', join_paths(prefix, datadir, 'icons'))
+
+config_dev = config
+config_dev.set('resources_path', join_paths(meson.source_root(), 'data', 'resources'))
+config_dev.set('app_icons_path', join_paths(meson.source_root(), 'data'))
 
 # install python sources
 install_subdir(
   'setzer',
   install_dir: pymdir,
+)
+
+# install resources
+install_subdir(
+  join_paths('data', 'resources'),
+  install_dir: resourcesdir,
 )
 
 # install program data
@@ -54,8 +70,16 @@ install_data(
 
 # install binary
 configure_file(
-  input: '__main__.py',
+  input: 'setzer.in',
   output: 'setzer',
-  copy: true,
+  configuration: config,
+  install: true,
   install_dir: bindir,
+)
+
+# create devel binary
+configure_file(
+  input: 'setzer.in',
+  output: 'setzer_dev.py',
+  configuration: config_dev,
 )

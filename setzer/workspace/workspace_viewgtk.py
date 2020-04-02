@@ -30,6 +30,7 @@ import setzer.workspace.shortcutsbar.shortcutsbar_viewgtk as shortcutsbar_view
 import setzer.workspace.bibtex_shortcutsbar.bibtex_shortcutsbar_viewgtk as bibtex_shortcutsbar_view
 import setzer.workspace.preview_panel.preview_panel_viewgtk as preview_panel_view
 import setzer.workspace.sidebar.sidebar_viewgtk as sidebar_view
+from setzer.app.service_locator import ServiceLocator
 
 import os
 
@@ -41,13 +42,16 @@ class MainWindow(Gtk.ApplicationWindow):
         self.app = app
         self.set_size_request(-1, 550)
         self.add_events(Gdk.EventMask.KEY_PRESS_MASK)
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/icons')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/arrows')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/greek_letters')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/misc_math')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/misc_text')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/operators')
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.dirname(__file__) + '/../resources/symbols/relations')
+        resources_path = ServiceLocator.get_resources_path()
+        app_icons_path = ServiceLocator.get_app_icons_path()
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'icons'))
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'symbols', 'arrows'))
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'symbols', 'greek_letters'))
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'symbols', 'misc_math'))
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'symbols', 'misc_text'))
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'symbols', 'operators'))
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'symbols', 'relations'))
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), app_icons_path)
 
         # window state variables
         self.current_width = 0
@@ -113,7 +117,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.add(self.mode_stack)
 
         self.css_provider = Gtk.CssProvider()
-        self.css_provider.load_from_path(os.path.dirname(__file__) + '/../resources/style_gtk.css')
+        self.css_provider.load_from_path(os.path.join(resources_path, 'style_gtk.css'))
         self.style_context = Gtk.StyleContext()
         self.style_context.add_provider_for_screen(self.get_screen(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 

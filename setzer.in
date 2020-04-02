@@ -41,6 +41,10 @@ class MainApplicationController(Gtk.Application):
         
         settings = ServiceLocator.get_settings()
 
+        # init resources path
+        ServiceLocator.init_resources_path('@resources_path@')
+        ServiceLocator.init_app_icons_path('@app_icons_path@')
+
         # init main window, model, dialogs
         self.main_window = view.MainWindow(self, settings)
         ServiceLocator.init_main_window(self.main_window)
