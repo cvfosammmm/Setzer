@@ -82,8 +82,11 @@ class DocumentBuilder(object):
                 except KeyError: pass
                 else:
                     try:
-                        self.document.preview.scroll_to_synctex_position(result_blob['pdf_position'])
+                        pdf_position = result_blob['pdf_position'] 
                     except KeyError: pass
+                    else:
+                        if pdf_position != None:
+                            self.document.preview.scroll_to_synctex_position(pdf_position)
 
                 build_log_items = list()
                 if result_blob['error'] == 'interpreter_missing':
