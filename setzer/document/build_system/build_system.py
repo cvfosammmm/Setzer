@@ -105,6 +105,7 @@ class Query(object):
         self.badbox_line_number_regex = ServiceLocator.get_build_log_badbox_line_number_regex()
         self.other_line_number_regex = ServiceLocator.get_build_log_other_line_number_regex()
         self.bibtex_log_item_regex = ServiceLocator.get_bibtex_log_item_regex()
+        self.synctex_regex = ServiceLocator.get_synctex_regex()
         self.force_building_to_stop = False
 
         self.latex_interpreter = latex_interpreter
@@ -225,22 +226,23 @@ class Query(object):
         arguments.append(str(self.synctex_args['line']) + ':' + str(self.synctex_args['line_offset']) + ':' + tex_name)
         arguments.append('-o')
         arguments.append(pdf_name)
-        arguments.append('-x')
-        arguments.append('echo "%{page+1};;;%{x};;;%{y};;;%{h};;;%{v};;;%{width};;;%{height}"')
         process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         process.wait()
-        raw = process.communicate()[0].decode('utf-8').split('\n')[0].split(';;;')
+        raw = process.communicate()[0].decode('utf-8')#.split('\n')[0].split(';;;')
         process = None
-        if len(raw) == 7:
-            result = dict()
-            result['page'] = int(raw[0])
-            result['x'] = float(raw[1])
-            result['y'] = float(raw[2])
-            result['h'] = float(raw[3])
-            result['v'] = float(raw[4])
-            result['width'] = float(raw[5])
-            result['height'] = float(raw[6])
-            return result
+
+        rectangles = list()
+        for match in self.synctex_regex.finditer(raw):
+            rectangle = dict()
+            rectangle['page'] = int(match.group(1))
+            rectangle['h'] = float(match.group(2))
+            rectangle['v'] = float(match.group(3))
+            rectangle['width'] = float(match.group(4))
+            rectangle['height'] = float(match.group(5))
+            rectangles.append(rectangle)
+
+        if len(rectangles) > 0:
+            return rectangles[0]
         else:
             return None
 
