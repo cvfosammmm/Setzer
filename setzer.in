@@ -41,7 +41,8 @@ class MainApplicationController(Gtk.Application):
         
         settings = ServiceLocator.get_settings()
 
-        # init resources path
+        # init static variables
+        ServiceLocator.init_setzer_version('@setzer_version@')
         ServiceLocator.init_resources_path('@resources_path@')
         ServiceLocator.init_app_icons_path('@app_icons_path@')
 

@@ -33,6 +33,7 @@ pymdir = py.get_install_dir()
 resourcesdir = join_paths(datadir, 'Setzer')
 
 config = configuration_data()
+config.set('setzer_version', meson.project_version())
 config.set('resources_path', join_paths(prefix, resourcesdir, 'resources'))
 config.set('app_icons_path', join_paths(prefix, datadir, 'icons'))
 

@@ -45,6 +45,7 @@ class ServiceLocator(object):
 
     dialogs = dict()
     settings = None
+    setzer_version = None
     resources_path = None
     app_icons_path = None
     popover_menu_builder = None
@@ -60,7 +61,8 @@ class ServiceLocator(object):
     def init_dialogs(main_window, workspace):
         settings = ServiceLocator.get_settings()
         resources_path = ServiceLocator.get_resources_path()
-        ServiceLocator.dialogs['about'] = about_dialog.AboutDialog(main_window)
+        setzer_version = ServiceLocator.get_setzer_version()
+        ServiceLocator.dialogs['about'] = about_dialog.AboutDialog(main_window, setzer_version)
         ServiceLocator.dialogs['add_remove_packages'] = add_remove_packages_dialog.AddRemovePackagesDialog(main_window, workspace)
         ServiceLocator.dialogs['bibtex_wizard'] = bibtex_wizard.BibTeXWizard(main_window, workspace, settings)
         ServiceLocator.dialogs['building_failed'] = building_failed_dialog.BuildingFailedDialog(main_window)
@@ -124,6 +126,12 @@ class ServiceLocator(object):
 
     def get_dot_folder():
         return os.path.expanduser('~') + '/.setzer'
+
+    def init_setzer_version(setzer_version):
+        ServiceLocator.setzer_version = setzer_version
+
+    def get_setzer_version():
+        return ServiceLocator.setzer_version
 
     def init_resources_path(resources_path):
         ServiceLocator.resources_path = resources_path
