@@ -48,6 +48,11 @@
 	</provides>
 
     <releases>
+        <release version="0.2.2" date="2020-4-2">
+            <description>
+                <p>Zoom level popover for the .pdf preview, preview should use far less memory now, ...</p>
+            </description>
+        </release>
         <release version="0.2.1" date="2020-3-19">
             <description>
                 <p>Bug fixes</p>

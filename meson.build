@@ -1,6 +1,6 @@
 project(
   'Setzer',
-  version: '0.2.0',
+  version: '0.2.2',
   license: 'GPLv3',
   meson_version: '>=0.51',
 )
