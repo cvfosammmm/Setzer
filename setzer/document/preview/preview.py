@@ -134,7 +134,7 @@ class Preview(Observable):
 
     def scroll_to_synctex_position(self, position):
         if self.layouter.has_layout:
-            self.presenter.scroll_to_position({'page': position['page'], 'x': max((self.layouter.page_width / 2 + self.layouter.horizontal_margin - self.view.scrolled_window.get_allocated_width() / 2) / self.layouter.scale_factor, 0), 'y': max(((position['y'] + position['height'] / 2) * self.layouter.scale_factor - self.view.scrolled_window.get_allocated_height() / 2) / self.layouter.scale_factor, 0)})
+            self.presenter.scroll_to_position({'page': position['page'], 'x': max((self.layouter.page_width / 2 + self.layouter.horizontal_margin - self.view.scrolled_window.get_allocated_width() / 2) / self.layouter.scale_factor, 0), 'y': max(((position['v'] - position['height'] / 2) * self.layouter.scale_factor - self.view.scrolled_window.get_allocated_height() / 2) / self.layouter.scale_factor, 0)})
 
     def set_pdf_date(self):
         if self.pdf_filename != None:
