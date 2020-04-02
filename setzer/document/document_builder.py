@@ -42,7 +42,7 @@ class DocumentBuilder(object):
             document = self.document
             insert = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
             synctex_arguments = dict()
-            synctex_arguments['line'] = insert.get_line()
+            synctex_arguments['line'] = insert.get_line() + 1
             synctex_arguments['line_offset'] = insert.get_line_offset()
             latex_interpreter = self.settings.get_value('preferences', 'latex_interpreter')
             build_option_system_commands = self.settings.get_value('preferences', 'build_option_system_commands')
