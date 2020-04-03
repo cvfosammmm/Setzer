@@ -37,7 +37,7 @@ class Workspace(Observable):
 
     def __init__(self):
         Observable.__init__(self)
-        self.pathname = ServiceLocator.get_dot_folder()
+        self.pathname = ServiceLocator.get_config_folder()
 
         self.open_documents = list()
         self.open_latex_documents = list()

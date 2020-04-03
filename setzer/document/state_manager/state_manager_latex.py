@@ -26,7 +26,7 @@ class StateManagerLaTeX():
 
     def __init__(self, document):
         self.document = document
-        self.data_pathname = ServiceLocator.get_dot_folder()
+        self.data_pathname = ServiceLocator.get_config_folder()
 
     def load_document_state(self):
         if self.document.filename == None: return
