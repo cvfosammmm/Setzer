@@ -26,6 +26,7 @@ from setzer.dialogs.dialog import Dialog
 import setzer.dialogs.bibtex_wizard.bibtex_wizard_viewgtk as view
 from setzer.dialogs.bibtex_wizard.pages.page_create_new_entry import CreateNewEntryPage
 from setzer.dialogs.bibtex_wizard.pages.page_fields_entry import FieldsEntryPage
+from setzer.app.service_locator import ServiceLocator
 
 import pickle
 import os
@@ -33,10 +34,10 @@ import os
 
 class BibTeXWizard(Dialog):
 
-    def __init__(self, main_window, workspace, settings):
+    def __init__(self, main_window, workspace):
         self.main_window = main_window
         self.workspace = workspace
-        self.settings = settings
+        self.settings = ServiceLocator.get_settings()
         self.document_types = dict()
         self.document_types['article'] = {'title': 'Article in Journal', 'description': 'An article in a journal, magazine, newspaper, or other periodical which forms a self-contained unit with its own title. The title of the periodical is given in the <tt>journaltitle</tt> field. If the issue has its own title in addition to the main title of the periodical, it goes in the <tt>issuetitle</tt> field. Note that <tt>editor</tt> and related fields refer to the journal while <tt>translator</tt> and related fields refer to the article.', 'fields_required': ['author', 'title', 'journaltitle', 'date'], 'fields_optional': ['translator', 'annotator', 'commentator', 'subtitle', 'titleaddon', 'editor', 'editora', 'editorb', 'editorc', 'journalsubtitle', 'issuetitle', 'issuesubtitle', 'language', 'origlanguage', 'series', 'volume', 'number', 'eid', 'issue', 'month', 'pages', 'version', 'note', 'issn', 'addendum', 'pubstate', 'doi', 'eprint', 'eprintclass', 'eprinttype', 'url', 'urldate']}
         self.document_types['book'] = {'title': 'Book', 'description': 'A single-volume book with one or more authors where the authors share credit for the work as a whole. This entry type also covers the function of the @inbook type of traditional BibTeX.', 'fields_required': ['author', 'title', 'date'], 'fields_optional': ['editor', 'editora', 'editorb', 'editorc', 'translator', 'annotator', 'commentator', 'introduction', 'foreword', 'afterword', 'subtitle', 'titleaddon', 'maintitle', 'mainsubtitle', 'maintitleaddon', 'language', 'origlanguage', 'volume', 'part', 'edition', 'volumes', 'series', 'number', 'note', 'publisher', 'location', 'isbn', 'chapter', 'pages', 'pagetotal', 'addendum', 'pubstate', 'doi', 'eprint', 'eprintclass', 'eprinttype', 'url', 'urldate']}

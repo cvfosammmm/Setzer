@@ -23,6 +23,7 @@ from gi.repository import GLib
 from gi.repository import Gio
 from gi.repository import Gtk
 from setzer.app.service_locator import ServiceLocator
+from setzer.dialogs.dialog_locator import DialogLocator
 
 
 class Shortcuts(object):
@@ -111,7 +112,7 @@ class Shortcuts(object):
         self.accel_group.connect(Gdk.keyval_from_name('quotedbl'), c_mask, flags, self.shortcut_quotes)
 
     def shortcut_open(self, accel_group=None, window=None, key=None, mask=None):
-        filename = ServiceLocator.get_dialog('open_document').run()
+        filename = DialogLocator.get_dialog('open_document').run()
         self.workspace.open_document_by_filename(filename)
 
     def shortcut_doc_chooser(self, accel_group=None, window=None, key=None, mask=None):

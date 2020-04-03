@@ -20,7 +20,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import GLib
 from gi.repository import Gtk
 
-from setzer.app.service_locator import ServiceLocator
+from setzer.dialogs.dialog_locator import DialogLocator
 
 
 class Search(object):
@@ -87,7 +87,7 @@ class Search(object):
             number_of_occurences = search_context.get_occurrences_count()
             
             if number_of_occurences > 0:
-                dialog = ServiceLocator.get_dialog('replace_confirmation')
+                dialog = DialogLocator.get_dialog('replace_confirmation')
                 if dialog.run(original, replacement, number_of_occurences):
                     search_context.replace_all(replacement, -1)
 

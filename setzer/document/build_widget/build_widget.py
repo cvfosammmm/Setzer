@@ -18,6 +18,7 @@
 import setzer.document.build_widget.build_widget_viewgtk as build_widget_view
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
+from setzer.dialogs.dialog_locator import DialogLocator
 
 import time
 import os.path
@@ -99,8 +100,8 @@ class BuildWidget(Observable):
 
     def build_document_request(self, button_object=None):
         if self.document.filename == None:
-            if ServiceLocator.get_dialog('build_save').run(self.document):
-                ServiceLocator.get_dialog('save_document').run(self.document)
+            if DialogLocator.get_dialog('build_save').run(self.document):
+                DialogLocator.get_dialog('save_document').run(self.document)
             else:
                 return False
         if self.document.filename != None:

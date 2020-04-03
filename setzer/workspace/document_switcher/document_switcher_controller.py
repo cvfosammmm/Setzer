@@ -16,6 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 from setzer.app.service_locator import ServiceLocator
+from setzer.dialogs.dialog_locator import DialogLocator
 
 
 class DocumentSwitcherController(object):
@@ -62,7 +63,7 @@ class DocumentSwitcherController(object):
 
     def on_doclist_close_clicked(self, button_object, document):
         if document.get_modified():
-            dialog = ServiceLocator.get_dialog('close_confirmation')
+            dialog = DialogLocator.get_dialog('close_confirmation')
             not_save_to_close = dialog.run([document])['not_save_to_close_documents']
             if document not in not_save_to_close:
                 self.workspace.remove_document(document)

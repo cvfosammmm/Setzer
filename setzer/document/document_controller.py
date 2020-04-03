@@ -24,7 +24,7 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import GObject
 
-from setzer.app.service_locator import ServiceLocator
+from setzer.dialogs.dialog_locator import DialogLocator
 
 
 class DocumentController(object):
@@ -106,7 +106,7 @@ class DocumentController(object):
     def save_date_loop(self):
         if self.document.filename == None: return True
         if self.document.save_date <= os.path.getmtime(self.document.filename) - 0.001:
-            if ServiceLocator.get_dialog('document_changed_on_disk').run(self.document):
+            if DialogLocator.get_dialog('document_changed_on_disk').run(self.document):
                 self.document.populate_from_filename()
             else:
                 self.document.source_buffer.set_modified(False)

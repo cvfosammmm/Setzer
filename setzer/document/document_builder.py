@@ -19,6 +19,7 @@ import time
 
 import setzer.document.build_system.build_system as build_system
 from setzer.app.service_locator import ServiceLocator
+from setzer.dialogs.dialog_locator import DialogLocator
 import setzer.helpers.helpers as helpers
 
 
@@ -92,15 +93,15 @@ class DocumentBuilder(object):
                 if result_blob['error'] == 'interpreter_missing':
                     self.document.show_build_state('')
                     self.document.change_state('idle')
-                    if ServiceLocator.get_dialog('interpreter_missing').run(result_blob['error_arg']):
-                        ServiceLocator.get_dialog('preferences').run()
+                    if DialogLocator.get_dialog('interpreter_missing').run(result_blob['error_arg']):
+                        DialogLocator.get_dialog('preferences').run()
                     return
 
                 if result_blob['error'] == 'interpreter_not_working':
                     self.document.show_build_state('')
                     self.document.change_state('idle')
-                    if ServiceLocator.get_dialog('building_failed').run(result_blob['error_arg']):
-                        ServiceLocator.get_dialog('preferences').run()
+                    if DialogLocator.get_dialog('building_failed').run(result_blob['error_arg']):
+                        DialogLocator.get_dialog('preferences').run()
                     return
 
                 try:

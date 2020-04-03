@@ -23,6 +23,7 @@ from gi.repository import GLib
 
 import setzer.helpers.helpers as helpers
 from setzer.app.service_locator import ServiceLocator
+from setzer.dialogs.dialog_locator import DialogLocator
 
 import time
 
@@ -134,7 +135,7 @@ class WorkspaceController(object):
             self.workspace.create_document_from_filename(filename, activate=True)
 
     def on_open_document_button_click(self, button_object=None):
-        filename = ServiceLocator.get_dialog('open_document').run()
+        filename = DialogLocator.get_dialog('open_document').run()
         self.workspace.open_document_by_filename(filename)
 
     def on_new_latex_document_action_activated(self, action=None, parameter=None):
@@ -145,7 +146,7 @@ class WorkspaceController(object):
 
     def on_doclist_close_clicked(self, button_object, document):
         if document.get_modified():
-            dialog = ServiceLocator.get_dialog('close_confirmation')
+            dialog = DialogLocator.get_dialog('close_confirmation')
             not_save_to_close = dialog.run([document])['not_save_to_close_documents']
             if document not in not_save_to_close:
                 self.workspace.remove_document(document)
@@ -170,7 +171,7 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def on_save_as_clicked(self, action=None, parameter=None):
         document = self.workspace.get_active_document()
-        ServiceLocator.get_dialog('save_document').run(document)
+        DialogLocator.get_dialog('save_document').run(document)
         
     @_assert_has_active_document
     def on_save_all_clicked(self, action=None, parameter=None):
@@ -182,7 +183,7 @@ class WorkspaceController(object):
                 if document.get_filename() == None:
                     self.workspace.set_active_document(document)
                     return_to_active_document = True
-                    ServiceLocator.get_dialog('save_document').run(document)
+                    DialogLocator.get_dialog('save_document').run(document)
                 else:
                     document.save_to_disk()
             if return_to_active_document == True:
@@ -217,7 +218,7 @@ class WorkspaceController(object):
         active_document = self.workspace.get_active_document()
         documents = self.workspace.get_all_documents()
         unsaved_documents = self.workspace.get_unsaved_documents()
-        dialog = ServiceLocator.get_dialog('close_confirmation')
+        dialog = DialogLocator.get_dialog('close_confirmation')
         not_save_to_close_documents = dialog.run(unsaved_documents)['not_save_to_close_documents']
 
         for document in documents:
@@ -347,52 +348,52 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def start_wizard(self, action, parameter=None):
         document = self.workspace.get_active_document()
-        ServiceLocator.get_dialog('document_wizard').run(document)
+        DialogLocator.get_dialog('document_wizard').run(document)
 
     @_assert_has_active_document
     def start_include_bibtex_file_dialog(self, action, parameter=None):
         document = self.workspace.get_active_document()
-        ServiceLocator.get_dialog('include_bibtex_file').run(document)
+        DialogLocator.get_dialog('include_bibtex_file').run(document)
 
     @_assert_has_active_document
     def start_include_latex_file_dialog(self, action, parameter=None):
         document = self.workspace.get_active_document()
-        ServiceLocator.get_dialog('include_latex_file').run(document)
+        DialogLocator.get_dialog('include_latex_file').run(document)
 
     @_assert_has_active_document
     def start_add_remove_packages_dialog(self, action, parameter=None):
         document = self.workspace.get_active_document()
-        ServiceLocator.get_dialog('add_remove_packages').run(document)
+        DialogLocator.get_dialog('add_remove_packages').run(document)
 
     @_assert_has_active_document
     def start_create_new_bibtex_entry_dialog(self, action, parameter=None):
         document = self.workspace.get_active_document()
-        ServiceLocator.get_dialog('bibtex_wizard').run('new_entry', document)
+        DialogLocator.get_dialog('bibtex_wizard').run('new_entry', document)
 
     @_assert_has_active_document
     def start_show_previous_bibtex_entries_dialog(self, action, parameter=None):
         document = self.workspace.get_active_document()
-        ServiceLocator.get_dialog('bibtex_wizard').run('previous_entries', document)
+        DialogLocator.get_dialog('bibtex_wizard').run('previous_entries', document)
 
     @_assert_has_active_document
     def start_search_online_for_bibtex_entries_dialog(self, action, parameter=None):
         document = self.workspace.get_active_document()
-        ServiceLocator.get_dialog('bibtex_wizard').run('search_online', document)
+        DialogLocator.get_dialog('bibtex_wizard').run('search_online', document)
 
     def start_spellchecking_language_dialog(self, action, parameter=None):
-        ServiceLocator.get_dialog('spellchecking_language').run()
+        DialogLocator.get_dialog('spellchecking_language').run()
 
     def start_spellchecking_dialog(self, action, parameter=None):
-        ServiceLocator.get_dialog('spellchecking').run()
+        DialogLocator.get_dialog('spellchecking').run()
 
     def show_shortcuts_window(self, action, parameter=''):
-        ServiceLocator.get_dialog('keyboard_shortcuts').run()
+        DialogLocator.get_dialog('keyboard_shortcuts').run()
 
     def show_preferences_dialog(self, action=None, parameter=''):
-        ServiceLocator.get_dialog('preferences').run()
+        DialogLocator.get_dialog('preferences').run()
 
     def show_about_dialog(self, action, parameter=''):
-        ServiceLocator.get_dialog('about').run()
+        DialogLocator.get_dialog('about').run()
 
     def close_build_log(self, action, parameter=''):
         self.workspace.set_show_build_log(False)

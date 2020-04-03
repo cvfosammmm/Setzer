@@ -22,6 +22,7 @@ from gi.repository import Gtk
 
 from setzer.dialogs.dialog import Dialog
 import setzer.dialogs.include_bibtex_file.include_bibtex_file_viewgtk as view
+from setzer.app.service_locator import ServiceLocator
 
 import pickle
 import os
@@ -29,9 +30,9 @@ import os
 
 class IncludeBibTeXFile(Dialog):
 
-    def __init__(self, main_window, settings):
+    def __init__(self, main_window):
         self.main_window = main_window
-        self.settings = settings
+        self.settings = ServiceLocator.get_settings()
         self.styles = ['plain', 'abbrv', 'alpha', 'apalike', 'ieeetr']
         self.style_names = ['Plain', 'Abbrv', 'Alpha', 'Apalike', 'iEEEtr']
         self.natbib_styles = ['plainnat', 'abbrvnat', 'unsrtnat', 'achemso']

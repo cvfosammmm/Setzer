@@ -22,29 +22,9 @@ from xdg.BaseDirectory import xdg_config_home
 import setzer.app.settings as settingscontroller
 import setzer.helpers.popover_menu_builder as popover_menu_builder
 
-import setzer.dialogs.about.about as about_dialog
-import setzer.dialogs.add_remove_packages.add_remove_packages as add_remove_packages_dialog
-import setzer.dialogs.bibtex_wizard.bibtex_wizard as bibtex_wizard
-import setzer.dialogs.build_save.build_save as build_save_dialog
-import setzer.dialogs.building_failed.building_failed as building_failed_dialog
-import setzer.dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
-import setzer.dialogs.document_wizard.document_wizard as document_wizard
-import setzer.dialogs.document_changed_on_disk.document_changed_on_disk as document_changed_on_disk_dialog
-import setzer.dialogs.include_bibtex_file.include_bibtex_file as include_bibtex_file_dialog
-import setzer.dialogs.include_latex_file.include_latex_file as include_latex_file_dialog
-import setzer.dialogs.interpreter_missing.interpreter_missing as interpreter_missing_dialog
-import setzer.dialogs.preferences.preferences as preferences_dialog
-import setzer.dialogs.open_document.open_document as open_document_dialog
-import setzer.dialogs.replace_confirmation.replace_confirmation as replace_confirmation_dialog
-import setzer.dialogs.save_document.save_document as save_document_dialog
-import setzer.dialogs.keyboard_shortcuts.keyboard_shortcuts as keyboard_shortcuts_dialog
-import setzer.dialogs.spellchecking_language.spellchecking_language as spellchecking_language_dialog
-import setzer.dialogs.spellchecking.spellchecking as spellchecking_dialog
-
 
 class ServiceLocator(object):
 
-    dialogs = dict()
     settings = None
     setzer_version = None
     resources_path = None
@@ -58,32 +38,6 @@ class ServiceLocator(object):
     symbols_regex = re.compile('\\\\(label|include|input|bibliography)\{((?:\s|\w|\:|,)*)\}|\\\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}')
     blocks_regex = re.compile('\n.*\\\\(begin|end)\{((?:\w)*(?:\*){0,1})\}|\n.*\\\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{')
     synctex_regex = re.compile('\nOutput:.*\nPage:([0-9]+)\nx:.*\ny:.*\nh:((?:[0-9]|\\.)+)\nv:((?:[0-9]|\\.)+)\nW:((?:[0-9]|\\.)+)\nH:((?:[0-9]|\\.)+)\nbefore:.*\noffset:.*\nmiddle:.*\nafter:.*')
-
-    def init_dialogs(main_window, workspace):
-        settings = ServiceLocator.get_settings()
-        resources_path = ServiceLocator.get_resources_path()
-        setzer_version = ServiceLocator.get_setzer_version()
-        ServiceLocator.dialogs['about'] = about_dialog.AboutDialog(main_window, setzer_version)
-        ServiceLocator.dialogs['add_remove_packages'] = add_remove_packages_dialog.AddRemovePackagesDialog(main_window, workspace)
-        ServiceLocator.dialogs['bibtex_wizard'] = bibtex_wizard.BibTeXWizard(main_window, workspace, settings)
-        ServiceLocator.dialogs['building_failed'] = building_failed_dialog.BuildingFailedDialog(main_window)
-        ServiceLocator.dialogs['build_save'] = build_save_dialog.BuildSaveDialog(main_window)
-        ServiceLocator.dialogs['document_wizard'] = document_wizard.DocumentWizard(main_window, workspace, settings, resources_path)
-        ServiceLocator.dialogs['document_changed_on_disk'] = document_changed_on_disk_dialog.DocumentChangedOnDiskDialog(main_window)
-        ServiceLocator.dialogs['include_bibtex_file'] = include_bibtex_file_dialog.IncludeBibTeXFile(main_window, settings)
-        ServiceLocator.dialogs['include_latex_file'] = include_latex_file_dialog.IncludeLaTeXFile(main_window)
-        ServiceLocator.dialogs['interpreter_missing'] = interpreter_missing_dialog.InterpreterMissingDialog(main_window)
-        ServiceLocator.dialogs['preferences'] = preferences_dialog.PreferencesDialog(main_window, settings)
-        ServiceLocator.dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(main_window)
-        ServiceLocator.dialogs['replace_confirmation'] = replace_confirmation_dialog.ReplaceConfirmationDialog(main_window)
-        ServiceLocator.dialogs['save_document'] = save_document_dialog.SaveDocumentDialog(main_window, workspace)
-        ServiceLocator.dialogs['keyboard_shortcuts'] = keyboard_shortcuts_dialog.KeyboardShortcutsDialog(main_window)
-        ServiceLocator.dialogs['spellchecking'] = spellchecking_dialog.SpellcheckingDialog(main_window, workspace)
-        ServiceLocator.dialogs['spellchecking_language'] = spellchecking_language_dialog.SpellcheckingLanguageDialog(main_window, workspace)
-        ServiceLocator.dialogs['close_confirmation'] = close_confirmation_dialog.CloseConfirmationDialog(main_window, workspace, ServiceLocator.dialogs['save_document'])
-    
-    def get_dialog(dialog_type):
-        return ServiceLocator.dialogs[dialog_type]
 
     def init_main_window(main_window):
         ServiceLocator.main_window = main_window
@@ -145,3 +99,5 @@ class ServiceLocator(object):
 
     def get_app_icons_path():
         return ServiceLocator.app_icons_path
+
+

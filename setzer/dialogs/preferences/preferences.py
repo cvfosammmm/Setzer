@@ -18,13 +18,14 @@
 
 from setzer.dialogs.dialog import Dialog
 import setzer.dialogs.preferences.preferences_viewgtk as view
+from setzer.app.service_locator import ServiceLocator
 
 
 class PreferencesDialog(Dialog):
 
-    def __init__(self, main_window, settings):
+    def __init__(self, main_window):
         self.main_window = main_window
-        self.settings = settings
+        self.settings = ServiceLocator.get_settings()
 
     def run(self):
         self.setup()

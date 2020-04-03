@@ -29,6 +29,7 @@ from setzer.workspace.workspace import Workspace
 import setzer.workspace.workspace_viewgtk as view
 import setzer.helpers.helpers as helpers
 from setzer.app.service_locator import ServiceLocator
+from setzer.dialogs.dialog_locator import DialogLocator
 
 
 class MainApplicationController(Gtk.Application):
@@ -51,7 +52,7 @@ class MainApplicationController(Gtk.Application):
         ServiceLocator.init_main_window(self.main_window)
 
         self.workspace = Workspace()
-        ServiceLocator.init_dialogs(self.main_window, self.workspace)
+        DialogLocator.init_dialogs(self.main_window, self.workspace)
 
         # init view
         if settings.get_value('window_state', 'is_maximized'):
@@ -138,7 +139,7 @@ class MainApplicationController(Gtk.Application):
         documents = self.workspace.get_unsaved_documents()
         active_document = self.workspace.get_active_document()
 
-        if documents == None or active_document == None or ServiceLocator.get_dialog('close_confirmation').run(documents)['all_save_to_close']:
+        if documents == None or active_document == None or DialogLocator.get_dialog('close_confirmation').run(documents)['all_save_to_close']:
             self.save_window_state()
             self.workspace.save_to_disk()
             self.quit()

@@ -31,6 +31,7 @@ from setzer.dialogs.document_wizard.pages.page_book_settings import BookSettings
 from setzer.dialogs.document_wizard.pages.page_letter_settings import LetterSettingsPage
 from setzer.dialogs.document_wizard.pages.page_beamer_settings import BeamerSettingsPage
 from setzer.dialogs.document_wizard.pages.page_general_settings import GeneralSettingsPage
+from setzer.app.service_locator import ServiceLocator
 
 import pickle
 import os
@@ -39,22 +40,22 @@ import os
 class DocumentWizard(Dialog):
     ''' Create document templates for users to build on. '''
 
-    def __init__(self, main_window, workspace, settings, resources_path):
+    def __init__(self, main_window, workspace):
         self.main_window = main_window
         self.workspace = workspace
-        self.settings = settings
+        self.settings = ServiceLocator.get_settings()
         self.current_values = dict()
         self.page_formats = {'US Letter': 'letterpaper', 'US Legal': 'legalpaper', 'A4': 'a4paper', 'A5': 'a5paper', 'B5': 'b5paper'}
 
         self.view = view.DocumentWizardView(self.main_window)
 
         self.pages = list()
-        self.pages.append(DocumentClassPage(self.current_values, resources_path))
+        self.pages.append(DocumentClassPage(self.current_values))
         self.pages.append(ArticleSettingsPage(self.current_values))
         self.pages.append(ReportSettingsPage(self.current_values))
         self.pages.append(BookSettingsPage(self.current_values))
         self.pages.append(LetterSettingsPage(self.current_values))
-        self.pages.append(BeamerSettingsPage(self.current_values, resources_path))
+        self.pages.append(BeamerSettingsPage(self.current_values))
         self.pages.append(GeneralSettingsPage(self.current_values))
         for page in self.pages: self.view.notebook.append_page(page.view)
 

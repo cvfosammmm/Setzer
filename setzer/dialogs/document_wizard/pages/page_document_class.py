@@ -21,15 +21,16 @@ from gi.repository import GLib
 from gi.repository import Gtk
 
 from setzer.dialogs.document_wizard.pages.page import Page, PageView
+from setzer.app.service_locator import ServiceLocator
 
 import os
 
 
 class DocumentClassPage(Page):
 
-    def __init__(self, current_values, resources_path):
+    def __init__(self, current_values):
         self.current_values = current_values
-        self.view = DocumentClassPageView(resources_path)
+        self.view = DocumentClassPageView()
 
     def observe_view(self):
         def row_selected(box, row, user_data=None):
@@ -52,7 +53,7 @@ class DocumentClassPage(Page):
 
 class DocumentClassPageView(PageView):
 
-    def __init__(self, resources_path):
+    def __init__(self):
         PageView.__init__(self)
             
         self.header.set_text('Choose a document class')
@@ -84,7 +85,7 @@ class DocumentClassPageView(PageView):
         self.preview_data.append({'name': 'beamer', 'image': 'beamer1.svg', 'text': '<b>Beamer:</b>  A class for making presentation slides\nwith LaTeX.\n\nThere are many predefined presentation styles.'})
         for item in self.preview_data:
             box = Gtk.VBox()
-            image = Gtk.Image.new_from_file(os.path.join(resources_path, item['image']))
+            image = Gtk.Image.new_from_file(os.path.join(ServiceLocator.get_resources_path(), item['image']))
             image.set_margin_bottom(6)
             label = Gtk.Label()
             label.set_markup(item['text'])
