@@ -92,7 +92,7 @@ class PreviewPresenter(object):
 
     def start_fade_loop(self):
         def draw():
-            timer = (4.25 - time.time() + self.preview.visible_rectangles_time)
+            timer = (4.25 - time.time() + self.layouter.visible_synctex_rectangles_time)
             if timer <= 0.4:
                 self.view.drawing_area.queue_draw()
             return timer >= 0
@@ -139,16 +139,16 @@ class PreviewPresenter(object):
                 ctx.fill()
 
                 try:
-                    rectangles = self.preview.visible_rectangles[page_number]
+                    rectangles = self.layouter.visible_synctex_rectangles[page_number]
                 except KeyError: pass
                 else:
-                    time_factor = self.ease(min(4.25 - (time.time() - self.preview.visible_rectangles_time), 0.25) * 4)
+                    time_factor = self.ease(min(4.25 - (time.time() - self.layouter.visible_synctex_rectangles_time), 0.25) * 4)
                     if time_factor < 0:
-                        self.preview.visible_rectangles = dict()
+                        self.layouter.visible_synctex_rectangles = dict()
                     else:
                         ctx.set_source_rgba(0.976, 0.941, 0.420, 0.6 * time_factor)
                         for rectangle in rectangles:
-                            ctx.rectangle(rectangle['h'] * self.layouter.scale_factor, (rectangle['v'] - rectangle['height']) * self.layouter.scale_factor, rectangle['width'] * self.layouter.scale_factor, rectangle['height'] * self.layouter.scale_factor)
+                            ctx.rectangle(rectangle['x'], rectangle['y'], rectangle['width'], rectangle['height'])
                         ctx.fill()
 
                 if page_number in self.page_renderer.rendered_pages:

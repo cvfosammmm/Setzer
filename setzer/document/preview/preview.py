@@ -57,8 +57,6 @@ class Preview(Observable):
         self.zoom_level_fit_to_height = None
         self.zoom_level = None
         self.pdf_loaded = False
-        self.visible_rectangles = dict()
-        self.visible_rectangles_time = None
 
         self.first_show = True
 
@@ -137,13 +135,19 @@ class Preview(Observable):
 
     def set_synctex_rectangles(self, rectangles):
         if self.layouter.has_layout:
-            self.visible_rectangles = dict()
-            self.visible_rectangles_time = time.time()
+            self.layouter.visible_synctex_rectangles = dict()
+            self.layouter.visible_synctex_rectangles_time = time.time()
             for rectangle in rectangles:
+                new_rectangle = dict()
+                new_rectangle['page'] = rectangle['page']
+                new_rectangle['x'] = rectangle['h'] * self.layouter.scale_factor
+                new_rectangle['y'] = (rectangle['v'] - rectangle['height']) * self.layouter.scale_factor
+                new_rectangle['width'] = rectangle['width'] * self.layouter.scale_factor
+                new_rectangle['height'] = rectangle['height'] * self.layouter.scale_factor
                 try:
-                    self.visible_rectangles[rectangle['page'] - 1].append(rectangle)
+                    self.layouter.visible_synctex_rectangles[rectangle['page'] - 1].append(new_rectangle)
                 except KeyError:
-                    self.visible_rectangles[rectangle['page'] - 1] = [rectangle]
+                    self.layouter.visible_synctex_rectangles[rectangle['page'] - 1] = [new_rectangle]
             if len(rectangles) > 0:
                 position = rectangles[0]
                 self.presenter.scroll_to_position({'page': position['page'], 'x': max((self.layouter.page_width / 2 + self.layouter.horizontal_margin - self.view.scrolled_window.get_allocated_width() / 2) / self.layouter.scale_factor, 0), 'y': max(((position['v'] - position['height'] / 2) * self.layouter.scale_factor - self.view.scrolled_window.get_allocated_height() / 2) / self.layouter.scale_factor, 0)})

@@ -44,6 +44,8 @@ class PreviewLayouter(Observable):
         self.canvas_height = None
         self.scale_factor = None
         self.current_page = None
+        self.visible_synctex_rectangles = dict()
+        self.visible_synctex_rectangles_time = None
         self.has_layout = False
 
         self.preview.register_observer(self)
