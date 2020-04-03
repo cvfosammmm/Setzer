@@ -3,4 +3,5 @@ Name=Setzer
 Exec=setzer
 Type=Application
 Icon=org.cvfosammmm.Setzer
-Categories=GNOME;GTK;Science;
+Categories=GNOME;GTK;Science;Office;
+Keywords=latex;editor;
