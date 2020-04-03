@@ -71,7 +71,7 @@ class ServiceLocator(object):
 
     def get_settings():
         if ServiceLocator.settings == None:
-            ServiceLocator.settings = settingscontroller.Settings()
+            ServiceLocator.settings = settingscontroller.Settings(ServiceLocator.get_config_folder())
         return ServiceLocator.settings
 
     def get_popover_menu_builder():

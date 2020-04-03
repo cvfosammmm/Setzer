@@ -30,12 +30,12 @@ from setzer.helpers.observable import Observable
 class Settings(Observable):
     ''' Settings controller for saving application state. '''
     
-    def __init__(self):
+    def __init__(self, pathname):
         Observable.__init__(self)
 
         self.gtksettings = Gtk.Settings.get_default()
         
-        self.pathname = os.path.expanduser('~') + '/.setzer'
+        self.pathname = pathname
     
         self.data = dict()
         self.defaults = dict()
