@@ -21,6 +21,7 @@ from gi.repository import Poppler
 
 import os.path
 import math
+import time
 import _thread as thread
 
 import setzer.document.preview.preview_viewgtk as preview_view
@@ -56,6 +57,8 @@ class Preview(Observable):
         self.zoom_level_fit_to_height = None
         self.zoom_level = None
         self.pdf_loaded = False
+        self.visible_rectangles = dict()
+        self.visible_rectangles_time = None
 
         self.first_show = True
 
@@ -132,9 +135,19 @@ class Preview(Observable):
             page = math.floor(yoffset / self.page_height) + 1
             self.presenter.scroll_to_position({'page': page, 'x': xoffset, 'y': yoffset - (page - 1) * self.page_height})
 
-    def scroll_to_synctex_position(self, position):
+    def set_synctex_rectangles(self, rectangles):
         if self.layouter.has_layout:
-            self.presenter.scroll_to_position({'page': position['page'], 'x': max((self.layouter.page_width / 2 + self.layouter.horizontal_margin - self.view.scrolled_window.get_allocated_width() / 2) / self.layouter.scale_factor, 0), 'y': max(((position['v'] - position['height'] / 2) * self.layouter.scale_factor - self.view.scrolled_window.get_allocated_height() / 2) / self.layouter.scale_factor, 0)})
+            self.visible_rectangles = dict()
+            self.visible_rectangles_time = time.time()
+            for rectangle in rectangles:
+                try:
+                    self.visible_rectangles[rectangle['page'] - 1].append(rectangle)
+                except KeyError:
+                    self.visible_rectangles[rectangle['page'] - 1] = [rectangle]
+            if len(rectangles) > 0:
+                position = rectangles[0]
+                self.presenter.scroll_to_position({'page': position['page'], 'x': max((self.layouter.page_width / 2 + self.layouter.horizontal_margin - self.view.scrolled_window.get_allocated_width() / 2) / self.layouter.scale_factor, 0), 'y': max(((position['v'] - position['height'] / 2) * self.layouter.scale_factor - self.view.scrolled_window.get_allocated_height() / 2) / self.layouter.scale_factor, 0)})
+                self.presenter.start_fade_loop()
 
     def set_pdf_date(self):
         if self.pdf_filename != None:

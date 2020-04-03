@@ -228,7 +228,7 @@ class Query(object):
         arguments.append(pdf_name)
         process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         process.wait()
-        raw = process.communicate()[0].decode('utf-8')#.split('\n')[0].split(';;;')
+        raw = process.communicate()[0].decode('utf-8')
         process = None
 
         rectangles = list()
@@ -242,7 +242,7 @@ class Query(object):
             rectangles.append(rectangle)
 
         if len(rectangles) > 0:
-            return rectangles[0]
+            return rectangles
         else:
             return None
 

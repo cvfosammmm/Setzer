@@ -22,6 +22,7 @@ import cairo
 
 import os.path
 import math
+import time
 import queue
 
 
@@ -89,6 +90,15 @@ class PreviewPresenter(object):
         if self.layouter.has_layout:
             self.view.drawing_area.set_size_request(self.layouter.canvas_width, self.layouter.canvas_height)
 
+    def start_fade_loop(self):
+        def draw():
+            timer = (4.25 - time.time() + self.preview.visible_rectangles_time)
+            if timer <= 0.4:
+                self.view.drawing_area.queue_draw()
+            return timer >= 0
+        self.view.drawing_area.queue_draw()
+        GObject.timeout_add(15, draw)
+
     def scroll_to_position(self, position):
         if self.layouter.has_layout:
             self.scrolling_queue.put(position)
@@ -128,6 +138,19 @@ class PreviewPresenter(object):
                 ctx.rectangle(0, 0, self.layouter.page_width, self.layouter.page_height)
                 ctx.fill()
 
+                try:
+                    rectangles = self.preview.visible_rectangles[page_number]
+                except KeyError: pass
+                else:
+                    time_factor = self.ease(min(4.25 - (time.time() - self.preview.visible_rectangles_time), 0.25) * 4)
+                    if time_factor < 0:
+                        self.preview.visible_rectangles = dict()
+                    else:
+                        ctx.set_source_rgba(0.976, 0.941, 0.420, 0.6 * time_factor)
+                        for rectangle in rectangles:
+                            ctx.rectangle(rectangle['h'] * self.layouter.scale_factor, (rectangle['v'] - rectangle['height']) * self.layouter.scale_factor, rectangle['width'] * self.layouter.scale_factor, rectangle['height'] * self.layouter.scale_factor)
+                        ctx.fill()
+
                 if page_number in self.page_renderer.rendered_pages:
                     rendered_page_data = self.page_renderer.rendered_pages[page_number]
                     surface = rendered_page_data[0]
@@ -144,5 +167,7 @@ class PreviewPresenter(object):
                             ctx.paint()
                             ctx.set_matrix(matrix)
                 ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, self.layouter.page_height + self.layouter.page_gap))
+
+    def ease(self, factor): return (factor - 1)**3 + 1
 
 
