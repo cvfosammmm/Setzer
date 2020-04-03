@@ -39,7 +39,7 @@ import os
 class DocumentWizard(Dialog):
     ''' Create document templates for users to build on. '''
 
-    def __init__(self, main_window, workspace, settings):
+    def __init__(self, main_window, workspace, settings, resources_path):
         self.main_window = main_window
         self.workspace = workspace
         self.settings = settings
@@ -49,12 +49,12 @@ class DocumentWizard(Dialog):
         self.view = view.DocumentWizardView(self.main_window)
 
         self.pages = list()
-        self.pages.append(DocumentClassPage(self.current_values))
+        self.pages.append(DocumentClassPage(self.current_values, resources_path))
         self.pages.append(ArticleSettingsPage(self.current_values))
         self.pages.append(ReportSettingsPage(self.current_values))
         self.pages.append(BookSettingsPage(self.current_values))
         self.pages.append(LetterSettingsPage(self.current_values))
-        self.pages.append(BeamerSettingsPage(self.current_values))
+        self.pages.append(BeamerSettingsPage(self.current_values, resources_path))
         self.pages.append(GeneralSettingsPage(self.current_values))
         for page in self.pages: self.view.notebook.append_page(page.view)
 

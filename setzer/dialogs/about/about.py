@@ -27,8 +27,9 @@ import os.path
 
 class AboutDialog(Dialog):
 
-    def __init__(self, main_window):
+    def __init__(self, main_window, setzer_version):
         self.main_window = main_window
+        self.setzer_version = setzer_version
 
     def run(self):
         self.setup()
@@ -40,7 +41,7 @@ class AboutDialog(Dialog):
         self.view.set_transient_for(self.main_window)
         self.view.set_modal(True)
         self.view.set_program_name('Setzer')
-        self.view.set_version('0.2.2')
+        self.view.set_version(self.setzer_version)
         self.view.set_copyright('Copyright © 2018-2020 - the Setzer developers')
         self.view.set_comments('Setzer is a LaTeX editor.')
         self.view.set_license_type(Gtk.License.GPL_3_0)

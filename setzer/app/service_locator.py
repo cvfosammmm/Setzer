@@ -45,6 +45,9 @@ class ServiceLocator(object):
 
     dialogs = dict()
     settings = None
+    setzer_version = None
+    resources_path = None
+    app_icons_path = None
     popover_menu_builder = None
     build_log_doc_regex = re.compile('( *\((.*\.tex))')
     build_log_item_regex = re.compile('((?:Overfull \\\\hbox|Underfull \\\\hbox|No file .*\.|File .* does not exist\.|! I can\'t find file\.|! File .* not found\.|(?:LaTeX|pdfTeX|LuaTeX|Package|Class) .*Warning.*:|LaTeX Font Warning:|! Undefined control sequence\.|! Missing (?:.*) inserted.|! Package .* Error:|! (?:LaTeX|LuaTeX) Error:|No file .*\.bbl.).*\\n)')
@@ -57,12 +60,14 @@ class ServiceLocator(object):
 
     def init_dialogs(main_window, workspace):
         settings = ServiceLocator.get_settings()
-        ServiceLocator.dialogs['about'] = about_dialog.AboutDialog(main_window)
+        resources_path = ServiceLocator.get_resources_path()
+        setzer_version = ServiceLocator.get_setzer_version()
+        ServiceLocator.dialogs['about'] = about_dialog.AboutDialog(main_window, setzer_version)
         ServiceLocator.dialogs['add_remove_packages'] = add_remove_packages_dialog.AddRemovePackagesDialog(main_window, workspace)
         ServiceLocator.dialogs['bibtex_wizard'] = bibtex_wizard.BibTeXWizard(main_window, workspace, settings)
         ServiceLocator.dialogs['building_failed'] = building_failed_dialog.BuildingFailedDialog(main_window)
         ServiceLocator.dialogs['build_save'] = build_save_dialog.BuildSaveDialog(main_window)
-        ServiceLocator.dialogs['document_wizard'] = document_wizard.DocumentWizard(main_window, workspace, settings)
+        ServiceLocator.dialogs['document_wizard'] = document_wizard.DocumentWizard(main_window, workspace, settings, resources_path)
         ServiceLocator.dialogs['document_changed_on_disk'] = document_changed_on_disk_dialog.DocumentChangedOnDiskDialog(main_window)
         ServiceLocator.dialogs['include_bibtex_file'] = include_bibtex_file_dialog.IncludeBibTeXFile(main_window, settings)
         ServiceLocator.dialogs['include_latex_file'] = include_latex_file_dialog.IncludeLaTeXFile(main_window)
@@ -122,4 +127,20 @@ class ServiceLocator(object):
     def get_dot_folder():
         return os.path.expanduser('~') + '/.setzer'
 
+    def init_setzer_version(setzer_version):
+        ServiceLocator.setzer_version = setzer_version
 
+    def get_setzer_version():
+        return ServiceLocator.setzer_version
+
+    def init_resources_path(resources_path):
+        ServiceLocator.resources_path = resources_path
+
+    def get_resources_path():
+        return ServiceLocator.resources_path
+
+    def init_app_icons_path(app_icons_path):
+        ServiceLocator.app_icons_path = app_icons_path
+
+    def get_app_icons_path():
+        return ServiceLocator.app_icons_path

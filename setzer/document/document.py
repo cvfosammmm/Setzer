@@ -66,14 +66,16 @@ class Document(Observable):
     def init_buffer(self):
         self.source_buffer = GtkSource.Buffer()
 
+        resources_path = ServiceLocator.get_resources_path()
+
         # set source language for syntax highlighting
         self.source_language_manager = GtkSource.LanguageManager()
-        self.source_language_manager.set_search_path((os.path.dirname(__file__) + '/../resources/gtksourceview/language-specs',))
+        self.source_language_manager.set_search_path((os.path.join(resources_path, 'gtksourceview', 'language-specs'),))
         self.source_language = self.source_language_manager.get_language(self.get_gsv_language_name())
         self.source_buffer.set_language(self.source_language)
 
         self.source_style_scheme_manager = GtkSource.StyleSchemeManager()
-        self.source_style_scheme_manager.set_search_path((os.path.dirname(__file__) + '/../resources/gtksourceview/styles',))
+        self.source_style_scheme_manager.set_search_path((os.path.join(resources_path, 'gtksourceview', 'styles'),))
         self.source_style_scheme_light = self.source_style_scheme_manager.get_scheme('setzer')
         self.source_style_scheme_dark = self.source_style_scheme_manager.get_scheme('setzer-dark')
 

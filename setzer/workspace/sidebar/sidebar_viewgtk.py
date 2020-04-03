@@ -21,6 +21,8 @@ gi.require_version('GtkSource', '3.0')
 from gi.repository import Gdk
 from gi.repository import Gtk
 
+from setzer.app.service_locator import ServiceLocator
+
 import xml.etree.ElementTree as ET
 import os
 
@@ -82,7 +84,7 @@ class SidebarPageSymbolsList(SidebarPage):
         
         self.parent_folder = 'dark' if is_dark_mode else 'light'
 
-        xml_tree = ET.parse(os.path.dirname(__file__) + '/../../resources/symbols/' + symbol_folder + '.xml')
+        xml_tree = ET.parse(os.path.join(ServiceLocator.get_resources_path(), 'symbols', symbol_folder + '.xml'))
         xml_root = xml_tree.getroot()
         for symbol_tag in xml_root:
             self.symbols.append([symbol_tag.attrib['file'].rsplit('.')[0], symbol_tag.attrib['command'], symbol_tag.attrib.get('package', None), int(symbol_tag.attrib.get('original_width', 10)), int(symbol_tag.attrib.get('original_height', 10))])
