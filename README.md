@@ -10,37 +10,35 @@ Website: <a href="https://www.cvfosammmm.org/setzer/">https://www.cvfosammmm.org
 
 Setzer is a LaTeX editor written in Python with Gtk. I'm happy if you give it a try and provide feedback via the issue tracker here on GitHub, be it about design, code architecture, bugs, feature requests, ... I try to respond to issues immediately.
 
-## Running Setzer with Gnome Builder
+## Installing Setzer
 
-To run Setzer with Gnome Builder just click the "Clone.." button on the start screen, paste in the url (https://github.com/cvfosammmm/Setzer.git), click on "Clone" again, wait for it to download and hit the play button. It will build Setzer and its dependencies and then launch it.
+### Flatpak
 
-Warning: Building Setzer this way may take a long time (~ 30 minutes on my laptop).
+Install with: `flatpak install flathub org.cvfosammmm.Setzer`
 
-## Running Setzer on Debian (probably Ubuntu, other Distributions too?)
+### AUR
 
-This way is probably a bit faster and may save you some disk space. I develop Setzer on Debian and that's what I tested it with. On Debian derivatives (like Ubuntu) it should probably work the same. On distributions other than Debian and Debian derivatives it should work more or less the same. If you want to run Setzer from source on another distribution and don't know how please open an issue here on GitHub. I will then try to provide instructions for your system.
+Git version available <a href="https://aur.archlinux.org/packages/setzer-git/">here</a>.
 
-1. Run the following command to install prerequisite Debian packages:<br />
-`apt-get install libgtk-3-dev libgtksourceview-3.0-dev libpoppler-glib-dev libgspell-1-dev python3-xdg`
+### Manual
 
-2. Download und Unpack Setzer from GitHub
+I develop Setzer on Debian and that's what I tested it with. On Debian derivatives (like Ubuntu) it should probably work the same. On distributions other than Debian and Debian derivatives it should work more or less the same. If you want to run Setzer from source on another distribution and don't know how please open an issue here on GitHub. I will then try to provide instructions for your system.
 
-3. cd to Setzer folder
+1. Install prerequisite packages:<br />
+Debian: `libgtk-3-dev libgtksourceview-3.0-dev libpoppler-glib-dev libgspell-1-dev python3-xdg`
 
-4. Run meson: `meson builddir`
+2. Download und Unpack the <a href="https://github.com/cvfosammmm/Setzer/releases">latest Setzer release </a>: `tar -xf Setzer-<version>.tar.gz && cd Setzer-<version>`
 
-5. Install Setzer with: `ninja install -C builddir`<br />
-Or run it locally: `./scripts/setzer.dev`
+3. Run meson: `meson builddir`<br />
+Note: Some distributions (like Debian) may not include systemwide installations of Python modules which aren't installed from distribution packages. In this case the program won't find any modules, however you can change the installation prefix to your home directory with `meson builddir --prefix=~/.local`.
 
-Note: Some distributions may not include systemwide installations of Python modules which aren't installed from distribution packages. In this case, you want to install Setzer in your home directory with `meson builddir --prefix=~/.local`.
+4. Install Setzer with: `ninja install -C builddir`<br />
+Or run it without installation: `./scripts/setzer.dev`
 
 ## Building your documents from within the app
 
-To build your documents from within the app you have to specify a build command. I recommend building with latexmk, which on Debian can be installed like so:
-`apt-get install latexmk`
-
-To specify a build command open the "Preferences" dialog and type in the command you want to use under "Build command", which in the case of latexmk could be the following:
-`latexmk -synctex=1 -interaction=nonstopmode -pdf -output-directory=%OUTDIR %FILENAME`
+To build your documents from within the app you can choose from four build commands: `latexmk`, `pdflatex`, `xelatex` and `lualatex`. Make sure that you have the LaTeX builder you use installed.
+I recommend building with `latexmk`, which can be configured to use any build method in a `latexmkrc` file (see `man latexmk`).
 
 ## Getting in touch
 
