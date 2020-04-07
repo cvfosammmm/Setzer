@@ -177,9 +177,6 @@ class Document(Observable):
     def set_initial_folded_regions(self, folded_regions):
         self.code_folding.set_initial_folded_regions(folded_regions)
         
-    def get_state(self):
-        return self.state
-
     def place_cursor(self, text_iter):
         buff = self.get_buffer()
         buff.place_cursor(text_iter)
@@ -295,7 +292,11 @@ class LaTeXDocument(Document):
 
         # possible states: idle, ready_for_building
         # building_in_progress, building_to_stop
-        self.state = 'idle'
+        self.build_state = 'idle'
+
+        # possible values: build, sync, build_and_sync
+        self.build_mode = 'build_and_sync'
+        self.build_pathname = None
         
         self.preview = preview.Preview(self)
         self.state_manager = state_manager_latex.StateManagerLaTeX(self)
@@ -319,8 +320,8 @@ class LaTeXDocument(Document):
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = latex_parser.LaTeXParser(self)
 
-    def change_state(self, state):
-        self.state = state
+    def change_build_state(self, state):
+        self.build_state = state
 
         if state == 'ready_for_building':
             self.build_time = None
@@ -330,17 +331,26 @@ class LaTeXDocument(Document):
             pass
         elif state == 'idle':
             pass
-        self.add_change_code('document_state_change', self.state)
+        self.add_change_code('build_state_change', self.build_state)
 
     def show_build_state(self, message):
         self.add_change_code('build_state', message)
 
+    def get_build_state(self):
+        return self.build_state
+
+    def set_build_mode(self, mode):
+        self.build_mode = mode
+
+    def get_build_mode(self):
+        return self.build_mode
+
     def build(self):
         if self.filename != None:
-            self.change_state('ready_for_building')
+            self.change_build_state('ready_for_building')
 
     def stop_building(self):
-        self.change_state('building_to_stop')
+        self.change_build_state('building_to_stop')
         
     def cleanup_build_files(self):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,'.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc']

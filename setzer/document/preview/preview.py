@@ -150,7 +150,7 @@ class Preview(Observable):
                     self.layouter.visible_synctex_rectangles[rectangle['page'] - 1] = [new_rectangle]
             if len(rectangles) > 0:
                 position = rectangles[0]
-                self.presenter.scroll_to_position({'page': position['page'], 'x': max((self.layouter.page_width / 2 + self.layouter.horizontal_margin - self.view.scrolled_window.get_allocated_width() / 2) / self.layouter.scale_factor, 0), 'y': max(((position['v'] - position['height'] / 2) * self.layouter.scale_factor - self.view.scrolled_window.get_allocated_height() / 2) / self.layouter.scale_factor, 0)})
+                self.presenter.scroll_to_position({'page': position['page'], 'x': max((self.layouter.page_width / 2 + self.layouter.horizontal_margin - self.view.stack.get_allocated_width() / 2) / self.layouter.scale_factor, 0), 'y': max(((position['v'] - position['height'] / 2) * self.layouter.scale_factor - self.view.stack.get_allocated_height() / 2) / self.layouter.scale_factor, 0)})
                 self.presenter.start_fade_loop()
 
     def set_pdf_date(self):
@@ -197,7 +197,7 @@ class Preview(Observable):
 
     #@helpers.timer
     def set_zoom_fit_to_height(self):
-        zoom_level = (self.view.scrolled_window.get_allocated_height() + self.layouter.border_width) / (self.page_height * self.layouter.ppp)
+        zoom_level = (self.view.stack.get_allocated_height() + self.layouter.border_width) / (self.page_height * self.layouter.ppp)
         if zoom_level == self.zoom_level: return
 
         xoffset = ((self.page_width * zoom_level * self.layouter.ppp - self.view.get_allocated_width()) / 2) / (zoom_level * self.layouter.ppp) - self.xoffset

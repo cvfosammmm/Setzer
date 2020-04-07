@@ -60,7 +60,7 @@ class BuildWidget(Observable):
             if (section, item) == ('preferences', 'cleanup_build_files'):
                 self.set_clean_button_state()
 
-        if change_code == 'document_state_change':
+        if change_code == 'build_state_change':
             self.on_build_state_change()
             self.set_clean_button_state()
 
@@ -70,7 +70,7 @@ class BuildWidget(Observable):
 
     def on_build_state_change(self):
         document = self.document
-        state = document.get_state()
+        state = document.get_build_state()
         selfstate = self.build_button_state
         if state == 'idle' or state == '':
             build_button_state = ('idle', int(time.time()*1000))

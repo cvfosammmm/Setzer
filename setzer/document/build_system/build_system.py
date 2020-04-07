@@ -22,12 +22,15 @@ import _thread as thread, queue
 import subprocess
 import os
 import os.path
+import base64
 import tempfile
 import shutil
 import re
 
 from setzer.helpers.helpers import timer
 from setzer.app.service_locator import ServiceLocator
+
+import setzer.helpers.helpers as helpers
 
 
 class BuildSystem(object):
@@ -60,20 +63,20 @@ class BuildSystem(object):
         self.change_code_queue.put({'change_code': change_code, 'parameter': parameter})
                 
     def results_loop(self):
-        ''' wait for results and add them to their documents '''
-
         if self.active_query != None:
-            result_blob = self.active_query.get_result()
-            if result_blob != None:
+            if self.active_query.is_done():
+                result_blob = self.active_query.get_result()
+                sync_result = self.active_query.get_sync_result()
+                if sync_result != None or result_blob != None:
+                    self.add_change_code('building_finished', {'build': result_blob, 'sync': sync_result})
                 self.active_query = None
-                self.add_change_code('building_finished', result_blob)
         return True
     
     def add_query(self, query):
         if self.active_query != None:
             self.active_query.stop_building()
         self.active_query = query
-        thread.start_new_thread(query.build, ())
+        thread.start_new_thread(query.execute, ())
         self.add_change_code('reset_timer')
         self.add_change_code('building_started')
         
@@ -86,44 +89,51 @@ class BuildSystem(object):
 
 class Query(object):
 
-    def __init__(self, text, document_controller, synctex_arguments, latex_interpreter, additional_arguments):
-        self.text = text
-        self.document_controller = document_controller
-        self.tex_filename = self.document_controller.document.get_filename()[:]
-        self.new_pdf_filename = os.path.splitext(self.tex_filename)[0] + '.pdf'
-        self.directory_name = os.path.dirname(self.document_controller.document.get_filename())
+    def __init__(self):
+        self.config_folder = ServiceLocator.get_config_folder()
+
         self.process = None
         self.result = None
         self.result_lock = thread.allocate_lock()
-        self.synctex_args = synctex_arguments
-        self.additional_arguments = additional_arguments
+        self.sync_result = None
+        self.sync_result_lock = thread.allocate_lock()
+        self.done_executing = False
+        self.done_executing_lock = thread.allocate_lock()
+        self.synctex_file = None
+        self.synctex_file_lock = thread.allocate_lock()
 
-        self.log_messages = list()
-        self.bibtex_log_messages = list()
-        self.doc_regex = ServiceLocator.get_build_log_doc_regex()
-        self.item_regex = ServiceLocator.get_build_log_item_regex()
-        self.badbox_line_number_regex = ServiceLocator.get_build_log_badbox_line_number_regex()
-        self.other_line_number_regex = ServiceLocator.get_build_log_other_line_number_regex()
-        self.bibtex_log_item_regex = ServiceLocator.get_bibtex_log_item_regex()
-        self.synctex_regex = ServiceLocator.get_synctex_regex()
-        self.force_building_to_stop = False
+    def stop_building(self):
+        if self.process != None:
+            self.process.kill()
+            self.process = None
+            self.force_building_to_stop = True
+    
+    def get_result(self):
+        return_value = None
+        with self.result_lock:
+            if self.result != None:
+                return_value = self.result
+        return return_value
 
-        self.latex_interpreter = latex_interpreter
-        self.build_command_defaults = dict()
-        self.build_command_defaults['latexmk'] = 'latexmk -synctex=1 -interaction=nonstopmode -pdf'
-        self.build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode -pdf'
-        self.build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode'
-        self.build_command_defaults['lualatex'] = 'lualatex -synctex=1 -interaction=nonstopmode -pdf'
-        self.build_command = self.build_command_defaults[self.latex_interpreter] + self.additional_arguments
+    def get_sync_result(self):
+        return_value = None
+        with self.sync_result_lock:
+            if self.sync_result != None:
+                return_value = self.sync_result
+        return return_value
 
-        self.do_another_latex_build = True
-        self.do_a_bibtex_build = False
-        self.done_bibtex_build = False
-        self.error_count = 0
-
+    def mark_done(self):
+        with self.done_executing_lock:
+            self.done_executing = True
+    
+    def is_done(self):
+        with self.done_executing_lock:
+            return self.done_executing
+    
     def build(self):
         with tempfile.TemporaryDirectory() as tmp_directory_name:
             tex_file = tempfile.NamedTemporaryFile(suffix='.tex', dir=tmp_directory_name)
+            self.build_pathname = tex_file.name
             with open(tex_file.name, 'w') as f: f.write(self.text)
             pdf_filename = tmp_directory_name + '/' + os.path.basename(tex_file.name).rsplit('.tex', 1)[0] + '.pdf'
             log_filename = tmp_directory_name + '/' + os.path.basename(tex_file.name).rsplit('.tex', 1)[0] + '.log'
@@ -140,8 +150,7 @@ class Query(object):
                     except FileNotFoundError:
                         self.cleanup_build_files(tex_file.name)
                         with self.result_lock:
-                            self.result = {'document_controller': self.document_controller, 
-                                           'error': 'interpreter_not_working',
+                            self.result = {'error': 'interpreter_not_working',
                                            'error_arg': self.latex_interpreter}
                         return
                     self.process.wait()
@@ -157,8 +166,7 @@ class Query(object):
                     except FileNotFoundError:
                         self.cleanup_build_files(tex_file.name)
                         with self.result_lock:
-                            self.result = {'document_controller': self.document_controller, 
-                                           'error': 'interpreter_missing',
+                            self.result = {'error': 'interpreter_missing',
                                            'error_arg': arguments[0]}
                         return
                     _ = self.process.communicate()
@@ -173,18 +181,18 @@ class Query(object):
                     except FileNotFoundError as e:
                         self.cleanup_build_files(tex_file.name)
                         with self.result_lock:
-                            self.result = {'document_controller': self.document_controller, 
-                                           'error': 'interpreter_not_working',
+                            self.result = {'error': 'interpreter_not_working',
                                            'error_arg': 'log file missing'}
                         return
         
             self.parse_bibtex_log(tex_file.name[:-3] + 'blg')
 
-            pdf_position = self.parse_synctex(tex_file.name, pdf_filename)
+            self.copy_synctex_file(self.build_pathname)
+
             if self.process != None:
                 self.process = None
 
-                if self.document_controller.settings.get_value('preferences', 'cleanup_build_files'):
+                if self.do_cleanup:
                     self.cleanup_build_files(self.tex_filename)
                 else:
                     self.rename_build_files(tex_file.name)
@@ -194,57 +202,15 @@ class Query(object):
                     except FileNotFoundError: self.new_pdf_filename = None
                 else:
                     self.new_pdf_filename = None
-                    pdf_position = None
 
                 with self.result_lock:
-                    self.result = {'document_controller': self.document_controller,
-                                   'pdf_filename': self.new_pdf_filename, 
+                    self.result = {'pdf_filename': self.new_pdf_filename, 
                                    'log_messages': self.log_messages + self.bibtex_log_messages,
-                                   'pdf_position': pdf_position,
                                    'error': None,
                                    'error_arg': None}
             else:
                 self.cleanup_build_files(tex_file.name)
             tex_file.close()
-
-    def stop_building(self):
-        if self.process != None:
-            self.process.kill()
-            self.process = None
-            self.force_building_to_stop = True
-    
-    def get_result(self):
-        return_value = None
-        with self.result_lock:
-            if self.result != None:
-                return_value = self.result
-        return return_value
-    
-    def parse_synctex(self, tex_name, pdf_name):
-        column = 0
-        arguments = ['synctex', 'view', '-i']
-        arguments.append(str(self.synctex_args['line']) + ':' + str(self.synctex_args['line_offset']) + ':' + tex_name)
-        arguments.append('-o')
-        arguments.append(pdf_name)
-        process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        process.wait()
-        raw = process.communicate()[0].decode('utf-8')
-        process = None
-
-        rectangles = list()
-        for match in self.synctex_regex.finditer(raw):
-            rectangle = dict()
-            rectangle['page'] = int(match.group(1))
-            rectangle['h'] = float(match.group(2))
-            rectangle['v'] = float(match.group(3))
-            rectangle['width'] = float(match.group(4))
-            rectangle['height'] = float(match.group(5))
-            rectangles.append(rectangle)
-
-        if len(rectangles) > 0:
-            return rectangles
-        else:
-            return None
 
     #@timer
     def parse_build_log(self, log_filename, tex_filename):
@@ -383,7 +349,6 @@ class Query(object):
                             self.error_count += 1
 
     def parse_bibtex_log(self, log_filename):
-        
         try: file = open(log_filename, 'rb')
         except FileNotFoundError as e: pass
         else:
@@ -410,10 +375,6 @@ class Query(object):
                     line_number = int(item.group(2).strip())
                     self.bibtex_log_messages.append(('Warning', None, filename, file_no, line_number, text))
 
-            '''
-if errors none: (There were 2 error messages)
-'''
-
     def bl_get_line_number(self, line, matchiter):
         for i in range(10):
             line_number_match = self.other_line_number_regex.search(line)
@@ -425,6 +386,17 @@ if errors none: (There were 2 error messages)
                 except StopIteration:
                     return -1
         return -1
+
+    def copy_synctex_file(self, tex_file_name):
+        move_from = os.path.splitext(tex_file_name)[0] + '.synctex.gz'
+        folder = self.config_folder + '/' + base64.urlsafe_b64encode(str.encode(self.tex_filename)).decode()
+        move_to = folder + '/' + os.path.splitext(os.path.basename(self.tex_filename))[0] + '.synctex.gz'
+
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
+        try: shutil.copyfile(move_from, move_to)
+        except FileNotFoundError as e: print(e)#return None
 
     def cleanup_build_files(self, tex_file_name):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' , '.ilg',
@@ -442,9 +414,131 @@ if errors none: (There were 2 error messages)
             try: shutil.move(move_from, move_to)
             except FileNotFoundError: pass
 
-    def get_document(self):
-        return self.document_controller.document
+    #@helpers.timer
+    def sync(self):
+        synctex_folder = self.config_folder + '/' + base64.urlsafe_b64encode(str.encode(self.tex_filename)).decode()
+        arguments = ['synctex', 'view', '-i']
+        arguments.append(str(self.synctex_args['line']) + ':' + str(self.synctex_args['line_offset']) + ':' + self.build_pathname)
+        arguments.append('-o')
+        arguments.append(self.tex_filename[:-3] + 'pdf')
+        arguments.append('-d')
+        arguments.append(synctex_folder)
+        process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process.wait()
+        raw = process.communicate()[0].decode('utf-8')
+        process = None
+
+        rectangles = list()
+        for match in self.synctex_regex.finditer(raw):
+            rectangle = dict()
+            rectangle['page'] = int(match.group(1))
+            rectangle['h'] = float(match.group(2))
+            rectangle['v'] = float(match.group(3))
+            rectangle['width'] = float(match.group(4))
+            rectangle['height'] = float(match.group(5))
+            rectangles.append(rectangle)
+
+        if len(rectangles) > 0:
+            self.sync_result = rectangles
+        else:
+            self.sync_result = None
 
 
+class QueryBuild(Query):
+
+    def __init__(self, text, tex_filename, latex_interpreter, additional_arguments, do_cleanup):
+        Query.__init__(self)
+
+        self.text = text
+        self.tex_filename = tex_filename
+        self.build_pathname = None
+        self.new_pdf_filename = os.path.splitext(self.tex_filename)[0] + '.pdf'
+        self.directory_name = os.path.dirname(self.tex_filename)
+        self.additional_arguments = additional_arguments
+        self.do_cleanup = do_cleanup
+
+        self.log_messages = list()
+        self.bibtex_log_messages = list()
+        self.doc_regex = ServiceLocator.get_build_log_doc_regex()
+        self.item_regex = ServiceLocator.get_build_log_item_regex()
+        self.badbox_line_number_regex = ServiceLocator.get_build_log_badbox_line_number_regex()
+        self.other_line_number_regex = ServiceLocator.get_build_log_other_line_number_regex()
+        self.bibtex_log_item_regex = ServiceLocator.get_bibtex_log_item_regex()
+        self.force_building_to_stop = False
+
+        self.latex_interpreter = latex_interpreter
+        self.build_command_defaults = dict()
+        self.build_command_defaults['latexmk'] = 'latexmk -synctex=1 -interaction=nonstopmode -pdf'
+        self.build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode -pdf'
+        self.build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode'
+        self.build_command_defaults['lualatex'] = 'lualatex -synctex=1 -interaction=nonstopmode -pdf'
+        self.build_command = self.build_command_defaults[self.latex_interpreter] + self.additional_arguments
+
+        self.do_another_latex_build = True
+        self.do_a_bibtex_build = False
+        self.done_bibtex_build = False
+        self.error_count = 0
+
+    def execute(self):
+        self.build()
+        self.mark_done()
+
+
+class QuerySync(Query):
+
+    def __init__(self, tex_pathname, build_pathname, synctex_arguments):
+        Query.__init__(self)
+
+        self.tex_pathname = tex_pathname
+        self.build_pathname = build_pathname
+        self.synctex_args = synctex_arguments
+
+        self.synctex_regex = ServiceLocator.get_synctex_regex()
+
+    def execute(self):
+        self.sync()
+        self.mark_done()
+
+
+class QueryBuildAndSync(Query):
+
+    def __init__(self, text, tex_filename, latex_interpreter, additional_arguments, do_cleanup, synctex_arguments):
+        Query.__init__(self)
+
+        self.text = text
+        self.tex_filename = tex_filename
+        self.new_pdf_filename = os.path.splitext(self.tex_filename)[0] + '.pdf'
+        self.directory_name = os.path.dirname(self.tex_filename)
+        self.synctex_args = synctex_arguments
+        self.additional_arguments = additional_arguments
+        self.do_cleanup = do_cleanup
+
+        self.log_messages = list()
+        self.bibtex_log_messages = list()
+        self.doc_regex = ServiceLocator.get_build_log_doc_regex()
+        self.item_regex = ServiceLocator.get_build_log_item_regex()
+        self.badbox_line_number_regex = ServiceLocator.get_build_log_badbox_line_number_regex()
+        self.other_line_number_regex = ServiceLocator.get_build_log_other_line_number_regex()
+        self.bibtex_log_item_regex = ServiceLocator.get_bibtex_log_item_regex()
+        self.synctex_regex = ServiceLocator.get_synctex_regex()
+        self.force_building_to_stop = False
+
+        self.latex_interpreter = latex_interpreter
+        self.build_command_defaults = dict()
+        self.build_command_defaults['latexmk'] = 'latexmk -synctex=1 -interaction=nonstopmode -pdf'
+        self.build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode -pdf'
+        self.build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode'
+        self.build_command_defaults['lualatex'] = 'lualatex -synctex=1 -interaction=nonstopmode -pdf'
+        self.build_command = self.build_command_defaults[self.latex_interpreter] + self.additional_arguments
+
+        self.do_another_latex_build = True
+        self.do_a_bibtex_build = False
+        self.done_bibtex_build = False
+        self.error_count = 0
+
+    def execute(self):
+        self.build()
+        self.sync()
+        self.mark_done()
 
 

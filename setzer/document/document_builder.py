@@ -39,33 +39,50 @@ class DocumentBuilder(object):
 
     def change_notification(self, change_code, notifying_object, parameter):
 
-        if change_code == 'document_state_change' and parameter == 'ready_for_building':
+        if change_code == 'build_state_change' and parameter == 'ready_for_building':
             document = self.document
-            insert = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
-            synctex_arguments = dict()
-            synctex_arguments['line'] = insert.get_line() + 1
-            synctex_arguments['line_offset'] = insert.get_line_offset() + 1
-            latex_interpreter = self.settings.get_value('preferences', 'latex_interpreter')
-            build_option_system_commands = self.settings.get_value('preferences', 'build_option_system_commands')
-            additional_arguments = ''
-            lualatex_prefix = ' -' if latex_interpreter == 'lualatex' else ' '
-            latexmk_prefix = ' -latexoption=' if latex_interpreter == 'latexmk' else ' '
-            if build_option_system_commands == 'disable':
-                additional_arguments += lualatex_prefix + '-no-shell-escape'
-            elif build_option_system_commands == 'restricted':
-                additional_arguments += lualatex_prefix + '-shell-restricted'
-            elif build_option_system_commands == 'enable':
-                additional_arguments += lualatex_prefix + '-shell-escape'
-            buffer = document.get_buffer()
-            if buffer != None:
-                query = build_system.Query(buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True), self, synctex_arguments, latex_interpreter, additional_arguments)
-                self.build_system.add_query(query)
+            mode = document.get_build_mode()
 
-        if change_code == 'document_state_change' and parameter == 'building_to_stop':
+            if mode in ['sync', 'build_and_sync']:
+                insert = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
+                synctex_arguments = dict()
+                synctex_arguments['line'] = insert.get_line() + 1
+                synctex_arguments['line_offset'] = insert.get_line_offset() + 1
+
+            if mode in ['build', 'build_and_sync']:
+                interpreter = self.settings.get_value('preferences', 'latex_interpreter')
+                build_option_system_commands = self.settings.get_value('preferences', 'build_option_system_commands')
+                additional_arguments = ''
+                lualatex_prefix = ' -' if interpreter == 'lualatex' else ' '
+                latexmk_prefix = ' -latexoption=' if interpreter == 'latexmk' else ' '
+                if build_option_system_commands == 'disable':
+                    additional_arguments += lualatex_prefix + '-no-shell-escape'
+                elif build_option_system_commands == 'restricted':
+                    additional_arguments += lualatex_prefix + '-shell-restricted'
+                elif build_option_system_commands == 'enable':
+                    additional_arguments += lualatex_prefix + '-shell-escape'
+                buffer = document.get_buffer()
+                if buffer != None:
+                    text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True)
+                else:
+                    text = ''
+                filename = self.document.get_filename()[:]
+                do_cleanup = self.settings.get_value('preferences', 'cleanup_build_files')
+
+            if mode == 'build':
+                query = build_system.QueryBuild(text, filename, interpreter, additional_arguments, do_cleanup)
+            elif mode == 'sync':
+                query = build_system.QuerySync(filename, document.build_pathname, synctex_arguments)
+            else:
+                query = build_system.QueryBuildAndSync(text, filename, interpreter, additional_arguments, do_cleanup, synctex_arguments)
+
+            self.build_system.add_query(query)
+
+        if change_code == 'build_state_change' and parameter == 'building_to_stop':
             self.build_system.stop_building()
         
         if change_code == 'building_started':
-            self.document.change_state('building_in_progress')
+            self.document.change_build_state('building_in_progress')
                 
         if change_code == 'reset_timer':
             self.document.build_widget.view.reset_timer()
@@ -73,39 +90,38 @@ class DocumentBuilder(object):
 
         if change_code == 'building_stopped':
             self.document.show_build_state('')
-            self.document.change_state('idle')
+            self.document.change_build_state('idle')
 
         if change_code == 'building_finished':
             result_blob = parameter
-            if self == result_blob['document_controller']:
+            if result_blob['build'] != None:
                 try:
-                    self.document.preview.set_pdf_filename(result_blob['pdf_filename'])
+                    self.document.preview.set_pdf_filename(result_blob['build']['pdf_filename'])
                 except KeyError: pass
-                else:
-                    try:
-                        pdf_position = result_blob['pdf_position'] 
-                    except KeyError: pass
-                    else:
-                        if pdf_position != None:
-                            self.document.preview.set_synctex_rectangles(pdf_position)
+
+            if result_blob['sync'] != None:
+                self.document.preview.set_synctex_rectangles(result_blob['sync'])
+
+            if result_blob['build'] != None:
+                build_blob = result_blob['build']
 
                 build_log_items = list()
-                if result_blob['error'] == 'interpreter_missing':
+                if build_blob['error'] == 'interpreter_missing':
                     self.document.show_build_state('')
-                    self.document.change_state('idle')
-                    if DialogLocator.get_dialog('interpreter_missing').run(result_blob['error_arg']):
+                    self.document.change_build_state('idle')
+                    if DialogLocator.get_dialog('interpreter_missing').run(build_blob['error_arg']):
                         DialogLocator.get_dialog('preferences').run()
                     return
 
-                if result_blob['error'] == 'interpreter_not_working':
+                if build_blob['error'] == 'interpreter_not_working':
                     self.document.show_build_state('')
-                    self.document.change_state('idle')
-                    if DialogLocator.get_dialog('building_failed').run(result_blob['error_arg']):
+                    self.document.change_build_state('idle')
+                    if DialogLocator.get_dialog('building_failed').run(build_blob['error_arg']):
                         DialogLocator.get_dialog('preferences').run()
                     return
 
                 try:
-                    build_log_blob = result_blob['log_messages']
+                    build_log_blob = build_blob['log_messages']
                 except KeyError:
                     pass
                 else:
@@ -126,6 +142,7 @@ class DocumentBuilder(object):
                     self.document.show_build_state('Success!')
 
                 self.document.has_been_built = True
-                self.document.change_state('idle')
-        
+
+            self.document.change_build_state('idle')
+
 

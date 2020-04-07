@@ -24,7 +24,6 @@ class PreviewPanelPresenter(object):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
         self.notebook = self.main_window.preview_panel.notebook
-        self.notebook_page_ids_by_document = dict()
 
         self.workspace.register_observer(self)
         self.activate_blank_page()
@@ -34,15 +33,12 @@ class PreviewPanelPresenter(object):
         if change_code == 'new_document':
             document = parameter
             if document.is_latex_document():
-                page_id = self.notebook.append_page(document.preview.view, None)
-                self.notebook_page_ids_by_document[document] = page_id
+                self.notebook.append_page(document.preview.view, None)
 
         if change_code == 'document_removed':
             document = parameter
             if document.is_latex_document():
-                page_id = self.notebook_page_ids_by_document[document]
-                self.notebook.remove_page(page_id)
-                del(self.notebook_page_ids_by_document[document])
+                self.notebook.remove(document.preview.view)
 
         if change_code == 'new_active_document':
             self.set_preview_document()
@@ -58,11 +54,11 @@ class PreviewPanelPresenter(object):
             self.activate_blank_page()
         else:
             if self.workspace.master_document != None:
-                page_id = self.notebook_page_ids_by_document[self.workspace.master_document]
-                self.notebook.set_current_page(page_id)
+                document = self.workspace.master_document
+                self.notebook.set_current_page(self.notebook.page_num(document.preview.view))
             elif self.workspace.active_document.is_latex_document():
-                page_id = self.notebook_page_ids_by_document[self.workspace.active_document]
-                self.notebook.set_current_page(page_id)
+                document = self.workspace.active_document
+                self.notebook.set_current_page(self.notebook.page_num(document.preview.view))
             else:
                 self.activate_blank_page()
 
