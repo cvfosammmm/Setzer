@@ -300,7 +300,7 @@ class LaTeXDocument(Document):
         
         self.preview = preview.Preview(self)
         self.state_manager = state_manager_latex.StateManagerLaTeX(self)
-        self.view = document_view.DocumentView(self, 'latex')
+        self.view = document_view.DocumentView(self)
         self.document_switcher_item = document_switcher_item.DocumentSwitcherItemLaTeX(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
 
@@ -323,15 +323,18 @@ class LaTeXDocument(Document):
     def change_build_state(self, state):
         self.build_state = state
 
-        if state == 'ready_for_building':
-            self.build_time = None
-        elif state == 'building_in_progress':
-            self.last_build_start_time = time.time()
-        elif state == 'building_to_stop':
-            pass
-        elif state == 'idle':
-            pass
-        self.add_change_code('build_state_change', self.build_state)
+        if self.build_mode in ['build', 'build_and_sync']:
+            if state == 'ready_for_building':
+                self.build_time = None
+            elif state == 'building_in_progress':
+                self.last_build_start_time = time.time()
+            elif state == 'building_to_stop':
+                pass
+            elif state == 'idle':
+                pass
+            self.add_change_code('build_state_change', self.build_state)
+        else:
+            self.add_change_code('build_state_change', self.build_state)
 
     def show_build_state(self, message):
         self.add_change_code('build_state', message)
@@ -346,6 +349,8 @@ class LaTeXDocument(Document):
         return self.build_mode
 
     def build(self):
+        if self.build_mode == 'sync' and self.build_pathname == None: return
+
         if self.filename != None:
             self.change_build_state('ready_for_building')
 
@@ -392,7 +397,7 @@ class BibTeXDocument(Document):
         self.is_master = False
 
         self.state_manager = state_manager_bibtex.StateManagerBibTeX(self)
-        self.view = document_view.DocumentView(self, 'bibtex')
+        self.view = document_view.DocumentView(self)
         self.document_switcher_item = document_switcher_item.DocumentSwitcherItemBibTeX(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
 

@@ -83,7 +83,7 @@ class PreviewController(object):
             yoffset = max(self.layouter.current_page - 1, 0) * self.preview.page_height
             yoffset += min(max(adjustment.get_value() - self.layouter.vertical_margin - max(self.layouter.current_page - 1, 0) * (self.layouter.page_height + self.layouter.page_gap), 0), self.layouter.page_height) / self.layouter.scale_factor
             self.preview.set_position_from_offsets(None, yoffset)
-    
+
     def on_button_press(self, widget, event):
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
             self.view.context_menu.show_all()

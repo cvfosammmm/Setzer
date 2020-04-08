@@ -205,6 +205,7 @@ class Query(object):
 
                 with self.result_lock:
                     self.result = {'pdf_filename': self.new_pdf_filename, 
+                                   'build_pathname': self.build_pathname,
                                    'log_messages': self.log_messages + self.bibtex_log_messages,
                                    'error': None,
                                    'error_arg': None}
@@ -486,10 +487,10 @@ class QueryBuild(Query):
 
 class QuerySync(Query):
 
-    def __init__(self, tex_pathname, build_pathname, synctex_arguments):
+    def __init__(self, tex_filename, build_pathname, synctex_arguments):
         Query.__init__(self)
 
-        self.tex_pathname = tex_pathname
+        self.tex_filename = tex_filename
         self.build_pathname = build_pathname
         self.synctex_args = synctex_arguments
 

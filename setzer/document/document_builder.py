@@ -42,6 +42,7 @@ class DocumentBuilder(object):
         if change_code == 'build_state_change' and parameter == 'ready_for_building':
             document = self.document
             mode = document.get_build_mode()
+            filename = self.document.get_filename()[:]
 
             if mode in ['sync', 'build_and_sync']:
                 insert = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
@@ -66,13 +67,13 @@ class DocumentBuilder(object):
                     text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True)
                 else:
                     text = ''
-                filename = self.document.get_filename()[:]
                 do_cleanup = self.settings.get_value('preferences', 'cleanup_build_files')
 
             if mode == 'build':
                 query = build_system.QueryBuild(text, filename, interpreter, additional_arguments, do_cleanup)
             elif mode == 'sync':
-                query = build_system.QuerySync(filename, document.build_pathname, synctex_arguments)
+                if document.build_pathname != None:
+                    query = build_system.QuerySync(filename, document.build_pathname, synctex_arguments)
             else:
                 query = build_system.QueryBuildAndSync(text, filename, interpreter, additional_arguments, do_cleanup, synctex_arguments)
 
@@ -101,6 +102,7 @@ class DocumentBuilder(object):
 
             if result_blob['sync'] != None:
                 self.document.preview.set_synctex_rectangles(result_blob['sync'])
+                self.document.show_build_state('')
 
             if result_blob['build'] != None:
                 build_blob = result_blob['build']
@@ -141,6 +143,7 @@ class DocumentBuilder(object):
                 else:
                     self.document.show_build_state('Success!')
 
+                self.document.build_pathname = build_blob['build_pathname']
                 self.document.has_been_built = True
 
             self.document.change_build_state('idle')

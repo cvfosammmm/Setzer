@@ -70,27 +70,33 @@ class BuildWidget(Observable):
 
     def on_build_state_change(self):
         document = self.document
-        state = document.get_build_state()
-        selfstate = self.build_button_state
-        if state == 'idle' or state == '':
-            build_button_state = ('idle', int(time.time()*1000))
-        else:
-            build_button_state = ('building', int(time.time()*1000))
-
-        self.view.build_timer.show_all()
-        if selfstate[0] != build_button_state[0]:
-            self.build_button_state = build_button_state
-            if build_button_state[0] == 'idle':
-                self.view.build_button.set_sensitive(True)
-                self.view.build_button.show_all()
-                self.view.stop_button.hide()
+        if document.build_mode in ['build', 'build_and_sync']:
+            state = document.get_build_state()
+            selfstate = self.build_button_state
+            if state == 'idle' or state == '':
+                build_button_state = ('idle', int(time.time()*1000))
             else:
-                self.view.build_button.set_sensitive(False)
-                self.view.build_button.hide()
-                self.view.stop_button.show_all()
-                self.view.reset_timer()
-                self.view.show_timer()
-                self.view.start_timer()
+                build_button_state = ('building', int(time.time()*1000))
+
+            self.view.build_timer.show_all()
+            if selfstate[0] != build_button_state[0]:
+                self.build_button_state = build_button_state
+                if build_button_state[0] == 'idle':
+                    self.view.build_button.set_sensitive(True)
+                    self.view.build_button.show_all()
+                    self.view.stop_button.hide()
+                else:
+                    self.view.build_button.set_sensitive(False)
+                    self.view.build_button.hide()
+                    self.view.stop_button.show_all()
+                    self.view.reset_timer()
+                    self.view.show_timer()
+                    self.view.start_timer()
+        else:
+            self.build_button_state = ('idle', int(time.time()*1000))
+            self.view.build_button.set_sensitive(True)
+            self.view.build_button.show_all()
+            self.view.stop_button.hide()
 
     def show_message(self, message=''):
         self.view.stop_timer()
@@ -105,6 +111,7 @@ class BuildWidget(Observable):
             else:
                 return False
         if self.document.filename != None:
+            self.document.set_build_mode('build_and_sync')
             self.document.build()
 
     def on_stop_build_button_click(self, button_object=None):

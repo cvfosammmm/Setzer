@@ -35,11 +35,51 @@ class DocumentController(object):
         self.view = document_view
 
         self.view.source_view.connect('key-press-event', self.on_keypress)
+        self.view.source_view.connect('button-press-event', self.on_button_press)
         GObject.timeout_add(500, self.save_date_loop)
         
+        def undo(menu_item): self.view.source_view.emit('undo')
+        self.view.menu_item_undo.connect('activate', undo)
+
+        def redo(menu_item): self.view.source_view.emit('redo')
+        self.view.menu_item_redo.connect('activate', redo)
+
+        def cut(menu_item): self.view.source_view.emit('cut-clipboard')
+        self.view.menu_item_cut.connect('activate', cut)
+
+        def copy(menu_item): self.view.source_view.emit('copy-clipboard')
+        self.view.menu_item_copy.connect('activate', copy)
+
+        def paste(menu_item): self.view.source_view.emit('paste-clipboard')
+        self.view.menu_item_paste.connect('activate', paste)
+
+        def delete(menu_item): self.view.source_view.emit('delete-from-cursor', Gtk.DeleteType.CHARS, 0)
+        self.view.menu_item_delete.connect('activate', delete)
+
+        def select_all(menu_item): self.view.source_view.emit('select-all', True)
+        self.view.menu_item_select_all.connect('activate', select_all)
+
+        if self.document.is_latex_document():
+            self.view.menu_item_show_in_preview.connect('activate', self.on_show_in_preview)
+
+
     '''
     *** signal handlers: changes in documents
     '''
+
+    def on_button_press(self, widget, event):
+        if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
+            has_selection = self.document.source_buffer.get_has_selection()
+            self.view.menu_item_cut.set_sensitive(has_selection)
+            self.view.menu_item_copy.set_sensitive(has_selection)
+            self.view.menu_item_delete.set_sensitive(has_selection)
+            self.view.context_menu.show_all()
+            self.view.context_menu.popup_at_pointer()
+            return True
+
+    def on_show_in_preview(self, menu_item):
+        self.document.set_build_mode('sync')
+        self.document.build()
 
     def on_keypress(self, widget, event, data=None):
         modifiers = Gtk.accelerator_get_default_mod_mask()
