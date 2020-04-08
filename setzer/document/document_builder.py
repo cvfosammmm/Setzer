@@ -143,7 +143,7 @@ class DocumentBuilder(object):
                 else:
                     self.document.show_build_state('Success!')
 
-                self.document.build_pathname = build_blob['build_pathname']
+                self.document.set_build_pathname(build_blob['build_pathname'])
                 self.document.has_been_built = True
 
             self.document.change_build_state('idle')

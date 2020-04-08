@@ -297,7 +297,8 @@ class LaTeXDocument(Document):
         # possible values: build, sync, build_and_sync
         self.build_mode = 'build_and_sync'
         self.build_pathname = None
-        
+        self.can_sync_to_preview = False
+
         self.preview = preview.Preview(self)
         self.state_manager = state_manager_latex.StateManagerLaTeX(self)
         self.view = document_view.DocumentView(self)
@@ -319,6 +320,8 @@ class LaTeXDocument(Document):
 
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = latex_parser.LaTeXParser(self)
+
+        self.update_can_sync_to_preview()
 
     def change_build_state(self, state):
         self.build_state = state
@@ -347,6 +350,17 @@ class LaTeXDocument(Document):
 
     def get_build_mode(self):
         return self.build_mode
+
+    def set_build_pathname(self, pathname):
+        self.build_pathname = pathname
+        self.update_can_sync_to_preview()
+
+    def update_can_sync_to_preview(self):
+        if self.build_pathname != None and self.preview.pdf_loaded:
+            self.can_sync_to_preview = True
+        else:
+            self.can_sync_to_preview = False
+        self.add_change_code('can_sync_to_preview_changed', self.can_sync_to_preview)
 
     def build(self):
         if self.build_mode == 'sync' and self.build_pathname == None: return

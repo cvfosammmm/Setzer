@@ -187,7 +187,7 @@ class Query(object):
         
             self.parse_bibtex_log(tex_file.name[:-3] + 'blg')
 
-            self.copy_synctex_file(self.build_pathname)
+            self.build_pathname = self.copy_synctex_file(self.build_pathname)
 
             if self.process != None:
                 self.process = None
@@ -397,7 +397,8 @@ class Query(object):
             os.makedirs(folder)
 
         try: shutil.copyfile(move_from, move_to)
-        except FileNotFoundError as e: print(e)#return None
+        except FileNotFoundError: return None
+        else: return tex_file_name
 
     def cleanup_build_files(self, tex_file_name):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' , '.ilg',
@@ -417,6 +418,10 @@ class Query(object):
 
     #@helpers.timer
     def sync(self):
+        if self.build_pathname == None:
+            self.sync_result = None
+            return
+
         synctex_folder = self.config_folder + '/' + base64.urlsafe_b64encode(str.encode(self.tex_filename)).decode()
         arguments = ['synctex', 'view', '-i']
         arguments.append(str(self.synctex_args['line']) + ':' + str(self.synctex_args['line_offset']) + ':' + self.build_pathname)

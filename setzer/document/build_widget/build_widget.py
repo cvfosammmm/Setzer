@@ -94,6 +94,7 @@ class BuildWidget(Observable):
                     self.view.start_timer()
         else:
             self.build_button_state = ('idle', int(time.time()*1000))
+            self.view.hide_timer_now()
             self.view.build_button.set_sensitive(True)
             self.view.build_button.show_all()
             self.view.stop_button.hide()

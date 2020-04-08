@@ -101,6 +101,11 @@ class BuildWidgetView(Gtk.HBox):
         self.state_change_count += 1
         GObject.timeout_add(duration, self.unreveal, self.state_change_count)
         
+    def hide_timer_now(self):
+        self.build_timer.set_transition_type(Gtk.RevealerTransitionType.NONE)
+        self.build_timer.set_reveal_child(False)
+        self.build_timer.set_transition_type(Gtk.RevealerTransitionType.CROSSFADE)
+
     def reveal(self, state_change_count):
         if self.state_change_count == state_change_count:
             self.build_timer.set_reveal_child(True)
