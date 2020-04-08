@@ -88,5 +88,6 @@ class PreviewController(object):
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
             self.view.context_menu.show_all()
             self.view.context_menu.popup_at_pointer()
+            return True
     
 
