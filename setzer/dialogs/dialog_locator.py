@@ -28,8 +28,10 @@ import setzer.dialogs.include_latex_file.include_latex_file as include_latex_fil
 import setzer.dialogs.interpreter_missing.interpreter_missing as interpreter_missing_dialog
 import setzer.dialogs.preferences.preferences as preferences_dialog
 import setzer.dialogs.open_document.open_document as open_document_dialog
+import setzer.dialogs.open_session.open_session as open_session_dialog
 import setzer.dialogs.replace_confirmation.replace_confirmation as replace_confirmation_dialog
 import setzer.dialogs.save_document.save_document as save_document_dialog
+import setzer.dialogs.save_session.save_session as save_session_dialog
 import setzer.dialogs.keyboard_shortcuts.keyboard_shortcuts as keyboard_shortcuts_dialog
 import setzer.dialogs.spellchecking_language.spellchecking_language as spellchecking_language_dialog
 import setzer.dialogs.spellchecking.spellchecking as spellchecking_dialog
@@ -51,10 +53,12 @@ class DialogLocator(object):
         dialogs['include_bibtex_file'] = include_bibtex_file_dialog.IncludeBibTeXFile(main_window)
         dialogs['include_latex_file'] = include_latex_file_dialog.IncludeLaTeXFile(main_window)
         dialogs['interpreter_missing'] = interpreter_missing_dialog.InterpreterMissingDialog(main_window)
-        dialogs['preferences'] = preferences_dialog.PreferencesDialog(main_window)
         dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(main_window)
+        dialogs['open_session'] = open_session_dialog.OpenSessionDialog(main_window)
+        dialogs['preferences'] = preferences_dialog.PreferencesDialog(main_window)
         dialogs['replace_confirmation'] = replace_confirmation_dialog.ReplaceConfirmationDialog(main_window)
         dialogs['save_document'] = save_document_dialog.SaveDocumentDialog(main_window, workspace)
+        dialogs['save_session'] = save_session_dialog.SaveSessionDialog(main_window, workspace)
         dialogs['keyboard_shortcuts'] = keyboard_shortcuts_dialog.KeyboardShortcutsDialog(main_window)
         dialogs['spellchecking'] = spellchecking_dialog.SpellcheckingDialog(main_window, workspace)
         dialogs['spellchecking_language'] = spellchecking_language_dialog.SpellcheckingLanguageDialog(main_window, workspace)

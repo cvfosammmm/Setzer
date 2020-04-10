@@ -123,8 +123,8 @@ class Shortcuts(object):
         self.main_window.headerbar.new_document_button.set_active(True)
 
     def shortcut_show_open_docs(self, accel_group=None, window=None, key=None, mask=None):
-        if self.main_window.headerbar.center_button.get_sensitive():
-            self.main_window.headerbar.center_button.clicked()
+        if self.main_window.headerbar.center_widget.center_button.get_sensitive():
+            self.main_window.headerbar.center_widget.center_button.clicked()
 
     def shortcut_build(self, accel_group=None, window=None, key=None, mask=None):
         if self.workspace.get_active_document() != None:

@@ -34,6 +34,8 @@ class CloseConfirmationDialog(Dialog):
         self.save_document_dialog = save_document_dialog
 
     def run(self, documents):
+        if documents == None: return {'all_save_to_close': True, 'not_save_to_close_documents': list()}
+
         self.setup(documents)
 
         documents_not_save_to_close = list()

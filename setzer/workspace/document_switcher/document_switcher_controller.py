@@ -25,7 +25,8 @@ class DocumentSwitcherController(object):
     def __init__(self, document_switcher, workspace):
         self.document_switcher = document_switcher
         self.workspace = workspace
-        self.view = ServiceLocator.get_main_window().headerbar.open_docs_popover
+        self.button = ServiceLocator.get_main_window().headerbar.center_widget
+        self.view = self.button.open_docs_popover
 
         self.observe_document_switcher_view()
 
@@ -47,15 +48,13 @@ class DocumentSwitcherController(object):
             self.view.popdown()
             self.workspace.set_active_document(row.document)
 
-    def on_doclist_row_popup(self, popover, data=None):
-        self.document_switcher.set_mode('normal')
-
     def on_doclist_row_popdown(self, popover, data=None):
         self.document_switcher.set_mode('normal')
         self.view.document_list.unselect_all()
 
     def set_selection_mode(self, action, parameter=None):
         self.document_switcher.set_mode('selection')
+        return True
 
     def unset_master_document(self, action, parameter=None):
         self.document_switcher.set_mode('normal')

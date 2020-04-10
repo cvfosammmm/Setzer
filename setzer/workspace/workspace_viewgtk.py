@@ -134,6 +134,12 @@ class MainWindow(Gtk.ApplicationWindow):
         self.save_all_action = Gio.SimpleAction.new('save-all', None)
         self.add_action(self.save_all_action)
 
+        self.save_session_action = Gio.SimpleAction.new('save-session', None)
+        self.add_action(self.save_session_action)
+
+        self.restore_session_action = Gio.SimpleAction.new('restore-session', GLib.VariantType('as'))
+        self.add_action(self.restore_session_action)
+
         self.find_action = Gio.SimpleAction.new('find', None)
         self.add_action(self.find_action)
 

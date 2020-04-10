@@ -162,6 +162,7 @@ class WorkspacePresenter(object):
         self.main_window.find_replace_action.set_enabled(value)
         self.main_window.close_document_action.set_enabled(value)
         self.main_window.close_all_action.set_enabled(value)
+        self.main_window.save_session_action.set_enabled(value)
         self.main_window.insert_before_after_action.set_enabled(value)
         self.main_window.insert_symbol_action.set_enabled(value)
         self.main_window.insert_before_document_end_action.set_enabled(value)

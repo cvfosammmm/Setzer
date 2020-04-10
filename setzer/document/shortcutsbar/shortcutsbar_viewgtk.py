@@ -33,11 +33,13 @@ class ShortcutsBarBottom(Gtk.Toolbar):
         self.button_find_and_replace = Gtk.ToggleToolButton()
         self.button_find_and_replace.set_icon_name('edit-find-replace-symbolic')
         self.button_find_and_replace.set_tooltip_text('Find and Replace (Ctrl+H)')
+        self.button_find_and_replace.get_child().set_can_focus(False)
         self.insert(self.button_find_and_replace, 0)
         
         self.button_find = Gtk.ToggleToolButton()
         self.button_find.set_icon_name('edit-find-symbolic')
         self.button_find.set_tooltip_text('Find (Ctrl+F)')
+        self.button_find.get_child().set_can_focus(False)
         self.insert(self.button_find, 0)
         self.show_all()
 
@@ -61,7 +63,7 @@ class WizardButton(Gtk.ToolButton):
 
         self.set_icon_widget(self.icon_widget)
         self.set_action_name('win.show-document-wizard')
-        self.set_focus_on_click(False)
+        self.get_child().set_can_focus(False)
         self.set_tooltip_text('Create a template document')
         self.show_all()
 

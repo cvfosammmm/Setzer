@@ -44,7 +44,6 @@ class HeaderbarPresenter(object):
 
         if change_code == 'new_active_document':
             document = parameter
-            self.show_document_name(document)
 
             if document.get_modified():
                 self.main_window.headerbar.save_document_button.set_sensitive(True)
@@ -57,6 +56,8 @@ class HeaderbarPresenter(object):
                 self.activate_latex_documents_mode()
             elif document.is_bibtex_document():
                 self.activate_bibtex_documents_mode()
+
+            self.setup_modified_transform()
 
         if change_code == 'update_recently_opened_documents':
             items = list()
@@ -80,7 +81,6 @@ class HeaderbarPresenter(object):
 
     def activate_blank_slate_mode(self):
         self.set_build_button_state()
-        self.show_document_name(None)
         self.main_window.headerbar.save_document_button.hide()
         self.main_window.headerbar.preview_toggle.hide()
         self.main_window.headerbar.preview_toggle.set_sensitive(False)
@@ -103,53 +103,6 @@ class HeaderbarPresenter(object):
         self.main_window.headerbar.sidebar_toggle.hide()
         self.main_window.headerbar.sidebar_toggle.set_sensitive(False)
 
-    def show_document_name(self, document):
-        headerbar = self.main_window.headerbar
-        if document == None:
-            headerbar.center_button.hide()
-            headerbar.center_button.set_sensitive(False)
-            headerbar.center_label_welcome.show_all()
-        else:
-            doclist_item = document.document_switcher_item.view
-            
-            if headerbar.name_binding != None: headerbar.name_binding.unbind()
-            headerbar.document_name_label.set_text(doclist_item.label.get_text())
-            headerbar.name_binding = doclist_item.label.bind_property('label', headerbar.document_name_label, 'label', 0)
-            
-            if headerbar.folder_binding != None: headerbar.folder_binding.unbind()
-            headerbar.folder_binding = doclist_item.flabel.bind_property('label', headerbar.document_folder_label, 'label', 0, self.folder_transform_func)
-
-            if headerbar.mod_binding != None: headerbar.mod_binding.unbind()
-            headerbar.document_mod_label.set_text(doclist_item.mlabel.get_text())
-            headerbar.mod_binding = doclist_item.mlabel.bind_property('label', headerbar.document_mod_label, 'label', 0, self.modified_transform_func)
-
-            headerbar.center_label_welcome.hide()
-            headerbar.center_button.set_sensitive(True)
-            headerbar.center_button.show_all()
-
-            self.folder_transform_func(headerbar.folder_binding, doclist_item.folder)
-            self.modified_transform_func(headerbar.mod_binding, doclist_item.mlabel.get_text())
-            
-    def modified_transform_func(self, binding, from_value, to_value=None):
-        headerbar = self.main_window.headerbar
-
-        if from_value == 'False' and headerbar.document_folder_label.get_text() != '':
-            headerbar.save_document_button.set_sensitive(False)
-        else:
-            headerbar.save_document_button.set_sensitive(True)
-        if self.workspace.get_unsaved_documents() != None:
-            self.main_window.save_all_action.set_enabled(True)
-        else:
-            self.main_window.save_all_action.set_enabled(False)
-
-    def folder_transform_func(self, binding, from_value, to_value=None):
-        headerbar = self.main_window.headerbar
-        headerbar.document_folder_label.set_text(from_value)
-        if from_value == '':
-            headerbar.document_folder_label.hide()
-        else:
-            headerbar.document_folder_label.show_all()
-
     def set_build_button_state(self):
         if self.workspace.master_document != None:
             document = self.workspace.master_document
@@ -164,5 +117,29 @@ class HeaderbarPresenter(object):
             headerbar.build_wrapper.set_center_widget(document.build_widget.view)
             if document.build_widget.view.has_result():
                 document.build_widget.view.hide_timer(4000)
+
+    def setup_modified_transform(self):
+        headerbar = self.main_window.headerbar
+
+        document = self.workspace.get_active_document()
+        if document == None:
+            headerbar.save_document_button.set_sensitive(False)
+            self.main_window.save_all_action.set_enabled(False)
+        else:
+            doclist_item = document.document_switcher_item.view
+            if headerbar.center_widget.mod_binding != None: headerbar.center_widget.mod_binding.unbind()
+            headerbar.center_widget.mod_binding = doclist_item.mlabel.bind_property('label', headerbar.center_widget.document_mod_label, 'label', 0, self.modified_transform_func)
+
+    def modified_transform_func(self, binding, from_value, to_value=None):
+        headerbar = self.main_window.headerbar
+
+        if from_value == 'False' and headerbar.center_widget.document_folder_label.get_text() != '':
+            headerbar.save_document_button.set_sensitive(False)
+        else:
+            headerbar.save_document_button.set_sensitive(True)
+        if self.workspace.get_unsaved_documents() != None:
+            self.main_window.save_all_action.set_enabled(True)
+        else:
+            self.main_window.save_all_action.set_enabled(False)
 
 

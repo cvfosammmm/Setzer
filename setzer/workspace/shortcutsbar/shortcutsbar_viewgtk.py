@@ -56,6 +56,7 @@ class ShortcutsBar(Gtk.HBox):
         self.button_build_log = Gtk.ToggleToolButton()
         self.button_build_log.set_icon_name('utilities-system-monitor-symbolic')
         self.button_build_log.set_tooltip_text('Build log (F8)')
+        self.button_build_log.get_child().set_can_focus(False)
         self.right_icons.insert(self.button_build_log, 0)
 
     def populate_top_toolbar(self):
@@ -64,7 +65,7 @@ class ShortcutsBar(Gtk.HBox):
         self.italic_button.set_label('Italic Text')
         self.italic_button.set_action_name('win.insert-before-after')
         self.italic_button.set_action_target_value(GLib.Variant('as', ['\\textit{', '}']))
-        self.italic_button.set_focus_on_click(False)
+        self.italic_button.get_child().set_can_focus(False)
         self.italic_button.set_tooltip_text('Italic (Ctrl+I)')
         self.top_icons.insert(self.italic_button, 0)
 
@@ -73,7 +74,7 @@ class ShortcutsBar(Gtk.HBox):
         self.bold_button.set_label('Bold Text')
         self.bold_button.set_action_name('win.insert-before-after')
         self.bold_button.set_action_target_value(GLib.Variant('as', ['\\textbf{', '}']))
-        self.bold_button.set_focus_on_click(False)
+        self.bold_button.get_child().set_can_focus(False)
         self.bold_button.set_tooltip_text('Bold (Ctrl+B)')
         self.top_icons.insert(self.bold_button, 0)
 
@@ -115,7 +116,7 @@ class ShortcutsBar(Gtk.HBox):
 
         self.document_button = Gtk.MenuButton()
         self.document_button.set_image(Gtk.Image.new_from_icon_name('application-x-addon-symbolic', Gtk.IconSize.MENU))
-        self.document_button.set_focus_on_click(False)
+        self.document_button.set_can_focus(False)
         self.document_button.set_tooltip_text('Document')
         self.document_button.get_style_context().add_class('flat')
         self.document_button.set_popover(popover)
@@ -154,7 +155,7 @@ class ShortcutsBar(Gtk.HBox):
 
         self.bibliography_button = Gtk.MenuButton()
         self.bibliography_button.set_image(Gtk.Image.new_from_icon_name('view-dual-symbolic', Gtk.IconSize.MENU))
-        self.bibliography_button.set_focus_on_click(False)
+        self.bibliography_button.set_can_focus(False)
         self.bibliography_button.set_tooltip_text('Bibliography')
         self.bibliography_button.get_style_context().add_class('flat')
         self.bibliography_button.set_popover(popover)
@@ -267,7 +268,7 @@ class ShortcutsBar(Gtk.HBox):
 
         self.text_button = Gtk.MenuButton()
         self.text_button.set_image(Gtk.Image.new_from_icon_name('text-symbolic', Gtk.IconSize.MENU))
-        self.text_button.set_focus_on_click(False)
+        self.text_button.set_can_focus(False)
         self.text_button.set_tooltip_text('Text')
         self.text_button.get_style_context().add_class('flat')
         self.text_button.set_popover(popover)
@@ -292,7 +293,7 @@ class ShortcutsBar(Gtk.HBox):
         self.quotes_button.set_direction(Gtk.ArrowType.DOWN)
         self.quotes_button.set_image(Gtk.Image.new_from_icon_name('own-quotes-symbolic', Gtk.IconSize.MENU))
         self.quotes_button.set_popover(popover)
-        self.quotes_button.set_focus_on_click(False)
+        self.quotes_button.set_can_focus(False)
         self.quotes_button.set_tooltip_text('Quotes (Ctrl+")')
         self.quotes_button.get_style_context().add_class('flat')
         button_wrapper.add(self.quotes_button)
@@ -396,7 +397,7 @@ class ShortcutsBar(Gtk.HBox):
 
         self.math_button = Gtk.MenuButton()
         self.math_button.set_image(Gtk.Image.new_from_icon_name('own-math-menu-symbolic', Gtk.IconSize.MENU))
-        self.math_button.set_focus_on_click(False)
+        self.math_button.set_can_focus(False)
         self.math_button.set_tooltip_text('Math')
         self.math_button.get_style_context().add_class('flat')
         self.math_button.set_popover(popover)
@@ -449,7 +450,7 @@ class ShortcutsBar(Gtk.HBox):
         self.insert_object_button.set_direction(Gtk.ArrowType.DOWN)
         self.insert_object_button.set_image(Gtk.Image.new_from_icon_name('own-insert-object-symbolic', Gtk.IconSize.MENU))
         self.insert_object_button.set_popover(popover)
-        self.insert_object_button.set_focus_on_click(False)
+        self.insert_object_button.set_can_focus(False)
         self.insert_object_button.set_tooltip_text('Objects')
         self.insert_object_button.get_style_context().add_class('flat')
         button_wrapper.add(self.insert_object_button)

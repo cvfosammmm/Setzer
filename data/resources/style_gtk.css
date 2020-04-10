@@ -97,11 +97,13 @@ popover.documentchooser box.not_found label {
     margin-bottom: 0;
     margin-left: 22px;
     border-radius: 0;
-    border-top-style: none;
-    border-bottom-style: none;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    box-shadow: none;
+    transition: none;
 }
-.open-docs-popover-button:hover:not(:backdrop) {
-    background-image: none;
+.open-docs-popover-button:hover:not(:active) {
+    background: none;
     text-shadow: none;
 }
 .open-docs-popover,
@@ -113,15 +115,14 @@ popover.documentchooser box.not_found label {
     border-width: 0px;
     outline: none;
 }
-.open-docs-popover {
-    padding: 12px;
-}
 .open-docs-popover row {
-    border-radius: 3px;
-    padding: 3px 3px 3px 5px;
+    border-radius: 4px;
+    padding: 2px 1px 2px 4px;
+    color: #333;
 }
 .open-docs-popover list {
-    padding: 1px;
+    padding: 0px;
+    margin: 0px;
 }
 .open-docs-popover list button {
     padding: 0px 0px;
@@ -140,51 +141,42 @@ popover.documentchooser box.not_found label {
     border-style: none;
     border-width: 0px;
 }
-.open-docs-popover separator {
-    margin-top: 7px;
-    margin-left: 9px;
-    margin-right: 9px;
-}
-.open-docs-popover label.explaination {
-    margin-left: 9px;
-    margin-right: 9px;
+popover label.explaination {
+    margin-left: 5px;
+    margin-right: 5px;
     color: mix(@theme_fg_color, @theme_bg_color, 0.3);
     font-size: 13px;
 }
 .open-docs-popover label.master-label {
     opacity: 0.3;
 }
-.open-docs-popover label.explaination-header {
-    margin-left: 9px;
-    margin-right: 9px;
+popover label.explaination-header {
+    margin-left: 5px;
+    margin-right: 5px;
     font-weight: bold;
 }
-box.mbox {
-    margin: 0px;
-    margin-top: 5px;
-    margin-bottom: 3px;
-}
-box.mbox button {
+button.like-model {
     border-width: 0px;
     box-shadow: none;
-    padding: 1px 6px 1px 6px;
-    margin: 0px 3px 0px 3px;
+    padding: 1px 5px 1px 5px;
+    margin: 0px;
     background: transparent;
     outline: none;
 }
-box.mbox button:hover {
+button.like-model:hover {
     background: @theme_base_color;
+    transition: none;
 }
 .open-docs-popover list .icon {
     padding-top: 3px;
     padding-bottom: 3px;
 }
-.open-docs-popover list.selection-mode .radio {
+.open-docs-popover list.selection-mode .radio-hover {
     padding-top: 3px;
     padding-bottom: 3px;
     opacity: 0;
 }
-.open-docs-popover list.selection-mode row:hover .radio {
+.open-docs-popover list.selection-mode row:hover .radio-hover {
     opacity: 1;
 }
 

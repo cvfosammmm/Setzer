@@ -108,7 +108,7 @@ class Settings(Observable):
         if not os.path.isdir(self.pathname):
             os.makedirs(self.pathname)
         
-        try: filehandle = open(self.pathname + '/settings.pickle', 'rb')
+        try: filehandle = open(os.path.join(self.pathname, 'settings.pickle'), 'rb')
         except IOError: return False
         else:
             try: self.data = pickle.load(filehandle)
@@ -119,7 +119,7 @@ class Settings(Observable):
     def pickle(self):
         ''' Save settings in home folder. '''
         
-        try: filehandle = open(self.pathname + '/settings.pickle', 'wb')
+        try: filehandle = open(os.path.join(self.pathname, 'settings.pickle'), 'wb')
         except IOError: return False
         else: pickle.dump(self.data, filehandle)
         

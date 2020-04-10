@@ -48,7 +48,8 @@ class DocumentPresenter(object):
         def can_redo_changed(manager, user_data=None): self.view.menu_item_redo.set_sensitive(manager.can_redo())
         undo_manager.connect('can-redo-changed', can_redo_changed)
         can_redo_changed(undo_manager)
-        self.view.menu_item_show_in_preview.set_sensitive(False)
+        if self.document.is_latex_document():
+            self.view.menu_item_show_in_preview.set_sensitive(False)
 
         self.document.register_observer(self)
         self.settings.register_observer(self)

@@ -24,10 +24,13 @@ class DocumentSwitcherPresenter(object):
     def __init__(self, document_switcher, workspace):
         self.document_switcher = document_switcher
         self.workspace = workspace
-        self.view = ServiceLocator.get_main_window().headerbar.open_docs_popover
+        self.button = ServiceLocator.get_main_window().headerbar.center_widget
+        self.view = self.button.open_docs_popover
 
         self.workspace.register_observer(self)
         self.document_switcher.register_observer(self)
+
+        self.show_document_name(None)
 
     '''
     *** notification handlers
@@ -42,11 +45,14 @@ class DocumentSwitcherPresenter(object):
 
         if change_code == 'document_removed':
             document = parameter
-            self.view.remove_document(document.document_switcher_item.view)
+            self.view.document_list.remove(document.document_switcher_item.view)
             self.activate_mode(self.document_switcher.mode)
+            if self.workspace.active_document == None:
+                self.show_document_name(None)
 
         if change_code == 'new_active_document':
             document = parameter
+            self.show_document_name(document)
             self.view.document_list.invalidate_sort()
 
         if change_code == 'docswitcher_mode_change':
@@ -74,7 +80,7 @@ class DocumentSwitcherPresenter(object):
             item.show()
             item.document_close_button.show()
             item.icon_box.show()
-            item.radio_button.hide()
+            item.radio_button_hover.hide()
         self.view.in_selection_mode = False
 
     def activate_selection_mode(self):
@@ -87,7 +93,7 @@ class DocumentSwitcherPresenter(object):
         for item in self.view.document_list.get_children():
             item.document_close_button.hide()
             item.icon_box.hide()
-            item.radio_button.show()
+            item.radio_button_hover.show()
             if not item.document.is_latex_document():
                 item.hide()
         self.view.in_selection_mode = True
@@ -97,5 +103,35 @@ class DocumentSwitcherPresenter(object):
             self.view.set_master_document_button.set_sensitive(True)
         else:
             self.view.set_master_document_button.set_sensitive(False)
+
+    def show_document_name(self, document):
+        if document == None:
+            self.button.center_button.set_sensitive(False)
+            self.button.set_visible_child_name('welcome')
+        else:
+            doclist_item = document.document_switcher_item.view
+            
+            if self.button.name_binding != None: self.button.name_binding.unbind()
+            self.button.document_name_label.set_text(doclist_item.label.get_text())
+            self.button.name_binding = doclist_item.label.bind_property('label', self.button.document_name_label, 'label', 0)
+            
+            if self.button.folder_binding != None: self.button.folder_binding.unbind()
+            self.button.folder_binding = doclist_item.flabel.bind_property('label', self.button.document_folder_label, 'label', 0, self.folder_transform_func)
+
+            if self.button.mod_binding != None: self.button.mod_binding.unbind()
+            self.button.document_mod_label.set_text(doclist_item.mlabel.get_text())
+            self.button.mod_binding = doclist_item.mlabel.bind_property('label', self.button.document_mod_label, 'label', 0)
+
+            self.button.center_button.set_sensitive(True)
+            self.button.set_visible_child_name('button')
+
+            self.folder_transform_func(self.button.folder_binding, doclist_item.folder)
+
+    def folder_transform_func(self, binding, from_value, to_value=None):
+        self.button.document_folder_label.set_text(from_value)
+        if from_value == '':
+            self.button.document_folder_label.hide()
+        else:
+            self.button.document_folder_label.show_all()
 
 

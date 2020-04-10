@@ -98,6 +98,8 @@ class Workspace(Observable):
             self.update_recently_opened_document(document.get_filename(), notify=True)
 
     def remove_document(self, document):
+        if document == self.master_document:
+            self.unset_master_document()
         document.state_manager.save_document_state()
         self.open_documents.remove(document)
         if document.is_latex_document():
@@ -108,8 +110,6 @@ class Workspace(Observable):
                 self.set_active_document(None)
             else:
                 self.set_active_document(candidate)
-        if document == self.master_document:
-            self.unset_master_document()
         self.add_change_code('document_removed', document)
 
     def create_latex_document(self, activate=False):
@@ -207,7 +207,7 @@ class Workspace(Observable):
             pass
 
     def populate_from_disk(self):
-        try: filehandle = open(self.pathname + '/workspace.pickle', 'rb')
+        try: filehandle = open(os.path.join(self.pathname, 'workspace.pickle'), 'rb')
         except IOError: pass
         else:
             try: data = pickle.load(filehandle)
@@ -226,8 +226,27 @@ class Workspace(Observable):
                     self.update_recently_opened_document(item['filename'], item['date'], notify=False)
         self.add_change_code('update_recently_opened_documents', self.recently_opened_documents)
 
+    def load_documents_from_session_file(self, filename):
+        try: filehandle = open(filename, 'rb')
+        except IOError: pass
+        else:
+            try: data = pickle.load(filehandle)
+            except EOFError:
+                return
+            else:
+                try:
+                    master_document_filename = data['master_document_filename']
+                except KeyError:
+                    master_document_filename = None
+                for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
+                    document = self.create_document_from_filename(item['filename'])
+                    if item['filename'] == master_document_filename and document != None:
+                        self.set_one_document_master(document)        
+        if len(self.open_documents) > 0:
+            self.set_active_document(self.open_documents[-1])
+
     def save_to_disk(self):
-        try: filehandle = open(self.pathname + '/workspace.pickle', 'wb')
+        try: filehandle = open(os.path.join(self.pathname, 'workspace.pickle'), 'wb')
         except IOError: pass
         else:
             open_documents = dict()
@@ -246,6 +265,23 @@ class Workspace(Observable):
                 data['master_document_filename'] = self.master_document.get_filename()
             pickle.dump(data, filehandle)
             
+    def save_session(self, filename):
+        try: filehandle = open(filename, 'wb')
+        except IOError: pass
+        else:
+            open_documents = dict()
+            for document in self.open_documents:
+                filename = document.get_filename()
+                if filename != None:
+                    open_documents[filename] = {
+                        'filename': filename,
+                        'last_activated': document.get_last_activated()
+                    }
+            data = {'open_documents': open_documents}
+            if self.master_document != None:
+                data['master_document_filename'] = self.master_document.get_filename()
+            pickle.dump(data, filehandle)
+
     def get_unsaved_documents(self):
         unsaved_documents = list()
         for document in self.open_documents:
@@ -272,14 +308,14 @@ class Workspace(Observable):
     def unset_master_document(self):
         for document in self.open_latex_documents:
             document.set_is_master(False)
+            self.set_has_visible_build_system(document)
         self.master_document = None
-        self.set_has_visible_build_system(document)
         self.set_has_visible_build_system(self.active_document)
         self.add_change_code('master_state_change', 'no_master_document')
         self.set_build_log()
 
     def set_has_visible_build_system(self, document):
-        if document.is_latex_document():
+        if document != None and document.is_latex_document():
             if document == self.master_document:
                 document.set_has_visible_build_system(True)
             elif document == self.active_document and self.master_document == None:

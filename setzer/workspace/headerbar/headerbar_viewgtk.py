@@ -44,7 +44,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.sidebar_toggle_revealer = Gtk.Revealer()
         self.sidebar_toggle = Gtk.ToggleButton()
         self.sidebar_toggle.set_image(Gtk.Image.new_from_icon_name('builder-view-left-pane-symbolic', Gtk.IconSize.MENU))
-        self.sidebar_toggle.set_focus_on_click(False)
+        self.sidebar_toggle.set_can_focus(False)
         self.sidebar_toggle.set_tooltip_text('Toggle sidebar (F9)')
         self.pack_start(self.sidebar_toggle)
 
@@ -54,7 +54,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.open_document_button_label.pack_start(Gtk.Label('Open'), False, False, 0)
         self.open_document_button_label.pack_start(Gtk.Image.new_from_icon_name('pan-down-symbolic', Gtk.IconSize.MENU), False, False, 0)
         self.open_document_button = Gtk.MenuButton()
-        self.open_document_button.set_focus_on_click(False)
+        self.open_document_button.set_can_focus(False)
         self.open_document_button.set_tooltip_text('Open a document (Ctrl+Shift+O)')
         self.open_document_button.set_use_popover(True)
         self.open_document_button.add(self.open_document_button_label)
@@ -74,7 +74,7 @@ class HeaderBar(Gtk.HeaderBar):
         image = Gtk.Image.new_from_icon_name('pan-down-symbolic', Gtk.IconSize.BUTTON)
         self.new_document_button_label.pack_start(image, False, False, 0)
         self.new_document_button.add(self.new_document_button_label)
-        self.new_document_button.set_focus_on_click(False)
+        self.new_document_button.set_can_focus(False)
         self.new_document_button.set_tooltip_text('Create a new document (Ctrl+N)')
         self.new_document_button.get_style_context().add_class("text-button")
         self.new_document_button.get_style_context().add_class("image-button")
@@ -90,14 +90,14 @@ class HeaderBar(Gtk.HeaderBar):
 
         # save document button
         self.save_document_button = Gtk.Button.new_with_label('Save')
-        self.save_document_button.set_focus_on_click(False)
+        self.save_document_button.set_can_focus(False)
         self.save_document_button.set_tooltip_text('Save the current document (Ctrl+S)')
         self.pack_end(self.save_document_button)
         
         # preview toggle
         self.preview_toggle = Gtk.ToggleButton()
         self.preview_toggle.set_image(Gtk.Image.new_from_icon_name('view-paged-symbolic', Gtk.IconSize.MENU))
-        self.preview_toggle.set_focus_on_click(False)
+        self.preview_toggle.set_can_focus(False)
         self.preview_toggle.set_tooltip_text('Toggle preview (F10)')
         self.pack_end(self.preview_toggle)
         
@@ -106,43 +106,8 @@ class HeaderBar(Gtk.HeaderBar):
         self.pack_end(self.build_wrapper)
 
         # title / open documents popover
-        self.mod_binding = None
-        self.document_mod_label = Gtk.Label()
-        self.name_binding = None
-        self.document_name_label = Gtk.Label()
-        self.document_name_label.get_style_context().add_class('title')
-        self.document_name_label.set_ellipsize(Pango.EllipsizeMode.END)
-        self.folder_binding = None
-        self.document_folder_label = Gtk.Label()
-        self.document_folder_label.get_style_context().add_class('subtitle')
-        self.document_folder_label.set_ellipsize(Pango.EllipsizeMode.END)
-        self.document_arrow = Gtk.Image.new_from_icon_name('pan-down-symbolic', Gtk.IconSize.MENU)
-        vbox = Gtk.VBox()
-        vbox.pack_start(self.document_name_label, False, False, 0)
-        vbox.pack_start(self.document_folder_label, False, False, 0)
-        hbox = Gtk.HBox()
-        hbox.pack_start(vbox, False, False, 0)
-        hbox.pack_start(self.document_arrow, False, False, 0)
-        hbox.set_valign(Gtk.Align.CENTER)
-        
-        self.open_docs_popover = document_switcher_viewgtk.OpenDocsPopover()
-        self.center_widget = Gtk.HBox()
-        self.center_button = Gtk.MenuButton()
-        self.center_button.get_style_context().add_class('flat')
-        self.center_button.get_style_context().add_class('open-docs-popover-button')
-        self.center_button.set_tooltip_text('Show open documents (Ctrl+T)')
-        self.center_button.set_focus_on_click(False)
-        self.center_button.add(hbox)
-        self.center_button.set_use_popover(True)
-        self.center_button.set_popover(self.open_docs_popover)
-        self.center_label_welcome = Gtk.Label("Setzer")
-        self.center_label_welcome.get_style_context().add_class('title')
-        self.center_widget.pack_start(self.center_button, False, False, 0)
-        self.center_widget.pack_start(self.center_label_welcome, False, False, 0)
+        self.center_widget = document_switcher_viewgtk.OpenDocsButton()
         self.set_custom_title(self.center_widget)
-        self.center_widget.set_valign(Gtk.Align.FILL)
-        self.center_button.set_valign(Gtk.Align.FILL)
-        self.center_label_welcome.set_valign(Gtk.Align.FILL)
 
     def insert_workspace_menu(self):
         popover = Gtk.PopoverMenu()
@@ -152,6 +117,8 @@ class HeaderBar(Gtk.HeaderBar):
         self.pmb.set_box_margin(box)
         self.pmb.add_action_button(box, 'Save Document As...', 'win.save-as', keyboard_shortcut='Ctrl+Shift+S')
         self.pmb.add_action_button(box, 'Save All Documents', 'win.save-all')
+        self.pmb.add_separator(box)
+        self.pmb.add_menu_button(box, 'Session', 'session')
         self.pmb.add_separator(box)
         self.pmb.add_menu_button(box, 'View', 'view')
         self.pmb.add_menu_button(box, 'Tools', 'tools')
@@ -175,6 +142,21 @@ class HeaderBar(Gtk.HeaderBar):
         stack.add_named(box, 'view')
         box.show_all()
 
+        # session submenu
+        box = Gtk.VBox()
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, 'Session')
+        self.session_explaination = Gtk.Label('Save the list of open documents in a session file\nand restore it later, a convenient way to work\non multiple projects.')
+        self.session_explaination.set_xalign(0)
+        self.session_explaination.get_style_context().add_class('explaination')
+        self.session_explaination.set_margin_top(8)
+        self.session_explaination.set_margin_bottom(11)
+        box.pack_start(self.session_explaination, False, False, 0)
+        self.pmb.add_action_button(box, 'Restore Previous Session...', 'win.restore-session', [''])
+        self.pmb.add_action_button(box, 'Save Current Session...', 'win.save-session')
+        stack.add_named(box, 'session')
+        box.show_all()
+
         # tools submenu
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
@@ -188,7 +170,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.menu_button = Gtk.MenuButton()
         image = Gtk.Image.new_from_icon_name('open-menu-symbolic', Gtk.IconSize.BUTTON)
         self.menu_button.set_image(image)
-        self.menu_button.set_focus_on_click(False)
+        self.menu_button.set_can_focus(False)
         self.menu_button.set_popover(popover)
         self.pack_end(self.menu_button)
 

@@ -49,6 +49,8 @@ class WorkspaceController(object):
         self.main_window.new_bibtex_document_action.connect('activate', self.on_new_bibtex_document_action_activated)
         self.main_window.save_as_action.connect('activate', self.on_save_as_clicked)
         self.main_window.save_all_action.connect('activate', self.on_save_all_clicked)
+        self.main_window.save_session_action.connect('activate', self.on_save_session_clicked)
+        self.main_window.restore_session_action.connect('activate', self.on_restore_session_clicked)
         self.main_window.find_action.connect('activate', self.on_menu_find_clicked)
         self.main_window.find_next_action.connect('activate', self.find_next)
         self.main_window.find_prev_action.connect('activate', self.find_prev)
@@ -188,6 +190,29 @@ class WorkspaceController(object):
                     document.save_to_disk()
             if return_to_active_document == True:
                 self.workspace.set_active_document(document)
+
+    @_assert_has_active_document
+    def on_save_session_clicked(self, action=None, parameter=None):
+        DialogLocator.get_dialog('save_session').run()
+
+    def on_restore_session_clicked(self, action=None, parameter=None):
+        parameter = parameter.unpack()[0]
+        if parameter == '':
+            filename = DialogLocator.get_dialog('open_session').run()
+        else:
+            filename = parameter
+
+        active_document = self.workspace.get_active_document()
+        documents = self.workspace.get_all_documents()
+        unsaved_documents = self.workspace.get_unsaved_documents()
+        dialog = DialogLocator.get_dialog('close_confirmation')
+        not_save_to_close_documents = dialog.run(unsaved_documents)['not_save_to_close_documents']
+
+        if len(not_save_to_close_documents) == 0:
+            if documents != None:
+                for document in documents:
+                    self.workspace.remove_document(document)
+            self.workspace.load_documents_from_session_file(filename)
 
     @_assert_has_active_document
     def on_menu_find_clicked(self, action=None, parameter=None):

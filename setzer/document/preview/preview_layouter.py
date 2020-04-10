@@ -91,6 +91,7 @@ class PreviewLayouter(Observable):
         self.canvas_width = self.page_width + 2 * self.horizontal_margin
         self.canvas_height = self.preview.number_of_pages * (self.page_height + self.page_gap) - self.page_gap + 2 * self.vertical_margin
         self.has_layout = True
+        self.compute_current_page()
         self.update_zoom_levels()
         self.add_change_code('layout_changed')
 
