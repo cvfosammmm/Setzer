@@ -346,6 +346,9 @@ class Workspace(Observable):
         self.add_change_code('master_state_change', 'no_master_document')
         self.set_build_log()
 
+    def get_master_document(self):
+        return self.master_document
+
     def set_has_visible_build_system(self, document):
         if document != None and document.is_latex_document():
             if document == self.master_document:
