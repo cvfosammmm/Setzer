@@ -48,6 +48,7 @@ class Workspace(Observable):
         self.active_document = None
 
         self.recently_opened_session_files = dict()
+        self.session_file_opened = None
 
         self.settings = ServiceLocator.get_settings()
         self.inline_spellchecking = self.settings.get_value('preferences', 'inline_spellchecking')
@@ -213,9 +214,9 @@ class Workspace(Observable):
             self.remove_recently_opened_session_file(filename)
         else:
             if date == None: date = time.time()
-            if len(self.recently_opened_session_files) >= 5: 
-                del(self.recently_opened_session_files[sorted(self.recently_opened_session_files.values(), key=lambda val: val['date'])[0]['filename']])
             self.recently_opened_session_files[filename] = {'filename': filename, 'date': date}
+            if len(self.recently_opened_session_files) > 5: 
+                del(self.recently_opened_session_files[sorted(self.recently_opened_session_files.values(), key=lambda val: val['date'])[0]['filename']])
         if notify:
             self.add_change_code('update_recently_opened_session_files', self.recently_opened_session_files)
 
@@ -270,6 +271,7 @@ class Workspace(Observable):
                         self.set_one_document_master(document)        
             if len(self.open_documents) > 0:
                 self.set_active_document(self.open_documents[-1])
+            self.session_file_opened = filename
             self.update_recently_opened_session_file(filename, notify=True)
 
     def save_to_disk(self):
@@ -309,6 +311,7 @@ class Workspace(Observable):
             if self.master_document != None:
                 data['master_document_filename'] = self.master_document.get_filename()
             pickle.dump(data, filehandle)
+            self.session_file_opened = session_filename
             self.update_recently_opened_session_file(session_filename, notify=True)
 
     def get_unsaved_documents(self):

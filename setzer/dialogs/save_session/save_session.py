@@ -34,14 +34,20 @@ class SaveSessionDialog(Dialog):
 
     def run(self):
         self.setup()
-        document = self.workspace.get_active_document()
-        if document != None:
-            pathname = document.get_filename()
-            if pathname != None:
-                self.view.set_current_folder(os.path.dirname(pathname))
-            self.view.set_current_name('.stzs')
+
+        if self.workspace.session_file_opened != None:
+            self.view.set_current_folder(os.path.dirname(self.workspace.session_file_opened))
+            self.view.set_current_name(os.path.basename(self.workspace.session_file_opened))
         else:
-            self.view.set_current_name('.stzs')
+            document = self.workspace.get_active_document()
+            if document != None:
+                pathname = document.get_filename()
+                if pathname != None:
+                    self.view.set_current_folder(os.path.dirname(pathname))
+                self.view.set_current_name('.stzs')
+            else:
+                self.view.set_current_name('.stzs')
+
         response = self.view.run()
         if response == Gtk.ResponseType.OK:
             filename = self.view.get_filename()
