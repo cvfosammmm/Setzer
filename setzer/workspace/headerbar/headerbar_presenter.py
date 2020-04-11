@@ -15,6 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from gi.repository import Gio
+from gi.repository import GLib
+
 from setzer.app.service_locator import ServiceLocator
 
 import os.path
@@ -75,6 +81,27 @@ class HeaderbarPresenter(object):
                 self.main_window.headerbar.open_document_button.set_sensitive(False)
                 self.main_window.headerbar.open_document_blank_button.set_sensitive(True)
                 self.main_window.headerbar.open_document_blank_button.show_all()
+
+        if change_code == 'update_recently_opened_session_files':
+            items = list()
+            data = parameter.values()
+            for item in sorted(data, key=lambda val: -val['date']):
+                items.append(item['filename'])
+            for button in self.main_window.headerbar.session_file_buttons:
+                self.main_window.headerbar.session_box.remove(button)
+            if len(self.main_window.headerbar.session_file_buttons) > 0:
+                self.main_window.headerbar.session_box.remove(self.main_window.headerbar.session_box_separator)
+            self.main_window.headerbar.session_file_buttons = list()
+            if len(items) > 0:
+                self.main_window.headerbar.session_box.pack_start(self.main_window.headerbar.session_box_separator, False, False, 0)
+            for item in items:
+                button = Gtk.ModelButton()
+                button.set_label(item)
+                button.get_child().set_halign(Gtk.Align.START)
+                button.set_detailed_action_name(Gio.Action.print_detailed_name('win.restore-session', GLib.Variant('as', [item])))
+                button.show_all()
+                self.main_window.headerbar.session_box.pack_start(button, False, False, 0)
+                self.main_window.headerbar.session_file_buttons.append(button)
 
         if change_code == 'master_state_change':
             self.set_build_button_state()

@@ -47,6 +47,8 @@ class Workspace(Observable):
 
         self.active_document = None
 
+        self.recently_opened_session_files = dict()
+
         self.settings = ServiceLocator.get_settings()
         self.inline_spellchecking = self.settings.get_value('preferences', 'inline_spellchecking')
         self.spellchecking_language_code = self.settings.get_value('preferences', 'spellchecking_language_code')
@@ -195,7 +197,7 @@ class Workspace(Observable):
         else:
             if date == None: date = time.time()
             if len(self.recently_opened_documents) >= 1000: 
-                del(self.recently_opened_documents[sorted(self.recently_opened_documents.values(), key=lambda val: -val['date'])[0]['filename']])
+                del(self.recently_opened_documents[sorted(self.recently_opened_documents.values(), key=lambda val: val['date'])[0]['filename']])
             self.recently_opened_documents[filename] = {'filename': filename, 'date': date}
         if notify:
             self.add_change_code('update_recently_opened_documents', self.recently_opened_documents)
@@ -203,6 +205,23 @@ class Workspace(Observable):
     def remove_recently_opened_document(self, filename):
         try:
             del(self.recently_opened_documents[filename])
+        except KeyError:
+            pass
+
+    def update_recently_opened_session_file(self, filename, date=None, notify=True):
+        if not isinstance(filename, str) or not os.path.isfile(filename):
+            self.remove_recently_opened_session_file(filename)
+        else:
+            if date == None: date = time.time()
+            if len(self.recently_opened_session_files) >= 5: 
+                del(self.recently_opened_session_files[sorted(self.recently_opened_session_files.values(), key=lambda val: val['date'])[0]['filename']])
+            self.recently_opened_session_files[filename] = {'filename': filename, 'date': date}
+        if notify:
+            self.add_change_code('update_recently_opened_session_files', self.recently_opened_session_files)
+
+    def remove_recently_opened_session_file(self, filename):
+        try:
+            del(self.recently_opened_session_files[filename])
         except KeyError:
             pass
 
@@ -224,7 +243,14 @@ class Workspace(Observable):
                         self.set_one_document_master(document)
                 for item in data['recently_opened_documents'].values():
                     self.update_recently_opened_document(item['filename'], item['date'], notify=False)
+                try:
+                    recently_opened_session_files = data['recently_opened_session_files'].values()
+                except KeyError:
+                    recently_opened_session_files = []
+                for item in recently_opened_session_files:
+                    self.update_recently_opened_session_file(item['filename'], item['date'], notify=False)
         self.add_change_code('update_recently_opened_documents', self.recently_opened_documents)
+        self.add_change_code('update_recently_opened_session_files', self.recently_opened_session_files)
 
     def load_documents_from_session_file(self, filename):
         try: filehandle = open(filename, 'rb')
@@ -242,8 +268,9 @@ class Workspace(Observable):
                     document = self.create_document_from_filename(item['filename'])
                     if item['filename'] == master_document_filename and document != None:
                         self.set_one_document_master(document)        
-        if len(self.open_documents) > 0:
-            self.set_active_document(self.open_documents[-1])
+            if len(self.open_documents) > 0:
+                self.set_active_document(self.open_documents[-1])
+            self.update_recently_opened_session_file(filename, notify=True)
 
     def save_to_disk(self):
         try: filehandle = open(os.path.join(self.pathname, 'workspace.pickle'), 'wb')
@@ -259,14 +286,15 @@ class Workspace(Observable):
                     }
             data = {
                 'open_documents': open_documents,
-                'recently_opened_documents': self.recently_opened_documents
+                'recently_opened_documents': self.recently_opened_documents,
+                'recently_opened_session_files': self.recently_opened_session_files
             }
             if self.master_document != None:
                 data['master_document_filename'] = self.master_document.get_filename()
             pickle.dump(data, filehandle)
             
-    def save_session(self, filename):
-        try: filehandle = open(filename, 'wb')
+    def save_session(self, session_filename):
+        try: filehandle = open(session_filename, 'wb')
         except IOError: pass
         else:
             open_documents = dict()
@@ -281,6 +309,7 @@ class Workspace(Observable):
             if self.master_document != None:
                 data['master_document_filename'] = self.master_document.get_filename()
             pickle.dump(data, filehandle)
+            self.update_recently_opened_session_file(session_filename, notify=True)
 
     def get_unsaved_documents(self):
         unsaved_documents = list()

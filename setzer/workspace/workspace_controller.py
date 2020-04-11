@@ -199,6 +199,7 @@ class WorkspaceController(object):
         parameter = parameter.unpack()[0]
         if parameter == '':
             filename = DialogLocator.get_dialog('open_session').run()
+            if filename == None: return
         else:
             filename = parameter
 
