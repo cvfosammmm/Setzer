@@ -223,7 +223,6 @@ class DocumentWizard(Dialog):
             line_count_before_insert = buff.get_line_count()
 
             insert_start, insert_end = eval('self.get_insert_text_' + document_class + '()')
-            insert_start_orig_len = len(insert_start)
 
             # replace tabs with spaces, if set in preferences
             if self.settings.get_value('preferences', 'spaces_instead_of_tabs'):
@@ -237,7 +236,7 @@ class DocumentWizard(Dialog):
             buff.insert(bounds[1], insert_end)
 
             bounds = buff.get_bounds()
-            bounds[0].forward_chars(insert_start_orig_len)
+            bounds[0].forward_chars(len(insert_start))
             buff.place_cursor(bounds[0])
 
             buff.end_user_action()
