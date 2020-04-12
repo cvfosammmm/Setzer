@@ -1,7 +1,7 @@
 project(
   'Setzer',
   version: '0.2.3',
-  license: 'GPLv3',
+  license: 'GPL-3.0-or-later',
 )
 
 # runtime dependencies
