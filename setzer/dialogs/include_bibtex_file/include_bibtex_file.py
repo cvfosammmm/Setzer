@@ -111,7 +111,7 @@ class IncludeBibTeXFile(Dialog):
             self.view.style_switcher.pack_start(self.view.style_buttons[style], False, False, 0)
             self.view.style_buttons[style].connect('toggled', self.on_style_chosen, style)
 
-            image = Gtk.Image.new_from_file(os.path.dirname(__file__) + '/resources/' + style + '.png')
+            image = Gtk.Image.new_from_file(os.path.join(ServiceLocator.get_resources_path(), 'bibliography_styles', style + '.png'))
             self.view.preview_stack.add_named(image, style)
 
         first_button = None
@@ -130,7 +130,7 @@ class IncludeBibTeXFile(Dialog):
             self.view.natbib_style_switcher.pack_start(self.view.natbib_style_buttons[style], False, False, 0)
             self.view.natbib_style_buttons[style].connect('toggled', self.on_natbib_style_chosen, style)
 
-            image = Gtk.Image.new_from_file(os.path.dirname(__file__) + '/resources/' + style + '.png')
+            image = Gtk.Image.new_from_file(os.path.join(ServiceLocator.get_resources_path(), 'bibliography_styles', style + '.png'))
             self.view.natbib_preview_stack.add_named(image, style)
 
         self.view.topbox.show_all()
