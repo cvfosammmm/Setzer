@@ -85,7 +85,7 @@ class DocumentClassPageView(PageView):
         self.preview_data.append({'name': 'beamer', 'image': 'beamer1.svg', 'text': '<b>Beamer:</b>  A class for making presentation slides\nwith LaTeX.\n\nThere are many predefined presentation styles.'})
         for item in self.preview_data:
             box = Gtk.VBox()
-            image = Gtk.Image.new_from_file(os.path.join(ServiceLocator.get_resources_path(), item['image']))
+            image = Gtk.Image.new_from_file(os.path.join(ServiceLocator.get_resources_path(), 'document_wizard', item['image']))
             image.set_margin_bottom(6)
             label = Gtk.Label()
             label.set_markup(item['text'])
