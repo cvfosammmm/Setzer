@@ -65,11 +65,11 @@ class BuildSystem(object):
     def results_loop(self):
         if self.active_query != None:
             if self.active_query.is_done():
-                result_blob = self.active_query.get_result()
+                build_result = self.active_query.get_build_result()
                 forward_sync_result = self.active_query.get_forward_sync_result()
                 backward_sync_result = self.active_query.get_backward_sync_result()
-                if forward_sync_result != None or backward_sync_result != None or result_blob != None:
-                    self.add_change_code('building_finished', {'build': result_blob, 'forward_sync': forward_sync_result, 'backward_sync': backward_sync_result})
+                if forward_sync_result != None or backward_sync_result != None or build_result != None:
+                    self.add_change_code('building_finished', {'build': build_result, 'forward_sync': forward_sync_result, 'backward_sync': backward_sync_result})
                 self.active_query = None
         return True
     
@@ -94,8 +94,8 @@ class Query(object):
         self.config_folder = ServiceLocator.get_config_folder()
 
         self.process = None
-        self.result = None
-        self.result_lock = thread.allocate_lock()
+        self.build_result = None
+        self.build_result_lock = thread.allocate_lock()
         self.forward_sync_result = None
         self.forward_sync_result_lock = thread.allocate_lock()
         self.backward_sync_result = None
@@ -111,11 +111,11 @@ class Query(object):
             self.process = None
             self.force_building_to_stop = True
     
-    def get_result(self):
+    def get_build_result(self):
         return_value = None
-        with self.result_lock:
-            if self.result != None:
-                return_value = self.result
+        with self.build_result_lock:
+            if self.build_result != None:
+                return_value = self.build_result
         return return_value
 
     def get_forward_sync_result(self):
@@ -159,9 +159,9 @@ class Query(object):
                         self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=tmp_directory_name, env=custom_env)
                     except FileNotFoundError:
                         self.cleanup_build_files(tex_file.name)
-                        with self.result_lock:
-                            self.result = {'error': 'interpreter_not_working',
-                                           'error_arg': self.latex_interpreter}
+                        with self.build_result_lock:
+                            self.build_result = {'error': 'interpreter_not_working',
+                                                 'error_arg': self.latex_interpreter}
                         return
                     self.process.wait()
 
@@ -175,9 +175,9 @@ class Query(object):
                         self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
                     except FileNotFoundError:
                         self.cleanup_build_files(tex_file.name)
-                        with self.result_lock:
-                            self.result = {'error': 'interpreter_missing',
-                                           'error_arg': arguments[0]}
+                        with self.build_result_lock:
+                            self.build_result = {'error': 'interpreter_missing',
+                                                 'error_arg': arguments[0]}
                         return
                     _ = self.process.communicate()
                     try:
@@ -190,9 +190,9 @@ class Query(object):
                         self.parse_build_log(log_filename, tex_file.name)
                     except FileNotFoundError as e:
                         self.cleanup_build_files(tex_file.name)
-                        with self.result_lock:
-                            self.result = {'error': 'interpreter_not_working',
-                                           'error_arg': 'log file missing'}
+                        with self.build_result_lock:
+                            self.build_result = {'error': 'interpreter_not_working',
+                                                 'error_arg': 'log file missing'}
                         return
         
             self.parse_bibtex_log(tex_file.name[:-3] + 'blg')
@@ -213,12 +213,12 @@ class Query(object):
                 else:
                     self.new_pdf_filename = None
 
-                with self.result_lock:
-                    self.result = {'pdf_filename': self.new_pdf_filename, 
-                                   'build_pathname': self.build_pathname,
-                                   'log_messages': self.log_messages + self.bibtex_log_messages,
-                                   'error': None,
-                                   'error_arg': None}
+                with self.build_result_lock:
+                    self.build_result = {'pdf_filename': self.new_pdf_filename, 
+                                         'build_pathname': self.build_pathname,
+                                         'log_messages': self.log_messages + self.bibtex_log_messages,
+                                         'error': None,
+                                         'error_arg': None}
             else:
                 self.cleanup_build_files(tex_file.name)
             tex_file.close()
