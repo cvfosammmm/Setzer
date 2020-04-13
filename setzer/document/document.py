@@ -420,6 +420,14 @@ class LaTeXDocument(Document):
         if buff != None:
             if position['column'] == -1:
                 start = buff.get_iter_at_line(position['line'])
+                end = start.copy()
+                if not start.ends_line():
+                    end.forward_to_line_end()
+
+                text = buff.get_text(start, end, False)
+                ws_number = len(text) - len(text.lstrip())
+                start.forward_chars(ws_number)
+
                 buff.place_cursor(start)
                 self.view.source_view.scroll_mark_onscreen(buff.get_insert())
 
