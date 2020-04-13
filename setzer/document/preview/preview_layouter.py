@@ -45,7 +45,6 @@ class PreviewLayouter(Observable):
         self.scale_factor = None
         self.current_page = None
         self.visible_synctex_rectangles = dict()
-        self.visible_synctex_rectangles_time = None
         self.has_layout = False
 
         self.preview.register_observer(self)
@@ -92,7 +91,23 @@ class PreviewLayouter(Observable):
         self.has_layout = True
         self.compute_current_page()
         self.update_zoom_levels()
+        self.update_synctex_rectangles()
         self.add_change_code('layout_changed')
+
+    def update_synctex_rectangles(self):
+        if self.has_layout:
+            self.visible_synctex_rectangles = dict()
+            for rectangle in self.preview.visible_synctex_rectangles:
+                new_rectangle = dict()
+                new_rectangle['page'] = rectangle['page']
+                new_rectangle['x'] = rectangle['h'] * self.scale_factor
+                new_rectangle['y'] = (rectangle['v'] - rectangle['height']) * self.scale_factor
+                new_rectangle['width'] = rectangle['width'] * self.scale_factor
+                new_rectangle['height'] = rectangle['height'] * self.scale_factor
+                try:
+                    self.visible_synctex_rectangles[rectangle['page'] - 1].append(new_rectangle)
+                except KeyError:
+                    self.visible_synctex_rectangles[rectangle['page'] - 1] = [new_rectangle]
 
     def update_zoom_levels(self):
         if not self.has_layout: return

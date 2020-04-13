@@ -391,9 +391,9 @@ class LaTeXDocument(Document):
     def start_building(self):
         if self.build_mode == 'forward_sync' and self.build_pathname == None: return
         if self.build_mode == 'backward_sync' and self.backward_sync_data == None: return
+        if self.filename == None: return
 
-        if self.filename != None:
-            self.change_build_state('ready_for_building')
+        self.change_build_state('ready_for_building')
 
     def stop_building(self):
         self.change_build_state('building_to_stop')
