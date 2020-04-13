@@ -69,7 +69,6 @@ class PreviewLayouter(Observable):
                 self.canvas_width = None
                 self.canvas_height = None
                 self.scale_factor = None
-                self.current_page = None
                 self.add_change_code('layout_changed')
             self.compute_current_page()
 

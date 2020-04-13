@@ -78,7 +78,7 @@ class DocumentPresenter(object):
                 else:
                     self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
 
-        if change_code == 'can_sync_to_preview_changed':
+        if change_code == 'can_forward_sync_changed':
             if self.document.is_latex_document():
                 self.view.menu_item_show_in_preview.set_sensitive(parameter)
 

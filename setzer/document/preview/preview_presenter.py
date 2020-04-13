@@ -54,6 +54,7 @@ class PreviewPresenter(object):
             else:
                 self.show_blank_slate()
             self.update_number_of_pages()
+            self.update_current_page()
 
         if change_code == 'layout_changed':
             self.set_canvas_size()
@@ -65,6 +66,9 @@ class PreviewPresenter(object):
 
         if change_code == 'position_changed':
             self.update_current_page()
+
+        if change_code == 'can_backward_sync_changed':
+            self.view.menu_item_backward_sync.set_sensitive(parameter)
 
     def show_blank_slate(self):
         self.view.stack.set_visible_child_name('blank_slate')
@@ -81,7 +85,7 @@ class PreviewPresenter(object):
             self.view.paging_widget.label_number_of_pages.set_text("0")
 
     def update_current_page(self):
-        if self.layouter.has_layout:
+        if self.preview.pdf_loaded and self.layouter.has_layout:
             self.view.paging_widget.label_current_page.set_text(str(self.layouter.get_current_page()))
         else:
             self.view.paging_widget.label_current_page.set_text("0")
@@ -104,7 +108,8 @@ class PreviewPresenter(object):
             self.scrolling_queue.put(position)
 
     def scrolling_loop(self, widget=None, allocation=None):
-        if self.layouter.has_layout and int(self.view.drawing_area.get_allocated_height()) == int(self.layouter.canvas_height):
+        allocated_height = int(self.view.drawing_area.get_allocated_height())
+        if self.layouter.has_layout and allocated_height == max(int(self.layouter.canvas_height), allocated_height):
             while self.scrolling_queue.empty() == False:
                 todo = self.scrolling_queue.get(block=False)
                 if self.scrolling_queue.empty():

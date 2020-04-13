@@ -74,12 +74,11 @@ class DocumentController(object):
             self.view.menu_item_copy.set_sensitive(has_selection)
             self.view.menu_item_delete.set_sensitive(has_selection)
             self.view.context_menu.show_all()
-            self.view.context_menu.popup_at_pointer()
+            self.view.context_menu.popup_at_pointer(event)
             return True
 
     def on_show_in_preview(self, menu_item):
-        self.document.set_build_mode('sync')
-        self.document.build()
+        self.document.forward_sync()
 
     def on_keypress(self, widget, event, data=None):
         modifiers = Gtk.accelerator_get_default_mod_mask()

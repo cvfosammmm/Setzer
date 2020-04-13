@@ -294,10 +294,12 @@ class LaTeXDocument(Document):
         # building_in_progress, building_to_stop
         self.build_state = 'idle'
 
-        # possible values: build, sync, build_and_sync
-        self.build_mode = 'build_and_sync'
+        # possible values: build, forward_sync, build_and_forward_sync
+        self.build_mode = 'build_and_forward_sync'
         self.build_pathname = None
-        self.can_sync_to_preview = False
+        self.can_forward_sync = False
+        self.can_backward_sync = False
+        self.backward_sync_data = None
 
         self.preview = preview.Preview(self)
         self.state_manager = state_manager_latex.StateManagerLaTeX(self)
@@ -321,12 +323,13 @@ class LaTeXDocument(Document):
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = latex_parser.LaTeXParser(self)
 
-        self.update_can_sync_to_preview()
+        self.update_can_forward_sync()
+        self.update_can_backward_sync()
 
     def change_build_state(self, state):
         self.build_state = state
 
-        if self.build_mode in ['build', 'build_and_sync']:
+        if self.build_mode in ['build', 'build_and_forward_sync']:
             if state == 'ready_for_building':
                 self.build_time = None
             elif state == 'building_in_progress':
@@ -353,17 +356,41 @@ class LaTeXDocument(Document):
 
     def set_build_pathname(self, pathname):
         self.build_pathname = pathname
-        self.update_can_sync_to_preview()
+        self.update_can_forward_sync()
+        self.update_can_backward_sync()
 
-    def update_can_sync_to_preview(self):
+    def update_can_forward_sync(self):
         if self.build_pathname != None and self.preview.pdf_loaded:
-            self.can_sync_to_preview = True
+            self.can_forward_sync = True
         else:
-            self.can_sync_to_preview = False
-        self.add_change_code('can_sync_to_preview_changed', self.can_sync_to_preview)
+            self.can_forward_sync = False
+        self.add_change_code('can_forward_sync_changed', self.can_forward_sync)
 
-    def build(self):
-        if self.build_mode == 'sync' and self.build_pathname == None: return
+    def update_can_backward_sync(self):
+        if self.build_pathname != None and self.preview.pdf_loaded:
+            self.can_backward_sync = True
+        else:
+            self.can_backward_sync = False
+        self.add_change_code('can_backward_sync_changed', self.can_backward_sync)
+
+    def forward_sync(self):
+        if self.can_forward_sync:
+            self.set_build_mode('forward_sync')
+            self.start_building()
+
+    def backward_sync(self, page, x, y):
+        if self.can_backward_sync:
+            self.backward_sync_data = {'page': page, 'x': x, 'y': y}
+            self.set_build_mode('backward_sync')
+            self.start_building()
+
+    def build_and_forward_sync(self):
+        self.set_build_mode('build_and_forward_sync')
+        self.start_building()
+
+    def start_building(self):
+        if self.build_mode == 'forward_sync' and self.build_pathname == None: return
+        if self.build_mode == 'backward_sync' and self.backward_sync_data == None: return
 
         if self.filename != None:
             self.change_build_state('ready_for_building')
@@ -387,6 +414,14 @@ class LaTeXDocument(Document):
         if self.has_visible_build_system != has_visible_build_system:
             self.has_visible_build_system = has_visible_build_system
             self.add_change_code('build_system_visibility_change', has_visible_build_system)
+
+    def set_synctex_position(self, position):
+        buff = self.get_buffer()
+        if buff != None:
+            if position['column'] == -1:
+                start = buff.get_iter_at_line(position['line'])
+                buff.place_cursor(start)
+                self.view.source_view.scroll_mark_onscreen(buff.get_insert())
 
     def get_folded_regions(self):
         return self.code_folding.get_folded_regions()

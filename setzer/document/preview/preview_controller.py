@@ -19,6 +19,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk
 
+import math
+
 
 class PreviewController(object):
 
@@ -28,6 +30,7 @@ class PreviewController(object):
         self.view = view
 
         self.zoom_momentum = 0
+        self.context_menu_popup_button_event = None
 
         self.view.connect('size-allocate', self.on_size_allocate)
         self.view.scrolled_window.get_hadjustment().connect('value-changed', self.on_hadjustment_changed)
@@ -49,6 +52,12 @@ class PreviewController(object):
 
         def zoom_fit_to_height(menu_item): self.preview.set_zoom_fit_to_height()
         self.view.menu_item_zoom_fit_to_height.connect('activate', zoom_fit_to_height)
+
+        def backward_sync(menu_item):
+            event = self.context_menu_popup_button_event
+            if event != None:
+                self.init_backward_sync(event)
+        self.view.menu_item_backward_sync.connect('activate', backward_sync)
 
     def on_scroll(self, widget, event):
         if event.state == Gdk.ModifierType.CONTROL_MASK:
@@ -87,7 +96,22 @@ class PreviewController(object):
     def on_button_press(self, widget, event):
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
             self.view.context_menu.show_all()
-            self.view.context_menu.popup_at_pointer()
+            self.view.context_menu.popup_at_pointer(event)
+            self.context_menu_popup_button_event = event
             return True
-    
+        elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state == Gdk.ModifierType.CONTROL_MASK:
+            self.init_backward_sync(event)
+            return True
+
+    def init_backward_sync(self, event):
+        if not self.layouter.has_layout: return False
+        y_total_pixels = min(max(event.y - self.layouter.vertical_margin, 0), (self.layouter.page_height + self.layouter.page_gap) * self.preview.number_of_pages - self.layouter.page_gap)
+        x_pixels = min(max(event.x - self.layouter.horizontal_margin, 0), self.layouter.page_width)
+        page = math.floor(y_total_pixels / (self.layouter.page_height + self.layouter.page_gap))
+        y_pixels = min(max(y_total_pixels - page * (self.layouter.page_height + self.layouter.page_gap), 0), self.layouter.page_height)
+        x = x_pixels / self.layouter.scale_factor
+        y = y_pixels / self.layouter.scale_factor
+        page += 1
+        self.preview.document.backward_sync(page, x, y)
+
 

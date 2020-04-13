@@ -70,7 +70,7 @@ class BuildWidget(Observable):
 
     def on_build_state_change(self):
         document = self.document
-        if document.build_mode in ['build', 'build_and_sync']:
+        if document.build_mode in ['build', 'build_and_forward_sync']:
             state = document.get_build_state()
             selfstate = self.build_button_state
             if state == 'idle' or state == '':
@@ -112,8 +112,7 @@ class BuildWidget(Observable):
             else:
                 return False
         if self.document.filename != None:
-            self.document.set_build_mode('build_and_sync')
-            self.document.build()
+            self.document.build_and_forward_sync()
 
     def on_stop_build_button_click(self, button_object=None):
         document = self.document

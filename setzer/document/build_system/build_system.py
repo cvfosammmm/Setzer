@@ -66,9 +66,10 @@ class BuildSystem(object):
         if self.active_query != None:
             if self.active_query.is_done():
                 result_blob = self.active_query.get_result()
-                sync_result = self.active_query.get_sync_result()
-                if sync_result != None or result_blob != None:
-                    self.add_change_code('building_finished', {'build': result_blob, 'sync': sync_result})
+                forward_sync_result = self.active_query.get_forward_sync_result()
+                backward_sync_result = self.active_query.get_backward_sync_result()
+                if forward_sync_result != None or backward_sync_result != None or result_blob != None:
+                    self.add_change_code('building_finished', {'build': result_blob, 'forward_sync': forward_sync_result, 'backward_sync': backward_sync_result})
                 self.active_query = None
         return True
     
@@ -95,8 +96,10 @@ class Query(object):
         self.process = None
         self.result = None
         self.result_lock = thread.allocate_lock()
-        self.sync_result = None
-        self.sync_result_lock = thread.allocate_lock()
+        self.forward_sync_result = None
+        self.forward_sync_result_lock = thread.allocate_lock()
+        self.backward_sync_result = None
+        self.backward_sync_result_lock = thread.allocate_lock()
         self.done_executing = False
         self.done_executing_lock = thread.allocate_lock()
         self.synctex_file = None
@@ -115,11 +118,18 @@ class Query(object):
                 return_value = self.result
         return return_value
 
-    def get_sync_result(self):
+    def get_forward_sync_result(self):
         return_value = None
-        with self.sync_result_lock:
-            if self.sync_result != None:
-                return_value = self.sync_result
+        with self.forward_sync_result_lock:
+            if self.forward_sync_result != None:
+                return_value = self.forward_sync_result
+        return return_value
+
+    def get_backward_sync_result(self):
+        return_value = None
+        with self.backward_sync_result_lock:
+            if self.backward_sync_result != None:
+                return_value = self.backward_sync_result
         return return_value
 
     def mark_done(self):
@@ -417,9 +427,9 @@ class Query(object):
             except FileNotFoundError: pass
 
     #@helpers.timer
-    def sync(self):
+    def forward_sync(self):
         if self.build_pathname == None:
-            self.sync_result = None
+            self.forward_sync_result = None
             return
 
         synctex_folder = self.config_folder + '/' + base64.urlsafe_b64encode(str.encode(self.tex_filename)).decode()
@@ -435,7 +445,7 @@ class Query(object):
         process = None
 
         rectangles = list()
-        for match in self.synctex_regex.finditer(raw):
+        for match in self.forward_synctex_regex.finditer(raw):
             rectangle = dict()
             rectangle['page'] = int(match.group(1))
             rectangle['h'] = float(match.group(2))
@@ -445,9 +455,41 @@ class Query(object):
             rectangles.append(rectangle)
 
         if len(rectangles) > 0:
-            self.sync_result = rectangles
+            self.forward_sync_result = rectangles
         else:
-            self.sync_result = None
+            self.forward_sync_result = None
+
+    #@helpers.timer
+    def backward_sync(self):
+        if self.build_pathname == None:
+            self.backward_sync_result = None
+            return
+
+        synctex_folder = self.config_folder + '/' + base64.urlsafe_b64encode(str.encode(self.tex_filename)).decode()
+        arguments = ['synctex', 'edit', '-o']
+        arguments.append(str(self.backward_sync_data['page']) + ':' + str(self.backward_sync_data['x']) + ':' + str(self.backward_sync_data['y']) + ':' + self.tex_filename[:-3] + 'pdf')
+        arguments.append('-d')
+        arguments.append(synctex_folder)
+        process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process.wait()
+        raw = process.communicate()[0].decode('utf-8')
+        process = None
+
+        match = self.backward_synctex_regex.search(raw)
+        result = None
+        if match != None and match.group(1) == self.build_pathname:
+            result = dict()
+            result['line'] = max(int(match.group(2)) - 1, 0)
+            column = int(match.group(3))
+            if column != -1:
+                result['column'] = max(column - 1, 0)
+            else:
+                result['column'] = column
+
+        if result != None:
+            self.backward_sync_result = result
+        else:
+            self.backward_sync_result = None
 
 
 class QueryBuild(Query):
@@ -490,7 +532,7 @@ class QueryBuild(Query):
         self.mark_done()
 
 
-class QuerySync(Query):
+class QueryForwardSync(Query):
 
     def __init__(self, tex_filename, build_pathname, synctex_arguments):
         Query.__init__(self)
@@ -499,14 +541,30 @@ class QuerySync(Query):
         self.build_pathname = build_pathname
         self.synctex_args = synctex_arguments
 
-        self.synctex_regex = ServiceLocator.get_synctex_regex()
+        self.forward_synctex_regex = ServiceLocator.get_forward_synctex_regex()
 
     def execute(self):
-        self.sync()
+        self.forward_sync()
         self.mark_done()
 
 
-class QueryBuildAndSync(Query):
+class QueryBackwardSync(Query):
+
+    def __init__(self, tex_filename, build_pathname, backward_sync_data):
+        Query.__init__(self)
+
+        self.tex_filename = tex_filename
+        self.build_pathname = build_pathname
+        self.backward_sync_data = backward_sync_data
+
+        self.backward_synctex_regex = ServiceLocator.get_backward_synctex_regex()
+
+    def execute(self):
+        self.backward_sync()
+        self.mark_done()
+
+
+class QueryBuildAndForwardSync(Query):
 
     def __init__(self, text, tex_filename, latex_interpreter, additional_arguments, do_cleanup, synctex_arguments):
         Query.__init__(self)
@@ -526,7 +584,7 @@ class QueryBuildAndSync(Query):
         self.badbox_line_number_regex = ServiceLocator.get_build_log_badbox_line_number_regex()
         self.other_line_number_regex = ServiceLocator.get_build_log_other_line_number_regex()
         self.bibtex_log_item_regex = ServiceLocator.get_bibtex_log_item_regex()
-        self.synctex_regex = ServiceLocator.get_synctex_regex()
+        self.forward_synctex_regex = ServiceLocator.get_forward_synctex_regex()
         self.force_building_to_stop = False
 
         self.latex_interpreter = latex_interpreter
@@ -544,7 +602,7 @@ class QueryBuildAndSync(Query):
 
     def execute(self):
         self.build()
-        self.sync()
+        self.forward_sync()
         self.mark_done()
 
 
