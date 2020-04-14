@@ -143,7 +143,7 @@ class HeaderbarPresenter(object):
         if document != None and document.is_latex_document():
             headerbar.build_wrapper.set_center_widget(document.build_widget.view)
             if document.build_widget.view.has_result():
-                document.build_widget.view.hide_timer(4000)
+                document.build_widget.view.hide_timer(1600)
 
     def setup_modified_transform(self):
         headerbar = self.main_window.headerbar

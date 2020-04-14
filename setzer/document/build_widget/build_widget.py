@@ -103,7 +103,7 @@ class BuildWidget(Observable):
         self.view.stop_timer()
         self.view.show_result(message)
         if self.view.get_parent() != None:
-            self.view.hide_timer(4000)
+            self.view.hide_timer(1600)
 
     def build_document_request(self, button_object=None):
         if self.document.filename == None:
