@@ -47,13 +47,13 @@ class PageView(Gtk.VBox):
         self.headerbar_subtitle = ''
 
     def set_document_settings_page(self):
-        self.headerbar_subtitle = 'Step 2'
+        self.headerbar_subtitle = _('Step') + ' 2'
         self.content = Gtk.HBox()
         self.left_content = Gtk.VBox()
         self.right_content = Gtk.VBox()
         self.right_content.set_margin_left(18)
 
-        self.subheader_page_format = Gtk.Label('Page format')
+        self.subheader_page_format = Gtk.Label(_('Page format'))
         self.subheader_page_format.get_style_context().add_class('document-wizard-subheader')
         self.subheader_page_format.set_xalign(0)
 
@@ -66,17 +66,17 @@ class PageView(Gtk.VBox):
         self.page_format_list.set_vexpand(False)
 
         self.orientation_box = Gtk.HBox()
-        self.option_portrait = Gtk.RadioButton('Portrait')
-        self.option_landscape = Gtk.RadioButton.new_with_label_from_widget(self.option_portrait, 'Landscape')
+        self.option_portrait = Gtk.RadioButton(_('Portrait'))
+        self.option_landscape = Gtk.RadioButton.new_with_label_from_widget(self.option_portrait, _('Landscape'))
         self.orientation_box.pack_start(self.option_portrait, True, True, 0)
         self.orientation_box.pack_start(self.option_landscape, True, True, 0)
         self.orientation_box.set_margin_top(6)
 
-        self.subheader_margins = Gtk.Label('Page margins')
+        self.subheader_margins = Gtk.Label(_('Page margins'))
         self.subheader_margins.get_style_context().add_class('document-wizard-subheader')
         self.subheader_margins.set_xalign(0)
         self.subheader_margins.set_margin_top(18)
-        self.option_default_margins = Gtk.CheckButton.new_with_label('Use default margins')
+        self.option_default_margins = Gtk.CheckButton.new_with_label(_('Use default margins'))
 
         self.margins_box = Gtk.VBox()
         self.margins_button_left = Gtk.SpinButton.new_with_range(0.0, 5.0, 0.1)
@@ -104,12 +104,12 @@ class PageView(Gtk.VBox):
         self.margins_box.get_style_context().add_class('margins-box')
         self.margins_box.set_size_request(348, -1)
 
-        self.margins_description = Gtk.Label('All values are in cm (1 inch ≅ 2.54 cm).')
+        self.margins_description = Gtk.Label(_('All values are in cm (1 inch ≅ 2.54 cm).'))
         self.margins_description.set_xalign(0)
         self.margins_description.set_margin_top(6)
         self.margins_description.get_style_context().add_class('document-wizard-desc')
 
-        self.subheader_font_size = Gtk.Label('Font size')
+        self.subheader_font_size = Gtk.Label(_('Font size'))
         self.subheader_font_size.get_style_context().add_class('document-wizard-subheader')
         self.subheader_font_size.set_xalign(0)
         self.subheader_font_size.set_size_request(348, -1)

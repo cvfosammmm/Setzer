@@ -86,7 +86,7 @@ class LetterSettingsPageView(PageView):
         PageView.__init__(self)
         self.set_document_settings_page()
             
-        self.header.set_text('Letter settings')
+        self.header.set_text(_('Letter settings'))
 
         self.pack_start(self.header, False, False, 0)
 

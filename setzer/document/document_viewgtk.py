@@ -44,13 +44,13 @@ class DocumentView(Gtk.HBox):
         self.source_view.set_left_margin(6)
         self.scrolled_window.add(self.source_view)
 
-        self.menu_item_undo = Gtk.MenuItem.new_with_label('Undo')
-        self.menu_item_redo = Gtk.MenuItem.new_with_label('Redo')
-        self.menu_item_cut = Gtk.MenuItem.new_with_label('Cut')
-        self.menu_item_copy = Gtk.MenuItem.new_with_label('Copy')
-        self.menu_item_paste = Gtk.MenuItem.new_with_label('Paste')
-        self.menu_item_delete = Gtk.MenuItem.new_with_label('Delete')
-        self.menu_item_select_all = Gtk.MenuItem.new_with_label('Select All')
+        self.menu_item_undo = Gtk.MenuItem.new_with_label(_('Undo'))
+        self.menu_item_redo = Gtk.MenuItem.new_with_label(_('Redo'))
+        self.menu_item_cut = Gtk.MenuItem.new_with_label(_('Cut'))
+        self.menu_item_copy = Gtk.MenuItem.new_with_label(_('Copy'))
+        self.menu_item_paste = Gtk.MenuItem.new_with_label(_('Paste'))
+        self.menu_item_delete = Gtk.MenuItem.new_with_label(_('Delete'))
+        self.menu_item_select_all = Gtk.MenuItem.new_with_label(_('Select All'))
         self.context_menu = Gtk.Menu()
         self.context_menu.append(self.menu_item_undo)
         self.context_menu.append(self.menu_item_redo)
@@ -64,7 +64,7 @@ class DocumentView(Gtk.HBox):
 
         if document.is_latex_document():
             self.context_menu.append(Gtk.SeparatorMenuItem())
-            self.menu_item_show_in_preview = Gtk.MenuItem.new_with_label('Show in Preview')
+            self.menu_item_show_in_preview = Gtk.MenuItem.new_with_label(_('Show in Preview'))
             self.context_menu.append(self.menu_item_show_in_preview)
 
         self.vbox.pack_start(self.scrolled_window, True, True, 0)

@@ -30,7 +30,7 @@ class IncludeLaTeXFile(Dialog):
 
     def __init__(self, main_window):
         self.main_window = main_window
-        self.pathtypes = ['Relative Path', 'Absolute Path']
+        self.pathtypes = {'rel' : _('Relative Path'), 'abs' : _('Absolute Path')}
         self.current_values = dict()
 
         self.view = view.IncludeLaTeXFileView(self.main_window)
@@ -60,12 +60,12 @@ class IncludeLaTeXFile(Dialog):
 
     def init_current_values(self):
         self.current_values['filename'] = ''
-        self.current_values['pathtype'] = 'Relative Path'
+        self.current_values['pathtype'] = 'rel'
     
     def setup(self):
         file_filter1 = Gtk.FileFilter()
         file_filter1.add_pattern('*.tex')
-        file_filter1.set_name('LaTeX Files')
+        file_filter1.set_name(_('LaTeX Files'))
         self.view.file_chooser_button.add_filter(file_filter1)
 
         first_button = None
@@ -73,7 +73,7 @@ class IncludeLaTeXFile(Dialog):
             self.view.pathtype_buttons[pathtype] = Gtk.RadioButton()
             if first_button == None: first_button = self.view.pathtype_buttons[pathtype]
             box = Gtk.HBox()
-            box.pack_start(Gtk.Label(pathtype), False, False, 0)
+            box.pack_start(Gtk.Label(self.pathtypes[pathtype]), False, False, 0)
             box.set_margin_right(6)
             box.set_margin_left(4)
             self.view.pathtype_buttons[pathtype].add(box)
@@ -99,7 +99,7 @@ class IncludeLaTeXFile(Dialog):
         self.current_values['pathtype'] = pathtype
 
     def get_display_filename(self):
-        if self.current_values['pathtype'] == 'Relative Path':
+        if self.current_values['pathtype'] == 'rel':
             document_dir = os.path.dirname(self.document.get_filename())
             return os.path.relpath(self.current_values['filename'], document_dir)
         else:

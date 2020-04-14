@@ -48,7 +48,7 @@ class AddRemovePackagesDialogView(object):
 
     def create_headerbar(self):
         self.headerbar = self.dialog.get_header_bar()
-        self.headerbar.set_title('Add / Remove Packages')
+        self.headerbar.set_title(_('Add / Remove Packages'))
         self.headerbar.show_all()
 
     def create_add_box(self):
@@ -74,7 +74,7 @@ class AddRemovePackagesDialogView(object):
         self.add_description.set_width_chars(30)
         self.add_details.pack_start(self.add_description, False, False, 0)
         self.add_button = Gtk.Button()
-        self.add_button.set_label('Add Package')
+        self.add_button.set_label(_('Add Package'))
         add_button_wrapper = Gtk.HBox()
         add_button_wrapper.pack_start(self.add_button, False, False, 0)
         self.add_button.get_style_context().add_class('suggested-action')
@@ -112,7 +112,7 @@ class AddRemovePackagesDialogView(object):
         self.remove_description.set_width_chars(30)
         self.remove_details.pack_start(self.remove_description, False, False, 0)
         self.remove_button = Gtk.Button()
-        self.remove_button.set_label('Remove Package')
+        self.remove_button.set_label(_('Remove Package'))
         remove_button_wrapper = Gtk.HBox()
         remove_button_wrapper.pack_start(self.remove_button, False, False, 0)
         self.remove_details.pack_start(remove_button_wrapper, False, False, 0)

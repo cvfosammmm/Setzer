@@ -52,7 +52,7 @@ class SpellcheckingLanguageDialog(Dialog):
         self.view.set_transient_for(self.main_window)
 
         self.headerbar = Gtk.HeaderBar()
-        self.headerbar.set_title('Spellchecking Language')
+        self.headerbar.set_title(_('Spellchecking Language'))
         self.headerbar.show_all()
         action_area = self.view.get_action_area()
         cancel_button = action_area.get_children()[0]

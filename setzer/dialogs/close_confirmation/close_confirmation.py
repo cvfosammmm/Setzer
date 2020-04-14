@@ -83,12 +83,12 @@ class CloseConfirmationDialog(Dialog):
         self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
 
         if len(documents) == 1:
-            self.view.set_property('text', 'Document »' + documents[0].get_displayname() + '« has unsaved changes.')
-            self.view.format_secondary_markup('If you close without saving, these changes will be lost.')
+            self.view.set_property('text', _('Document »{document}« has unsaved changes.').format(document=documents[0].get_displayname()))
+            self.view.format_secondary_markup(_('If you close without saving, these changes will be lost.'))
 
         if len(documents) >= 2:
-            self.view.set_property('text', 'There are ' + str(len(documents)) + ' documents with unsaved changes.\nSave changes before closing?')
-            self.view.format_secondary_markup('Select the documents you want to save:')
+            self.view.set_property('text', _('There are {amount} documents with unsaved changes.\nSave changes before closing?').format(amount=str(len(documents))))
+            self.view.format_secondary_markup(_('Select the documents you want to save:'))
             label = self.view.get_message_area().get_children()[1]
             label.set_xalign(0)
             label.set_halign(Gtk.Align.START)
@@ -110,7 +110,7 @@ class CloseConfirmationDialog(Dialog):
                 listboxrow.set_can_focus(False)
             scrolled_window.add(self.chooser)
                 
-            secondary_text_label = Gtk.Label('If you close without saving, all changes will be lost.')
+            secondary_text_label = Gtk.Label(_('If you close without saving, all changes will be lost.'))
             message_area = self.view.get_message_area()
             message_area.pack_start(scrolled_window, False, False, 0)
             message_area.pack_start(secondary_text_label, False, False, 0)

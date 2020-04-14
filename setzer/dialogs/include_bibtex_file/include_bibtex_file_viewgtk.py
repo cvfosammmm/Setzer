@@ -45,17 +45,17 @@ class IncludeBibTeXFileView(object):
         self.content = Gtk.VBox()
         self.content.set_margin_left(18)
         self.content.set_margin_right(18)
-        label = Gtk.Label('BibTeX file to include')
+        label = Gtk.Label(_('BibTeX file to include'))
         label.set_xalign(0)
         label.set_margin_bottom(3)
         label.set_margin_top(18)
         self.content.pack_start(label, False, False, 0)
         self.file_chooser_button = Gtk.FileChooserButton()
         #self.file_chooser_button.set_can_focus(False)
-        self.file_chooser_button.set_title('Select a BibTeX File')
+        self.file_chooser_button.set_title(_('Select a BibTeX File'))
         self.content.pack_start(self.file_chooser_button, False, False, 0)
 
-        label = Gtk.Label('Bibliography style')
+        label = Gtk.Label(_('Bibliography style'))
         label.set_xalign(0)
         label.set_margin_bottom(3)
         label.set_margin_top(18)
@@ -71,7 +71,7 @@ class IncludeBibTeXFileView(object):
         self.natbib_style_buttons = dict()
         self.content.pack_start(self.natbib_style_switcher, False, False, 0)
 
-        self.natbib_option = Gtk.CheckButton('Show bibliography styles for the \'natbib\' package')
+        self.natbib_option = Gtk.CheckButton(_('Show bibliography styles for the \'natbib\' package'))
         self.natbib_option.set_margin_top(18)
         self.natbib_option.set_can_focus(False)
         self.content.pack_start(self.natbib_option, False, False, 0)
@@ -104,7 +104,7 @@ class IncludeBibTeXFileView(object):
     def create_headerbar(self):
         self.headerbar = self.dialog.get_header_bar()
         self.headerbar.set_show_close_button(False)
-        self.headerbar.set_title('Include BibTeX file')
+        self.headerbar.set_title(_('Include BibTeX file'))
 
         self.cancel_button = self.dialog.add_button('_Cancel', Gtk.ResponseType.CANCEL)
         self.cancel_button.set_can_focus(False)

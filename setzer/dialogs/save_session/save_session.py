@@ -64,7 +64,7 @@ class SaveSessionDialog(Dialog):
     def setup(self):
         self.action = Gtk.FileChooserAction.SAVE
         self.buttons = ('_Cancel', Gtk.ResponseType.CANCEL, '_Save', Gtk.ResponseType.OK)
-        self.view = Gtk.FileChooserDialog('Save Session', self.main_window, self.action, self.buttons)
+        self.view = Gtk.FileChooserDialog(_('Save Session'), self.main_window, self.action, self.buttons)
 
         self.view.set_do_overwrite_confirmation(True)
 

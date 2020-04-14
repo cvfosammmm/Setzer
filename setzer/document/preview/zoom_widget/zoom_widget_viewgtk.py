@@ -52,7 +52,7 @@ class PreviewZoomWidget(Gtk.HBox):
         self.zoom_level_button.set_direction(Gtk.ArrowType.DOWN)
         self.zoom_level_button.set_focus_on_click(False)
         self.zoom_level_button.set_popover(popover)
-        self.zoom_level_button.set_tooltip_text('Set zoom level')
+        self.zoom_level_button.set_tooltip_text(_('Set zoom level'))
         self.zoom_level_button.get_style_context().add_class('flat')
         self.zoom_level_button.get_style_context().add_class('zoom_level_button')
         self.zoom_level_button.set_can_focus(False)

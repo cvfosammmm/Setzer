@@ -46,8 +46,8 @@ class DocumentChangedOnDiskDialog(Dialog):
     def setup(self, document):
         self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
 
-        self.view.set_property('text', 'Document »' + document.get_displayname() + '« has changed on disk.')
-        self.view.format_secondary_markup('Should Setzer reload it now?')
+        self.view.set_property('text', _('Document »{document}« has changed on disk.').format(document=document.get_displayname()))
+        self.view.format_secondary_markup(_('Should Setzer reload it now?'))
 
         self.view.add_buttons('_Keep the current Version', Gtk.ResponseType.CANCEL, '_Reload from Disk', Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)

@@ -44,7 +44,7 @@ class OpenDocumentDialog(Dialog):
     def setup(self):
         self.action = Gtk.FileChooserAction.OPEN
         self.buttons = ('_Cancel', Gtk.ResponseType.CANCEL, '_Open', Gtk.ResponseType.OK)
-        self.view = Gtk.FileChooserDialog('Open', self.main_window, self.action, self.buttons)
+        self.view = Gtk.FileChooserDialog(_('Open'), self.main_window, self.action, self.buttons)
 
         headerbar = self.view.get_header_bar()
         if headerbar != None:
@@ -57,7 +57,7 @@ class OpenDocumentDialog(Dialog):
         file_filter1 = Gtk.FileFilter()
         file_filter1.add_pattern('*.tex')
         file_filter1.add_pattern('*.bib')
-        file_filter1.set_name('LaTeX and BibTeX Files')
+        file_filter1.set_name(_('LaTeX and BibTeX Files'))
         self.view.add_filter(file_filter1)
 
         self.view.set_select_multiple(False)

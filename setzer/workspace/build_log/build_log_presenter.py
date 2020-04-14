@@ -54,14 +54,14 @@ class BuildLogPresenter(object):
                 time_string = ''
             if errors == 0:
                 if warnings == 0:
-                    self.view.header_label.set_markup('<b>Building successful</b> (' + time_string + 'no warnings or badboxes).')
+                    self.view.header_label.set_markup('<b>' + _('Building successful') + '</b> (' + time_string + _('no warnings or badboxes') + ').')
                 else:
-                    self.view.header_label.set_markup('<b>Building successful</b> (' + time_string + str(warnings) + ' warning' + ('s' if warnings > 1 else '') + ' or badbox' + ('es' if warnings > 1 else '') + ').')
+                    self.view.header_label.set_markup('<b>' + _('Building successful') + '</b> (' + time_string + _('{amount} warning(s) or badbox(es)').format(amount=str(warnings)) + ').')
             else:
                 if warnings == 0:
-                    self.view.header_label.set_markup('<b>Building failed with ' + str(errors) + ' error' + ('s' if errors > 1 else '') + '</b> (no warnings or badboxes).')
+                    self.view.header_label.set_markup('<b>' + _('Building failed with {amount} error(s)').format(amount=str(errors)) + '</b> (' + _('no warnings or badboxes') + ').')
                 else:
-                    self.view.header_label.set_markup('<b>Building failed with ' + str(errors) + ' error' + ('s' if errors > 1 else '') + '</b> (' + str(warnings) + ' warning' + ('s' if warnings > 1 else '') + ' or badbox' + ('es' if warnings > 1 else '') + ').')
+                    self.view.header_label.set_markup('<b>' + _('Building failed with {amount} error(s)').format(amount=str(errors)) + '</b> (' + _('{amount} warning(s) or badbox(es)').format(amount=str(warnings)) + ').')
         else:
             self.view.header_label.set_markup('')
     

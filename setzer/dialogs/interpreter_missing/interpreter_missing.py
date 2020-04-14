@@ -43,12 +43,12 @@ class InterpreterMissingDialog(Dialog):
     def setup(self, interpreter_name):
         self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
 
-        self.view.set_property('text', 'LateX Interpreter is missing.')
-        self.view.format_secondary_markup('''Setzer is configured to use »''' + interpreter_name + '''« which seems to be missing on this system.
+        self.view.set_property('text', _('LateX Interpreter is missing.'))
+        self.view.format_secondary_markup(_('''Setzer is configured to use »{interpreter}« which seems to be missing on this system.
 
 To choose a different interpreter go to Preferences.
 
-For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibooks.org/wiki/LaTeX/Installation</a>''')
+For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibooks.org/wiki/LaTeX/Installation</a>''').format(interpreter=interpreter_name))
 
         self.view.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Go to Preferences', Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)

@@ -54,7 +54,7 @@ class DocumentWizardView(object):
     def create_headerbar(self):
         self.headerbar = self.dialog.get_header_bar()
         self.headerbar.set_show_close_button(False)
-        self.headerbar.set_title('Create a template document')
+        self.headerbar.set_title(_('Create a template document'))
         self.headerbar.set_subtitle('')
 
         self.cancel_button = self.dialog.add_button('_Cancel', Gtk.ResponseType.CANCEL)

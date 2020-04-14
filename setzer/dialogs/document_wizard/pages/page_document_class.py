@@ -34,7 +34,7 @@ class DocumentClassPage(Page):
 
     def observe_view(self):
         def row_selected(box, row, user_data=None):
-            child_name = row.get_child().get_text().lower()
+            child_name = self.view.document_classes[row.get_child().get_text()]
             self.current_values['document_class'] = child_name
             self.view.preview_container.set_visible_child_name(child_name)
 
@@ -56,20 +56,21 @@ class DocumentClassPageView(PageView):
     def __init__(self):
         PageView.__init__(self)
             
-        self.header.set_text('Choose a document class')
-        self.headerbar_subtitle = 'Step 1: Choose document class'
+        self.header.set_text(_('Choose a document class'))
+        self.headerbar_subtitle = _('Step') + ' 1: ' + _('Choose a document class')
         self.content = Gtk.HBox()
         
         self.list = Gtk.ListBox()
         self.list.set_can_focus(True)
         self.list.set_size_request(348, -1)
         self.list_rows = dict()
-        for name in ['Beamer', 'Letter', 'Book', 'Report', 'Article']:
+        self.document_classes = {_('Beamer'): 'beamer', _('Letter'): 'letter', _('Book'): 'book', _('Report'): 'report', _('Article'): 'article'}
+        for name in self.document_classes:
             label = Gtk.Label(name)
             label.set_xalign(0)
             self.list.prepend(label)
         for row in self.list.get_children():
-            self.list_rows[row.get_child().get_text().lower()] = row
+            self.list_rows[self.document_classes[row.get_child().get_text()]] = row
             row.set_can_focus(True)
         self.list.set_margin_right(0)
         self.list.set_vexpand(False)
@@ -78,11 +79,11 @@ class DocumentClassPageView(PageView):
         self.preview_container = Gtk.Stack()
         self.preview_container.set_size_request(366, -1)
         self.preview_data = list()
-        self.preview_data.append({'name': 'article', 'image': 'article1.svg', 'text': '<b>Article:</b>  For articles in scientific journals, term\npapers, handouts, short reports, ...\n\nThis class on its own is pretty simplistic and\nis often used as a starting point for more\ncustom layouts.'})
-        self.preview_data.append({'name': 'book', 'image': 'book1.svg', 'text': '<b>Book:</b>  For actual books containing many chapters\nand sections.'})
-        self.preview_data.append({'name': 'report', 'image': 'report1.svg', 'text': '<b>Report:</b>  For longer reports and articles containing\nmore than one chapter, small books, thesis.'})
-        self.preview_data.append({'name': 'letter', 'image': 'letter1.svg', 'text': '<b>Letter:</b>  For writing letters.'})
-        self.preview_data.append({'name': 'beamer', 'image': 'beamer1.svg', 'text': '<b>Beamer:</b>  A class for making presentation slides\nwith LaTeX.\n\nThere are many predefined presentation styles.'})
+        self.preview_data.append({'name': 'article', 'image': 'article1.svg', 'text': _('<b>Article:</b>  For articles in scientific journals, term\npapers, handouts, short reports, ...\n\nThis class on its own is pretty simplistic and\nis often used as a starting point for more\ncustom layouts.')})
+        self.preview_data.append({'name': 'book', 'image': 'book1.svg', 'text': _('<b>Book:</b>  For actual books containing many chapters\nand sections.')})
+        self.preview_data.append({'name': 'report', 'image': 'report1.svg', 'text': _('<b>Report:</b>  For longer reports and articles containing\nmore than one chapter, small books, thesis.')})
+        self.preview_data.append({'name': 'letter', 'image': 'letter1.svg', 'text': _('<b>Letter:</b>  For writing letters.')})
+        self.preview_data.append({'name': 'beamer', 'image': 'beamer1.svg', 'text': _('<b>Beamer:</b>  A class for making presentation slides\nwith LaTeX.\n\nThere are many predefined presentation styles.')})
         for item in self.preview_data:
             box = Gtk.VBox()
             image = Gtk.Image.new_from_file(os.path.join(ServiceLocator.get_resources_path(), 'document_wizard', item['image']))

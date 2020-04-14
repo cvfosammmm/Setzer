@@ -34,15 +34,15 @@ class BuildWidgetView(Gtk.HBox):
         
         self.build_button = Gtk.Button.new_from_icon_name('builder-build-symbolic', Gtk.IconSize.MENU)
         self.build_button.set_focus_on_click(False)
-        self.build_button.set_tooltip_text('Build .pdf-file from document (F6)')
+        self.build_button.set_tooltip_text(_('Build .pdf-file from document') + ' (F6)')
 
         self.stop_button = Gtk.Button.new_from_icon_name('process-stop-symbolic', Gtk.IconSize.MENU)
         self.stop_button.set_focus_on_click(False)
-        self.stop_button.set_tooltip_text('Stop building')
+        self.stop_button.set_tooltip_text(_('Stop building'))
 
         self.clean_button = Gtk.Button.new_from_icon_name('brush-symbolic', Gtk.IconSize.MENU)
         self.clean_button.set_focus_on_click(False)
-        self.clean_button.set_tooltip_text('Cleanup build files')
+        self.clean_button.set_tooltip_text(_('Cleanup build files'))
 
         self.build_timer = Gtk.Revealer()
         self.build_timer.set_transition_type(Gtk.RevealerTransitionType.CROSSFADE)

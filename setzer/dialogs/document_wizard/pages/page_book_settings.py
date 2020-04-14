@@ -100,9 +100,9 @@ class BookSettingsPageView(PageView):
         PageView.__init__(self)
         self.set_document_settings_page()
 
-        self.header.set_text('Book settings')
+        self.header.set_text(_('Book settings'))
 
-        self.subheader_options = Gtk.Label('Options')
+        self.subheader_options = Gtk.Label(_('Options'))
         self.subheader_options.get_style_context().add_class('document-wizard-subheader')
         self.subheader_options.set_xalign(0)
         self.subheader_options.set_margin_top(18)

@@ -116,14 +116,14 @@ class BeamerSettingsPageView(PageView):
     def __init__(self):
         PageView.__init__(self)
             
-        self.header.set_text('Beamer settings')
-        self.headerbar_subtitle = 'Step 2: Beamer settings'
+        self.header.set_text(_('Beamer settings'))
+        self.headerbar_subtitle = _('Step') + ' 2:' + _('Beamer settings')
         self.content = Gtk.HBox()
         self.form = Gtk.VBox()
         
         self.theme_names = ['Warsaw', 'Malmoe', 'Luebeck', 'Copenhagen', 'Szeged', 'Singapore', 'Frankfurt', 'Darmstadt', 'Dresden', 'Ilmenau', 'Berlin', 'Hannover', 'Marburg', 'Goettingen', 'PaloAlto', 'Berkeley', 'Montpellier', 'JuanLesPins', 'Antibes', 'Rochester', 'Pittsburgh', 'EastLansing', 'CambridgeUS', 'AnnArbor', 'Madrid', 'Boadilla', 'Bergen', 'default']
 
-        self.subheader_themes = Gtk.Label('Themes')
+        self.subheader_themes = Gtk.Label(_('Themes'))
         self.subheader_themes.get_style_context().add_class('document-wizard-subheader')
         self.subheader_themes.set_xalign(0)
 
@@ -145,15 +145,15 @@ class BeamerSettingsPageView(PageView):
         self.themes_list.get_style_context().add_class('document-wizard-list2')
         self.themes_list_scrolled_window.add(self.themes_list)
         
-        self.subheader_options = Gtk.Label('Options')
+        self.subheader_options = Gtk.Label(_('Options'))
         self.subheader_options.get_style_context().add_class('document-wizard-subheader')
         self.subheader_options.set_margin_top(18)
         self.subheader_options.set_xalign(0)
         
-        self.option_show_navigation = Gtk.CheckButton.new_with_label('Show navigation buttons')
-        self.option_top_align = Gtk.CheckButton.new_with_label('Align content to the top of pages')
+        self.option_show_navigation = Gtk.CheckButton.new_with_label(_('Show navigation buttons'))
+        self.option_top_align = Gtk.CheckButton.new_with_label(_('Align content to the top of pages'))
         self.option_top_align.get_style_context().add_class('has-desc')
-        self.option_top_align_desc = Gtk.Label('("t" option, it\'s centered by default)')
+        self.option_top_align_desc = Gtk.Label(_('("t" option, it\'s centered by default)'))
         self.option_top_align_desc.get_style_context().add_class('document-wizard-option-desc')
         self.option_top_align_desc.set_xalign(0)
         
