@@ -110,8 +110,8 @@ for folder in folders:
         arguments = ['inkscape', '--export-png=temp.png', '../setzer/resources/symbols/' + folder + '/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
         process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         process.wait()
-        output, _ = process.communicate()
-        output = output.decode('utf8')
+        output = process.communicate()
+        output = output[0].decode('utf8')
         width_match = width_regex.search(output)
         
         process.kill()

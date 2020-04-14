@@ -179,7 +179,7 @@ class Query(object):
                             self.build_result = {'error': 'interpreter_missing',
                                                  'error_arg': arguments[0]}
                         return
-                    _ = self.process.communicate()
+                    self.process.communicate()
                     try:
                         self.process.wait()
                     except AttributeError:
