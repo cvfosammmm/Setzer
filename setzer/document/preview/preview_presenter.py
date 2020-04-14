@@ -143,19 +143,6 @@ class PreviewPresenter(object):
                 ctx.rectangle(0, 0, self.layouter.page_width, self.layouter.page_height)
                 ctx.fill()
 
-                try:
-                    rectangles = self.layouter.visible_synctex_rectangles[page_number]
-                except KeyError: pass
-                else:
-                    time_factor = self.ease(min(4.25 - (time.time() - self.preview.visible_synctex_rectangles_time), 0.25) * 4)
-                    if time_factor < 0:
-                        self.preview.set_synctex_rectangles(list())
-                    else:
-                        ctx.set_source_rgba(0.976, 0.941, 0.420, 0.6 * time_factor)
-                        for rectangle in rectangles:
-                            ctx.rectangle(rectangle['x'], rectangle['y'], rectangle['width'], rectangle['height'])
-                        ctx.fill()
-
                 if page_number in self.page_renderer.rendered_pages:
                     rendered_page_data = self.page_renderer.rendered_pages[page_number]
                     surface = rendered_page_data[0]
@@ -171,6 +158,22 @@ class PreviewPresenter(object):
                             ctx.set_source_surface(surface, 0, 0)
                             ctx.paint()
                             ctx.set_matrix(matrix)
+
+                try:
+                    rectangles = self.layouter.visible_synctex_rectangles[page_number]
+                except KeyError: pass
+                else:
+                    time_factor = self.ease(min(4.25 - (time.time() - self.preview.visible_synctex_rectangles_time), 0.25) * 4)
+                    if time_factor < 0:
+                        self.preview.set_synctex_rectangles(list())
+                    else:
+                        ctx.set_source_rgba(0.976, 0.941, 0.420, 0.6 * time_factor)
+                        ctx.set_operator(cairo.Operator.MULTIPLY)
+                        for rectangle in rectangles:
+                            ctx.rectangle(rectangle['x'], rectangle['y'], rectangle['width'], rectangle['height'])
+                        ctx.fill()
+                        ctx.set_operator(cairo.Operator.OVER)
+
                 ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, self.layouter.page_height + self.layouter.page_gap))
 
     def ease(self, factor): return (factor - 1)**3 + 1
