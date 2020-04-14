@@ -218,8 +218,10 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def on_menu_find_clicked(self, action=None, parameter=None):
         active_document = self.workspace.get_active_document()
-        active_document.view.shortcuts_bar_bottom.button_find.set_active(True)
-        GLib.idle_add(active_document.search.search_entry_grab_focus, None)
+        if active_document.view.shortcuts_bar_bottom.button_find.get_active():
+            GLib.idle_add(active_document.search.search_entry_grab_focus, None)
+        else:
+            active_document.view.shortcuts_bar_bottom.button_find.set_active(True)
 
     @_assert_has_active_document
     def find_next(self, action=None, parameter=None):
@@ -236,8 +238,10 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def on_menu_find_replace_clicked(self, action=None, parameter=None):
         active_document = self.workspace.get_active_document()
-        active_document.view.shortcuts_bar_bottom.button_find_and_replace.set_active(True)
-        GLib.idle_add(active_document.search.search_entry_grab_focus, None)
+        if active_document.view.shortcuts_bar_bottom.button_find_and_replace.get_active():
+            GLib.idle_add(active_document.search.search_entry_grab_focus, None)
+        else:
+            active_document.view.shortcuts_bar_bottom.button_find_and_replace.set_active(True)
 
     @_assert_has_active_document
     def on_close_all_clicked(self, action=None, parameter=None):

@@ -94,7 +94,7 @@ class Search(object):
     def on_search_entry_activate(self, entry=None):
         self.on_search_next_match(entry, True)
         self.document_view.source_view.grab_focus()
-        
+
     def on_search_next_match(self, entry=None, include_current_highlight=False):
         if self.document.get_buffer() != None:
             buffer = self.document.get_buffer()
@@ -244,7 +244,12 @@ class Search(object):
         
     def search_entry_grab_focus(self, args=None):
         entry = self.document_view.search_bar.entry
-        entry.grab_focus()
+        did_set_text = self.set_text_current_selection()
+        entry.grab_focus_without_selecting()
+        entry.set_position(entry.get_text_length())
+        if not did_set_text:
+            entry.select_region(0, entry.get_text_length())
+            self.on_search_entry_changed(entry)
 
     def set_mode_search(self):
         self.search_bar_mode = 'search'
@@ -254,6 +259,22 @@ class Search(object):
         self.search_bar_mode = 'replace'
         self.search_bar.replace_wrapper.show_all()
         
+    def set_text_current_selection(self):
+        buff = self.document.get_buffer()
+        if buff != None and buff.get_has_selection():
+            bounds = buff.get_selection_bounds()
+            if len(bounds) > 0:
+                if bounds[1].get_offset() - bounds[0].get_offset() <= 100:
+                    selection = buff.get_text(bounds[0], bounds[1], True)
+                else:
+                    end = bounds[0].copy()
+                    end.forward_chars(100)
+                    selection = buff.get_text(bounds[0], end, True)
+                search_bar = self.document_view.search_bar
+                search_bar.entry.set_text(selection)
+                return True
+        return False
+
     '''
     *** control match counter
     '''
