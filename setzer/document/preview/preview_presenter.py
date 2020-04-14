@@ -34,6 +34,8 @@ class PreviewPresenter(object):
         self.page_renderer = page_renderer
         self.view = view
 
+        self.highlight_duration = 1.5
+
         self.view.drawing_area.connect('draw', self.draw)
         self.scrolling_queue = queue.Queue()
         self.view.drawing_area.connect('size-allocate', self.scrolling_loop)
@@ -96,7 +98,7 @@ class PreviewPresenter(object):
 
     def start_fade_loop(self):
         def draw():
-            timer = (4.25 - time.time() + self.preview.visible_synctex_rectangles_time)
+            timer = (self.highlight_duration + 0.25 - time.time() + self.preview.visible_synctex_rectangles_time)
             if timer <= 0.4:
                 self.view.drawing_area.queue_draw()
             return timer >= 0
@@ -163,7 +165,7 @@ class PreviewPresenter(object):
                     rectangles = self.layouter.visible_synctex_rectangles[page_number]
                 except KeyError: pass
                 else:
-                    time_factor = self.ease(min(4.25 - (time.time() - self.preview.visible_synctex_rectangles_time), 0.25) * 4)
+                    time_factor = self.ease(min(self.highlight_duration + 0.25 - (time.time() - self.preview.visible_synctex_rectangles_time), 0.25) * 4)
                     if time_factor < 0:
                         self.preview.set_synctex_rectangles(list())
                     else:
