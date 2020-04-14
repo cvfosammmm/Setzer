@@ -68,8 +68,6 @@ class Document(Observable):
     def init_buffer(self):
         self.source_buffer = GtkSource.Buffer()
 
-        self.source_buffer.create_tag('synctex_highlight', background_rgba=Gdk.RGBA(0.976, 0.941, 0.420, 0.6), background_full_height=True)
-
         resources_path = ServiceLocator.get_resources_path()
 
         # set source language for syntax highlighting
@@ -305,7 +303,9 @@ class LaTeXDocument(Document):
         self.can_backward_sync = False
         self.backward_sync_data = None
         self.synctex_highlight_time = None
-        GObject.timeout_add(50, self.remove_synctex_tags)
+        self.source_buffer.create_tag('synctex_highlight', background_rgba=Gdk.RGBA(0.976, 0.941, 0.420, 0.6), background_full_height=True)
+        self.synctex_highlight_tag = self.source_buffer.get_tag_table().lookup('synctex_highlight')
+        GObject.timeout_add(15, self.remove_or_color_synctex_tags)
 
         self.preview = preview.Preview(self)
         self.state_manager = state_manager_latex.StateManagerLaTeX(self)
@@ -435,19 +435,27 @@ class LaTeXDocument(Document):
                 start.forward_chars(ws_number)
 
                 buff.place_cursor(start)
+                #self.synctex_tag_count += 1
+                self.synctex_highlight_tag.set_property('background-rgba', Gdk.RGBA(0.976, 0.941, 0.420, 0.6))
                 self.source_buffer.apply_tag_by_name('synctex_highlight', start, end)
+                #self.visible_synctex_tags.append(self.synctex_tag_count)
                 self.synctex_highlight_time = time.time()
                 self.view.source_view.scroll_mark_onscreen(buff.get_insert())
 
-    def remove_synctex_tags(self):
+    def remove_or_color_synctex_tags(self):
         buff = self.get_buffer()
         if buff != None:
             if self.synctex_highlight_time == None: return True
-            if time.time() - self.synctex_highlight_time > 1.65:
-                start = self.source_buffer.get_start_iter()
-                end = self.source_buffer.get_end_iter()
-                self.source_buffer.remove_tag_by_name('synctex_highlight', start, end)
-                self.synctex_highlight_time = None
+            time_factor = time.time() - self.synctex_highlight_time
+            if time_factor > 1.5:
+                if time_factor <= 1.75:
+                    opacity_factor = 1 - (time_factor - 1.5) * 4
+                    self.synctex_highlight_tag.set_property('background-rgba', Gdk.RGBA(0.976, 0.941, 0.420, opacity_factor * 0.6))
+                else:
+                    start = self.source_buffer.get_start_iter()
+                    end = self.source_buffer.get_end_iter()
+                    self.source_buffer.remove_tag_by_name('synctex_highlight', start, end)
+                    self.synctex_highlight_time = None
         return True
 
     def get_folded_regions(self):
