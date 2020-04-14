@@ -18,6 +18,8 @@
 import gi
 gi.require_version('GtkSource', '3.0')
 from gi.repository import GtkSource
+from gi.repository import Gdk
+from gi.repository import GObject
 
 import os.path
 import time
@@ -65,6 +67,8 @@ class Document(Observable):
         
     def init_buffer(self):
         self.source_buffer = GtkSource.Buffer()
+
+        self.source_buffer.create_tag('synctex_highlight', background_rgba=Gdk.RGBA(0.976, 0.941, 0.420, 0.6), background_full_height=True)
 
         resources_path = ServiceLocator.get_resources_path()
 
@@ -300,6 +304,8 @@ class LaTeXDocument(Document):
         self.can_forward_sync = False
         self.can_backward_sync = False
         self.backward_sync_data = None
+        self.synctex_highlight_time = None
+        GObject.timeout_add(50, self.remove_synctex_tags)
 
         self.preview = preview.Preview(self)
         self.state_manager = state_manager_latex.StateManagerLaTeX(self)
@@ -429,7 +435,20 @@ class LaTeXDocument(Document):
                 start.forward_chars(ws_number)
 
                 buff.place_cursor(start)
+                self.source_buffer.apply_tag_by_name('synctex_highlight', start, end)
+                self.synctex_highlight_time = time.time()
                 self.view.source_view.scroll_mark_onscreen(buff.get_insert())
+
+    def remove_synctex_tags(self):
+        buff = self.get_buffer()
+        if buff != None:
+            if self.synctex_highlight_time == None: return True
+            if time.time() - self.synctex_highlight_time > 1.65:
+                start = self.source_buffer.get_start_iter()
+                end = self.source_buffer.get_end_iter()
+                self.source_buffer.remove_tag_by_name('synctex_highlight', start, end)
+                self.synctex_highlight_time = None
+        return True
 
     def get_folded_regions(self):
         return self.code_folding.get_folded_regions()
