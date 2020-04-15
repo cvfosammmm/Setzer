@@ -65,7 +65,7 @@ class IncludeLaTeXFile(Dialog):
     def setup(self):
         file_filter1 = Gtk.FileFilter()
         file_filter1.add_pattern('*.tex')
-        file_filter1.set_name('LaTeX files')
+        file_filter1.set_name('LaTeX Files')
         self.view.file_chooser_button.add_filter(file_filter1)
 
         first_button = None

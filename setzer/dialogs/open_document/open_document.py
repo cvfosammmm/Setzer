@@ -57,7 +57,7 @@ class OpenDocumentDialog(Dialog):
         file_filter1 = Gtk.FileFilter()
         file_filter1.add_pattern('*.tex')
         file_filter1.add_pattern('*.bib')
-        file_filter1.set_name('LaTeX and BibTeX files')
+        file_filter1.set_name('LaTeX and BibTeX Files')
         self.view.add_filter(file_filter1)
 
         self.view.set_select_multiple(False)
