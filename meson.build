@@ -32,15 +32,21 @@ bindir = get_option('bindir')
 datadir = get_option('datadir')
 pymdir = py.get_install_dir()
 resourcesdir = join_paths(datadir, 'Setzer')
+localedir = get_option('localedir')
 
 config = configuration_data()
 config.set('setzer_version', meson.project_version())
+config.set('localedir_path', join_paths(prefix, localedir))
 config.set('resources_path', join_paths(prefix, resourcesdir, 'resources'))
 config.set('app_icons_path', join_paths(prefix, datadir, 'icons'))
 
 config_dev = config
+config_dev.set('localedir_path', '/tmp/usr/share/locale') # this is a workaround
 config_dev.set('resources_path', join_paths(meson.source_root(), 'data', 'resources'))
 config_dev.set('app_icons_path', join_paths(meson.source_root(), 'data'))
+
+# install translations
+subdir('po')
 
 # install python sources
 install_subdir(

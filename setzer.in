@@ -24,6 +24,7 @@ from gi.repository import Gio
 from gi.repository import GLib
 
 import sys, time
+import gettext
 
 from setzer.workspace.workspace import Workspace
 import setzer.workspace.workspace_viewgtk as view
@@ -39,7 +40,11 @@ class MainApplicationController(Gtk.Application):
 
     def do_activate(self):
         ''' Everything starts here. '''
-        
+
+        # setup gettext
+        gettext.install('setzer', localedir='@localedir_path@')
+
+        # get settings
         settings = ServiceLocator.get_settings()
 
         # init static variables
