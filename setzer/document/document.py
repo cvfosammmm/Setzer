@@ -25,6 +25,8 @@ from gi.repository import GObject
 
 import os.path
 import time
+import re
+import difflib
 
 import setzer.document.document_builder as document_builder
 import setzer.document.document_controller as document_controller
@@ -433,9 +435,9 @@ class LaTeXDocument(Document):
             self.set_build_mode('forward_sync')
             self.start_building()
 
-    def backward_sync(self, page, x, y):
+    def backward_sync(self, page, x, y, word, context):
         if self.can_backward_sync:
-            self.backward_sync_data = {'page': page, 'x': x, 'y': y}
+            self.backward_sync_data = {'page': page, 'x': x, 'y': y, 'word': word, 'context': context}
             self.set_build_mode('backward_sync')
             self.start_building()
 
@@ -473,25 +475,66 @@ class LaTeXDocument(Document):
     def set_synctex_position(self, position):
         buff = self.get_buffer()
         if buff != None:
-            if position['column'] == -1:
-                start = buff.get_iter_at_line(position['line'])
-                end = start.copy()
-                if not start.ends_line():
-                    end.forward_to_line_end()
+            start = buff.get_iter_at_line(position['line'])
+            end = start.copy()
+            if not start.ends_line():
+                end.forward_to_line_end()
+            text = buff.get_text(start, end, False)
 
-                text = buff.get_text(start, end, False)
+            matches = self.get_synctex_word_bounds(text, position['word'], position['context'])
+            if matches != None:
+                for word_bounds in matches:
+                    end = start.copy()
+                    new_start = start.copy()
+                    new_start.forward_chars(word_bounds[0])
+                    end.forward_chars(word_bounds[1])
+                    self.add_synctex_tag(new_start, end)
+            else:
                 ws_number = len(text) - len(text.lstrip())
                 start.forward_chars(ws_number)
+                self.add_synctex_tag(start, end)
 
-                buff.place_cursor(start)
-                self.synctex_tag_count += 1
-                self.source_buffer.create_tag('synctex_highlight-' + str(self.synctex_tag_count), background_rgba=Gdk.RGBA(0.976, 0.941, 0.420, 0.6), background_full_height=True)
-                tag = self.source_buffer.get_tag_table().lookup('synctex_highlight-' + str(self.synctex_tag_count))
-                self.source_buffer.apply_tag(tag, start, end)
-                if not self.synctex_highlight_tags:
-                    GObject.timeout_add(15, self.remove_or_color_synctex_tags)
-                self.synctex_highlight_tags[self.synctex_tag_count] = {'tag': tag, 'time': time.time()}
-                self.view.source_view.scroll_mark_onscreen(buff.get_insert())
+    def add_synctex_tag(self, start_iter, end_iter):
+        buff = self.get_buffer()
+        buff.place_cursor(start_iter)
+        self.synctex_tag_count += 1
+        self.source_buffer.create_tag('synctex_highlight-' + str(self.synctex_tag_count), background_rgba=Gdk.RGBA(0.976, 0.941, 0.420, 0.6), background_full_height=True)
+        tag = self.source_buffer.get_tag_table().lookup('synctex_highlight-' + str(self.synctex_tag_count))
+        self.source_buffer.apply_tag(tag, start_iter, end_iter)
+        if not self.synctex_highlight_tags:
+            GObject.timeout_add(15, self.remove_or_color_synctex_tags)
+        self.synctex_highlight_tags[self.synctex_tag_count] = {'tag': tag, 'time': time.time()}
+        self.view.source_view.scroll_mark_onscreen(buff.get_insert())
+
+    def get_synctex_word_bounds(self, text, word, context):
+        if not word: return None
+        word = word.split(' ')
+        if len(word) > 2:
+            word = word[:2]
+        word = ' '.join(word)
+        regex = re.escape(word)
+
+        for c in regex:
+            if ord(c) > 127:
+                regex = regex.replace(c, '(?:\w)')
+
+        matches = list()
+        top_score = 0.1
+        for match in re.finditer('(\W{0,1})' + regex.replace('\x1b', '(?:\w{2,3})').replace('\x1c', '(?:\w{2})').replace('\x1d', '(?:\w{2,3})').replace('\-', '(?:-{0,1})') + '(\W{0,1})', text):
+            offset1 = context.find(word)
+            offset2 = len(context) - offset1 - len(word)
+            match_text = text[max(match.start() - max(offset1, 0), 0):min(match.end() + max(offset2, 0), len(text))]
+            score = difflib.SequenceMatcher(None, match_text, context).ratio()
+            if bool(match.group(1)) or bool(match.group(2)):
+                if score > top_score + 0.1:
+                    top_score = score
+                    matches = [[match.start() + len(match.group(1)), match.end() - len(match.group(2))]]
+                elif score > top_score - 0.1:
+                    matches.append([match.start() + len(match.group(1)), match.end() - len(match.group(2))])
+        if len(matches) > 0:
+            return matches
+        else:
+            return None
 
     def remove_or_color_synctex_tags(self):
         buff = self.get_buffer()

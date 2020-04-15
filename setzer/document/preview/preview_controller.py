@@ -16,7 +16,9 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
+gi.require_version('Poppler', '0.18')
 gi.require_version('Gtk', '3.0')
+from gi.repository import Poppler
 from gi.repository import Gdk
 
 import math
@@ -112,6 +114,16 @@ class PreviewController(object):
         x = x_pixels / self.layouter.scale_factor
         y = y_pixels / self.layouter.scale_factor
         page += 1
-        self.preview.document.backward_sync(page, x, y)
+
+        with self.preview.poppler_document_lock:
+            poppler_page = self.preview.poppler_document.get_page(page - 1)
+            rect = Poppler.Rectangle()
+            rect.x1 = max(min(x, self.preview.page_width), 0)
+            rect.y1 = max(min(y, self.preview.page_height), 0)
+            rect.x2 = max(min(x, self.preview.page_width), 0)
+            rect.y2 = max(min(y, self.preview.page_height), 0)
+            word = poppler_page.get_selected_text(Poppler.SelectionStyle.WORD, rect)
+            context = poppler_page.get_selected_text(Poppler.SelectionStyle.LINE, rect)
+        self.preview.document.backward_sync(page, x, y, word, context)
 
 

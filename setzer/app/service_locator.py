@@ -38,7 +38,7 @@ class ServiceLocator(object):
     symbols_regex = re.compile('\\\\(label|include|input|bibliography)\{((?:\s|\w|\:|,)*)\}|\\\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}')
     blocks_regex = re.compile('\n.*\\\\(begin|end)\{((?:\w)*(?:\*){0,1})\}|\n.*\\\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{')
     forward_synctex_regex = re.compile('\nOutput:.*\nPage:([0-9]+)\nx:.*\ny:.*\nh:((?:[0-9]|\\.)+)\nv:((?:[0-9]|\\.)+)\nW:((?:[0-9]|\\.)+)\nH:((?:[0-9]|\\.)+)\nbefore:.*\noffset:.*\nmiddle:.*\nafter:.*')
-    backward_synctex_regex = re.compile('\nOutput:.*\nInput:(.*\\.tex)\nLine:([0-9]+)\nColumn:((?:[0-9]|-)+)\nOffset:((?:[0-9]|-)+)\nContext:.*\n')
+    backward_synctex_regex = re.compile('\nOutput:.*\nInput:(.*\\.tex)\nLine:([0-9]+)\nColumn:(?:[0-9]|-)+\nOffset:(?:[0-9]|-)+\nContext:.*\n')
 
     def init_main_window(main_window):
         ServiceLocator.main_window = main_window

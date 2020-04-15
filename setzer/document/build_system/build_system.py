@@ -480,11 +480,8 @@ class Query(object):
         if match != None and match.group(1) == self.build_pathname:
             result = dict()
             result['line'] = max(int(match.group(2)) - 1, 0)
-            column = int(match.group(3))
-            if column != -1:
-                result['column'] = max(column - 1, 0)
-            else:
-                result['column'] = column
+            result['word'] = self.backward_sync_data['word']
+            result['context'] = self.backward_sync_data['context']
 
         if result != None:
             self.backward_sync_result = result
