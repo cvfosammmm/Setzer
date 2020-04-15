@@ -17,12 +17,10 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-gi.require_version('GtkSource', '3.0')
 from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
-from gi.repository import GtkSource
 
 import setzer.workspace.build_log.build_log_viewgtk as build_log_view
 import setzer.workspace.headerbar.headerbar_viewgtk as headerbar_view

@@ -16,8 +16,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
 
@@ -97,9 +95,7 @@ class WorkspaceController(object):
     def observe_document_chooser(self):
         document_chooser = self.main_window.headerbar.document_chooser
         document_chooser.connect('closed', self.on_document_chooser_closed)
-        search_buffer = document_chooser.search_entry.get_buffer()
-        search_buffer.connect('inserted-text', self.on_document_chooser_search_changed)
-        search_buffer.connect('deleted-text', self.on_document_chooser_search_changed)
+        document_chooser.search_entry.connect('search-changed', self.on_document_chooser_search_changed)
         auto_suggest_box = document_chooser.auto_suggest_box
         auto_suggest_box.connect('row-activated', self.on_document_chooser_selection)
         document_chooser.other_documents_button.connect('clicked', self.on_open_document_button_click)
@@ -123,7 +119,7 @@ class WorkspaceController(object):
         document_chooser.search_entry.set_text('')
         document_chooser.auto_suggest_box.unselect_all()
         
-    def on_document_chooser_search_changed(self, search_entry, position=None, chars1=None, chars2=None, user_data=None):
+    def on_document_chooser_search_changed(self, search_entry):
         self.main_window.headerbar.document_chooser.search_filter()
     
     def on_document_chooser_selection(self, box, row):
@@ -318,62 +314,19 @@ class WorkspaceController(object):
     @_assert_has_active_document
     def insert_before_document_end(self, action, parameter):
         document = self.workspace.get_active_document()
-        buffer = document.get_buffer()
-        end_iter = buffer.get_end_iter()
-        result = end_iter.backward_search('\\end{document}', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
-        if result != None:
-            document.insert_text_at_iter(result[0], '''
-''' + parameter[0] + '''
-
-''', False)
-        else:
-            document.insert_text_at_cursor(parameter[0])
+        document.insert_before_document_end(parameter[0])
 
     @_assert_has_active_document
     def add_packages(self, action, parameter):
         if parameter == None: return
-
         document = self.workspace.get_active_document()
-
-        first_package = True
-        text = ''
-        for packagename in parameter:
-            if not first_package: text += '\n'
-            text += '\\usepackage{' + packagename + '}'
-            first_package = False
-        
-        buffer = document.get_buffer()
-        end_iter = buffer.get_end_iter()
-        result = end_iter.backward_search('\\usepackage', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
-        if result != None:
-            result[0].forward_to_line_end()
-            document.insert_text_at_iter(result[0], '\n' + text)
-        else:
-            end_iter = buffer.get_end_iter()
-            result = end_iter.backward_search('\\documentclass', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
-            if result != None:
-                result[0].forward_to_line_end()
-                document.insert_text_at_iter(result[0], '\n' + text)
-            else:
-                document.insert_text_at_cursor(text)
+        document.add_packages(parameter)
 
     @_assert_has_active_document
     def remove_packages(self, action, parameter):
         if parameter == None: return
         document = self.workspace.get_active_document()
-
-        packages_dict = document.parser.symbols['packages_detailed']
-        for package in parameter:
-            try:
-                match_obj = packages_dict[package]
-            except KeyError: return
-            start_iter = document.source_buffer.get_iter_at_offset(match_obj.start())
-            end_iter = document.source_buffer.get_iter_at_offset(match_obj.end())
-            text = document.source_buffer.get_text(start_iter, end_iter, False)
-            if text == match_obj.group(0):  
-                if start_iter.get_line_offset() == 0:
-                    start_iter.backward_char()
-                document.source_buffer.delete(start_iter, end_iter)
+        document.remove_packages(parameter)
 
     @_assert_has_active_document
     def start_wizard(self, action, parameter=None):

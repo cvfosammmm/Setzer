@@ -17,6 +17,8 @@
 
 import gi
 gi.require_version('GtkSource', '3.0')
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 from gi.repository import GtkSource
 from gi.repository import Gdk
 from gi.repository import GObject
@@ -183,6 +185,55 @@ class Document(Observable):
         buff = self.get_buffer()
         buff.place_cursor(text_iter)
         self.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
+
+    def insert_before_document_end(self, text):
+        buffer = self.get_buffer()
+        end_iter = buffer.get_end_iter()
+        result = end_iter.backward_search('\\end{document}', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
+        if result != None:
+            self.insert_text_at_iter(result[0], '''
+''' + text + '''
+
+''', False)
+        else:
+            self.insert_text_at_cursor(text)
+
+    def add_packages(self, packages):
+        first_package = True
+        text = ''
+        for packagename in packages:
+            if not first_package: text += '\n'
+            text += '\\usepackage{' + packagename + '}'
+            first_package = False
+        
+        buffer = self.get_buffer()
+        end_iter = buffer.get_end_iter()
+        result = end_iter.backward_search('\\usepackage', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
+        if result != None:
+            result[0].forward_to_line_end()
+            self.insert_text_at_iter(result[0], '\n' + text)
+        else:
+            end_iter = buffer.get_end_iter()
+            result = end_iter.backward_search('\\documentclass', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
+            if result != None:
+                result[0].forward_to_line_end()
+                self.insert_text_at_iter(result[0], '\n' + text)
+            else:
+                self.insert_text_at_cursor(text)
+
+    def remove_packages(self, packages):
+        packages_dict = self.parser.symbols['packages_detailed']
+        for package in packages:
+            try:
+                match_obj = packages_dict[package]
+            except KeyError: return
+            start_iter = self.source_buffer.get_iter_at_offset(match_obj.start())
+            end_iter = self.source_buffer.get_iter_at_offset(match_obj.end())
+            text = self.source_buffer.get_text(start_iter, end_iter, False)
+            if text == match_obj.group(0):  
+                if start_iter.get_line_offset() == 0:
+                    start_iter.backward_char()
+                self.source_buffer.delete(start_iter, end_iter)
 
     def insert_text_at_iter(self, insert_iter, text, indent_lines=True):
         buff = self.get_buffer()

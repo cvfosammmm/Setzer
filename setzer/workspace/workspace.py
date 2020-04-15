@@ -90,15 +90,14 @@ class Workspace(Observable):
         if document.get_filename() == None:
             document.set_displayname('Untitled Document ' + str(self.untitled_documents_no + 1))
             self.untitled_documents_no += 1
-        if document.get_buffer() != None:
-            self.open_documents.append(document)
-            if document.is_latex_document():
-                self.open_latex_documents.append(document)
-                document.spellchecker.set_enabled(self.inline_spellchecking)
-                document.spellchecker.set_language(self.spellchecking_language_code)
-            document.state_manager.load_document_state()
-            self.add_change_code('new_document', document)
-            self.update_recently_opened_document(document.get_filename(), notify=True)
+        self.open_documents.append(document)
+        if document.is_latex_document():
+            self.open_latex_documents.append(document)
+            document.spellchecker.set_enabled(self.inline_spellchecking)
+            document.spellchecker.set_language(self.spellchecking_language_code)
+        document.state_manager.load_document_state()
+        self.add_change_code('new_document', document)
+        self.update_recently_opened_document(document.get_filename(), notify=True)
 
     def remove_document(self, document):
         if document == self.master_document:
