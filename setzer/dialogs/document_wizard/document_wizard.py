@@ -137,7 +137,7 @@ class DocumentWizard(Dialog):
         self.current_values['letter']['margin_top'] = 3.5
         self.current_values['letter']['margin_bottom'] = 3.5
         self.current_values['beamer'] = dict()
-        self.current_values['beamer']['theme'] = 'Default'
+        self.current_values['beamer']['theme'] = 'default'
         self.current_values['beamer']['option_show_navigation'] = True
         self.current_values['beamer']['option_top_align'] = True
     
