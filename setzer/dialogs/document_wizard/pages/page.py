@@ -47,7 +47,7 @@ class PageView(Gtk.VBox):
         self.headerbar_subtitle = ''
 
     def set_document_settings_page(self):
-        self.headerbar_subtitle = 'Step 2'
+        self.headerbar_subtitle = 'Step 2: Set page and font size'
         self.content = Gtk.HBox()
         self.left_content = Gtk.VBox()
         self.right_content = Gtk.VBox()
