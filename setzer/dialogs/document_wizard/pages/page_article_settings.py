@@ -100,7 +100,7 @@ class ArticleSettingsPageView(PageView):
         PageView.__init__(self)
         self.set_document_settings_page()
             
-        self.header.set_text('Article settings')
+        self.header.set_text(_('Article settings'))
 
         self.subheader_options = Gtk.Label('Options')
         self.subheader_options.get_style_context().add_class('document-wizard-subheader')

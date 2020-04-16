@@ -44,7 +44,7 @@ class OpenSessionDialog(Dialog):
     def setup(self):
         self.action = Gtk.FileChooserAction.OPEN
         self.buttons = ('_Cancel', Gtk.ResponseType.CANCEL, '_Open', Gtk.ResponseType.OK)
-        self.view = Gtk.FileChooserDialog('Load Session', self.main_window, self.action, self.buttons)
+        self.view = Gtk.FileChooserDialog(_('Load Session'), self.main_window, self.action, self.buttons)
 
         headerbar = self.view.get_header_bar()
         if headerbar != None:
@@ -56,7 +56,7 @@ class OpenSessionDialog(Dialog):
 
         file_filter1 = Gtk.FileFilter()
         file_filter1.add_pattern('*.stzs')
-        file_filter1.set_name('Setzer Session')
+        file_filter1.set_name(_('Setzer Session'))
         self.view.add_filter(file_filter1)
 
         self.view.set_select_multiple(False)

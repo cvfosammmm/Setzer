@@ -39,17 +39,17 @@ class Sidebar(object):
 
         # tabbed pages: name, icon name, tooltip, widget
         self.pages = list()
-        self.pages.append(['greek_letters', 'own-symbols-greek-letters-symbolic', 'Greek Letters', 
+        self.pages.append(['greek_letters', 'own-symbols-greek-letters-symbolic', _('Greek Letters'), 
                            'sidebar_view.SidebarPageSymbolsList("greek_letters", 25, ' + dm + ')'])
-        self.pages.append(['arrows', 'own-symbols-arrows-symbolic', 'Arrows', 
+        self.pages.append(['arrows', 'own-symbols-arrows-symbolic', _('Arrows'), 
                            'sidebar_view.SidebarPageSymbolsList("arrows", 48, ' + dm + ')'])
-        self.pages.append(['relations', 'own-symbols-relations-symbolic', 'Relations', 
+        self.pages.append(['relations', 'own-symbols-relations-symbolic', _('Relations'), 
                            'sidebar_view.SidebarPageSymbolsList("relations", 39, ' + dm + ')'])
-        self.pages.append(['operators', 'own-symbols-operators-symbolic', 'Operators', 
+        self.pages.append(['operators', 'own-symbols-operators-symbolic', _('Operators'), 
                            'sidebar_view.SidebarPageSymbolsList("operators", 47, ' + dm + ')'])
-        self.pages.append(['misc_math', 'own-symbols-misc-math-symbolic', 'Misc. Math', 
+        self.pages.append(['misc_math', 'own-symbols-misc-math-symbolic', _('Misc. Math'), 
                            'sidebar_view.SidebarPageSymbolsList("misc_math", 42, ' + dm + ')'])
-        self.pages.append(['misc_text', 'own-symbols-misc-text-symbolic', 'Misc. Symbols', 
+        self.pages.append(['misc_text', 'own-symbols-misc-text-symbolic', _('Misc. Symbols'), 
                            'sidebar_view.SidebarPageSymbolsList("misc_text", 38, ' + dm + ')'])
         self.page_views = list()
         self.init_page_stack()

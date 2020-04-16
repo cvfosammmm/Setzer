@@ -41,10 +41,10 @@ class BuildingFailedDialog(Dialog):
     def setup(self, error_message):
         self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
         
-        self.view.set_property('text', 'Something went wrong.')
-        self.view.format_secondary_markup('''The build process ended unexpectedly returning "''' + error_message + '''".
+        self.view.set_property('text', _('Something went wrong.'))
+        self.view.format_secondary_markup(_('''The build process ended unexpectedly returning "{error_message}".
 
-To configure your build system go to Preferences.''')
+To configure your build system go to Preferences.''').format(error_message=error_message))
 
         self.view.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Go to Preferences', Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)

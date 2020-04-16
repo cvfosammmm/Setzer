@@ -45,16 +45,16 @@ class IncludeLaTeXFileView(object):
         self.content = Gtk.VBox()
         self.content.set_margin_left(18)
         self.content.set_margin_right(18)
-        label = Gtk.Label('LaTeX file to include')
+        label = Gtk.Label(_('LaTeX file to include'))
         label.set_xalign(0)
         label.set_margin_bottom(3)
         label.set_margin_top(18)
         self.content.pack_start(label, False, False, 0)
         self.file_chooser_button = Gtk.FileChooserButton()
-        self.file_chooser_button.set_title('Select a LaTeX File')
+        self.file_chooser_button.set_title(_('Select a LaTeX File'))
         self.content.pack_start(self.file_chooser_button, False, False, 0)
 
-        label = Gtk.Label('Type of path to included file')
+        label = Gtk.Label(_('Type of path to included file'))
         label.set_xalign(0)
         label.set_margin_bottom(3)
         label.set_margin_top(18)
@@ -76,7 +76,7 @@ class IncludeLaTeXFileView(object):
 
         self.description_revealer = Gtk.Revealer()
         description = Gtk.Label()
-        description.set_markup('<b>Relative Path:</b> Set the path relative to the main document.\nThis is useful when the included file is in the same folder as\nthe main document and you want to move around both of\nthem together. (recommended)\n\n<b>Absolute Path:</b> Specify the absolute location of the included\nfile in your filesystem.')
+        description.set_markup(_('<b>Relative Path:</b> Set the path relative to the main document.\nThis is useful when the included file is in the same folder as\nthe main document and you want to move around both of\nthem together.') + ' (' + _('recommended') + ')\n\n' + _('<b>Absolute Path:</b> Specify the absolute location of the included\nfile in your filesystem.'))
         description.set_xalign(0)
         description.set_margin_bottom(18)
         self.description_revealer.add(description)
@@ -88,7 +88,7 @@ class IncludeLaTeXFileView(object):
     def create_headerbar(self):
         self.headerbar = self.dialog.get_header_bar()
         self.headerbar.set_show_close_button(False)
-        self.headerbar.set_title('Include LaTeX file')
+        self.headerbar.set_title(_('Include LaTeX file'))
 
         self.cancel_button = self.dialog.add_button('_Cancel', Gtk.ResponseType.CANCEL)
         self.cancel_button.set_can_focus(False)

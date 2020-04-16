@@ -35,21 +35,21 @@ class AddRemovePackagesDialog(Dialog):
         self.main_window = main_window
         self.workspace = workspace
         self.packages = dict()
-        self.packages['amsfonts'] = {'command': 'amsfonts', 'description': 'additional math fonts from AMS.'}
-        self.packages['amsmath'] = {'command': 'amsmath', 'description': 'mathematics package from AMS.'}
-        self.packages['amssymb'] = {'command': 'amssymb', 'description': 'mathematical symbols from AMS.'}
-        self.packages['amsthm'] = {'command': 'amsthm', 'description': 'math theorems setting package from AMS.'}
-        self.packages['glossaries'] = {'command': 'glossaries', 'description': 'create a glossary for your document.'}
-        self.packages['graphicx'] = {'command': 'graphicx', 'description': 'include graphics in your document. (recommended)'}
-        self.packages['hyperref'] = {'command': 'hyperref', 'description': 'create hyperlinks within your document.'}
-        self.packages['listings'] = {'command': 'listings', 'description': 'provides the \\listing environment for embedding programming code.'}
-        self.packages['natbib'] = {'command': 'natbib', 'description': 'provides additional bibliography and citation styles.'}
-        self.packages['parskip'] = {'command': 'parskip', 'description': 'paragraphs without indentation.'}
-        self.packages['textcomp'] = {'command': 'textcomp', 'description': 'contains symbols to be used in textmode. (recommended)'}
-        self.packages['theorem'] = {'command': 'theorem', 'description': 'define theorem environments (like "definition", "lemma", ...) with custom styling.'}
-        self.packages['transparent'] = {'command': 'transparent', 'description': 'set transparency for sections in your document.'}
-        self.packages['url'] = {'command': 'url', 'description': 'type urls with the \\url{..} command without escaping them. (recommended)'}
-        self.packages['xcolor'] = {'command': 'xcolor', 'description': 'enables colored text. (recommended)'}
+        self.packages['amsfonts'] = {'command': 'amsfonts', 'description': _('additional math fonts from AMS.')}
+        self.packages['amsmath'] = {'command': 'amsmath', 'description': _('mathematics package from AMS.')}
+        self.packages['amssymb'] = {'command': 'amssymb', 'description': _('mathematical symbols from AMS.')}
+        self.packages['amsthm'] = {'command': 'amsthm', 'description': _('math theorems setting package from AMS.')}
+        self.packages['glossaries'] = {'command': 'glossaries', 'description': _('create a glossary for your document.')}
+        self.packages['graphicx'] = {'command': 'graphicx', 'description': _('include graphics in your document.') + ' (' + _('recommended') + ')'}
+        self.packages['hyperref'] = {'command': 'hyperref', 'description': _('create hyperlinks within your document.')}
+        self.packages['listings'] = {'command': 'listings', 'description': _('provides the \\listing environment for embedding programming code.')}
+        self.packages['natbib'] = {'command': 'natbib', 'description': _('provides additional bibliography and citation styles.')}
+        self.packages['parskip'] = {'command': 'parskip', 'description': _('paragraphs without indentation.')}
+        self.packages['textcomp'] = {'command': 'textcomp', 'description': _('contains symbols to be used in textmode.') + ' (' + _('recommended') + ')'}
+        self.packages['theorem'] = {'command': 'theorem', 'description': _('define theorem environments (like "definition", "lemma", ...) with custom styling.')}
+        self.packages['transparent'] = {'command': 'transparent', 'description': _('set transparency for sections in your document.')}
+        self.packages['url'] = {'command': 'url', 'description': _('type urls with the \\url{..} command without escaping them.') + ' (' + _('recommended') + ')'}
+        self.packages['xcolor'] = {'command': 'xcolor', 'description': _('enables colored text.') + ' (' + _('recommended') + ')'}
 
         self.current_values = dict()
 

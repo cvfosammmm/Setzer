@@ -241,6 +241,6 @@ class BlankSlate(Gtk.HBox):
     def __init__(self):
         Gtk.HBox.__init__(self)
         
-        self.pack_start(Gtk.Label("No open documents"), True, True, 0)
+        self.pack_start(Gtk.Label(_('No open documents')), True, True, 0)
         
 

@@ -116,7 +116,7 @@ class BuildLogRowView(Gtk.HBox):
         self.filename_display = os.path.basename(filename)
         self.file_number = file_number
         self.line_number = line_number
-        self.line_number_display = 'Line ' + str(line_number) if line_number >= 0 else ''
+        self.line_number_display = _('Line {number}').format(number=str(line_number)) if line_number >= 0 else ''
 
         self.icon_box = Gtk.VBox()
         self.icon = Gtk.Image.new_from_icon_name(self.icon_name, Gtk.IconSize.MENU)

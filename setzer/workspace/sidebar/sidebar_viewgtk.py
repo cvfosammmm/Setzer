@@ -104,7 +104,7 @@ class SidebarPageSymbolsList(SidebarPage):
             button.set_image(image)
             tooltip_text = symbol[1]
             if symbol[2] != None: 
-                tooltip_text += ' (Package: ' + symbol[2] + ')'
+                tooltip_text += ' (' + _('Package') + ': ' + symbol[2] + ')'
             button.set_tooltip_text(tooltip_text)
             symbol.append(button)
             self.flowbox.insert(button, -1)

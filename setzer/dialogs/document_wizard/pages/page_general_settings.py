@@ -84,17 +84,17 @@ class GeneralSettingsPageView(PageView):
     def __init__(self):
         PageView.__init__(self)
             
-        self.header.set_text('General document settings')
-        self.headerbar_subtitle = 'Step 3: General document settings'
+        self.header.set_text(_('General document settings'))
+        self.headerbar_subtitle = _('Step') + ' 3: ' + _('General document settings')
         self.content = Gtk.HBox()
         self.form = Gtk.VBox()
 
-        self.subheader_title = Gtk.Label('Title')
+        self.subheader_title = Gtk.Label(_('Title'))
         self.subheader_title.get_style_context().add_class('document-wizard-subheader')
         self.subheader_title.set_xalign(0)
         self.title_entry = Gtk.Entry()
         self.title_entry.set_margin_right(250)
-        self.subheader_author = Gtk.Label('Author')
+        self.subheader_author = Gtk.Label(_('Author'))
         self.subheader_author.get_style_context().add_class('document-wizard-subheader')
         self.subheader_author.set_xalign(0)
         self.author_entry = Gtk.Entry()
@@ -103,7 +103,7 @@ class GeneralSettingsPageView(PageView):
         self.author_box.pack_start(self.subheader_author, False, False, 0)
         self.author_box.pack_start(self.author_entry, False, False, 0)
         self.author_box.set_size_request(348, -1)
-        self.subheader_date = Gtk.Label('Date')
+        self.subheader_date = Gtk.Label(_('Date'))
         self.subheader_date.get_style_context().add_class('document-wizard-subheader')
         self.subheader_date.set_xalign(0)
         self.date_entry = Gtk.Entry()
@@ -117,7 +117,7 @@ class GeneralSettingsPageView(PageView):
         self.document_properties_hbox.pack_start(self.author_box, False, False, 0)
         self.document_properties_hbox.pack_start(self.date_box, False, False, 0)
 
-        self.subheader_packages = Gtk.Label('Packages')
+        self.subheader_packages = Gtk.Label(_('Packages'))
         self.subheader_packages.get_style_context().add_class('document-wizard-subheader')
         self.subheader_packages.set_margin_top(18)
         self.subheader_packages.set_xalign(0)
@@ -128,7 +128,7 @@ class GeneralSettingsPageView(PageView):
         self.packages_rightbox = Gtk.VBox()
         self.packages_rightbox.set_size_request(348, -1)
         self.option_packages = dict()
-        self.option_packages['ams'] = Gtk.CheckButton.new_with_label('AMS math packages')
+        self.option_packages['ams'] = Gtk.CheckButton.new_with_label(_('AMS math packages'))
         self.option_packages['textcomp'] = Gtk.CheckButton.new_with_label('textcomp')
         self.option_packages['graphicx'] = Gtk.CheckButton.new_with_label('graphicx')
         self.option_packages['xcolor'] = Gtk.CheckButton.new_with_label('xcolor')
@@ -153,16 +153,16 @@ class GeneralSettingsPageView(PageView):
         
         self.packages_tooltip = Gtk.Label()
         self.packages_tooltip_data = dict()
-        self.packages_tooltip_data['ams'] = '<b>AMS packages:</b> provide mathematical symbols, math-related environments, ... (recommended)'
-        self.packages_tooltip_data['textcomp'] = '<b>textcomp:</b> contains symbols to be used in textmode. (recommended)'
-        self.packages_tooltip_data['graphicx'] = '<b>graphicx:</b> include graphics in your document. (recommended)'
-        self.packages_tooltip_data['xcolor'] = '<b>xcolor:</b> enables colored text. (recommended)'
-        self.packages_tooltip_data['url'] = '<b>url:</b> type urls with the \\url{..} command without escaping them. (recommended)'
-        self.packages_tooltip_data['hyperref'] = '<b>hyperref:</b> create hyperlinks within your document.'
-        self.packages_tooltip_data['theorem'] = '<b>theorem:</b> define theorem environments (like "definition", "lemma", ...) with custom styling.'
-        self.packages_tooltip_data['listings'] = '<b>listings:</b> provides the \\listing environment for embedding programming code.'
-        self.packages_tooltip_data['glossaries'] = '<b>glossaries:</b> create a glossary for your document.'
-        self.packages_tooltip_data['parskip'] = '<b>parskip:</b> paragraphs without indentation.'
+        self.packages_tooltip_data['ams'] = _('<b>AMS packages:</b> provide mathematical symbols, math-related environments, ...') + ' (' + _('recommended') + ')'
+        self.packages_tooltip_data['textcomp'] = '<b>textcomp:</b> ' + _('contains symbols to be used in textmode.') + ' (' + _('recommended') + ')'
+        self.packages_tooltip_data['graphicx'] = '<b>graphicx:</b> ' + _('include graphics in your document.') + ' (' + _('recommended') + ')'
+        self.packages_tooltip_data['xcolor'] = '<b>xcolor:</b> ' + _('enables colored text.') + ' (' + _('recommended') + ')'
+        self.packages_tooltip_data['url'] = '<b>url:</b> ' + _('type urls with the \\url{..} command without escaping them.') + ' (' + _('recommended') + ')'
+        self.packages_tooltip_data['hyperref'] = '<b>hyperref:</b> ' + _('create hyperlinks within your document.')
+        self.packages_tooltip_data['theorem'] = '<b>theorem:</b> ' + _('define theorem environments (like "definition", "lemma", ...) with custom styling.')
+        self.packages_tooltip_data['listings'] = '<b>listings:</b> ' + _('provides the \\listing environment for embedding programming code.')
+        self.packages_tooltip_data['glossaries'] = '<b>glossaries:</b> ' + _('create a glossary for your document.')
+        self.packages_tooltip_data['parskip'] = '<b>parskip:</b> ' + _('paragraphs without indentation.')
         self.packages_tooltip.set_markup(' ')
         self.packages_tooltip.set_xalign(0)
         self.packages_tooltip.set_margin_top(12)

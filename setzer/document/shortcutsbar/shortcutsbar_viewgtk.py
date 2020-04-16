@@ -32,13 +32,13 @@ class ShortcutsBarBottom(Gtk.Toolbar):
 
         self.button_find_and_replace = Gtk.ToggleToolButton()
         self.button_find_and_replace.set_icon_name('edit-find-replace-symbolic')
-        self.button_find_and_replace.set_tooltip_text('Find and Replace (Ctrl+H)')
+        self.button_find_and_replace.set_tooltip_text(_('Find and Replace (Ctrl+H)'))
         self.button_find_and_replace.get_child().set_can_focus(False)
         self.insert(self.button_find_and_replace, 0)
         
         self.button_find = Gtk.ToggleToolButton()
         self.button_find.set_icon_name('edit-find-symbolic')
-        self.button_find.set_tooltip_text('Find (Ctrl+F)')
+        self.button_find.set_tooltip_text(_('Find (Ctrl+F)'))
         self.button_find.get_child().set_can_focus(False)
         self.insert(self.button_find, 0)
         self.show_all()
@@ -53,7 +53,7 @@ class WizardButton(Gtk.ToolButton):
         icon.set_margin_left(4)
         self.icon_widget.pack_start(icon, False, False, 0)
         self.label_revealer = Gtk.Revealer()
-        label = Gtk.Label('New Document Wizard')
+        label = Gtk.Label(_('New Document Wizard'))
         label.set_margin_left(6)
         label.set_margin_right(4)
         self.label_revealer.add(label)
@@ -64,7 +64,7 @@ class WizardButton(Gtk.ToolButton):
         self.set_icon_widget(self.icon_widget)
         self.set_action_name('win.show-document-wizard')
         self.get_child().set_can_focus(False)
-        self.set_tooltip_text('Create a template document')
+        self.set_tooltip_text(_('Create a template document'))
         self.show_all()
 
 

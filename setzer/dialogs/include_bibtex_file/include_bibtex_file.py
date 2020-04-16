@@ -92,7 +92,7 @@ class IncludeBibTeXFile(Dialog):
     def setup(self):
         file_filter1 = Gtk.FileFilter()
         file_filter1.add_pattern('*.bib')
-        file_filter1.set_name('BibTeX Files')
+        file_filter1.set_name(_('BibTeX Files'))
         self.view.file_chooser_button.add_filter(file_filter1)
 
         first_button = None

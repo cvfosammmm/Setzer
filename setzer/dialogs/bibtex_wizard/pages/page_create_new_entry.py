@@ -59,8 +59,8 @@ class CreateNewEntryPageView(PageView):
         PageView.__init__(self)
         self.document_types = document_types
             
-        self.header.set_text('Choose a document type')
-        self.headerbar_subtitle = 'Step 1: Choose document type'
+        self.header.set_text(_('Choose a document type'))
+        self.headerbar_subtitle = _('Step') + ' 1: ' + _('Choose a document type')
         self.content = Gtk.HBox()
 
         self.list_wrapper = Gtk.ScrolledWindow()
@@ -87,14 +87,14 @@ class CreateNewEntryPageView(PageView):
             label.set_line_wrap(True)
             markup = '<b>@' + document_type + '</b>\n\n'
             markup += attributes['description'] + '\n\n'
-            markup += 'Required fields: '
+            markup += _('Required fields') + ': '
             is_first = True
             for attribute in attributes['fields_required']:
                 if not is_first:
                     markup += ', '
                 is_first = False
                 markup += attribute
-            markup += '\n\nOptional fields: '
+            markup += '\n\n' + _('Optional fields') + ': '
             is_first = True
             for attribute in attributes['fields_optional']:
                 if not is_first:

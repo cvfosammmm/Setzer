@@ -99,13 +99,13 @@ class FieldsEntryPageView(Gtk.Overlay):
         self.vbox.set_margin_right(382)
         self.scrolled_window.add(self.vbox)
 
-        self.headerbar_subtitle = 'Step 2: Entry fields'
+        self.headerbar_subtitle = _('Step') + ' 2: ' + _('Entry fields')
 
         self.header1 = Gtk.Label()
         self.header1.set_xalign(0)
         self.header1.set_margin_bottom(12)
         self.header1.get_style_context().add_class('bibtex-wizard-header')
-        self.header1.set_text('Required fields')
+        self.header1.set_text(_('Required fields'))
 
         self.required_entry_views = dict()
         self.required_fields_entries = Gtk.VBox()
@@ -118,9 +118,9 @@ class FieldsEntryPageView(Gtk.Overlay):
         self.header2.set_margin_bottom(12)
         self.header2.set_margin_top(18)
         self.header2.get_style_context().add_class('bibtex-wizard-header')
-        self.header2.set_text('Optional fields')
+        self.header2.set_text(_('Optional fields'))
 
-        self.option_include_empty = Gtk.CheckButton.new_with_label('Insert empty optional fields')
+        self.option_include_empty = Gtk.CheckButton.new_with_label(_('Insert empty optional fields'))
         self.option_include_empty.set_margin_bottom(18)
 
         self.optional_entry_views = dict()

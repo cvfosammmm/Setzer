@@ -142,10 +142,10 @@ class DocumentBuilder(object):
                             error_count += 1
                     if error_count > 0:
                         error_color = helpers.theme_color_to_css(self.document.view.get_style_context(), 'error_color')
-                        message = '<span color="' + error_color + '">Failed</span> (' + str(error_count) + ' error' + ('s' if error_count > 1 else '') + ')!'
+                        message = '<span color="' + error_color + '">' + _('Failed') + '</span> (' + _('{amount} error(s)').format(amount=str(error_count)) + ')!'
                         self.document.show_build_state(message)
                     else:
-                        self.document.show_build_state('Success!')
+                        self.document.show_build_state(_('Success!'))
 
                     self.document.set_build_pathname(build_blob['build_pathname'])
                     self.document.has_been_built = True
