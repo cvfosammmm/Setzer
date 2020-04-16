@@ -222,7 +222,7 @@ class ShortcutsBar(Gtk.HBox):
         for command in ['newpage', 'linebreak', 'pagebreak', 'bigskip', 'medskip', 'smallskip']:
             self.pmb.add_action_button(box, '\\' + command, 'win.insert-symbol', ['\\' + command])
         self.pmb.add_action_button(box, '\\vspace', 'win.insert-symbol', ['\\vspace{•}'])
-        self.pmb.add_action_button(box, 'New Line (\\\\)', 'win.insert-symbol', ['\\\\\n'], keyboard_shortcut='Strg+Return')
+        self.pmb.add_action_button(box, 'New Line (\\\\)', 'win.insert-symbol', ['\\\\\n'], keyboard_shortcut='Ctrl+Return')
         stack.add_named(box, 'vertical_spacing')
         box.show_all()
 
