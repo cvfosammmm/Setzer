@@ -117,7 +117,7 @@ class BeamerSettingsPageView(PageView):
         PageView.__init__(self)
             
         self.header.set_text(_('Beamer settings'))
-        self.headerbar_subtitle = _('Step') + ' 2:' + _('Beamer settings')
+        self.headerbar_subtitle = _('Step') + ' 2: ' + _('Beamer settings')
         self.content = Gtk.HBox()
         self.form = Gtk.VBox()
         

@@ -101,13 +101,14 @@ class ReportSettingsPageView(PageView):
         self.set_document_settings_page()
 
         self.header.set_text(_('Report settings'))
+        self.headerbar_subtitle = _('Step') + ' 2: ' + _('Report settings')
 
         self.subheader_options = Gtk.Label(_('Options'))
         self.subheader_options.get_style_context().add_class('document-wizard-subheader')
         self.subheader_options.set_xalign(0)
         self.subheader_options.set_margin_top(18)
 
-        self.option_twocolumn = Gtk.CheckButton.new_with_label('Two-column layout')
+        self.option_twocolumn = Gtk.CheckButton.new_with_label(_('Two-column layout'))
 
         self.pack_start(self.header, False, False, 0)
 
