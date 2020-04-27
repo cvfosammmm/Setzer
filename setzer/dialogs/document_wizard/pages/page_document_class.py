@@ -34,7 +34,7 @@ class DocumentClassPage(Page):
 
     def observe_view(self):
         def row_selected(box, row, user_data=None):
-            child_name = self.view.document_classes[row.get_child().get_text()]
+            child_name = row.get_child().get_text().lower()
             self.current_values['document_class'] = child_name
             self.view.preview_container.set_visible_child_name(child_name)
 
@@ -64,13 +64,12 @@ class DocumentClassPageView(PageView):
         self.list.set_can_focus(True)
         self.list.set_size_request(348, -1)
         self.list_rows = dict()
-        self.document_classes = {_('Beamer'): 'beamer', _('Letter'): 'letter', _('Book'): 'book', _('Report'): 'report', _('Article'): 'article'}
-        for name in self.document_classes:
-            label = Gtk.Label(name)
+        for document_class in ['beamer', 'letter', 'book', 'report', 'article']:
+            label = Gtk.Label(document_class.title())
             label.set_xalign(0)
             self.list.prepend(label)
         for row in self.list.get_children():
-            self.list_rows[self.document_classes[row.get_child().get_text()]] = row
+            self.list_rows[row.get_child().get_text().lower()] = row
             row.set_can_focus(True)
         self.list.set_margin_right(0)
         self.list.set_vexpand(False)
