@@ -48,6 +48,11 @@
 	</provides>
 
     <releases>
+        <release version="0.2.4" date="2020-4-27">
+            <description>
+                <p>Initial backward synctex support, improved synctex highlighting, search UI improvements, ...</p>
+            </description>
+        </release>
         <release version="0.2.3" date="2020-4-11">
             <description>
                 <p>Session management, highlight passages on build, ...</p>
