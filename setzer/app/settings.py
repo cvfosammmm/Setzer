@@ -19,7 +19,6 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gspell', '1')
 from gi.repository import Gtk
-from gi.repository import GObject
 from gi.repository import Gspell
 import os.path
 import pickle
