@@ -21,7 +21,7 @@ Warning: Building Setzer this way may take a long time (~ 30 minutes on my lapto
 This way is probably a bit faster and may save you some disk space. I develop Setzer on Debian and that's what I tested it with. On Debian derivatives (like Ubuntu) it should probably work the same. On distributions other than Debian and Debian derivatives it should work more or less the same. If you want to run Setzer from source on another distribution and don't know how please open an issue here on GitHub. I will then try to provide instructions for your system.
 
 1. Run the following command to install prerequisite Debian packages:<br />
-`apt-get install libgtk-3-dev libgtksourceview-3.0-dev libpoppler-glib-dev libgspell-1-dev python3-xdg`
+`apt-get install python3-gi gir1.2-gtk-3.0 gir1.2-gtksource-3.0 gir1.2-gspell-1 gir1.2-poppler-0.18 python3-xdg`
 
 2. Download und Unpack Setzer from GitHub
 

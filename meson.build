@@ -4,33 +4,11 @@ project(
   license: 'GPL-3.0-or-later',
 )
 
-# runtime dependencies
-dependency('gtk+-3.0')
-dependency('gtksourceview-3.0')
-dependency('poppler-glib')
-dependency('gspell-1')
-
-# python configuration
-python_modules = [
-  'gi',
-  'xdg',
-]
-if meson.version().version_compare('>=0.51')
-  py = import('python').find_installation(modules: python_modules)
-else
-  py = import('python').find_installation()
-  foreach module: python_modules
-    if run_command(py, '-c', 'import @0@'.format(module)).returncode() != 0
-      error('Failed to find required python module "@0@".'.format(module))
-    endif
-  endforeach
-endif
-
 # configure folders
 prefix = get_option('prefix')
 bindir = get_option('bindir')
 datadir = get_option('datadir')
-pymdir = py.get_install_dir()
+pymdir = import('python').find_installation().get_install_dir()
 resourcesdir = join_paths(datadir, 'Setzer')
 localedir = get_option('localedir')
 
