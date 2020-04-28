@@ -11,6 +11,7 @@ datadir = get_option('datadir')
 pymdir = import('python').find_installation().get_install_dir()
 resourcesdir = join_paths(datadir, 'Setzer')
 localedir = get_option('localedir')
+mandir = get_option('mandir')
 
 config = configuration_data()
 config.set('setzer_version', meson.project_version())
@@ -52,6 +53,11 @@ install_data(
 install_data(
   join_paths('data', 'org.cvfosammmm.Setzer.appdata.xml'),
   install_dir: join_paths(datadir, 'metainfo'),
+)
+
+install_man(
+  join_paths('data', 'setzer.1'),
+  install_dir: mandir,
 )
 
 # install binary
