@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('GtkSource', '3.0')
+gi.require_version('GtkSource', '4')
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import GtkSource
