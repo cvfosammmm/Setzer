@@ -26,15 +26,19 @@
 
 	<screenshots>
     	<screenshot type="default">
+    	    <caption>Buttons and shortcuts for many LaTeX elements and special characters.</caption>
 			<image>https://www.cvfosammmm.org/setzer/images/screenshot-symbols-appdata.png</image>
 		</screenshot>
 		<screenshot>
+    	    <caption>Document creation wizard.</caption>
 			<image>https://www.cvfosammmm.org/setzer/images/screenshot-wizard-appdata.png</image>
 		</screenshot>
 		<screenshot>
+    	    <caption>Dark mode.</caption>
 			<image>https://www.cvfosammmm.org/setzer/images/screenshot-dark-mode-appdata.png</image>
 		</screenshot>
 		<screenshot>
+    	    <caption>Helpful error messages in the build log.</caption>
 			<image>https://www.cvfosammmm.org/setzer/images/screenshot-build-log-appdata.png</image>
 		</screenshot>
 	</screenshots>
