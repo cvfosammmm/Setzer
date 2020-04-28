@@ -76,7 +76,6 @@ class Document(Observable):
 
         # set source language for syntax highlighting
         self.source_language_manager = GtkSource.LanguageManager()
-        self.source_language_manager.set_search_path((os.path.join(resources_path, 'gtksourceview', 'language-specs'),))
         self.source_language = self.source_language_manager.get_language(self.get_gsv_language_name())
         self.source_buffer.set_language(self.source_language)
 
