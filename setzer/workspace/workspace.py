@@ -86,7 +86,7 @@ class Workspace(Observable):
             self.set_active_document(document)
     
     def add_document(self, document):
-        if self.open_documents.count(document) != 0: return False
+        if document in self.open_documents: return False
         if document.get_filename() == None:
             document.set_displayname(_('Untitled Document {number}').format(number=str(self.untitled_documents_no + 1)))
             self.untitled_documents_no += 1

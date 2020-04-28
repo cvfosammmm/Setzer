@@ -24,7 +24,7 @@ src_path = os.path.join(os.path.dirname(__file__), '..')
 bld_path = os.path.join(src_path, 'builddir')
 
 if os.path.isdir(bld_path):
-  sys.path.insert(0, src_path)
-  from builddir import setzer_dev
+    sys.path.insert(0, src_path)
+    from builddir import setzer_dev
 else:
-  print('Make sure to run `meson builddir` first.')
+    print('Make sure to run `meson builddir` first.')

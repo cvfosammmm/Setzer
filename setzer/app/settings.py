@@ -44,9 +44,6 @@ class Settings(Observable):
             self.data = self.defaults
             self.pickle()
             
-        # load gsettings schema concerning application menu / window decorations
-        self.button_layout = self.gtksettings.get_property('gtk-decoration-layout')
-    
     def set_defaults(self):
         self.defaults['window_state'] = dict()
         self.defaults['window_state']['width'] = 1020
