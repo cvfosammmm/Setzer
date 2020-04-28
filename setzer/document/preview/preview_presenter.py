@@ -75,10 +75,14 @@ class PreviewPresenter(object):
     def show_blank_slate(self):
         self.view.stack.set_visible_child_name('blank_slate')
         self.view.blank_slate.show_all()
+        self.view.external_viewer_button.set_sensitive(False)
+        self.view.external_viewer_button.hide()
 
     def show_pdf(self):
         self.view.stack.set_visible_child_name('pdf')
         self.view.scrolled_window.show_all()
+        self.view.external_viewer_button.set_sensitive(True)
+        self.view.external_viewer_button.show_all()
 
     def update_number_of_pages(self):
         if self.preview.pdf_filename != None:

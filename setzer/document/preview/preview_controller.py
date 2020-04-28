@@ -39,6 +39,7 @@ class PreviewController(object):
         self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_vadjustment_changed)
         self.view.scrolled_window.connect('scroll-event', self.on_scroll)
         self.view.drawing_area.connect('button-press-event', self.on_button_press)
+        self.view.external_viewer_button.connect('clicked', self.on_external_viewer_button_clicked)
 
         def zoom_in(menu_item): self.preview.zoom_in()
         self.view.menu_item_zoom_in.connect('activate', zoom_in)
@@ -104,6 +105,9 @@ class PreviewController(object):
         elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state == Gdk.ModifierType.CONTROL_MASK:
             self.init_backward_sync(event)
             return True
+
+    def on_external_viewer_button_clicked(self, button):
+        self.preview.open_external_viewer()
 
     def init_backward_sync(self, event):
         if not self.layouter.has_layout: return False

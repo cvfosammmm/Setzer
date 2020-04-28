@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="external-viewer-symbolic.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="704"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="11.313709"
+     inkscape:cx="-1.1827877"
+     inkscape:cy="-1.2754815"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <path
+     inkscape:connector-curvature="0"
+     id="path2"
+     overflow="visible"
+     style="color:#000000;font-weight:400;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;text-transform:none;white-space:normal;overflow:visible;fill:#2e3436"
+     d="m 9.3047326,1.0362528 0.7071064,0.7071068 c 0.182434,0.1824335 0.466691,0.2828428 0.730442,0.2877924 h 1.810193 l -3.2477414,3.247741 1.4142134,1.414214 3.248449,-3.2484484 7.07e-4,1.8123144 c 0.0049,0.263751 0.06788,0.5105311 0.287085,0.729734 l 0.707107,0.707107 0.707107,-0.707107 C 15.888604,5.767504 15.996084,5.532745 16.001034,5.25768 l -0.04526,-5.21561939 -5.213498,-0.0431335 c -0.274358,0.0056569 -0.509825,0.11243 -0.729028,0.3316331 z" />
+  <path
+     inkscape:connector-curvature="0"
+     id="path4"
+     overflow="visible"
+     style="color:#000000;font-weight:400;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;text-transform:none;text-orientation:mixed;white-space:normal;shape-padding:0;clip-rule:evenodd;overflow:visible;isolation:auto;mix-blend-mode:normal;solid-color:#000000;solid-opacity:1;fill:#2e3436;fill-rule:evenodd;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+     d="m 5.0160508,2.0688475 c -1.6714426,0.00875 -3.0242517,1.3615574 -3.033,3.033 v 5.8502035 c 0.00876,1.671114 1.361881,3.023345 3.033,3.031 h 1.1369713 v -2 H 5.0160508 c -0.59,0 -1.033,-0.441 -1.033,-1.03 V 5.1008475 c 0,-0.59 0.444,-1.033 1.033,-1.033 h 1.9833909 v -2 z"
+     sodipodi:nodetypes="ccccccssssccc" />
+  <path
+     inkscape:connector-curvature="0"
+     id="path4-3"
+     overflow="visible"
+     style="color:#000000;font-weight:400;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;text-transform:none;text-orientation:mixed;white-space:normal;shape-padding:0;clip-rule:evenodd;overflow:visible;isolation:auto;mix-blend-mode:normal;solid-color:#000000;solid-opacity:1;fill:#2e3436;fill-rule:evenodd;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+     d="m 1.9756012,10.942025 c 0.00875,1.671443 1.3615573,3.024252 3.033,3.033 h 5.8502038 c 1.671115,-0.0088 3.023346,-1.361881 3.031001,-3.033 l 0,-1.9369261 h -2.000001 l 0,1.9369261 c 0,0.59 -0.441,1.033001 -1.03,1.033001 l -5.8522038,-10e-7 c -0.5900001,0 -1.0330001,-0.444 -1.0330001,-1.033 V 9.0758218 H 1.9746012 Z"
+     sodipodi:nodetypes="ccccccssssccc" />
+</svg>

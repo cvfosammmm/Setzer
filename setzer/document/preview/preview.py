@@ -22,6 +22,7 @@ from gi.repository import Poppler
 import os.path
 import math
 import time
+import subprocess
 import _thread as thread
 
 import setzer.document.preview.preview_viewgtk as preview_view
@@ -264,5 +265,9 @@ class Preview(Observable):
             position = self.get_position_by_screen_offset(xoffset, yoffset)
             self.presenter.scroll_to_position(position)
             self.add_change_code('zoom_level_changed')
+
+    def open_external_viewer(self):
+        if self.pdf_filename != None:
+            subprocess.call(["xdg-open", self.pdf_filename])
 
 

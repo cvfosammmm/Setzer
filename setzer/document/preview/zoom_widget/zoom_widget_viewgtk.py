@@ -33,7 +33,6 @@ class PreviewZoomWidget(Gtk.HBox):
         self.zoom_in_button = Gtk.Button.new_from_icon_name('zoom-in-symbolic', Gtk.IconSize.MENU)
         self.zoom_in_button.set_tooltip_text('Zoom in')
         self.zoom_in_button.get_style_context().add_class('flat')
-        self.zoom_in_button.get_style_context().add_class('zoom_in_button')
         self.zoom_in_button.set_can_focus(False)
 
         popover = Gtk.PopoverMenu()
