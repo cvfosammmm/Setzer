@@ -95,6 +95,8 @@ class BeamerSettingsPage(Page):
             row = self.view.themes_list_rows[presets['beamer']['theme']]
         except TypeError:
             row = self.view.themes_list_rows[self.current_values['beamer']['theme']]
+        except KeyError:
+            row = self.view.themes_list_rows[self.current_values['beamer']['theme']]
         self.view.themes_list.select_row(row)
 
         for setter_function, value_name in [
