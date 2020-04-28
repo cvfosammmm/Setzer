@@ -4,9 +4,9 @@
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0+</project_license>
 	<content_rating type="oars-1.1" />
-	<name>Setzer</name>
+	<name translatable="no">Setzer</name>
 	<summary>Simple yet full-featured LaTeX editor</summary>
-    <developer_name>Cvfosammmm</developer_name>
+    <developer_name translatable="no">Cvfosammmm</developer_name>
 
 	<description>
 		<p>Setzer lets you Write LaTeX documents with an easy to use yet full-featured editor.</p>
@@ -23,6 +23,7 @@
 	</description>
 
 	<launchable type="desktop-id">org.cvfosammmm.Setzer.desktop</launchable>
+    <translation type="gettext">setzer</translation>
 
 	<screenshots>
     	<screenshot type="default">
