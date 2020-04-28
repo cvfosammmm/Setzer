@@ -35,7 +35,7 @@ class PreviewView(Gtk.VBox):
         self.action_bar.pack_start(self.paging_widget, False, False, 0)
 
         self.external_viewer_button = Gtk.Button.new_from_icon_name('external-viewer-symbolic', Gtk.IconSize.MENU)
-        self.external_viewer_button.set_tooltip_text('External Viewer')
+        self.external_viewer_button.set_tooltip_text(_('External Viewer'))
         self.external_viewer_button.get_style_context().add_class('flat')
         self.external_viewer_button.set_can_focus(False)
         self.action_bar.pack_end(self.external_viewer_button, False, False, 0)
