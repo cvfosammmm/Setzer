@@ -1,17 +1,20 @@
+#
+# Cvfosammmm <r.griesel@gmail.com>, 2020.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
 "POT-Creation-Date: 2020-04-28 15:26+0200\n"
-"PO-Revision-Date: 2020-04-28 15:30+0200\n"
-"Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
-"Language-Team: German\n"
+"PO-Revision-Date: 2020-04-28 22:36+0200\n"
+"Last-Translator: Cvfosammmm <r.griesel@gmail.com>\n"
+"Language-Team: German <r.griesel@gmail.com>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 3.36.0\n"
+"X-Generator: Gtranslator 3.30.1\n"
 
 #: setzer/dialogs/about/about.py:44
 msgid "Setzer is a LaTeX editor."
@@ -131,7 +134,7 @@ msgstr ""
 #: setzer/dialogs/document_wizard/pages/page_report_settings.py:104
 #: setzer/dialogs/document_wizard/pages/page.py:50
 msgid "Step"
-msgstr ""
+msgstr "Schritt"
 
 #: setzer/dialogs/bibtex_wizard/pages/page_create_new_entry.py:90
 #: setzer/dialogs/bibtex_wizard/pages/page_fields_entry.py:108
@@ -934,21 +937,21 @@ msgstr ""
 #: setzer/document/autocomplete/autocomplete.py:579
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:74
 msgid "Bold Text"
-msgstr ""
+msgstr "Fett"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:93
 #: setzer/document/autocomplete/autocomplete.py:581
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:65
 msgid "Italic Text"
-msgstr ""
+msgstr "Kursiv"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:94
 msgid "Underlined Text"
-msgstr ""
+msgstr "Unterstrichen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:95
 msgid "Typewriter Text"
-msgstr ""
+msgstr "Schreibmaschine"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:96
 msgid "Emphasized Text"
@@ -1022,7 +1025,7 @@ msgstr ""
 #: setzer/dialogs/preferences/preferences_viewgtk.py:40
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:126
 msgid "Preferences"
-msgstr ""
+msgstr "Einstellungen"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:53
 msgid "Build System"
@@ -1485,15 +1488,15 @@ msgstr ""
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:84
 msgid "New LaTeX Document"
-msgstr ""
+msgstr "Neues LaTeX Dokument"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:85
 msgid "New BibTeX Document"
-msgstr ""
+msgstr "Neues BibTeX Dokument"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:92
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:101
 msgid "Toggle preview"
@@ -1519,11 +1522,11 @@ msgstr ""
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:128
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Tastenkombinationen"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:129
 msgid "About"
-msgstr "Über"
+msgstr "Info"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:131
 msgid "Close All Documents"
@@ -1961,27 +1964,27 @@ msgstr ""
 
 #: setzer/workspace/sidebar/sidebar.py:42
 msgid "Greek Letters"
-msgstr ""
+msgstr "Griechische Buchstaben"
 
 #: setzer/workspace/sidebar/sidebar.py:44
 msgid "Arrows"
-msgstr ""
+msgstr "Pfeile"
 
 #: setzer/workspace/sidebar/sidebar.py:46
 msgid "Relations"
-msgstr ""
+msgstr "Relationen"
 
 #: setzer/workspace/sidebar/sidebar.py:48
 msgid "Operators"
-msgstr ""
+msgstr "Operatoren"
 
 #: setzer/workspace/sidebar/sidebar.py:50
 msgid "Misc. Math"
-msgstr ""
+msgstr "Verschiedene math. Symbole"
 
 #: setzer/workspace/sidebar/sidebar.py:52
 msgid "Misc. Symbols"
-msgstr ""
+msgstr "Verschiedene Symbole"
 
 #: setzer/workspace/workspace_viewgtk.py:244
 msgid "No open documents"
@@ -1990,4 +1993,4 @@ msgstr ""
 #: setzer/workspace/workspace.py:91
 #, python-brace-format
 msgid "Untitled Document {number}"
-msgstr ""
+msgstr "Unbenanntes Dokument {number}"
