@@ -17,10 +17,9 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-gi.require_version('GtkSource', '3.0')
 from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository import GtkSource, Pango
+from gi.repository import Pango
 
 import setzer.helpers.helpers as helpers
 import setzer.document.autocomplete.autocomplete_viewgtk as view
