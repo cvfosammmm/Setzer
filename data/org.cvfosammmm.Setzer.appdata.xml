@@ -50,117 +50,117 @@
     <releases>
         <release version="0.2.5" date="2020-4-28">
             <description>
-                <p>Bug fix</p>
+                <p translatable="no">Bug fix</p>
             </description>
         </release>
         <release version="0.2.4" date="2020-4-27">
             <description>
-                <p>Initial backward synctex support, improved synctex highlighting, search UI improvements, ...</p>
+                <p translatable="no">Initial backward synctex support, improved synctex highlighting, search UI improvements, ...</p>
             </description>
         </release>
         <release version="0.2.3" date="2020-4-11">
             <description>
-                <p>Session management, highlight passages on build, ...</p>
+                <p translatable="no">Session management, highlight passages on build, ...</p>
             </description>
         </release>
         <release version="0.2.2" date="2020-4-2">
             <description>
-                <p>Zoom level popover for the .pdf preview, preview should use far less memory now, ...</p>
+                <p translatable="no">Zoom level popover for the .pdf preview, preview should use far less memory now, ...</p>
             </description>
         </release>
         <release version="0.2.1" date="2020-3-19">
             <description>
-                <p>Bug fixes</p>
+                <p translatable="no">Bug fixes</p>
             </description>
         </release>
         <release version="0.2.0" date="2020-3-18">
             <description>
-                <p>Enable embedded system commands, document modified on disk dialog, option to highlight current line, option to highlight matching brackets, ...</p>
+                <p translatable="no">Enable embedded system commands, document modified on disk dialog, option to highlight current line, option to highlight matching brackets, ...</p>
             </description>
         </release>
         <release version="0.1.9" date="2020-2-18">
             <description>
-                <p>Add/remove packages dialog, improved HiDPI support, ...</p>
+                <p translatable="no">Add/remove packages dialog, improved HiDPI support, ...</p>
             </description>
         </release>
         <release version="0.1.8" date="2020-1-25">
             <description>
-                <p>Keyboard shortcuts in popovers, more commands in shortcuts bar, ...</p>
+                <p translatable="no">Keyboard shortcuts in popovers, more commands in shortcuts bar, ...</p>
             </description>
         </release>
         <release version="0.1.7" date="2020-1-18">
             <description>
-                <p>More commands in shortcuts bar, autocomplete now case insensitive, ...</p>
+                <p translatable="no">More commands in shortcuts bar, autocomplete now case insensitive, ...</p>
             </description>
         </release>
         <release version="0.1.6" date="2020-1-13">
             <description>
-                <p>HiDPI support in .pdf preview, presistent code folding, ...</p>
+                <p translatable="no">HiDPI support in .pdf preview, presistent code folding, ...</p>
             </description>
         </release>
         <release version="0.1.5" date="2020-1-3">
             <description>
-                <p>Initial code folding support, ...</p>
+                <p translatable="no">Initial code folding support, ...</p>
             </description>
         </release>
         <release version="0.1.4" date="2019-12-28">
             <description>
-                <p>References to existing labels in autocomplete, persistent master document state, ...</p>
+                <p translatable="no">References to existing labels in autocomplete, persistent master document state, ...</p>
             </description>
         </release>
         <release version="0.1.3" date="2019-12-21">
             <description>
-                <p>Initial spellchecking support, ...</p>
+                <p translatable="no">Initial spellchecking support, ...</p>
             </description>
         </release>
         <release version="0.1.2" date="2019-12-15">
             <description>
-                <p>Simple BibTeX wizard, more bibliography features in LaTeX editor, ...</p>
+                <p translatable="no">Simple BibTeX wizard, more bibliography features in LaTeX editor, ...</p>
             </description>
         </release>
         <release version="0.1.1" date="2019-12-1">
             <description>
-                <p>BibTeX support in the build system, edit BibTeX files, ...</p>
+                <p translatable="no">BibTeX support in the build system, edit BibTeX files, ...</p>
             </description>
         </release>
         <release version="0.1.0" date="2019-11-27">
             <description>
-                <p>Editor settings in preferences dialog, ...</p>
+                <p translatable="no">Editor settings in preferences dialog, ...</p>
             </description>
         </release>
         <release version="0.0.7" date="2019-11-24">
             <description>
-                <p>Build multiple times to resolve undefined references, show warnings in build log, ...</p>
+                <p translatable="no">Build multiple times to resolve undefined references, show warnings in build log, ...</p>
             </description>
         </release>
         <release version="0.0.6" date="2019-11-21">
             <description>
-                <p>Indent multi-line inserts, ...</p>
+                <p translatable="no">Indent multi-line inserts, ...</p>
             </description>
         </release>
         <release version="0.0.5" date="2019-11-14">
             <description>
-                <p>Multiple documents in build log, build in temporary folder, ...</p>
+                <p translatable="no">Multiple documents in build log, build in temporary folder, ...</p>
             </description>
         </release>
         <release version="0.0.4" date="2019-11-11">
             <description>
-                <p>Master document function, ...</p>
+                <p translatable="no">Master document function, ...</p>
             </description>
         </release>
         <release version="0.0.3" date="2019-11-6">
             <description>
-                <p>New app layout, animated wizard button, big code refactor, ...</p>
+                <p translatable="no">New app layout, animated wizard button, big code refactor, ...</p>
             </description>
         </release>
         <release version="0.0.2" date="2019-10-22">
             <description>
-                <p>Set margins in wizard, improved icon, ...</p>
+                <p translatable="no">Set margins in wizard, improved icon, ...</p>
             </description>
         </release>
         ​<release version="0.0.1" date="2019-10-13">
             <description>
-                <p>Initial release</p>
+                <p translatable="no">Initial release</p>
             </description>
         </release>
     </releases>
