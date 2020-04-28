@@ -543,7 +543,7 @@ class LaTeXDocument(Document):
                 time_factor = time.time() - item['time']
                 if time_factor > 1.5:
                     if time_factor <= 1.75:
-                        opacity_factor = 1 - (time_factor - 1.5) * 4
+                        opacity_factor = self.ease(1 - (time_factor - 1.5) * 4)
                         item['tag'].set_property('background-rgba', Gdk.RGBA(0.976, 0.941, 0.420, opacity_factor * 0.6))
                     else:
                         start = self.source_buffer.get_start_iter()
@@ -552,6 +552,8 @@ class LaTeXDocument(Document):
                         self.source_buffer.get_tag_table().remove(item['tag'])
                         del(self.synctex_highlight_tags[tag_count])
         return bool(self.synctex_highlight_tags)
+
+    def ease(self, factor): return (factor - 1)**3 + 1
 
     def get_folded_regions(self):
         return self.code_folding.get_folded_regions()
