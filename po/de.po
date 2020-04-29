@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
 "POT-Creation-Date: 2020-04-28 22:57+0200\n"
-"PO-Revision-Date: 2020-04-29 13:27+0200\n"
+"PO-Revision-Date: 2020-04-29 14:12+0200\n"
 "Last-Translator: Cvfosammmm <r.griesel@gmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -864,11 +864,11 @@ msgstr "Vorheriger Treffer"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:66
 msgid "Copy selected text to clipboard"
-msgstr "Ausgewählten Text in die Zwischenablage kopieren"
+msgstr "Markierten Text in die Zwischenablage kopieren"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:67
 msgid "Cut selected text to clipboard"
-msgstr "Ausgewählten Text in die Zwischenablage ausschneiden"
+msgstr "Markierten Text in die Zwischenablage ausschneiden"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:68
 msgid "Paste text from clipboard"
@@ -1098,7 +1098,7 @@ msgstr ""
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:159
 msgid "Automatically show build log .."
-msgstr ""
+msgstr "Beim Erstellen automatisch Fehler und Warnungen anzeigen .."
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:164
 msgid ".. only when errors occurred."
@@ -1114,25 +1114,28 @@ msgstr ".. bei Fehlern, Warnungen und Badboxen."
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:172
 msgid "Embedded system commands"
-msgstr ""
+msgstr "Systembefehle einbetten"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:178
 msgid ""
 "Warning: enable this only if you have to. It can cause security problems\n"
 "when building files from untrusted sources."
 msgstr ""
+"Vorsicht: nur aktivieren, wenn es sein muss. Es kann zu "
+"Sicherheitsproblemen\n"
+"mit Dateien aus nicht vertrauenswürdiger Quelle kommen."
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:183
 msgid "Disable"
-msgstr ""
+msgstr "Deaktiviert"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:184
 msgid "Enable restricted \\write18{SHELL COMMAND}"
-msgstr ""
+msgstr "Eingeschränkt aktiviertes \\write18{SHELL COMMAND}"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:185
 msgid "Fully enable \\write18{SHELL COMMAND}"
-msgstr ""
+msgstr "Vollständig aktiviertes \\write18{SHELL COMMAND}"
 
 #: setzer/dialogs/replace_confirmation/replace_confirmation.py:46
 #, python-brace-format
@@ -1289,15 +1292,15 @@ msgstr ""
 
 #: setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py:54
 msgid "Set zoom level"
-msgstr ""
+msgstr "Skalierung"
 
 #: setzer/document/preview/preview_viewgtk.py:38
 msgid "External Viewer"
-msgstr ""
+msgstr "Externes Anzeigeprogramm"
 
 #: setzer/document/preview/preview_viewgtk.py:49
 msgid "Show Source"
-msgstr ""
+msgstr "Quellcode anzeigen"
 
 #: setzer/document/preview/preview_viewgtk.py:50
 msgid "Zoom In"
@@ -1331,7 +1334,7 @@ msgstr ""
 
 #: setzer/document/preview/preview_viewgtk.py:106
 msgid "Page "
-msgstr "Seite"
+msgstr "Seite "
 
 #: setzer/document/preview/preview_viewgtk.py:109
 msgid " of "
@@ -1339,19 +1342,19 @@ msgstr " von "
 
 #: setzer/document/search/search_viewgtk.py:55
 msgid "Replace"
-msgstr ""
+msgstr "Ersetzen"
 
 #: setzer/document/search/search_viewgtk.py:57
 msgid "Replace selected result"
-msgstr ""
+msgstr "Markiertes Ergebnis ersetzen"
 
 #: setzer/document/search/search_viewgtk.py:59
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 #: setzer/document/search/search_viewgtk.py:61
 msgid "Replace all results"
-msgstr ""
+msgstr "Alle Ergebnisse ersetzen"
 
 #: setzer/document/document_builder.py:145
 msgid "Failed"
@@ -1360,7 +1363,7 @@ msgstr "Fehler"
 #: setzer/document/document_builder.py:145
 #, python-brace-format
 msgid "{amount} error(s)"
-msgstr ""
+msgstr "{amount}"
 
 #: setzer/document/document_builder.py:148
 msgid "Success!"
@@ -1425,29 +1428,29 @@ msgstr ""
 #: setzer/workspace/build_log/build_log_presenter.py:57
 #: setzer/workspace/build_log/build_log_presenter.py:59
 msgid "Building successful"
-msgstr ""
+msgstr "Erstellen erfolgreich"
 
 #: setzer/workspace/build_log/build_log_presenter.py:57
 #: setzer/workspace/build_log/build_log_presenter.py:62
 msgid "no warnings or badboxes"
-msgstr ""
+msgstr "keine Warnungen oder Badboxen"
 
 #: setzer/workspace/build_log/build_log_presenter.py:59
 #: setzer/workspace/build_log/build_log_presenter.py:64
 #, python-brace-format
 msgid "{amount} warning(s) or badbox(es)"
-msgstr ""
+msgstr "{amount} Warnung(en) oder Badbox(en)"
 
 #: setzer/workspace/build_log/build_log_presenter.py:62
 #: setzer/workspace/build_log/build_log_presenter.py:64
 #, python-brace-format
 msgid "Building failed with {amount} error(s)"
-msgstr ""
+msgstr "Erstellen fehlgeschlagen mit {amount} Fehler(n)"
 
 #: setzer/workspace/build_log/build_log_viewgtk.py:119
 #, python-brace-format
 msgid "Line {number}"
-msgstr ""
+msgstr "Zeile {number}"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:58
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:58
@@ -1589,7 +1592,7 @@ msgstr "Weitere Dokumente"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:58
 msgid "Build log"
-msgstr ""
+msgstr "Fehler und Warnungen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:69
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
