@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
 "POT-Creation-Date: 2020-04-28 22:57+0200\n"
-"PO-Revision-Date: 2020-04-29 19:16+0200\n"
+"PO-Revision-Date: 2020-04-29 19:24+0200\n"
 "Last-Translator: Cvfosammmm <r.griesel@gmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1022,7 +1022,7 @@ msgstr "LaTeX und BibTeX Dateien"
 
 #: setzer/dialogs/open_session/open_session.py:47
 msgid "Load Session"
-msgstr "Sitzung laden"
+msgstr "Sitzung wiederherstellen"
 
 #: setzer/dialogs/open_session/open_session.py:59
 msgid "Setzer Session"
@@ -1663,7 +1663,7 @@ msgstr "Zitat mit Seitenangabe"
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:139
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:147
 msgid "Natbib Citations"
-msgstr ""
+msgstr "Natbib Zitate"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:140
 msgid "Include non-cited BibTeX Entries with '\\nocite'"
