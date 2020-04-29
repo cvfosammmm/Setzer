@@ -1,13 +1,13 @@
 #
-# Cvfosammmm <r.griesel@gmail.com>, 2020.
 # Stephan Lachnit <stephanlachnit@protonmail.com>, 2020.
+# Cvfosammmm <r.griesel@gmail.com>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
 "POT-Creation-Date: 2020-04-28 22:57+0200\n"
-"PO-Revision-Date: 2020-04-29 14:38+0200\n"
+"PO-Revision-Date: 2020-04-29 19:16+0200\n"
 "Last-Translator: Cvfosammmm <r.griesel@gmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 3.36.0\n"
+"X-Generator: Gtranslator 3.30.1\n"
 
 #: setzer/dialogs/about/about.py:44
 msgid "Setzer is a LaTeX editor."
@@ -522,7 +522,7 @@ msgstr ""
 #: setzer/dialogs/close_confirmation/close_confirmation.py:86
 #, python-brace-format
 msgid "Document »{document}« has unsaved changes."
-msgstr "Das Dokument »{document}« hat ungespeicherte Änderungen."
+msgstr "Dokument »{document}« hat ungespeicherte Änderungen."
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:87
 msgid "If you close without saving, these changes will be lost."
@@ -868,11 +868,11 @@ msgstr "Vorheriger Treffer"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:66
 msgid "Copy selected text to clipboard"
-msgstr "Markierten Text in die Zwischenablage kopieren"
+msgstr "Markierten Text kopieren"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:67
 msgid "Cut selected text to clipboard"
-msgstr "Markierten Text in die Zwischenablage ausschneiden"
+msgstr "Markierten Text ausschneiden"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:68
 msgid "Paste text from clipboard"
@@ -888,7 +888,7 @@ msgstr "Letzten Befehl rückgängig machen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:73
 msgid "Redo previous text edit"
-msgstr "Rückgängig gemachten Befehl wiederherstellen"
+msgstr "Befehl wiederherstellen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:76
 msgid "Selection"
@@ -979,17 +979,17 @@ msgstr "Umgebung"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:102
 msgid "Math Shortcuts"
-msgstr ""
+msgstr "Mathematik"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:103
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:311
 msgid "Inline Math Section"
-msgstr ""
+msgstr "Mathematische Umgebung (inline)"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:104
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:312
 msgid "Display Math Section"
-msgstr ""
+msgstr "Mathematische Umgebung (display)"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:105
 msgid "Equation"
@@ -1367,7 +1367,7 @@ msgstr "Fehler"
 #: setzer/document/document_builder.py:145
 #, python-brace-format
 msgid "{amount} error(s)"
-msgstr "{amount} Fehler"
+msgstr "{amount}"
 
 #: setzer/document/document_builder.py:148
 msgid "Success!"
