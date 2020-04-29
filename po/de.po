@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-28 22:57+0200\n"
-"PO-Revision-Date: 2020-04-28 23:57+0200\n"
+"PO-Revision-Date: 2020-04-29 11:53+0200\n"
 "Last-Translator: Cvfosammmm <r.griesel@gmail.com>\n"
 "Language-Team: German <r.griesel@gmail.com>\n"
 "Language: de\n"
@@ -23,11 +23,11 @@ msgstr "Setzer ist ein LaTeX editor."
 #: setzer/dialogs/add_remove_packages/add_remove_packages_viewgtk.py:51
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:95
 msgid "Add / Remove Packages"
-msgstr "Pakete hinzufügen / entfernen"
+msgstr "Pakete einbinden / entfernen"
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages_viewgtk.py:77
 msgid "Add Package"
-msgstr "Paket hinzufügen"
+msgstr "Paket einbinden"
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages_viewgtk.py:115
 msgid "Remove Package"
@@ -95,7 +95,7 @@ msgstr "Paragraphen ohne Zeileneinzug."
 #: setzer/dialogs/add_remove_packages/add_remove_packages.py:48
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:157
 msgid "contains symbols to be used in textmode."
-msgstr ""
+msgstr "enthält Symbole für den Textmodus."
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages.py:49
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:162
@@ -103,25 +103,27 @@ msgid ""
 "define theorem environments (like \"definition\", \"lemma\", ...) with "
 "custom styling."
 msgstr ""
+"mathematische Satztypen definieren (wie \"Definition\", \"Lemma\", ...) und "
+"deren Aussehen festlegen."
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages.py:50
 msgid "set transparency for sections in your document."
-msgstr ""
+msgstr "transparente Abschnitte."
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages.py:51
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:160
 msgid "type urls with the \\url{..} command without escaping them."
-msgstr ""
+msgstr "URLs schreiben mit dem \\url{..} Befehl."
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages.py:52
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:159
 msgid "enables colored text."
-msgstr ""
+msgstr "ermöglicht farbigen Text."
 
 #: setzer/dialogs/bibtex_wizard/pages/page_create_new_entry.py:62
 #: setzer/dialogs/bibtex_wizard/pages/page_create_new_entry.py:63
 msgid "Choose a document type"
-msgstr ""
+msgstr "Dokumententyp wählen"
 
 #: setzer/dialogs/bibtex_wizard/pages/page_create_new_entry.py:63
 #: setzer/dialogs/bibtex_wizard/pages/page_fields_entry.py:102
@@ -139,24 +141,24 @@ msgstr "Schritt"
 #: setzer/dialogs/bibtex_wizard/pages/page_create_new_entry.py:90
 #: setzer/dialogs/bibtex_wizard/pages/page_fields_entry.py:108
 msgid "Required fields"
-msgstr ""
+msgstr "Notwendige Felder"
 
 #: setzer/dialogs/bibtex_wizard/pages/page_create_new_entry.py:97
 #: setzer/dialogs/bibtex_wizard/pages/page_fields_entry.py:121
 msgid "Optional fields"
-msgstr ""
+msgstr "Optionale Felder"
 
 #: setzer/dialogs/bibtex_wizard/pages/page_fields_entry.py:102
 msgid "Entry fields"
-msgstr ""
+msgstr "Felder ausfüllen"
 
 #: setzer/dialogs/bibtex_wizard/pages/page_fields_entry.py:123
 msgid "Insert empty optional fields"
-msgstr ""
+msgstr "Leere optionale Felder einfügen"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:42
 msgid "Article in Journal"
-msgstr ""
+msgstr "Zeitschriftenartikel"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:42
 msgid ""
@@ -182,7 +184,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:44
 msgid "Multi-volume Book"
-msgstr ""
+msgstr "Mehrbändiges Buch"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:44
 msgid ""
@@ -193,7 +195,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:45
 msgid "Part of a Book With Its Own Title"
-msgstr ""
+msgstr "Buchteil mit eigenem Titel"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:45
 msgid ""
@@ -203,7 +205,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:46
 msgid "Book in Book"
-msgstr ""
+msgstr "Buch in Buch"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:46
 msgid ""
@@ -214,7 +216,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:47
 msgid "Supplemental Material in a Book"
-msgstr ""
+msgstr "Ergänzungsmaterial in einem Buch"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:47
 msgid ""
@@ -230,7 +232,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:48
 msgid "Booklet"
-msgstr ""
+msgstr "Broschüre"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:48
 msgid ""
@@ -241,7 +243,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:49
 msgid "Single-volume Collection"
-msgstr ""
+msgstr "Einbändiger Sammelband"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:49
 msgid ""
@@ -252,7 +254,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:50
 msgid "Multi-volume Collection"
-msgstr ""
+msgstr "Mehrbändiger Sammelband"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:50
 msgid ""
@@ -263,7 +265,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:51
 msgid "Article in a Collection"
-msgstr ""
+msgstr "Artikel in einer Sammlung"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:51
 msgid ""
@@ -275,7 +277,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:52
 msgid "Supplemental Material in a Collection"
-msgstr ""
+msgstr "Ergänzungsmaterial in einem Sammelband"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:52
 msgid ""
@@ -286,7 +288,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:53
 msgid "Data Set"
-msgstr ""
+msgstr "Datensatz"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:53
 msgid "A data set or a similar collection of (mostly) raw data."
@@ -294,7 +296,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:54
 msgid "Technical Manual"
-msgstr ""
+msgstr "Technisches Handbuch"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:54
 msgid ""
@@ -304,7 +306,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:55
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Sonstiges"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:55
 msgid ""
@@ -316,7 +318,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:56
 msgid "Online Resource"
-msgstr ""
+msgstr "Internetseite"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:56
 msgid ""
@@ -343,7 +345,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:58
 msgid "Complete Issue of a Periodical"
-msgstr ""
+msgstr "Vollständige Ausgabe einer Zeitschrift"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:58
 msgid ""
@@ -356,7 +358,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:59
 msgid "Supplemental Material in a Periodical"
-msgstr ""
+msgstr "Ergänzungsmaterial in einer Zeitschrift"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:59
 msgid ""
@@ -372,7 +374,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:60
 msgid "Conference Proceedings"
-msgstr ""
+msgstr "Tagungsband einer Konferenz"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:60
 msgid ""
@@ -384,7 +386,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:61
 msgid "Multi-volume Proceedings Entry"
-msgstr ""
+msgstr "Mehrbändiger Tagungsband einer Konferenz"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:61
 msgid ""
@@ -395,7 +397,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:62
 msgid "Article in Conference Proceedings"
-msgstr ""
+msgstr "Artikel in einem Tagungsband einer Konferenz"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:62
 msgid ""
@@ -406,7 +408,7 @@ msgstr ""
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:63
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:263
 msgid "Reference"
-msgstr ""
+msgstr "Lexikon"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:63
 msgid ""
@@ -417,7 +419,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:64
 msgid "Multi-volume Reference Entry"
-msgstr ""
+msgstr "Mehrbändiges Lexikon"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:64
 msgid ""
@@ -429,7 +431,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:65
 msgid "Article in a Reference"
-msgstr ""
+msgstr "Lexikonartikel"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:65
 msgid ""
@@ -440,7 +442,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:66
 msgid "Report"
-msgstr ""
+msgstr "Forschungsbericht"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:66
 msgid ""
@@ -462,7 +464,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:68
 msgid "Thesis"
-msgstr ""
+msgstr "Studienarbeit"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:68
 msgid ""
@@ -472,7 +474,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:69
 msgid "Unpublished"
-msgstr ""
+msgstr "Unveröffentlicht"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:69
 msgid ""
@@ -549,22 +551,22 @@ msgstr ""
 #: setzer/dialogs/document_wizard/pages/page_article_settings.py:103
 #: setzer/dialogs/document_wizard/pages/page_article_settings.py:104
 msgid "Article settings"
-msgstr ""
+msgstr "Article Einstellungen"
 
 #: setzer/dialogs/document_wizard/pages/page_article_settings.py:111
 #: setzer/dialogs/document_wizard/pages/page_book_settings.py:111
 #: setzer/dialogs/document_wizard/pages/page_report_settings.py:111
 msgid "Two-column layout"
-msgstr ""
+msgstr "Zweispaltiges Seitenlayout"
 
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:121
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:122
 msgid "Beamer settings"
-msgstr ""
+msgstr "Beamer Einstellungen"
 
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:128
 msgid "Themes"
-msgstr ""
+msgstr "Themes"
 
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:150
 #: setzer/dialogs/document_wizard/pages/page_book_settings.py:106
@@ -575,25 +577,25 @@ msgstr "Optionen"
 
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:155
 msgid "Show navigation buttons"
-msgstr ""
+msgstr "Navigationselemente einbinden"
 
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:156
 msgid "Align content to the top of pages"
-msgstr ""
+msgstr "Inhalt am oberen Seitenende ausrichten"
 
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:158
 msgid "(\"t\" option, it's centered by default)"
-msgstr ""
+msgstr "(\"t\" Option, der Inhalt ist sonst zentriert)"
 
 #: setzer/dialogs/document_wizard/pages/page_book_settings.py:103
 #: setzer/dialogs/document_wizard/pages/page_book_settings.py:104
 msgid "Book settings"
-msgstr ""
+msgstr "Book Einstellungen"
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:59
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:60
 msgid "Choose a document class"
-msgstr "Wähle eine Dokumentenklasse"
+msgstr "Dokumentenklasse wählen"
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:81
 msgid ""
@@ -666,24 +668,24 @@ msgstr ""
 #: setzer/dialogs/document_wizard/pages/page_letter_settings.py:89
 #: setzer/dialogs/document_wizard/pages/page_letter_settings.py:90
 msgid "Letter settings"
-msgstr ""
+msgstr "Letter Einstellungen"
 
 #: setzer/dialogs/document_wizard/pages/page_report_settings.py:103
 #: setzer/dialogs/document_wizard/pages/page_report_settings.py:104
 msgid "Report settings"
-msgstr ""
+msgstr "Report Einstellungen"
 
 #: setzer/dialogs/document_wizard/pages/page.py:56
 msgid "Page format"
-msgstr ""
+msgstr "Ausrichtung"
 
 #: setzer/dialogs/document_wizard/pages/page.py:69
 msgid "Portrait"
-msgstr ""
+msgstr "Hochformat"
 
 #: setzer/dialogs/document_wizard/pages/page.py:70
 msgid "Landscape"
-msgstr ""
+msgstr "Querformat"
 
 #: setzer/dialogs/document_wizard/pages/page.py:75
 msgid "Page margins"
@@ -790,7 +792,7 @@ msgstr ""
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:35
 msgid "Documents"
-msgstr ""
+msgstr "Dokumente"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:36
 msgid "Create new document"
@@ -800,20 +802,20 @@ msgstr "Neues Dokument anlegen"
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:58
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:66
 msgid "Open a document"
-msgstr ""
+msgstr "Dokument öffnen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:38
 msgid "Show recent documents"
-msgstr ""
+msgstr "Zuletzt geöffnete Dokumente"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:39
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:58
 msgid "Show open documents"
-msgstr ""
+msgstr "Geöffnete Dokumente"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:40
 msgid "Switch to the next open document"
-msgstr ""
+msgstr "Zum nächsten geöffneten Dokument springen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:41
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:94
@@ -822,11 +824,11 @@ msgstr "Aktuelles Dokument speichern"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:42
 msgid "Save the document with a new filename"
-msgstr ""
+msgstr "Dokument unter neuem Dateinamen speichern"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:43
 msgid "Close the current document"
-msgstr ""
+msgstr "Aktuelles Dokument schließen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:46
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:124
@@ -854,84 +856,84 @@ msgstr "Suchen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:60
 msgid "Find the next match"
-msgstr ""
+msgstr "Nächster Treffer"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:61
 msgid "Find the previous match"
-msgstr ""
+msgstr "Vorheriger Treffer"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:66
 msgid "Copy selected text to clipboard"
-msgstr ""
+msgstr "Ausgewählten Text in die Zwischenablage kopieren"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:67
 msgid "Cut selected text to clipboard"
-msgstr ""
+msgstr "Ausgewählten Text in die Zwischenablage ausschneiden"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:68
 msgid "Paste text from clipboard"
-msgstr ""
+msgstr "Text aus der Zwischenablage einfügen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:71
 msgid "Undo and Redo"
-msgstr ""
+msgstr "Rückgängig und Wiederherstellen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:72
 msgid "Undo previous text edit"
-msgstr ""
+msgstr "Letzten Befehl rückgängig machen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:73
 msgid "Redo previous text edit"
-msgstr ""
+msgstr "Rückgängig gemachten Befehl wiederherstellen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:76
 msgid "Selection"
-msgstr ""
+msgstr "Textauswahl"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:77
 msgid "Select all text"
-msgstr ""
+msgstr "Alles auswählen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:80
 msgid "Editing"
-msgstr ""
+msgstr "Bearbeiten"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:81
 msgid "Toggle insert / overwrite"
-msgstr ""
+msgstr "Einfügen / Überschreiben umschalten"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:82
 msgid "Move current line up"
-msgstr ""
+msgstr "Aktuelle Zeile nach oben verschieben"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:83
 msgid "Move current line down"
-msgstr ""
+msgstr "Aktuelle Zeile nach unten verschieben"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:84
 msgid "Move current word left"
-msgstr ""
+msgstr "Aktuelles Wort nach links verschieben"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:85
 msgid "Move current word right"
-msgstr ""
+msgstr "Aktuelles Wort nach rechts verschieben"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:86
 msgid "Increment number at cursor"
-msgstr ""
+msgstr "Zahl am Cursor erhöhen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:87
 msgid "Decrement number at cursor"
-msgstr ""
+msgstr "Zahl am Cursor verringern"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:90
 msgid "LaTeX Shortcuts"
-msgstr ""
+msgstr "LaTeX"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:91
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:225
 msgid "New Line"
-msgstr ""
+msgstr "Zeilenumbruch"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:92
 #: setzer/document/autocomplete/autocomplete.py:579
@@ -955,11 +957,11 @@ msgstr "Schreibmaschine"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:96
 msgid "Emphasized Text"
-msgstr ""
+msgstr "Hervorgehoben"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:97
 msgid "Quotation Marks"
-msgstr ""
+msgstr "Anführungszeichen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:98
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:443
@@ -992,17 +994,17 @@ msgstr ""
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:106
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:315
 msgid "Subscript"
-msgstr ""
+msgstr "Tiefgestellt"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:107
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:316
 msgid "Superscript"
-msgstr ""
+msgstr "Hochgestellt"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:108
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:317
 msgid "Fraction"
-msgstr ""
+msgstr "Bruchzahl (\\frac)"
 
 #: setzer/dialogs/open_document/open_document.py:47
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:54
@@ -1581,7 +1583,7 @@ msgstr "Keine Ergebnisse"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:214
 msgid "Other Documents"
-msgstr ""
+msgstr "Weitere Dokumente"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:58
 msgid "Build log"
@@ -1856,11 +1858,11 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:296
 msgid "Quotes"
-msgstr ""
+msgstr "Anführungszeichen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:309
 msgid "Include AMS Packages"
-msgstr ""
+msgstr "AMS Pakete einbinden"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:313
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:333
