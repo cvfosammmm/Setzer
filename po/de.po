@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
 "POT-Creation-Date: 2020-04-28 22:57+0200\n"
-"PO-Revision-Date: 2020-04-29 13:08+0200\n"
+"PO-Revision-Date: 2020-04-29 13:27+0200\n"
 "Last-Translator: Cvfosammmm <r.griesel@gmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -689,15 +689,15 @@ msgstr "Querformat"
 
 #: setzer/dialogs/document_wizard/pages/page.py:75
 msgid "Page margins"
-msgstr ""
+msgstr "Seitenränder"
 
 #: setzer/dialogs/document_wizard/pages/page.py:79
 msgid "Use default margins"
-msgstr ""
+msgstr "vorgegebene Werte nutzen"
 
 #: setzer/dialogs/document_wizard/pages/page.py:107
 msgid "All values are in cm (1 inch ≅ 2.54 cm)."
-msgstr ""
+msgstr "Alle Werte sind in cm (1 inch ≅ 2.54 cm)."
 
 #: setzer/dialogs/document_wizard/pages/page.py:112
 msgid "Font size"
@@ -705,7 +705,7 @@ msgstr "Schriftgröße"
 
 #: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:57
 msgid "Create a template document"
-msgstr ""
+msgstr "Dokumentenvorlage erstellen"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:48
 msgid "BibTeX file to include"
@@ -725,7 +725,7 @@ msgstr ""
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:107
 msgid "Include BibTeX file"
-msgstr ""
+msgstr "BibTeX Dokument einbinden"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file.py:95
 msgid "BibTeX Files"
@@ -843,7 +843,7 @@ msgstr ".pdf-Datei erstellen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:48
 msgid "Spellchecking dialog"
-msgstr ""
+msgstr "Rechtschreibung prüfen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:58
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:62
@@ -1014,7 +1014,7 @@ msgstr "Öffnen"
 
 #: setzer/dialogs/open_document/open_document.py:60
 msgid "LaTeX and BibTeX Files"
-msgstr ""
+msgstr "LaTeX und BibTeX Dateien"
 
 #: setzer/dialogs/open_session/open_session.py:47
 msgid "Load Session"
@@ -1067,11 +1067,11 @@ msgstr "Zeilenumbruch aktivieren"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:105
 msgid "Code Folding"
-msgstr ""
+msgstr "Code-Folding"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:110
 msgid "Enable code folding"
-msgstr ""
+msgstr "Code-Folding aktivieren"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:114
 msgid "Highlighting"
@@ -1093,6 +1093,8 @@ msgstr "LaTeX Interpreter"
 msgid ""
 "Automatically remove helper files (.log, .dvi, ...) after building .pdf."
 msgstr ""
+"Hilfsdateien (.log, .dvi, ...) nach der .pdf-Erstellung automatisch "
+"entfernen."
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:159
 msgid "Automatically show build log .."
@@ -1616,7 +1618,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:100
 msgid "Table of Contents"
-msgstr ""
+msgstr "Inhaltsverzeichnis"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:102
 msgid "Include LaTeX File"
