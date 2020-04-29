@@ -84,11 +84,11 @@ class Search(object):
             search_context = self.document.search_context
             original = self.search_bar.entry.get_text()
             replacement = self.search_bar.replace_entry.get_text()
-            number_of_occurences = search_context.get_occurrences_count()
+            number_of_occurrences = search_context.get_occurrences_count()
             
-            if number_of_occurences > 0:
+            if number_of_occurrences > 0:
                 dialog = DialogLocator.get_dialog('replace_confirmation')
-                if dialog.run(original, replacement, number_of_occurences):
+                if dialog.run(original, replacement, number_of_occurrences):
                     search_context.replace_all(replacement, -1)
 
     def on_search_entry_activate(self, entry=None):

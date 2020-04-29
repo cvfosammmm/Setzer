@@ -1,21 +1,21 @@
 #
-# Stephan Lachnit <stephanlachnit@protonmail.com>, 2020.
 # Cvfosammmm <r.griesel@gmail.com>, 2020.
+# Stephan Lachnit <stephanlachnit@protonmail.com>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
-"POT-Creation-Date: 2020-04-28 22:57+0200\n"
-"PO-Revision-Date: 2020-04-29 19:24+0200\n"
-"Last-Translator: Cvfosammmm <r.griesel@gmail.com>\n"
+"POT-Creation-Date: 2020-04-29 19:17+0200\n"
+"PO-Revision-Date: 2020-04-29 19:35+0200\n"
+"Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 3.30.1\n"
+"X-Generator: Gtranslator 3.36.0\n"
 
 #: setzer/dialogs/about/about.py:44
 msgid "Setzer is a LaTeX editor."
@@ -1141,14 +1141,22 @@ msgstr "Eingeschränkt aktiviertes \\write18{SHELL COMMAND}"
 msgid "Fully enable \\write18{SHELL COMMAND}"
 msgstr "Vollständig aktiviertes \\write18{SHELL COMMAND}"
 
-#: setzer/dialogs/replace_confirmation/replace_confirmation.py:46
-#, python-brace-format
-msgid "Replacing {amount} occurence(s) of »{original}« with »{replacement}«."
-msgstr ""
-
 #: setzer/dialogs/replace_confirmation/replace_confirmation.py:47
-msgid "Do you really want to do this?"
+msgid "occurrence"
+msgid_plural "occurrences"
+msgstr[0] "Auftritt"
+msgstr[1] "Auftritte"
+
+#: setzer/dialogs/replace_confirmation/replace_confirmation.py:48
+#, python-brace-format
+msgid ""
+"Replacing {amount} {str_occurrences} of »{original}« with »{replacement}«."
 msgstr ""
+"Ersetze {amount} {str_occurrences} von »{original}« mit »{replacement}«."
+
+#: setzer/dialogs/replace_confirmation/replace_confirmation.py:49
+msgid "Do you really want to do this?"
+msgstr "Willst du das wirklich tun?"
 
 #: setzer/dialogs/save_document/save_document.py:59
 msgid "Save document"
@@ -1360,16 +1368,23 @@ msgstr "Alle"
 msgid "Replace all results"
 msgstr "Alle Ergebnisse ersetzen"
 
-#: setzer/document/document_builder.py:145
+#: setzer/document/document_builder.py:146
+#: setzer/workspace/build_log/build_log_presenter.py:57
+msgid "error"
+msgid_plural "errors"
+msgstr[0] "Fehler"
+msgstr[1] "Fehler"
+
+#: setzer/document/document_builder.py:147
 msgid "Failed"
-msgstr "Fehler"
+msgstr "Fehlgeschlagen"
 
-#: setzer/document/document_builder.py:145
+#: setzer/document/document_builder.py:147
 #, python-brace-format
-msgid "{amount} error(s)"
-msgstr "{amount}"
+msgid "{amount} {str_errors}"
+msgstr "{amount} {str_errors}"
 
-#: setzer/document/document_builder.py:148
+#: setzer/document/document_builder.py:150
 msgid "Success!"
 msgstr "Erfolg!"
 
@@ -1429,27 +1444,39 @@ msgstr "Online nach Einträgen suchen"
 msgid "Add a BibTeX Entry from an Online Database"
 msgstr "Einen BibTex Eintrag aus einer Online Datenbank hinzufügen"
 
-#: setzer/workspace/build_log/build_log_presenter.py:57
+#: setzer/workspace/build_log/build_log_presenter.py:58
+msgid "warning"
+msgid_plural "warnings"
+msgstr[0] "Warnung"
+msgstr[1] "Warnungen"
+
 #: setzer/workspace/build_log/build_log_presenter.py:59
+msgid "badbox"
+msgid_plural "badboxes"
+msgstr[0] "Badbox"
+msgstr[1] "Badboxen"
+
+#: setzer/workspace/build_log/build_log_presenter.py:62
+#: setzer/workspace/build_log/build_log_presenter.py:64
 msgid "Building successful"
 msgstr "Erstellen erfolgreich"
 
-#: setzer/workspace/build_log/build_log_presenter.py:57
 #: setzer/workspace/build_log/build_log_presenter.py:62
+#: setzer/workspace/build_log/build_log_presenter.py:67
 msgid "no warnings or badboxes"
 msgstr "keine Warnungen oder Badboxen"
 
-#: setzer/workspace/build_log/build_log_presenter.py:59
 #: setzer/workspace/build_log/build_log_presenter.py:64
+#: setzer/workspace/build_log/build_log_presenter.py:69
 #, python-brace-format
-msgid "{amount} warning(s) or badbox(es)"
-msgstr "{amount} Warnung(en) oder Badbox(en)"
+msgid "{amount} {str_warnings} or {str_badboxes}"
+msgstr "{amount} {str_warnings} oder {str_badboxes}"
 
-#: setzer/workspace/build_log/build_log_presenter.py:62
-#: setzer/workspace/build_log/build_log_presenter.py:64
+#: setzer/workspace/build_log/build_log_presenter.py:67
+#: setzer/workspace/build_log/build_log_presenter.py:69
 #, python-brace-format
-msgid "Building failed with {amount} error(s)"
-msgstr "Erstellen fehlgeschlagen mit {amount} Fehler(n)"
+msgid "Building failed with {amount} {str_errors}"
+msgstr "Erstellen fehlgeschlagen mit {amount} {str_errors}"
 
 #: setzer/workspace/build_log/build_log_viewgtk.py:119
 #, python-brace-format
@@ -1490,6 +1517,11 @@ msgid ""
 "a top level document (the master) will contain multiple lower\n"
 "level files via include statements."
 msgstr ""
+"Das Hauptdokument wird erstellt, unabhängig davon welche Dokument gerade "
+"bearbeitet wird, und wird immer in der .pdf Vorschau angezeigt.\n"
+"Das Erstellungsprotokoll wird sich auf das Hauptdokument beziehen. Dies wird "
+"oft sinnvoll wenn an großen Projekten gearbeitet wird,\n"
+"wo ein Hauptdokument typischerweise mehrere Subdokumente einbindet."
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:48
 msgid "Toggle sidebar"
@@ -1638,7 +1670,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:113
 msgid "Date Today"
-msgstr ""
+msgstr "Datum heute"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:120
 msgid "Document"
@@ -1765,7 +1797,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:213
 msgid "Centered"
-msgstr ""
+msgstr "Zentriert"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:213
 msgid "Left-aligned"
@@ -1914,7 +1946,7 @@ msgstr "Mathematische Leerzeichen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:363
 msgid "Roman"
-msgstr ""
+msgstr "Roman"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:363
 msgid "Calligraphic"
@@ -1976,11 +2008,11 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:453
 msgid "Objects"
-msgstr ""
+msgstr "Objekte"
 
 #: setzer/workspace/sidebar/sidebar_viewgtk.py:106
 msgid "Package"
-msgstr ""
+msgstr "Paket"
 
 #: setzer/workspace/sidebar/sidebar.py:42
 msgid "Greek Letters"
@@ -2032,6 +2064,7 @@ msgid "Features include:"
 msgstr "Enthaltende Funktionen:"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:15
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:30
 msgid "Buttons and shortcuts for many LaTeX elements and special characters"
 msgstr "Knöpfe und Tastenkürzel für viele LaTeX Elemente und spezielle Zeichen"
 
@@ -2040,12 +2073,14 @@ msgid "Comfortable document creation wizard"
 msgstr "Komfortabler Assistent zum erstellen von Dokumenten"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:17
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:38
 msgid "Dark mode"
 msgstr "Nachtmodus"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:18
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:42
 msgid "Helpful error messages in the build log"
-msgstr ""
+msgstr "Hilfreiche Fehlermeldungen"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:19
 msgid "Looks great on the Gnome desktop"
@@ -2059,21 +2094,9 @@ msgstr ""
 msgid "Arguably the best .pdf viewer of any LaTeX editor"
 msgstr ""
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:30
-msgid "Buttons and shortcuts for many LaTeX elements and special characters."
-msgstr ""
-
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:34
-msgid "Document creation wizard."
-msgstr ""
-
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:38
-msgid "Dark mode."
-msgstr ""
-
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:42
-msgid "Helpful error messages in the build log."
-msgstr ""
+msgid "Document creation wizard"
+msgstr "Komfortabler Assistent zum erstellen von Dokumenten"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:58
 msgid "Bug fix"

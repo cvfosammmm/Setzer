@@ -20,6 +20,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from gettext import ngettext
+
 from setzer.dialogs.dialog import Dialog
 
 
@@ -29,8 +31,8 @@ class ReplaceConfirmationDialog(Dialog):
     def __init__(self, main_window):
         self.main_window = main_window
 
-    def run(self, original, replacement, number_of_occurences):
-        self.setup(original, replacement, number_of_occurences)
+    def run(self, original, replacement, number_of_occurrences):
+        self.setup(original, replacement, number_of_occurrences)
         response = self.view.run()
         if response == Gtk.ResponseType.YES:
             return_value = True
@@ -39,14 +41,14 @@ class ReplaceConfirmationDialog(Dialog):
         self.close()
         return return_value
 
-    def setup(self, original, replacement, number_of_occurences):
+    def setup(self, original, replacement, number_of_occurrences):
         self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
 
-        plural = 's' if number_of_occurences > 1 else ''
-        self.view.set_property('text', _('Replacing {amount} occurence(s) of »{original}« with »{replacement}«.').format(amount=str(number_of_occurences),original=original,replacement=replacement))
+        str_occurrences = ngettext('occurrence', 'occurrences', number_of_occurrences)
+        self.view.set_property('text', _('Replacing {amount} {str_occurrences} of »{original}« with »{replacement}«.').format(amount=str(number_of_occurrences),str_occurrences=str_occurrences,original=original,replacement=replacement))
         self.view.format_secondary_markup(_('Do you really want to do this?'))
 
-        self.view.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Yes, replace all occurences', Gtk.ResponseType.YES)
+        self.view.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Yes, replace all occurrences', Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)
 
 
