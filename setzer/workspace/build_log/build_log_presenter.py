@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+from gettext import ngettext
+
 import setzer.workspace.build_log.build_log_viewgtk as build_log_view
 
 
@@ -52,16 +54,19 @@ class BuildLogPresenter(object):
                 time_string = '{:.2f}s, '.format(self.build_log.document.build_time)
             else:
                 time_string = ''
+            str_errors = ngettext('error', 'errors', errors)
+            str_warnings = ngettext('warning', 'warnings', warnings)
+            str_badboxes = ngettext('badbox', 'badboxes', warnings)
             if errors == 0:
                 if warnings == 0:
                     self.view.header_label.set_markup('<b>' + _('Building successful') + '</b> (' + time_string + _('no warnings or badboxes') + ').')
                 else:
-                    self.view.header_label.set_markup('<b>' + _('Building successful') + '</b> (' + time_string + _('{amount} warning(s) or badbox(es)').format(amount=str(warnings)) + ').')
+                    self.view.header_label.set_markup('<b>' + _('Building successful') + '</b> (' + time_string + _('{amount} {str_warnings} or {str_badboxes}').format(amount=str(warnings),str_warnings=str_warnings,str_badboxes=str_badboxes) + ').')
             else:
                 if warnings == 0:
-                    self.view.header_label.set_markup('<b>' + _('Building failed with {amount} error(s)').format(amount=str(errors)) + '</b> (' + _('no warnings or badboxes') + ').')
+                    self.view.header_label.set_markup('<b>' + _('Building failed with {amount} {str_errors}').format(amount=str(errors),str_errors=str_errors) + '</b> (' + _('no warnings or badboxes') + ').')
                 else:
-                    self.view.header_label.set_markup('<b>' + _('Building failed with {amount} error(s)').format(amount=str(errors)) + '</b> (' + _('{amount} warning(s) or badbox(es)').format(amount=str(warnings)) + ').')
+                    self.view.header_label.set_markup('<b>' + _('Building failed with {amount} {str_errors}').format(amount=str(errors),str_errors=str_errors) + '</b> (' + _('{amount} {str_warnings} or {str_badboxes}').format(amount=str(warnings),str_warnings=str_warnings,str_badboxes=str_badboxes) + ').')
         else:
             self.view.header_label.set_markup('')
     

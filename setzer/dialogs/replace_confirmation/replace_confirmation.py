@@ -20,6 +20,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from gettext import ngettext
+
 from setzer.dialogs.dialog import Dialog
 
 
@@ -42,8 +44,8 @@ class ReplaceConfirmationDialog(Dialog):
     def setup(self, original, replacement, number_of_occurences):
         self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
 
-        plural = 's' if number_of_occurences > 1 else ''
-        self.view.set_property('text', _('Replacing {amount} occurence(s) of »{original}« with »{replacement}«.').format(amount=str(number_of_occurences),original=original,replacement=replacement))
+        str_occurences = ngettext('occurence', 'occurences', number_of_occurences)
+        self.view.set_property('text', _('Replacing {amount} {str_occurences} of »{original}« with »{replacement}«.').format(amount=str(number_of_occurences),str_occurences=str_occurences,original=original,replacement=replacement))
         self.view.format_secondary_markup(_('Do you really want to do this?'))
 
         self.view.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Yes, replace all occurences', Gtk.ResponseType.YES)
