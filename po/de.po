@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
 "POT-Creation-Date: 2020-04-29 19:17+0200\n"
-"PO-Revision-Date: 2020-04-29 19:52+0200\n"
+"PO-Revision-Date: 2020-04-29 21:31+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -491,7 +491,7 @@ msgstr "Neuen BibTeX Eintrag erstellen"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:159
 msgid "Add BibTeX Entry"
-msgstr ""
+msgstr "BibTeX Eintrag hinzufügen"
 
 #: setzer/dialogs/build_save/build_save.py:47
 #, python-brace-format
@@ -984,12 +984,12 @@ msgstr "Mathematik"
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:103
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:311
 msgid "Inline Math Section"
-msgstr "Mathematische Umgebung (inline)"
+msgstr "Math. Umgebung (inline)"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:104
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:312
 msgid "Display Math Section"
-msgstr "Mathematische Umgebung (display)"
+msgstr "Math. Umgebung (display)"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:105
 msgid "Equation"
@@ -1144,19 +1144,19 @@ msgstr "Vollständig aktiviertes \\write18{SHELL COMMAND}"
 #: setzer/dialogs/replace_confirmation/replace_confirmation.py:47
 msgid "occurrence"
 msgid_plural "occurrences"
-msgstr[0] "Auftritt"
-msgstr[1] "Auftritte"
+msgstr[0] "Treffer"
+msgstr[1] "Treffer"
 
 #: setzer/dialogs/replace_confirmation/replace_confirmation.py:48
 #, python-brace-format
 msgid ""
 "Replacing {amount} {str_occurrences} of »{original}« with »{replacement}«."
 msgstr ""
-"Ersetze {amount} {str_occurrences} von »{original}« mit »{replacement}«."
+"Ersetze {amount} {str_occurrences} von »{original}« durch »{replacement}«."
 
 #: setzer/dialogs/replace_confirmation/replace_confirmation.py:49
 msgid "Do you really want to do this?"
-msgstr "Willst du das wirklich tun?"
+msgstr "Wollen Sie das wirklich tun?"
 
 #: setzer/dialogs/save_document/save_document.py:59
 msgid "Save document"
@@ -1496,17 +1496,15 @@ msgstr "Strg"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:112
 msgid "Set one Document as Master"
-msgstr "Ein Dokument als Hauptdokument festlegen"
+msgstr "Hauptdokument festlegen"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:119
 msgid "Unset Master Document"
-msgstr "Auswahl des Hauptdokuments zurücksetzen"
+msgstr "Hauptdokument-Auswahl zurücksetzen"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:127
 msgid "Click on a document in the list below to set it as master."
-msgstr ""
-"Klicken sie auf ein Dokument aus der nachstehenden Liste um es als "
-"Hauptdokument festzulegen."
+msgstr "Klicken Sie auf ein Dokument um es als Hauptdokument festzulegen."
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:131
 msgid ""
@@ -1517,11 +1515,11 @@ msgid ""
 "a top level document (the master) will contain multiple lower\n"
 "level files via include statements."
 msgstr ""
-"Das Hauptdokument wird erstellt, unabhängig davon welche Dokument gerade "
-"bearbeitet wird, und wird immer in der .pdf Vorschau angezeigt.\n"
-"Das Erstellungsprotokoll wird sich auf das Hauptdokument beziehen. Dies wird "
-"oft sinnvoll wenn an großen Projekten gearbeitet wird,\n"
-"wo ein Hauptdokument typischerweise mehrere Subdokumente einbindet."
+"Das Hauptdokument wird erstellt, unabhängig davon welches Dokument\n"
+"gerade bearbeitet wird, und wird immer in der .pdf Vorschau angezeigt.\n"
+"Das Erstellungsprotokoll wird sich auf das Hauptdokument beziehen.\n"
+"Dies ist oft sinnvoll wenn an großen Projekten gearbeitet wird, wo ein\n"
+"Hauptdokument typischerweise mehrere Subdokumente einbindet."
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:48
 msgid "Toggle sidebar"
@@ -1599,9 +1597,10 @@ msgid ""
 "and restore it later, a convenient way to work\n"
 "on multiple projects."
 msgstr ""
-"Speicher die Liste von geöffneten Dokumenten in einer Sitzungdatei\n"
-"und öffne sie später wieder, ein praktischer Weg um\n"
-"an verschiedenen Projekten zu arbeiten."
+"Speichern Sie die Liste geöffneter Dokumente in\n"
+"einer Sitzungdatei und öffnen Sie sie später wieder,\n"
+"eine praktische Methode um an verschiedenen\n"
+"Projekten zu arbeiten."
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:155
 msgid "Restore Previous Session"
@@ -2049,15 +2048,15 @@ msgstr "Unbenanntes Dokument {number}"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:8
 msgid "Simple yet full-featured LaTeX editor"
-msgstr "Einfacher und trotzdem vollwertiger LaTeX Editor."
+msgstr "LaTeX Editor mit vielen nützlichen Funktionen."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:12
 msgid ""
 "Setzer lets you Write LaTeX documents with an easy to use yet full-featured "
 "editor."
 msgstr ""
-"Mit Setzer kannst du Dokumente in einem einfach zu verwendbaren und trotzdem "
-"vollwertigen Editor verfassen."
+"Schreiben Sie LaTeX-Dokumente in einem einfach zu bedienendem Editor, die "
+"viele nützliche Funktionen hat."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:13
 msgid "Features include:"
@@ -2070,7 +2069,7 @@ msgstr "Knöpfe und Tastenkürzel für viele LaTeX Elemente und spezielle Zeiche
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:16
 msgid "Comfortable document creation wizard"
-msgstr "Komfortabler Assistent zum erstellen von Dokumenten"
+msgstr "Komfortabler Assistent zum Erstellen von Dokumenten"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:17
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:38
@@ -2096,7 +2095,7 @@ msgstr ""
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:34
 msgid "Document creation wizard"
-msgstr "Komfortabler Assistent zum erstellen von Dokumenten"
+msgstr "Komfortabler Assistent zum Erstellen von Dokumenten"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:58
 msgid "Bug fix"
