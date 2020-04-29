@@ -50,11 +50,6 @@ install_data(
   install_dir: join_paths(datadir, 'icons', 'hicolor', 'scalable', 'apps'),
 )
 
-install_data(
-  join_paths('data', 'org.cvfosammmm.Setzer.appdata.xml'),
-  install_dir: join_paths(datadir, 'metainfo'),
-)
-
 install_man(
   join_paths('data', 'setzer.1'),
   install_dir: mandir,

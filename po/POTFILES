@@ -47,3 +47,4 @@ setzer/workspace/sidebar/sidebar_viewgtk.py
 setzer/workspace/sidebar/sidebar.py
 setzer/workspace/workspace_viewgtk.py
 setzer/workspace/workspace.py
+data/org.cvfosammmm.Setzer.appdata.xml.in
