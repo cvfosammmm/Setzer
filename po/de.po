@@ -4,11 +4,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
 "POT-Creation-Date: 2020-04-28 22:57+0200\n"
-"PO-Revision-Date: 2020-04-29 11:53+0200\n"
+"PO-Revision-Date: 2020-04-29 13:08+0200\n"
 "Last-Translator: Cvfosammmm <r.griesel@gmail.com>\n"
-"Language-Team: German <r.griesel@gmail.com>\n"
+"Language-Team: German <>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -486,7 +486,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:159
 msgid "Create a new BibTeX Entry"
-msgstr ""
+msgstr "Neuen BibTeX Eintrag erstellen"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:159
 msgid "Add BibTeX Entry"
@@ -634,7 +634,7 @@ msgstr ""
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:87
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:88
 msgid "General document settings"
-msgstr ""
+msgstr "Allgemeine Einstellungen"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:92
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:111
@@ -653,17 +653,17 @@ msgstr "Datum"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:120
 msgid "Packages"
-msgstr ""
+msgstr "Pakete"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:131
 msgid "AMS math packages"
-msgstr ""
+msgstr "AMS Pakete"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:156
 msgid ""
 "<b>AMS packages:</b> provide mathematical symbols, math-related "
 "environments, ..."
-msgstr ""
+msgstr "<b>AMS Pakete:</b> mathematische Symbole, Umgebungen, ..."
 
 #: setzer/dialogs/document_wizard/pages/page_letter_settings.py:89
 #: setzer/dialogs/document_wizard/pages/page_letter_settings.py:90
@@ -966,12 +966,12 @@ msgstr "Anführungszeichen"
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:98
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:443
 msgid "List Item"
-msgstr ""
+msgstr "Listeneintrag"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:99
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:181
 msgid "Environment"
-msgstr ""
+msgstr "Umgebung"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:102
 msgid "Math Shortcuts"
@@ -1826,35 +1826,35 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:285
 msgid "Primary Quotes"
-msgstr ""
+msgstr "Primär"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:285
 msgid "Secondary Quotes"
-msgstr ""
+msgstr "Sekundär"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:285
 msgid "German Quotes"
-msgstr ""
+msgstr "Deutsch"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:285
 msgid "German Single Quotes"
-msgstr ""
+msgstr "Deutsch einfach"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:285
 msgid "French Quotes"
-msgstr ""
+msgstr "Französisch"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:285
 msgid "French Single Quotes"
-msgstr ""
+msgstr "Französisch einfach"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:285
 msgid "German Alt Quotes"
-msgstr ""
+msgstr "Deutsch alternativ"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:285
 msgid "German Alt Single Quotes"
-msgstr ""
+msgstr "Deutsch alternativ einfach"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:296
 msgid "Quotes"
@@ -1867,7 +1867,7 @@ msgstr "AMS Pakete einbinden"
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:313
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:333
 msgid "Math Environments"
-msgstr ""
+msgstr "Mathematische Umgebungen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:318
 msgid "Square Root"
@@ -1896,7 +1896,7 @@ msgstr ""
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:326
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:391
 msgid "Math Spaces"
-msgstr ""
+msgstr "Mathematische Leerzeichen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:363
 msgid "Roman"
@@ -1916,7 +1916,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:400
 msgid "Math"
-msgstr ""
+msgstr "Mathematik"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:415
 msgid "Figure (image inside freestanding block)"
