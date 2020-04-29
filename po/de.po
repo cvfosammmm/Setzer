@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
 "POT-Creation-Date: 2020-04-28 22:57+0200\n"
-"PO-Revision-Date: 2020-04-29 14:12+0200\n"
+"PO-Revision-Date: 2020-04-29 14:38+0200\n"
 "Last-Translator: Cvfosammmm <r.griesel@gmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -52,12 +52,12 @@ msgstr "AMS Paket für mathematische Sätze."
 #: setzer/dialogs/add_remove_packages/add_remove_packages.py:42
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:164
 msgid "create a glossary for your document."
-msgstr "erstelle ein Glossar für dein Dokument."
+msgstr "Glossar erstellen."
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages.py:43
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:158
 msgid "include graphics in your document."
-msgstr "füge Grafiken in deinem Dokument ein."
+msgstr "Grafiken in das Dokument einfügen."
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages.py:43
 #: setzer/dialogs/add_remove_packages/add_remove_packages.py:48
@@ -76,7 +76,7 @@ msgstr "empfohlen"
 #: setzer/dialogs/add_remove_packages/add_remove_packages.py:44
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:161
 msgid "create hyperlinks within your document."
-msgstr "erstelle Hyperlinks in deinem Dokument."
+msgstr "Hyperlinks einfügen."
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages.py:45
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:163
@@ -495,13 +495,16 @@ msgstr ""
 #: setzer/dialogs/build_save/build_save.py:47
 #, python-brace-format
 msgid "Document »{document}« has no filename."
-msgstr ""
+msgstr "Dokument »{document}« hat keinen Dateinamen."
 
 #: setzer/dialogs/build_save/build_save.py:48
 msgid ""
 "Please save your document to a file, so the build system knows where to put "
 "the .pdf (it will be in the same folder as your document)."
 msgstr ""
+"Bitte speichern Sie das Dokument in einer Datei, damit Setzer weißt wo die "
+"erstellte .pdf-Datei gespeichert werden soll (sie wird im gleichen Ordner "
+"wie das Dokument gespeichert)."
 
 #: setzer/dialogs/building_failed/building_failed.py:44
 msgid "Something went wrong."
