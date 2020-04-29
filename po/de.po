@@ -1,5 +1,6 @@
 #
 # Cvfosammmm <r.griesel@gmail.com>, 2020.
+# Stephan Lachnit <stephanlachnit@protonmail.com>, 2020.
 #
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 3.30.1\n"
+"X-Generator: Gtranslator 3.36.0\n"
 
 #: setzer/dialogs/about/about.py:44
 msgid "Setzer is a LaTeX editor."
@@ -508,7 +509,7 @@ msgstr ""
 
 #: setzer/dialogs/building_failed/building_failed.py:44
 msgid "Something went wrong."
-msgstr ""
+msgstr "Irgendetwas ist schief gelaufen."
 
 #: setzer/dialogs/building_failed/building_failed.py:45
 #, python-brace-format
@@ -521,7 +522,7 @@ msgstr ""
 #: setzer/dialogs/close_confirmation/close_confirmation.py:86
 #, python-brace-format
 msgid "Document »{document}« has unsaved changes."
-msgstr ""
+msgstr "Das Dokument »{document}« hat ungespeicherte Änderungen."
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:87
 msgid "If you close without saving, these changes will be lost."
@@ -732,7 +733,7 @@ msgstr "BibTeX Dokument einbinden"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file.py:95
 msgid "BibTeX Files"
-msgstr ""
+msgstr "BibTeX Dateien"
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:48
 msgid "LaTeX file to include"
@@ -766,11 +767,11 @@ msgstr ""
 
 #: setzer/dialogs/include_latex_file/include_latex_file.py:33
 msgid "Relative Path"
-msgstr ""
+msgstr "Relativer Pfad"
 
 #: setzer/dialogs/include_latex_file/include_latex_file.py:33
 msgid "Absolute Path"
-msgstr ""
+msgstr "Absoluter Pfad"
 
 #: setzer/dialogs/include_latex_file/include_latex_file.py:68
 msgid "LaTeX Files"
@@ -992,7 +993,7 @@ msgstr ""
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:105
 msgid "Equation"
-msgstr ""
+msgstr "Gleichung"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:106
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:315
@@ -1021,11 +1022,11 @@ msgstr "LaTeX und BibTeX Dateien"
 
 #: setzer/dialogs/open_session/open_session.py:47
 msgid "Load Session"
-msgstr ""
+msgstr "Sitzung laden"
 
 #: setzer/dialogs/open_session/open_session.py:59
 msgid "Setzer Session"
-msgstr ""
+msgstr "Setzer Sitzung"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:40
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:126
@@ -1151,11 +1152,11 @@ msgstr ""
 
 #: setzer/dialogs/save_document/save_document.py:59
 msgid "Save document"
-msgstr ""
+msgstr "Dokument speichern"
 
 #: setzer/dialogs/save_session/save_session.py:67
 msgid "Save Session"
-msgstr ""
+msgstr "Sitzung speichern"
 
 #: setzer/dialogs/spellchecking_language/spellchecking_language.py:55
 msgid "Spellchecking Language"
@@ -1366,7 +1367,7 @@ msgstr "Fehler"
 #: setzer/document/document_builder.py:145
 #, python-brace-format
 msgid "{amount} error(s)"
-msgstr "{amount}"
+msgstr "{amount} Fehler"
 
 #: setzer/document/document_builder.py:148
 msgid "Success!"
@@ -1406,27 +1407,27 @@ msgstr "In Vorschau anzeigen"
 
 #: setzer/workspace/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:49
 msgid "Create New Entry"
-msgstr ""
+msgstr "Neuen Eintrag hinzufügen"
 
 #: setzer/workspace/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:60
 msgid "Create a New BibTeX Entry"
-msgstr ""
+msgstr "Neuen BibTeX Eintrag hinzufügen"
 
 #: setzer/workspace/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:69
 msgid "Previously Used Entries"
-msgstr ""
+msgstr "Zuvor verwendete Einträge"
 
 #: setzer/workspace/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:80
 msgid "Add a Previously Used BibTeX Entry"
-msgstr ""
+msgstr "Zuvor verwendeten Eintrag hinzufügen"
 
 #: setzer/workspace/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:89
 msgid "Search For Entries Online"
-msgstr ""
+msgstr "Online nach Einträgen suchen"
 
 #: setzer/workspace/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:100
 msgid "Add a BibTeX Entry from an Online Database"
-msgstr ""
+msgstr "Einen BibTex Eintrag aus einer Online Datenbank hinzufügen"
 
 #: setzer/workspace/build_log/build_log_presenter.py:57
 #: setzer/workspace/build_log/build_log_presenter.py:59
@@ -1468,15 +1469,17 @@ msgstr "Strg"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:112
 msgid "Set one Document as Master"
-msgstr ""
+msgstr "Ein Dokument als Hauptdokument festlegen"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:119
 msgid "Unset Master Document"
-msgstr ""
+msgstr "Auswahl des Hauptdokuments zurücksetzen"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:127
 msgid "Click on a document in the list below to set it as master."
 msgstr ""
+"Klicken sie auf ein Dokument aus der nachstehenden Liste um es als "
+"Hauptdokument festzulegen."
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:131
 msgid ""
@@ -1564,6 +1567,9 @@ msgid ""
 "and restore it later, a convenient way to work\n"
 "on multiple projects."
 msgstr ""
+"Speicher die Liste von geöffneten Dokumenten in einer Sitzungdatei\n"
+"und öffne sie später wieder, ein praktischer Weg um\n"
+"an verschiedenen Projekten zu arbeiten."
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:155
 msgid "Restore Previous Session"
@@ -1636,7 +1642,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:120
 msgid "Document"
-msgstr ""
+msgstr "Dokument"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:134
 msgid "Include BibTeX File"
@@ -1648,11 +1654,11 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:137
 msgid "Citation"
-msgstr ""
+msgstr "Zitat"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:137
 msgid "Citation with Page Number"
-msgstr ""
+msgstr "Zitat mit Seitenangabe"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:139
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:147
@@ -1729,7 +1735,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:186
 msgid "Footnote"
-msgstr ""
+msgstr "Fußnote"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
 msgid "Underline"
@@ -1830,7 +1836,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:271
 msgid "Text"
-msgstr ""
+msgstr "Text"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:285
 msgid "Primary Quotes"
@@ -1962,7 +1968,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:440
 msgid "Numbered List"
-msgstr ""
+msgstr "Nummerierte Liste"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:440
 msgid "List with Bold Labels"
@@ -2008,3 +2014,165 @@ msgstr "Keine Dokumente geöffnet"
 #, python-brace-format
 msgid "Untitled Document {number}"
 msgstr "Unbenanntes Dokument {number}"
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:8
+msgid "Simple yet full-featured LaTeX editor"
+msgstr "Einfacher und trotzdem vollwertiger LaTeX Editor."
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:12
+msgid ""
+"Setzer lets you Write LaTeX documents with an easy to use yet full-featured "
+"editor."
+msgstr ""
+"Mit Setzer kannst du Dokumente in einem einfach zu verwendbaren und trotzdem "
+"vollwertigen Editor verfassen."
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:13
+msgid "Features include:"
+msgstr "Enthaltende Funktionen:"
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:15
+msgid "Buttons and shortcuts for many LaTeX elements and special characters"
+msgstr "Knöpfe und Tastenkürzel für viele LaTeX Elemente und spezielle Zeichen"
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:16
+msgid "Comfortable document creation wizard"
+msgstr "Komfortabler Assistent zum erstellen von Dokumenten"
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:17
+msgid "Dark mode"
+msgstr "Nachtmodus"
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:18
+msgid "Helpful error messages in the build log"
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:19
+msgid "Looks great on the Gnome desktop"
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:20
+msgid "Good screen to content ratio"
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:21
+msgid "Arguably the best .pdf viewer of any LaTeX editor"
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:30
+msgid "Buttons and shortcuts for many LaTeX elements and special characters."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:34
+msgid "Document creation wizard."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:38
+msgid "Dark mode."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:42
+msgid "Helpful error messages in the build log."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:58
+msgid "Bug fix"
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:63
+msgid ""
+"Initial backward synctex support, improved synctex highlighting, search UI "
+"improvements, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:68
+msgid "Session management, highlight passages on build, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:73
+msgid ""
+"Zoom level popover for the .pdf preview, preview should use far less memory "
+"now, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:78
+msgid "Bug fixes"
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:83
+msgid ""
+"Enable embedded system commands, document modified on disk dialog, option to "
+"highlight current line, option to highlight matching brackets, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:88
+msgid "Add/remove packages dialog, improved HiDPI support, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:93
+msgid "Keyboard shortcuts in popovers, more commands in shortcuts bar, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:98
+msgid "More commands in shortcuts bar, autocomplete now case insensitive, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:103
+msgid "HiDPI support in .pdf preview, presistent code folding, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:108
+msgid "Initial code folding support, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:113
+msgid ""
+"References to existing labels in autocomplete, persistent master document "
+"state, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:118
+msgid "Initial spellchecking support, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:123
+msgid "Simple BibTeX wizard, more bibliography features in LaTeX editor, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:128
+msgid "BibTeX support in the build system, edit BibTeX files, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:133
+msgid "Editor settings in preferences dialog, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:138
+msgid ""
+"Build multiple times to resolve undefined references, show warnings in build "
+"log, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:143
+msgid "Indent multi-line inserts, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:148
+msgid "Multiple documents in build log, build in temporary folder, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:153
+msgid "Master document function, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:158
+msgid "New app layout, animated wizard button, big code refactor, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:163
+msgid "Set margins in wizard, improved icon, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:168
+msgid "Initial release"
+msgstr ""
