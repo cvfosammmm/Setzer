@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
-"POT-Creation-Date: 2020-04-29 19:17+0200\n"
-"PO-Revision-Date: 2020-04-29 21:31+0200\n"
+"POT-Creation-Date: 2020-04-30 00:22+0200\n"
+"PO-Revision-Date: 2020-04-30 01:16+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 3.30.1\n"
+"X-Generator: Gtranslator 3.36.0\n"
 
 #: setzer/dialogs/about/about.py:44
 msgid "Setzer is a LaTeX editor."
@@ -171,6 +171,13 @@ msgid ""
 "refer to the journal while <tt>translator</tt> and related fields refer to "
 "the article."
 msgstr ""
+"Ein Artikel in einem Journal, einer Zeitung, oder einem anderwertigen "
+"Magazin, der eine abgeschlossene Einheit mit seinem eigenen Titel bildet. "
+"Der Titel der Zeitschrift ist im <tt>journaltitle</tt> Feld gegeben. Falls "
+"die Ausgabe einen eigenen Namen zusätlich zum Haupttitel des Magazins hat, "
+"gehört dieser in das <tt>issuetitle</tt> Feld. Beachte, dass <tt>editor</tt> "
+"und verwandte Felder sich auf das Magazin beziehen, während sich "
+"<tt>translator</tt> und verwandte Felder auf den Artikel beziehen."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:43
 msgid "Book"
@@ -182,6 +189,9 @@ msgid ""
 "for the work as a whole. This entry type also covers the function of the "
 "@inbook type of traditional BibTeX."
 msgstr ""
+"Ein einbandiges Buch mit einem oder mehreren Autoren, bei dem sich die "
+"Autoren die Annerkennung für das ganze Werk teilen. Dieser Dokumententyp "
+"schließt die Funktion vom @inbook type von traditionellem BibTeX mit ein."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:44
 msgid "Multi-volume Book"
@@ -193,6 +203,9 @@ msgid ""
 "also supported by the entry type @book. However, it is advisable to make use "
 "of the dedicated entry type @mvbook."
 msgstr ""
+"Ein mehrbandiges @book. Zur Abwärtskompatibilität sind mehrbandige Bücher "
+"auch unterstützt von Dokumententyp @book. Allerdings ist es empfehlenswert den "
+"dafür bestimmten Dokumententyp @mvbook zu verwenden."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:45
 msgid "Part of a Book With Its Own Title"
@@ -203,6 +216,9 @@ msgid ""
 "A part of a book which forms a self-contained unit with its own title. Note "
 "that the profile of this entry type is different from standard BibTeX."
 msgstr ""
+"Ein Teil eines Buches welches eine unabhängige Einheit mit seinem eigenen "
+"Titel formt. Beachte, dass das Profil dieses Dokumententypes verschieden zu "
+"standardmäßigem BibTeX ist."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:46
 msgid "Book in Book"
@@ -214,6 +230,9 @@ msgid ""
 "as a stand-alone book. A typical example are books reprinted in the "
 "collected works of an author."
 msgstr ""
+"Dieser Typ is ähnlich zu @inbook, allerdings stattdessen für Werke "
+"ursprünglich veröffentlich as selbständiges Buch. Ein typisches Beispiel "
+"sind Bücher, die in einer Sammlung eines Autors veröffentlicht werden."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:47
 msgid "Supplemental Material in a Book"
@@ -230,6 +249,14 @@ msgid ""
 "other @inbook items. The standard styles will treat this entry type as an "
 "alias for @inbook."
 msgstr ""
+"Ergänzendes Material in einem @book. Dieser Typ is nahe verwandt mit dem "
+"@inbook Typ. Währen @inbook hauptsächlich für einen Teil eines Buches mit "
+"einem eigenen Titel gedacht ist (z. B. ein einziges Essay in einer Sammlung "
+"von Essays vom selben Autor), ist dieser Typ vorgesehen für Elemente wie "
+"Vorworte, Einleitungen, Geleitworte, Nachwrote, etc., welche oft nur einen "
+"generischen Namen haben. Stilistische Leitfäden können voraussetzen, dass "
+"solche Elemente anders als @inbook Elemente formatiert werden. Der "
+"gewöhnliche Stil wird diesen Typ wie ein Pseudonym für @inbook behandeln."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:48
 msgid "Booklet"
@@ -518,6 +545,10 @@ msgid ""
 "\n"
 "To configure your build system go to Preferences."
 msgstr ""
+"Der Erstellungsprozess wurde unerwarted beendet, Ausgabe: "
+"\"{error_message}\".\n"
+"\n"
+"Um dein Erstellungssystem zu ändern gehe in die Einstellungen."
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:86
 #, python-brace-format
@@ -526,7 +557,7 @@ msgstr "Dokument »{document}« hat ungespeicherte Änderungen."
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:87
 msgid "If you close without saving, these changes will be lost."
-msgstr ""
+msgstr "Wenn du ohne zu speichern schließt gehen alle Veränderungen verloren."
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:90
 #, python-brace-format
@@ -534,23 +565,27 @@ msgid ""
 "There are {amount} documents with unsaved changes.\n"
 "Save changes before closing?"
 msgstr ""
+"Es gibt {amount} Dokumente mit ungespeicherten Änderungen.\n"
+"Änderungen vorm Schließen speichern?"
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:91
 msgid "Select the documents you want to save:"
-msgstr ""
+msgstr "Wähle die Dokumente aus die du speichern willst:"
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:113
 msgid "If you close without saving, all changes will be lost."
 msgstr ""
+"Wenn du die Datei ohne zu speichern schließt gehen alle ungespeicherten "
+"Veränderungen verloren."
 
 #: setzer/dialogs/document_changed_on_disk/document_changed_on_disk.py:49
 #, python-brace-format
 msgid "Document »{document}« has changed on disk."
-msgstr ""
+msgstr "Dokument »{document}« hat sich im Speicher geändert."
 
 #: setzer/dialogs/document_changed_on_disk/document_changed_on_disk.py:50
 msgid "Should Setzer reload it now?"
-msgstr ""
+msgstr "Soll Setzer es jetzt neu laden?"
 
 #: setzer/dialogs/document_wizard/pages/page_article_settings.py:103
 #: setzer/dialogs/document_wizard/pages/page_article_settings.py:104
@@ -779,7 +814,7 @@ msgstr "LaTeX Dateien"
 
 #: setzer/dialogs/interpreter_missing/interpreter_missing.py:46
 msgid "LateX Interpreter is missing."
-msgstr ""
+msgstr "LaTeX Interpreter ist nicht vorhanden."
 
 #: setzer/dialogs/interpreter_missing/interpreter_missing.py:47
 #, python-brace-format
@@ -793,6 +828,14 @@ msgid ""
 "wiki/LaTeX/Installation\">https://en.wikibooks.org/wiki/LaTeX/Installation</"
 "a>"
 msgstr ""
+"Setzer ist konfiguriert »{interpreter}« zu verwenden, welches nicht auf dem "
+"System vorhanden zu sein scheint.\n"
+"\n"
+"Ein anderer LaTeX Interpreter lässt sich in den Einstellungen auswählen.\n"
+"\n"
+"Hilfe zur Installation von LaTeX gibt es auf <a href=\"https://de.wikibooks."
+"org/wiki/LaTeX/_Installation\">https://de.wikibooks.org/wiki/LaTeX/"
+"_Installation</a>."
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:35
 msgid "Documents"
@@ -1141,20 +1184,20 @@ msgstr "Eingeschränkt aktiviertes \\write18{SHELL COMMAND}"
 msgid "Fully enable \\write18{SHELL COMMAND}"
 msgstr "Vollständig aktiviertes \\write18{SHELL COMMAND}"
 
-#: setzer/dialogs/replace_confirmation/replace_confirmation.py:47
+#: setzer/dialogs/replace_confirmation/replace_confirmation.py:45
 msgid "occurrence"
 msgid_plural "occurrences"
 msgstr[0] "Treffer"
 msgstr[1] "Treffer"
 
-#: setzer/dialogs/replace_confirmation/replace_confirmation.py:48
+#: setzer/dialogs/replace_confirmation/replace_confirmation.py:46
 #, python-brace-format
 msgid ""
 "Replacing {amount} {str_occurrences} of »{original}« with »{replacement}«."
 msgstr ""
 "Ersetze {amount} {str_occurrences} von »{original}« durch »{replacement}«."
 
-#: setzer/dialogs/replace_confirmation/replace_confirmation.py:49
+#: setzer/dialogs/replace_confirmation/replace_confirmation.py:47
 msgid "Do you really want to do this?"
 msgstr "Wollen Sie das wirklich tun?"
 
@@ -1168,7 +1211,7 @@ msgstr "Sitzung speichern"
 
 #: setzer/dialogs/spellchecking_language/spellchecking_language.py:55
 msgid "Spellchecking Language"
-msgstr ""
+msgstr "Sprache"
 
 #: setzer/document/autocomplete/autocomplete.py:253
 #: setzer/document/autocomplete/autocomplete.py:307
@@ -1227,7 +1270,7 @@ msgstr "Griechischer Buchstabe"
 
 #: setzer/document/autocomplete/autocomplete.py:303
 msgid "Verbatim environment, content won't be interpreted as LaTeX."
-msgstr ""
+msgstr "Verbatim Umgebung, Inhalt wird nicht von LaTeX ausgewertet."
 
 #: setzer/document/autocomplete/autocomplete.py:498
 msgid "Include a non-cited item from the bibliography"
@@ -1243,7 +1286,7 @@ msgstr "Farbiger Text"
 
 #: setzer/document/autocomplete/autocomplete.py:585
 msgid "Monospaced Text"
-msgstr ""
+msgstr "Monospace-Text"
 
 #: setzer/document/autocomplete/autocomplete.py:625
 msgid "Inline verbatim text that won't be interpreted as LaTeX."
@@ -1292,15 +1335,15 @@ msgstr ""
 #: setzer/document/autocomplete/autocomplete.py:662
 #, python-brace-format
 msgid "Reference to '{label}'"
-msgstr ""
+msgstr "Verweis auf '{label}'"
 
 #: setzer/document/build_widget/build_widget_viewgtk.py:41
 msgid "Stop building"
-msgstr ""
+msgstr "Erstellung abbrechen"
 
 #: setzer/document/build_widget/build_widget_viewgtk.py:45
 msgid "Cleanup build files"
-msgstr ""
+msgstr "Hilfdateien entfernen"
 
 #: setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py:54
 msgid "Set zoom level"
@@ -1368,23 +1411,23 @@ msgstr "Alle"
 msgid "Replace all results"
 msgstr "Alle Ergebnisse ersetzen"
 
-#: setzer/document/document_builder.py:146
-#: setzer/workspace/build_log/build_log_presenter.py:57
+#: setzer/document/document_builder.py:145
+#: setzer/workspace/build_log/build_log_presenter.py:55
 msgid "error"
 msgid_plural "errors"
 msgstr[0] "Fehler"
 msgstr[1] "Fehler"
 
-#: setzer/document/document_builder.py:147
+#: setzer/document/document_builder.py:146
 msgid "Failed"
 msgstr "Fehlgeschlagen"
 
-#: setzer/document/document_builder.py:147
+#: setzer/document/document_builder.py:146
 #, python-brace-format
 msgid "{amount} {str_errors}"
 msgstr "{amount} {str_errors}"
 
-#: setzer/document/document_builder.py:150
+#: setzer/document/document_builder.py:149
 msgid "Success!"
 msgstr "Erfolg!"
 
@@ -1444,36 +1487,36 @@ msgstr "Online nach Einträgen suchen"
 msgid "Add a BibTeX Entry from an Online Database"
 msgstr "Einen BibTex Eintrag aus einer Online Datenbank hinzufügen"
 
-#: setzer/workspace/build_log/build_log_presenter.py:58
+#: setzer/workspace/build_log/build_log_presenter.py:56
 msgid "warning"
 msgid_plural "warnings"
 msgstr[0] "Warnung"
 msgstr[1] "Warnungen"
 
-#: setzer/workspace/build_log/build_log_presenter.py:59
+#: setzer/workspace/build_log/build_log_presenter.py:57
 msgid "badbox"
 msgid_plural "badboxes"
 msgstr[0] "Badbox"
 msgstr[1] "Badboxen"
 
+#: setzer/workspace/build_log/build_log_presenter.py:60
 #: setzer/workspace/build_log/build_log_presenter.py:62
-#: setzer/workspace/build_log/build_log_presenter.py:64
 msgid "Building successful"
 msgstr "Erstellen erfolgreich"
 
-#: setzer/workspace/build_log/build_log_presenter.py:62
-#: setzer/workspace/build_log/build_log_presenter.py:67
+#: setzer/workspace/build_log/build_log_presenter.py:60
+#: setzer/workspace/build_log/build_log_presenter.py:65
 msgid "no warnings or badboxes"
 msgstr "keine Warnungen oder Badboxen"
 
-#: setzer/workspace/build_log/build_log_presenter.py:64
-#: setzer/workspace/build_log/build_log_presenter.py:69
+#: setzer/workspace/build_log/build_log_presenter.py:62
+#: setzer/workspace/build_log/build_log_presenter.py:67
 #, python-brace-format
 msgid "{amount} {str_warnings} or {str_badboxes}"
 msgstr "{amount} {str_warnings} oder {str_badboxes}"
 
+#: setzer/workspace/build_log/build_log_presenter.py:65
 #: setzer/workspace/build_log/build_log_presenter.py:67
-#: setzer/workspace/build_log/build_log_presenter.py:69
 #, python-brace-format
 msgid "Building failed with {amount} {str_errors}"
 msgstr "Erstellen fehlgeschlagen mit {amount} {str_errors}"
@@ -1657,7 +1700,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:99
 msgid "Show Title"
-msgstr ""
+msgstr "Titel anzeigen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:100
 msgid "Table of Contents"
@@ -1743,7 +1786,7 @@ msgstr ""
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:177
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:231
 msgid "International Accents"
-msgstr ""
+msgstr "Internationale Akzente"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:179
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:240
@@ -1770,7 +1813,7 @@ msgstr "Fußnote"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
 msgid "Underline"
-msgstr ""
+msgstr "Unterstreichen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:363
@@ -1965,7 +2008,7 @@ msgstr "Mathematik"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:415
 msgid "Figure (image inside freestanding block)"
-msgstr ""
+msgstr "Figure (Bild in einem freistehendem Block)"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:416
 msgid "Inline Image"
@@ -1987,7 +2030,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:431
 msgid "Other Language"
-msgstr ""
+msgstr "Andere Sprache"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:432
 msgid "Plain Text"
@@ -2083,15 +2126,15 @@ msgstr "Hilfreiche Fehlermeldungen"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:19
 msgid "Looks great on the Gnome desktop"
-msgstr ""
+msgstr "Sieht gut in Gnome aus"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:20
 msgid "Good screen to content ratio"
-msgstr ""
+msgstr "Gutes Verhältnis von Fenstergröße zu Inhalt"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:21
 msgid "Arguably the best .pdf viewer of any LaTeX editor"
-msgstr ""
+msgstr "Wohl der beste .pdf Betrachter von allen LaTeX Editoren"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:34
 msgid "Document creation wizard"
