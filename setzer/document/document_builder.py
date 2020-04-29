@@ -16,6 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import time
+from gettext import ngettext
 
 import setzer.document.build_system.build_system as build_system
 from setzer.app.service_locator import ServiceLocator
@@ -142,7 +143,8 @@ class DocumentBuilder(object):
                             error_count += 1
                     if error_count > 0:
                         error_color = helpers.theme_color_to_css(self.document.view.get_style_context(), 'error_color')
-                        message = '<span color="' + error_color + '">' + _('Failed') + '</span> (' + _('{amount} error(s)').format(amount=str(error_count)) + ')!'
+                        str_errors = ngettext('error', 'errors', error_count)
+                        message = '<span color="' + error_color + '">' + _('Failed') + '</span> (' + _('{amount} {str_errors}').format(amount=str(error_count),str_errors=str_errors) + ')!'
                         self.document.show_build_state(message)
                     else:
                         self.document.show_build_state(_('Success!'))
