@@ -15,8 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from gettext import ngettext
-
 import setzer.workspace.build_log.build_log_viewgtk as build_log_view
 
 

@@ -38,7 +38,7 @@ class MainApplicationController(Gtk.Application):
         ''' Everything starts here. '''
 
         # setup gettext
-        gettext.install('setzer', localedir='@localedir_path@')
+        gettext.install('setzer', names=('ngettext',), localedir='@localedir_path@')
 
         # get settings
         settings = ServiceLocator.get_settings()

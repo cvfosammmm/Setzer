@@ -16,7 +16,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import time
-from gettext import ngettext
 
 import setzer.document.build_system.build_system as build_system
 from setzer.app.service_locator import ServiceLocator
