@@ -69,7 +69,7 @@ class Settings(Observable):
         self.defaults['preferences'] = dict()
         self.defaults['preferences']['cleanup_build_files'] = True
         self.defaults['preferences']['autoshow_build_log'] = 'errors_warnings'
-        self.defaults['preferences']['latex_interpreter'] = 'xelatex'
+        self.defaults['preferences']['latex_interpreter'] = 'latexmk'
         self.defaults['preferences']['prefer_dark_mode'] = False
         self.defaults['preferences']['spaces_instead_of_tabs'] = True
         self.defaults['preferences']['tab_width'] = 4
