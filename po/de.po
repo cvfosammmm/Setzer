@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
 "POT-Creation-Date: 2020-04-30 00:22+0200\n"
-"PO-Revision-Date: 2020-04-30 23:31+0200\n"
+"PO-Revision-Date: 2020-05-01 12:43+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: setzer/dialogs/about/about.py:44
 msgid "Setzer is a LaTeX editor."
-msgstr "Setzer ist ein LaTeX editor."
+msgstr "Setzer ist ein LaTeX-Editor."
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages_viewgtk.py:51
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:95
@@ -748,39 +748,39 @@ msgstr "Dokumentenvorlage erstellen"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:48
 msgid "BibTeX file to include"
-msgstr ""
+msgstr "BibTeX-Datei"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:55
 msgid "Select a BibTeX File"
-msgstr ""
+msgstr "BibTeX-Datei auswählen"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:58
 msgid "Bibliography style"
-msgstr ""
+msgstr "Bibliographie-Stil"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:74
 msgid "Show bibliography styles for the 'natbib' package"
-msgstr ""
+msgstr "Bibliographie-Stile für das 'natbib'-Paket anzeigen"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:107
 msgid "Include BibTeX file"
-msgstr "BibTeX Dokument einbinden"
+msgstr "BibTeX-Dokument einbinden"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file.py:95
 msgid "BibTeX Files"
-msgstr "BibTeX Dateien"
+msgstr "BibTeX-Dateien"
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:48
 msgid "LaTeX file to include"
-msgstr ""
+msgstr "LaTeX-Datei"
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:54
 msgid "Select a LaTeX File"
-msgstr ""
+msgstr "LaTeX-Datei auswählen"
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:57
 msgid "Type of path to included file"
-msgstr ""
+msgstr "Pfad-Typ"
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:79
 msgid ""
@@ -789,16 +789,20 @@ msgid ""
 "the main document and you want to move around both of\n"
 "them together."
 msgstr ""
+"<b>Relativer Pfad:</b> setze den Pfad relativ zum Hauptdokument.\n"
+"Das ist nützlich wenn die eingebundene Datei im selben Ordner\n"
+"liegt wie das Hauptdokument und Sie ggf. beide Dateien\n"
+"zusammen verschieben möchten."
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:79
 msgid ""
 "<b>Absolute Path:</b> Specify the absolute location of the included\n"
 "file in your filesystem."
-msgstr ""
+msgstr "<b>Absoluter Pfad:</b> absolute Position im Dateisystem."
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:91
 msgid "Include LaTeX file"
-msgstr ""
+msgstr "LaTeX-Dokument einbinden"
 
 #: setzer/dialogs/include_latex_file/include_latex_file.py:33
 msgid "Relative Path"
@@ -810,11 +814,11 @@ msgstr "Absoluter Pfad"
 
 #: setzer/dialogs/include_latex_file/include_latex_file.py:68
 msgid "LaTeX Files"
-msgstr "LaTeX Dateien"
+msgstr "LaTeX-Dateien"
 
 #: setzer/dialogs/interpreter_missing/interpreter_missing.py:46
 msgid "LateX Interpreter is missing."
-msgstr "LaTeX Interpreter ist nicht vorhanden."
+msgstr "LaTeX-Interpreter ist nicht vorhanden."
 
 #: setzer/dialogs/interpreter_missing/interpreter_missing.py:47
 #, python-brace-format
@@ -1061,7 +1065,7 @@ msgstr "Öffnen"
 
 #: setzer/dialogs/open_document/open_document.py:60
 msgid "LaTeX and BibTeX Files"
-msgstr "LaTeX und BibTeX Dateien"
+msgstr "LaTeX- und BibTeX-Dateien"
 
 #: setzer/dialogs/open_session/open_session.py:47
 msgid "Load Session"
@@ -1485,7 +1489,7 @@ msgstr "Online nach Einträgen suchen"
 
 #: setzer/workspace/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:100
 msgid "Add a BibTeX Entry from an Online Database"
-msgstr "Einen BibTex Eintrag aus einer Online Datenbank hinzufügen"
+msgstr "Einen BibTex Eintrag aus einer Online-Datenbank hinzufügen"
 
 #: setzer/workspace/build_log/build_log_presenter.py:56
 msgid "warning"
@@ -1578,11 +1582,11 @@ msgstr "Neues Dokument erstellen"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:84
 msgid "New LaTeX Document"
-msgstr "Neues LaTeX Dokument"
+msgstr "Neues LaTeX-Dokument"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:85
 msgid "New BibTeX Document"
-msgstr "Neues BibTeX Dokument"
+msgstr "Neues BibTeX-Dokument"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:92
 msgid "Save"
@@ -1696,7 +1700,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:98
 msgid "Document Environment"
-msgstr ""
+msgstr "Document Umgebung"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:99
 msgid "Show Title"
@@ -1708,7 +1712,7 @@ msgstr "Inhaltsverzeichnis"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:102
 msgid "Include LaTeX File"
-msgstr ""
+msgstr "LaTeX-Dokument einbinden"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:113
 msgid "Date Today"
@@ -1720,11 +1724,11 @@ msgstr "Dokument"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:134
 msgid "Include BibTeX File"
-msgstr ""
+msgstr "BibTeX-Dokument einbinden"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:135
 msgid "Include 'natbib' Package"
-msgstr ""
+msgstr "'natbib'-Paket einbinden"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:137
 msgid "Citation"
@@ -1786,16 +1790,16 @@ msgstr ""
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:177
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:231
 msgid "International Accents"
-msgstr "Internationale Akzente"
+msgstr "Internationale Akzentzeichen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:179
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:240
 msgid "Sectioning"
-msgstr ""
+msgstr "Abschnitte"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:182
 msgid "Verbatim Environment"
-msgstr ""
+msgstr "Verbatim Umgebung"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:183
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:252
@@ -1852,37 +1856,37 @@ msgstr ""
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:241
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:244
 msgid "Part"
-msgstr ""
+msgstr "Part"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:241
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:244
 msgid "Chapter"
-msgstr ""
+msgstr "Chapter"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:241
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:244
 msgid "Section"
-msgstr ""
+msgstr "Section"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:241
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:244
 msgid "Subsection"
-msgstr ""
+msgstr "Subsection"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:241
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:244
 msgid "Subsubsection"
-msgstr ""
+msgstr "Subsubsection"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:241
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:244
 msgid "Paragraph"
-msgstr ""
+msgstr "Paragraph"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:241
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:244
 msgid "Subparagraph"
-msgstr ""
+msgstr "Subparagraph"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:253
 msgid "Short Quotation"
@@ -1979,7 +1983,7 @@ msgstr ""
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:325
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:382
 msgid "Math Accents"
-msgstr ""
+msgstr "Mathematische Akzentzeichen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:326
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:391
@@ -2000,7 +2004,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:363
 msgid "Fraktur"
-msgstr ""
+msgstr "Fraktur"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:400
 msgid "Math"
@@ -2091,7 +2095,7 @@ msgstr "Unbenanntes Dokument {number}"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:8
 msgid "Simple yet full-featured LaTeX editor"
-msgstr "LaTeX Editor mit vielen nützlichen Funktionen."
+msgstr "LaTeX-Editor mit vielen nützlichen Funktionen."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:12
 msgid ""
@@ -2108,7 +2112,7 @@ msgstr "Enthaltende Funktionen:"
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:15
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:30
 msgid "Buttons and shortcuts for many LaTeX elements and special characters"
-msgstr "Knöpfe und Tastenkürzel für viele LaTeX Elemente und spezielle Zeichen"
+msgstr "Knöpfe und Tastenkürzel für viele LaTeX-Elemente und spezielle Zeichen"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:16
 msgid "Comfortable document creation wizard"
@@ -2134,7 +2138,7 @@ msgstr "Gutes Verhältnis von Fenstergröße zu Inhalt"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:21
 msgid "Arguably the best .pdf viewer of any LaTeX editor"
-msgstr "Der vielleicht beste .pdf-Betrachter von allen LaTeX Editoren"
+msgstr "Der vielleicht beste .pdf-Betrachter von allen LaTeX-Editoren"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:34
 msgid "Document creation wizard"
@@ -2142,102 +2146,112 @@ msgstr "Komfortabler Assistent zum Erstellen von Dokumenten"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:58
 msgid "Bug fix"
-msgstr ""
+msgstr "Bug fix"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:63
 msgid ""
 "Initial backward synctex support, improved synctex highlighting, search UI "
 "improvements, ..."
 msgstr ""
+"Initial backward synctex support, improved synctex highlighting, search UI "
+"improvements, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:68
 msgid "Session management, highlight passages on build, ..."
-msgstr ""
+msgstr "Session management, highlight passages on build, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:73
 msgid ""
 "Zoom level popover for the .pdf preview, preview should use far less memory "
 "now, ..."
 msgstr ""
+"Zoom level popover for the .pdf preview, preview should use far less memory "
+"now, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:78
 msgid "Bug fixes"
-msgstr ""
+msgstr "Bug fixes"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:83
 msgid ""
 "Enable embedded system commands, document modified on disk dialog, option to "
 "highlight current line, option to highlight matching brackets, ..."
 msgstr ""
+"Enable embedded system commands, document modified on disk dialog, option to "
+"highlight current line, option to highlight matching brackets, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:88
 msgid "Add/remove packages dialog, improved HiDPI support, ..."
-msgstr ""
+msgstr "Add/remove packages dialog, improved HiDPI support, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:93
 msgid "Keyboard shortcuts in popovers, more commands in shortcuts bar, ..."
-msgstr ""
+msgstr "Keyboard shortcuts in popovers, more commands in shortcuts bar, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:98
 msgid "More commands in shortcuts bar, autocomplete now case insensitive, ..."
-msgstr ""
+msgstr "More commands in shortcuts bar, autocomplete now case insensitive, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:103
 msgid "HiDPI support in .pdf preview, presistent code folding, ..."
-msgstr ""
+msgstr "HiDPI support in .pdf preview, presistent code folding, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:108
 msgid "Initial code folding support, ..."
-msgstr ""
+msgstr "Initial code folding support, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:113
 msgid ""
 "References to existing labels in autocomplete, persistent master document "
 "state, ..."
 msgstr ""
+"References to existing labels in autocomplete, persistent master document "
+"state, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:118
 msgid "Initial spellchecking support, ..."
-msgstr ""
+msgstr "Initial spellchecking support, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:123
 msgid "Simple BibTeX wizard, more bibliography features in LaTeX editor, ..."
-msgstr ""
+msgstr "Simple BibTeX wizard, more bibliography features in LaTeX editor, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:128
 msgid "BibTeX support in the build system, edit BibTeX files, ..."
-msgstr ""
+msgstr "BibTeX support in the build system, edit BibTeX files, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:133
 msgid "Editor settings in preferences dialog, ..."
-msgstr ""
+msgstr "Editor settings in preferences dialog, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:138
 msgid ""
 "Build multiple times to resolve undefined references, show warnings in build "
 "log, ..."
 msgstr ""
+"Build multiple times to resolve undefined references, show warnings in build "
+"log, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:143
 msgid "Indent multi-line inserts, ..."
-msgstr ""
+msgstr "Indent multi-line inserts, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:148
 msgid "Multiple documents in build log, build in temporary folder, ..."
-msgstr ""
+msgstr "Multiple documents in build log, build in temporary folder, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:153
 msgid "Master document function, ..."
-msgstr ""
+msgstr "Master document function, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:158
 msgid "New app layout, animated wizard button, big code refactor, ..."
-msgstr ""
+msgstr "New app layout, animated wizard button, big code refactor, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:163
 msgid "Set margins in wizard, improved icon, ..."
-msgstr ""
+msgstr "Set margins in wizard, improved icon, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:168
 msgid "Initial release"
-msgstr ""
+msgstr "Initial release"
