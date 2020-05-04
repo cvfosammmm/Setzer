@@ -40,20 +40,7 @@ install_subdir(
 )
 
 # install program data
-install_data(
-  join_paths('data', 'org.cvfosammmm.Setzer.desktop'),
-  install_dir: join_paths(datadir, 'applications'),
-)
-
-install_data(
-  join_paths('data', 'org.cvfosammmm.Setzer.svg'),
-  install_dir: join_paths(datadir, 'icons', 'hicolor', 'scalable', 'apps'),
-)
-
-install_man(
-  join_paths('data', 'setzer.1'),
-  install_dir: mandir,
-)
+subdir('data')
 
 # install binary
 configure_file(
@@ -70,3 +57,6 @@ configure_file(
   output: 'setzer_dev.py',
   configuration: config_dev,
 )
+
+# run tests
+subdir('tests')
