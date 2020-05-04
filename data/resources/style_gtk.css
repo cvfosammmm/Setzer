@@ -118,7 +118,7 @@ popover.documentchooser box.not_found label {
 .open-docs-popover row {
     border-radius: 4px;
     padding: 2px 1px 2px 4px;
-    color: #333;
+    color: @theme_fg_color;
 }
 .open-docs-popover list {
     padding: 0px;
