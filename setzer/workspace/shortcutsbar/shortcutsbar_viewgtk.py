@@ -178,7 +178,7 @@ class ShortcutsBar(Gtk.HBox):
         self.pmb.add_separator(box)
         self.pmb.add_menu_button(box, _('Sectioning'), 'sectioning')
         self.pmb.add_separator(box)
-        self.pmb.add_action_button(box, _('Environment'), 'win.insert-before-after', ['\\begin{•}\n\t', '\n\\end{•}'], keyboard_shortcut='Ctrl+E')
+        self.pmb.add_action_button(box, _('Environment'), 'win.insert-before-after', ['\\begin{•}\n\t', '\n\\end{•}'], keyboard_shortcut=_('Ctrl') + '+E')
         self.pmb.add_action_button(box, _('Verbatim Environment'), 'win.insert-before-after', ['\\begin{verbatim}\n\t', '\n\\end{verbatim}'])
         self.pmb.add_menu_button(box, _('Quotations'), 'quotations')
         self.pmb.add_separator(box)
@@ -191,7 +191,7 @@ class ShortcutsBar(Gtk.HBox):
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Font Styles'))
-        for font_style in [(_('Bold') + ' (\\textbf)', 'textbf', 'format-text-bold-symbolic', 'Ctrl+B'), (_('Italic') + ' (\\textit)', 'textit', 'format-text-italic-symbolic', 'Ctrl+I'), (_('Underline') + ' (\\underline)', 'underline', 'format-text-underline-symbolic', 'Ctrl+U'), (_('Sans Serif') + ' (\\textsf)', 'textsf', 'placeholder', None), (_('Typewriter') + ' (\\texttt)', 'texttt', 'placeholder', 'Ctrl+M'), (_('Small Caps') + ' (\\textsc)', 'textsc', 'placeholder', None), (_('Slanted') + ' (\\textsl)', 'textsl', 'placeholder', None), (_('Emphasis') + ' (\\emph)', 'emph', 'placeholder', 'Ctrl+Shift+E')]:
+        for font_style in [(_('Bold') + ' (\\textbf)', 'textbf', 'format-text-bold-symbolic', _('Ctrl') + '+B'), (_('Italic') + ' (\\textit)', 'textit', 'format-text-italic-symbolic', _('Ctrl') + '+I'), (_('Underline') + ' (\\underline)', 'underline', 'format-text-underline-symbolic', _('Ctrl') + '+U'), (_('Sans Serif') + ' (\\textsf)', 'textsf', 'placeholder', None), (_('Typewriter') + ' (\\texttt)', 'texttt', 'placeholder', _('Ctrl') + '+M'), (_('Small Caps') + ' (\\textsc)', 'textsc', 'placeholder', None), (_('Slanted') + ' (\\textsl)', 'textsl', 'placeholder', None), (_('Emphasis') + ' (\\emph)', 'emph', 'placeholder', _('Shift') + '+' + _('Ctrl') + '+E')]:
             icon_name = font_style[2]
             self.pmb.add_action_button(box, font_style[0], 'win.insert-before-after', ['\\' + font_style[1] + '{', '}'], icon_name=icon_name, keyboard_shortcut=font_style[3])
         stack.add_named(box, 'font_styles')
@@ -222,7 +222,7 @@ class ShortcutsBar(Gtk.HBox):
         for command in ['newpage', 'linebreak', 'pagebreak', 'bigskip', 'medskip', 'smallskip']:
             self.pmb.add_action_button(box, '\\' + command, 'win.insert-symbol', ['\\' + command])
         self.pmb.add_action_button(box, '\\vspace', 'win.insert-symbol', ['\\vspace{•}'])
-        self.pmb.add_action_button(box, _('New Line')+ ' (\\\\)', 'win.insert-symbol', ['\\\\\n'], keyboard_shortcut='Ctrl+Return')
+        self.pmb.add_action_button(box, _('New Line')+ ' (\\\\)', 'win.insert-symbol', ['\\\\\n'], keyboard_shortcut=_('Ctrl') + '+Return')
         stack.add_named(box, 'vertical_spacing')
         box.show_all()
         # international accents submenu
@@ -308,16 +308,16 @@ class ShortcutsBar(Gtk.HBox):
         self.pmb.set_box_margin(box)
         self.pmb.add_action_button(box, _('Include AMS Packages'), 'win.add-packages', ['amsmath', 'amssymb', 'amsfonts', 'amsthm'])
         self.pmb.add_separator(box)
-        self.pmb.add_action_button(box, _('Inline Math Section') + ' ($ ... $)', 'win.insert-before-after', ['$ ', ' $'], keyboard_shortcut='Ctrl+Shift+M')
-        self.pmb.add_action_button(box, _('Display Math Section') + ' (\\[ ... \\])', 'win.insert-before-after', ['\\[ ', ' \\]'], keyboard_shortcut='Alt+Shift+M')
+        self.pmb.add_action_button(box, _('Inline Math Section') + ' ($ ... $)', 'win.insert-before-after', ['$ ', ' $'], keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+M')
+        self.pmb.add_action_button(box, _('Display Math Section') + ' (\\[ ... \\])', 'win.insert-before-after', ['\\[ ', ' \\]'], keyboard_shortcut=_('Shift') + '+Alt' + '+M')
         self.pmb.add_menu_button(box, _('Math Environments'), 'math_environments')
         self.pmb.add_separator(box)
-        self.pmb.add_action_button(box, _('Subscript') + ' (_{})', 'win.insert-before-after', ['_{', '}'], keyboard_shortcut='Ctrl+Shift+D')
-        self.pmb.add_action_button(box, _('Superscript') + ' (^{})', 'win.insert-before-after', ['^{', '}'], keyboard_shortcut='Ctrl+Shift+U')
-        self.pmb.add_action_button(box, _('Fraction') + ' (\\frac)', 'win.insert-symbol', ['\\frac{•}{•}'], keyboard_shortcut='Alt+Shift+F')
-        self.pmb.add_action_button(box, _('Square Root') + ' (\\sqrt)', 'win.insert-before-after', ['\\sqrt{', '}'], keyboard_shortcut='Ctrl+Shift+Q')
-        self.pmb.add_action_button(box, '\\left', 'win.insert-symbol', ['\\left •'], keyboard_shortcut='Ctrl+Shift+L')
-        self.pmb.add_action_button(box, '\\right', 'win.insert-symbol', ['\\right •'], keyboard_shortcut='Ctrl+Shift+R')
+        self.pmb.add_action_button(box, _('Subscript') + ' (_{})', 'win.insert-before-after', ['_{', '}'], keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+D')
+        self.pmb.add_action_button(box, _('Superscript') + ' (^{})', 'win.insert-before-after', ['^{', '}'], keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+U')
+        self.pmb.add_action_button(box, _('Fraction') + ' (\\frac)', 'win.insert-symbol', ['\\frac{•}{•}'], keyboard_shortcut=_('Shift') + '+Alt' + '+F')
+        self.pmb.add_action_button(box, _('Square Root') + ' (\\sqrt)', 'win.insert-before-after', ['\\sqrt{', '}'], keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+Q')
+        self.pmb.add_action_button(box, '\\left', 'win.insert-symbol', ['\\left •'], keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+L')
+        self.pmb.add_action_button(box, '\\right', 'win.insert-symbol', ['\\right •'], keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+R')
         self.pmb.add_separator(box)
         self.pmb.add_menu_button(box, _('Math Functions'), 'math_functions')
         self.pmb.add_menu_button(box, _('Math Font Styles'), 'math_font_styles')
@@ -332,7 +332,7 @@ class ShortcutsBar(Gtk.HBox):
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Math Environments'))
         for environment in ['equation', 'equation*', 'align', 'align*', 'alignat', 'alignat*', 'flalign', 'flalign*', 'gather', 'gather*', 'multline', 'multline*']:
-            self.pmb.add_action_button(box, environment, 'win.insert-before-after', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'], keyboard_shortcut=('Ctrl+Shift+N' if environment == 'equation' else None))
+            self.pmb.add_action_button(box, environment, 'win.insert-before-after', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'], keyboard_shortcut=(_('Shift') + '+' + _('Ctrl') + '+N' if environment == 'equation' else None))
         self.pmb.add_separator(box)
         for environment in ['cases', 'split']:
             self.pmb.add_action_button(box, environment, 'win.insert-before-after', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'])
@@ -440,7 +440,7 @@ class ShortcutsBar(Gtk.HBox):
         for list_type in [[_('Bulleted List') + ' (itemize)', 'itemize'], [_('Numbered List') + ' (enumerate)', 'enumerate'], [_('List with Bold Labels') + ' (description)', 'description']]:
             self.pmb.add_action_button(box, list_type[0], 'win.insert-before-after', ['\\begin{' + list_type[1] + '}\n\t', '\n\\end{' + list_type[1] + '}'])
         self.pmb.add_separator(box)
-        self.pmb.add_action_button(box, _('List Item'), 'win.insert-symbol', ['\\item •'], keyboard_shortcut='Ctrl+Shift+I')
+        self.pmb.add_action_button(box, _('List Item'), 'win.insert-symbol', ['\\item •'], keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+I')
         stack.add_named(box, 'list_environments')
         box.show_all()
 

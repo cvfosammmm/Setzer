@@ -17,6 +17,7 @@ setzer/dialogs/document_wizard/pages/page_letter_settings.py
 setzer/dialogs/document_wizard/pages/page_report_settings.py
 setzer/dialogs/document_wizard/pages/page.py
 setzer/dialogs/document_wizard/document_wizard_viewgtk.py
+setzer/dialogs/document_wizard/document_wizard.py
 setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py
 setzer/dialogs/include_bibtex_file/include_bibtex_file.py
 setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py
@@ -35,6 +36,7 @@ setzer/document/build_widget/build_widget_viewgtk.py
 setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py
 setzer/document/preview/preview_viewgtk.py
 setzer/document/search/search_viewgtk.py
+setzer/document/shortcutsbar/shortcutsbar_viewgtk.py
 setzer/document/document_builder.py
 setzer/document/document_viewgtk.py
 setzer/workspace/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py

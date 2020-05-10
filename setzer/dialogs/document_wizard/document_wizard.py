@@ -243,18 +243,20 @@ class DocumentWizard(Dialog):
             buff.begin_user_action()
 
             if len(text.strip()) > 0:
-                offset = buff.get_iter_at_mark(buff.get_insert()).get_line()
-                buff.insert(buff.get_iter_at_line(offset), 
-'''% NOTE: The content of your document has been commented out
+                note = _('''% NOTE: The content of your document has been commented out
 % by the wizard. Just do a CTRL+Z (undo) to put it back in
 % or remove the "%" before each line you want to keep.
 % You can remove this note as well.
 % 
 ''')
-                for line_number in range(offset + 5, line_count_before_insert + offset + 5):
+                note_len = len(note)
+                note_number_of_lines = note.count('\n')
+                offset = buff.get_iter_at_mark(buff.get_insert()).get_line()
+                buff.insert(buff.get_iter_at_line(offset), note)
+                for line_number in range(offset + note_number_of_lines, line_count_before_insert + offset + note_number_of_lines):
                     buff.insert(buff.get_iter_at_line(line_number), '% ')
                 insert_iter = buff.get_iter_at_mark(buff.get_insert())
-                insert_iter.backward_chars(215)
+                insert_iter.backward_chars(note_len + 2)
                 buff.place_cursor(insert_iter)
 
             buff.end_user_action()

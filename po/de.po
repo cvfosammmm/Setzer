@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-10 18:15+0200\n"
-"PO-Revision-Date: 2020-05-10 18:17+0200\n"
+"POT-Creation-Date: 2020-05-10 19:37+0200\n"
+"PO-Revision-Date: 2020-05-10 19:36+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -801,6 +801,7 @@ msgid "Font size"
 msgstr "Schriftgröße"
 
 #: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:57
+#: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:67
 msgid "Create a template document"
 msgstr "Dokumentenvorlage erstellen"
 
@@ -815,6 +816,21 @@ msgstr "_Weiter"
 #: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:68
 msgid "_Create"
 msgstr "_Erstellen"
+
+#: setzer/dialogs/document_wizard/document_wizard.py:246
+msgid ""
+"% NOTE: The content of your document has been commented out\n"
+"% by the wizard. Just do a CTRL+Z (undo) to put it back in\n"
+"% or remove the \"%\" before each line you want to keep.\n"
+"% You can remove this note as well.\n"
+"% \n"
+msgstr ""
+"% HINWEIS: Der Inhalt Ihres Dokuments wurde vom Assistenten\n"
+"% auskommentiert. Drücken Sie STRG+Z (rückgängig) um ihn\n"
+"% wieder einzufügen, oder entfernen Sie die \"%\" vor jeder\n"
+"% Zeile, die Sie behalten möchten.\n"
+"% Sie können diesen Hinweis ebenfalls entfernen.\n"
+"% \n"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:48
 msgid "BibTeX file to include"
@@ -1503,6 +1519,18 @@ msgstr "Alle"
 msgid "Replace all results"
 msgstr "Alle Ergebnisse ersetzen"
 
+#: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:35
+msgid "Find and Replace (Ctrl+H)"
+msgstr "Suchen und Ersetzen (Strg+H)"
+
+#: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:41
+msgid "Find (Ctrl+F)"
+msgstr "Suchen (Strg+F)"
+
+#: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:56
+msgid "New Document Wizard"
+msgstr "Dokumenten-Assistent"
+
 #: setzer/document/document_builder.py:145
 #: setzer/workspace/build_log/build_log_presenter.py:55
 msgid "error"
@@ -1623,9 +1651,23 @@ msgstr "Zeile {number}"
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:66
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:78
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:94
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:118
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:132
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:133
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:69
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:78
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:181
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:225
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:296
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:311
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:315
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:316
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:318
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:319
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:320
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:335
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:443
 msgid "Ctrl"
 msgstr "Strg"
 
@@ -1661,6 +1703,18 @@ msgid "Toggle sidebar"
 msgstr "Seitenleiste anzeigen / verbergen"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:58
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:118
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:311
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:312
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:315
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:316
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:317
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:318
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:319
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:320
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:335
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:443
 msgid "Shift"
 msgstr "Umschalt"
 

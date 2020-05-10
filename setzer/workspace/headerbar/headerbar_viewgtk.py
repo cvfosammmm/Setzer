@@ -55,7 +55,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.open_document_button_label.pack_start(Gtk.Image.new_from_icon_name('pan-down-symbolic', Gtk.IconSize.MENU), False, False, 0)
         self.open_document_button = Gtk.MenuButton()
         self.open_document_button.set_can_focus(False)
-        self.open_document_button.set_tooltip_text(_('Open a document') + ' (' + _('Ctrl') + '+' + _('Shift') + '+O)')
+        self.open_document_button.set_tooltip_text(_('Open a document') + ' (' + _('Shift') + '+' + _('Ctrl') + '+O)')
         self.open_document_button.set_use_popover(True)
         self.open_document_button.add(self.open_document_button_label)
         self.open_document_button.get_style_context().add_class('text-button')
@@ -115,7 +115,7 @@ class HeaderBar(Gtk.HeaderBar):
 
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
-        self.pmb.add_action_button(box, _('Save Document As') + '...', 'win.save-as', keyboard_shortcut='Ctrl+Shift+S')
+        self.pmb.add_action_button(box, _('Save Document As') + '...', 'win.save-as', keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+S')
         self.pmb.add_action_button(box, _('Save All Documents'), 'win.save-all')
         self.pmb.add_separator(box)
         self.pmb.add_menu_button(box, _('Session'), 'session')
@@ -129,8 +129,8 @@ class HeaderBar(Gtk.HeaderBar):
         self.pmb.add_action_button(box, _('About'), 'win.show-about-dialog')
         self.pmb.add_separator(box)
         self.pmb.add_action_button(box, _('Close All Documents'), 'win.close-all-documents')
-        self.pmb.add_action_button(box, _('Close Document'), 'win.close-active-document', keyboard_shortcut='Ctrl+W')
-        self.pmb.add_action_button(box, _('Quit'), 'win.quit', keyboard_shortcut='Ctrl+Q')
+        self.pmb.add_action_button(box, _('Close Document'), 'win.close-active-document', keyboard_shortcut=_('Ctrl') + '+W')
+        self.pmb.add_action_button(box, _('Quit'), 'win.quit', keyboard_shortcut=_('Ctrl') + '+Q')
         stack.add_named(box, 'main')
         box.show_all()
 
