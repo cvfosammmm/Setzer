@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
 "POT-Creation-Date: 2020-04-30 00:22+0200\n"
-"PO-Revision-Date: 2020-05-01 12:43+0200\n"
+"PO-Revision-Date: 2020-05-10 15:15+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -436,7 +436,7 @@ msgstr ""
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:63
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:263
 msgid "Reference"
-msgstr "Lexikon"
+msgstr "Referenz"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:63
 msgid ""
@@ -660,7 +660,7 @@ msgstr ""
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:84
 msgid "<b>Letter:</b>  For writing letters."
-msgstr ""
+msgstr "<b>Letter:</b>  Zum Schreiben von Briefen."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:85
 msgid ""
@@ -1390,6 +1390,8 @@ msgid ""
 "To show a .pdf preview of your document, click the build button in the "
 "headerbar."
 msgstr ""
+"Um eine .pdf-Vorschau Ihres Dokuments anzuzeigen, klicken Sie bitte den "
+"Erstellen-Button."
 
 #: setzer/document/preview/preview_viewgtk.py:106
 msgid "Page "
@@ -1741,7 +1743,7 @@ msgstr "Zitat mit Seitenangabe"
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:139
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:147
 msgid "Natbib Citations"
-msgstr "Natbib Zitate"
+msgstr "Natbib-Zitate"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:140
 msgid "Include non-cited BibTeX Entries with '\\nocite'"
@@ -1749,23 +1751,23 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:148
 msgid "Abbreviated"
-msgstr ""
+msgstr "Kurzform"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:148
 msgid "Abbreviated with Brackets"
-msgstr ""
+msgstr "Kurzform mit Klammern"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:151
 msgid "Cite Author"
-msgstr ""
+msgstr "Autor zitieren"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:151
 msgid "Cite Author Detailed"
-msgstr ""
+msgstr "Autor zitieren, detailiert"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:159
 msgid "Bibliography"
-msgstr ""
+msgstr "Bibliographie"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:173
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:193
@@ -1804,12 +1806,12 @@ msgstr "Verbatim Umgebung"
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:183
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:252
 msgid "Quotations"
-msgstr ""
+msgstr "Zitat-Umgebung"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:185
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:262
 msgid "Cross References"
-msgstr ""
+msgstr "Querverweise"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:186
 msgid "Footnote"
@@ -1890,15 +1892,15 @@ msgstr "Subparagraph"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:253
 msgid "Short Quotation"
-msgstr ""
+msgstr "Kurzes Zitat"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:254
 msgid "Longer Quotation"
-msgstr ""
+msgstr "Langes Zitat"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:255
 msgid "Poetry Quotation"
-msgstr ""
+msgstr "Gedicht zitieren"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:263
 msgid "Label"
@@ -2021,7 +2023,7 @@ msgstr ""
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:417
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:425
 msgid "Code Listing"
-msgstr ""
+msgstr "Programmcode"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:418
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:439
@@ -2030,7 +2032,7 @@ msgstr ""
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:426
 msgid "Include 'listings' Package"
-msgstr ""
+msgstr "'listings'-Paket einbinden"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:431
 msgid "Other Language"
