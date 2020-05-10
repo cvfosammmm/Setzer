@@ -57,8 +57,8 @@ class BuildLogView(Gtk.VBox):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
                      
     def sort_function(self, row1, row2, user_data=None):
-        message_type1 = row1.get_child().label_message_type.get_text()
-        message_type2 = row2.get_child().label_message_type.get_text()
+        message_type1 = row1.get_child().message_type
+        message_type2 = row2.get_child().message_type
 
         if message_type1 != 'Error' and message_type2 == 'Error':
             return 1
@@ -109,6 +109,7 @@ class BuildLogRowView(Gtk.HBox):
         Gtk.HBox.__init__(self)
 
         symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
+        labels = {'Badbox': _('Badbox'), 'Error': _('Error'), 'Warning': _('Warning')}
 
         self.message_type = message_type
         self.icon_name = symbols[message_type]
@@ -125,7 +126,7 @@ class BuildLogRowView(Gtk.HBox):
         self.icon.set_margin_top(1)
         self.icon.set_valign(0)
         self.icon_box.pack_start(self.icon, False, False, 0)
-        self.label_message_type = Gtk.Label(self.message_type)
+        self.label_message_type = Gtk.Label(labels[self.message_type])
         self.label_message_type.set_size_request(76, -1)
         self.label_message_type.set_xalign(0)
         self.label_message_type.set_yalign(0)

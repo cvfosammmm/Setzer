@@ -33,6 +33,7 @@ setzer/dialogs/save_session/save_session.py
 setzer/dialogs/spellchecking_language/spellchecking_language.py
 setzer/document/autocomplete/autocomplete.py
 setzer/document/build_widget/build_widget_viewgtk.py
+setzer/document/preview/zoom_widget/zoom_widget.py
 setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py
 setzer/document/preview/preview_viewgtk.py
 setzer/document/search/search_viewgtk.py

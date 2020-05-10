@@ -28,7 +28,7 @@ class BuildLogPresenter(object):
         self.build_log.register_observer(self)
 
     '''
-    *** notification handlers, get called by observed document
+    *** notification handlers
     '''
 
     def change_notification(self, change_code, notifying_object, parameter):

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-10 20:10+0200\n"
-"PO-Revision-Date: 2020-05-10 20:12+0200\n"
+"POT-Creation-Date: 2020-05-10 20:26+0200\n"
+"PO-Revision-Date: 2020-05-10 20:27+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1451,6 +1451,21 @@ msgstr "Erstellung abbrechen"
 msgid "Cleanup build files"
 msgstr "Hilfsdateien entfernen"
 
+#: setzer/document/preview/zoom_widget/zoom_widget.py:41
+#: setzer/document/preview/preview_viewgtk.py:52
+msgid "Fit to Width"
+msgstr "An Breite anpassen"
+
+#: setzer/document/preview/zoom_widget/zoom_widget.py:46
+#: setzer/document/preview/preview_viewgtk.py:53
+msgid "Fit to Text Width"
+msgstr "An Textbreite anpassen"
+
+#: setzer/document/preview/zoom_widget/zoom_widget.py:51
+#: setzer/document/preview/preview_viewgtk.py:54
+msgid "Fit to Height"
+msgstr "An Höhe anpassen"
+
 #: setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py:30
 msgid "Zoom out"
 msgstr "Verkleinern"
@@ -1478,18 +1493,6 @@ msgstr "Vergrößern"
 #: setzer/document/preview/preview_viewgtk.py:51
 msgid "Zoom Out"
 msgstr "Verkleinern"
-
-#: setzer/document/preview/preview_viewgtk.py:52
-msgid "Fit to Width"
-msgstr "An Breite anpassen"
-
-#: setzer/document/preview/preview_viewgtk.py:53
-msgid "Fit to Text Width"
-msgstr "An Textbreite anpassen"
-
-#: setzer/document/preview/preview_viewgtk.py:54
-msgid "Fit to Height"
-msgstr "An Höhe anpassen"
 
 #: setzer/document/preview/preview_viewgtk.py:90
 msgid "No preview available"
@@ -1649,7 +1652,19 @@ msgstr "{amount} {str_warnings} oder {str_badboxes}"
 msgid "Building failed with {amount} {str_errors}"
 msgstr "Erstellen fehlgeschlagen mit {amount} {str_errors}"
 
-#: setzer/workspace/build_log/build_log_viewgtk.py:119
+#: setzer/workspace/build_log/build_log_viewgtk.py:112
+msgid "Badbox"
+msgstr "Badbox"
+
+#: setzer/workspace/build_log/build_log_viewgtk.py:112
+msgid "Error"
+msgstr "Fehler"
+
+#: setzer/workspace/build_log/build_log_viewgtk.py:112
+msgid "Warning"
+msgstr "Warnung"
+
+#: setzer/workspace/build_log/build_log_viewgtk.py:120
 #, python-brace-format
 msgid "Line {number}"
 msgstr "Zeile {number}"
