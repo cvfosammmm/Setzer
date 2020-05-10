@@ -27,11 +27,11 @@ class PreviewZoomWidget(Gtk.HBox):
         self.get_style_context().add_class('zoom_widget')
         
         self.zoom_out_button = Gtk.Button.new_from_icon_name('zoom-out-symbolic', Gtk.IconSize.MENU)
-        self.zoom_out_button.set_tooltip_text('Zoom out')
+        self.zoom_out_button.set_tooltip_text(_('Zoom out'))
         self.zoom_out_button.get_style_context().add_class('flat')
         self.zoom_out_button.set_can_focus(False)
         self.zoom_in_button = Gtk.Button.new_from_icon_name('zoom-in-symbolic', Gtk.IconSize.MENU)
-        self.zoom_in_button.set_tooltip_text('Zoom in')
+        self.zoom_in_button.set_tooltip_text(_('Zoom in'))
         self.zoom_in_button.get_style_context().add_class('flat')
         self.zoom_in_button.set_can_focus(False)
 

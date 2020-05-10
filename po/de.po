@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-10 20:00+0200\n"
-"PO-Revision-Date: 2020-05-10 20:03+0200\n"
+"POT-Creation-Date: 2020-05-10 20:10+0200\n"
+"PO-Revision-Date: 2020-05-10 20:12+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1451,6 +1451,14 @@ msgstr "Erstellung abbrechen"
 msgid "Cleanup build files"
 msgstr "Hilfsdateien entfernen"
 
+#: setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py:30
+msgid "Zoom out"
+msgstr "Verkleinern"
+
+#: setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py:34
+msgid "Zoom in"
+msgstr "Vergrößern"
+
 #: setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py:54
 msgid "Set zoom level"
 msgstr "Skalierung"
@@ -1473,15 +1481,15 @@ msgstr "Verkleinern"
 
 #: setzer/document/preview/preview_viewgtk.py:52
 msgid "Fit to Width"
-msgstr "Auf Breite anpassen"
+msgstr "An Breite anpassen"
 
 #: setzer/document/preview/preview_viewgtk.py:53
 msgid "Fit to Text Width"
-msgstr "Auf Textbreite anpassen"
+msgstr "An Textbreite anpassen"
 
 #: setzer/document/preview/preview_viewgtk.py:54
 msgid "Fit to Height"
-msgstr "Auf Höhe anpassen"
+msgstr "An Höhe anpassen"
 
 #: setzer/document/preview/preview_viewgtk.py:90
 msgid "No preview available"
