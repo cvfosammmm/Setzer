@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
 "POT-Creation-Date: 2020-04-30 00:22+0200\n"
-"PO-Revision-Date: 2020-05-10 15:30+0200\n"
+"PO-Revision-Date: 2020-05-10 16:30+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -645,18 +645,29 @@ msgid ""
 "is often used as a starting point for more\n"
 "custom layouts."
 msgstr ""
+"<b>Article:</b>  Für Artikel in wissenschaftlichen\n"
+"Zeitschriften, Hausarbeiten, Handouts, kurze\n"
+"Berichte, ...\n"
+"\n"
+"Diese Klasse ist an sich ziemlich einfach und wird oft\n"
+"als Ausgangspunkt für kompliziertere Layouts benutzt."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:82
 msgid ""
 "<b>Book:</b>  For actual books containing many chapters\n"
 "and sections."
 msgstr ""
+"<b>Book:</b>  Für eigentliche Bücher mit mehreren\n"
+"Kapiteln und Abschnitten."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:83
 msgid ""
 "<b>Report:</b>  For longer reports and articles containing\n"
 "more than one chapter, small books, thesis."
 msgstr ""
+"<b>Report:</b>  Für längere Berichte und Artikel mit\n"
+"mehr als einem Kapitel, kurze Bücher,\n"
+"Abschlussarbeiten."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:84
 msgid "<b>Letter:</b>  For writing letters."
@@ -669,6 +680,9 @@ msgid ""
 "\n"
 "There are many predefined presentation styles."
 msgstr ""
+"<b>Beamer:</b>  Für Präsentationsfolien.\n"
+"\n"
+"Sie können aus vielen vordefinierten Stilen auswählen."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:87
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:88
@@ -1278,11 +1292,11 @@ msgstr "Verbatim Umgebung, Inhalt wird nicht von LaTeX ausgewertet."
 
 #: setzer/document/autocomplete/autocomplete.py:498
 msgid "Include a non-cited item from the bibliography"
-msgstr ""
+msgstr "Einen nicht-zitierten BibTeX-Eintrag einbinden"
 
 #: setzer/document/autocomplete/autocomplete.py:499
 msgid "Include all non-cited items from the bibliography"
-msgstr ""
+msgstr "Alle nicht-zitierten BibTeX-Einträge einbinden"
 
 #: setzer/document/autocomplete/autocomplete.py:580
 msgid "Colored Text"
@@ -1294,7 +1308,7 @@ msgstr "Monospace-Text"
 
 #: setzer/document/autocomplete/autocomplete.py:625
 msgid "Inline verbatim text that won't be interpreted as LaTeX."
-msgstr ""
+msgstr "Verbatim Text, der nicht von LaTeX ausgewertet wird."
 
 #: setzer/document/autocomplete/autocomplete.py:637
 msgid "Make text 'tiny' within current scope"
@@ -1772,7 +1786,7 @@ msgstr "Bibliographie"
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:173
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:193
 msgid "Font Styles"
-msgstr "Schrifttyp"
+msgstr "Schriftstil"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:174
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:203
@@ -1806,7 +1820,7 @@ msgstr "Verbatim Umgebung"
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:183
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:252
 msgid "Quotations"
-msgstr "Zitat-Umgebung"
+msgstr "Zitat-Umgebungen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:185
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:262
@@ -1833,11 +1847,11 @@ msgstr "Schreibmaschine"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
 msgid "Small Caps"
-msgstr ""
+msgstr "Kapitälchen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
 msgid "Slanted"
-msgstr ""
+msgstr "Geneigt"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
 msgid "Emphasis"
@@ -1849,11 +1863,11 @@ msgstr "Zentriert"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:213
 msgid "Left-aligned"
-msgstr ""
+msgstr "Links"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:213
 msgid "Right-aligned"
-msgstr ""
+msgstr "Rechts"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:241
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:244
@@ -1904,15 +1918,15 @@ msgstr "Gedicht zitieren"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:263
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:263
 msgid "Equation Reference"
-msgstr ""
+msgstr "Referenz auf math. Gleichung"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:263
 msgid "Page Reference"
-msgstr ""
+msgstr "Referenz auf Seite"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:271
 msgid "Text"
@@ -1980,7 +1994,7 @@ msgstr "Mathematische Schriftstile"
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:324
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:371
 msgid "Math Stacking Symbols"
-msgstr ""
+msgstr "Gestapelte Symbole"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:325
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:382
@@ -1998,11 +2012,11 @@ msgstr "Roman"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:363
 msgid "Calligraphic"
-msgstr ""
+msgstr "Kalligraphisch"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:363
 msgid "Blackboard Bold"
-msgstr ""
+msgstr "Blackboard Bold"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:363
 msgid "Fraktur"
@@ -2018,7 +2032,7 @@ msgstr "Figure (Bild in einem freistehendem Block)"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:416
 msgid "Inline Image"
-msgstr ""
+msgstr "Bilddatei einbinden"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:417
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:425
@@ -2028,7 +2042,7 @@ msgstr "Programmcode"
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:418
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:439
 msgid "List Environments"
-msgstr ""
+msgstr "Listen-Umgebungen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:426
 msgid "Include 'listings' Package"
@@ -2040,11 +2054,11 @@ msgstr "Andere Sprache"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:432
 msgid "Plain Text"
-msgstr ""
+msgstr "Nur-Text"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:440
 msgid "Bulleted List"
-msgstr ""
+msgstr "Liste mit Aufzählungszeichen"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:440
 msgid "Numbered List"
@@ -2052,7 +2066,7 @@ msgstr "Nummerierte Liste"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:440
 msgid "List with Bold Labels"
-msgstr ""
+msgstr "Liste mit Labels"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:453
 msgid "Objects"
