@@ -46,7 +46,7 @@ class BuildingFailedDialog(Dialog):
 
 To configure your build system go to Preferences.''').format(error_message=error_message))
 
-        self.view.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Go to Preferences', Gtk.ResponseType.YES)
+        self.view.add_buttons(_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Go to Preferences'), Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)
 
 

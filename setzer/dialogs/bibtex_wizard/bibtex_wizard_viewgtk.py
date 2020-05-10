@@ -56,15 +56,15 @@ class BibTeXWizardView(object):
         self.headerbar.set_show_close_button(False)
         self.headerbar.set_subtitle('')
 
-        self.cancel_button = self.dialog.add_button('_Cancel', Gtk.ResponseType.CANCEL)
+        self.cancel_button = self.dialog.add_button(_('_Cancel'), Gtk.ResponseType.CANCEL)
         self.cancel_button.set_can_focus(False)
-        self.back_button = Gtk.Button.new_with_mnemonic('_Back')
+        self.back_button = Gtk.Button.new_with_mnemonic(_('_Back'))
         self.back_button.set_can_focus(False)
         
-        self.next_button = Gtk.Button.new_with_mnemonic('_Next')
+        self.next_button = Gtk.Button.new_with_mnemonic(_('_Next'))
         self.next_button.set_can_focus(False)
         self.next_button.get_style_context().add_class('suggested-action')
-        self.create_button = self.dialog.add_button('_Create', Gtk.ResponseType.APPLY)
+        self.create_button = self.dialog.add_button(_('_Create'), Gtk.ResponseType.APPLY)
         self.create_button.set_can_focus(False)
         self.create_button.get_style_context().add_class('suggested-action')
         

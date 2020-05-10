@@ -116,7 +116,7 @@ class CloseConfirmationDialog(Dialog):
             message_area.pack_start(secondary_text_label, False, False, 0)
             message_area.show_all()
 
-        self.view.add_buttons('Close _without Saving', Gtk.ResponseType.NO, '_Cancel', Gtk.ResponseType.CANCEL, '_Save', Gtk.ResponseType.YES)
+        self.view.add_buttons(_('Close _without Saving'), Gtk.ResponseType.NO, _('_Cancel'), Gtk.ResponseType.CANCEL, _('_Save'), Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)
 
 

@@ -50,7 +50,7 @@ To choose a different interpreter go to Preferences.
 
 For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibooks.org/wiki/LaTeX/Installation</a>''').format(interpreter=interpreter_name))
 
-        self.view.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Go to Preferences', Gtk.ResponseType.YES)
+        self.view.add_buttons(_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Go to Preferences'), Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)
 
 

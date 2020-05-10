@@ -63,7 +63,7 @@ class SaveSessionDialog(Dialog):
 
     def setup(self):
         self.action = Gtk.FileChooserAction.SAVE
-        self.buttons = ('_Cancel', Gtk.ResponseType.CANCEL, '_Save', Gtk.ResponseType.OK)
+        self.buttons = (_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Save'), Gtk.ResponseType.OK)
         self.view = Gtk.FileChooserDialog(_('Save Session'), self.main_window, self.action, self.buttons)
 
         self.view.set_do_overwrite_confirmation(True)
@@ -71,7 +71,7 @@ class SaveSessionDialog(Dialog):
         headerbar = self.view.get_header_bar()
         if headerbar != None:
             for widget in headerbar.get_children():
-                if isinstance(widget, Gtk.Button) and widget.get_label() == '_Save':
+                if isinstance(widget, Gtk.Button) and widget.get_label() == _('_Save'):
                     widget.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
                     widget.set_can_default(True)
                     widget.grab_default()

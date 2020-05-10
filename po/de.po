@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
-"Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
-"POT-Creation-Date: 2020-04-30 00:22+0200\n"
-"PO-Revision-Date: 2020-05-10 16:30+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-10 18:15+0200\n"
+"PO-Revision-Date: 2020-05-10 18:17+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -534,6 +534,25 @@ msgstr ""
 "erstellte .pdf-Datei gespeichert werden soll (sie wird im gleichen Ordner "
 "wie das Dokument gespeichert)."
 
+#: setzer/dialogs/build_save/build_save.py:50
+#: setzer/dialogs/building_failed/building_failed.py:49
+#: setzer/dialogs/close_confirmation/close_confirmation.py:119
+#: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:60
+#: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:109
+#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:93
+#: setzer/dialogs/interpreter_missing/interpreter_missing.py:53
+#: setzer/dialogs/open_document/open_document.py:46
+#: setzer/dialogs/open_session/open_session.py:46
+#: setzer/dialogs/replace_confirmation/replace_confirmation.py:49
+#: setzer/dialogs/save_document/save_document.py:58
+#: setzer/dialogs/save_session/save_session.py:66
+msgid "_Cancel"
+msgstr "_Abbrechen"
+
+#: setzer/dialogs/build_save/build_save.py:50
+msgid "_Save document now"
+msgstr "_Speichern"
+
 #: setzer/dialogs/building_failed/building_failed.py:44
 msgid "Something went wrong."
 msgstr "Irgendetwas ist schief gelaufen."
@@ -549,6 +568,11 @@ msgstr ""
 "\"{error_message}\".\n"
 "\n"
 "Sie können das Erstellungssystem in den Einstellungen konfigurieren."
+
+#: setzer/dialogs/building_failed/building_failed.py:49
+#: setzer/dialogs/interpreter_missing/interpreter_missing.py:53
+msgid "_Go to Preferences"
+msgstr "_Einstellungen"
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:86
 #, python-brace-format
@@ -578,6 +602,18 @@ msgstr ""
 "Wenn Sie die Datei schließen ohne zu speichern, gehen alle ungespeicherten "
 "Änderungen verloren."
 
+#: setzer/dialogs/close_confirmation/close_confirmation.py:119
+msgid "Close _without Saving"
+msgstr "Schließen _ohne Speichern"
+
+#: setzer/dialogs/close_confirmation/close_confirmation.py:119
+#: setzer/dialogs/save_document/save_document.py:58
+#: setzer/dialogs/save_document/save_document.py:66
+#: setzer/dialogs/save_session/save_session.py:66
+#: setzer/dialogs/save_session/save_session.py:74
+msgid "_Save"
+msgstr "_Speichern"
+
 #: setzer/dialogs/document_changed_on_disk/document_changed_on_disk.py:49
 #, python-brace-format
 msgid "Document »{document}« has changed on disk."
@@ -586,6 +622,14 @@ msgstr "Dokument »{document}« wurde auf der Festplatte geändert."
 #: setzer/dialogs/document_changed_on_disk/document_changed_on_disk.py:50
 msgid "Should Setzer reload it now?"
 msgstr "Soll Setzer es jetzt neu laden?"
+
+#: setzer/dialogs/document_changed_on_disk/document_changed_on_disk.py:52
+msgid "_Keep the current Version"
+msgstr "_Aktuelle Version behalten"
+
+#: setzer/dialogs/document_changed_on_disk/document_changed_on_disk.py:52
+msgid "_Reload from Disk"
+msgstr "_Neu laden"
 
 #: setzer/dialogs/document_wizard/pages/page_article_settings.py:103
 #: setzer/dialogs/document_wizard/pages/page_article_settings.py:104
@@ -760,6 +804,18 @@ msgstr "Schriftgröße"
 msgid "Create a template document"
 msgstr "Dokumentenvorlage erstellen"
 
+#: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:62
+msgid "_Back"
+msgstr "_Zurück"
+
+#: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:65
+msgid "_Next"
+msgstr "_Weiter"
+
+#: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:68
+msgid "_Create"
+msgstr "_Erstellen"
+
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:48
 msgid "BibTeX file to include"
 msgstr "BibTeX-Datei"
@@ -779,6 +835,11 @@ msgstr "Bibliographie-Stile für das 'natbib'-Paket anzeigen"
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:107
 msgid "Include BibTeX file"
 msgstr "BibTeX-Dokument einbinden"
+
+#: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:112
+#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:96
+msgid "_Include"
+msgstr "_Einbinden"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file.py:95
 msgid "BibTeX Files"
@@ -1071,6 +1132,13 @@ msgstr "Hochgestellt"
 msgid "Fraction"
 msgstr "Bruchzahl (\\frac)"
 
+#: setzer/dialogs/open_document/open_document.py:46
+#: setzer/dialogs/open_document/open_document.py:52
+#: setzer/dialogs/open_session/open_session.py:46
+#: setzer/dialogs/open_session/open_session.py:52
+msgid "_Open"
+msgstr "Öffnen"
+
 #: setzer/dialogs/open_document/open_document.py:47
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:54
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:65
@@ -1218,6 +1286,10 @@ msgstr ""
 #: setzer/dialogs/replace_confirmation/replace_confirmation.py:47
 msgid "Do you really want to do this?"
 msgstr "Wollen Sie das wirklich tun?"
+
+#: setzer/dialogs/replace_confirmation/replace_confirmation.py:49
+msgid "_Yes, replace all occurrences"
+msgstr "_Ja, alles ersetzen"
 
 #: setzer/dialogs/save_document/save_document.py:59
 msgid "Save document"
@@ -1632,7 +1704,7 @@ msgstr "Ansicht"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:128
 msgid "Keyboard Shortcuts"
-msgstr "Tastenkombinationen"
+msgstr "Tastenkürzel"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:129
 msgid "About"
@@ -2109,9 +2181,17 @@ msgstr "Keine Dokumente geöffnet"
 msgid "Untitled Document {number}"
 msgstr "Unbenanntes Dokument {number}"
 
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:7
+msgid "Setzer"
+msgstr "Setzer"
+
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:8
 msgid "Simple yet full-featured LaTeX editor"
 msgstr "LaTeX-Editor mit vielen nützlichen Funktionen."
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:9
+msgid "Cvfosammmm"
+msgstr "Cvfosammmm"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:12
 msgid ""

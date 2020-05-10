@@ -47,7 +47,7 @@ class BuildSaveDialog(Dialog):
         self.view.set_property('text', _('Document »{document}« has no filename.').format(document=document.get_displayname()))
         self.view.format_secondary_markup(_('Please save your document to a file, so the build system knows where to put the .pdf (it will be in the same folder as your document).'))
 
-        self.view.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Save document now', Gtk.ResponseType.YES)
+        self.view.add_buttons(_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Save document now'), Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)
 
 

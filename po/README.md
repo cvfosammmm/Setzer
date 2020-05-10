@@ -13,12 +13,11 @@ Now translate the strings in `lang.po` and add `lang` to the `LINGUAS` file.
 
 ## Updating a translation
 
-Run: (replace `lang` with the language code)
+Run:
 ```bash
 rm -Rf builddir
 meson builddir --prefix=/tmp/usr
 ninja setzer-update-po -C builddir
-cp po/setzer.pot po/lang.po
 ```
 Now translate the fuzzy strings in `lang.po` (remove the `#,fuzzy` lines).
 

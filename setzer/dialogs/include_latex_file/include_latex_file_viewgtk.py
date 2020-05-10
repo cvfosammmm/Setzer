@@ -90,10 +90,10 @@ class IncludeLaTeXFileView(object):
         self.headerbar.set_show_close_button(False)
         self.headerbar.set_title(_('Include LaTeX file'))
 
-        self.cancel_button = self.dialog.add_button('_Cancel', Gtk.ResponseType.CANCEL)
+        self.cancel_button = self.dialog.add_button(_('_Cancel'), Gtk.ResponseType.CANCEL)
         self.cancel_button.set_can_focus(False)
         
-        self.create_button = self.dialog.add_button('_Include', Gtk.ResponseType.APPLY)
+        self.create_button = self.dialog.add_button(_('_Include'), Gtk.ResponseType.APPLY)
         self.create_button.set_can_focus(False)
         self.create_button.get_style_context().add_class('suggested-action')
         

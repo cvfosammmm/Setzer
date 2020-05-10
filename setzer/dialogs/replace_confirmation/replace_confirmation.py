@@ -46,7 +46,7 @@ class ReplaceConfirmationDialog(Dialog):
         self.view.set_property('text', _('Replacing {amount} {str_occurrences} of »{original}« with »{replacement}«.').format(amount=str(number_of_occurrences),str_occurrences=str_occurrences,original=original,replacement=replacement))
         self.view.format_secondary_markup(_('Do you really want to do this?'))
 
-        self.view.add_buttons('_Cancel', Gtk.ResponseType.CANCEL, '_Yes, replace all occurrences', Gtk.ResponseType.YES)
+        self.view.add_buttons(_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Yes, replace all occurrences'), Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)
 
 
