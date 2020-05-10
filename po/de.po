@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: https://github.com/cvfosammmm/Setzer/issues\n"
 "POT-Creation-Date: 2020-04-30 00:22+0200\n"
-"PO-Revision-Date: 2020-05-10 15:15+0200\n"
+"PO-Revision-Date: 2020-05-10 15:30+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1082,7 +1082,7 @@ msgstr "Einstellungen"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:53
 msgid "Build System"
-msgstr ""
+msgstr ".pdf-Erstellung"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:54
 msgid "Editor"
@@ -1298,43 +1298,43 @@ msgstr ""
 
 #: setzer/document/autocomplete/autocomplete.py:637
 msgid "Make text 'tiny' within current scope"
-msgstr ""
+msgstr "Schriftgröße 'tiny'"
 
 #: setzer/document/autocomplete/autocomplete.py:638
 msgid "Make text 'scriptsize' within current scope"
-msgstr ""
+msgstr "Schriftgröße 'scriptsize'"
 
 #: setzer/document/autocomplete/autocomplete.py:639
 msgid "Make text 'footnotesize' within current scope"
-msgstr ""
+msgstr "Schriftgröße 'footnotesize'"
 
 #: setzer/document/autocomplete/autocomplete.py:640
 msgid "Make text 'small' within current scope"
-msgstr ""
+msgstr "Schriftgröße 'small'"
 
 #: setzer/document/autocomplete/autocomplete.py:641
 msgid "Make text 'normalsize' within current scope"
-msgstr ""
+msgstr "Schriftgröße 'normalsize'"
 
 #: setzer/document/autocomplete/autocomplete.py:642
 msgid "Make text 'large' within current scope"
-msgstr ""
+msgstr "Schriftgröße 'large'"
 
 #: setzer/document/autocomplete/autocomplete.py:643
 msgid "Make text 'Large' within current scope"
-msgstr ""
+msgstr "Schriftgröße 'Large'"
 
 #: setzer/document/autocomplete/autocomplete.py:644
 msgid "Make text 'LARGE' within current scope"
-msgstr ""
+msgstr "Schriftgröße 'LARGE'"
 
 #: setzer/document/autocomplete/autocomplete.py:645
 msgid "Make text 'huge' within current scope"
-msgstr ""
+msgstr "Schriftgröße 'huge'"
 
 #: setzer/document/autocomplete/autocomplete.py:646
 msgid "Make text 'Huge' within current scope"
-msgstr ""
+msgstr "Schriftgröße 'Huge'"
 
 #: setzer/document/autocomplete/autocomplete.py:662
 #, python-brace-format
@@ -1698,7 +1698,7 @@ msgstr "Fett"
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:96
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:109
 msgid "Document Info"
-msgstr ""
+msgstr "Informationen zum Dokument"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:98
 msgid "Document Environment"
@@ -1747,7 +1747,7 @@ msgstr "Natbib-Zitate"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:140
 msgid "Include non-cited BibTeX Entries with '\\nocite'"
-msgstr ""
+msgstr "Nicht-zitierte BibTeX-Einträge einbinden ('\\nocite')"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:148
 msgid "Abbreviated"
@@ -1787,7 +1787,7 @@ msgstr "Textausrichtung"
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:176
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:221
 msgid "Vertical Spacing"
-msgstr ""
+msgstr "Vertikale Abstände"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:177
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:231
@@ -1824,12 +1824,12 @@ msgstr "Unterstrichen"
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:363
 msgid "Sans Serif"
-msgstr ""
+msgstr "Serifenlos"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:363
 msgid "Typewriter"
-msgstr ""
+msgstr "Schreibmaschine"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
 msgid "Small Caps"
