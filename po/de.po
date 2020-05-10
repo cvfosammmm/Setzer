@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-10 19:37+0200\n"
-"PO-Revision-Date: 2020-05-10 19:36+0200\n"
+"POT-Creation-Date: 2020-05-10 20:00+0200\n"
+"PO-Revision-Date: 2020-05-10 20:03+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1897,13 +1897,37 @@ msgstr "Kurzform"
 msgid "Abbreviated with Brackets"
 msgstr "Kurzform mit Klammern"
 
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:148
+msgid "Detailed"
+msgstr "Ausführlich"
+
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:148
+msgid "Detailed with Brackets"
+msgstr "Ausführlich mit Klammern"
+
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:148
+msgid "Alternative 1"
+msgstr "Alternativ 1"
+
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:148
+msgid "Alternative 2"
+msgstr "Alternativ 2"
+
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:151
 msgid "Cite Author"
-msgstr "Autor zitieren"
+msgstr "Autor"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:151
 msgid "Cite Author Detailed"
-msgstr "Autor zitieren, detailiert"
+msgstr "Autor, detailliert"
+
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:151
+msgid "Cite Year"
+msgstr "Jahr"
+
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:151
+msgid "Cite Year with Brackets"
+msgstr "Jahr mit Klammern"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:159
 msgid "Bibliography"

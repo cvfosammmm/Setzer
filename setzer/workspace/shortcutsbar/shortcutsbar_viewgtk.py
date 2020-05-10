@@ -145,10 +145,10 @@ class ShortcutsBar(Gtk.HBox):
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Natbib Citations'))
-        for citation_style in [(_('Abbreviated'), '\\citet{•}'), (_('Abbreviated with Brackets'), '\\citep{•}'), ('Detailed', '\\citet*{•}'), ('Detailed with Brackets', '\\citep*{•}'), ('Alternative 1', '\\citealt{•}'), ('Alternative 2', '\\citealp{•}')]:
+        for citation_style in [(_('Abbreviated'), '\\citet{•}'), (_('Abbreviated with Brackets'), '\\citep{•}'), (_('Detailed'), '\\citet*{•}'), (_('Detailed with Brackets'), '\\citep*{•}'), (_('Alternative 1'), '\\citealt{•}'), (_('Alternative 2'), '\\citealp{•}')]:
             self.pmb.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
         self.pmb.add_separator(box)
-        for citation_style in [(_('Cite Author'), '\\citeauthor{•}'), (_('Cite Author Detailed'), '\\citeauthor*{•}'), ('Cite Year', '\\citeyear{•}'), ('Cite Year with Brackets', '\\citeyearpar{•}')]:
+        for citation_style in [(_('Cite Author'), '\\citeauthor{•}'), (_('Cite Author Detailed'), '\\citeauthor*{•}'), (_('Cite Year'), '\\citeyear{•}'), (_('Cite Year with Brackets'), '\\citeyearpar{•}')]:
             self.pmb.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
         stack.add_named(box, 'natbib_citations')
         box.show_all()
