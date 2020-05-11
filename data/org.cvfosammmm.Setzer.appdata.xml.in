@@ -53,6 +53,11 @@
     </provides>
 
     <releases>
+        <release version="0.2.6" date="2020-5-11">
+            <description>
+                <p translatable="no">German translation, external .pdf viewer button, ...</p>
+            </description>
+        </release>
         <release version="0.2.5" date="2020-4-28">
             <description>
                 <p translatable="no">Bug fix</p>

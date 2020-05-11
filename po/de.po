@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-11 10:24+0200\n"
-"PO-Revision-Date: 2020-05-11 10:25+0200\n"
+"POT-Creation-Date: 2020-05-11 12:20+0200\n"
+"PO-Revision-Date: 2020-05-11 12:21+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1078,13 +1078,13 @@ msgid "New Line"
 msgstr "Zeilenumbruch"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:92
-#: setzer/document/autocomplete/autocomplete.py:579
+#: setzer/document/autocomplete/autocomplete.py:578
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:74
 msgid "Bold Text"
 msgstr "Fett"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:93
-#: setzer/document/autocomplete/autocomplete.py:581
+#: setzer/document/autocomplete/autocomplete.py:580
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:65
 msgid "Italic Text"
 msgstr "Kursiv"
@@ -1314,37 +1314,38 @@ msgstr "Sitzung speichern"
 msgid "Spellchecking Language"
 msgstr "Sprache"
 
-#: setzer/document/autocomplete/autocomplete.py:253
-#: setzer/document/autocomplete/autocomplete.py:307
-#: setzer/document/autocomplete/autocomplete.py:331
+#: setzer/document/autocomplete/autocomplete.py:252
+#: setzer/document/autocomplete/autocomplete.py:306
+#: setzer/document/autocomplete/autocomplete.py:330
+#: setzer/document/autocomplete/autocomplete.py:346
 #: setzer/document/autocomplete/autocomplete.py:347
-#: setzer/document/autocomplete/autocomplete.py:348
+#: setzer/document/autocomplete/autocomplete.py:403
 #: setzer/document/autocomplete/autocomplete.py:404
-#: setzer/document/autocomplete/autocomplete.py:405
+#: setzer/document/autocomplete/autocomplete.py:411
 #: setzer/document/autocomplete/autocomplete.py:412
-#: setzer/document/autocomplete/autocomplete.py:413
-#: setzer/document/autocomplete/autocomplete.py:435
-#: setzer/document/autocomplete/autocomplete.py:438
+#: setzer/document/autocomplete/autocomplete.py:434
+#: setzer/document/autocomplete/autocomplete.py:437
+#: setzer/document/autocomplete/autocomplete.py:440
 #: setzer/document/autocomplete/autocomplete.py:441
-#: setzer/document/autocomplete/autocomplete.py:442
-#: setzer/document/autocomplete/autocomplete.py:490
-#: setzer/document/autocomplete/autocomplete.py:501
+#: setzer/document/autocomplete/autocomplete.py:489
+#: setzer/document/autocomplete/autocomplete.py:500
+#: setzer/document/autocomplete/autocomplete.py:504
 #: setzer/document/autocomplete/autocomplete.py:505
-#: setzer/document/autocomplete/autocomplete.py:506
+#: setzer/document/autocomplete/autocomplete.py:523
 #: setzer/document/autocomplete/autocomplete.py:524
 #: setzer/document/autocomplete/autocomplete.py:525
 #: setzer/document/autocomplete/autocomplete.py:526
-#: setzer/document/autocomplete/autocomplete.py:527
+#: setzer/document/autocomplete/autocomplete.py:529
 #: setzer/document/autocomplete/autocomplete.py:530
-#: setzer/document/autocomplete/autocomplete.py:531
-#: setzer/document/autocomplete/autocomplete.py:539
+#: setzer/document/autocomplete/autocomplete.py:538
+#: setzer/document/autocomplete/autocomplete.py:556
 #: setzer/document/autocomplete/autocomplete.py:557
-#: setzer/document/autocomplete/autocomplete.py:558
-#: setzer/document/autocomplete/autocomplete.py:578
+#: setzer/document/autocomplete/autocomplete.py:577
+#: setzer/document/autocomplete/autocomplete.py:586
 #: setzer/document/autocomplete/autocomplete.py:587
-#: setzer/document/autocomplete/autocomplete.py:588
+#: setzer/document/autocomplete/autocomplete.py:600
 #: setzer/document/autocomplete/autocomplete.py:601
-#: setzer/document/autocomplete/autocomplete.py:602
+#: setzer/document/autocomplete/autocomplete.py:604
 #: setzer/document/autocomplete/autocomplete.py:605
 #: setzer/document/autocomplete/autocomplete.py:606
 #: setzer/document/autocomplete/autocomplete.py:607
@@ -1362,78 +1363,77 @@ msgstr "Sprache"
 #: setzer/document/autocomplete/autocomplete.py:619
 #: setzer/document/autocomplete/autocomplete.py:620
 #: setzer/document/autocomplete/autocomplete.py:621
-#: setzer/document/autocomplete/autocomplete.py:622
+#: setzer/document/autocomplete/autocomplete.py:632
 #: setzer/document/autocomplete/autocomplete.py:633
 #: setzer/document/autocomplete/autocomplete.py:634
-#: setzer/document/autocomplete/autocomplete.py:635
 msgid "Greek letter"
 msgstr "Griechischer Buchstabe"
 
-#: setzer/document/autocomplete/autocomplete.py:303
+#: setzer/document/autocomplete/autocomplete.py:302
 msgid "Verbatim environment, content won't be interpreted as LaTeX."
 msgstr "Verbatim Umgebung, Inhalt wird nicht von LaTeX ausgewertet."
 
-#: setzer/document/autocomplete/autocomplete.py:498
+#: setzer/document/autocomplete/autocomplete.py:497
 msgid "Include a non-cited item from the bibliography"
 msgstr "Einen nicht-zitierten BibTeX-Eintrag einbinden"
 
-#: setzer/document/autocomplete/autocomplete.py:499
+#: setzer/document/autocomplete/autocomplete.py:498
 msgid "Include all non-cited items from the bibliography"
 msgstr "Alle nicht-zitierten BibTeX-Einträge einbinden"
 
-#: setzer/document/autocomplete/autocomplete.py:580
+#: setzer/document/autocomplete/autocomplete.py:579
 msgid "Colored Text"
 msgstr "Farbiger Text"
 
-#: setzer/document/autocomplete/autocomplete.py:585
+#: setzer/document/autocomplete/autocomplete.py:584
 msgid "Monospaced Text"
 msgstr "Monospace-Text"
 
-#: setzer/document/autocomplete/autocomplete.py:625
+#: setzer/document/autocomplete/autocomplete.py:624
 msgid "Inline verbatim text that won't be interpreted as LaTeX."
 msgstr "Verbatim Text, der nicht von LaTeX ausgewertet wird."
 
-#: setzer/document/autocomplete/autocomplete.py:637
+#: setzer/document/autocomplete/autocomplete.py:636
 msgid "Make text 'tiny' within current scope"
 msgstr "Schriftgröße 'tiny'"
 
-#: setzer/document/autocomplete/autocomplete.py:638
+#: setzer/document/autocomplete/autocomplete.py:637
 msgid "Make text 'scriptsize' within current scope"
 msgstr "Schriftgröße 'scriptsize'"
 
-#: setzer/document/autocomplete/autocomplete.py:639
+#: setzer/document/autocomplete/autocomplete.py:638
 msgid "Make text 'footnotesize' within current scope"
 msgstr "Schriftgröße 'footnotesize'"
 
-#: setzer/document/autocomplete/autocomplete.py:640
+#: setzer/document/autocomplete/autocomplete.py:639
 msgid "Make text 'small' within current scope"
 msgstr "Schriftgröße 'small'"
 
-#: setzer/document/autocomplete/autocomplete.py:641
+#: setzer/document/autocomplete/autocomplete.py:640
 msgid "Make text 'normalsize' within current scope"
 msgstr "Schriftgröße 'normalsize'"
 
-#: setzer/document/autocomplete/autocomplete.py:642
+#: setzer/document/autocomplete/autocomplete.py:641
 msgid "Make text 'large' within current scope"
 msgstr "Schriftgröße 'large'"
 
-#: setzer/document/autocomplete/autocomplete.py:643
+#: setzer/document/autocomplete/autocomplete.py:642
 msgid "Make text 'Large' within current scope"
 msgstr "Schriftgröße 'Large'"
 
-#: setzer/document/autocomplete/autocomplete.py:644
+#: setzer/document/autocomplete/autocomplete.py:643
 msgid "Make text 'LARGE' within current scope"
 msgstr "Schriftgröße 'LARGE'"
 
-#: setzer/document/autocomplete/autocomplete.py:645
+#: setzer/document/autocomplete/autocomplete.py:644
 msgid "Make text 'huge' within current scope"
 msgstr "Schriftgröße 'huge'"
 
-#: setzer/document/autocomplete/autocomplete.py:646
+#: setzer/document/autocomplete/autocomplete.py:645
 msgid "Make text 'Huge' within current scope"
 msgstr "Schriftgröße 'Huge'"
 
-#: setzer/document/autocomplete/autocomplete.py:662
+#: setzer/document/autocomplete/autocomplete.py:661
 #, python-brace-format
 msgid "Reference to '{label}'"
 msgstr "Verweis auf '{label}'"
@@ -2223,27 +2223,27 @@ msgstr "Objekte"
 msgid "Package"
 msgstr "Paket"
 
-#: setzer/workspace/sidebar/sidebar.py:42
+#: setzer/workspace/sidebar/sidebar.py:41
 msgid "Greek Letters"
 msgstr "Griechische Buchstaben"
 
-#: setzer/workspace/sidebar/sidebar.py:44
+#: setzer/workspace/sidebar/sidebar.py:43
 msgid "Arrows"
 msgstr "Pfeile"
 
-#: setzer/workspace/sidebar/sidebar.py:46
+#: setzer/workspace/sidebar/sidebar.py:45
 msgid "Relations"
 msgstr "Relationen"
 
-#: setzer/workspace/sidebar/sidebar.py:48
+#: setzer/workspace/sidebar/sidebar.py:47
 msgid "Operators"
 msgstr "Operatoren"
 
-#: setzer/workspace/sidebar/sidebar.py:50
+#: setzer/workspace/sidebar/sidebar.py:49
 msgid "Misc. Math"
 msgstr "Verschiedene math. Symbole"
 
-#: setzer/workspace/sidebar/sidebar.py:52
+#: setzer/workspace/sidebar/sidebar.py:51
 msgid "Misc. Symbols"
 msgstr "Verschiedene Symbole"
 
@@ -2316,10 +2316,14 @@ msgid "Document creation wizard"
 msgstr "Komfortabler Assistent zum Erstellen von Dokumenten"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:58
+msgid "German translation, external .pdf viewer button, ..."
+msgstr "German translation, external .pdf viewer button, ..."
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:63
 msgid "Bug fix"
 msgstr "Bug fix"
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:63
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:68
 msgid ""
 "Initial backward synctex support, improved synctex highlighting, search UI "
 "improvements, ..."
@@ -2327,11 +2331,11 @@ msgstr ""
 "Initial backward synctex support, improved synctex highlighting, search UI "
 "improvements, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:68
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:73
 msgid "Session management, highlight passages on build, ..."
 msgstr "Session management, highlight passages on build, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:73
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:78
 msgid ""
 "Zoom level popover for the .pdf preview, preview should use far less memory "
 "now, ..."
@@ -2339,11 +2343,11 @@ msgstr ""
 "Zoom level popover for the .pdf preview, preview should use far less memory "
 "now, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:78
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:83
 msgid "Bug fixes"
 msgstr "Bug fixes"
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:83
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:88
 msgid ""
 "Enable embedded system commands, document modified on disk dialog, option to "
 "highlight current line, option to highlight matching brackets, ..."
@@ -2351,27 +2355,27 @@ msgstr ""
 "Enable embedded system commands, document modified on disk dialog, option to "
 "highlight current line, option to highlight matching brackets, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:88
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:93
 msgid "Add/remove packages dialog, improved HiDPI support, ..."
 msgstr "Add/remove packages dialog, improved HiDPI support, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:93
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:98
 msgid "Keyboard shortcuts in popovers, more commands in shortcuts bar, ..."
 msgstr "Keyboard shortcuts in popovers, more commands in shortcuts bar, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:98
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:103
 msgid "More commands in shortcuts bar, autocomplete now case insensitive, ..."
 msgstr "More commands in shortcuts bar, autocomplete now case insensitive, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:103
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:108
 msgid "HiDPI support in .pdf preview, presistent code folding, ..."
 msgstr "HiDPI support in .pdf preview, presistent code folding, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:108
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:113
 msgid "Initial code folding support, ..."
 msgstr "Initial code folding support, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:113
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:118
 msgid ""
 "References to existing labels in autocomplete, persistent master document "
 "state, ..."
@@ -2379,23 +2383,23 @@ msgstr ""
 "References to existing labels in autocomplete, persistent master document "
 "state, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:118
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:123
 msgid "Initial spellchecking support, ..."
 msgstr "Initial spellchecking support, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:123
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:128
 msgid "Simple BibTeX wizard, more bibliography features in LaTeX editor, ..."
 msgstr "Simple BibTeX wizard, more bibliography features in LaTeX editor, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:128
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:133
 msgid "BibTeX support in the build system, edit BibTeX files, ..."
 msgstr "BibTeX support in the build system, edit BibTeX files, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:133
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:138
 msgid "Editor settings in preferences dialog, ..."
 msgstr "Editor settings in preferences dialog, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:138
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:143
 msgid ""
 "Build multiple times to resolve undefined references, show warnings in build "
 "log, ..."
@@ -2403,27 +2407,27 @@ msgstr ""
 "Build multiple times to resolve undefined references, show warnings in build "
 "log, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:143
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:148
 msgid "Indent multi-line inserts, ..."
 msgstr "Indent multi-line inserts, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:148
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:153
 msgid "Multiple documents in build log, build in temporary folder, ..."
 msgstr "Multiple documents in build log, build in temporary folder, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:153
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:158
 msgid "Master document function, ..."
 msgstr "Master document function, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:158
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:163
 msgid "New app layout, animated wizard button, big code refactor, ..."
 msgstr "New app layout, animated wizard button, big code refactor, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:163
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:168
 msgid "Set margins in wizard, improved icon, ..."
 msgstr "Set margins in wizard, improved icon, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:168
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:173
 msgid "Initial release"
 msgstr "Initial release"
 
