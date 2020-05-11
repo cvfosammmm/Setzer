@@ -45,7 +45,21 @@ class ServiceLocator(object):
 
     def get_main_window():
         return ServiceLocator.main_window
-    
+
+    def get_theme_fg_color():
+        return ServiceLocator.main_window.get_style_context().lookup_color('theme_fg_color')[1]
+
+    def get_theme_bg_color():
+        return ServiceLocator.main_window.get_style_context().lookup_color('theme_bg_color')[1]
+
+    def get_error_color():
+        return ServiceLocator.main_window.get_style_context().lookup_color('error_color')[1]
+
+    def get_is_dark_mode():
+        fg_color = ServiceLocator.get_theme_fg_color()
+        bg_color = ServiceLocator.get_theme_bg_color()
+        return (fg_color.red + fg_color.green + fg_color.blue) * fg_color.alpha > (bg_color.red + bg_color.green + bg_color.blue) * bg_color.alpha
+
     def get_build_log_doc_regex():
         return ServiceLocator.build_log_doc_regex
     

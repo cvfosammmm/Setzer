@@ -18,22 +18,6 @@
 import time
 
 
-def theme_color_to_css(style_context, color_string):
-    rgba = style_context.lookup_color(color_string)[1]
-    return '#' + format(int(rgba.red * 255), '02x') + format(int(rgba.green * 255), '02x') + format(int(rgba.blue * 255), '02x')
-    
-
-def theme_color_to_rgba(style_context, color_string):
-    return style_context.lookup_color(color_string)[1]
-
-
-def is_dark_mode(widget):
-    style_context = widget.get_style_context()
-    fg_color = theme_color_to_rgba(style_context, 'theme_fg_color')
-    bg_color = theme_color_to_rgba(style_context, 'theme_bg_color')
-    return (fg_color.red + fg_color.green + fg_color.blue) * fg_color.alpha > (bg_color.red + bg_color.green + bg_color.blue) * bg_color.alpha
-    
-
 def timer(original_function):
     
     def new_function(*args, **kwargs):

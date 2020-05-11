@@ -33,8 +33,6 @@ import setzer.document.preview.preview_page_renderer as preview_page_renderer
 import setzer.document.preview.zoom_widget.zoom_widget as zoom_widget
 from setzer.helpers.observable import Observable
 
-import setzer.helpers.helpers as helpers
-
 
 class Preview(Observable):
 
@@ -192,7 +190,6 @@ class Preview(Observable):
             else:
                 self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0]
 
-    #@helpers.timer
     def set_zoom_fit_to_height(self):
         zoom_level = (self.view.stack.get_allocated_height() + self.layouter.border_width) / (self.page_height * self.layouter.ppp)
         if zoom_level == self.zoom_level: return

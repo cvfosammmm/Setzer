@@ -19,7 +19,6 @@ import gi
 from gi.repository import Gio
 from gi.repository import GLib
 
-import setzer.helpers.helpers as helpers
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 

@@ -20,7 +20,6 @@ import time
 import setzer.document.build_system.build_system as build_system
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
-import setzer.helpers.helpers as helpers
 
 
 class DocumentBuilder(object):
@@ -141,7 +140,8 @@ class DocumentBuilder(object):
                         if item[0] == 'Error':
                             error_count += 1
                     if error_count > 0:
-                        error_color = helpers.theme_color_to_css(self.document.view.get_style_context(), 'error_color')
+                        error_color_rgba = ServiceLocator.get_error_color()
+                        error_color = '#' + format(int(error_color_rgba.red * 255), '02x') + format(int(error_color_rgba.green * 255), '02x') + format(int(error_color_rgba.blue * 255), '02x')
                         str_errors = ngettext('<span color="{color}">Failed</span> ({amount} error)!', '<span color="{color}">Failed</span> ({amount} errors)!', error_count)
                         message = str_errors.format(color=error_color, amount=str(error_count))
                         self.document.show_build_state(message)

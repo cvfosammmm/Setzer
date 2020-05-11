@@ -18,7 +18,6 @@
 import gi
 from gi.repository import GObject
 
-from setzer.helpers.helpers import timer
 from setzer.app.service_locator import ServiceLocator
 import _thread as thread, queue
 import time
@@ -105,7 +104,6 @@ class LaTeXParser(object):
             self.blocks_changed = False
         return result
 
-    #@timer
     def parse_blocks(self, text):
         with self.parse_jobs_lock:
             self.parse_blocks_job_running = True
@@ -174,7 +172,6 @@ class LaTeXParser(object):
         with self.parse_jobs_lock:
             self.parse_blocks_job_running = False
 
-    #@timer
     def parse_symbols(self, text):
         with self.parse_jobs_lock:
             self.parse_symbols_job_running = True

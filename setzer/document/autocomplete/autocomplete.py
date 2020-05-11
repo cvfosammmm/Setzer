@@ -21,7 +21,6 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Pango
 
-import setzer.helpers.helpers as helpers
 import setzer.document.autocomplete.autocomplete_viewgtk as view
 from setzer.app.service_locator import ServiceLocator
 

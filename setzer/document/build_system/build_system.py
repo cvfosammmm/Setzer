@@ -27,10 +27,7 @@ import tempfile
 import shutil
 import re
 
-from setzer.helpers.helpers import timer
 from setzer.app.service_locator import ServiceLocator
-
-import setzer.helpers.helpers as helpers
 
 
 class BuildSystem(object):
@@ -223,7 +220,6 @@ class Query(object):
                 self.cleanup_build_files(tex_file.name)
             tex_file.close()
 
-    #@timer
     def parse_build_log(self, log_filename, tex_filename):
         try: file = open(log_filename, 'rb')
         except FileNotFoundError as e: raise e
@@ -426,7 +422,6 @@ class Query(object):
             try: shutil.move(move_from, move_to)
             except FileNotFoundError: pass
 
-    #@helpers.timer
     def forward_sync(self):
         if self.build_pathname == None:
             self.forward_sync_result = None
@@ -459,7 +454,6 @@ class Query(object):
         else:
             self.forward_sync_result = None
 
-    #@helpers.timer
     def backward_sync(self):
         if self.build_pathname == None:
             self.backward_sync_result = None

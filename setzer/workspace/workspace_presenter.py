@@ -19,7 +19,6 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gio
 
-import setzer.helpers.helpers as helpers
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -49,7 +48,7 @@ class WorkspacePresenter(object):
 
         if change_code == 'new_document':
             document = parameter
-            document.set_use_dark_scheme(helpers.is_dark_mode(self.main_window))
+            document.set_use_dark_scheme(ServiceLocator.get_is_dark_mode())
 
             if document.is_latex_document():
                 self.main_window.notebook.append_page(document.view)

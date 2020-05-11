@@ -22,7 +22,6 @@ from gi.repository import Gio
 from gi.repository import GLib
 
 import setzer.workspace.sidebar.sidebar_viewgtk as sidebar_view
-import setzer.helpers.helpers as helpers
 from setzer.app.service_locator import ServiceLocator
 
 import math
@@ -35,7 +34,7 @@ class Sidebar(object):
         self.view = ServiceLocator.get_main_window().sidebar
 
         # detect dark mode
-        dm = 'True' if helpers.is_dark_mode(self.view) else 'False'
+        dm = 'True' if ServiceLocator.get_is_dark_mode() else 'False'
 
         # tabbed pages: name, icon name, tooltip, widget
         self.pages = list()

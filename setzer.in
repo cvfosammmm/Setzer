@@ -24,7 +24,6 @@ import gettext
 
 from setzer.workspace.workspace import Workspace
 import setzer.workspace.workspace_viewgtk as view
-import setzer.helpers.helpers as helpers
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 
@@ -64,8 +63,8 @@ class MainApplicationController(Gtk.Application):
                                           settings.get_value('window_state', 'height'))
         self.main_window.current_width = settings.get_value('window_state', 'width')
         self.main_window.current_height = settings.get_value('window_state', 'height')
-        self.fg_color = helpers.theme_color_to_rgba(self.main_window.get_style_context(), 'theme_fg_color')
-        self.bg_color = helpers.theme_color_to_rgba(self.main_window.get_style_context(), 'theme_bg_color')
+        self.fg_color = ServiceLocator.get_theme_fg_color()
+        self.bg_color = ServiceLocator.get_theme_bg_color()
         self.style_context = self.main_window.get_style_context()
         self.first_window_state_event = True
         self.main_window.show_all()
@@ -99,8 +98,8 @@ class MainApplicationController(Gtk.Application):
     def on_window_draw(self, main_window, context):
         ''' check for theme changes, update sidebar, textviews '''
 
-        fg_color = helpers.theme_color_to_rgba(self.style_context, 'theme_fg_color')
-        bg_color = helpers.theme_color_to_rgba(self.style_context, 'theme_bg_color')
+        fg_color = ServiceLocator.get_theme_fg_color()
+        bg_color = ServiceLocator.get_theme_bg_color()
         if self.fg_color.red != fg_color.red or self.bg_color.red != bg_color.red:
             self.fg_color = fg_color
             self.bg_color = bg_color
@@ -108,7 +107,7 @@ class MainApplicationController(Gtk.Application):
             try: documents = self.workspace.open_documents
             except AttributeError: pass
             else:
-                is_dark_mode = helpers.is_dark_mode(main_window)
+                is_dark_mode = ServiceLocator.get_is_dark_mode()
                 for document in documents:
                     document.set_dark_mode(is_dark_mode)
         return False

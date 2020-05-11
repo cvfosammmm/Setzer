@@ -26,7 +26,6 @@ from gi.repository import GtkSource
 import setzer.document.code_folding.code_folding_viewgtk as code_folding_view
 import setzer.document.code_folding.code_folding_controller as code_folding_controller
 import setzer.document.code_folding.code_folding_presenter as code_folding_presenter
-from setzer.helpers.helpers import timer
 
 
 class CodeFolding(object):
@@ -132,7 +131,6 @@ class CodeFolding(object):
                 for line in range(region['starting_line'] + 1, region['ending_line'] + 1):
                     self.presenter.line_invisible[line] = True
 
-    #@timer
     def update_folding_regions(self):
         folding_regions = dict()
         folding_regions_by_region_id = dict()

@@ -19,8 +19,6 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-import setzer.helpers.helpers as helpers
-
 
 class PreviewPanelView(Gtk.VBox):
 
