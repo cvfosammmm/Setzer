@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-10 20:26+0200\n"
-"PO-Revision-Date: 2020-05-10 20:27+0200\n"
+"POT-Creation-Date: 2020-05-11 08:06+0200\n"
+"PO-Revision-Date: 2020-05-11 08:08+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1287,17 +1287,12 @@ msgid "Fully enable \\write18{SHELL COMMAND}"
 msgstr "Vollständig aktiviertes \\write18{SHELL COMMAND}"
 
 #: setzer/dialogs/replace_confirmation/replace_confirmation.py:45
-msgid "occurrence"
-msgid_plural "occurrences"
-msgstr[0] "Treffer"
-msgstr[1] "Treffer"
-
-#: setzer/dialogs/replace_confirmation/replace_confirmation.py:46
 #, python-brace-format
-msgid ""
-"Replacing {amount} {str_occurrences} of »{original}« with »{replacement}«."
-msgstr ""
-"Ersetze {amount} {str_occurrences} von »{original}« durch »{replacement}«."
+msgid "Replacing {amount} occurence of »{original}« with »{replacement}«."
+msgid_plural ""
+"Replacing {amount} occurrences of »{original}« with »{replacement}«."
+msgstr[0] "Ersetze {amount} Vorkommen von »{original}« durch »{replacement}«."
+msgstr[1] "Ersetze {amount} Vorkommen von »{original}« durch »{replacement}«."
 
 #: setzer/dialogs/replace_confirmation/replace_confirmation.py:47
 msgid "Do you really want to do this?"
@@ -2452,3 +2447,8 @@ msgstr "Set margins in wizard, improved icon, ..."
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:168
 msgid "Initial release"
 msgstr "Initial release"
+
+#~ msgid "occurrence"
+#~ msgid_plural "occurrences"
+#~ msgstr[0] "Treffer"
+#~ msgstr[1] "Treffer"

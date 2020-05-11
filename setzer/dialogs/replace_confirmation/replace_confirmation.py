@@ -42,8 +42,8 @@ class ReplaceConfirmationDialog(Dialog):
     def setup(self, original, replacement, number_of_occurrences):
         self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
 
-        str_occurrences = ngettext('occurrence', 'occurrences', number_of_occurrences)
-        self.view.set_property('text', _('Replacing {amount} {str_occurrences} of »{original}« with »{replacement}«.').format(amount=str(number_of_occurrences),str_occurrences=str_occurrences,original=original,replacement=replacement))
+        str_occurrences = ngettext('Replacing {amount} occurence of »{original}« with »{replacement}«.', 'Replacing {amount} occurrences of »{original}« with »{replacement}«.', number_of_occurrences)
+        self.view.set_property('text', str_occurrences.format(amount=str(number_of_occurrences), original=original, replacement=replacement))
         self.view.format_secondary_markup(_('Do you really want to do this?'))
 
         self.view.add_buttons(_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Yes, replace all occurrences'), Gtk.ResponseType.YES)
