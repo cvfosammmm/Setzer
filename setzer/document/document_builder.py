@@ -142,8 +142,8 @@ class DocumentBuilder(object):
                             error_count += 1
                     if error_count > 0:
                         error_color = helpers.theme_color_to_css(self.document.view.get_style_context(), 'error_color')
-                        str_errors = ngettext('error', 'errors', error_count)
-                        message = '<span color="' + error_color + '">' + _('Failed') + '</span> (' + _('{amount} {str_errors}').format(amount=str(error_count),str_errors=str_errors) + ')!'
+                        str_errors = ngettext('<span color="{color}">Failed</span> ({amount} error)!', '<span color="{color}">Failed</span> ({amount} errors)!', error_count)
+                        message = str_errors.format(color=error_color, amount=str(error_count))
                         self.document.show_build_state(message)
                     else:
                         self.document.show_build_state(_('Success!'))

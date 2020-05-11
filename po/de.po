@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-11 08:06+0200\n"
-"PO-Revision-Date: 2020-05-11 08:08+0200\n"
+"POT-Creation-Date: 2020-05-11 10:24+0200\n"
+"PO-Revision-Date: 2020-05-11 10:25+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1538,20 +1538,11 @@ msgid "New Document Wizard"
 msgstr "Dokumenten-Assistent"
 
 #: setzer/document/document_builder.py:145
-#: setzer/workspace/build_log/build_log_presenter.py:55
-msgid "error"
-msgid_plural "errors"
-msgstr[0] "Fehler"
-msgstr[1] "Fehler"
-
-#: setzer/document/document_builder.py:146
-msgid "Failed"
-msgstr "Fehlgeschlagen"
-
-#: setzer/document/document_builder.py:146
 #, python-brace-format
-msgid "{amount} {str_errors}"
-msgstr "{amount} {str_errors}"
+msgid "<span color=\"{color}\">Failed</span> ({amount} error)!"
+msgid_plural "<span color=\"{color}\">Failed</span> ({amount} errors)!"
+msgstr[0] "<span color=\"{color}\">Fehler</span> ({amount})!"
+msgstr[1] "<span color=\"{color}\">Fehler</span> ({amount})!"
 
 #: setzer/document/document_builder.py:149
 msgid "Success!"
@@ -1614,38 +1605,26 @@ msgid "Add a BibTeX Entry from an Online Database"
 msgstr "Einen BibTex Eintrag aus einer Online-Datenbank hinzufügen"
 
 #: setzer/workspace/build_log/build_log_presenter.py:56
-msgid "warning"
-msgid_plural "warnings"
-msgstr[0] "Warnung"
-msgstr[1] "Warnungen"
+#, python-brace-format
+msgid "Building failed with {amount} error"
+msgid_plural "Building failed with {amount} errors"
+msgstr[0] "Erstellen fehlgeschlagen mit {amount} Fehler"
+msgstr[1] "Erstellen fehlgeschlagen mit {amount} Fehlern"
 
 #: setzer/workspace/build_log/build_log_presenter.py:57
-msgid "badbox"
-msgid_plural "badboxes"
-msgstr[0] "Badbox"
-msgstr[1] "Badboxen"
+#, python-brace-format
+msgid "{amount} warning or badbox"
+msgid_plural "{amount} warnings or badboxes"
+msgstr[0] "{amount} Warnung oder Badbox"
+msgstr[1] "{amount} Warnungen oder Badboxen"
 
 #: setzer/workspace/build_log/build_log_presenter.py:60
-#: setzer/workspace/build_log/build_log_presenter.py:62
 msgid "Building successful"
 msgstr "Erstellen erfolgreich"
 
-#: setzer/workspace/build_log/build_log_presenter.py:60
 #: setzer/workspace/build_log/build_log_presenter.py:65
 msgid "no warnings or badboxes"
 msgstr "keine Warnungen oder Badboxen"
-
-#: setzer/workspace/build_log/build_log_presenter.py:62
-#: setzer/workspace/build_log/build_log_presenter.py:67
-#, python-brace-format
-msgid "{amount} {str_warnings} or {str_badboxes}"
-msgstr "{amount} {str_warnings} oder {str_badboxes}"
-
-#: setzer/workspace/build_log/build_log_presenter.py:65
-#: setzer/workspace/build_log/build_log_presenter.py:67
-#, python-brace-format
-msgid "Building failed with {amount} {str_errors}"
-msgstr "Erstellen fehlgeschlagen mit {amount} {str_errors}"
 
 #: setzer/workspace/build_log/build_log_viewgtk.py:112
 msgid "Badbox"
@@ -2447,6 +2426,27 @@ msgstr "Set margins in wizard, improved icon, ..."
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:168
 msgid "Initial release"
 msgstr "Initial release"
+
+#~ msgid "error"
+#~ msgid_plural "errors"
+#~ msgstr[0] "Fehler"
+#~ msgstr[1] "Fehler"
+
+#~ msgid "warning"
+#~ msgid_plural "warnings"
+#~ msgstr[0] "Warnung"
+#~ msgstr[1] "Warnungen"
+
+#~ msgid "badbox"
+#~ msgid_plural "badboxes"
+#~ msgstr[0] "Badbox"
+#~ msgstr[1] "Badboxen"
+
+#~ msgid "Failed"
+#~ msgstr "Fehlgeschlagen"
+
+#~ msgid "{amount} {str_errors}"
+#~ msgstr "{amount} {str_errors}"
 
 #~ msgid "occurrence"
 #~ msgid_plural "occurrences"

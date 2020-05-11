@@ -52,19 +52,22 @@ class BuildLogPresenter(object):
                 time_string = '{:.2f}s, '.format(self.build_log.document.build_time)
             else:
                 time_string = ''
-            str_errors = ngettext('error', 'errors', errors)
-            str_warnings = ngettext('warning', 'warnings', warnings)
-            str_badboxes = ngettext('badbox', 'badboxes', warnings)
+
+            str_errors = ngettext('Building failed with {amount} error', 'Building failed with {amount} errors', errors)
+            str_warnings = ngettext('{amount} warning or badbox', '{amount} warnings or badboxes', warnings)
+
             if errors == 0:
-                if warnings == 0:
-                    self.view.header_label.set_markup('<b>' + _('Building successful') + '</b> (' + time_string + _('no warnings or badboxes') + ').')
-                else:
-                    self.view.header_label.set_markup('<b>' + _('Building successful') + '</b> (' + time_string + _('{amount} {str_warnings} or {str_badboxes}').format(amount=str(warnings),str_warnings=str_warnings,str_badboxes=str_badboxes) + ').')
+                markup = '<b>' + _('Building successful') + '</b> (' + time_string
             else:
-                if warnings == 0:
-                    self.view.header_label.set_markup('<b>' + _('Building failed with {amount} {str_errors}').format(amount=str(errors),str_errors=str_errors) + '</b> (' + _('no warnings or badboxes') + ').')
-                else:
-                    self.view.header_label.set_markup('<b>' + _('Building failed with {amount} {str_errors}').format(amount=str(errors),str_errors=str_errors) + '</b> (' + _('{amount} {str_warnings} or {str_badboxes}').format(amount=str(warnings),str_warnings=str_warnings,str_badboxes=str_badboxes) + ').')
+                markup = '<b>' + str_errors.format(amount=str(errors)) + '</b> ('
+
+            if warnings == 0:
+                markup += _('no warnings or badboxes') 
+            else:
+                markup += str_warnings.format(amount=str(warnings))
+
+            markup += ').'
+            self.view.header_label.set_markup(markup)
         else:
             self.view.header_label.set_markup('')
     
