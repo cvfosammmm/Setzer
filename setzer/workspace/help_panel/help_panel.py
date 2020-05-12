@@ -51,7 +51,10 @@ class HelpPanel(object):
         self.view.content.go_forward()
 
     def on_up_button_clicked(self, button):
-        self.view.content.load_uri(self.uri + '#')
+        if self.view.content.get_uri() != self.uri + '#':
+            self.view.content.load_uri(self.uri + '#')
+        else:
+            self.view.content.load_uri(self.uri + '#top')
         self.count += 1
 
     def on_back_forward_list_changed(self, back_forward_list, item_added=None, items_removed=None):

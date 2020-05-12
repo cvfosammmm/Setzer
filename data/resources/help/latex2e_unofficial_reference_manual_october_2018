@@ -85,7 +85,8 @@ span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
 ul.no-bullet {list-style: none}
 BODY {
-  margin-top: 1em;
+  padding-top: 1px;
+  margin-top: 0px;
   margin-left: 1em; /* auto results in two-digit <ol> lost off left */
   margin-right: 1em;
   margin-bottom: 1em;
@@ -107,7 +108,7 @@ div.referenceinfo {font-size:small;}
 
 </head>
 
-<body lang="en">
+<body lang="en" id="top">
 <h1 class="settitle" align="center">LaTeX2e unofficial reference manual (October 2018)</h1>
         
 
