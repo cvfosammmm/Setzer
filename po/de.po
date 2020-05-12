@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-11 12:20+0200\n"
-"PO-Revision-Date: 2020-05-11 12:21+0200\n"
+"POT-Creation-Date: 2020-05-11 17:00+0200\n"
+"PO-Revision-Date: 2020-05-11 17:05+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -973,8 +973,8 @@ msgid "Close the current document"
 msgstr "Aktuelles Dokument schließen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:46
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:124
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:166
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:131
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:173
 msgid "Tools"
 msgstr "Werkzeuge"
 
@@ -987,163 +987,183 @@ msgstr ".pdf-Datei erstellen"
 msgid "Spellchecking dialog"
 msgstr "Rechtschreibung prüfen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:58
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:62
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:52
+msgid "Show help panel"
+msgstr "Hilfe anzeigen"
+
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:53
+msgid "Show build log"
+msgstr "Fehler und Warnungen anzeigen"
+
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:54
+msgid "Show side panel"
+msgstr "Seitenleiste anzeigen"
+
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:55
+msgid "Show preview panel"
+msgstr "Vorschau anzeigen"
+
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:56
+msgid "Close Application"
+msgstr "Anwendung beenden"
+
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:59
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:63
 msgid "Find and Replace"
 msgstr "Suchen und Ersetzen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:59
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:60
 msgid "Find"
 msgstr "Suchen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:60
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:61
 msgid "Find the next match"
 msgstr "Nächster Treffer"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:61
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:62
 msgid "Find the previous match"
 msgstr "Vorheriger Treffer"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:66
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:67
 msgid "Copy selected text to clipboard"
 msgstr "Markierten Text kopieren"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:67
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:68
 msgid "Cut selected text to clipboard"
 msgstr "Markierten Text ausschneiden"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:68
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:69
 msgid "Paste text from clipboard"
 msgstr "Text aus der Zwischenablage einfügen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:71
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:72
 msgid "Undo and Redo"
 msgstr "Rückgängig und Wiederherstellen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:72
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:73
 msgid "Undo previous text edit"
 msgstr "Letzten Befehl rückgängig machen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:73
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:74
 msgid "Redo previous text edit"
 msgstr "Befehl wiederherstellen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:76
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:77
 msgid "Selection"
 msgstr "Textauswahl"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:77
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:78
 msgid "Select all text"
 msgstr "Alles auswählen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:80
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:81
 msgid "Editing"
 msgstr "Bearbeiten"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:81
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:82
 msgid "Toggle insert / overwrite"
 msgstr "Einfügen / Überschreiben umschalten"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:82
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:83
 msgid "Move current line up"
 msgstr "Aktuelle Zeile nach oben verschieben"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:83
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:84
 msgid "Move current line down"
 msgstr "Aktuelle Zeile nach unten verschieben"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:84
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:85
 msgid "Move current word left"
 msgstr "Aktuelles Wort nach links verschieben"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:85
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:86
 msgid "Move current word right"
 msgstr "Aktuelles Wort nach rechts verschieben"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:86
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:87
 msgid "Increment number at cursor"
 msgstr "Zahl am Cursor erhöhen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:87
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:88
 msgid "Decrement number at cursor"
 msgstr "Zahl am Cursor verringern"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:90
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:91
 msgid "LaTeX Shortcuts"
 msgstr "LaTeX"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:91
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:92
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:225
 msgid "New Line"
 msgstr "Zeilenumbruch"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:92
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:93
 #: setzer/document/autocomplete/autocomplete.py:578
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:74
 msgid "Bold Text"
 msgstr "Fett"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:93
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:94
 #: setzer/document/autocomplete/autocomplete.py:580
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:65
 msgid "Italic Text"
 msgstr "Kursiv"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:94
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:95
 msgid "Underlined Text"
 msgstr "Unterstrichen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:95
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:96
 msgid "Typewriter Text"
 msgstr "Schreibmaschine"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:96
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:97
 msgid "Emphasized Text"
 msgstr "Hervorgehoben"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:97
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:98
 msgid "Quotation Marks"
 msgstr "Anführungszeichen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:98
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:99
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:443
 msgid "List Item"
 msgstr "Listeneintrag"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:99
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:100
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:181
 msgid "Environment"
 msgstr "Umgebung"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:102
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:103
 msgid "Math Shortcuts"
 msgstr "Mathematik"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:103
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:104
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:311
 msgid "Inline Math Section"
 msgstr "Math. Umgebung (inline)"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:104
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:105
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:312
 msgid "Display Math Section"
 msgstr "Math. Umgebung (display)"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:105
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:106
 msgid "Equation"
 msgstr "Gleichung"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:106
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:107
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:315
 msgid "Subscript"
 msgstr "Tiefgestellt"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:107
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:108
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:316
 msgid "Superscript"
 msgstr "Hochgestellt"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:108
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:109
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:317
 msgid "Fraction"
 msgstr "Bruchzahl (\\frac)"
@@ -1174,7 +1194,7 @@ msgid "Setzer Session"
 msgstr "Setzer Sitzung"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:40
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:126
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:133
 msgid "Preferences"
 msgstr "Einstellungen"
 
@@ -1648,9 +1668,9 @@ msgstr "Zeile {number}"
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:66
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:78
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:94
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:118
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:132
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:133
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:125
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:139
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:140
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:69
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:78
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:181
@@ -1700,7 +1720,7 @@ msgid "Toggle sidebar"
 msgstr "Seitenleiste anzeigen / verbergen"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:58
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:118
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:125
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:311
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:312
@@ -1732,52 +1752,56 @@ msgid "Save"
 msgstr "Speichern"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:101
+msgid "Toggle help"
+msgstr "Hilfe anzeigen / verbergen"
+
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:108
 msgid "Toggle preview"
 msgstr "Vorschau anzeigen / verbergen"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:118
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:125
 msgid "Save Document As"
 msgstr "Speichern unter"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:119
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:126
 msgid "Save All Documents"
 msgstr "Alle speichern"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:121
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:148
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:128
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:155
 msgid "Session"
 msgstr "Sitzung"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:123
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:140
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:130
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:147
 msgid "View"
 msgstr "Ansicht"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:128
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:135
 msgid "Keyboard Shortcuts"
 msgstr "Tastenkürzel"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:129
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:136
 msgid "About"
 msgstr "Info"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:131
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:138
 msgid "Close All Documents"
 msgstr "Alle schließen"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:132
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:139
 msgid "Close Document"
 msgstr "Schließen"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:133
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:140
 msgid "Quit"
 msgstr "Beenden"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:141
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:148
 msgid "Dark Mode"
 msgstr "Nachtmodus"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:149
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:156
 msgid ""
 "Save the list of open documents in a session file\n"
 "and restore it later, a convenient way to work\n"
@@ -1788,31 +1812,31 @@ msgstr ""
 "eine praktische Methode um an verschiedenen\n"
 "Projekten zu arbeiten."
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:155
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:162
 msgid "Restore Previous Session"
 msgstr "Sitzung wiederherstellen"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:156
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:163
 msgid "Save Current Session"
 msgstr "Sitzung speichern"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:167
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:174
 msgid "Check Spelling"
 msgstr "Rechtschreibung prüfen"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:168
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:175
 msgid "Automatic Spellchecking"
 msgstr "Rechtschreibfehler hervorheben"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:169
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:176
 msgid "Set Spellchecking Language"
 msgstr "Sprache festlegen"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:209
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:216
 msgid "No results"
 msgstr "Keine Ergebnisse"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:214
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:221
 msgid "Other Documents"
 msgstr "Weitere Dokumente"
 
@@ -2251,7 +2275,7 @@ msgstr "Verschiedene Symbole"
 msgid "No open documents"
 msgstr "Keine Dokumente geöffnet"
 
-#: setzer/workspace/workspace.py:91
+#: setzer/workspace/workspace.py:93
 #, python-brace-format
 msgid "Untitled Document {number}"
 msgstr "Unbenanntes Dokument {number}"

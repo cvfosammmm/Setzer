@@ -376,6 +376,25 @@ paned > paned.visible-separator separator {
 }
 
 /*
+** help
+*/
+
+box.help {
+    background-color: @theme_base_color;
+}
+box.help > box {
+    background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
+}
+box.help > box button {
+    border-width: 0px;
+    margin: 0px;
+    box-shadow: none;
+    border-radius: 0px;
+    padding: 6px;
+}
+
+/*
 ** search bar
 */
 

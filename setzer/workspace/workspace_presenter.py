@@ -103,8 +103,12 @@ class WorkspacePresenter(object):
         if change_code == 'set_show_sidebar':
             self.animate_sidebar(parameter, True)
 
-        if change_code == 'set_show_preview':
-            self.animate_preview(parameter, True)
+        if change_code == 'set_show_preview_or_help':
+            if self.workspace.show_preview:
+                self.main_window.preview_help_stack.set_visible_child_name('preview')
+            else:
+                self.main_window.preview_help_stack.set_visible_child_name('help')
+            self.animate_preview(self.workspace.show_preview, self.workspace.show_help, True)
 
         if change_code == 'show_build_log_state_change':
             self.build_log_animate(parameter, True)
@@ -173,7 +177,11 @@ class WorkspacePresenter(object):
     def on_realize(self, view=None, cr=None, user_data=None):
         if self.sidebars_initialized == False:
             self.animate_sidebar(self.workspace.show_sidebar, False)
-            self.animate_preview(self.workspace.show_preview, False)
+            if self.workspace.show_preview:
+                self.main_window.preview_help_stack.set_visible_child_name('preview')
+            else:
+                self.main_window.preview_help_stack.set_visible_child_name('help')
+            self.animate_preview(self.workspace.show_preview, self.workspace.show_help, False)
             self.build_log_animate(self.workspace.get_show_build_log(), False)
             self.sidebars_initialized = True
 
@@ -235,9 +243,9 @@ class WorkspacePresenter(object):
             self.main_window.sidebar_paned.set_position(end)
             if set_toggle: self.main_window.headerbar.sidebar_toggle.set_active(show_sidebar)
 
-    def animate_preview(self, show_preview=False, animate=False, set_toggle=True):
+    def animate_preview(self, show_preview=False, show_help=False, animate=False, set_toggle=True):
         def set_position_on_tick(paned, frame_clock_cb, user_data=None):
-            show_preview, set_toggle = user_data
+            show_preview, show_help, set_toggle = user_data
             now = frame_clock_cb.get_frame_time()
             if now < end_time and paned.get_position != end:
                 t = self.ease((now - start_time) / (end_time - start_time))
@@ -245,58 +253,63 @@ class WorkspacePresenter(object):
                 return True
             else:
                 paned.set_position(end)
-                if not show_preview:
-                    self.main_window.preview_panel.hide()
+                if not (show_preview or show_help):
+                    self.main_window.preview_help_stack.hide()
                     self.main_window.preview_visible = False
                 else:
-                    self.main_window.preview_paned.child_set_property(self.main_window.preview_panel, 'shrink', False)
+                    self.main_window.preview_paned.child_set_property(self.main_window.preview_help_stack, 'shrink', False)
                     self.main_window.preview_visible = True
                     self.workspace.set_preview_position(paned.get_position())
-                if set_toggle: self.main_window.headerbar.preview_toggle.set_active(show_preview)
+                if set_toggle:
+                    self.main_window.headerbar.preview_toggle.set_active(show_preview)
+                    self.main_window.headerbar.help_toggle.set_active(show_help)
                 self.preview_animating = False
                 return False
 
         if self.preview_animating: return
-        if self.main_window.preview_visible == show_preview: return
 
-        frame_clock = self.main_window.preview_paned.get_frame_clock()
-        duration = 200
+        if self.main_window.preview_visible != (show_preview or show_help):
+            frame_clock = self.main_window.preview_paned.get_frame_clock()
+            duration = 200
 
-        if show_preview:
-            self.main_window.preview_paned.get_style_context().remove_class('hidden-separator')
-            self.main_window.preview_paned.get_style_context().add_class('visible-separator')
-            end = self.workspace.preview_position
-            if end == -1:
-                end = self.main_window.preview_paned.get_allocated_width() / 2
-        else:
-            self.main_window.preview_paned.get_style_context().add_class('hidden-separator')
-            self.main_window.preview_paned.get_style_context().remove_class('visible-separator')
-            end = self.main_window.preview_paned.get_allocated_width()
-
-        if frame_clock != None and animate:
-            if show_preview:
-                start = self.main_window.preview_paned.get_allocated_width()
-                self.main_window.preview_panel.show_all()
+            if show_preview or show_help:
+                self.main_window.preview_paned.get_style_context().remove_class('hidden-separator')
+                self.main_window.preview_paned.get_style_context().add_class('visible-separator')
+                end = self.workspace.preview_position
+                if end == -1:
+                    end = self.main_window.preview_paned.get_allocated_width() / 2
             else:
-                start = self.workspace.preview_position
-            if start != end:
-                start_time = frame_clock.get_frame_time()
-                end_time = start_time + 1000 * duration
-                self.preview_animating = True
-                self.main_window.preview_paned.add_tick_callback(set_position_on_tick, (show_preview, set_toggle))
-                self.main_window.preview_paned.child_set_property(self.main_window.preview_panel, 'shrink', True)
-        else:
-            if show_preview:
-                if self.workspace.show_sidebar == False and self.main_window.sidebar.get_allocated_width() > 1:
-                    end -= self.main_window.sidebar.get_allocated_width()
-                self.main_window.preview_paned.child_set_property(self.main_window.preview_panel, 'shrink', False)
-                self.main_window.preview_visible = True
+                self.main_window.preview_paned.get_style_context().add_class('hidden-separator')
+                self.main_window.preview_paned.get_style_context().remove_class('visible-separator')
+                end = self.main_window.preview_paned.get_allocated_width()
+
+            if frame_clock != None and animate:
+                if show_preview or show_help:
+                    start = self.main_window.preview_paned.get_allocated_width()
+                    self.main_window.preview_help_stack.show_all()
+                else:
+                    start = self.workspace.preview_position
+                if start != end:
+                    start_time = frame_clock.get_frame_time()
+                    end_time = start_time + 1000 * duration
+                    self.preview_animating = True
+                    self.main_window.preview_paned.add_tick_callback(set_position_on_tick, (show_preview, show_help, set_toggle))
+                    self.main_window.preview_paned.child_set_property(self.main_window.preview_help_stack, 'shrink', True)
             else:
-                self.main_window.preview_paned.child_set_property(self.main_window.preview_panel, 'shrink', True)
-                self.main_window.preview_visible = False
-                self.main_window.preview_panel.hide()
-            self.main_window.preview_paned.set_position(end)
-            if set_toggle: self.main_window.headerbar.preview_toggle.set_active(show_preview)
+                if show_preview or show_help:
+                    if self.workspace.show_sidebar == False and self.main_window.sidebar.get_allocated_width() > 1:
+                        end -= self.main_window.sidebar.get_allocated_width()
+                    self.main_window.preview_paned.child_set_property(self.main_window.preview_help_stack, 'shrink', False)
+                    self.main_window.preview_visible = True
+                else:
+                    self.main_window.preview_paned.child_set_property(self.main_window.preview_help_stack, 'shrink', True)
+                    self.main_window.preview_visible = False
+                    self.main_window.preview_help_stack.hide()
+                self.main_window.preview_paned.set_position(end)
+
+        if set_toggle:
+            self.main_window.headerbar.preview_toggle.set_active(show_preview)
+            self.main_window.headerbar.help_toggle.set_active(show_help)
 
     def build_log_animate(self, show_build_log=True, animate=False):
         def set_position_on_tick(paned, frame_clock_cb, user_data=None):

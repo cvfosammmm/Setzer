@@ -93,13 +93,21 @@ class HeaderBar(Gtk.HeaderBar):
         self.save_document_button.set_can_focus(False)
         self.save_document_button.set_tooltip_text(_('Save the current document') + ' (' + _('Ctrl') + '+S)')
         self.pack_end(self.save_document_button)
-        
-        # preview toggle
+
+        # help and preview toggles
+        box = Gtk.HBox()
         self.preview_toggle = Gtk.ToggleButton()
         self.preview_toggle.set_image(Gtk.Image.new_from_icon_name('view-paged-symbolic', Gtk.IconSize.MENU))
         self.preview_toggle.set_can_focus(False)
         self.preview_toggle.set_tooltip_text(_('Toggle preview') + ' (F10)')
-        self.pack_end(self.preview_toggle)
+        box.pack_start(self.preview_toggle, False, False, 0)
+        self.help_toggle = Gtk.ToggleButton()
+        self.help_toggle.set_image(Gtk.Image.new_from_icon_name('help-browser-symbolic', Gtk.IconSize.MENU))
+        self.help_toggle.set_can_focus(False)
+        self.help_toggle.set_tooltip_text(_('Toggle help') + ' (F1)')
+        box.pack_start(self.help_toggle, False, False, 0)
+        box.get_style_context().add_class('linked')
+        self.pack_end(box)
         
         # build button wrapper
         self.build_wrapper = Gtk.VBox()

@@ -111,6 +111,8 @@ class HeaderbarPresenter(object):
         self.main_window.headerbar.save_document_button.hide()
         self.main_window.headerbar.preview_toggle.hide()
         self.main_window.headerbar.preview_toggle.set_sensitive(False)
+        self.main_window.headerbar.help_toggle.hide()
+        self.main_window.headerbar.help_toggle.set_sensitive(False)
         self.main_window.headerbar.sidebar_toggle.hide()
         self.main_window.headerbar.sidebar_toggle.set_sensitive(False)
 
@@ -119,6 +121,8 @@ class HeaderbarPresenter(object):
         self.main_window.headerbar.save_document_button.show_all()
         self.main_window.headerbar.preview_toggle.show_all()
         self.main_window.headerbar.preview_toggle.set_sensitive(True)
+        self.main_window.headerbar.help_toggle.show_all()
+        self.main_window.headerbar.help_toggle.set_sensitive(True)
         self.main_window.headerbar.sidebar_toggle.show_all()
         self.main_window.headerbar.sidebar_toggle.set_sensitive(True)
 
@@ -127,6 +131,8 @@ class HeaderbarPresenter(object):
         self.main_window.headerbar.save_document_button.show_all()
         self.main_window.headerbar.preview_toggle.hide()
         self.main_window.headerbar.preview_toggle.set_sensitive(False)
+        self.main_window.headerbar.help_toggle.hide()
+        self.main_window.headerbar.help_toggle.set_sensitive(False)
         self.main_window.headerbar.sidebar_toggle.hide()
         self.main_window.headerbar.sidebar_toggle.set_sensitive(False)
 

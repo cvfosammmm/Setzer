@@ -51,6 +51,7 @@ class Settings(Observable):
         self.defaults['window_state']['is_maximized'] = False
         self.defaults['window_state']['show_sidebar'] = False
         self.defaults['window_state']['sidebar_paned_position'] = -1
+        self.defaults['window_state']['show_help'] = False
         self.defaults['window_state']['show_preview'] = False
         self.defaults['window_state']['show_build_log'] = False
         self.defaults['window_state']['preview_paned_position'] = -1

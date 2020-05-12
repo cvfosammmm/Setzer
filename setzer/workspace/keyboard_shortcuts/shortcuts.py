@@ -85,12 +85,14 @@ class Shortcuts(object):
         c_mask = Gdk.ModifierType.CONTROL_MASK
         s_mask = Gdk.ModifierType.SHIFT_MASK
         m_mask = Gdk.ModifierType.META_MASK
+        all_mask = Gdk.ModifierType.MODIFIER_MASK
         flags = Gtk.AccelFlags.MASK
         
         self.accel_group.connect(Gdk.keyval_from_name('o'), c_mask, flags, self.shortcut_open)
         self.accel_group.connect(Gdk.keyval_from_name('o'), c_mask | s_mask, flags, self.shortcut_doc_chooser)
         self.accel_group.connect(Gdk.keyval_from_name('n'), c_mask, flags, self.shortcut_new)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask, flags, self.shortcut_show_open_docs)
+        self.accel_group.connect(Gdk.keyval_from_name('F1'), 0, flags, self.shortcut_help)
         self.accel_group.connect(Gdk.keyval_from_name('F6'), 0, flags, self.shortcut_build)
         self.accel_group.connect(Gdk.keyval_from_name('F8'), 0, flags, self.shortcut_build_log)
         self.accel_group.connect(Gdk.keyval_from_name('F9'), 0, flags, self.shortcut_sidebar)
@@ -139,13 +141,19 @@ class Shortcuts(object):
         return True
 
     def shortcut_sidebar(self, accel_group=None, window=None, key=None, mask=None):
-        toggle = self.main_window.headerbar.sidebar_toggle.get_child()
+        toggle = self.main_window.headerbar.sidebar_toggle
         if toggle.get_sensitive():
             toggle.clicked()
         return True
 
     def shortcut_preview(self, accel_group=None, window=None, key=None, mask=None):
         toggle = self.main_window.headerbar.preview_toggle
+        if toggle.get_sensitive():
+            toggle.clicked()
+        return True
+
+    def shortcut_help(self, accel_group=None, window=None, key=None, mask=None):
+        toggle = self.main_window.headerbar.help_toggle
         if toggle.get_sensitive():
             toggle.clicked()
         return True

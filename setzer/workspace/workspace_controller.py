@@ -85,8 +85,9 @@ class WorkspaceController(object):
         self.main_window.headerbar.save_document_button.connect('clicked', self.on_save_button_click)
         self.main_window.headerbar.sidebar_toggle.connect('toggled', self.on_sidebar_toggle_toggled)
         self.main_window.headerbar.preview_toggle.connect('toggled', self.on_preview_toggle_toggled)
+        self.main_window.headerbar.help_toggle.connect('toggled', self.on_help_toggle_toggled)
         self.main_window.sidebar.connect('size-allocate', self.on_sidebar_size_allocate)
-        self.main_window.preview_panel.connect('size-allocate', self.on_preview_size_allocate)
+        self.main_window.preview_help_stack.connect('size-allocate', self.on_preview_size_allocate)
         self.main_window.preview_paned.connect('size-allocate', self.on_preview_paned_size_allocate)
         self.main_window.notebook_wrapper.connect('size-allocate', self.on_build_log_size_allocate)
         self.main_window.shortcuts_bar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
@@ -255,10 +256,23 @@ class WorkspaceController(object):
         self.on_doclist_close_clicked(None, document)
         
     def on_sidebar_toggle_toggled(self, toggle_button, parameter=None):
-        self.workspace.set_show_sidebar(toggle_button.get_active(), True)
+        self.workspace.set_show_sidebar(toggle_button.get_active())
 
     def on_preview_toggle_toggled(self, toggle_button, parameter=None):
-        self.workspace.set_show_preview(toggle_button.get_active(), True)
+        show_preview = toggle_button.get_active()
+        if show_preview:
+            show_help = False
+        else:
+            show_help = self.workspace.show_help
+        self.workspace.set_show_preview_or_help(show_preview, show_help)
+
+    def on_help_toggle_toggled(self, toggle_button, parameter=None):
+        show_help = toggle_button.get_active()
+        if show_help:
+            show_preview = False
+        else:
+            show_preview = self.workspace.show_preview
+        self.workspace.set_show_preview_or_help(show_preview, show_help)
 
     def on_spellchecking_toggle_toggled(self, action, parameter=None):
         new_state = not action.get_state().get_boolean()
@@ -282,7 +296,7 @@ class WorkspaceController(object):
         if not self.workspace.presenter.sidebars_initialized: return
         if allocation.width != self.p_allocation:
             self.p_allocation = allocation.width
-            if self.workspace.show_preview and self.workspace.active_document != None:
+            if (self.workspace.show_preview or self.workspace.show_help) and self.workspace.active_document != None:
                 if not self.workspace.presenter.preview_animating:
                     self.workspace.set_preview_position(self.main_window.preview_paned.get_position())
 

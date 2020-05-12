@@ -49,10 +49,11 @@ class KeyboardShortcutsDialog(Dialog):
         data.append(section)
 
         section = {'title': 'Windows and Panels', 'items': list()}
-        section['items'].append({'title': 'Show build log', 'shortcut': 'F8'})
-        section['items'].append({'title': 'Show side panel', 'shortcut': 'F9'})
-        section['items'].append({'title': 'Show preview panel', 'shortcut': 'F10'})
-        section['items'].append({'title': 'Close Application', 'shortcut': '&lt;ctrl&gt;Q'})
+        section['items'].append({'title': _('Show help panel'), 'shortcut': 'F1'})
+        section['items'].append({'title': _('Show build log'), 'shortcut': 'F8'})
+        section['items'].append({'title': _('Show side panel'), 'shortcut': 'F9'})
+        section['items'].append({'title': _('Show preview panel'), 'shortcut': 'F10'})
+        section['items'].append({'title': _('Close Application'), 'shortcut': '&lt;ctrl&gt;Q'})
         data.append(section)
 
         section = {'title': _('Find and Replace'), 'items': list()}

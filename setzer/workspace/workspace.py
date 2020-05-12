@@ -24,6 +24,7 @@ from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
 import setzer.workspace.preview_panel.preview_panel_presenter as preview_panel_presenter
+import setzer.workspace.help_panel.help_panel as help_panel
 import setzer.workspace.sidebar.sidebar as sidebar
 import setzer.workspace.build_log.build_log as build_log
 import setzer.workspace.headerbar.headerbar_presenter as headerbar_presenter
@@ -58,6 +59,7 @@ class Workspace(Observable):
         self.sidebar = sidebar.Sidebar()
         self.show_sidebar = self.settings.get_value('window_state', 'show_sidebar')
         self.sidebar_position = self.settings.get_value('window_state', 'sidebar_paned_position')
+        self.show_help = self.settings.get_value('window_state', 'show_help')
         self.show_preview = self.settings.get_value('window_state', 'show_preview')
         self.preview_position = self.settings.get_value('window_state', 'preview_paned_position')
         self.build_log = build_log.BuildLog(self)
@@ -69,6 +71,7 @@ class Workspace(Observable):
         self.presenter = workspace_presenter.WorkspacePresenter(self)
         self.headerbar = headerbar_presenter.HeaderbarPresenter(self)
         self.preview_panel = preview_panel_presenter.PreviewPanelPresenter(self)
+        self.help_panel = help_panel.HelpPanel(self)
         self.document_switcher = document_switcher.DocumentSwitcher(self)
         self.controller = workspace_controller.WorkspaceController(self)
 
@@ -358,7 +361,7 @@ class Workspace(Observable):
             else:
                 document.set_has_visible_build_system(False)
 
-    def set_show_sidebar(self, show_sidebar, animate=False):
+    def set_show_sidebar(self, show_sidebar):
         if show_sidebar != self.show_sidebar:
             self.show_sidebar = show_sidebar
             self.add_change_code('set_show_sidebar', show_sidebar)
@@ -366,21 +369,22 @@ class Workspace(Observable):
     def set_sidebar_position(self, sidebar_position):
         self.sidebar_position = sidebar_position
 
+    def set_show_preview_or_help(self, show_preview, show_help):
+        if show_preview != self.show_preview or show_help != self.show_help:
+            self.show_preview = show_preview
+            self.show_help = show_help
+            self.add_change_code('set_show_preview_or_help')
+
     def set_preview_position(self, preview_position):
         self.preview_position = preview_position
-
-    def set_build_log_position(self, build_log_position):
-        self.build_log_position = build_log_position
-
-    def set_show_preview(self, show_preview, animate=False):
-        if show_preview != self.show_preview:
-            self.show_preview = show_preview
-            self.add_change_code('set_show_preview', show_preview)
 
     def set_show_build_log(self, show_build_log):
         if show_build_log != self.show_build_log:
             self.show_build_log = show_build_log
             self.add_change_code('show_build_log_state_change', show_build_log)
+
+    def set_build_log_position(self, build_log_position):
+        self.build_log_position = build_log_position
 
     def get_show_build_log(self):
         if self.show_build_log != None:
