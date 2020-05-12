@@ -106,7 +106,7 @@ class WorkspacePresenter(object):
         if change_code == 'set_show_preview_or_help':
             if self.workspace.show_preview:
                 self.main_window.preview_help_stack.set_visible_child_name('preview')
-            else:
+            elif self.workspace.show_help:
                 self.main_window.preview_help_stack.set_visible_child_name('help')
             self.animate_preview(self.workspace.show_preview, self.workspace.show_help, True)
 
@@ -179,7 +179,7 @@ class WorkspacePresenter(object):
             self.animate_sidebar(self.workspace.show_sidebar, False)
             if self.workspace.show_preview:
                 self.main_window.preview_help_stack.set_visible_child_name('preview')
-            else:
+            elif self.workspace.show_help:
                 self.main_window.preview_help_stack.set_visible_child_name('help')
             self.animate_preview(self.workspace.show_preview, self.workspace.show_help, False)
             self.build_log_animate(self.workspace.get_show_build_log(), False)
