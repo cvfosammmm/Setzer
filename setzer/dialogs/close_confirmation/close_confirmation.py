@@ -80,7 +80,7 @@ class CloseConfirmationDialog(Dialog):
         return {'all_save_to_close': all_save_to_close, 'not_save_to_close_documents': documents_not_save_to_close}
 
     def setup(self, documents):
-        self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
+        self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.WARNING)
 
         if len(documents) == 1:
             self.view.set_property('text', _('Document »{document}« has unsaved changes.').format(document=documents[0].get_displayname()))
@@ -116,7 +116,10 @@ class CloseConfirmationDialog(Dialog):
             message_area.pack_start(secondary_text_label, False, False, 0)
             message_area.show_all()
 
-        self.view.add_buttons(_('Close _without Saving'), Gtk.ResponseType.NO, _('_Cancel'), Gtk.ResponseType.CANCEL, _('_Save'), Gtk.ResponseType.YES)
+        close_button = self.view.add_button(_("Close _without Saving"), Gtk.ResponseType.NO)
+        close_button.get_style_context().add_class("destructive-action")
+
+        self.view.add_buttons(_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Save'), Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)
 
 
