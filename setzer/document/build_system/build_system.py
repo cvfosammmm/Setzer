@@ -277,15 +277,22 @@ class Query(object):
                         buffer = ''
                         matchiter = iter(match.splitlines())
                         line = next(matchiter)
-                        if line.startswith('LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.'):
+
+                        if line.startswith('No file ' + tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1] + '.bbl.') and not self.done_bibtex_build:
+                            self.do_another_latex_build = True
+                            self.do_a_bibtex_build = True
+
+                        elif line.startswith('LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.'):
                             self.do_another_latex_build = True
 
                         elif line.startswith('Package natbib Warning: Citation(s) may have changed.'):
                             self.do_another_latex_build = True
 
-                        elif line.startswith('No file ' + tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1] + '.bbl.') and not self.done_bibtex_build:
+                        elif line.startswith('No file ' + tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1] + '.toc.'):
                             self.do_another_latex_build = True
-                            self.do_a_bibtex_build = True
+
+                        elif line.startswith('No file ' + tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1] + '.aux.'):
+                            self.do_another_latex_build = True
 
                         elif line.startswith('Overfull \hbox'):
                             line_number_match = self.badbox_line_number_regex.search(line)
