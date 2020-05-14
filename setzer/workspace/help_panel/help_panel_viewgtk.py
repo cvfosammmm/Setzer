@@ -51,7 +51,15 @@ class HelpPanelView(Gtk.VBox):
 
         self.pack_start(self.action_bar, False, False, 0)
 
-        self.content = WebKit2.WebView()
+        self.settings = WebKit2.Settings()
+        self.settings.set_enable_java(False)
+        self.settings.set_enable_javascript(False)
+        self.settings.set_enable_javascript_markup(False)
+        self.settings.set_enable_plugins(False)
+        self.settings.set_enable_developer_extras(False)
+        self.settings.set_enable_page_cache(False)
+
+        self.content = WebKit2.WebView.new_with_settings(self.settings)
         self.content.set_can_focus(False)
         self.pack_start(self.content, True, True, 0)
 
