@@ -15,22 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import os.path
 
-import setzer.workspace.help_panel.help_panel_controller as help_panel_controller
-import setzer.workspace.help_panel.help_panel_presenter as help_panel_presenter
-from setzer.app.service_locator import ServiceLocator
+class HelpPanelPresenter(object):
 
+    def __init__(self, help_panel, view):
+        self.help_panel = help_panel
+        self.view = view
 
-class HelpPanel(object):
-
-    def __init__(self, workspace):
-        self.workspace = workspace
-        self.view = ServiceLocator.get_main_window().help_panel
-
-        self.uri = 'file://' + os.path.join(ServiceLocator.get_resources_path(), 'help', 'latex2e_unofficial_reference_manual_october_2018')
-
-        self.controller = help_panel_controller.HelpPanelController(self, self.view)
-        self.presenter = help_panel_presenter.HelpPanelPresenter(self, self.view)
+        self.view.content.load_uri(self.help_panel.uri)
 
 
