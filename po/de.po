@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-11 17:00+0200\n"
+"POT-Creation-Date: 2020-05-14 11:32+0200\n"
 "PO-Revision-Date: 2020-05-11 17:05+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
@@ -973,8 +973,8 @@ msgid "Close the current document"
 msgstr "Aktuelles Dokument schließen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:46
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:131
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:173
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:132
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:174
 msgid "Tools"
 msgstr "Werkzeuge"
 
@@ -1194,7 +1194,7 @@ msgid "Setzer Session"
 msgstr "Setzer Sitzung"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:40
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:133
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:134
 msgid "Preferences"
 msgstr "Einstellungen"
 
@@ -1668,9 +1668,9 @@ msgstr "Zeile {number}"
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:66
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:78
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:94
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:125
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:139
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:126
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:140
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:141
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:69
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:78
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:181
@@ -1720,7 +1720,7 @@ msgid "Toggle sidebar"
 msgstr "Seitenleiste anzeigen / verbergen"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:58
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:125
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:126
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:311
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:312
@@ -1751,57 +1751,57 @@ msgstr "Neues BibTeX-Dokument"
 msgid "Save"
 msgstr "Speichern"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:101
-msgid "Toggle help"
-msgstr "Hilfe anzeigen / verbergen"
-
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:108
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:102
 msgid "Toggle preview"
 msgstr "Vorschau anzeigen / verbergen"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:125
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:107
+msgid "Toggle help"
+msgstr "Hilfe anzeigen / verbergen"
+
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:126
 msgid "Save Document As"
 msgstr "Speichern unter"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:126
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:127
 msgid "Save All Documents"
 msgstr "Alle speichern"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:128
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:155
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:129
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:156
 msgid "Session"
 msgstr "Sitzung"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:130
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:147
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:131
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:148
 msgid "View"
 msgstr "Ansicht"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:135
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:136
 msgid "Keyboard Shortcuts"
 msgstr "Tastenkürzel"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:136
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:137
 msgid "About"
 msgstr "Info"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:138
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:139
 msgid "Close All Documents"
 msgstr "Alle schließen"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:139
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:140
 msgid "Close Document"
 msgstr "Schließen"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:140
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:141
 msgid "Quit"
 msgstr "Beenden"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:148
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:149
 msgid "Dark Mode"
 msgstr "Nachtmodus"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:156
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:157
 msgid ""
 "Save the list of open documents in a session file\n"
 "and restore it later, a convenient way to work\n"
@@ -1812,31 +1812,31 @@ msgstr ""
 "eine praktische Methode um an verschiedenen\n"
 "Projekten zu arbeiten."
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:162
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:163
 msgid "Restore Previous Session"
 msgstr "Sitzung wiederherstellen"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:163
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:164
 msgid "Save Current Session"
 msgstr "Sitzung speichern"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:174
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:175
 msgid "Check Spelling"
 msgstr "Rechtschreibung prüfen"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:175
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:176
 msgid "Automatic Spellchecking"
 msgstr "Rechtschreibfehler hervorheben"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:176
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:177
 msgid "Set Spellchecking Language"
 msgstr "Sprache festlegen"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:216
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:217
 msgid "No results"
 msgstr "Keine Ergebnisse"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:221
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:222
 msgid "Other Documents"
 msgstr "Weitere Dokumente"
 
@@ -2271,11 +2271,11 @@ msgstr "Verschiedene math. Symbole"
 msgid "Misc. Symbols"
 msgstr "Verschiedene Symbole"
 
-#: setzer/workspace/workspace_viewgtk.py:244
+#: setzer/workspace/workspace_viewgtk.py:252
 msgid "No open documents"
 msgstr "Keine Dokumente geöffnet"
 
-#: setzer/workspace/workspace.py:93
+#: setzer/workspace/workspace.py:94
 #, python-brace-format
 msgid "Untitled Document {number}"
 msgstr "Unbenanntes Dokument {number}"
