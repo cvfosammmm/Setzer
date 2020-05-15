@@ -6,10 +6,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: kowalski.7cc@gmail.com\n"
-"POT-Creation-Date: 2020-05-11 14:10+0200\n"
-"PO-Revision-Date: 2020-05-11 14:33+0200\n"
+"POT-Creation-Date: 2020-05-15 23:30+0200\n"
+"PO-Revision-Date: 2020-05-15 23:32+0200\n"
 "Last-Translator: Kowalski7cc <kowalski.7cc@gmail.com>\n"
-"Language-Team: Italian < >\n"
+"Language-Team: \n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1058,8 +1058,8 @@ msgid "Close the current document"
 msgstr "Chiudi documento corrente"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:46
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:124
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:166
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:132
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:174
 msgid "Tools"
 msgstr "Strumenti"
 
@@ -1072,163 +1072,183 @@ msgstr "compila file PDF dal documento"
 msgid "Spellchecking dialog"
 msgstr "Finestra di dialogo controllo ortografico"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:58
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:62
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:52
+msgid "Show help panel"
+msgstr "Mostra pannello d'auito"
+
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:53
+msgid "Show build log"
+msgstr "Mostra il log di compilazione"
+
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:54
+msgid "Show side panel"
+msgstr "Mostra pannello laterale"
+
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:55
+msgid "Show preview panel"
+msgstr "Mostra pannello anteprima"
+
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:56
+msgid "Close Application"
+msgstr "Chiudi applicazione"
+
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:59
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:63
 msgid "Find and Replace"
 msgstr "Trova e sostituisci"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:59
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:60
 msgid "Find"
 msgstr "Trova"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:60
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:61
 msgid "Find the next match"
 msgstr "Trova la corrispondenza successiva"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:61
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:62
 msgid "Find the previous match"
 msgstr "Trova la corrispondenza precedente"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:66
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:67
 msgid "Copy selected text to clipboard"
 msgstr "Copia il testo dagli appunti"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:67
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:68
 msgid "Cut selected text to clipboard"
 msgstr "Taglia il testo dagli appunti"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:68
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:69
 msgid "Paste text from clipboard"
 msgstr "Incolla il testo dagli appunti"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:71
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:72
 msgid "Undo and Redo"
 msgstr "Annulla e ripeti"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:72
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:73
 msgid "Undo previous text edit"
 msgstr "Annulla precedente modifica del testo "
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:73
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:74
 msgid "Redo previous text edit"
 msgstr "Ripeti precedente modifica del testo "
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:76
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:77
 msgid "Selection"
 msgstr "Selezione"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:77
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:78
 msgid "Select all text"
 msgstr "Seleziona tutto il testo"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:80
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:81
 msgid "Editing"
 msgstr "Modidica"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:81
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:82
 msgid "Toggle insert / overwrite"
 msgstr "Commuta inserimento / sovrascrittura"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:82
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:83
 msgid "Move current line up"
 msgstr "Sposta su linea corrente"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:83
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:84
 msgid "Move current line down"
 msgstr "Sposta giù linea corrente"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:84
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:85
 msgid "Move current word left"
 msgstr "Muovi a sinistra la parola corrente"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:85
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:86
 msgid "Move current word right"
 msgstr "Muovi a destra la parola corrente"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:86
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:87
 msgid "Increment number at cursor"
 msgstr "Incrementa il numero sul cursore"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:87
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:88
 msgid "Decrement number at cursor"
 msgstr "Decrementa il numero sul cursore"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:90
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:91
 msgid "LaTeX Shortcuts"
 msgstr "Scorciatoie LaTeX"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:91
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:92
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:225
 msgid "New Line"
 msgstr "Nuova linea"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:92
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:93
 #: setzer/document/autocomplete/autocomplete.py:578
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:74
 msgid "Bold Text"
 msgstr "Testo rassetto"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:93
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:94
 #: setzer/document/autocomplete/autocomplete.py:580
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:65
 msgid "Italic Text"
 msgstr "Testo corsivo"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:94
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:95
 msgid "Underlined Text"
 msgstr "Testo sottolineato"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:95
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:96
 msgid "Typewriter Text"
 msgstr "Testo macchina da scrivere"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:96
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:97
 msgid "Emphasized Text"
 msgstr "Testo enfatizzato"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:97
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:98
 msgid "Quotation Marks"
 msgstr "Testo citato"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:98
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:99
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:443
 msgid "List Item"
 msgstr "Elemento lista"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:99
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:100
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:181
 msgid "Environment"
 msgstr "Ambiente"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:102
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:103
 msgid "Math Shortcuts"
 msgstr "Scorciatoie"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:103
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:104
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:311
 msgid "Inline Math Section"
 msgstr "Sezione matematica inline"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:104
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:105
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:312
 msgid "Display Math Section"
 msgstr "Mostra sezione matematica"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:105
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:106
 msgid "Equation"
 msgstr "Equazione"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:106
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:107
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:315
 msgid "Subscript"
 msgstr "Subscript"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:107
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:108
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:316
 msgid "Superscript"
 msgstr "Superscript"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:108
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:109
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:317
 msgid "Fraction"
 msgstr "Frazione"
@@ -1259,7 +1279,7 @@ msgid "Setzer Session"
 msgstr "Sessione Setzer"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:40
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:126
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:134
 msgid "Preferences"
 msgstr "Impostazioni"
 
@@ -1735,9 +1755,9 @@ msgstr "Linea {number}"
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:66
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:78
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:94
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:118
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:132
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:133
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:126
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:140
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:141
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:69
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:78
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:181
@@ -1790,7 +1810,7 @@ msgid "Toggle sidebar"
 msgstr "Commuta barra laterale"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:58
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:118
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:126
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:194
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:311
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:312
@@ -1821,53 +1841,57 @@ msgstr "Nuovo documento BibTeX"
 msgid "Save"
 msgstr "Salva"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:101
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:102
 msgid "Toggle preview"
 msgstr "Commuta anteprima"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:118
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:107
+msgid "Toggle help"
+msgstr "Commuta aiuto"
+
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:126
 msgid "Save Document As"
 msgstr "Salva documento come"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:119
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:127
 msgid "Save All Documents"
 msgstr "Salva tutti i documenti"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:121
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:148
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:129
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:156
 msgid "Session"
 msgstr "Sessione"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:123
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:140
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:131
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:148
 msgid "View"
 msgstr "Visualizza"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:128
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:136
 msgid "Keyboard Shortcuts"
 msgstr "Scorciatoie tastiera"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:129
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:137
 msgid "About"
 msgstr "Informazioni su"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:131
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:139
 msgid "Close All Documents"
 msgstr "Chiudi tutti i documenti"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:132
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:140
 msgid "Close Document"
 msgstr "Chiudi documento"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:133
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:141
 msgid "Quit"
 msgstr "Esci"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:141
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:149
 msgid "Dark Mode"
 msgstr "Modalità scura"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:149
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:157
 msgid ""
 "Save the list of open documents in a session file\n"
 "and restore it later, a convenient way to work\n"
@@ -1877,31 +1901,31 @@ msgstr ""
 "e ripristinarlo in un secondo momento, un modo conveniente\n"
 "per lavorare su più progetti."
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:155
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:163
 msgid "Restore Previous Session"
 msgstr "Ripristina sessione precedente"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:156
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:164
 msgid "Save Current Session"
 msgstr "Salva sessione corrente"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:167
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:175
 msgid "Check Spelling"
 msgstr "Controllo ortografico"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:168
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:176
 msgid "Automatic Spellchecking"
 msgstr "Controllo ortografico automatico"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:169
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:177
 msgid "Set Spellchecking Language"
 msgstr "Imposta lingua di controllo ortografico"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:209
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:217
 msgid "No results"
 msgstr "Nessun risultato"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:214
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:222
 msgid "Other Documents"
 msgstr "Altri documenti"
 
@@ -2336,11 +2360,11 @@ msgstr "Matematica varia"
 msgid "Misc. Symbols"
 msgstr "Simboli vari"
 
-#: setzer/workspace/workspace_viewgtk.py:244
+#: setzer/workspace/workspace_viewgtk.py:252
 msgid "No open documents"
 msgstr "Nessun documento aperto"
 
-#: setzer/workspace/workspace.py:91
+#: setzer/workspace/workspace.py:94
 #, python-brace-format
 msgid "Untitled Document {number}"
 msgstr "Documento senza nome {number}"
@@ -2404,138 +2428,117 @@ msgstr "Probabilmente il miglior visualizzatore .pdf di qualsiasi editor LaTeX"
 msgid "Document creation wizard"
 msgstr "Creazione guidata documento"
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:58
-msgid "German translation, external .pdf viewer button, ..."
-msgstr "Traduzione tedesca, pulsante visualizzatore .pdf esterno, ..."
+#~ msgid "German translation, external .pdf viewer button, ..."
+#~ msgstr "Traduzione tedesca, pulsante visualizzatore .pdf esterno, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:63
-msgid "Bug fix"
-msgstr "Bug fix"
+#~ msgid "Bug fix"
+#~ msgstr "Bug fix"
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:68
-msgid ""
-"Initial backward synctex support, improved synctex highlighting, search UI "
-"improvements, ..."
-msgstr ""
-"Supporto iniziale per la sintassi all'indietro, evidenziazione della "
-"sintassi migliorata, miglioramenti dell'interfaccia utente di ricerca, ..."
+#~ msgid ""
+#~ "Initial backward synctex support, improved synctex highlighting, search "
+#~ "UI improvements, ..."
+#~ msgstr ""
+#~ "Supporto iniziale per la sintassi all'indietro, evidenziazione della "
+#~ "sintassi migliorata, miglioramenti dell'interfaccia utente di ricerca, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:73
-msgid "Session management, highlight passages on build, ..."
-msgstr "Gestione della sessione, evidenziare i passaggi su compilazione, ..."
+#~ msgid "Session management, highlight passages on build, ..."
+#~ msgstr ""
+#~ "Gestione della sessione, evidenziare i passaggi su compilazione, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:78
-msgid ""
-"Zoom level popover for the .pdf preview, preview should use far less memory "
-"now, ..."
-msgstr ""
-"Popover di livello di zoom per l'anteprima .pdf, l'anteprima dovrebbe usare "
-"molta meno memoria ora, ..."
+#~ msgid ""
+#~ "Zoom level popover for the .pdf preview, preview should use far less "
+#~ "memory now, ..."
+#~ msgstr ""
+#~ "Popover di livello di zoom per l'anteprima .pdf, l'anteprima dovrebbe "
+#~ "usare molta meno memoria ora, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:83
-msgid "Bug fixes"
-msgstr "Bug fixes"
+#~ msgid "Bug fixes"
+#~ msgstr "Bug fixes"
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:88
-msgid ""
-"Enable embedded system commands, document modified on disk dialog, option to "
-"highlight current line, option to highlight matching brackets, ..."
-msgstr ""
-"Abilita comandi di sistema integrati, documento modificato sulla finestra di "
-"dialogo del disco, opzione per evidenziare la riga corrente, opzione per "
-"evidenziare parentesi corrispondenti, ..."
+#~ msgid ""
+#~ "Enable embedded system commands, document modified on disk dialog, option "
+#~ "to highlight current line, option to highlight matching brackets, ..."
+#~ msgstr ""
+#~ "Abilita comandi di sistema integrati, documento modificato sulla finestra "
+#~ "di dialogo del disco, opzione per evidenziare la riga corrente, opzione "
+#~ "per evidenziare parentesi corrispondenti, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:93
-msgid "Add/remove packages dialog, improved HiDPI support, ..."
-msgstr ""
-"Finestra di dialogo aggiungi / rimuovi pacchetti, supporto HiDPI "
-"migliorato, ..."
+#~ msgid "Add/remove packages dialog, improved HiDPI support, ..."
+#~ msgstr ""
+#~ "Finestra di dialogo aggiungi / rimuovi pacchetti, supporto HiDPI "
+#~ "migliorato, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:98
-msgid "Keyboard shortcuts in popovers, more commands in shortcuts bar, ..."
-msgstr ""
-"Scorciatoie da tastiera in popover, più comandi nella barra delle "
-"scorciatoie, ..."
+#~ msgid "Keyboard shortcuts in popovers, more commands in shortcuts bar, ..."
+#~ msgstr ""
+#~ "Scorciatoie da tastiera in popover, più comandi nella barra delle "
+#~ "scorciatoie, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:103
-msgid "More commands in shortcuts bar, autocomplete now case insensitive, ..."
-msgstr ""
-"Più comandi nella barra delle scorciatoie, completamento automatico ora "
-"senza distinzione tra maiuscole e minuscole, ..."
+#~ msgid ""
+#~ "More commands in shortcuts bar, autocomplete now case insensitive, ..."
+#~ msgstr ""
+#~ "Più comandi nella barra delle scorciatoie, completamento automatico ora "
+#~ "senza distinzione tra maiuscole e minuscole, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:108
-msgid "HiDPI support in .pdf preview, presistent code folding, ..."
-msgstr ""
-"Supporto HiDPI in anteprima .pdf, compressione del codice presente nella "
-"vista, ..."
+#~ msgid "HiDPI support in .pdf preview, presistent code folding, ..."
+#~ msgstr ""
+#~ "Supporto HiDPI in anteprima .pdf, compressione del codice presente nella "
+#~ "vista, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:113
-msgid "Initial code folding support, ..."
-msgstr "Supporto pieghevole codice iniziale, ..."
+#~ msgid "Initial code folding support, ..."
+#~ msgstr "Supporto pieghevole codice iniziale, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:118
-msgid ""
-"References to existing labels in autocomplete, persistent master document "
-"state, ..."
-msgstr ""
-"Riferimenti a etichette esistenti in stato di completamento automatico, "
-"documento master persistente, ..."
+#~ msgid ""
+#~ "References to existing labels in autocomplete, persistent master document "
+#~ "state, ..."
+#~ msgstr ""
+#~ "Riferimenti a etichette esistenti in stato di completamento automatico, "
+#~ "documento master persistente, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:123
-msgid "Initial spellchecking support, ..."
-msgstr "Supporto per il controllo ortografico iniziale, ..."
+#~ msgid "Initial spellchecking support, ..."
+#~ msgstr "Supporto per il controllo ortografico iniziale, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:128
-msgid "Simple BibTeX wizard, more bibliography features in LaTeX editor, ..."
-msgstr ""
-"Semplice procedura guidata BibTeX, più funzioni bibliografiche nell'editor "
-"LaTeX, ..."
+#~ msgid ""
+#~ "Simple BibTeX wizard, more bibliography features in LaTeX editor, ..."
+#~ msgstr ""
+#~ "Semplice procedura guidata BibTeX, più funzioni bibliografiche "
+#~ "nell'editor LaTeX, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:133
-msgid "BibTeX support in the build system, edit BibTeX files, ..."
-msgstr ""
-"Supporto BibTeX nel sistema di compilazione, modifica di file BibTeX, ..."
+#~ msgid "BibTeX support in the build system, edit BibTeX files, ..."
+#~ msgstr ""
+#~ "Supporto BibTeX nel sistema di compilazione, modifica di file BibTeX, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:138
-msgid "Editor settings in preferences dialog, ..."
-msgstr ""
-"Impostazioni dell'editor nella finestra di dialogo delle preferenze, ..."
+#~ msgid "Editor settings in preferences dialog, ..."
+#~ msgstr ""
+#~ "Impostazioni dell'editor nella finestra di dialogo delle preferenze, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:143
-msgid ""
-"Build multiple times to resolve undefined references, show warnings in build "
-"log, ..."
-msgstr ""
-"Compila più volte per risolvere riferimenti indefiniti, mostra avvisi nel "
-"registro di compilazione, ..."
+#~ msgid ""
+#~ "Build multiple times to resolve undefined references, show warnings in "
+#~ "build log, ..."
+#~ msgstr ""
+#~ "Compila più volte per risolvere riferimenti indefiniti, mostra avvisi nel "
+#~ "registro di compilazione, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:148
-msgid "Indent multi-line inserts, ..."
-msgstr "Rientri per gli inserti multilinea, ..."
+#~ msgid "Indent multi-line inserts, ..."
+#~ msgstr "Rientri per gli inserti multilinea, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:153
-msgid "Multiple documents in build log, build in temporary folder, ..."
-msgstr ""
-"Più documenti nel registro di compilazione, compilazione nella cartella "
-"temporanea, ..."
+#~ msgid "Multiple documents in build log, build in temporary folder, ..."
+#~ msgstr ""
+#~ "Più documenti nel registro di compilazione, compilazione nella cartella "
+#~ "temporanea, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:158
-msgid "Master document function, ..."
-msgstr "Funzione documento principale, ..."
+#~ msgid "Master document function, ..."
+#~ msgstr "Funzione documento principale, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:163
-msgid "New app layout, animated wizard button, big code refactor, ..."
-msgstr ""
-"Nuovo layout di app, pulsante della procedura guidata animato, refactor di "
-"grandi dimensioni, ..."
+#~ msgid "New app layout, animated wizard button, big code refactor, ..."
+#~ msgstr ""
+#~ "Nuovo layout di app, pulsante della procedura guidata animato, refactor "
+#~ "di grandi dimensioni, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:168
-msgid "Set margins in wizard, improved icon, ..."
-msgstr "Imposta i margini nella procedura guidata, icona migliorata, ..."
+#~ msgid "Set margins in wizard, improved icon, ..."
+#~ msgstr "Imposta i margini nella procedura guidata, icona migliorata, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:173
-msgid "Initial release"
-msgstr "Rilascio iniziale"
+#~ msgid "Initial release"
+#~ msgstr "Rilascio iniziale"
 
 #~ msgid "occurrence"
 #~ msgid_plural "occurrences"
