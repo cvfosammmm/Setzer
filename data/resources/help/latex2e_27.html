@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Terminal input/output (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Terminal input/output (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Terminal input/output (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_28.html#Command-line" rel="next" title="Command line">
+<link href="latex2e_26.html#g_t_005ctelephone" rel="prev" title="\telephone">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Terminal-input_002foutput"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_28.html#Command-line" accesskey="n" rel="next">Command line</a>, Previous: <a href="latex2e_26.html#Letters" accesskey="p" rel="prev">Letters</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Terminal-input_002foutput-1"></a>
+<h2 class="chapter">27 Terminal input/output</h2>
+
+<a name="index-input_002foutput_002c-to-terminal"></a>
+<a name="index-terminal-input_002foutput"></a>
+
+
+
+<hr>
+<a name="g_t_005ctypein"></a>
+<a name="g_t_005ctypein-1"></a>
+<h3 class="section">27.1 <code>\typein</code></h3>
+
+<a name="index-_005ctypein"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\typein{<var>prompt-msg</var>}
+\typein[<var>cmd</var>]{<var>prompt-msg</var>}
+</pre></div>
+
+<p>Print <var>prompt-msg</var> on the terminal and cause LaTeX to stop and
+wait for you to type a line of input.  This line of input ends when you
+hit the return key.
+</p>
+<p>For example, this
+</p>
+<div class="example">
+<pre class="example">As long as I live I shall never forget \typein{Enter student name:}
+</pre></div>
+
+<p>coupled with this command line interaction
+</p>
+<div class="example">
+<pre class="example">Enter student name:
+
+\@typein=Aphra Behn
+</pre></div>
+
+<p>gives the output &lsquo;<samp>... never forget Aphra Behn</samp>&rsquo;.
+</p>
+<p>The first command version, <code>\typein{<var>prompt-msg</var>}</code>, causes
+the input you typed to be processed as if it had been included in the
+input file in place of the <code>\typein</code> command.
+</p>
+<p>In the second command version the optional argument <code><var>cmd</var></code>
+argument must be a command name &mdash; it must begin with a backslash, \.
+This command name is then defined or redefined to be the input that you
+typed.  For example, this
+</p>
+<div class="example">
+<pre class="example">\typein[\student]{Enter student name:}
+\typeout{Recommendation for \student .}
+</pre></div>
+
+<p>gives this output on the command line,
+</p>
+<div class="example">
+<pre class="example">Enter student name:
+
+\student=John Dee
+Recommendation for John Dee.
+</pre></div>
+
+<p>where the user has entered &lsquo;<samp>John Dee.</samp>&rsquo;
+</p>
+
+<hr>
+<a name="g_t_005ctypeout"></a>
+<a name="g_t_005ctypeout-1"></a>
+<h3 class="section">27.2 <code>\typeout</code></h3>
+
+<a name="index-_005ctypeout"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\typeout{<var>msg</var>}
+</pre></div>
+
+<p>Print <code>msg</code> on the terminal and in the <code>log</code> file.
+</p>
+<p>This
+</p>
+<div class="example">
+<pre class="example">\newcommand{\student}{John Dee}
+\typeout{Recommendation for \student .}
+</pre></div>
+
+<p>outputs &lsquo;<samp>Recommendation for John Dee</samp>&rsquo;.  Like what happens here with
+<code>\student</code>, commands that are defined with <code>\newcommand</code> or
+<code>\renewcommand</code> (among others) are replaced by their definitions
+before being printed.
+</p>
+<p>LaTeX&rsquo;s usual rules for treating multiple spaces as a single space
+and ignoring spaces after a command name apply to <code>msg</code>.  As above,
+use the command <code>\space</code> to get a single space, independent of
+surrounding spaces.  Use <code>^^J</code> to get a newline.  Get a percent
+character with <code>\csname @percentchar\endcsname</code>.
+</p>
+<p>This command can be useful for simple debugging, as here:
+</p>
+<div class="example">
+<pre class="example">\newlength{\jhlength}
+\setlength{\jhlength}{5pt}
+\typeout{The length is \the\jhlength.}
+</pre></div>
+
+<p>produces on the command line &lsquo;<samp>The length is 5.0pt</samp>&rsquo;.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005ctypein" accesskey="p" rel="prev">\typein</a>, Up: <a href="#Terminal-input_002foutput" accesskey="u" rel="up">Terminal input/output</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

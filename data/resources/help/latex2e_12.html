@@ -1,0 +1,1093 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Definitions (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Definitions (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Definitions (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_13.html#Counters" rel="next" title="Counters">
+<link href="latex2e_11.html#Footnotes-of-footnotes" rel="prev" title="Footnotes of footnotes">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Definitions"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_13.html#Counters" accesskey="n" rel="next">Counters</a>, Previous: <a href="latex2e_11.html#Footnotes" accesskey="p" rel="prev">Footnotes</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Definitions-1"></a>
+<h2 class="chapter">12 Definitions</h2>
+
+<a name="index-definitions"></a>
+
+<p>LaTeX has support for making new commands of many different kinds.
+</p>
+
+
+<hr>
+<a name="g_t_005cnewcommand-_0026-_005crenewcommand"></a>
+<a name="g_t_005cnewcommand-_0026-_005crenewcommand-1"></a>
+<h3 class="section">12.1 <code>\newcommand</code> &amp; <code>\renewcommand</code></h3>
+
+<a name="index-_005cnewcommand"></a>
+<a name="index-commands_002c-defining-new-ones"></a>
+<a name="index-commands_002c-redefining"></a>
+<a name="index-defining-a-new-command"></a>
+<a name="index-new-commands_002c-defining"></a>
+
+<p>Synopses, one of:
+</p>
+<div class="example">
+<pre class="example">\newcommand{\<var>cmd</var>}{<var>defn</var>}
+\newcommand{\<var>cmd</var>}[<var>nargs</var>]{<var>defn</var>}
+\newcommand{\<var>cmd</var>}[<var>nargs</var>][<var>optargdefault</var>]{<var>defn</var>}
+\newcommand*{\<var>cmd</var>}{<var>defn</var>}
+\newcommand*{\<var>cmd</var>}[<var>nargs</var>]{<var>defn</var>}
+\newcommand*{\<var>cmd</var>}[<var>nargs</var>][<var>optargdefault</var>]{<var>defn</var>}
+</pre></div>
+
+<p>or one of these.
+</p>
+<div class="example">
+<pre class="example">\renewcommand{\<var>cmd</var>}[<var>nargs</var>]{<var>defn</var>}
+\renewcommand{\<var>cmd</var>}[<var>nargs</var>]{<var>defn</var>}
+\renewcommand{\<var>cmd</var>}[<var>nargs</var>][<var>optargdefault</var>]{<var>defn</var>}
+\renewcommand*{\<var>cmd</var>}{<var>defn</var>}
+\renewcommand*{\<var>cmd</var>}[<var>nargs</var>]{<var>defn</var>}
+\renewcommand*{\<var>cmd</var>}[<var>nargs</var>][<var>optargdefault</var>]{<var>defn</var>}
+</pre></div>
+
+<p>Define or redefine a command.  See also the discussion of
+<code>\DeclareRobustCommand</code> in <a href="latex2e_3.html#Class-and-package-commands">Class and package commands</a>.
+<a name="index-starred-form_002c-defining-new-commands"></a>
+<a name="index-_002a_002dform_002c-defining-new-commands"></a>
+The starred form of these two requires that the arguments not contain
+multiple paragraphs of text (in plain TeX terms that it not be
+<code>\long</code>).
+</p>
+<p>These are the parameters:
+</p>
+<dl compact="compact">
+<dt><var>cmd</var></dt>
+<dd>
+<p>Required; the command name.  It must begin with a backslash, <code>\</code>,
+and must not begin with the four letter string <code>\end</code>.  For
+<code>\newcommand</code>, it must not be already defined.  For
+<code>\renewcommand</code>, this name must already be defined.
+</p>
+</dd>
+<dt><var>nargs</var></dt>
+<dd><p>Optional; an integer from 0 to 9, specifying the number of arguments
+that the command takes, including any optional argument.  Omitting this
+argument is the same as specifying 0, meaning that the command has no
+arguments.  If you redefine a command, the new version can have a
+different number of arguments than the old version.
+</p>
+</dd>
+<dt><var>optargdefault</var></dt>
+<dd><p>Optional; if this argument is present then the first argument of
+<code>\<var>cmd</var></code> is optional, with default value <var>optargdefault</var>
+(which may be the empty string).  If this argument is not present then
+<code>\<var>cmd</var></code> does not take an optional argument.
+</p>
+<a name="index-positional-parameter"></a>
+<p>That is, if <code>\<var>cmd</var></code> is used with square brackets, as in
+<code>\<var>cmd</var>[<var>optval</var>]{...}...</code>, then within <var>defn</var> the
+parameter&nbsp;<code>#1</code> is set to the value of <var>optval</var>.  On the
+other hand, if <code>\<var>cmd</var></code> is called without the square brackets
+then within <var>defn</var> the parameter <code>#1</code> is set to the value of
+<var>optargdefault</var>.  In either case, the required arguments start with
+<code>#2</code>.
+</p>
+<p>Omitting <code>[<var>optargdefault</var>]</code> is different from having the
+square brackets with no contents, as in <code>[]</code>.  The former sets
+<code>#1</code> to the value of <var>optargdefault</var>; the latter sets <code>#1</code>
+to the empty string.
+</p>
+</dd>
+<dt><var>defn</var></dt>
+<dd><p>Required; the text to be substituted for every occurrence of
+<code>\<var>cmd</var></code>. The parameters <code>#1</code>, <code>#2</code>,
+... <code>#<var>nargs</var></code> are replaced by the values that you supply when
+you call the command (or by the default value if there is an optional
+argument and you don&rsquo;t exercise the option).
+</p>
+</dd>
+</dl>
+
+<p>TeX ignores spaces in the source following an alphabetic control
+sequence, as in &lsquo;<samp>\cmd </samp>&rsquo;.  If you actually want a space there, one
+solution is to type <code>{}</code> after the command (&lsquo;<samp>\cmd{} </samp>&rsquo;, and
+another solution is to use an explicit control space (&lsquo;<samp>\cmd\ </samp>&rsquo;).
+</p>
+<p>A simple example of defining a new command:
+<code>\newcommand{\RS}{Robin Smith}</code> results in <code>\RS</code> being
+replaced by the longer text.  Redefining an existing command is similar:
+<code>\renewcommand{\qedsymbol}{{\small QED}}</code>.
+</p>
+<p>If you try to define a command and the name has already been used then
+you get something like &lsquo;<samp>LaTeX Error: Command \fred already
+defined. Or name \end... illegal, see p.192 of the manual</samp>&rsquo;.  If you try
+to redefine a command and the name has not yet been used then you get
+something like &lsquo;<samp>LaTeX Error: \hank undefined</samp>&rsquo;.
+</p>
+<p>Here the first command definition has no arguments, and the second has
+one required argument.
+</p>
+<div class="example">
+<pre class="example">\newcommand{\student}{Ms~O'Leary}
+\newcommand{\defref}[1]{Definition~\ref{#1}}
+</pre></div>
+
+<p>Use the first as in <code>I highly recommend \student{} to you</code>.  The
+second has a variable, so that <code>\defref{def:basis}</code> expands to
+<code>Definition~\ref{def:basis}</code>, which ultimately expands to
+something like &lsquo;<samp>Definition~3.14</samp>&rsquo;.
+</p>
+<p>Similarly, but with two required arguments:
+<code>\newcommand{\nbym}[2]{$#1 \times #2$}</code> is invoked as
+<code>\nbym{2}{k}</code>.
+</p>
+<p>This example has an optional argument.
+</p>
+<div class="example">
+<pre class="example">\newcommand{\salutation}[1][Sir or Madam]{Dear #1:}
+</pre></div>
+
+<p>Then <code>\salutation</code> gives &lsquo;<samp>Dear Sir or Madam:</samp>&rsquo; while
+<code>\salutation[John]</code> gives &lsquo;<samp>Dear John:</samp>&rsquo;.  And
+<code>\salutation[]</code> gives &lsquo;<samp>Dear :</samp>&rsquo;.
+</p>
+<p>This example has an optional argument and two required arguments.
+</p>
+<div class="example">
+<pre class="example">\newcommand{\lawyers}[3][company]{#2, #3, and~#1}
+I employ \lawyers[Howe]{Dewey}{Cheatem}.
+</pre></div>
+
+<p>The output is &lsquo;<samp>I employ Dewey, Cheatem, and Howe</samp>&rsquo;.  The optional
+argument, the <code>Howe</code>, is associated with <code>#1</code>, while
+<code>Dewey</code> and <code>Cheatem</code> are associated with <code>#2</code>
+and&nbsp;<code>#3</code>.  Because of the optional argument,
+<code>\lawyers{Dewey}{Cheatem}</code> will give the output &lsquo;<samp>I employ
+Dewey, Cheatem, and company</samp>&rsquo;.
+</p>
+<p>The braces around <var>defn</var> do not define a group, that is, they do not
+delimit the scope of the result of expanding <var>defn</var>.  For example,
+with <code>\newcommand{\shipname}[1]{\it #1}</code>, in this sentence,
+</p>
+<div class="example">
+<pre class="example">The \shipname{Monitor} met the \shipname{Merrimac}.
+</pre></div>
+
+<p>the words &lsquo;<samp>met the</samp>&rsquo; would incorrectly be in italics.  The solution
+is to put another pair of braces inside the definition:
+<code>\newcommand{\shipname}[1]{{\it #1}}</code>.
+</p>
+
+<hr>
+<a name="g_t_005cprovidecommand"></a>
+<a name="g_t_005cprovidecommand-1"></a>
+<h3 class="section">12.2 <code>\providecommand</code></h3>
+
+<a name="index-_005cprovidecommand"></a>
+<a name="index-commands_002c-defining-new-ones-1"></a>
+<a name="index-defining-a-new-command-1"></a>
+<a name="index-new-commands_002c-defining-1"></a>
+
+<p>Synopses, one of:
+</p>
+<div class="example">
+<pre class="example">\providecommand{<var>cmd</var>}{<var>defn</var>}
+\providecommand{<var>cmd</var>}[<var>nargs</var>]{<var>defn</var>}
+\providecommand{<var>cmd</var>}[<var>nargs</var>][<var>optargdefault</var>]{<var>defn</var>}
+\providecommand*{<var>cmd</var>}{<var>defn</var>}
+\providecommand*{<var>cmd</var>}[<var>nargs</var>]{<var>defn</var>}
+\providecommand*{<var>cmd</var>}[<var>nargs</var>][<var>optargdefault</var>]{<var>defn</var>}
+</pre></div>
+
+<p>Defines a command, as long as no command of this name already exists.
+If no command of this name already exists then this has the same effect
+as <code>\newcommand</code>.  If a command of this name already exists then
+this definition does nothing.  This is particularly useful in a file
+that may be loaded more than once, such as a style file.
+See <a href="#g_t_005cnewcommand-_0026-_005crenewcommand">\newcommand &amp; \renewcommand</a> for the description of the arguments.
+</p>
+<p>This example
+</p>
+<div class="example">
+<pre class="example">\providecommand{\myaffiliation}{Saint Michael's College}
+\providecommand{\myaffiliation}{Saint Michael's College}
+From \myaffiliation.
+</pre></div>
+
+<p>outputs &lsquo;<samp>From Saint Michael's College</samp>&rsquo;.  Unlike <code>\newcommand</code>,
+the repeated use of <code>\providecommand</code> does not give an error.
+</p>
+
+<hr>
+<a name="g_t_005cmakeatletter-_0026-_005cmakeatother"></a>
+<a name="g_t_005cmakeatletter-_0026-_005cmakeatother-1"></a>
+<h3 class="section">12.3 <code>\makeatletter</code> &amp; <code>\makeatother</code></h3>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\makeatletter
+  ... definition of commands with @ in their name ..
+\makeatother
+</pre></div>
+
+<p>Use this pair when you redefine LaTeX commands that are named with an
+at-sign character&nbsp;&lsquo;<samp><code>@</code></samp>&rsquo;.  The <code>\makeatletter</code>
+declaration makes the at-sign character have the category code of a
+letter, code&nbsp;11.  The <code>\makeatother</code> declaration sets the
+category code of the at-sign to code&nbsp;12, its default value.
+</p>
+<p>As TeX reads characters, it assigns each one a category code, or
+<a name="index-catcode"></a>
+<a name="index-character-category-code"></a>
+<a name="index-category-code_002c-character"></a>
+<em>catcode</em>. For instance, it assigns the backslash
+character&nbsp;&lsquo;<samp><code>\</code></samp>&rsquo; the catcode&nbsp;0.  Command names
+consist of a category&nbsp;0 character, ordinarily backslash, followed
+by letters, category&nbsp;11 characters (except that a command name can
+also consist of a category&nbsp;0 character followed by a single
+non-letter symbol).
+</p>
+<p>LaTeX&rsquo;s source code has the convention that some commands use
+<code>@</code> in their name.  These commands are mainly intended for package
+or class writers.  The convention prevents authors who are just using a
+package or class from accidentally replacing such a command with one of
+their own, because by default the at-sign has catcode&nbsp;12.
+</p>
+<p>The pair <code>\makeatletter</code> and <code>\makeatother</code> changes the
+default code and then changes it back.  Use them inside a <samp>.tex</samp>
+file, in the preamble, when you are defining or redefining commands
+named with <code>@</code>, by having them surround your definition.  Don&rsquo;t
+use these inside <samp>.sty</samp> or <samp>.cls</samp> files since the
+<code>\usepackage</code> and <code>\documentclass</code> commands already arrange
+that the at-sign has the character code of a letter, catcode&nbsp;11.
+</p>
+<a name="index-package_002c-macros2e"></a>
+<a name="index-macros2e-package"></a>
+
+<p>For a comprehensive list of macros with an at-sign in their names see
+<a href="http://ctan.org/pkg/macros2e">http://ctan.org/pkg/macros2e</a>.
+</p>
+<p>In this example the class file has a command
+<code>\thesis@universityname</code> that the user wants to change.  These
+three lines should go in the preamble, before the
+<code>\begin{document}</code>.
+</p>
+<div class="example">
+<pre class="example">\makeatletter
+\renewcommand{\thesis@universityname}{Saint Michael's College}
+\makeatother
+</pre></div>
+
+
+<hr>
+<a name="g_t_005c_0040ifstar"></a>
+<a name="g_t_005c_0040ifstar-1"></a>
+<h3 class="section">12.4 <code>\@ifstar</code></h3>
+
+<a name="index-_005c_0040ifstar"></a>
+<a name="index-commands_002c-star_002dvariants"></a>
+<a name="index-star_002dvariants_002c-commands"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\newcommand{\mycmd}{\@ifstar{\mycmd@star}{\mycmd@nostar}}
+\newcommand{\mycmd@nostar}[<var>nostar-num-args</var>]{<var>nostar-body</var>} 
+\newcommand{\mycmd@star}[<var>star-num-args</var>]{<var>star-body</var>}
+</pre></div>
+
+<p>Many standard LaTeX environments or commands have a variant with the
+same name but ending with a star character&nbsp;<code>*</code>, an asterisk.
+Examples are the <code>table</code> and <code>table*</code> environments and the
+<code>\section</code> and <code>\section*</code> commands.
+</p>
+<p>When defining environments, following this pattern is straightforward
+because <code>\newenvironment</code> and <code>\renewenvironment</code> allow the
+environment name to contain a star.  For commands the situation is more
+complex.  As in the synopsis above, there will be a user-called command,
+given above as <code>\mycmd</code>, which peeks ahead to see if it is followed
+by a star.  For instance, LaTeX does not really have a
+<code>\section*</code> command; instead, the <code>\section</code> command peeks
+ahead.  This command does not accept arguments but instead expands to
+one of two commands that do accept arguments.  In the synopsis these two
+are <code>\mycmd@nostar</code> and <code>\mycmd@star</code>.  They could take the
+same number of arguments or a different number, or no arguments at all.
+As always, in a LaTeX document a command using at-sign&nbsp;<code>@</code>
+must be enclosed inside a <code>\makeatletter ... \makeatother</code> block
+(see <a href="#g_t_005cmakeatletter-_0026-_005cmakeatother">\makeatletter &amp; \makeatother</a>).
+</p>
+<p>This example of <code>\@ifstar</code> defines the command <code>\ciel</code> and a
+variant <code>\ciel*</code>.  Both have one required argument.  A call to
+<code>\ciel{night}</code> will return &quot;starry night sky&quot; while
+<code>\ciel*{blue}</code> will return &quot;starry not blue sky&quot;.
+</p>
+<div class="example">
+<pre class="example">\newcommand*{\ciel@unstarred}[1]{starry #1 sky}
+\newcommand*{\ciel@starred}[1]{starry not #1 sky}
+\newcommand*{\ciel}{\@ifstar{\ciel@starred}{\ciel@unstarred}}
+</pre></div>
+
+<p>In the next example, the starred variant takes a different number of
+arguments than the unstarred one.  With this definition, Agent 007&rsquo;s
+<code>``My name is \agentsecret*{Bond},
+\agentsecret{James}{Bond}.''</code> is equivalent to entering the commands
+<code>``My name is \textsc{Bond}, \textit{James} textsc{Bond}.''</code>
+</p>
+<div class="example">
+<pre class="example">\newcommand*{\agentsecret@unstarred}[2]{\textit{#1} \textsc{#2}}
+\newcommand*{\agentsecret@starred}[1]{\textsc{#1}}
+\newcommand*{\agentsecret}{%
+  \@ifstar{\agentsecret@starred}{\agentsecret@unstarred}}
+</pre></div>
+
+<p>There are two sometimes more convenient ways to accomplish the work of
+<code>\@ifstar</code>.  The <samp>suffix</samp> package allows the construct
+<code>\newcommand\mycommand{<var>unstarred version</var>}</code> followed by
+<code>\WithSuffix\newcommand\mycommand*{<var>starred version</var>}</code>.  And
+LaTeX3 has the <samp>xparse</samp> package that allows this code.
+</p>
+<div class="example">
+<pre class="example">\NewDocumentCommand\foo{s}{\IfBooleanTF#1
+  {<var>starred version</var>}%
+  {<var>unstarred version</var>}% 
+  }
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cnewcounter"></a>
+<a name="g_t_005cnewcounter_003a-Allocating-a-counter"></a>
+<h3 class="section">12.5 <code>\newcounter</code>: Allocating a counter</h3>
+
+<a name="index-_005cnewcounter"></a>
+<a name="index-counters_002c-defining-new"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\newcounter{<var>countername</var>}
+\newcounter{<var>countername</var>}[<var>supercounter</var>]
+</pre></div>
+
+<p>Globally defines a new counter named <var>countername</var> and initialize it
+to zero (see <a href="latex2e_13.html#Counters">Counters</a>).
+</p>
+<p>The name <var>countername</var> must consist of letters only. It does not
+begin with a backslash.  This name must not already be in use by another
+counter.
+</p>
+<p>When you use the optional argument <code>[<var>supercounter</var>]</code> then the
+counter <var>countername</var> will be reset to zero whenever
+<var>supercounter</var> is incremented.  For example, ordinarily
+<code>subsection</code> is numbered within <code>section</code> so that any time you
+increment <var>section</var>, either with <code>\stepcounter</code>
+(see <a href="latex2e_13.html#g_t_005cstepcounter">\stepcounter</a>) or <code>\refstepcounter</code>
+(see <a href="latex2e_13.html#g_t_005crefstepcounter">\refstepcounter</a>), then LaTeX will reset <var>subsection</var> to
+zero.
+</p>
+<p>This example
+</p>
+<div class="example">
+<pre class="example">\newcounter{asuper}  \setcounter{asuper}{1}
+\newcounter{asub}[asuper] \setcounter{asub}{3}   % Note `asuper'
+The value of asuper is \arabic{asuper} and of asub is \arabic{asub}.
+\stepcounter{asuper}
+Now asuper is \arabic{asuper} while asub is \arabic{asub}.
+</pre></div>
+
+<p>produces &lsquo;<samp>The value of asuper is 1 and that of asub is 3</samp>&rsquo; and
+&lsquo;<samp>Now asuper is 2 while asub is 0</samp>&rsquo;.
+</p>
+<p>If the counter already exists, for instance by entering <code>asuper</code>
+twice, then you get something like &lsquo;<samp>LaTeX Error: Command \c@asuper
+already defined.  Or name \end... illegal, see p.192 of the manual.</samp>&rsquo;.
+</p>
+<p>If you use the optional argument then the super counter must already
+exist. Entering <code>\newcounter{jh}[lh]</code> when <code>lh</code> is not a
+defined counter will get you &lsquo;<samp>LaTeX Error: No counter 'lh'
+defined.</samp>&rsquo;
+</p>
+
+<hr>
+<a name="g_t_005cnewlength"></a>
+<a name="g_t_005cnewlength-1"></a>
+<h3 class="section">12.6 <code>\newlength</code></h3>
+
+<a name="index-_005cnewlength"></a>
+<a name="index-lengths_002c-allocating-new"></a>
+<a name="index-rubber-lengths_002c-defining-new"></a>
+<a name="index-skip-register_002c-plain-TeX"></a>
+<a name="index-glue-register_002c-plain-TeX"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\newlength{<var>arg</var>}
+</pre></div>
+
+<p>Allocate a new length register (see <a href="latex2e_14.html#Lengths">Lengths</a>).  The required argument
+<var>arg</var> must begin with a backslash, <code>\</code>.  The new register holds
+rubber lengths such as <code>72.27pt</code> or <code>1in plus.2in minus.1in</code>
+(a LaTeX length register is what plain TeX calls a <code>skip</code>
+register).  The initial value is zero.  The control sequence
+<code>\<var>arg</var></code> must not be already defined.
+</p>
+<p>An example:
+</p>
+<div class="example">
+<pre class="example">\newlength{\graphichgt}
+</pre></div>
+
+<p>If you forget the backslash then you get &lsquo;<samp>Missing control sequence
+inserted</samp>&rsquo;.  If the command sequence already exists then you get
+something like &lsquo;<samp>LaTeX Error: Command \graphichgt already defined.
+Or name \end... illegal, see p.192 of the manual</samp>&rsquo;.
+</p>
+
+<hr>
+<a name="g_t_005cnewsavebox"></a>
+<a name="g_t_005cnewsavebox-1"></a>
+<h3 class="section">12.7 <code>\newsavebox</code></h3>
+
+<a name="index-_005cnewsavebox"></a>
+<a name="index-box_002c-allocating-new"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\newsavebox{\<var>cmd</var>}
+</pre></div>
+
+<p>Define \<var>cmd</var>, the string consisting of a backslash followed by
+<var>cmd</var>, to refer to a new bin for storing material.  These bins hold
+material that has been typeset, to use multiple times or to measure or
+manipulate (see <a href="latex2e_20.html#Boxes">Boxes</a>).  The bin name \<var>cmd</var> is required, must
+start with a backslash, \, and must not already be a defined command.
+This command is fragile (see <a href="#g_t_005cprotect">\protect</a>).
+</p>
+<p>This allocates a bin and then puts typeset material into it.
+</p>
+<div class="example">
+<pre class="example">\newsavebox{\logobox}
+\savebox{\logobox}{LoGo}
+Our logo is \usebox{\logobox}. 
+</pre></div>
+
+<p>The output is &lsquo;<samp>Our logo is LoGo</samp>&rsquo;.
+</p>
+<p>If there is an already defined bin then you get something like
+&lsquo;<samp>LaTeX Error: Command \logobox already defined. Or name
+\end... illegal, see p.192 of the manual</samp>&rsquo;.
+</p>
+<p>The allocation of a box is global.
+</p>
+
+<hr>
+<a name="g_t_005cnewenvironment-_0026-_005crenewenvironment"></a>
+<a name="g_t_005cnewenvironment-_0026-_005crenewenvironment-1"></a>
+<h3 class="section">12.8 <code>\newenvironment</code> &amp; <code>\renewenvironment</code></h3>
+
+<a name="index-_005cnewenvironment"></a>
+<a name="index-_005crenewenvironment"></a>
+<a name="index-environments_002c-defining"></a>
+<a name="index-defining-new-environments"></a>
+<a name="index-redefining-environments"></a>
+
+<p>Synopses, one of:
+</p>
+<div class="example">
+<pre class="example">\newenvironment{<var>env</var>}{<var>begdef</var>}{<var>enddef</var>}
+\newenvironment{<var>env</var>}[<var>nargs</var>]{<var>begdef</var>}{<var>enddef</var>}
+\newenvironment{<var>env</var>}[<var>nargs</var>][<var>optargdefault</var>]{<var>begdef</var>}{<var>enddef</var>}
+\newenvironment*{<var>env</var>}{<var>begdef</var>}{<var>enddef</var>}
+\newenvironment*{<var>env</var>}[<var>nargs</var>]{<var>begdef</var>}{<var>enddef</var>}
+\newenvironment*{<var>env</var>}[<var>nargs</var>][<var>optargdefault</var>]{<var>begdef</var>}{<var>enddef</var>}
+</pre></div>
+
+<p>or one of these.
+</p>
+<div class="example">
+<pre class="example">\renewenvironment{<var>env</var>}{<var>begdef</var>}{<var>enddef</var>}
+\renewenvironment{<var>env</var>}[<var>nargs</var>]{<var>begdef</var>}{<var>enddef</var>}
+\renewenvironment{<var>env</var>}[<var>nargs</var>][<var>optargdefault</var>]{<var>begdef</var>}{<var>enddef</var>}
+\renewenvironment*{<var>env</var>}{<var>begdef</var>}{<var>enddef</var>}
+\renewenvironment*{<var>env</var>}[<var>nargs</var>]{<var>begdef</var>}{<var>enddef</var>}
+\renewenvironment*{<var>env</var>}[<var>nargs</var>][<var>optargdefault</var>]{<var>begdef</var>}{<var>enddef</var>}
+</pre></div>
+
+<p>Define or redefine the environment <var>env</var>, that is, create the
+construct <code>\begin{<var>env</var>} ... <var>body</var> ... \end{<var>env</var>}</code>.
+</p>
+<a name="index-_002a_002dform-of-environment-commands"></a>
+<p>The starred form of these commands requires that the arguments not
+contain multiple paragraphs of text.  However, the body of these
+environments can contain multiple paragraphs.
+</p>
+<dl compact="compact">
+<dt><var>env</var></dt>
+<dd><p>Required; the environment name.  It consists only of letters or the
+<code>*</code> character, and thus does not begin with backslash, <code>\</code>.
+It must not begin with the string <code>end</code>.  For
+<code>\newenvironment</code>, the name <var>env</var> must not be the name of an
+already existing environment, and also the command <code>\<var>env</var></code>
+must be undefined.  For <code>\renewenvironment</code>, <var>env</var> must be the
+name of an existing environment.
+</p>
+</dd>
+<dt><var>nargs</var></dt>
+<dd><p>Optional; an integer from 0 to 9 denoting the number of arguments of
+that the environment takes.  When you use the environment these
+arguments appear after the <code>\begin</code>, as in
+<code>\begin{<var>env</var>}{<var>arg1</var>} ... {<var>argn</var>}</code>.  Omitting
+this is equivalent to setting it to 0; the environment will have no
+arguments.  When redefining an environment, the new version can have a
+different number of arguments than the old version.
+</p>
+</dd>
+<dt><var>optargdefault</var></dt>
+<dd><p>Optional; if this is present then the first argument of the defined
+environment is optional, with default value <var>optargdefault</var> (which
+may be the empty string).  If this is not in the definition then the
+environment does not take an optional argument.
+</p>
+<p>That is, when <var>optargdefault</var> is present in the definition of the
+environment then you can start the environment with square brackets, as
+in <code>\begin{<var>env</var>}[<var>optval</var>]{...} ... \end{<var>env</var>}</code>.
+In this case, within <var>begdefn</var> the parameter <code>#1</code> is set to the
+value of <var>optval</var>.  If you call <code>\begin{<var>env</var>}</code> without
+square brackets, then within <var>begdefn</var> the parameter <code>#1</code> is
+set to the value of the default <var>optargdefault</var>.  In either case,
+any required arguments start with <code>#2</code>.
+</p>
+<p>Omitting <code>[<var>myval</var>]</code> in the call is different than having the
+square brackets with no contents, as in <code>[]</code>.  The former results
+in <code>#1</code> expanding to <var>optargdefault</var>; the latter results in
+<code>#1</code> expanding to the empty string.
+</p>
+</dd>
+<dt><var>begdef</var></dt>
+<dd><p>Required; the text expanded at every occurrence of
+<code>\begin{<var>env</var>}</code>.  Within <var>begdef</var>, the parameters
+<code>#1</code>, <code>#2</code>, ... <code>#<var>nargs</var></code>, are replaced by the
+values that you supply when you call the environment; see the examples
+below.
+</p>
+</dd>
+<dt><var>enddef</var></dt>
+<dd><p>Required; the text expanded at every occurrence of
+<code>\end{<var>env</var>}</code>.  This may not contain any parameters, that is,
+you cannot use <code>#1</code>, <code>#2</code>, etc., here (but see the final
+example below).
+</p>
+</dd>
+</dl>
+
+<p>All environments, that is to say the <var>begdef</var> code, the environment
+body, and the <var>enddef</var> code, are processed within a group.  Thus, in
+the first example below, the effect of the <code>\small</code> is limited to
+the quote and does not extend to material following the environment.
+</p>
+<p>If you try to define an environment and the name has already been used
+then you get something like &lsquo;<samp>LaTeX Error: Command \fred already
+defined. Or name \end... illegal, see p.192 of the manual</samp>&rsquo;.  If you try
+to redefine an environment and the name has not yet been used then you
+get something like &lsquo;<samp>LaTeX Error: Environment hank undefined.</samp>&rsquo;.
+</p>
+<p>This example gives an environment like LaTeX&rsquo;s <code>quotation</code>
+except that it will be set in smaller type.
+</p>
+<div class="example">
+<pre class="example">\newenvironment{smallquote}{%
+  \small\begin{quotation}
+}{%
+  \end{quotation}
+}
+</pre></div>
+
+<p>This has an argument, which is set in boldface at the start of a
+paragraph.
+</p>
+<div class="example">
+<pre class="example">\newenvironment{point}[1]{%
+  \noindent\textbf{#1}
+}{%
+}
+</pre></div>
+
+<p>This one shows the use of a optional argument; it gives a quotation
+environment that cites the author.
+</p>
+<div class="example">
+<pre class="example">\newenvironment{citequote}[1][Shakespeare]{%
+  \begin{quotation}
+  \noindent\textit{#1}: 
+}{%
+  \end{quotation}
+}
+</pre></div>
+
+<p>The author&rsquo;s name is optional, and defaults to &lsquo;<samp>Shakespeare</samp>&rsquo;.  In
+the document, use the environment like this.
+</p>
+<div class="example">
+<pre class="example">\begin{citequote}[Lincoln]
+  ...
+\end{citequote}
+</pre></div>
+
+<p>The final example shows how to save the value of an argument to use in 
+<var>enddef</var>, in this case in a box (see <a href="latex2e_20.html#g_t_005csbox-_0026-_005csavebox">\sbox &amp; \savebox</a>).
+</p>
+<div class="example">
+<pre class="example">\newsavebox{\quoteauthor}
+\newenvironment{citequote}[1][Shakespeare]{%
+  \sbox\quoteauthor{#1}%
+  \begin{quotation} 
+}{%
+  \hspace{1em plus 1fill}---\usebox{\quoteauthor}
+  \end{quotation}
+}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cnewtheorem"></a>
+<a name="g_t_005cnewtheorem-1"></a>
+<h3 class="section">12.9 <code>\newtheorem</code></h3>
+
+<a name="index-_005cnewtheorem"></a>
+<a name="index-theorems_002c-defining"></a>
+<a name="index-defining-new-theorems"></a>
+
+<a name="index-theorem_002dlike-environment"></a>
+<a name="index-environment_002c-theorem_002dlike"></a>
+<p>Synopses:
+</p>
+<div class="example">
+<pre class="example">\newtheorem{<var>name</var>}{<var>title</var>}
+\newtheorem{<var>name</var>}{<var>title</var>}[<var>numbered_within</var>]
+\newtheorem{<var>name</var>}[<var>numbered_like</var>]{<var>title</var>}
+</pre></div>
+
+<p>Define a new theorem-like environment.  You can specify one of
+<var>numbered_within</var> and <var>numbered_like</var>, or neither, but not both.
+</p>
+<p>The first form, <code>\newtheorem{<var>name</var>}{<var>title</var>}</code>, creates
+an environment that will be labelled with <var>title</var>; see the first
+example below.
+</p>
+<p>The second form,
+<code>\newtheorem{<var>name</var>}{<var>title</var>}[<var>numbered_within</var>]</code>,
+creates an environment whose counter is subordinate to the existing
+counter <var>numbered_within</var>, so this counter will be reset when
+<var>numbered_within</var> is reset.  See the second example below.
+</p>
+<p>The third form
+<code>\newtheorem{<var>name</var>}[<var>numbered_like</var>]{<var>title</var>}</code>,
+with optional argument between the two required arguments, creates an
+environment whose counter will share the previously defined counter
+<var>numbered_like</var>.  See the third example.
+</p>
+<p>This command creates a counter named <var>name</var>.  In addition, unless
+the optional argument <var>numbered_like</var> is used, inside of the
+theorem-like environment the current <code>\ref</code> value will be that of
+<code>\the<var>numbered_within</var></code> (see <a href="latex2e_7.html#g_t_005cref">\ref</a>).
+</p>
+<p>This declaration is global.  It is fragile (see <a href="#g_t_005cprotect">\protect</a>).
+</p>
+<p>Arguments:
+</p>
+<dl compact="compact">
+<dt><var>name</var></dt>
+<dd><p>The name of the environment.  It is a string of letters.  It must not
+begin with a backslash, <code>\</code>.  It must not be the name of an
+existing environment, and the command name <code>\<var>name</var></code> must not
+already be defined.
+</p>
+</dd>
+<dt><var>title</var></dt>
+<dd><p>The text to be printed at the beginning of the environment, before the
+number. For example, &lsquo;<samp>Theorem</samp>&rsquo;.
+</p>
+</dd>
+<dt><var>numbered_within</var></dt>
+<dd><p>Optional; the name of an already defined counter, usually a sectional
+unit such as <code>chapter</code> or <code>section</code>.  When the
+<var>numbered_within</var> counter is reset then the <var>name</var> environment&rsquo;s
+counter will also be reset.
+</p>
+<p>If this optional argument is not used then the command
+<code>\the<var>name</var></code> is set to <code>\arabic{<var>name</var>}</code>.
+</p>
+</dd>
+<dt><var>numbered_like</var></dt>
+<dd><p>Optional; the name of an already defined theorem-like environment. The
+new environment will be numbered in sequence with <var>numbered_like</var>.
+</p>
+</dd>
+</dl>
+
+<p>Without any optional arguments the environments are numbered
+sequentially.  The example below has a declaration in the preamble that
+results in &lsquo;<samp>Definition&nbsp;1</samp>&rsquo; and &lsquo;<samp>Definition&nbsp;2</samp>&rsquo; in the
+output.
+</p>
+<div class="example">
+<pre class="example">\newtheorem{defn}{Definition}
+\begin{document}
+\section{...}
+\begin{defn}
+  First def 
+\end{defn}
+
+\section{...}
+\begin{defn}
+  Second def
+\end{defn}
+</pre></div>
+
+<p>This example has the same document body as the prior one.  But here
+<code>\newtheorem</code>&rsquo;s optional argument <var>numbered_within</var> is given as
+<code>section</code>, so the output is like &lsquo;<samp>Definition&nbsp;1.1</samp>&rsquo; and
+&lsquo;<samp>Definition&nbsp;2.1</samp>&rsquo;.
+</p>
+<div class="example">
+<pre class="example">\newtheorem{defn}{Definition}[section]
+\begin{document}
+\section{...}
+\begin{defn}
+  First def 
+\end{defn}
+
+\section{...}
+\begin{defn}
+  Second def
+\end{defn}
+</pre></div>
+
+<p>In the next example there are two declarations in the preamble, the
+second of which calls for the new <code>thm</code> environment to use the same
+counter as <code>defn</code>.  It gives &lsquo;<samp>Definition&nbsp;1.1</samp>&rsquo;, followed
+by &lsquo;<samp>Theorem&nbsp;2.1</samp>&rsquo; and &lsquo;<samp>Definition&nbsp;2.2</samp>&rsquo;.
+</p>
+<div class="example">
+<pre class="example">\newtheorem{defn}{Definition}[section]
+\newtheorem{thm}[defn]{Theorem}
+\begin{document}
+\section{...}
+\begin{defn}
+  First def 
+\end{defn}
+
+\section{...}
+\begin{thm}
+  First thm
+\end{thm}
+
+\begin{defn}
+  Second def
+\end{defn}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cnewfont"></a>
+<a name="g_t_005cnewfont-1"></a>
+<h3 class="section">12.10 <code>\newfont</code></h3>
+
+<a name="index-_005cnewfont"></a>
+<a name="index-fonts_002c-new-commands-for"></a>
+<a name="index-defining-new-fonts"></a>
+
+<p>This command is obsolete. This description is here only to help with old
+documents.  New documents should define fonts in families through the
+New Font Selection Scheme which allows you to, for example, associate a
+boldface with a roman (see <a href="latex2e_4.html#Fonts">Fonts</a>).
+</p>
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\newfont{\<var>cmd</var>}{<var>font description</var>}
+</pre></div>
+
+<p>Define a command <code>\<var>cmd</var></code> that will change the current font.
+The control sequence must not already be defined. It must begin with a
+backslash, <code>\</code>.
+</p>
+<a name="index-at-clause_002c-in-font-definitions"></a>
+<a name="index-design-size_002c-in-font-definitions"></a>
+<p>The <var>font description</var> consists of a <var>fontname</var> and an optional
+<em>at clause</em>.  LaTeX will look on your system for a file named
+<samp><var>fontname</var>.tfm</samp>.  The at clause can have the form either
+<code>at <var>dimen</var></code> or <code>scaled <var>factor</var></code>, where a
+<var>factor</var> of &lsquo;<samp>1000</samp>&rsquo; means no scaling.  For LaTeX&rsquo;s purposes,
+all this does is scale all the character and other font dimensions
+relative to the font&rsquo;s design size, which is a value defined in the
+<samp>.tfm</samp> file.
+</p>
+<p>This defines two equivalent fonts and typesets a few characters in each.
+</p>
+<div class="example">
+<pre class="example">\newfont{\testfontat}{cmb10 at 11pt}
+\newfont{\testfontscaled}{cmb10 scaled 1100}
+\testfontat abc
+\testfontscaled abc
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cprotect"></a>
+<a name="g_t_005cprotect-1"></a>
+<h3 class="section">12.11 <code>\protect</code></h3>
+
+<a name="index-_005cprotect"></a>
+<a name="index-fragile-commands"></a>
+<a name="index-robust-commands"></a>
+
+<p>All LaTeX commands are either <em>fragile</em> or <em>robust</em>.  A
+fragile command can break when it is used in the argument to certain
+other commands.  Commands that contain data that LaTeX writes to an
+auxiliary file and re-reads later are fragile.  This includes material
+that goes into a table of contents, list of figures, list of tables,
+etc.  Fragile commands also include line breaks, any command that has an
+optional argument, and many more. To prevent such commands from
+breaking, one solution is to preceded them with the command
+<code>\protect</code>.
+</p>
+<p>For example, when LaTeX runs the <code>\section{<var>section
+name</var>}</code> command it writes the <var>section name</var> text to the
+<samp>.aux</samp> auxiliary file, moving it there for use elsewhere in the
+document such as in the table of contents.  Any argument that is
+internally expanded by LaTeX without typesetting it directly is
+referred to as a 
+<a name="index-moving-arguments"></a>
+<em>moving argument</em>.  A command is fragile if it can
+expand during this process into invalid TeX code.  Some examples of
+moving arguments are those that appear in the <code>\caption{...}</code>
+command (see <a href="latex2e_8.html#figure">figure</a>), in the <code>\thanks{...}</code> command
+(see <a href="latex2e_18.html#g_t_005cmaketitle">\maketitle</a>), and in @-expressions in the <code>tabular</code> and
+<code>array</code> environments (see <a href="latex2e_8.html#tabular">tabular</a>).
+</p>
+<p>If you get strange errors from commands used in moving arguments, try
+preceding it with <code>\protect</code>.  Every fragile commands must be
+protected with their own <code>\protect</code>.  
+</p>
+<p>Although usually a <code>\protect</code> command doesn&rsquo;t hurt, length
+commands are robust and should not be preceded by a <code>\protect</code>
+command. Nor can a <code>\protect</code> command be used in the argument to
+<code>\addtocounter</code> or <code>\setcounter</code> command.
+</p>
+<p>In this example the <code>\caption</code> command gives a mysterious error
+about an extra curly brace.  Fix the problem by preceding each
+<code>\raisebox</code> command with <code>\protect</code>.
+</p>
+<div class="example">
+<pre class="example">\begin{figure}
+  ...
+  \caption{Company headquarters of A\raisebox{1pt}{B}\raisebox{-1pt}{C}}
+\end{figure}
+</pre></div>
+
+<p>In the next example the <code>\tableofcontents</code> command gives an error
+because the <code>\(..\)</code> in the section title expands to illegal TeX
+in the <samp>.toc</samp> file.  You can solve this by changing <code>\(..\)</code>
+to <code>\protect\(..\protect\)</code>.
+</p>
+<div class="example">
+<pre class="example">\begin{document}
+\tableofcontents
+...
+\section{Einstein's \( e=mc^2 \)}
+...
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cignorespaces-_0026-_005cignorespacesafterend"></a>
+<a name="g_t_005cignorespaces-_0026-_005cignorespacesafterend-1"></a>
+<h3 class="section">12.12 <code>\ignorespaces &amp; \ignorespacesafterend</code></h3>
+
+<a name="index-_005cignorespaces"></a>
+<a name="index-_005cignorespacesafterend"></a>
+<a name="index-spaces_002c-ignore-around-commands"></a>
+<a name="index-commands_002c-ignore-spaces"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\ignorespaces
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\ignorespacesafterend
+</pre></div>
+
+<p>Both commands cause LaTeX to ignore spaces after the end of the
+command up until the first non-space character.  The first is a command
+from Plain TeX, and the second is LaTeX-specific.
+</p>
+<p>The <code>ignorespaces</code> is often used when defining commands via
+<code>\newcommand</code>, or <code>\newenvironment</code>, or <code>\def</code>.  The
+example below illustrates.  It allows a user to show the points values
+for quiz questions in the margin but it is inconvenient because, as
+shown in the <code>enumerate</code> list, users must not put any space between
+the command and the question text.
+</p>
+<div class="example">
+<pre class="example">\newcommand{\points}[1]{\makebox[0pt]{\makebox[10em][l]{#1~pts}}
+\begin{enumerate} 
+  \item\points{10}no extra space output here
+  \item\points{15} extra space between the number and the `extra'
+\end{enumerate} 
+</pre></div>
+
+<p>The solution is to change to this.
+</p>
+<div class="example">
+<pre class="example">\newcommand{\points}[1]{%
+  \makebox[0pt]{\makebox[10em][l]{#1~pts}}\ignorespaces}
+</pre></div>
+
+<p>A second example shows spaces being removed from the front of text.  The
+commands below allow a user to uniformly attach a title to names.  But,
+as given, if a title accidentally starts with a space then
+<code>\fullname</code> will reproduce that.
+</p>
+<div class="example">
+<pre class="example">\makeatletter
+\newcommand{\honorific}[1]{\def\@honorific{#1}} % remember title
+\newcommand{\fullname}[1]{\@honorific~#1}       % put title before name
+\makeatother
+\begin{tabular}{|l|}
+\honorific{Mr/Ms}  \fullname{Jones} \\  % no extra space here
+\honorific{ Mr/Ms} \fullname{Jones}     % extra space before title
+\end{tabular}
+</pre></div>
+
+<p>To fix this, change to
+<code>\newcommand{\fullname}[1]{\ignorespaces\@honorific~#1}</code>.
+</p>
+<p>The <code>\ignorespaces</code> is also often used in a <code>\newenvironment</code>
+at the end of the <var>begin</var> clause, that is, as part of the second
+argument, as in <code>\begin{newenvironment}{<var>env
+name</var>}{... \ignorespaces}{...}</code>.
+</p>
+<p>To strip spaces off the end of an environment use
+<code>\ignorespacesafterend</code>.  An example is that this will show a much
+larger vertical space between the first and second environments than
+between the second and third.
+</p>
+<div class="example">
+<pre class="example">\newenvironment{eq}{\begin{equation}}{\end{equation}}
+\begin{eq}
+e=mc^2
+\end{eq}
+\begin{equation}
+F=ma
+\end{equation}
+\begin{equation}
+E=IR
+\end{equation}
+</pre></div>
+
+<p>Putting a comment character&nbsp;<code>%</code> immediately after the
+<code>\end{eq}</code> will make the vertical space disappear, but that is
+inconvenient.  The solution is to change to
+<code>\newenvironment{eq}{\begin{equation}}{\end{equation}\ignorespacesafterend}</code>.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005cprotect" accesskey="p" rel="prev">\protect</a>, Up: <a href="#Definitions" accesskey="u" rel="up">Definitions</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

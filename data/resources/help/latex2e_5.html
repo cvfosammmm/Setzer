@@ -1,0 +1,768 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Layout (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Layout (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Layout (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_6.html#Sectioning" rel="next" title="Sectioning">
+<link href="latex2e_4.html#Low_002dlevel-font-commands" rel="prev" title="Low-level font commands">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Layout"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_6.html#Sectioning" accesskey="n" rel="next">Sectioning</a>, Previous: <a href="latex2e_4.html#Fonts" accesskey="p" rel="prev">Fonts</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Layout-1"></a>
+<h2 class="chapter">5 Layout</h2>
+
+<a name="index-layout-commands"></a>
+
+<p>Commands for controlling the general page layout.
+</p>
+
+
+<hr>
+<a name="g_t_005conecolumn"></a>
+<a name="g_t_005conecolumn-1"></a>
+<h3 class="section">5.1 <code>\onecolumn</code></h3>
+
+<a name="index-_005conecolumn"></a>
+<a name="index-one_002dcolumn-output"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\onecolumn
+</pre></div>
+
+<p>Start a new page and produce single-column output.  If the document is
+given the class option <code>onecolumn</code> then this is the default
+behavior (see <a href="latex2e_3.html#Document-class-options">Document class options</a>).  This command is fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+
+<hr>
+<a name="g_t_005ctwocolumn"></a>
+<a name="g_t_005ctwocolumn-1"></a>
+<h3 class="section">5.2 <code>\twocolumn</code></h3>
+
+<a name="index-_005ctwocolumn"></a>
+<a name="index-multicolumn-text"></a>
+<a name="index-two_002dcolumn-output"></a>
+
+<p>Synopses:
+</p>
+<div class="example">
+<pre class="example">\twocolumn
+\twocolumn[<var>prelim one column text</var>]
+</pre></div>
+
+<p>Start a new page and produce two-column output. If the document is given
+the class option <code>twocolumn</code> then this is the default
+(see <a href="latex2e_3.html#Document-class-options">Document class options</a>).  This command is fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>If the optional <var>prelim one column text</var> argument
+is present, it is typeset in one-column mode before the two-column
+typesetting starts.
+</p>
+<p>These parameters control typesetting in two-column output:
+</p>
+<dl compact="compact">
+<dt><code>\columnsep</code>
+<a name="index-_005ccolumnsep"></a>
+</dt>
+<dd><a name="twocolumn-columnsep"></a><p>The distance between columns. The default is 35pt.  Change it with a
+command such as <code>\setlength{\columnsep}{40pt}</code> You must change
+it before the two column environment starts; in the preamble is a good
+place.
+</p>
+</dd>
+<dt><code>\columnseprule</code>
+<a name="index-_005ccolumnseprule"></a>
+</dt>
+<dd><a name="twocolumn-columnseprule"></a><p>The width of the rule between columns. The rule appears halfway between
+the two columns.  The default is 0pt, meaning that there is no rule.
+Change it with a command such as
+<code>\setlength{\columnseprule}{0.4pt}</code>, before the two-column
+environment starts.
+</p>
+</dd>
+<dt><code>\columnwidth</code>
+<a name="index-_005ccolumnwidth"></a>
+</dt>
+<dd><a name="twocolumn-columnwidth"></a><p>The width of a single column.  In one-column mode this is equal to
+<code>\textwidth</code>.  In two-column mode by default LaTeX sets the
+width of each of the two columns to be half of <code>\textwidth</code> minus
+<code>\columnsep</code>.
+</p>
+</dd>
+</dl>
+
+<p>In a two-column document, the starred environments <code>table*</code> and
+<code>figure*</code> are two columns wide, whereas the unstarred environments
+<code>table</code> and <code>figure</code> take up only one column (see <a href="latex2e_8.html#figure">figure</a>
+and see <a href="latex2e_8.html#table">table</a>). LaTeX places starred floats at the top of a page.
+The following parameters control float behavior of two-column output.
+</p>
+<dl compact="compact">
+<dd><a name="twocolumn-dbltopfraction"></a></dd>
+<dt><code>\dbltopfraction</code>
+<a name="index-_005cdbltopfraction"></a>
+</dt>
+<dd><p>The maximum fraction at the top of a two-column page that may be
+occupied by two-column wide floats.  The default is 0.7, meaning that
+the height of a <code>table*</code> or <code>figure*</code> environment must not
+exceed <code>0.7\textheight</code> .  If the height of your starred float
+environment exceeds this then you can take one of the following actions
+to prevent it from floating all the way to the back of the document:
+</p>
+<ul>
+<li> Use the <code>[tp]</code> location specifier to tell LaTeX to try to put
+the bulky float on a page by itself, as well as at the top of a page.
+
+</li><li> Use the <code>[t!]</code> location specifier to override the effect of
+<code>\dbltopfraction</code> for this particular float.
+
+</li><li> Increase the value of <code>\dbltopfraction</code> to a suitably large number,
+to avoid going to float pages so soon.
+</li></ul>
+
+<p>You can redefine it, as with
+<code>\renewcommand{\dbltopfraction}{0.9}</code>.
+</p>
+<a name="twocolumn-dblfloatpagefraction"></a></dd>
+<dt><code>\dblfloatpagefraction</code>
+<a name="index-_005cdblfloatpagefraction"></a>
+</dt>
+<dd><p>For a float page of two-column wide floats, this is the minimum fraction
+that must be occupied by floats, limiting the amount of blank space.
+LaTeX&rsquo;s default is <code>0.5</code>.  Change it with <code>\renewcommand</code>.
+</p>
+<a name="twocolumn-dblfloatsep"></a></dd>
+<dt><code>\dblfloatsep</code>
+<a name="index-_005cdblfloatsep"></a>
+</dt>
+<dd><p>On a float page of two-column wide floats, this length is the distance
+between floats, at both the top and bottom of the page.  The default is
+<code>12pt plus2pt minus2pt</code> for a document set at <code>10pt</code> or
+<code>11pt</code>, and <code>14pt plus2pt minus4pt</code> for a document set at
+<code>12pt</code>.
+</p>
+<a name="twocolumn-dbltextfloatsep"></a></dd>
+<dt><code>\dbltextfloatsep</code>
+<a name="index-_005cdbltextfloatsep"></a>
+</dt>
+<dd><p>This length is the distance between a multi-column float at the top or
+bottom of a page and the main text.  The default is <code>20pt plus2pt
+minus4pt</code>.
+</p>
+<a name="twocolumn-dbltopnumber"></a></dd>
+<dt><code>\dbltopnumber</code>
+<a name="index-_005cdbltopnumber"></a>
+</dt>
+<dd><p>On a float page of two-column wide floats, this counter gives the
+maximum number of floats allowed at the top of the page.  The LaTeX
+default is <code>2</code>.
+</p>
+</dd>
+</dl>
+
+<p>This example uses <code>\twocolumn</code>&rsquo;s optional argument of to create a
+title that spans the two-column article:
+</p>
+<div class="example">
+<pre class="example">\documentclass[twocolumn]{article}
+\newcommand{\authormark}[1]{\textsuperscript{#1}}
+\begin{document}
+\twocolumn[{% inside this optional argument goes one-column text
+  \centering
+  \LARGE The Title \\[1.5em]
+  \large Author One\authormark{1},
+         Author Two\authormark{2},
+         Author Three\authormark{1} \\[1em]
+  \normalsize
+  \begin{tabular}{p{.2\textwidth}@{\hspace{2em}}p{.2\textwidth}}
+    \authormark{1}Department one  &amp;\authormark{2}Department two \\ 
+     School one                   &amp;School two 
+  \end{tabular}\\[3em] % space below title part
+  }]
+
+Two column text here.
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cflushbottom"></a>
+<a name="g_t_005cflushbottom-1"></a>
+<h3 class="section">5.3 <code>\flushbottom</code></h3>
+
+<a name="index-_005cflushbottom"></a>
+
+<p>Make all pages in the documents after this declaration have the same
+height, by stretching the vertical space where necessary to fill out the
+page.  This is most often used when making two-sided documents since the
+differences in facing pages can be glaring.
+</p>
+<p>If TeX cannot satisfactorily stretch the vertical space in a page
+then you get a message like &lsquo;<samp>Underfull \vbox (badness 10000) has
+occurred while \output is active</samp>&rsquo;.  If you get that, one option is to
+change to <code>\raggedbottom</code> (see <a href="#g_t_005craggedbottom">\raggedbottom</a>).  Alternatively,
+you can adjust the <code>textheight</code> to make compatible pages, or you
+can add some vertical stretch glue between lines or between paragraphs,
+as in <code>\setlength{\parskip}{0ex plus0.1ex}</code>.  Your last option
+is to, in a final editing stage, adjust the height of individual pages
+(see <a href="latex2e_10.html#g_t_005cenlargethispage">\enlargethispage</a>).
+</p>
+<p>The <code>\flushbottom</code> state is the default only if you select the
+<code>twoside</code> document class option (see <a href="latex2e_3.html#Document-class-options">Document class options</a>).
+</p>
+
+<hr>
+<a name="g_t_005craggedbottom"></a>
+<a name="g_t_005craggedbottom-1"></a>
+<h3 class="section">5.4 <code>\raggedbottom</code></h3>
+
+<a name="index-_005craggedbottom"></a>
+<a name="index-stretch_002c-omitting-vertical"></a>
+
+<p>Make all later pages the natural height of the material on that page; no
+rubber vertical lengths will be stretched.  Thus, in a two-sided
+document the facing pages may be different heights.  This command can go
+at any point in the document body.  See <a href="#g_t_005cflushbottom">\flushbottom</a>.
+</p>
+<p>This is the default unless you select the <code>twoside</code> document class
+option (see <a href="latex2e_3.html#Document-class-options">Document class options</a>).
+</p>
+
+<hr>
+<a name="Page-layout-parameters"></a>
+<a name="Page-layout-parameters-1"></a>
+<h3 class="section">5.5 Page layout parameters</h3>
+
+<a name="index-page-layout-parameters"></a>
+<a name="index-parameters_002c-page-layout"></a>
+<a name="index-layout_002c-page-parameters-for"></a>
+<a name="index-header_002c-parameters-for"></a>
+<a name="index-footer_002c-parameters-for"></a>
+<a name="index-running-header-and-footer"></a>
+
+<dl compact="compact">
+<dt><code>\columnsep</code>
+<a name="index-_005ccolumnsep-1"></a>
+</dt>
+<dt><code>\columnseprule</code>
+<a name="index-_005ccolumnseprule-1"></a>
+</dt>
+<dt><code>\columnwidth</code>
+<a name="index-_005ccolumnwidth-1"></a>
+</dt>
+<dd><a name="index-_005ccolumnsep-2"></a>
+<a name="index-_005ccolumnseprule-2"></a>
+<a name="index-_005ccolumnwidth-2"></a>
+<a name="page-layout-parameters-columnsep"></a><a name="page-layout-parameters-columnseprule"></a><a name="page-layout-parameters-columnwidth"></a><p>The distance between the two columns, the width of a rule between the
+columns, and the width of the columns, when the document class option
+<code>twocolumn</code> is in effect (see <a href="latex2e_3.html#Document-class-options">Document class options</a>).
+See <a href="#g_t_005ctwocolumn">\twocolumn</a>.
+</p>
+</dd>
+<dt><code>\headheight</code>
+<a name="index-_005cheadheight"></a>
+</dt>
+<dd><a name="index-_005cheadheight-1"></a>
+<a name="page-layout-parameters-headheight"></a><p>Height of the box that contains the running head.  The default in the
+<code>article</code>, <code>report</code>, and <code>book</code> classes is &lsquo;<samp>12pt</samp>&rsquo;,
+at all type sizes.
+</p>
+</dd>
+<dt><code>\headsep</code>
+<a name="index-_005cheadsep"></a>
+</dt>
+<dd><a name="index-_005cheadsep-1"></a>
+<a name="page-layout-parameters-headsep"></a><p>Vertical distance between the bottom of the header line and the top of
+the main text.  The default in the <code>article</code> and <code>report</code>
+classes is &lsquo;<samp>25pt</samp>&rsquo;.  In the <code>book</code> class the default is: if the
+document is set at 10pt then it is &lsquo;<samp>0.25in</samp>&rsquo;, and at 11pt and 12pt
+it is &lsquo;<samp>0.275in</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\footskip</code>
+<a name="index-_005cfootskip"></a>
+</dt>
+<dd><a name="index-_005cfootskip-1"></a>
+<a name="page-layout-parameters-footskip"></a><p>Distance from the baseline of the last line of text to the baseline of
+the page footer.  The default in the <code>article</code> and <code>report</code>
+classes is &lsquo;<samp>30pt</samp>&rsquo;.  In the <code>book</code> class the default is: when
+the type size is 10pt the default is &lsquo;<samp>0.35in</samp>&rsquo;, while at 11pt it is
+&lsquo;<samp>0.38in</samp>&rsquo;, and at 12pt it is &lsquo;<samp>30pt</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\linewidth</code>
+<a name="index-_005clinewidth"></a>
+</dt>
+<dd><a name="index-_005clinewidth-1"></a>
+<a name="page-layout-parameters-linewidth"></a><p>Width of the current line, decreased for each nested <code>list</code>
+(see <a href="latex2e_8.html#list">list</a>).  That is, the nominal value for <code>\linewidth</code> is to
+equal <code>\textwidth</code> but for each nested list the <code>\linewidth</code>
+is decreased by the sum of that list&rsquo;s <code>\leftmargin</code> and
+<code>\rightmargin</code> (see <a href="latex2e_8.html#itemize">itemize</a>).
+</p>
+</dd>
+<dt><code>\marginparpush</code>
+<a name="index-_005cmarginparpush"></a>
+</dt>
+<dt><code>\marginsep</code>
+<a name="index-_005cmarginsep"></a>
+</dt>
+<dt><code>\marginparwidth</code>
+<a name="index-_005cmarginparwidth"></a>
+</dt>
+<dd><a name="index-_005cmarginparpush-1"></a>
+<a name="index-_005cmarginsep-1"></a>
+<a name="index-_005cmarginparwidth-1"></a>
+<a name="page-layout-parameters-marginparpush"></a><a name="page-layout-parameters-marginsep"></a><a name="page-layout-parameters-marginparwidth"></a><p>The minimum vertical space between two marginal notes, the horizontal
+space between the text body and the marginal notes, and the horizontal
+width of the notes.
+</p>
+<p>Normally marginal notes appear on the outside of the page, but the
+declaration <code>\reversemarginpar</code> changes that (and
+<code>\normalmarginpar</code> changes it back).
+</p>
+<p>The defaults for <code>\marginparpush</code> in both <code>book</code> and
+<code>article</code> classes are: &lsquo;<samp>7pt</samp>&rsquo; if the document is set at 12pt,
+and &lsquo;<samp>5pt</samp>&rsquo; if the document is set at 11pt or 10pt.
+</p>
+<p>For <code>\marginsep</code>, in <code>article</code> class the default is
+&lsquo;<samp>10pt</samp>&rsquo; except if the document is set at 10pt and in two-column mode
+where the default is &lsquo;<samp>11pt</samp>&rsquo;.
+</p>
+<p>For <code>\marginsep</code> in <code>book</code> class the default is &lsquo;<samp>10pt</samp>&rsquo; in
+two-column mode and &lsquo;<samp>7pt</samp>&rsquo; in one-column mode.  
+</p>
+<p>For <code>\marginparwidth</code> in both <code>book</code> and <code>article</code>
+classes, in two-column mode the default is 60% of <code>\paperwidth
+- \textwidth</code>, while in one-column mode it is 50% of that
+distance.
+</p>
+</dd>
+<dt><code>\oddsidemargin</code>
+<a name="index-_005coddsidemargin-1"></a>
+</dt>
+<dt><code>\evensidemargin</code>
+<a name="index-_005cevensidemargin-1"></a>
+</dt>
+<dd><a name="index-_005coddsidemargin-2"></a>
+<a name="index-_005cevensidemargin-2"></a>
+<a name="page-layout-parameters-oddsidemargin"></a><a name="page-layout-parameters-evensidemargin"></a><p>The <code>\oddsidemargin</code> is the extra distance between the left side of
+the page and the text&rsquo;s left margin, on odd-numbered pages when the
+document class option <code>twoside</code> is chosen and on all pages when
+<code>oneside</code> is in effect.  When <code>twoside</code> is in effect, on
+even-numbered pages the extra distance on the left is
+<code>evensidemargin</code>.
+</p>
+<p>LaTeX&rsquo;s default is that <code>\oddsidemargin</code> is 40% of the
+difference between <code>\paperwidth</code> and <code>\textwidth</code>, and
+<code>\evensidemargin</code> is the remainder.
+</p>
+</dd>
+<dt><code>\paperheight</code>
+<a name="index-_005cpaperheight"></a>
+</dt>
+<dd><a name="index-_005cpaperheight-1"></a>
+<a name="page-layout-parameters-paperheight"></a><p>The height of the paper, as distinct from the height of the print area.
+Normally set with a document class option, as in
+<code>\documentclass[a4paper]{article}</code> (see <a href="latex2e_3.html#Document-class-options">Document class options</a>).
+</p>
+</dd>
+<dt><code>\paperwidth</code>
+<a name="index-_005cpaperwidth"></a>
+</dt>
+<dd><a name="index-_005cpaperwidth-1"></a>
+<a name="page-layout-parameters-paperwidth"></a><p>The width of the paper, as distinct from the width of the print area.
+Normally set with a document class option, as in
+<code>\documentclass[a4paper]{article}</code> (see <a href="latex2e_3.html#Document-class-options">Document class options</a>).
+</p>
+</dd>
+<dt><code>\textheight</code>
+<a name="index-_005ctextheight"></a>
+</dt>
+<dd><a name="index-_005ctextheight-1"></a>
+<a name="page-layout-parameters-textheight"></a><p>The normal vertical height of the page body.  If the document is set at
+a nominal type size of 10pt then for an <code>article</code> or <code>report</code>
+the default is &lsquo;<samp>43\baselineskip</samp>&rsquo;, while for a <code>book</code> it is
+&lsquo;<samp>41\baselineskip</samp>&rsquo;.  At a type size of 11pt the default is
+&lsquo;<samp>38\baselineskip</samp>&rsquo; for all document classes.  At 12pt it is
+&lsquo;<samp>36\baselineskip</samp>&rsquo; for all classes.
+</p>
+</dd>
+<dt><code>\textwidth</code>
+<a name="index-_005ctextwidth"></a>
+</dt>
+<dd><a name="index-_005ctextwidth-1"></a>
+<a name="page-layout-parameters-textwidth"></a><p>The full horizontal width of the entire page body.  For an
+<code>article</code> or <code>report</code> document, the default is &lsquo;<samp>345pt</samp>&rsquo;
+when the chosen type size is 10pt, the default is &lsquo;<samp>360pt</samp>&rsquo; at 11pt,
+and it is &lsquo;<samp>390pt</samp>&rsquo; at 12pt.  For a <code>book</code> document, the default
+is &lsquo;<samp>4.5in</samp>&rsquo; at a type size of 10pt, and &lsquo;<samp>5in</samp>&rsquo; at 11pt or 12pt.
+</p>
+<p>In multi-column output, <code>\textwidth</code> remains the width of the
+entire page body, while <code>\columnwidth</code> is the width of one column
+(see <a href="#g_t_005ctwocolumn">\twocolumn</a>).
+</p>
+<p>In lists (see <a href="latex2e_8.html#list">list</a>), <code>\textwidth</code> remains the width of the
+entire page body (and <code>\columnwidth</code> the width of the entire
+column), while <code>\linewidth</code> may decrease for nested lists.
+</p>
+<p>Inside a minipage (see <a href="latex2e_8.html#minipage">minipage</a>) or <code>\parbox</code>
+(see <a href="latex2e_20.html#g_t_005cparbox">\parbox</a>), all the width-related parameters are set to the
+specified width, and revert to their normal values at the end of the
+<code>minipage</code> or <code>\parbox</code>.
+</p>
+<a name="index-_005chsize"></a>
+<a name="page-layout-parameters-hsize"></a></dd>
+<dt><code>\hsize</code>
+<a name="index-_005chsize-1"></a>
+</dt>
+<dd><p>This entry is included for completeness: <code>\hsize</code> is the TeX
+primitive parameter used when text is broken into lines.  It should not
+be used in normal LaTeX documents.
+</p>
+</dd>
+<dt><code>\topmargin</code>
+<a name="index-_005ctopmargin"></a>
+</dt>
+<dd><a name="index-topmargin"></a>
+<a name="page-layout-parameters-topmargin"></a><p>Space between the top of the TeX page (one inch from the top of the
+paper, by default) and the top of the header.  The value is computed
+based on many other parameters: <code>\paperheight - 2in -
+\headheight - \headsep - \textheight - \footskip</code>,
+and then divided by two.
+</p>
+</dd>
+<dt><code>\topskip</code>
+<a name="index-_005ctopskip"></a>
+</dt>
+<dd><a name="index-_005ctopskip-1"></a>
+<a name="page-layout-parameters-topskip"></a><p>Minimum distance between the top of the page body and the baseline of
+the first line of text.  For the standard classes, the default is the
+same as the font size, e.g., &lsquo;<samp>10pt</samp>&rsquo; at a type size of 10pt.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<a name="Floats"></a>
+<a name="Floats-1"></a>
+<h3 class="section">5.6 Floats</h3>
+
+<p>Some typographic elements, such as figures and tables, cannot be broken
+across pages.  They must be typeset outside of the normal flow of text,
+for instance floating to the top of a later page.
+</p>
+<p>LaTeX can have a number of different classes of floating material.
+The default is the two classes, <code>figure</code> (see <a href="latex2e_8.html#figure">figure</a>) and
+<code>table</code> (see <a href="latex2e_8.html#table">table</a>), but you can create a new class with the
+package <samp>float</samp>.
+</p>
+<p>Within any one float class LaTeX always respects the order, so that
+the first figure in a document source must be typeset before the second
+figure.  However, LaTeX may mix the classes, so it can happen that
+while the first table appears in the source before the first figure, it
+appears in the output after it.
+</p>
+<p>The placement of floats is subject to parameters, given below, that
+limit the number of floats that can appear at the top of a page, and
+the bottom, etc. If so many floats are queued that the limits prevent
+them all from fitting on a page then LaTeX places what it can and
+defers the rest to the next page.  In this way, floats may end up
+being typeset far from their place in the source.  In particular, a
+float that is big may migrate to the end of the document. In which
+event, because all floats in a class must appear in sequential order,
+every following float in that class also appears at the end.
+</p>
+<a name="index-placement-of-floats"></a>
+<a name="index-specifier_002c-float-placement"></a>
+<p>In addition to changing the parameters, for each float you can tweak
+where the float placement algorithm tries to place it by using its
+<var>placement</var> argument.  The possible values are a sequence of the
+letters below. The default for both <code>figure</code> and <code>table</code>, in
+both <code>article</code> and <code>book</code> classes, is <code>tbp</code>.
+</p>
+<dl compact="compact">
+<dt><code>t</code></dt>
+<dd><p>(Top)&mdash;at the top of a text page.
+</p>
+</dd>
+<dt><code>b</code></dt>
+<dd><p>(Bottom)&mdash;at the bottom of a text page.  (However, <code>b</code> is not
+allowed for full-width floats (<code>figure*</code>) with double-column
+output.  To ameliorate this, use the <samp>stfloats</samp> or
+<samp>dblfloatfix</samp> package, but see the discussion at caveats in the
+FAQ: <a href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=2colfloat">http://www.tex.ac.uk/cgi-bin/texfaq2html?label=2colfloat</a>.
+</p>
+</dd>
+<dt><code>h</code></dt>
+<dd><p>(Here)&mdash;at the position in the text where the <code>figure</code> environment
+appears.  However, <code>h</code> is not allowed by itself; <code>t</code> is
+automatically added.
+</p>
+<a name="index-here_002c-putting-floats"></a>
+<a name="index-package_002c-float"></a>
+<a name="index-float-package"></a>
+
+<p>To absolutely force a float to appear &ldquo;here&rdquo;, you can
+<code>\usepackage{float}</code> and use the <code>H</code> specifier which it
+defines.  For further discussion, see the FAQ entry at
+<a href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=figurehere">http://www.tex.ac.uk/cgi-bin/texfaq2html?label=figurehere</a>.
+</p>
+</dd>
+<dt><code>p</code></dt>
+<dd><a name="index-float-page"></a>
+<p>(Page of floats)&mdash;on a separate <em>float page</em>, which is a page
+containing no text, only floats.
+</p>
+</dd>
+<dt><code>!</code></dt>
+<dd><p>Used in addition to one of the above; for this float only, LaTeX
+ignores the restrictions on both the number of floats that can appear
+and the relative amounts of float and non-float text on the page.
+The <code>!</code> specifier does <em>not</em> mean &ldquo;put the float here&rdquo;;
+see above.
+</p>
+</dd>
+</dl>
+
+<p>Note: the order in which letters appear in the <var>placement</var> argument
+does not change the order in which LaTeX tries to place the float;
+for instance, <code>btp</code> has the same effect as <code>tbp</code>.  All that
+<var>placement</var> does is that if a letter is not present then the
+algorithm does not try that location.  Thus, LaTeX&rsquo;s default of
+<code>tbp</code> is to try every location except placing the float where it
+occurs in the source.
+</p>
+<p>To prevent LaTeX from moving floats to the end of the document or a
+chapter you can use a <code>\clearpage</code> command to start a new page and
+insert all pending floats. If a pagebreak is undesirable then you can
+use the <samp>afterpage</samp> package and issue
+<code>\afterpage{\clearpage}</code>.  This will wait until the current page
+is finished and then flush all outstanding floats.
+</p>
+<a name="index-package_002c-flafter"></a>
+<a name="index-flafter-package"></a>
+
+<p>LaTeX can typeset a float before where it appears in the source
+(although on the same output page) if there is a <code>t</code> specifier in
+the <var>placement</var> parameter.  If this is not desired, and deleting
+the <code>t</code> is not acceptable as it keeps the float from being placed
+at the top of the next page, then you can prevent it by either using
+the <samp>flafter</samp> package or using the command
+<a name="index-_005csuppressfloats"></a>
+<code>\suppressfloats[t]</code>, which causes floats for the top position on
+this page to moved to the next page.
+</p>
+<p>Parameters relating to fractions of pages occupied by float and
+non-float text (change them with
+<code>\renewcommand{<var>parameter</var>}{<var>decimal between 0 and 1</var>}</code>):
+</p>
+<dl compact="compact">
+<dt><code>\bottomfraction</code>
+<a name="index-_005cbottomfraction"></a>
+</dt>
+<dd><a name="index-_005cbottomfraction-1"></a>
+<a name="floats-bottomfraction"></a><p>The maximum fraction of the page allowed to be occupied by floats at
+the bottom; default &lsquo;<samp>.3</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\floatpagefraction</code>
+<a name="index-_005cfloatpagefraction"></a>
+</dt>
+<dd><a name="index-_005cfloatpagefraction-1"></a>
+<a name="floats-floatpagefraction"></a><p>The minimum fraction of a float page that must be occupied by floats;
+default &lsquo;<samp>.5</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\textfraction</code>
+<a name="index-_005ctextfraction"></a>
+</dt>
+<dd><a name="index-_005ctextfraction-1"></a>
+<a name="floats-textfraction"></a><p>Minimum fraction of a page that must be text; if floats take up too
+much space to preserve this much text, floats will be moved to a
+different page.  The default is &lsquo;<samp>.2</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\topfraction</code>
+<a name="index-_005ctopfraction"></a>
+</dt>
+<dd><a name="index-_005ctopfraction-1"></a>
+<a name="floats-topfraction"></a><p>Maximum fraction at the top of a page that may be occupied before
+floats; default &lsquo;<samp>.7</samp>&rsquo;.
+</p></dd>
+</dl>
+
+<p>Parameters relating to vertical space around floats (change them with a
+command of the form <code>\setlength{<var>parameter</var>}{<var>length
+expression</var>}</code>):
+</p>
+<dl compact="compact">
+<dt><code>\floatsep</code>
+<a name="index-_005cfloatsep"></a>
+</dt>
+<dd><a name="index-_005cfloatsep-1"></a>
+<a name="floats-floatsep"></a><p>Space between floats at the top or bottom of a page; default
+&lsquo;<samp>12pt plus2pt minus2pt</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\intextsep</code>
+<a name="index-_005cintextsep"></a>
+</dt>
+<dd><a name="index-_005cintextsep-1"></a>
+<a name="floats-intextsep"></a><p>Space above and below a float in the middle of the main text; default
+&lsquo;<samp>12pt plus2pt minus2pt</samp>&rsquo; for 10 point and 11 point documents,
+and &lsquo;<samp>14pt plus4pt minus4pt</samp>&rsquo; for 12 point documents.
+</p>
+</dd>
+<dt><code>\textfloatsep</code>
+<a name="index-_005ctextfloatsep"></a>
+</dt>
+<dd><a name="index-_005ctextfloatsep-1"></a>
+<a name="floats-textfloatsep"></a><p>Space between the last (first) float at the top (bottom) of a page;
+default &lsquo;<samp>20pt plus2pt minus4pt</samp>&rsquo;.
+</p></dd>
+</dl>
+
+<p>Counters relating to the number of floats on a page (change them with a
+command of the form <code>\setcounter{<var>ctrname</var>}{<var>natural
+number</var>}</code>):
+</p>
+<dl compact="compact">
+<dt><code>bottomnumber</code>
+<a name="index-bottomnumber"></a>
+</dt>
+<dd><a name="index-bottomnumber-1"></a>
+<a name="floats-bottomnumber"></a><p>Maximum number of floats that can appear at the bottom of a text page;
+default 1.
+</p>
+</dd>
+<dt><code>dbltopnumber</code>
+<a name="index-dbltopnumber"></a>
+</dt>
+<dd><a name="index-dbltopnumber-1"></a>
+<a name="floats-dbltopnumber"></a><p>Maximum number of full-sized floats that can appear at the top of a
+two-column page; default 2.
+</p>
+</dd>
+<dt><code>topnumber</code>
+<a name="index-topnumber"></a>
+</dt>
+<dd><a name="index-topnumber-1"></a>
+<a name="floats-topnumber"></a><p>Maximum number of floats that can appear at the top of a text page;
+default 2.
+</p>
+</dd>
+<dt><code>totalnumber</code>
+<a name="index-totalnumber"></a>
+</dt>
+<dd><a name="index-totalnumber-1"></a>
+<a name="floats-totalnumber"></a><p>Maximum number of floats that can appear on a text page; default 3.
+</p></dd>
+</dl>
+
+<p>The principal TeX&nbsp;FAQ entry relating to floats
+<a href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=floats">http://www.tex.ac.uk/cgi-bin/texfaq2html?label=floats</a> contains
+suggestions for relaxing LaTeX&rsquo;s default parameters to reduce the
+problem of floats being pushed to the end.  A full explanation of the
+float placement algorithm is in Frank Mittelbach&rsquo;s article &ldquo;How to
+influence the position of float environments like figure and table in
+LaTeX?&rdquo;
+(<a href="http://latex-project.org/papers/tb111mitt-float.pdf">http://latex-project.org/papers/tb111mitt-float.pdf</a>).
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#Page-layout-parameters" accesskey="p" rel="prev">Page layout parameters</a>, Up: <a href="#Layout" accesskey="u" rel="up">Layout</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

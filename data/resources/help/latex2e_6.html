@@ -1,0 +1,1014 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Sectioning (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Sectioning (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Sectioning (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_7.html#Cross-references" rel="next" title="Cross references">
+<link href="latex2e_5.html#Floats" rel="prev" title="Floats">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Sectioning"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_7.html#Cross-references" accesskey="n" rel="next">Cross references</a>, Previous: <a href="latex2e_5.html#Layout" accesskey="p" rel="prev">Layout</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Sectioning-1"></a>
+<h2 class="chapter">6 Sectioning</h2>
+
+<a name="index-sectioning-commands"></a>
+<a name="index-part"></a>
+<a name="index-chapter"></a>
+<a name="index-section"></a>
+<a name="index-subsection"></a>
+<a name="index-paragraph"></a>
+<a name="index-subparagraph"></a>
+<a name="index-_005cpart"></a>
+<a name="index-_005cchapter"></a>
+<a name="index-_005csection"></a>
+<a name="index-_005csubsection"></a>
+<a name="index-_005cparagraph"></a>
+<a name="index-_005csubparagraph"></a>
+
+<p>Structure your text into divisions: parts, chapters, sections, etc.  All
+sectioning commands have the same form, one of:
+</p>
+<div class="example">
+<pre class="example"><var>sectioning-command</var>{<var>title</var>}
+<var>sectioning-command</var>*{<var>title</var>}
+<var>sectioning-command</var>[<var>toc-title</var>]{<var>title</var>}
+</pre></div>
+
+<p>For instance, declare the start of a subsection as with
+<code>\subsection{Motivation}</code>.
+</p>
+<p>The table has each <var>sectioning-command</var> in LaTeX.  All are
+available in all of LaTeX&rsquo;s standard document classes <code>book</code>,
+<code>report</code>, and&nbsp;<code>article</code>, except that <code>\chapter</code> is
+not available in <code>article</code>.
+</p>
+<table>
+<thead><tr><th width="25%">Sectioning unit</th><th width="25%">Command</th><th width="40%">Level</th></tr></thead>
+<tr><td width="25%">Part</td><td width="25%"><code>\part</code></td><td width="40%">-1 (<code>book</code>, <code>report</code>), 0 (<code>article</code>)</td></tr>
+<tr><td width="25%">Chapter</td><td width="25%"><code>\chapter</code></td><td width="40%">0</td></tr>
+<tr><td width="25%">Section</td><td width="25%"><code>\section</code></td><td width="40%">1</td></tr>
+<tr><td width="25%">Subsection</td><td width="25%"><code>\subsection</code></td><td width="40%">2</td></tr>
+<tr><td width="25%">Subsubsection</td><td width="25%"><code>\subsubsection</code></td><td width="40%">3</td></tr>
+<tr><td width="25%">Paragraph</td><td width="25%"><code>\paragraph</code></td><td width="40%">4</td></tr>
+<tr><td width="25%">Subparagraph</td><td width="25%"><code>\subparagraph</code></td><td width="40%">5</td></tr>
+</table>
+
+<a name="index-_002a_002dform-of-sectioning-commands"></a>
+<p>All these commands have a <code>*</code>-form that prints <var>title</var> as usual
+but is not numbered and does not make an entry in the table of contents.
+An example of using this is for an appendix in an <code>article</code> .  The
+input <code>\appendix\section{Appendix}</code> gives the output &lsquo;<samp>A
+Appendix</samp>&rsquo; (see <a href="#g_t_005cappendix">\appendix</a>).  You can lose the numbering&nbsp;&lsquo;<samp>A</samp>&rsquo;
+by instead entering <code>\section*{Appendix}</code> (articles often omit a
+table of contents and have simple page headers so the other differences
+from the <code>\section</code> command may not matter).
+</p>
+<p>The section title <var>title</var> provides the heading in the main text, but
+it may also appear in the table of contents and in the running head or
+foot (see <a href="latex2e_18.html#Page-styles">Page styles</a>).  You may not want the same text in these
+places as in the main text.  All of these commands have an optional
+argument <var>toc-title</var> for these other places.
+</p>
+<p>The level number in the table above determines which sectional units are
+numbered, and which appear in the table of contents.  If the sectioning
+command&rsquo;s <var>level</var> is less than or equal to the value of the counter
+<code>secnumdepth</code> then the titles for this sectioning command will be
+numbered (see <a href="#Sectioning_002fsecnumdepth">Sectioning/secnumdepth</a>).  And, if <var>level</var> is less
+than or equal to the value of the counter <code>tocdepth</code> then the table
+of contents will have an entry for this sectioning unit
+(see <a href="#Sectioning_002ftocdepth">Sectioning/tocdepth</a>).
+</p>
+<p>LaTeX expects that before you have a <code>\subsection</code> you will have
+a <code>\section</code> and, in a book, that before a <code>\section</code> you will
+have a <code>\chapter</code>.  Otherwise you can get a something like a
+subsection numbered &lsquo;<samp>3.0.1</samp>&rsquo;.
+</p>
+<p>Two counters relate to the appearance of sectioning commands.
+</p>
+<dl compact="compact">
+<dt><code>secnumdepth</code>
+<a name="index-secnumdepth"></a>
+</dt>
+<dd><a name="index-secnumdepth-counter"></a>
+<a name="index-section-numbers_002c-printing"></a>
+<a name="sectioning-secnumdepth"></a><a name="Sectioning_002fsecnumdepth"></a><p>Controls which sectioning commands are
+numbered.  Suppress numbering of sectioning at any depth greater than
+<var>level</var> <code>\setcounter{secnumdepth}{<var>level</var>}</code>
+(see <a href="latex2e_13.html#g_t_005csetcounter">\setcounter</a>).  See the above table for the level numbers.  For
+instance, if the <code>secnumdepth</code> is 1 in an <code>article</code> then a
+<code>\section{Introduction}</code> command will produce output like &lsquo;<samp>1
+Introduction</samp>&rsquo; while <code>\subsection{Discussion}</code> will produce output
+like &lsquo;<samp>Discussion</samp>&rsquo;, without the number. LaTeX&rsquo;s default
+<code>secnumdepth</code> is&nbsp;3 in <samp>article</samp> class and &nbsp;2 in the
+<samp>book</samp> and <samp>report</samp> classes.
+</p>
+</dd>
+<dt><code>tocdepth</code>
+<a name="index-tocdepth"></a>
+</dt>
+<dd><a name="index-tocdepth-counter"></a>
+<a name="index-table-of-contents_002c-sectioning-numbers-printed"></a>
+<a name="sectioning-tocdepth"></a><a name="Sectioning_002ftocdepth"></a><p>Controls which sectioning units are listed in the table of contents.
+The setting <code>\setcounter{tocdepth}{<var>level</var>}</code> makes the
+sectioning units at <var>level</var> be the smallest ones listed
+(see <a href="latex2e_13.html#g_t_005csetcounter">\setcounter</a>).  See the above table for the level numbers.  For
+instance, if <code>tocdepth</code> is&nbsp;1 then the table of contents will
+list sections but not subsections.  LaTeX&rsquo;s default
+<code>secnumdepth</code> is&nbsp;3 in <samp>article</samp> class and &nbsp;2 in the
+<samp>book</samp> and <samp>report</samp> classes.
+</p>
+</dd>
+</dl>
+
+
+
+<hr>
+<a name="g_t_005cpart"></a>
+<a name="g_t_005cpart-1"></a>
+<h3 class="section">6.1 <code>\part</code></h3>
+
+<a name="index-_005cpart-1"></a>
+<a name="index-part-1"></a>
+<a name="index-sectioning_002c-part"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\part{<var>title</var>}
+\part*{<var>title</var>}
+\part[<var>toc-title</var>]{<var>title</var>}
+</pre></div>
+
+<p>Start a document part.  The standard LaTeX classes <code>book</code>,
+<code>report</code>, and <code>article</code>, all have this command.
+</p>
+<p>This produces a document part, in a book.
+</p>
+<div class="example">
+<pre class="example">\part{VOLUME I \\
+       PERSONAL MEMOIRS OF  U.\ S.\ GRANT}
+\chapter{ANCESTRY--BIRTH--BOYHOOD.}
+My family is American, and has been for generations,
+in all its branches, direct and collateral.
+</pre></div>
+
+<p>In each standard class the <code>\part</code> command outputs a part number
+such as &lsquo;<samp>Part I</samp>&rsquo;, alone on its line, in boldface, and in large
+type.  Then LaTeX outputs <var>title</var>, also alone on its line, in
+bold and in even larger type.  In class <code>book</code>, the LaTeX
+default puts each part alone on its own page. If the book is two-sided
+then LaTeX will skip a page if needed to have the new part on an
+odd-numbered page.  In <code>report</code> it is again alone on a page, but
+LaTeX won&rsquo;t force it onto an odd-numbered page.  In an <code>article</code>
+LaTeX does not put it on a fresh page, but instead outputs the part
+number and part title onto the main document page.
+</p>
+<p>The <code>*</code>&nbsp;form shows <var>title</var> 
+but it does not show the part number, does not increment the
+<code>part</code> counter, and produces no table of contents entry.
+</p>
+<p>The optional argument <var>toc-title</var> will appear as the part title in
+the table of contents (see <a href="latex2e_25.html#Table-of-contents-etc_002e">Table of contents etc.</a>) and in running
+headers (see <a href="latex2e_18.html#Page-styles">Page styles</a>).  If it is not present then <var>title</var>
+will be there.  This example puts a line break in <var>title</var> but leaves
+out the break in the table of contents.
+</p>
+<div class="example">
+<pre class="example">\part[Up from the bottom; my life]{Up from the bottom\\ my life}
+</pre></div>
+
+<p>For determining which sectional units are numbered and which appear in
+the table of contents, the level number of a part is&nbsp;-1
+(see <a href="#Sectioning_002fsecnumdepth">Sectioning/secnumdepth</a> and see <a href="#Sectioning_002ftocdepth">Sectioning/tocdepth</a>).
+</p>
+<a name="index-package_002c-indentfirst"></a>
+<a name="index-indentfirst-package"></a>
+
+<p>In the class <code>article</code>, if a paragraph immediately follows the part
+title then it is not indented.  To get an indent you can use the package
+<samp>indentfirst</samp>.
+</p>
+<a name="index-package_002c-titlesec"></a>
+<a name="index-titlesec-package"></a>
+
+<p>One package to change the behavior of <code>\part</code> is <samp>titlesec</samp>.
+See its documentation on CTAN.
+</p>
+
+<hr>
+<a name="g_t_005cchapter"></a>
+<a name="g_t_005cchapter-1"></a>
+<h3 class="section">6.2 <code>\chapter</code></h3>
+
+<a name="index-_005cchapter-1"></a>
+<a name="index-chapter-1"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\chapter{<var>title</var>}
+\chapter*{<var>title</var>}
+\chapter[<var>toc-title</var>]{<var>title</var>}
+</pre></div>
+
+<p>Start a chapter.  The standard LaTeX classes <code>book</code> and
+<code>report</code> have this command but <code>article</code> does not.
+</p>
+<p>This produces a chapter.
+</p>
+<div class="example">
+<pre class="example">\chapter{Loomings}
+Call me Ishmael.
+Some years ago---never mind how long precisely---having little or no
+money in my purse, and nothing particular to interest me on shore, I
+thought I would sail about a little and see the watery part of
+the world.
+</pre></div>
+
+<p>The LaTeX default starts each chapter on a fresh page, an
+odd-numbered page if the document is two-sided.  It produces a chapter
+number such as &lsquo;<samp>Chapter 1</samp>&rsquo; in large boldface type (the size is
+<code>\huge</code>).  It then puts <var>title</var> on a fresh line, in boldface
+type that is still larger (size <code>\Huge</code>).  It also increments the
+<code>chapter</code> counter, adds an entry to the table of contents
+(see <a href="latex2e_25.html#Table-of-contents-etc_002e">Table of contents etc.</a>), and sets the running header
+information (see <a href="latex2e_18.html#Page-styles">Page styles</a>).
+</p>
+<p>The <code>*</code>&nbsp;form shows <var>title</var> on a fresh line, in boldface.
+But it does not show the chapter number, does not increment the
+<code>chapter</code> counter, produces no table of contents entry, and does
+not affect the running header.  (If you use the page style
+<code>headings</code> in a two-sided document then the header will be from the
+prior chapter.)  This example illustrates.
+</p>
+<div class="example">
+<pre class="example">\chapter*{Preamble}
+</pre></div>
+
+<p>The optional argument <var>toc-title</var> will appear as the chapter title
+in the table of contents (see <a href="latex2e_25.html#Table-of-contents-etc_002e">Table of contents etc.</a>) and in
+running headers (see <a href="latex2e_18.html#Page-styles">Page styles</a>).  If it is not present then
+<var>title</var> will be there.  This shows the full name in the chapter
+title,
+</p>
+<div class="example">
+<pre class="example">\chapter[Weyl]{Hermann Klaus Hugo (Peter) Weyl (1885--1955)}
+</pre></div>
+
+<p>but only &lsquo;<samp>Weyl</samp>&rsquo; on the contents page.  This puts a line break in
+the title but that doesn&rsquo;t work well with running headers so it omits
+the break in the contents
+</p>
+<div class="example">
+<pre class="example">\chapter[Given it all\\ my story]{Given it all\\ my story}
+</pre></div>
+
+<p>For determining which sectional units are numbered and which appear in
+the table of contents, the level number of a chapter is&nbsp;0
+(see <a href="#Sectioning_002fsecnumdepth">Sectioning/secnumdepth</a> and see <a href="#Sectioning_002ftocdepth">Sectioning/tocdepth</a>).
+</p>
+<a name="index-package_002c-indentfirst-1"></a>
+<a name="index-indentfirst-package-1"></a>
+
+<p>The paragraph that follows the chapter title is not indented, as is a
+standard typographical practice.  To get an indent use the package
+<samp>indentfirst</samp>.
+</p>
+<p>You can change what is shown for the chapter number.  To change it to
+something like &lsquo;<samp>Lecture 1</samp>&rsquo;, put in the preamble either
+<code>\renewcommand{\chaptername}{Lecture}</code> or this
+(see <a href="latex2e_12.html#g_t_005cmakeatletter-_0026-_005cmakeatother">\makeatletter &amp; \makeatother</a>).
+</p>
+<div class="example">
+<pre class="example">\makeatletter
+\renewcommand{\@chapapp}{Lecture}
+\makeatother
+</pre></div>
+
+<a name="index-package_002c-babel"></a>
+<a name="index-babel-package"></a>
+
+<p>To make this change because of the primary language for
+the document, see the package <samp>babel</samp>.
+</p>
+<p>In a two-sided document LaTeX puts a chapter on odd-numbered page, if
+necessary leaving an even-numbered page that is blank except for any
+running headers.  To make that page completely blank,
+see&nbsp;<a href="latex2e_10.html#g_t_005cclearpage-_0026-_005ccleardoublepage">\clearpage &amp; \cleardoublepage</a>.
+</p>
+<a name="index-package_002c-titlesec-1"></a>
+<a name="index-titlesec-package-1"></a>
+
+<p>To change the behavior of the <code>\chapter</code> command, you can copy its
+definition from the LaTeX format file and make adjustments.  But
+there are also many packages on CTAN that address this.  One is
+<samp>titlesec</samp>.  See its documentation, but the example below gives a
+sense of what it can do.
+</p>
+<div class="example">
+<pre class="example">\usepackage{titlesec}   % in preamble
+\titleformat{\chapter}
+  {\Huge\bfseries}  % format of title
+  {}                % label, such as 1.2 for a subsection
+  {0pt}             % length of separation between label and title
+  {}                % before-code hook
+</pre></div>
+
+<p>This omits the chapter number &lsquo;<samp>Chapter 1</samp>&rsquo; from the page but unlike
+<code>\chapter*</code> it keeps the chapter in the table of contents and the
+running headers.
+</p>
+
+<hr>
+<a name="g_t_005csection"></a>
+<a name="g_t_005csection-1"></a>
+<h3 class="section">6.3 <code>\section</code></h3>
+
+<a name="index-_005csection-1"></a>
+<a name="index-section-1"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\section{<var>title</var>}
+\section*{<var>title</var>}
+\section[<var>toc-title</var>]{<var>title</var>}
+</pre></div>
+
+<p>Start a section.  The standard LaTeX classes <code>article</code>,
+<code>book</code>, and <code>report</code> all have this command.
+</p>
+<p>This produces a section.
+</p>
+<div class="example">
+<pre class="example">In this Part we tend to be more interested in the function,
+in the input-output behavior,
+than in the details of implementing that behavior.
+
+\section{Turing machines}
+Despite this desire to downplay implementation,
+we follow the approach of A~Turing that the
+first step toward defining the set of computable functions
+is to reflect on the details of what mechanisms can do.
+</pre></div>
+
+<p>For the standard LaTeX classes <code>book</code> and <code>report</code> the
+default output is like &lsquo;<samp>1.2 <var>title</var></samp>&rsquo; (for chapter&nbsp;1,
+section&nbsp;2), alone on its line and flush left, in boldface and a
+larger type (the type size is <code>\Large</code>).  The same holds in
+<code>article</code> except that there are no chapters in that class so it
+looks like &lsquo;<samp>2 <var>title</var></samp>&rsquo;.
+</p>
+<p>The <code>*</code>&nbsp;form shows <var>title</var>.
+But it does not show the section number, does not increment the
+<code>section</code> counter, produces no table of contents entry, and does
+not affect the running header.  (If you use the page style
+<code>headings</code> in a two-sided document then the header will be from the
+prior section.)
+</p>
+<p>The optional argument <var>toc-title</var> will appear as the section title
+in the table of contents (see <a href="latex2e_25.html#Table-of-contents-etc_002e">Table of contents etc.</a>) and in
+running headers (see <a href="latex2e_18.html#Page-styles">Page styles</a>).  If it is not present then
+<var>title</var> will be there.  This shows the full name in the title of the
+section,
+</p>
+<div class="example">
+<pre class="example">\section[Elizabeth~II]{Elizabeth the Second,
+  by the Grace of God of the United Kingdom,
+  Canada and Her other Realms and Territories Queen,
+  Head of the Commonwealth, Defender of the Faith.}
+</pre></div>
+
+<p>but only &lsquo;<samp>Elizabeth II</samp>&rsquo; on the contents page and in the headers.
+This has a line break in <var>title</var> but that does not work with headers
+so it is omitted from the contents and headers.
+</p>
+<div class="example">
+<pre class="example">\section[Truth is, I cheated; my life story]{Truth is,
+  I cheated\\my life story}
+</pre></div>
+
+<p>For determining which sectional units are numbered and which appear in
+the table of contents, the level number of a section is&nbsp;1
+(see <a href="#Sectioning_002fsecnumdepth">Sectioning/secnumdepth</a> and see <a href="#Sectioning_002ftocdepth">Sectioning/tocdepth</a>).
+</p>
+<a name="index-package_002c-indentfirst-2"></a>
+<a name="index-indentfirst-package-2"></a>
+
+<p>The paragraph that follows the section title is not indented, as is a
+standard typographical practice.  One way to get an indent is to use the
+package <samp>indentfirst</samp>.
+</p>
+<a name="index-package_002c-titlesec-2"></a>
+<a name="index-titlesec-package-2"></a>
+
+<p>In general, to change the behavior of the <code>\section</code> command, there
+are a number of options.  One is the <code>\@startsection</code> command
+(see <a href="#g_t_005c_0040startsection">\@startsection</a>).  There are also many packages on CTAN that
+address this, including <samp>titlesec</samp>.  See the documentation but the
+example below gives a sense of what they can do.
+</p>
+<div class="example">
+<pre class="example">\usepackage{titlesec}   % in preamble
+\titleformat{\section}
+  {\normalfont\Large\bfseries}  % format of title
+  {\makebox[1pc][r]{\thesection\hspace{1pc}}} % label
+  {0pt}                   % length of separation between label and title
+  {}                      % before-code hook
+\titlespacing*{\section}
+  {-1pc}{18pt}{10pt}[10pc]
+</pre></div>
+
+<p>That puts the section number in the margin.
+</p>
+
+<hr>
+<a name="g_t_005csubsection"></a>
+<a name="g_t_005csubsection-1"></a>
+<h3 class="section">6.4 <code>\subsection</code></h3>
+
+<a name="index-_005csubsection-1"></a>
+<a name="index-subsection-1"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\subsection{<var>title</var>}
+\subsection*{<var>title</var>}
+\subsection[<var>toc-title</var>]{<var>title</var>}
+</pre></div>
+
+<p>Start a subsection.  The standard LaTeX classes <code>article</code>,
+<code>book</code>, and <code>report</code> all have this command.
+</p>
+<p>This produces a subsection.
+</p>
+<div class="example">
+<pre class="example">We will show that there are more functions than Turing machines and that
+therefore some functions have no associated machine.
+
+\subsection{Cardinality} We will begin with two paradoxes that
+dramatize the challenge to our intuition posed by comparing the sizes of
+infinite sets.
+</pre></div>
+
+<p>For the standard LaTeX classes <code>book</code> and <code>report</code> the
+default output is like &lsquo;<samp>1.2.3 <var>title</var></samp>&rsquo; (for chapter&nbsp;1,
+section&nbsp;2, subsection&nbsp;3), alone on its line and flush left, in
+boldface and a larger type (the type size is <code>\large</code>).  The same
+holds in <code>article</code> except that there are no chapters in that class
+so it looks like &lsquo;<samp>2.3 <var>title</var></samp>&rsquo;.
+</p>
+<p>The <code>*</code>&nbsp;form shows <var>title</var>.
+But it does not show the section number, does not increment the
+<code>section</code> counter, and produces no table of contents entry.
+</p>
+<p>The optional argument <var>toc-title</var> will appear as the section title
+in the table of contents (see <a href="latex2e_25.html#Table-of-contents-etc_002e">Table of contents etc.</a>).  If it is
+not present then <var>title</var> will be there.  This shows the full name in
+the title of the section,
+</p>
+<div class="example">
+<pre class="example">\subsection[$\alpha,\beta,\gamma$ paper]{\textit{The Origin of
+  Chemical Elements} by R.A.~Alpher, H.~Bethe, and G.~Gamow}
+</pre></div>
+
+<p>but only &lsquo;<samp>&#x03B1;,&#x03B2;,&#x03B3;
+paper</samp>&rsquo; on the contents page.
+</p>
+<p>For determining which sectional units are numbered and which appear in
+the table of contents, the level number of a subsection is&nbsp;2
+(see <a href="#Sectioning_002fsecnumdepth">Sectioning/secnumdepth</a> and see <a href="#Sectioning_002ftocdepth">Sectioning/tocdepth</a>).
+</p>
+<a name="index-package_002c-indentfirst-3"></a>
+<a name="index-indentfirst-package-3"></a>
+
+<p>The paragraph that follows the subsection title is not indented, as is a
+standard typographical practice.  One way to get an indent is to use the
+package <samp>indentfirst</samp>.
+</p>
+<a name="index-package_002c-titlesec-3"></a>
+<a name="index-titlesec-package-3"></a>
+
+<p>There are a number of ways to change the behavior of the
+<code>\subsection</code> command.  One is the <code>\@startsection</code> command
+(see <a href="#g_t_005c_0040startsection">\@startsection</a>).  There are also many packages on CTAN that
+address this, including <samp>titlesec</samp>.  See the documentation but the
+example below gives a sense of what they can do.
+</p>
+<div class="example">
+<pre class="example">\usepackage{titlesec}   % in preamble
+\titleformat{\subsection}[runin]
+  {\normalfont\normalsize\bfseries}  % format of the title
+  {\thesubsection}                   % label
+  {0.6em}                            % space between label and title
+  {}                                 % before-code hook
+</pre></div>
+
+<p>That puts the subsection number and <var>title</var> in the first line of
+text.
+</p>
+
+<hr>
+<a name="g_t_005csubsubsection-_0026-_005cparagraph-_0026-_005csubparagraph"></a>
+
+<a name="g_t_005csubsubsection_002c-_005cparagraph_002c-_005csubparagraph"></a>
+<h3 class="section">6.5 <code>\subsubsection</code>, <code>\paragraph</code>, <code>\subparagraph</code></h3>
+
+<a name="index-_005csubsubsection"></a>
+<a name="index-subsubsection"></a>
+<a name="index-_005cparagraph-1"></a>
+<a name="index-paragraph-1"></a>
+<a name="index-_005csubparagraph-1"></a>
+<a name="index-subparagraph-1"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\subsubsection{<var>title</var>}
+\subsubsection*{<var>title</var>}
+\subsubsection[<var>toc-title</var>]{<var>title</var>}
+</pre></div>
+
+<p>or one of:
+</p>
+<div class="example">
+<pre class="example">\paragraph{<var>title</var>}
+\paragraph*{<var>title</var>}
+\paragraph[<var>toc-title</var>]{<var>title</var>}
+</pre></div>
+
+<p>or one of:
+</p>
+<div class="example">
+<pre class="example">\subparagraph{<var>title</var>}
+\subparagraph*{<var>title</var>}
+\subparagraph[<var>toc-title</var>]{<var>title</var>}
+</pre></div>
+
+<p>Start a subsubsection, paragraph, or subparagraph.  The standard
+LaTeX classes <code>article</code>, <code>book</code>, and <code>report</code> all have
+these commands, although they are not commonly used.
+</p>
+<p>This produces a subsubsection.
+</p>
+<div class="example">
+<pre class="example">\subsubsection{Piston ring compressors: structural performance}
+Provide exterior/interior wall cladding assemblies
+capable of withstanding the effects of load and stresses from 
+consumer-grade gasoline engine piston rings.
+</pre></div>
+
+<p>The default output of each of the three does not change over the
+standard LaTeX classes <code>article</code>, <code>book</code>, and
+<code>report</code>.  For <code>\subsubsection</code> the <var>title</var> is alone on
+its line, in boldface and normal size type.  For <code>\paragraph</code> the
+<var>title</var> is inline with the text, not indented, in boldface and
+normal size type.  For <code>\subparagraph</code> the <var>title</var> is inline
+with the text, with a paragraph indent, in boldface and normal size type
+(Because an <code>article</code> has no chapters its subsubsections are
+numbered and so it looks like &lsquo;<samp>1.2.3 <var>title</var></samp>&rsquo;, for
+section&nbsp;1, subsection&nbsp;2, and subsubsection&nbsp;3.  The other
+two divisions are not numbered.)
+</p>
+<p>The <code>*</code>&nbsp;form shows <var>title</var>.  But it does not increment the
+associated counter and produces no table of contents entry (and does not
+show the number for <code>\subsubsection</code>).
+</p>
+<p>The optional argument <var>toc-title</var> will appear as the division title
+in the table of contents (see <a href="latex2e_25.html#Table-of-contents-etc_002e">Table of contents etc.</a>).  If it is
+not present then <var>title</var> will be there.
+</p>
+<p>For determining which sectional units are numbered and which appear in
+the table of contents, the level number of a subsubsection is&nbsp;3, of
+a paragraph is&nbsp;4, and of a subparagraph is&nbsp;5
+(see <a href="#Sectioning_002fsecnumdepth">Sectioning/secnumdepth</a> and see <a href="#Sectioning_002ftocdepth">Sectioning/tocdepth</a>).
+</p>
+<a name="index-package_002c-indentfirst-4"></a>
+<a name="index-indentfirst-package-4"></a>
+
+<p>The paragraph that follows the subsubsection title is not indented, as is a
+standard typographical practice.  One way to get an indent is to use the
+package <samp>indentfirst</samp>.
+</p>
+<a name="index-package_002c-titlesec-4"></a>
+<a name="index-titlesec-package-4"></a>
+
+<p>There are a number of ways to change the behavior of the these commands.
+One is the <code>\@startsection</code> command (see <a href="#g_t_005c_0040startsection">\@startsection</a>).
+There are also many packages on CTAN that address this, including
+<samp>titlesec</samp>.  See the documentation on CTAN.
+</p>
+
+<hr>
+<a name="g_t_005cappendix"></a>
+
+<a name="g_t_005cappendix-1"></a>
+<h3 class="section">6.6 <code>\appendix</code></h3>
+
+<a name="index-_005cappendix"></a>
+<a name="index-appendix"></a>
+<a name="index-appendices"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\appendix
+</pre></div>
+
+<p>This does not directly produce any output.  But in a book or report it
+declares that subsequent <code>\chapter</code> commands start an appendix.  In
+an article it does the same, for <code>\section</code> commands.  It also
+resets the <code>chapter</code> and <code>section</code> counters to&nbsp;0 in a
+book or report, and in an article resets the <code>section</code> and
+<code>subsection</code> counters.
+</p>
+<p>In this book
+</p>
+<div class="example">
+<pre class="example">\chapter{One}  ...
+\chapter{Two}  ...
+ ...
+\appendix
+\chapter{Three}  ...
+\chapter{Four}  ...
+</pre></div>
+
+<p>the first two will generate output numbered &lsquo;<samp>Chapter 1</samp>&rsquo; and
+&lsquo;<samp>Chapter 2</samp>&rsquo;.  After the <code>\appendix</code> the numbering will be
+&lsquo;<samp>Appendix A</samp>&rsquo; and &lsquo;<samp>Appendix B</samp>&rsquo;.  See <a href="latex2e_29.html#Larger-book-template">Larger book template</a>
+for another example.
+</p>
+<a name="index-package_002c-appendix"></a>
+<a name="index-appendix-package"></a>
+<p>The <samp>appendix</samp> package adds the command
+<code>\appendixpage</code> to put a separate &lsquo;<samp>Appendices</samp>&rsquo; in the document
+body before the first appendix, and the command <code>\addappheadtotoc</code>
+to do the same in the table of contents.  You can reset the name
+&lsquo;<samp>Appendix</samp>&rsquo; with a command like
+<code>\renewcommand{\appendixname}{Specification}</code>, as well as a
+number of other features.  See the documentation on CTAN.
+</p>
+
+<hr>
+<a name="g_t_005cfrontmatter-_0026-_005cmainmatter-_0026-_005cbackmatter"></a>
+
+<a name="g_t_005cfrontmatter_002c-_005cmainmatter_002c-_005cbackmatter"></a>
+<h3 class="section">6.7 <code>\frontmatter</code>, <code>\mainmatter</code>, <code>\backmatter</code></h3>
+
+<a name="index-_005cfrontmatter"></a>
+<a name="index-book_002c-front-matter"></a>
+<a name="index-_005cmainmatter"></a>
+<a name="index-book_002c-main-matter"></a>
+<a name="index-_005cbackmatter"></a>
+<a name="index-book_002c-back-matter"></a>
+<a name="index-book_002c-end-matter"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\frontmatter
+\mainmatter
+\backmatter
+</pre></div>
+
+<p>Format a <code>book</code> class document differently according to which part
+of the document is being produced.  All three commands are optional.
+</p>
+<p>Traditionally, a book&rsquo;s front matter contains such things as the title
+page, an abstract, a table of contents, a preface, a list of notations,
+a list of figures, and a list of tables.  (Some of these front matter
+pages, such as the title page, are traditionally not numbered.)  The
+back matter may contain such things as a glossary, notes, a
+bibliography, and an index.
+</p>
+<p>The <code>\frontmatter</code> declaration makes the pages numbered in
+lowercase roman, and makes chapters not numbered, although each
+chapter&rsquo;s title appears in the table of contents; if you use other
+sectioning commands here, use the <code>*</code>-version (see <a href="#Sectioning">Sectioning</a>).
+The <code>\mainmatter</code> changes the behavior back to the expected
+version, and resets the page number.  The <code>\backmatter</code> leaves the
+page numbering alone but switches the chapters back to being not
+numbered.  See <a href="latex2e_29.html#Larger-book-template">Larger book template</a> for an example using the three.
+</p>
+
+<hr>
+<a name="g_t_005c_0040startsection"></a>
+<a name="g_t_005c_0040startsection-1"></a>
+<h3 class="section">6.8 <code>\@startsection</code></h3>
+
+<a name="index-_005c_0040startsection"></a>
+<a name="index-section_002c-redefining"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\@startsection{<var>name</var>}{<var>level</var>}{<var>indent</var>}{<var>beforeskip</var>}{<var>afterskip</var>}{<var>style</var>}
+</pre></div>
+
+<p>Used to help redefine the behavior of commands that start sectioning
+divisions such as <code>\section</code> or <code>\subsection</code>.
+</p>
+<p>Note that the <samp>titlesec</samp> package makes manipulation of sectioning
+easier.  Further, while most requirements for sectioning commands can be
+satisfied with <code>\@startsection</code>, some cannot.  For instance, in
+the standard LaTeX <code>book</code> and <code>report</code> classes the commands
+<code>\chapter</code> and <code>\report</code> are not constructed in this way.  To
+make such a command you may want to use the <code>\secdef</code> command.
+</p>
+<p>Technically, <code>\@startsection</code> has the form
+</p>
+<div class="example">
+<pre class="example">\@startsection{<var>name</var>}
+  {<var>level</var>}
+  {<var>indent</var>}
+  {<var>beforeskip</var>}
+  {<var>afterskip</var>}
+  {<var>style</var>}*[<var>toctitle</var>]{<var>title</var>}
+</pre></div>
+
+<p>so that issuing
+</p>
+<div class="example">
+<pre class="example">\renewcommand{\section}{\@startsection{<var>name</var>}
+  {<var>level</var>}
+  {<var>indent</var>}
+  {<var>beforeskip</var>}
+  {<var>afterskip</var>}
+  {<var>style</var>}}
+</pre></div>
+
+<p>redefines <code>\section</code> to have the form
+<code>\section*[<var>toctitle</var>]{<var>title</var>}</code> (here too, the
+star&nbsp;<code>*</code> is optional).  See <a href="#Sectioning">Sectioning</a>.  This implies that
+when you write a command like <code>\renewcommand{section}{...}</code>,
+the <code>\@startsection{...}</code> must come last in the definition.  See
+the examples below.
+</p>
+<dl compact="compact">
+<dt><var>name</var></dt>
+<dd><a name="startsection-name"></a><a name="g_t_005c_0040startsection_002fname"></a><p>Name of the counter used to number the sectioning header.  This counter
+must be defined separately.  Most commonly this is either
+<code>section</code>, <code>subsection</code>, or <code>paragraph</code>.  Although in
+those cases the counter name is the same as the sectioning command
+itself, you don&rsquo;t have to use the same name.
+</p>
+<p>Then <code>\the</code><var>name</var> displays the title number and
+<code>\</code><var>name</var><code>mark</code> is for the page headers.  See the third
+example below.
+</p>
+</dd>
+<dt><var>level</var></dt>
+<dd><a name="startsection-level"></a><a name="g_t_005c_0040startsection_002flevel"></a><p>An integer giving the depth of the sectioning command.
+See <a href="#Sectioning">Sectioning</a> for the list of standard level numbers.
+</p>
+<p>If <var>level</var> is less than or equal to the value of the counter
+<code>secnumdepth</code> then titles for this sectioning command will be
+numbered (see <a href="#Sectioning_002fsecnumdepth">Sectioning/secnumdepth</a>).  For instance, if
+<code>secnumdepth</code> is 1 in an <code>article</code> then the command
+<code>\section{Introduction}</code> will produce output like &ldquo;1
+Introduction&rdquo; while <code>\subsection{Discussion}</code> will produce
+output like &ldquo;Discussion&rdquo;, without the number prefix.
+</p>
+<p>If <var>level</var> is less than or equal to the value of the counter
+<var>tocdepth</var> then the table of contents will have an entry for this
+sectioning unit (see <a href="#Sectioning_002ftocdepth">Sectioning/tocdepth</a>).  For instance, in an
+<code>article</code>, if <var>tocdepth</var> is 1 then the table of contents will
+list sections but not subsections.
+</p>
+</dd>
+<dt><var>indent</var></dt>
+<dd><a name="startsection-indent"></a><a name="g_t_005c_0040startsection_002findent"></a><p>A length giving the indentation of all of the title lines with respect
+to the left margin.  To have the title flush with the margin use
+<code>0pt</code>.  A negative indentation such as <code>-\parindent</code> will move
+the title into the left margin.
+</p>
+</dd>
+<dt><var>beforeskip</var></dt>
+<dd><a name="startsection-beforeskip"></a><a name="g_t_005c_0040startsection_002fbeforeskip"></a><p>The absolute value of this length is the amount of vertical space that
+is inserted before this sectioning unit&rsquo;s title.  This space will be
+discarded if the sectioning unit happens to start at the top of a fresh
+page.  If this number is negative then the first paragraph following the
+header is not indented, if it is non-negative then the first paragraph
+is indented.  (Note that the negative of <code>1pt plus 2pt minus 3pt</code>
+is <code>-1pt plus -2pt minus -3pt</code>.)
+</p>
+<p>For example, if <var>beforeskip</var> is <code>-3.5ex plus -1ex minus -0.2ex</code>
+then to start the new sectioning unit, LaTeX will add about 3.5 times
+the height of a letter x in vertical space, and the first paragraph in
+the section will not be indented.  Using a rubber length, with
+<code>plus</code> and <code>minus</code>, is good practice here since it gives
+LaTeX more flexibility in making up the page (see <a href="latex2e_14.html#Lengths">Lengths</a>).
+</p>
+<p>The full accounting of the vertical space between the baseline of the
+line prior to this sectioning unit&rsquo;s header and the baseline of the
+header is that it is the sum of the <code>\parskip</code> of the text font,
+the <code>\baselineskip</code> of the title font, and the absolute value of
+the <var>beforeskip</var>.  This space is typically rubber so it may stretch
+or shrink.  (If the sectioning unit starts on a fresh page so that the
+vertical space is discarded then the baseline of the header text will be
+where LaTeX would put the baseline of the first text line on that
+page.)
+</p>
+</dd>
+<dt><var>afterskip</var></dt>
+<dd><a name="startsection-afterskip"></a><a name="g_t_005c_0040startsection_002fafterskip"></a><p>This is a length.  If <var>afterskip</var> is non-negative then this is the
+vertical space inserted after the sectioning unit&rsquo;s title header.  If it
+is negative then the title header becomes a run-in header, so that it
+becomes part of the next paragraph.  In this case the absolute value of
+the length gives the horizontal space between the end of the title and
+the beginning of the following paragraph.  (Note that the negative of
+<code>1pt plus 2pt minus 3pt</code> is <code>-1pt plus -2pt minus -3pt</code>.)
+</p>
+<p>As with <var>beforeskip</var>, using a rubber length, with <code>plus</code> and
+<code>minus</code> components, is good practice here since it gives LaTeX
+more flexibility in putting together the page.
+</p>
+<p>If <code>afterskip</code> is non-negative then the full accounting of the
+vertical space between the baseline of the sectioning unit&rsquo;s header and
+the baseline of the first line of the following paragraph is that it is
+the sum of the <code>\parskip</code> of the title font, the
+<code>\baselineskip</code> of the text font, and the value of <var>after</var>.
+That space is typically rubber so it may stretch or shrink.  (Note that
+because the sign of <code>afterskip</code> changes the sectioning unit
+header&rsquo;s from standalone to run-in, you cannot use a negative
+<code>afterskip</code> to cancel part of the <code>\parskip</code>.)
+</p>
+</dd>
+<dt><var>style</var></dt>
+<dd><a name="startsection-style"></a><a name="g_t_005c_0040startsection_002fstyle"></a><p>Controls the styling of the title.  See the examples below.  Typical
+commands to use here are <code>\centering</code>, <code>\raggedright</code>,
+<code>\normalfont</code>, <code>\hrule</code>, or <code>\newpage</code>.  The last command
+in <var>style</var> may be one that takes one argument, such as
+<code>\MakeUppercase</code> or <code>\fbox</code> that takes one argument.  The
+section title will be supplied as the argument to this command. For
+instance, setting <var>style</var> to <code>\bfseries\MakeUppercase</code> would
+produce titles that are bold and uppercase.
+</p></dd>
+</dl>
+
+<p>These are LaTeX&rsquo;s defaults for the first three sectioning units that
+are defined with <code>\@startsection</code>, for the <samp>article</samp>,
+<samp>book</samp>, and <samp>report</samp> classes.  For section, the <var>level</var> is
+1, the <var>indent</var> is 0pt, the <var>beforeskip</var> is <code>-3.5ex
+plus -1ex minus -0.2ex</code>, the <var>afterskip</var> is <code>2.3ex plus 0.2ex</code>,
+and the <var>style</var> is <code>\normalfont\Large\bfseries</code>.  For
+subsection, the <var>level</var> is 2, the <var>indent</var> is 0pt, the
+<var>beforeskip</var> is <code>-3.25ex plus -1ex minus -0.2ex</code>, the
+<var>afterskip</var> is <code>1.5ex plus 0.2ex</code>, and the <var>style</var> is
+<code>\normalfont\large\bfseries</code>.  For subsubsection, the <var>level</var>
+is 3, the <var>indent</var> is 0pt, the <var>beforeskip</var> is
+<code>-3.25ex plus -1ex minus -0.2ex</code>, the <var>afterskip</var> is
+<code>1.5ex plus 0.2ex</code>, and the <var>style</var> is
+<code>\normalfont\normalsize\bfseries</code>.
+</p>
+<p>Here are examples.  They go either in a package or class file or in the
+preamble of a LaTeX document.  If you put them in the preamble they
+must go between a <code>\makeatletter</code> command and a
+<code>\makeatother</code>.  (Probably the error message <code>You can't use
+`\spacefactor' in vertical mode.</code>  means that you forgot this.)
+See <a href="latex2e_12.html#g_t_005cmakeatletter-_0026-_005cmakeatother">\makeatletter &amp; \makeatother</a>.
+</p>
+<p>This will put section titles in large boldface type, centered.  It says
+<code>\renewcommand</code> because LaTeX&rsquo;s standard classes have already
+defined a <code>\section</code>.  For the same reason it does not define a
+<code>section</code> counter, or the commands <code>\thesection</code> and
+<code>\l@section</code>.
+</p>
+<div class="example">
+<pre class="example">\renewcommand\section{%
+  \@startsection{section}% <a href="#g_t_005c_0040startsection_002fname"><var>name</var></a>
+    {1}% <a href="#g_t_005c_0040startsection_002flevel"><var>level</var></a>
+    {0pt}% <a href="#g_t_005c_0040startsection_002findent"><var>indent</var></a>
+    {-3.5ex plus -1ex minus -.2ex}% <a href="#g_t_005c_0040startsection_002fbeforeskip"><var>beforeskip</var></a>
+    {2.3ex plus.2ex}% <a href="#g_t_005c_0040startsection_002fafterskip"><var>afterskip</var></a>
+    {\centering\normalfont\Large\bfseries}% <a href="#g_t_005c_0040startsection_002fstyle"><var>style</var></a>
+  }
+</pre></div>
+
+<p>This will put <code>subsection</code> titles in small caps type, inline with the paragraph.
+</p>
+<div class="example">
+<pre class="example">\renewcommand\subsection{%
+  \@startsection{subsection}%  <a href="#g_t_005c_0040startsection_002fname"><var>name</var></a>
+    {2}% <a href="#g_t_005c_0040startsection_002flevel"><var>level</var></a>
+    {0em}% <a href="#g_t_005c_0040startsection_002findent"><var>indent</var></a>
+    {-1ex plus 0.1ex minus -0.05ex}% <a href="#g_t_005c_0040startsection_002fbeforeskip"><var>beforeskip</var></a>
+    {-1em plus 0.2em}% <a href="#g_t_005c_0040startsection_002fafterskip"><var>afterskip</var></a>
+    {\scshape}% <a href="#g_t_005c_0040startsection_002fstyle"><var>style</var></a>
+  }
+</pre></div>
+
+<p>The prior examples redefined existing sectional unit title commands.
+This defines a new one, illustrating the needed counter and macros to
+display that counter.
+</p>
+<div class="example">
+<pre class="example">\setcounter{secnumdepth}{6}% show counters this far down
+\newcounter{subsubparagraph}[subparagraph]% counter for numbering
+\renewcommand{\thesubsubparagraph}%               how to display 
+  {\thesubparagraph.\@arabic\c@subsubparagraph}%  numbering
+\newcommand{\subsubparagraph}{\@startsection
+                         {subsubparagraph}%
+                         {6}%
+                         {0em}%
+                         {\baselineskip}%
+                         {0.5\baselineskip}%
+                         {\normalfont\normalsize}}
+\newcommand*\l@subsubparagraph{\@dottedtocline{6}{10em}{5em}}% for toc
+\newcommand{\subsubparagraphmark}[1]{}% for page headers
+</pre></div>
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005cfrontmatter-_0026-_005cmainmatter-_0026-_005cbackmatter" accesskey="p" rel="prev">\frontmatter &amp; \mainmatter &amp; \backmatter</a>, Up: <a href="#Sectioning" accesskey="u" rel="up">Sectioning</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

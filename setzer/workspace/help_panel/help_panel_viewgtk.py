@@ -31,6 +31,12 @@ class HelpPanelView(Gtk.VBox):
         self.action_bar = Gtk.HBox()
         self.action_bar.set_size_request(-1, 37)
 
+        self.home_button = Gtk.Button.new_from_icon_name('go-home-symbolic', Gtk.IconSize.MENU)
+        self.home_button.set_tooltip_text(_('Find'))
+        self.home_button.get_style_context().add_class('flat')
+        self.home_button.set_can_focus(False)
+        self.action_bar.pack_start(self.home_button, False, False, 0)
+
         self.up_button = Gtk.Button.new_from_icon_name('go-up-symbolic', Gtk.IconSize.MENU)
         self.up_button.set_tooltip_text(_('Find'))
         self.up_button.get_style_context().add_class('flat')

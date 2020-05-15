@@ -22,6 +22,6 @@ class HelpPanelPresenter(object):
         self.help_panel = help_panel
         self.view = view
 
-        self.view.content.load_uri(self.help_panel.uri)
+        self.view.content.load_uri(self.help_panel.home_uri)
 
 

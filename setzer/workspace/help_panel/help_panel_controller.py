@@ -35,6 +35,7 @@ class HelpPanelController(object):
         self.view.back_button.connect('clicked', self.on_back_button_clicked)
         self.view.next_button.connect('clicked', self.on_next_button_clicked)
         self.view.up_button.connect('clicked', self.on_up_button_clicked)
+        self.view.home_button.connect('clicked', self.on_home_button_clicked)
 
     def on_back_button_clicked(self, button):
         self.view.content.go_back()
@@ -43,10 +44,13 @@ class HelpPanelController(object):
         self.view.content.go_forward()
 
     def on_up_button_clicked(self, button):
-        if self.view.content.get_uri() != self.help_panel.uri + '#':
-            self.view.content.load_uri(self.help_panel.uri + '#')
+        if self.view.content.get_uri() != self.help_panel.current_uri + '#':
+            self.view.content.load_uri(self.help_panel.current_uri + '#')
         else:
-            self.view.content.load_uri(self.help_panel.uri + '#top')
+            self.view.content.load_uri(self.help_panel.current_uri + '#top')
+
+    def on_home_button_clicked(self, button):
+        self.view.content.load_uri(self.help_panel.home_uri)
 
     def on_back_forward_list_changed(self, back_forward_list, item_added=None, items_removed=None):
         self.view.back_button.set_sensitive(self.view.content.can_go_back())
@@ -58,8 +62,8 @@ class HelpPanelController(object):
         ra = WebKit2.PolicyDecisionType.RESPONSE
         if decision_type == na or decision_type == nwa:
             uri = decision.get_navigation_action().get_request().get_uri()
-            if uri.startswith(self.help_panel.uri):
-                return False
+            if uri.startswith(self.help_panel.path):
+                self.help_panel.current_uri = uri.split('#')[0]
             else:
                 webbrowser.open_new_tab(uri)
                 decision.ignore()

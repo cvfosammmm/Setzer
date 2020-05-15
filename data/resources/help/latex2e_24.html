@@ -1,0 +1,389 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Splitting the input (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Splitting the input (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Splitting the input (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_25.html#Front_002fback-matter" rel="next" title="Front/back matter">
+<link href="latex2e_23.html#g_t_005ctoday" rel="prev" title="\today">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Splitting-the-input"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_25.html#Front_002fback-matter" accesskey="n" rel="next">Front/back matter</a>, Previous: <a href="latex2e_23.html#Special-insertions" accesskey="p" rel="prev">Special insertions</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Splitting-the-input-1"></a>
+<h2 class="chapter">24 Splitting the input</h2>
+
+<a name="index-splitting-the-input-file"></a>
+<a name="index-input-file"></a>
+
+<p>LaTeX lets you split a large document into several smaller ones.
+This can simplify editing or allow multiple authors to work on the
+document.  It can also speed processing.
+</p>
+<p>Regardless of how many separate files you use, there is always one
+<a name="index-root-file"></a>
+<a name="index-file_002c-root"></a>
+<em>root file</em>, on which LaTeX compilation starts.  This shows such
+a file with five included files.
+</p>
+<div class="example">
+<pre class="example">\documentclass{book}
+\includeonly{  % comment out lines below to omit compiling
+  pref,
+  chap1,
+  chap2,
+  append,
+  bib
+  }
+\begin{document}
+\frontmatter
+\include{pref} 
+\mainmatter
+\include{chap1} 
+\include{chap2}
+\appendix
+\include{append}
+\backmatter
+\include{bib} 
+\end{document}
+</pre></div>
+
+<p>This will bring in material from <samp>pref.tex</samp>, <samp>chap1.tex</samp>,
+<samp>chap2.tex</samp>, <samp>append.tex</samp>, and <samp>bib.tex</samp>.  If you compile
+this file, and then comment out all of the lines inside
+<code>\includeonly{...}</code> except for <code>chap1,</code> and compile again,
+then LaTeX will only process the material in the first chapter.
+Thus, your output will appear more quickly and be shorter to print.
+However, the advantage of the <code>\includeonly</code> command is that
+LaTeX will retain the page numbers and all of the cross reference
+information from the other parts of the document so these will appear in
+your output correctly.
+</p>
+<p>See <a href="latex2e_29.html#Larger-book-template">Larger book template</a> for another example of <code>\includeonly</code>.
+</p>
+
+
+
+<hr>
+<a name="g_t_005cendinput"></a>
+<a name="g_t_005cendinput-1"></a>
+<h3 class="section">24.1 <code>\endinput</code></h3>
+
+<a name="index-_005cendinput"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\endinput
+</pre></div>
+
+<p>When you <code>\include{filename}</code>, inside <samp>filename.tex</samp> the
+material after <code>\endinput</code> will not be included.  This command is
+optional; if <samp>filename.tex</samp> has no <code>\endinput</code> then LaTeX
+will read all of the file.
+</p>
+<p>For example, suppose that a document&rsquo;s root file has
+<code>\input{chap1}</code> and this is <samp>chap1.tex</samp>.
+</p>
+<div class="example">
+<pre class="example">\chapter{One}
+This material will appear in the document. 
+\endinput
+This will not appear.
+</pre></div>
+
+<p>This can be useful for putting documentation or comments at the end of a
+file, or for avoiding junk characters that can be added during mailing.
+It is also useful for debugging: one strategy to localize errors is to
+put <code>\endinput</code> halfway through the included file and see if the
+error disappears.  Now, knowing which half contains the error, moving
+<code>\endinput</code> to halfway through that area further narrows down the
+location. This process rapidly finds the offending line.
+</p>
+<p>After reading <code>\endinput</code>, LaTeX continues to read to the end of
+the line, so something can follow this command and be read nonetheless.
+This allows you, for instance, to close an <code>\if...</code> with a
+<code>\fi</code>.
+</p>
+
+<hr>
+<a name="g_t_005cinclude-_0026-_005cincludeonly"></a>
+<a name="g_t_005cinclude-_0026-_005cincludeonly-1"></a>
+<h3 class="section">24.2 <code>\include</code> &amp; <code>\includeonly</code></h3>
+
+<a name="index-_005cinclude"></a>
+<a name="index-_005cincludeonly"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\includeonly{  % in document preamble
+  ...
+  <var>filename</var>,
+  ...
+  }
+  ...
+\include{<var>filename</var>}  % in document body 
+</pre></div>
+
+<p>Bring material from the external file <samp><var>filename</var>.tex</samp> into a
+LaTeX document.
+</p>
+<p>The <code>\include</code> command does three things: it executes
+<code>\clearpage</code> (see <a href="latex2e_10.html#g_t_005cclearpage-_0026-_005ccleardoublepage">\clearpage &amp; \cleardoublepage</a>), then it
+inputs the material from <samp><var>filename</var>.tex</samp> into the document,
+and then it does another <code>\clearpage</code>.  This command can only
+appear in the document body.  The <code>\includeonly</code> command controls
+which files will be read by LaTeX under subsequent <code>\include</code>
+commands.  Its list of filenames is comma-separated, and it can only
+appear in the preamble.
+</p>
+<p>This example root document, <samp>constitution.tex</samp>, brings in
+three files, <samp>preamble.tex</samp>, <samp>articles.tex</samp>, and
+<samp>amendments.tex</samp>.
+</p>
+<div class="example">
+<pre class="example">\documentclass{book}
+\includeonly{
+  preamble,
+  articles,
+  amendments
+  }
+\begin{document}
+\include{preamble}
+\include{articles}
+\include{amendments}
+\end{document}
+</pre></div>
+
+<p>The file <samp>preamble.tex</samp> contains no special code; you have just
+excerpted the chapter from <samp>consitution.tex</samp> and put it in a
+separate file just for editing convenience.
+</p>
+<div class="example">
+<pre class="example">\chapter{Preamble}
+We the People of the United States,
+in Order to form a more perfect Union, ...
+</pre></div>
+
+<p>Running LaTeX on <samp>constitution.tex</samp> makes the material from the
+three files appear in the document but also generates the auxiliary
+files <samp>preamble.aux</samp>, <samp>articles.aux</samp>, and
+<samp>amendments.tex</samp>. These contain information such as page numbers
+and cross-references (see <a href="latex2e_7.html#Cross-references">Cross references</a>).  If you now comment out
+<code>\includeonly</code>&rsquo;s lines with <code>preamble</code> and <code>amendments</code>
+and run LaTeX again then the resulting document shows only the
+material from <samp>articles.tex</samp>, not the material from
+<samp>preamble.tex</samp> or <samp>amendments.tex</samp>.  Nonetheless, all of the
+auxiliary information from the omitted files is still there, including
+the starting page number of the chapter.
+</p>
+<p>If the document preamble does not have <code>\includeonly</code> then
+LaTeX will include all the files you call for with <code>\include</code>
+commands.
+</p>
+<p>The <code>\include</code> command makes a new page.  To avoid that, see
+<a href="#g_t_005cinput">\input</a> (which, however, does not retain the auxiliary
+information).
+</p>
+<p>See <a href="latex2e_29.html#Larger-book-template">Larger book template</a> for another example using <code>\include</code>
+and <code>\includeonly</code>.  That example also uses <code>\input</code> for some
+material that will not necessarily start on a new page.
+</p>
+<p>File names can involve paths.
+</p>
+<div class="example">
+<pre class="example">\documentclass{book}
+\includeonly{
+  chapters/chap1,
+  }
+\begin{document}
+\include{chapters/chap1}
+\end{document}
+</pre></div>
+
+<p>To make your document portable across distributions and platforms you
+should avoid spaces in the file names. The tradition is to instead use
+dashes or underscores.  Nevertheless, for the name &lsquo;<samp>amo amas amat</samp>&rsquo;,
+this works under TeX Live on GNU/Linux:
+</p>
+<div class="example">
+<pre class="example">\documentclass{book}
+\includeonly{
+  &quot;amo\space amas\space amat&quot;
+  }
+\begin{document}
+\include{&quot;amo\space amas\space amat&quot;}
+\end{document}
+</pre></div>
+
+<p>and this works under MiKTeX on Windows:
+</p>
+<div class="example">
+<pre class="example">\documentclass{book}
+\includeonly{
+  {&quot;amo amas amat&quot;}
+  }
+\begin{document}
+\include{{&quot;amo amas amat&quot;}}
+\end{document}
+</pre></div>
+
+<a name="index-nested-_005cinclude_002c-not-allowed"></a>
+<p>You cannot use <code>\include</code> inside a file that is being included or
+you get &lsquo;<samp>LaTeX Error: \include cannot be nested.</samp>&rsquo;  The
+<code>\include</code> command cannot appear in the document preamble; you will
+get &lsquo;<samp>LaTeX Error: Missing \begin{document}</samp>&rsquo;.
+</p>
+<p>If a file that you <code>\include</code> does not exist, for instance if you
+<code>\include{athiesm}</code> but you meant <code>\include{atheism}</code>,
+then LaTeX does not give you an error but will warn you &lsquo;<samp>No file
+athiesm.tex.</samp>&rsquo;  (It will also create <samp>athiesm.aux</samp>.)
+</p>
+<p>If you <code>\include</code> the root file in itself then you first get
+&lsquo;<samp>LaTeX Error: Can be used only in preamble.</samp>&rsquo;  Later runs get
+&lsquo;<samp>TeX capacity exceeded, sorry [text input levels=15]</samp>&rsquo;.  To fix
+this, you must remove the inclusion <code>\include{root}</code> but also
+delete the file <samp><var>root</var>.aux</samp> and rerun LaTeX.
+</p>
+
+<hr>
+<a name="g_t_005cinput"></a>
+<a name="g_t_005cinput-1"></a>
+<h3 class="section">24.3 <code>\input</code></h3>
+
+<a name="index-_005cinput"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\input{<var>filename</var>}
+</pre></div>
+
+<p>LaTeX processes the file as if its contents were inserted in the
+current file.  For a more sophisticated inclusion mechanism see
+<a href="#g_t_005cinclude-_0026-_005cincludeonly">\include &amp; \includeonly</a>.
+</p>
+<p>If <var>filename</var> does not end in &lsquo;<samp>.tex</samp>&rsquo; then LaTeX first tries
+the filename with that extension; this is the usual case.  If
+<var>filename</var> ends with &lsquo;<samp>.tex</samp>&rsquo; then LaTeX looks for the
+filename as it is.
+</p>
+<p>For example, this
+</p>
+<div class="example">
+<pre class="example">\input{macros}
+</pre></div>
+
+<p>will cause LaTeX to first look for <samp>macros.tex</samp>. If it finds
+that file then it processes its contents as thought they had been
+copy-pasted in.  If there is no file of the name <samp>macros.tex</samp> then
+LaTeX tries the name <samp>macros</samp>, without an extension. (This may
+vary by distribution.)
+</p>
+<p>To make your document portable across distributions and platforms you
+should avoid spaces in the file names. The tradition is to instead use
+dashes or underscores.  Nevertheless, for the name &lsquo;<samp>amo amas amat</samp>&rsquo;,
+this works under TeX Live on GNU/Linux:
+</p>
+<div class="example">
+<pre class="example">\input{&quot;amo\space amas\space amat&quot;}
+</pre></div>
+
+<p>and this works under MiKTeX on Windows:
+</p>
+<div class="example">
+<pre class="example">\input{{&quot;amo amas amat&quot;}}
+</pre></div>
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005cinclude-_0026-_005cincludeonly" accesskey="p" rel="prev">\include &amp; \includeonly</a>, Up: <a href="#Splitting-the-input" accesskey="u" rel="up">Splitting the input</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

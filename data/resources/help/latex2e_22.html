@@ -1,0 +1,1070 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Graphics (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Graphics (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Graphics (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_23.html#Special-insertions" rel="next" title="Special insertions">
+<link href="latex2e_21.html#Colored-pages" rel="prev" title="Colored pages">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Graphics"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_23.html#Special-insertions" accesskey="n" rel="next">Special insertions</a>, Previous: <a href="latex2e_21.html#Color" accesskey="p" rel="prev">Color</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Graphics-1"></a>
+<h2 class="chapter">22 Graphics</h2>
+
+<a name="index-graphics"></a>
+<a name="index-graphics-package"></a>
+
+<p>You can use graphics such as PNG or PDF files in your LaTeX document.
+You need an additional package, which comes standard with LaTeX.
+This example is the short how-to.
+</p>
+<div class="example">
+<pre class="example">\include{graphicx}  % goes in the preamble
+  ...
+\includegraphics[width=0.5\linewidth]{plot.pdf}
+</pre></div>
+
+<p>To use the commands described here your document preamble must contain
+either <code>\usepackage{graphicx}</code> or
+<code>\usepackage{graphics}</code>. Most of the time, <samp>graphicx</samp> is the
+better choice.
+</p>
+<p>Graphics come in two main types, raster and vector.  LaTeX can use
+both.  In raster graphics the file contains an entry for each location
+in an array, describing what color it is.  An example is a photograph,
+in JPG format.  In vector graphics, the file contains a list of
+instructions such as &lsquo;<samp>draw a circle with this radius and that
+center</samp>&rsquo;.  An example is a line drawing produced by the Asymptote
+program, in PDF format.  Generally vector graphics are more useful
+because you can rescale their size without pixelation or other problems,
+and because they often have a smaller size.
+</p>
+<p>There are systems particularly well-suited to make graphics for a
+LaTeX document.  For example, these allow you to use the same fonts
+as in your document.  LaTeX comes with a <code>picture</code> environment
+(see <a href="latex2e_8.html#picture">picture</a>) that has simple capabilities.  Besides that, there are
+other ways to include the graphic-making commands in the document.  Two
+such systems are the PSTricks and TikZ packages.  There are also systems
+external to LaTeX, that generate a graphic that you include using the
+commands of this chapter.  Two that use a programming language are
+Asymptote and MetaPost.  One that uses a graphical interface is Xfig.
+Full description of these systems is outside the scope of this document;
+see their documentation on CTAN.
+</p>
+
+
+<hr>
+<a name="Graphics-package-options"></a>
+<a name="graphics-package-options"></a>
+<h3 class="section">22.1 <code>graphics</code> package options</h3>
+
+<a name="index-graphics-package-options"></a>
+<a name="index-options_002c-graphics-package"></a>
+
+<p>Synopsis (must be in the document preamble):
+</p>
+<div class="example">
+<pre class="example">\usepackage[<var>comma-separated option list</var>]{graphics}
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\usepackage[<var>comma-separated option list</var>]{graphicx}
+</pre></div>
+
+<p>The <code>graphicx</code> package has a format for optional arguments to the
+<code>\includegraphics</code> command that is convenient (it is the key-value
+format), so it is the better choice for new documents.  When you load
+the <samp>graphics</samp> or <samp>graphicx</samp> package with <code>\usepackage</code>
+there are two kinds of available options.
+</p>
+<p>The first is that LaTeX does not contain information about different
+output systems but instead depends on information stored in a
+<em>printer driver</em> file.  Normally you should not specify the driver
+option in the document, and instead rely on your system&rsquo;s default. One
+advantage of this is that it makes the document portable across systems.
+</p>
+<p>For completeness here is a list of the drivers.  The currently relevant
+ones are: <samp>dvipdfmx</samp>, <samp>dvips</samp>, <samp>dvisvgm</samp>, <samp>luatex</samp>,
+<samp>pdftex</samp>, <samp>xetex</samp>.  The two <samp>xdvi</samp> and <samp>oztex</samp> are
+essentially aliases for <samp>dvips</samp> (and <samp>xdvi</samp> is monochrome).
+Ones that should not be used for new systems are: <samp>dvipdf</samp>,
+<samp>dvipdfm</samp>, <samp>dviwin</samp>, <samp>dvipsone</samp>, <samp>emtex</samp>,
+<samp>pctexps</samp>, <samp>pctexwin</samp>, <samp>pctexhp</samp>, <samp>pctex32</samp>,
+<samp>truetex</samp>, <samp>tcidvi</samp>, <samp>vtex</samp> (and <samp>dviwindo</samp> is an
+alias for <samp>dvipsone</samp>).  These are stored in files with a
+<samp>.def</samp> extension, such as <samp>pdftex.def</samp>.
+</p>
+<p>The second kind of options are below.
+</p>
+<dl compact="compact">
+<dt><code>demo</code></dt>
+<dd><p>Instead of an image file, LaTeX puts in a 150&nbsp;pt by 100&nbsp;pt
+rectangle (unless another size is specified in the
+<code>\includegraphics</code> command).
+</p>
+</dd>
+<dt><code>draft</code></dt>
+<dd><p>For each graphic file, it is not shown but instead the file name is
+printed in a box of the correct size.  In order to determine the size,
+the file must be present.
+</p>
+</dd>
+<dt><code>final</code></dt>
+<dd><p>(Default) Override any previous <code>draft</code> option, so that the
+document shows the contents of the graphic files.
+</p>
+</dd>
+<dt><code>hiderotate</code></dt>
+<dd><p>Do not show rotated text.  (This allows for the possibility that a
+previewer does not have the capability to rotate text.)
+</p>
+</dd>
+<dt><code>hidescale</code></dt>
+<dd><p>Do not show scaled text.  (This allows for the possibility that a
+previewer does not have the capability to scale.)
+</p>
+</dd>
+<dt><code>hiresbb</code></dt>
+<dd><p>In a PS or EPS file the graphic size may be specified in two ways.  The
+<code>%%BoundingBox</code> lines describe the graphic size using integer
+multiples of a PostScript point, that is, integer multiples of 1/72
+inch.  A later addition to the PostScript language allows decimal
+multiples, such as 1.23, in <code>%%HiResBoundingBox</code> lines.  This
+option has LaTeX to read the size from the latter.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<a name="Graphics-package-configuration"></a>
+<a name="graphics-package-configuration"></a>
+<h3 class="section">22.2 <code>graphics</code> package configuration</h3>
+
+<a name="index-graphics-1"></a>
+<a name="index-graphics-package-1"></a>
+<a name="index-configuration_002c-graphics-package"></a>
+<a name="index-EPS-files"></a>
+<a name="index-JPEG-files"></a>
+<a name="index-JPG-files"></a>
+<a name="index-PDF-graphic-files"></a>
+<a name="index-PNG-files"></a>
+
+<p>These commands configure the way LaTeX searches the file system for
+the graphic.
+</p>
+<p>The behavior of file system search code is necessarily platform
+dependent.  In this document we cover GNU/Linux, Macintosh, and Windows, as
+those systems are typically configured.  For other situations consult
+the documentation in <samp>grfguide.pdf</samp>, or the LaTeX source, or your
+TeX distribution&rsquo;s documentation.
+</p>
+
+
+<hr>
+<a name="g_t_005cgraphicspath"></a>
+<a name="g_t_005cgraphicspath-1"></a>
+<h4 class="subsection">22.2.1 <code>\graphicspath</code></h4>
+
+<a name="index-_005cgraphicspath"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\graphicspath{<var>list of dir names inside curly brackets</var>}
+</pre></div>
+
+<p>Declare a list of directories to search for graphics files.  This allows
+you to later say something like <code>\includegraphics{lion.png}</code>
+instead of having to give its path.
+</p>
+<p>LaTeX always looks for graphic files first in the current directory.
+The declaration below tells the system to then look in the subdirectory
+<samp>pix</samp>, and then <samp>../pix</samp>.
+</p>
+<div class="example">
+<pre class="example">\usepackage{graphicx}   % or graphics; put in preamble
+  ...
+\graphicspath{ {pix/} {../pix/} }
+</pre></div>
+
+<p>The <code>\graphicspath</code> declaration is optional.  If you don&rsquo;t include
+it then LaTeX&rsquo;s default is to search all of the places that it
+usually looks for a file (it uses LaTeX&rsquo;s <code>\input@path</code>).  In
+particular, in this case one of the places it looks is the current
+directory.
+</p>
+<p>Enclose each directory name in curly braces; for example, above it says
+&lsquo;<samp><code>{pix}</code></samp>&rsquo;.  Do this even if there is only one directory.
+Each directory name must end in a forward slash, <samp>/</samp>.  This is true
+even on Windows, where good practice is to use forward slashes for all
+the directory separators since it makes the document portable to other
+platforms.  If you have spaces in your directory name then use double
+quotes, as with <code>{&quot;my docs/&quot;}</code>. Getting one of these rules wrong
+will cause LaTeX to report <code>Error: File `<var>filename</var>' not
+found</code>.
+</p>
+<p>Basically, the algorithm is that with this example, after looking in the
+current directory,
+</p>
+<div class="example">
+<pre class="example">\graphicspath{ {pix/} {../pix/} }
+...
+\usepackage{lion.png}
+</pre></div>
+
+<p>for each of the listed directories, LaTeX concatenates it with the
+file name and searches for the result, checking for <samp>pix/lion.png</samp>
+and then <samp>../pix/lion.png</samp>.  This algorithm means that the
+<code>\graphicspath</code> command does not recursively search subdirectories:
+if you issue <code>\graphicspath{{a/}}</code> and the graphic is in
+<samp>a/b/lion.png</samp> then LaTeX will not find it.  It also means that
+you can use absolute paths such as
+<code>\graphicspath{{/home/jim/logos/}}</code> or
+<code>\graphicspath{{C:/Users/Albert/Pictures/}}</code>.  However, using
+these means that the document is not portable.  (You could preserve
+portability by adjusting your TeX system settings configuration file
+parameter <code>TEXINPUTS</code>; see the documentation of your system.)
+</p>
+<p>You can use <code>\graphicspath</code> anywhere in the document.  You can use
+it more than once.  Show its value with
+<code>\makeatletter\typeout{\Ginput@path}\makeatother</code>.
+</p>
+<p>The directories are taken with respect to the base file.  That is,
+suppose that you are working on a document based on <samp>book/book.tex</samp>
+and it contains <code>\include{chapters/chap1}</code>.  If in
+<samp>chap1.tex</samp> you put <code>\graphicspath{{plots/}}</code> then
+LaTeX will not search for graphics in <samp>book/chapters/plots</samp>, but
+instead in <samp>book/plots</samp>.
+</p>
+
+<hr>
+<a name="g_t_005cDeclareGraphicsExtensions"></a>
+<a name="g_t_005cDeclareGraphicsExtensions-1"></a>
+<h4 class="subsection">22.2.2 <code>\DeclareGraphicsExtensions</code></h4>
+
+<a name="index-_005cDeclareGraphicsExtensions"></a>
+
+<p>Synopses:
+</p>
+<div class="example">
+<pre class="example">\DeclareGraphicsExtensions{<var>comma-separated list of file extensions</var>}
+</pre></div>
+
+<p>Declare the filename extensions to try.  This allows you to specify the
+order in which to choose graphic formats when you include graphic files
+by giving the filename without the extension, as in
+<code>\includegraphics{functionplot}</code>.
+</p>
+<p>In this example, LaTeX will find files in the PNG format before PDF
+files.
+</p>
+<div class="example">
+<pre class="example">\DeclareGraphicsExtensions{.png,PNG,.pdf,.PDF}
+  ...
+\includegraphics{lion}   % will find <samp>lion.png</samp> before <samp>lion.pdf</samp> 
+</pre></div>
+
+<p>Because the file name <samp>lion</samp> does not have a period, LaTeX uses
+the extension list.  For each directory in the graphics path
+(see <a href="#g_t_005cgraphicspath">\graphicspath</a>), LaTeX will try the extensions in the order
+given.  If it does not find such a file after trying all the directories
+and extensions then it reports &lsquo;<samp>! LaTeX Error: File `<samp>lion</samp>'
+not found</samp>&rsquo;.  Note that you must include the periods at the start of the
+extensions.
+</p>
+<p>Because GNU/Linux and Macintosh filenames are case sensitive, the list of
+file extensions is case sensitive on those platforms.  The Windows
+platform is not case sensitive.
+</p>
+<p>You are not required to include <code>\DeclareGraphicsExtensions</code> in
+your document; the printer driver has a sensible default.  For example,
+the most recent <samp>pdftex.def</samp> has this extension list.
+</p>
+<div class="example">
+<pre class="example">.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2
+</pre></div>
+
+<p>You can use this command anywhere in the document.  You can use it more
+than once.  Show its value with
+<code>\makeatletter\typeout{\Gin@extensions}\makeatother</code>.
+</p>
+
+<hr>
+<a name="g_t_005cDeclareGraphicsRule"></a>
+<a name="g_t_005cDeclareGraphicsRule-1"></a>
+<h4 class="subsection">22.2.3 <code>\DeclareGraphicsRule</code></h4>
+
+<a name="index-_005cDeclareGraphicsRule"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\DeclareGraphicsRule{<var>extension</var>}{<var>type</var>}{<var>size-file extension</var>}{<var>command</var>}
+</pre></div>
+
+<p>Declare how to handle graphic files whose names end in <var>extension</var>.
+</p>
+<p>This example declares that all files with names have the form
+<samp>filename-without-dot.mps</samp> will be treated as output from MetaPost,
+meaning that the printer driver will use its MetaPost-handling code to
+input the file.
+</p>
+<div class="example">
+<pre class="example">\DeclareGraphicsRule{.mps}{mps}{.mps}{}
+</pre></div>
+
+<p>This
+</p>
+<div class="example">
+<pre class="example">\DeclareGraphicsRule{*}{mps}{*}{}
+</pre></div>
+
+<p>tells LaTeX that it should handle as MetaPost output any file with an
+extension not covered by another rule, so it covers <samp>filename.1</samp>,
+<samp>filename.2</samp>, etc.
+</p>
+<p>This describes the four arguments.
+</p>
+<dl compact="compact">
+<dt><var>extension</var></dt>
+<dd><p>The file extension to which this rule applies. The extension is anything
+after and including the first dot in the filename.  Use the Kleene star,
+<code>*</code>, to denote the default behaviour for all undeclared extensions.
+</p>
+</dd>
+<dt><var>type</var></dt>
+<dd><p>The type of file involved.  This type is a string that must be defined
+in the printer driver. For instance, files with extensions <samp>.ps</samp>,
+<samp>.eps</samp>, or <samp>.ps.gz</samp> may all be classed as type <code>eps</code>.
+All files of the same type will be input with the same internal command
+by the printer driver. For example, the file types that <samp>pdftex</samp>
+recognizes are: <code>jpg</code>, <code>jbig2</code>, <code>mps</code>, <code>pdf</code>,
+<code>png</code>, <code>tif</code>.
+</p>
+</dd>
+<dt><var>size-file extension</var></dt>
+<dd><p>The extension of the file to be read to determine the size of the
+graphic, if there is such a file. It may be the same as <var>extension</var>
+but it may be different.
+</p>
+<p>As an example, consider a PostScript graphic.  To make it smaller, it
+might be compressed into a <samp>.ps.gz</samp> file.  Compressed files are not
+easily read by LaTeX so you can put the bounding box information in a
+separate file. If <var>size-file extension</var> is empty then you must
+specify size information in the arguments of <code>\includegraphics</code>.
+</p>
+<p>If the driver file has a procedure for reading size files for
+<code>type</code> then that will be used, otherwise it will use the procedure
+for reading <samp>.eps</samp> files.  (Thus you may specify the size of bitmap
+files in a file with a PostScript style <code>%%BoundingBox</code> line if no
+other format is available.)
+</p>
+</dd>
+<dt><var>command</var></dt>
+<dd><p>A command that will be applied to the
+file. This is very often left blank. This command must start with a
+single backward quote.  Thus,
+<code>\DeclareGraphicsRule{.eps.gz}{eps}{.eps.bb}{`gunzip -c
+#1}</code> specifies that any file with the extension <samp>.eps.gz</samp> should
+be treated as an <code>eps</code> file, with the BoundingBox information
+stored in the file with extension <samp>.eps.bb</samp>, and that the command
+<code>gunzip -c</code> will run on your platform to decompresses the file.
+</p>
+<p>Such a command is specific to your platform.  In addition, your TeX
+system must allow you to run external commands; as a security measure
+modern systems restrict running commands unless you explicitly allow it.
+See the documentation for your TeX distribution.
+</p>
+</dd>
+</dl>
+
+<hr>
+<a name="Commands-for-graphics"></a>
+<a name="Commands-for-graphics-1"></a>
+<h3 class="section">22.3 Commands for graphics</h3>
+
+<a name="index-graphics-package-commands"></a>
+<a name="index-commands_002c-graphics-package"></a>
+
+<p>These are the commands available with the <samp>graphics</samp> and
+<samp>graphicx</samp> packages.
+</p>
+
+
+<hr>
+<a name="g_t_005cincludegraphics"></a>
+<a name="g_t_005cincludegraphics-1"></a>
+<h4 class="subsection">22.3.1 <code>\includegraphics</code></h4>
+
+<a name="index-graphics-2"></a>
+<a name="index-graphics-package-2"></a>
+<a name="index-including-graphics"></a>
+<a name="index-importing-graphics"></a>
+<a name="index-EPS-files-1"></a>
+<a name="index-JPEG-files-1"></a>
+<a name="index-JPG-files-1"></a>
+<a name="index-PDF-graphic-files-1"></a>
+<a name="index-PNG-files-1"></a>
+<a name="index-_005cincludegraphics"></a>
+
+<p>Synopses for <samp>graphics</samp> package:
+</p>
+<div class="example">
+<pre class="example">\includegraphics{<var>filename</var>}
+\includegraphics[<var>urx</var>,<var>ury</var>]{<var>filename</var>}
+\includegraphics[<var>llx</var>,<var>lly</var>][<var>urx</var>,<var>ury</var>]{<var>filename</var>}
+\includegraphics*{<var>filename</var>}
+\includegraphics*[<var>urx</var>,<var>ury</var>]{<var>filename</var>}
+\includegraphics*[<var>llx</var>,<var>lly</var>][<var>urx</var>,<var>ury</var>]{<var>filename</var>}
+</pre></div>
+
+<p>Synopses for <samp>graphicx</samp> package:
+</p>
+<div class="example">
+<pre class="example">\includegraphics{<var>filename</var>}
+\includegraphics[<var>key-value list</var>]{<var>filename</var>}
+\includegraphics*{<var>filename</var>}
+\includegraphics*[<var>key-value list</var>]{<var>filename</var>}
+</pre></div>
+
+<p>Include a graphics file.  The starred form <code>\includegraphics*</code> will
+clip the graphic to the size specified, while for the unstarred form any
+part of the graphic that is outside the box of the specified size will
+over-print the surrounding area.
+</p>
+<p>This 
+</p>
+<div class="example">
+<pre class="example">\usepackage{graphicx}  % in preamble
+  ...
+\begin{center}
+  \includegraphics{plot.pdf}
+\end{center}
+</pre></div>
+
+<p>will incorporate into the document the graphic in <samp>plot.pdf</samp>,
+centered and at its nominal size.  You can also give a path to the file,
+as with <code>\includegraphics{graphics/plot.pdf}</code>.  To specify a list
+of locations to search for the file, see <a href="#g_t_005cgraphicspath">\graphicspath</a>.
+</p>
+<p>If your filename includes spaces then put it in double quotes. An example
+is <code>\includegraphics{&quot;sister picture.jpg&quot;}</code>.
+</p>
+<p>The <code>\includegraphics{<var>filename</var>}</code> command decides on the
+type of graphic by splitting <var>filename</var> on the first dot.  You can
+use <var>filename</var> with no dot, as in <code>\includegraphics{turing}</code>
+and then LaTeX tries a sequence of extensions such as <code>.png</code> and
+<code>.pdf</code> until it finds a file with that extension
+(see <a href="#g_t_005cDeclareGraphicsExtensions">\DeclareGraphicsExtensions</a>).
+</p>
+<p>If your file name contains dots before the extension then you can hide
+them with curly braces, as in
+<code>\includegraphics{{plot.2018.03.12.a}.pdf}</code>.  Or, if you use
+the <samp>graphicx</samp> package then you can use the options <code>type</code> and
+<code>ext</code>; see below.  This and other filename issues are also handled
+with the package <samp>grffile</samp>.
+</p>
+<p>This example puts a graphic in a figure environment so LaTeX can
+move it to the next page if fitting it on the current page is awkward
+(see <a href="latex2e_8.html#figure">figure</a>).
+</p>
+<div class="example">
+<pre class="example">\begin{figure}
+  \centering
+  \includegraphics[width=3cm]{lungxray.jpg}
+  \caption{The evidence is overwhelming: don't smoke.}  \label{fig:xray}
+\end{figure}
+</pre></div>
+
+<p>This places a graphic that will not float, so it is sure to appear at
+this point in the document even if makes LaTeX stretch the text or
+resort to blank areas on the page.  It will be centered and will have a
+caption.
+</p>
+<div class="example">
+<pre class="example">\usepackage{caption}  % in preamble
+  ...
+\begin{center}
+  \includegraphics{pix/nix.png}
+  \captionof{figure}{The spirit of the night} \label{pix:nix} % optional
+\end{center}
+</pre></div>
+
+<p>This example puts a box with a graphic side by side with one having
+text, with the two vertically centered.
+</p>
+<div class="example">
+<pre class="example">\newcommand*{\vcenteredhbox}[1]{\begin{tabular}{@{}c@{}}#1\end{tabular}}
+  ...
+\begin{center}
+  \vcenteredhbox{\includegraphics[width=0.4\textwidth]{plot}}
+  \hspace{1em}
+  \vcenteredhbox{\begin{minipage}{0.4\textwidth}
+                   \begin{displaymath}
+                     f(x)=x\cdot \sin (1/x)
+                   \end{displaymath}
+                 \end{minipage}}
+\end{center}
+</pre></div>
+
+<p>If you use the <samp>graphics</samp> package then the only options involve the
+size of the graphic (but see <a href="#g_t_005crotatebox">\rotatebox</a> and <a href="#g_t_005cscalebox">\scalebox</a>).
+When one optional argument is present then it is
+<code>[<var>urx</var>,<var>ury</var>]</code> and it gives the coordinates of the top
+right corner of the image, as a pair of TeX dimensions (see <a href="latex2e_14.html#Units-of-length">Units of length</a>).  If the units are omitted they default to <code>bp</code>.  In
+this case, the lower left corner of the image is assumed to be at (0,0).
+If two optional arguments are present then the leading one is
+<code>[<var>llx</var>,<var>lly</var>]</code>, specifying the coordinates of the image&rsquo;s
+lower left.  Thus, <code>\includegraphics[1in,0.618in]{...}</code> calls for
+the graphic to be placed so it is 1&nbsp;inch wide and 0.618&nbsp;inches
+tall and so its origin is at (0,0).
+</p>
+<p>The <samp>graphicx</samp> package gives you many more options.  Specify them
+in a key-value form, as here.
+</p>
+<div class="example">
+<pre class="example">\begin{center}
+  \includegraphics[width=1in,angle=90]{lion}
+  \hspace{2em}
+  \includegraphics[angle=90,width=1in]{lion}
+\end{center}
+</pre></div>
+
+<p>The options are read left-to-right. So the first graphic above is made
+one inch wide and then rotated, while the second is rotated and then
+made one inch wide.  Thus, unless the graphic is perfectly square, the
+two will end with different widths and heights.
+</p>
+<p>There are many options.  The primary ones are listed first.
+</p>
+<p>Note that a graphic is placed by LaTeX into a box, which is
+traditionally referred to as its bounding box (distinct from the
+PostScript BoundingBox described below).  The graphic&rsquo;s printed area may
+go beyond this box, or sit inside this box, but when LaTeX makes up a
+page it puts together boxes and this is the box allocated for the
+graphic.
+</p>
+<dl compact="compact">
+<dd><a name="includegraphics-width"></a></dd>
+<dt><code>width</code></dt>
+<dd><p>The graphic will be shown so its bounding box is this width.  An example
+is <code>\includegraphics[width=1in]{plot}</code>.  You can use the standard
+TeX dimensions (see <a href="latex2e_14.html#Units-of-length">Units of length</a>) and also convenient is
+<code>\linewidth</code>, or in a two-column document, <code>\columnwidth</code>
+(see <a href="latex2e_5.html#Page-layout-parameters">Page layout parameters</a>).  An example is that by using the
+<samp>calc</samp> package you can make the graphic be 1&nbsp;cm narrow than
+the width of the text with
+<code>\includegraphics[width=\linewidth-1.0cm]{hefferon.jpg}</code>.
+</p>
+</dd>
+<dt><code>height</code></dt>
+<dd><a name="includegraphics-height"></a><p>The graphic will be shown so its bounding box is this height.  You can
+use the standard TeX dimensions (see <a href="latex2e_14.html#Units-of-length">Units of length</a>), and also
+convenient are <code>\pageheight</code> and <code>\textheight</code> (see <a href="latex2e_5.html#Page-layout-parameters">Page layout parameters</a>).  For instance, the command
+<code>\includegraphics[height=0.25\textheight]{godel}</code> will make the
+graphic a quarter of the height of the text area.
+</p>
+</dd>
+<dt><code>totalheight</code></dt>
+<dd><a name="includegraphics-totalheght"></a><p>The graphic will be shown so its bounding box has this height plus
+depth.  This differs from the height if the graphic was rotated. For
+instance, if it has been rotated by -90 then it will have zero height
+but a large depth.
+</p>
+</dd>
+<dt><code>keepaspectratio</code></dt>
+<dd><a name="includegraphics-keepaspectratio"></a><p>If set to <code>true</code>, or just specified as here
+</p>
+<div class="example">
+<pre class="example"><code>\includegraphics[...,keepaspectratio,...]{...}</code>
+</pre></div>
+
+<p>and you give as options both <code>width</code> and <code>height</code> (or
+<code>totalheight</code>), then LaTeX will make the graphic is as large as
+possible without distortion. That is, LaTeX will ensure that neither
+is the graphic wider than <code>width</code> nor taller than <code>height</code> (or
+<code>totalheight</code>).
+</p>
+</dd>
+<dt><code>scale</code></dt>
+<dd><p>Factor by which to scale the graphic.  To make a graphic twice its
+nominal size, enter <code>\includegraphics[scale=2.0]{...}</code>.  This
+number may be any value; a number between 1 and&nbsp;0 will shrink the
+graphic and a negative number will reflect it.
+</p>
+</dd>
+<dt><code>angle</code></dt>
+<dd><p>Rotate the graphic.  The angle is taken in degrees and counterclockwise.
+The graphic is rotated about its <code>origin</code>; see that option.  For a
+complete description of how rotated material is typeset,
+see <a href="#g_t_005crotatebox">\rotatebox</a>.
+</p>
+</dd>
+<dt><code>origin</code></dt>
+<dd><p>The point of the graphic about which the rotation happens.  Possible
+values are any string containing one or two of: <code>l</code> for left,
+<code>r</code> for right, <code>b</code> for bottom, <code>c</code> for center, <code>t</code>
+for top, and <code>B</code> for baseline.  Thus, entering the command
+<code>\includegraphics[angle=180,origin=c]{moon}</code> will turn the
+picture upside down about that picture&rsquo;s center, while the command
+<code>\includegraphics[angle=180,origin=lB]{LeBateau}</code> will turn its
+picture upside down about its left baseline.  (The character <code>c</code>
+gives the horizontal center in <code>bc</code> or <code>tc</code>, but gives the
+vertical center in <code>lc</code> or <code>rc</code>.)  The default is <code>lB</code>.
+</p>
+<p>To rotate about an arbitrary point, see <a href="#g_t_005crotatebox">\rotatebox</a>.
+</p>
+</dd>
+</dl>
+
+<p>These are lesser-used options.
+</p>
+<dl compact="compact">
+<dd><a name="includegraphics-viewport"></a></dd>
+<dt><code>viewport</code></dt>
+<dd><p>Pick out a subregion of the graphic to show.  Takes four arguments,
+separated by spaces and given in TeX dimensions, as with
+<code>\includegraphics[.., viewport=0in 0in 1in 0.618in]{...}</code>.  The
+dimensions default to big points,&nbsp;<code>bp</code>.  They are taken
+relative to the origin specified by the bounding box.  See also the
+<code>trim</code> option.
+</p>
+<a name="includegraphics-trim"></a></dd>
+<dt><code>trim</code></dt>
+<dd><p>Gives parts of the graphic to not show.  Takes four arguments, separated
+by spaces, that are given in TeX dimensions, as with
+<code>\includegraphics[.., trim= 0in 0.1in 0.2in 0.3in, ...]{...}</code>.
+These give the amounts of the graphic not to show, that is, LaTeX
+will crop the picture by 0&nbsp;inches on the left, 0.1&nbsp;inches on
+the bottom, 0.2&nbsp;inches on the right, and 0.3&nbsp;inches on the
+top.  See also the <code>viewport</code> option.
+</p>
+<a name="includegraphics-clip"></a></dd>
+<dt><code>clip</code></dt>
+<dd><p>If set to <code>true</code>, or just specified as here
+</p>
+<div class="example">
+<pre class="example">\includegraphics[...,clip,...]{...}
+</pre></div>
+
+<p>then the graphic is cropped to the bounding box.  This is the same as
+using the starred form of the command,
+<code>\includegraphics*[...]{...}</code>.
+</p>
+<a name="includegraphics-page"></a></dd>
+<dt><code>page</code></dt>
+<dd><p>Give the page number of a multi-page PDF file.  The default is
+<code>page=1</code>.
+</p>
+<a name="includegraphics-pagebox"></a></dd>
+<dt><code>pagebox</code></dt>
+<dd><p>Specifies which bounding box to use for PDF files from among
+<code>mediabox</code>, <code>cropbox</code>, <code>bleedbox</code>, <code>trimbox</code>, or
+<code>artbox</code>.  PDF files do not have the BoundingBox that PostScript
+files have, but may specify up to four predefined rectangles. The
+MediaBox gives the boundaries of the physical medium. The CropBox is the
+region to which the contents of the page are to be clipped when
+displayed.  The BleedBox is the region to which the contents of the page
+should be clipped in production. The TrimBox is the intended dimensions
+of the finished page.  The ArtBox is the extent of the page&rsquo;s meaningful
+content.  The driver will set the image size based on CropBox if
+present, otherwise it will not use one of the others, with a
+driver-defined order of preference.  MediaBox is always present.
+</p>
+<a name="includegraphics-interpolate"></a></dd>
+<dt><code>interpolate</code></dt>
+<dd><p>Enable or disable interpolation of raster images by the viewer.  Can be
+set with <code>interpolate=true</code> or just specified as here.
+</p>
+<div class="example">
+<pre class="example">\includegraphics[...,interpolate,...]{...}
+</pre></div>
+
+<a name="includegraphics-quiet"></a></dd>
+<dt><code>quiet</code></dt>
+<dd><p>Do not write information to the log.  You can set it with
+<code>quiet=true</code> or just specified it with
+<code>\includegraphics[...,quite,...]{...}</code>,
+</p>
+<a name="includegraphics-draft"></a></dd>
+<dt><code>draft</code></dt>
+<dd><p>If you set it with <code>draft=true</code> or just specify it with
+</p>
+<div class="example">
+<pre class="example">\includegraphics[...,draft,...]{...}
+</pre></div>
+
+<p>then the graphic will not appear in the document, possibly saving color
+printer ink.  Instead, LaTeX will put an empty box of the correct
+size with the filename printed in it.
+</p>
+</dd>
+</dl>
+
+<p>These options address the bounding box for Encapsulated PostScript
+graphic files, which have a size specified with a line
+<code>%%BoundingBox</code> that appears in the file.  It has four values,
+giving the lower <em>x</em> coordinate, lower <em>y</em> coordinate, upper
+<em>x</em> coordinate, and upper <em>y</em> coordinate.  The units are
+PostScript points, equivalent to TeX&rsquo;s big points, 1/72&nbsp;inch.
+For example, if an <samp>.eps</samp> file has the line <code>%%BoundingBox 10
+20 40 80</code> then its natural size is 30/72&nbsp;inch wide by
+60/72&nbsp;inch tall.
+</p>
+<dl compact="compact">
+<dd><a name="includegraphics-bb"></a></dd>
+<dt><code>bb</code></dt>
+<dd><p>Specify the bounding box of the displayed region.  The argument is four
+dimensions separated by spaces, as with <code>\includegraphics[.., bb=
+0in 0in 1in 0.618in]{...}</code>.  Usually <code>\includegraphics</code> reads the
+BoundingBox numbers from the EPS file automatically, so this option is
+only useful if the bounding box is missing from that file or if you want
+to change it.
+</p>
+<a name="includegraphics-bbllx"></a><a name="includegraphics-bblly"></a><a name="includegraphics-bburx"></a><a name="includegraphics-bbury"></a></dd>
+<dt><code>bbllx, bblly, bburx, bbury</code></dt>
+<dd><p>Set the bounding box.  These four are obsolete, but are retained for
+compatibility with old packages.
+</p>
+<a name="includegraphics-natwidth"></a><a name="includegraphics-natheight"></a></dd>
+<dt><code>natwidth, natheight</code></dt>
+<dd><p>An alternative for <code>bb</code>.  Setting
+</p>
+<div class="example">
+<pre class="example">\includegraphics[...,natwidth=1in,natheight=0.618in,...]{...}
+</pre></div>
+
+<p>is the same as setting <code>bb=0 0 1in 0.618in</code>.
+</p> 
+<a name="includegraphics-hiresbb"></a></dd>
+<dt><code>hiresbb</code></dt>
+<dd><p>If set to <code>true</code>, or just specified as with
+</p>
+<div class="example">
+<pre class="example">\includegraphics[...,hiresbb,...]{...}
+</pre></div>
+
+<p>then LaTeX will look for <code>%%HiResBoundingBox</code> lines instead of
+<code>%%BoundingBox</code> lines.  (The <code>BoundingBox</code> lines use only
+natural numbers while the <code>HiResBoundingBox</code> lines use decimals;
+both use units equivalent to TeX&rsquo;s big points, 1/72&nbsp;inch.) To
+override a prior setting of <code>true</code>, you can set it to <code>false</code>.
+</p>
+</dd>
+</dl>
+
+<p>These following options allow a user to override LaTeX&rsquo;s method of
+choosing the graphic type based on the filename extension.  An example
+is that <code>\includegraphics[type=png,ext=.xxx,read=.xxx]{lion}</code>
+will read the file <samp>lion.xxx</samp> as though it were
+<samp>lion.png</samp>. For more on these, see <a href="#g_t_005cDeclareGraphicsRule">\DeclareGraphicsRule</a>.
+</p>
+<dl compact="compact">
+<dd><a name="includegraphics-type"></a></dd>
+<dt><code>type</code></dt>
+<dd><p>Specify the graphics type.
+</p>
+<a name="includegraphics-ext"></a></dd>
+<dt><code>ext</code></dt>
+<dd><p>Specify the graphics extension.
+Only use this in conjunction with the option <code>type</code>.
+</p>
+<a name="includegraphics-read"></a></dd>
+<dt><code>read</code></dt>
+<dd><p>Specify the file extension of the read file.
+Only use this in conjunction with the option <code>type</code>.
+</p>
+<a name="includegraphics-command"></a></dd>
+<dt><code>command</code></dt>
+<dd><p>Specify a command to be applied to this file.  Only use this in
+conjunction with the option <code>type</code>.  See <a href="latex2e_28.html#Command-line-options">Command line options</a>
+for a discussion of enabling the <code>\write18</code> functionality to run
+external commands.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<a name="g_t_005crotatebox"></a>
+<a name="g_t_005crotatebox-1"></a>
+<h4 class="subsection">22.3.2 <code>\rotatebox</code></h4>
+
+<a name="index-rotation"></a>
+<a name="index-rotating-graphics"></a>
+<a name="index-rotating-text"></a>
+<a name="index-_005crotatebox"></a>
+
+<p>Synopsis if you use the <samp>graphics</samp> package:
+</p>
+<div class="example">
+<pre class="example">\rotatebox{<var>angle</var>}{<var>material</var>}
+</pre></div>
+
+<p>Synopses if you use the <samp>graphicx</samp> package:
+</p>
+<div class="example">
+<pre class="example">\rotatebox{<var>angle</var>}{<var>material</var>}
+\rotatebox[<var>key-value list</var>]{<var>angle</var>}{<var>material</var>}
+</pre></div>
+
+<p>Put <var>material</var> in a box and rotate it <var>angle</var> degrees
+counterclockwise.
+</p>
+<p>This example rotates the table column heads forty five degrees.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{ll}
+  \rotatebox{45}{Character} &amp;\rotatebox{45}{NATO phonetic}   \\
+  A                         &amp;AL-FAH  \\
+  B                         &amp;BRAH-VOH
+\end{tabular}
+</pre></div>
+
+<p>The <var>material</var> can be anything that goes in a box, including a graphic.
+</p>
+<div class="example">
+<pre class="example">  \rotatebox[origin=c]{45}{\includegraphics[width=1in]{lion}}
+</pre></div>
+
+<p>To place the rotated material, the first step is that LaTeX sets
+<var>material</var> in a box, with a reference point on the left baseline.
+The second step is the rotation, by default about the reference point.
+The third step is that LaTeX computes a box to bound the rotated
+material.  Fourth, LaTeX moves this box horizontally so that the left
+edge of this new bounding box coincides with the left edge of the box
+from the first step (they need not coincide vertically).  This new
+bounding box, in its new position, is what LaTeX uses as the box when
+typesetting this material.
+</p>
+<p>If you use the <samp>graphics</samp> package then the rotation is about the
+reference point of the box. If you use the <samp>graphicx</samp> package
+then these are the options that can go in the <var>key-value list</var>,
+but note that you can get the same effect without needing this
+package, except for the <code>x</code> and <code>y</code> options
+(see <a href="#g_t_005cincludegraphics">\includegraphics</a>).
+</p>
+<dl compact="compact">
+<dt><code>origin</code></dt>
+<dd><p>The point of the <var>material</var>&rsquo;s box about which the rotation happens.
+Possible value is any string containing one or two of: <code>l</code> for
+left, <code>r</code> for right, <code>b</code> for bottom, <code>c</code> for center,
+<code>t</code> for top, and <code>B</code> for baseline.  Thus, the first line here
+</p>
+<div class="example">
+<pre class="example">\rotatebox[origin=c]{180}{moon}
+\rotatebox[origin=lB]{180}{LeBateau}
+</pre></div>
+
+<p>will turn the picture upside down from the center while the second will
+turn its picture upside down about its left baseline.  (The character
+<code>c</code> gives the horizontal center in <code>bc</code> or <code>tc</code> but gives
+the vertical center in <code>lc</code> or <code>rc</code>, and gives both in
+<code>c</code>.)  The default is <code>lB</code>.
+</p>
+</dd>
+<dt><code>x, y</code></dt>
+<dd><p>Specify an arbitrary point of rotation with
+<code>\rotatebox[x=<var>TeX dimension</var>,y=<var>TeX
+dimension</var>]{...}</code> (see <a href="latex2e_14.html#Units-of-length">Units of length</a>).  These give the offset
+from the box&rsquo;s reference point.
+</p>
+</dd>
+<dt><code>units</code></dt>
+<dd><p>This key allows you to change the default of degrees counterclockwise.
+Setting <code>units=-360</code> changes the direction to degrees clockwise and
+setting <code>units=6.283185</code> changes to radians counterclockwise.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<a name="g_t_005cscalebox"></a>
+<a name="g_t_005cscalebox-1"></a>
+<h4 class="subsection">22.3.3 <code>\scalebox</code></h4>
+
+<a name="index-graphics_002c-scaling"></a>
+<a name="index-graphics_002c-resizing"></a>
+<a name="index-scaling"></a>
+<a name="index-resizing"></a>
+<a name="index-text_002c-scaling"></a>
+<a name="index-text_002c-resizing"></a>
+<a name="index-_005cscalebox"></a>
+<a name="index-_005creflectbox"></a>
+
+<p>Synopses:
+</p>
+<div class="example">
+<pre class="example">\scalebox{<var>horizontal factor</var>}{<var>material</var>}
+\scalebox{<var>horizontal factor</var>}[<var>vertical factor</var>]{<var>material</var>}
+\reflectbox{<var>material</var>}
+</pre></div>
+
+<p>Scale the <var>material</var>.
+</p>
+<p>This example halves the size, both horizontally and vertically, of the
+first text and doubles the size of the second.
+</p>
+<div class="example">
+<pre class="example">\scalebox{0.5}{DRINK ME} and \scalebox{2.0}{Eat Me}
+</pre></div>
+
+<p>If you do not specify the optional <var>vertical factor</var> then it
+defaults to the same value as the <var>horizontal factor</var>.
+</p>
+<p>You can use this command to resize a graphic, as here.
+</p>
+<div class="example">
+<pre class="example">\scalebox{0.5}{\includegraphics{lion}}
+</pre></div>
+
+<p>If you use the <samp>graphicx</samp> package then you can accomplish the same
+thing with optional arguments to <code>\includegraphics</code>
+(see <a href="#g_t_005cincludegraphics">\includegraphics</a>).
+</p>
+<p>The <code>\reflectbox</code> command abbreviates
+<code>\scalebox{-1}[1]{<var>material</var>}</code>.  Thus, <code>Able was
+I\reflectbox{Able was I}</code> will show the phrase &lsquo;<samp>Able was I</samp>&rsquo;
+immediately followed by its mirror reflection.
+</p>
+
+<hr>
+<a name="g_t_005cresizebox"></a>
+<a name="g_t_005cresizebox-1"></a>
+<h4 class="subsection">22.3.4 <code>\resizebox</code></h4>
+
+<a name="index-graphics_002c-scaling-1"></a>
+<a name="index-graphics_002c-resizing-1"></a>
+<a name="index-scaling-1"></a>
+<a name="index-resizing-1"></a>
+<a name="index-text_002c-scaling-1"></a>
+<a name="index-text_002c-resizing-1"></a>
+<a name="index-_005cresizebox"></a>
+
+<p>Synopses:
+</p>
+<div class="example">
+<pre class="example">\resizebox{<var>horizontal length</var>}{<var>vertical length</var>}{<var>material</var>}
+\resizebox*{<var>horizontal length</var>}{<var>vertical length</var>}{<var>material</var>}
+</pre></div>
+
+<p>Given a size, such as <code>3cm</code>, transform <var>material</var> to make it
+that size.  If either <var>horizontal length</var> or <var>vertical length</var>
+is an exclamation point&nbsp;<code>!</code>  then the other argument is used
+to determine a scale factor for both directions.
+</p>
+<p>This example makes the graphic be a half inch wide and scales it
+vertically by the same factor to keep it from being distorted.
+</p>
+<div class="example">
+<pre class="example">\resizebox{0.5in}{!}{\includegraphics{lion}}
+</pre></div>
+
+<p>The unstarred form <code>\resizebox</code> takes <var>vertical length</var> to be
+the box&rsquo;s height while the starred form <code>\resizebox*</code> takes it to
+be height+depth.  For instance, make the text have a height+depth of a
+quarter inch with <code>\resizebox*{!}{0.25in}{\parbox{1in}{This
+box has both height and depth.}}</code>.
+</p>
+<p>You can use <code>\depth</code>, <code>\height</code>, <code>\totalheight</code>, and
+<code>\width</code> to refer to the original size of the box.  Thus, make the
+text two inches wide but keep the original height with
+<code>\resizebox{2in}{\height}{Two inches}</code>.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005cscalebox" accesskey="p" rel="prev">\scalebox</a>, Up: <a href="#Commands-for-graphics" accesskey="u" rel="up">Commands for graphics</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

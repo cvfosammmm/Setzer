@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Page breaking (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Page breaking (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Page breaking (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_11.html#Footnotes" rel="next" title="Footnotes">
+<link href="latex2e_9.html#g_t_005clinebreak-_0026-_005cnolinebreak" rel="prev" title="\linebreak &amp; \nolinebreak">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Page-breaking"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_11.html#Footnotes" accesskey="n" rel="next">Footnotes</a>, Previous: <a href="latex2e_9.html#Line-breaking" accesskey="p" rel="prev">Line breaking</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Page-breaking-1"></a>
+<h2 class="chapter">10 Page breaking</h2>
+
+<a name="index-page-breaking"></a>
+<a name="index-breaking-pages"></a>
+
+<p>Ordinarily LaTeX automatically takes care of breaking output into
+pages with its usual aplomb.  But if you are writing commands, or
+tweaking the final version of a document, then you may need to
+understand how to influence its actions.
+</p>
+<p>LaTeX&rsquo;s algorithm for splitting a document into pages is more complex
+than just waiting until there is enough material to fill a page and
+outputting the result.  Instead, LaTeX typesets more material than
+would fit on the page and then chooses a break that is optimal in some
+way (it has the smallest badness). An example of the advantage of this
+approach is that if the page has some vertical space that can be
+stretched or shrunk, such as with rubber lengths between paragraphs,
+then LaTeX can use that to avoid widow lines (where a new page starts
+with the last line of a paragraph; LaTeX can squeeze the extra line
+onto the first page) and orphans (where the first line of paragraph is
+at the end of a page; LaTeX can stretch the material of the first
+page so the extra line falls on the second page). Another example is
+where LaTeX uses available vertical shrinkage to fit on a page not
+just the header for a new section but also the first two lines of that
+section.
+</p>
+<p>But LaTeX does not optimize over the entire document&rsquo;s set of page
+breaks. So it can happen that the first page break is great but the
+second one is lousy; to break the current page LaTeX doesn&rsquo;t look as
+far ahead as the next page break.  So occasionally you may want to
+influence page breaks while preparing a final version of a document.
+</p>
+<p>See <a href="latex2e_5.html#Layout">Layout</a> for more material that is relevant to page breaking.
+</p>
+
+
+<hr>
+<a name="g_t_005cclearpage-_0026-_005ccleardoublepage"></a>
+<a name="g_t_005cclearpage-_0026-_005ccleardoublepage-1"></a>
+<h3 class="section">10.1 <code>\clearpage</code> &amp; <code>\cleardoublepage</code></h3>
+
+<a name="index-_005cclearpage"></a>
+<a name="index-flushing-floats-and-starting-a-page"></a>
+<a name="index-starting-a-new-page-and-clearing-floats"></a>
+<a name="index-_005ccleardoublepage"></a>
+<a name="index-starting-on-a-right_002dhand-page"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\clearpage
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\cleardoublepage
+</pre></div>
+
+<p>End the current page and output all of the pending floating figures and
+tables (see <a href="latex2e_5.html#Floats">Floats</a>).  If there are too many floats to fit on the
+page then LaTeX will put in extra pages containing only floats.  In
+two-sided printing, <code>\cleardoublepage</code> also makes the next page of
+content a right-hand page, an odd-numbered page, if necessary inserting
+a blank page.  The <code>\clearpage</code> command is robust while
+<code>\cleardoublepage</code> is fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>LaTeX&rsquo;s page breaks are optimized so ordinarily you only use this
+command in a document body to polish the final version, or inside
+commands.
+</p>
+<p>The <code>\cleardoublepage</code> command will put in a blank page, but it
+will have the running headers and footers.  To get a really blank
+page, use this command.
+</p>
+<div class="example">
+<pre class="example">\let\origdoublepage\cleardoublepage
+\newcommand{\clearemptydoublepage}{%
+  \clearpage
+  {\pagestyle{empty}\origdoublepage}%
+}
+</pre></div>
+
+<p>If you want LaTeX&rsquo;s standard <code>\chapter</code> command to do this then
+add the line <code>\let\cleardoublepage\clearemptydoublepage</code>.
+</p>
+<p>The command <code>\newpage</code> (see <a href="#g_t_005cnewpage">\newpage</a>) also ends the current
+page, but without clearing pending floats.  And, if LaTeX is in
+two-column mode then <code>\newpage</code> ends the current column while
+<code>\clearpage</code> and <code>\cleardoublepage</code> end the current page.
+</p>
+
+
+<hr>
+<a name="g_t_005cnewpage"></a>
+<a name="g_t_005cnewpage-1"></a>
+<h3 class="section">10.2 <code>\newpage</code></h3>
+
+<a name="index-_005cnewpage"></a>
+<a name="index-new-page_002c-starting"></a>
+<a name="index-starting-a-new-page"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\newpage
+</pre></div>
+
+<p>End the current page.  This command is robust (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>LaTeX&rsquo;s page breaks are optimized so ordinarily you only use this
+command in a document body to polish the final version, or inside
+commands.
+</p>
+<p>While the commands <code>\clearpage</code> and <code>\cleardoublepage</code> also
+end the current page, in addition they clear pending floats
+(see <a href="#g_t_005cclearpage-_0026-_005ccleardoublepage">\clearpage &amp; \cleardoublepage</a>).  And, if LaTeX is in
+two-column mode then <code>\clearpage</code> and <code>\cleardoublepage</code> end
+the current page, possibly leaving an empty column, while
+<code>\newpage</code> only ends the current column.
+</p>
+<p>In contrast with <code>\pagebreak</code> (see <a href="#g_t_005cpagebreak-_0026-_005cnopagebreak">\pagebreak &amp; \nopagebreak</a>),
+the <code>\newpage</code> command will cause the new page to start right where
+requested.  This
+</p>
+<div class="example">
+<pre class="example">Four score and seven years ago our fathers brought forth on this
+continent,
+\newpage
+\noindent a new nation, conceived in Liberty, and dedicated to the
+proposition that all men are created equal.
+</pre></div>
+
+<p>makes a new page start after &lsquo;<samp>continent,</samp>&rsquo; and the cut-off line is
+not right justified.  In addition, <code>\newpage</code> does not vertically
+stretch out the page, as <code>\pagebreak</code> does.
+</p>
+
+<hr>
+<a name="g_t_005cenlargethispage"></a>
+<a name="g_t_005cenlargethispage-1"></a>
+<h3 class="section">10.3 <code>\enlargethispage</code></h3>
+
+<a name="index-_005cenlargethispage"></a>
+<a name="index-enlarge-current-page"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\enlargethispage{size}
+\enlargethispage*{size}
+</pre></div>
+
+<p>Enlarge the <code>\textheight</code> for the current page.  The required
+argument <var>size</var> must be a rigid length (see <a href="latex2e_14.html#Lengths">Lengths</a>).  It may be
+positive or negative.  This command is fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>A common strategy is to wait until you have the final text of a
+document, and then pass through it tweaking line and page breaks.  This
+command allows you some page size leeway.
+</p>
+<p>This will allow one extra line on the current page.
+</p>
+<div class="example">
+<pre class="example">\enlargethispage{\baselineskip}
+</pre></div>
+
+<p>The starred form <code>\enlargesthispage*</code> tries to squeeze the material
+together on the page as much as possible, for the common use case of
+getting one more line on the page. This is often used together with an
+explicit <code>\pagebreak</code>.
+</p>
+
+<hr>
+<a name="g_t_005cpagebreak-_0026-_005cnopagebreak"></a>
+<a name="g_t_005cpagebreak-_0026-_005cnopagebreak-1"></a>
+<h3 class="section">10.4 <code>\pagebreak</code> &amp; <code>\nopagebreak</code></h3>
+
+<a name="index-_005cpagebreak"></a>
+<a name="index-_005cnopagebreak"></a>
+<a name="index-page-break_002c-forcing"></a>
+<a name="index-page-break_002c-preventing"></a>
+
+<p>Synopses:
+</p>
+<div class="example">
+<pre class="example">\pagebreak
+\pagebreak[<var>zero-to-four</var>]
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\nopagebreak
+\nopagebreak[<var>zero-to-four</var>]
+</pre></div>
+
+<p>Encourage or discourage a page break.  The optional <var>zero-to-four</var>
+is an integer that allows you to soften the request. The default is 4,
+so that without the optional argument these commands entirely force or
+prevent the break.  But for instance <code>\nopagebreak[1]</code> suggests to
+LaTeX that another spot might be preferable.  The higher the number,
+the more insistent the request.  Both commands are fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>LaTeX&rsquo;s page endings are optimized so ordinarily you only use this
+command in a document body to polish the final version, or inside
+commands.
+</p>
+<p>If you use these inside a paragraph, they apply to the point following
+the line in which they appear.  So this
+</p>
+<div class="example">
+<pre class="example">Four score and seven years ago our fathers brought forth on this
+continent,
+\pagebreak
+a new nation, conceived in Liberty, and dedicated to the proposition
+that all men are created equal.
+</pre></div>
+
+<p>does not give a page break at &lsquo;<samp>continent,</samp>&rsquo; but instead at
+&lsquo;<samp>nation,</samp>&rsquo; since that is where LaTeX breaks that line.  In
+addition, with <code>\pagebreak</code> the vertical space on the page is
+stretched out where possible so that it extends to the normal bottom
+margin.  This can look strange, and if <code>\flushbottom</code> is in effect
+this can cause you to get &lsquo;<samp>Underfull \vbox (badness 10000) has
+occurred while \output is active</samp>&rsquo;.  See <a href="#g_t_005cnewpage">\newpage</a> for a command that
+does not have these effects.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005cenlargethispage" accesskey="p" rel="prev">\enlargethispage</a>, Up: <a href="#Page-breaking" accesskey="u" rel="up">Page breaking</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

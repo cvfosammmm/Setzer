@@ -1,0 +1,616 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Fonts (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Fonts (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Fonts (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_5.html#Layout" rel="next" title="Layout">
+<link href="latex2e_3.html#Class-and-package-commands" rel="prev" title="Class and package commands">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Fonts"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_5.html#Layout" accesskey="n" rel="next">Layout</a>, Previous: <a href="latex2e_3.html#Document-classes" accesskey="p" rel="prev">Document classes</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Fonts-1"></a>
+<h2 class="chapter">4 Fonts</h2>
+<a name="Typefaces"></a>
+<a name="index-typefaces"></a>
+<a name="index-fonts"></a>
+
+<p>Two important aspects of selecting a <em>font</em> are specifying a size
+and a style.  The LaTeX commands for doing this are described here.
+</p>
+
+
+<hr>
+<a name="Font-styles"></a>
+<a name="Font-styles-1"></a>
+<h3 class="section">4.1 Font styles</h3>
+
+<a name="index-font-styles"></a>
+<a name="index-type-styles"></a>
+<a name="index-styles-of-text"></a>
+
+<p>The following type style commands are supported by LaTeX.
+</p>
+<p>In the table below the listed commands, the <code>\text...</code>  commands,
+is used with an argument, as in <code>\textit{<var>text</var>}</code>.  This is
+the preferred form.  But shown after it, in parenthesis, is the
+corresponding declaration form, which is sometimes useful.  This form
+takes no arguments, as in <code>{\itshape <var>text</var>}</code>.  The scope of
+the declaration form lasts until the next type style command or the end
+of the current group.  In addition, each has an environment form such as
+<code>\begin{itshape}...\end{itshape}</code>.
+</p>
+<p>These commands, in both the argument form and the declaration form, are
+cumulative; for instance you can get bold sans serif by saying either of
+<code>\sffamily\bfseries</code> or <code>\bfseries\sffamily</code>.
+</p>
+<a name="index-_005cnocorrlist"></a>
+<a name="index-_005cnocorr"></a>
+<p>One advantage of these commands is that they automatically insert italic
+corrections if needed (see <a href="latex2e_19.html#g_t_005c_002f">\/</a>).  Specifically, they insert the
+italic correction unless the following character is in the list
+<code>\nocorrlist</code>, which by default consists of a period and a comma.
+To suppress the automatic insertion of italic correction, use
+<code>\nocorr</code> at the start or end of the command argument, such as
+<code>\textit{\nocorr text}</code> or <code>\textsc{text \nocorr}</code>.
+</p>
+<dl compact="compact">
+<dt><code>\textrm (\rmfamily)</code></dt>
+<dd><a name="index-_005ctextrm"></a>
+<a name="index-_005crmfamily"></a>
+<p>Roman.
+</p>
+</dd>
+<dt><code>\textit (\itshape)</code></dt>
+<dd><a name="index-_005ctextit"></a>
+<a name="index-_005citshape"></a>
+<p>Italics.
+</p>
+</dd>
+<dt><code>\textmd (\mdseries)</code></dt>
+<dd><a name="index-_005ctextmd"></a>
+<a name="index-_005cmdseries"></a>
+<p>Medium weight (default).
+</p>
+</dd>
+<dt><code>\textbf (\bfseries)</code></dt>
+<dd><a name="index-_005ctextbf"></a>
+<a name="index-_005cbfseries"></a>
+<p>Boldface.
+</p>
+</dd>
+<dt><code>\textup (\upshape)</code></dt>
+<dd><a name="index-_005ctextup"></a>
+<a name="index-_005cupshape"></a>
+<p>Upright (default).
+</p>
+</dd>
+<dt><code>\textsl (\slshape)</code></dt>
+<dd><a name="index-_005ctextsl"></a>
+<a name="index-_005cslshape"></a>
+<p>Slanted.
+</p>
+</dd>
+<dt><code>\textsf (\sffamily)</code></dt>
+<dd><a name="index-_005ctextsf"></a>
+<a name="index-_005csffamily"></a>
+<p>Sans serif.
+</p>
+</dd>
+<dt><code>\textsc (\scshape)</code></dt>
+<dd><a name="index-_005ctextsc"></a>
+<a name="index-_005cscshape"></a>
+<p>Small caps.
+</p>
+</dd>
+<dt><code>\texttt (\ttfamily)</code></dt>
+<dd><a name="index-_005ctexttt"></a>
+<a name="index-_005cttfamily"></a>
+<p>Typewriter.
+</p>
+</dd>
+<dt><code>\textnormal (\normalfont)</code></dt>
+<dd><a name="index-_005ctextnormal"></a>
+<a name="index-_005cnormalfont"></a>
+<p>Main document font.
+</p>
+</dd>
+</dl>
+
+<a name="index-emphasis"></a>
+<a name="index-_005cemph"></a>
+<p>Although it also changes fonts, the <code>\emph{<var>text</var>}</code> command
+is semantic, for text to be emphasized, and should not be used as a
+substitute for <code>\textit</code>.  For example, <code>\emph{<var>start
+text</var> \emph{<var>middle text</var>} <var>end text</var>}</code> will result in the
+<var>start text</var> and <var>end text</var> in italics, but <var>middle text</var>
+will be in roman.
+</p>
+<p>LaTeX also provides the following commands, which unconditionally
+switch to the given style, that is, are <em>not</em> cumulative.  They are
+used as declarations: <code>{\<var>cmd</var>...}</code> instead of
+<code>\<var>cmd</var>{...}</code>.
+</p>
+<p>(The unconditional commands below are an older version of font
+switching. The earlier commands are an improvement in most
+circumstances. But sometimes an unconditional font switch is precisely
+what you want.)
+</p>
+<dl compact="compact">
+<dt><code>\bf</code>
+<a name="index-_005cbf"></a>
+</dt>
+<dd><a name="index-bold-font"></a>
+<p>Switch to bold face.
+</p>
+</dd>
+<dt><code>\cal</code>
+<a name="index-_005ccal"></a>
+</dt>
+<dd><a name="index-script-letters-for-math"></a>
+<a name="index-calligraphic-letters-for-math"></a>
+<p>Switch to calligraphic letters for math.
+</p>
+</dd>
+<dt><code>\it</code>
+<a name="index-_005cit"></a>
+</dt>
+<dd><a name="index-italic-font"></a>
+<p>Italics.
+</p>
+</dd>
+<dt><code>\rm</code>
+<a name="index-_005crm"></a>
+</dt>
+<dd><a name="index-roman-font"></a>
+<p>Roman.
+</p>
+</dd>
+<dt><code>\sc</code>
+<a name="index-_005csc"></a>
+</dt>
+<dd><a name="index-small-caps-font"></a>
+<p>Small caps.
+</p>
+</dd>
+<dt><code>\sf</code>
+<a name="index-_005csf"></a>
+</dt>
+<dd><a name="index-sans-serif-font"></a>
+<p>Sans serif.
+</p>
+</dd>
+<dt><code>\sl</code>
+<a name="index-_005csl"></a>
+</dt>
+<dd><a name="index-slanted-font"></a>
+<a name="index-oblique-font"></a>
+<p>Slanted (oblique).
+</p>
+</dd>
+<dt><code>\tt</code>
+<a name="index-_005ctt"></a>
+</dt>
+<dd><a name="index-typewriter-font"></a>
+<a name="index-monospace-font"></a>
+<a name="index-fixed_002dwidth-font"></a>
+<p>Typewriter (monospace, fixed-width).
+</p>
+</dd>
+</dl>
+
+<p>The <code>\em</code> command is the unconditional version of <code>\emph</code>.
+</p>
+<p>The following commands are for use in math mode.  They are not
+cumulative, so <code>\mathbf{\mathit{<var>symbol</var>}}</code> does not
+create a boldface and italic <var>symbol</var>; instead, it will just be in
+italics.  This is because typically math symbols need consistent
+typographic treatment, regardless of the surrounding environment.
+</p>
+<dl compact="compact">
+<dt><code>\mathrm</code></dt>
+<dd><a name="index-_005cmathrm"></a>
+<p>Roman, for use in math mode.
+</p>
+</dd>
+<dt><code>\mathbf</code></dt>
+<dd><a name="index-_005cmathbf"></a>
+<p>Boldface, for use in math mode.
+</p>
+</dd>
+<dt><code>\mathsf</code></dt>
+<dd><a name="index-_005cmathsf"></a>
+<p>Sans serif, for use in math mode.
+</p>
+</dd>
+<dt><code>\mathtt</code></dt>
+<dd><a name="index-_005cmathtt"></a>
+<p>Typewriter, for use in math mode.
+</p>
+</dd>
+<dt><code>\mathit</code></dt>
+<dt><code>(\mit)</code></dt>
+<dd><p>Italics, for use in math mode.
+</p>
+</dd>
+<dt><code>\mathnormal</code></dt>
+<dd><a name="index-_005cmathnormal"></a>
+<p>For use in math mode, e.g., inside another type style declaration.
+</p>
+</dd>
+<dt><code>\mathcal</code></dt>
+<dd><a name="index-_005cmathcal"></a>
+<p>Calligraphic letters, for use in math mode.
+</p>
+</dd>
+</dl>
+
+<a name="index-_005cmathversion"></a>
+<a name="index-math_002c-bold"></a>
+<a name="index-bold-math"></a>
+<p>In addition, the command <code>\mathversion{bold}</code> can be used for
+switching to bold letters and symbols in
+formulas. <code>\mathversion{normal}</code> restores the default.
+</p>
+<a name="index-_005coldstylenums"></a>
+<a name="index-numerals_002c-old_002dstyle"></a>
+<a name="index-old_002dstyle-numerals"></a>
+<a name="index-lining-numerals"></a>
+<a name="index-package_002c-textcomp"></a>
+<a name="index-textcomp-package"></a>
+
+<p>Finally, the command <code>\oldstylenums{<var>numerals</var>}</code> will typeset
+so-called &ldquo;old-style&rdquo; numerals, which have differing heights and
+depths (and sometimes widths) from the standard &ldquo;lining&rdquo; numerals,
+which all have the same height as uppercase letters.  LaTeX&rsquo;s
+default fonts support this, and will respect <code>\textbf</code> (but not
+other styles; there are no italic old-style numerals in Computer
+Modern).  Many other fonts have old-style numerals also; sometimes the
+<code>textcomp</code> package must be loaded, and sometimes package options
+are provided to make them the default.  FAQ entry:
+<a href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=osf">http://www.tex.ac.uk/cgi-bin/texfaq2html?label=osf</a>.
+</p>
+
+<hr>
+<a name="Font-sizes"></a>
+<a name="Font-sizes-1"></a>
+<h3 class="section">4.2 Font sizes</h3>
+
+<a name="index-font-sizes"></a>
+<a name="index-typeface-sizes"></a>
+<a name="index-sizes-of-text"></a>
+
+<p>The following standard type size commands are supported by LaTeX.
+The table shows the command name and the corresponding actual font
+size used (in points) with the &lsquo;<samp>10pt</samp>&rsquo;, &lsquo;<samp>11pt</samp>&rsquo;, and
+&lsquo;<samp>12pt</samp>&rsquo; document size options, respectively (see <a href="latex2e_3.html#Document-class-options">Document class options</a>).
+</p>
+<a name="index-_005ctiny"></a>
+<a name="index-_005cscriptsize"></a>
+<a name="index-_005cfootnotesize"></a>
+<a name="index-_005csmall"></a>
+<a name="index-_005cnormalsize"></a>
+<a name="index-_005clarge"></a>
+<a name="index-_005cLarge"></a>
+<a name="index-_005cLARGE"></a>
+<a name="index-_005chuge"></a>
+<a name="index-_005cHuge"></a>
+
+<table>
+<thead><tr><th>Command</th><th><code>10pt</code></th><th><code>11pt</code></th><th><code>12pt</code></th></tr></thead>
+<tr><td><code>\tiny</code></td><td>5</td><td>6</td><td>6</td></tr>
+<tr><td><code>\scriptsize</code></td><td>7</td><td>8</td><td>8</td></tr>
+<tr><td><code>\footnotesize</code></td><td>8</td><td>9</td><td>10</td></tr>
+<tr><td><code>\small</code></td><td>9</td><td>10</td><td>10.95</td></tr>
+<tr><td><code>\normalsize</code> (default)</td><td>10</td><td>10.95</td><td>12</td></tr>
+<tr><td><code>\large</code></td><td>12</td><td>12</td><td>14.4</td></tr>
+<tr><td><code>\Large</code></td><td>14.4</td><td>14.4</td><td>17.28</td></tr>
+<tr><td><code>\LARGE</code></td><td>17.28</td><td>17.28</td><td>20.74</td></tr>
+<tr><td><code>\huge</code></td><td>20.74</td><td>20.74</td><td>24.88</td></tr>
+<tr><td><code>\Huge</code></td><td>24.88</td><td>24.88</td><td>24.88</td></tr>
+</table>
+
+<p>The commands are listed here in declaration forms. You use them by
+declaring them, as with this example.
+</p>
+<div class="example">
+<pre class="example">\begin{quotation} \small
+  The Tao that can be named is not the eternal Tao.
+\end{quotation}
+</pre></div>
+
+<p>The scope of the <code>\small</code> lasts until the end of the
+<code>quotation</code> environment.  It would also end at the next type style
+command or the end of the current group, so you could enclose it in
+extra curly braces <code>{\small We are here, we are here, we are
+here!}</code>.  You can instead use the environment form of these commands;
+for instance, <code>\begin{tiny}...\end{tiny}</code>.
+</p>
+
+<hr>
+<a name="Low_002dlevel-font-commands"></a>
+<a name="Low_002dlevel-font-commands-1"></a>
+<h3 class="section">4.3 Low-level font commands</h3>
+
+<a name="index-low_002dlevel-font-commands"></a>
+<a name="index-font-commands_002c-low_002dlevel"></a>
+
+<p>These commands are primarily intended for writers of macros and
+packages.  The commands listed here are only a subset of the available
+ones.
+</p>
+<dl compact="compact">
+<dd><a name="low-level-font-commands-fontencoding"></a></dd>
+<dt><code>\fontencoding{<var>encoding</var>}</code></dt>
+<dd><a name="index-_005cfontencoding"></a>
+<p>Select the font encoding, the encoding of the output font. There are a
+large number of valid encodings.  The most common are <code>OT1</code>,
+Knuth&rsquo;s original encoding for Computer Modern (the default), and
+<code>T1</code>, also known as the Cork encoding, which has support for the
+accented characters used by the most widespread European languages
+(German, French, Italian, Polish and others), which allows TeX to
+hyphenate words containing accented letters. For more, see
+<a href="https://ctan.org/pkg/encguide">https://ctan.org/pkg/encguide</a>.
+</p>
+<a name="low-level-font-commands-fontfamily"></a></dd>
+<dt><code>\fontfamily{<var>family</var>}</code></dt>
+<dd><a name="index-_005cfontfamily"></a>
+<a name="index-families_002c-of-fonts"></a>
+<a name="index-font-catalogue"></a>
+<p>Select the font family.  The web page
+<a href="http://www.tug.dk/FontCatalogue/">http://www.tug.dk/FontCatalogue/</a> provides one way to browse
+through many of the fonts easily used with LaTeX.  Here are
+examples of some common families.
+</p>
+<table>
+<tr><td><code>pag</code></td><td>Avant Garde</td></tr>
+<tr><td><code>fvs</code></td><td>Bitstream Vera Sans</td></tr>
+<tr><td><code>pbk</code></td><td>Bookman</td></tr>
+<tr><td><code>bch</code></td><td>Charter</td></tr>
+<tr><td><code>ccr</code></td><td>Computer Concrete</td></tr>
+<tr><td><code>cmr</code></td><td>Computer Modern</td></tr>
+<tr><td><code>cmss</code></td><td>Computer Modern Sans Serif</td></tr>
+<tr><td><code>cmtt</code></td><td>Computer Modern Typewriter</td></tr>
+<tr><td><code>pcr</code></td><td>Courier</td></tr>
+<tr><td><code>phv</code></td><td>Helvetica</td></tr>
+<tr><td><code>fi4</code></td><td>Inconsolata</td></tr>
+<tr><td><code>lmr</code></td><td>Latin Modern</td></tr>
+<tr><td><code>lmss</code></td><td>Latin Modern Sans</td></tr>
+<tr><td><code>lmtt</code></td><td>Latin Modern Typewriter</td></tr>
+<tr><td><code>pnc</code></td><td>New Century Schoolbook</td></tr>
+<tr><td><code>ppl</code></td><td>Palatino</td></tr>
+<tr><td><code>ptm</code></td><td>Times</td></tr>
+<tr><td><code>uncl</code></td><td>Uncial</td></tr>
+<tr><td><code>put</code></td><td>Utopia</td></tr>
+<tr><td><code>pzc</code></td><td>Zapf Chancery</td></tr>
+</table>
+
+
+<a name="low-level-font-commands-fontseries"></a></dd>
+<dt><code>\fontseries{<var>series</var>}</code></dt>
+<dd><a name="index-_005cfontseries"></a>
+<a name="index-series_002c-of-fonts"></a>
+<p>Select the font series.  A <em>series</em> combines a <em>weight</em> and a
+<em>width</em>.  Typically, a font supports only a few of the possible
+combinations.  Some common combined series values include:
+</p>
+<table>
+<tr><td><code>m</code></td><td>Medium (normal)</td></tr>
+<tr><td><code>b</code></td><td>Bold</td></tr>
+<tr><td><code>c</code></td><td>Condensed</td></tr>
+<tr><td><code>bc</code></td><td>Bold condensed</td></tr>
+<tr><td><code>bx</code></td><td>Bold extended</td></tr>
+</table>
+
+<a name="index-weights_002c-of-fonts"></a>
+<p>The possible values for weight, individually, are:
+</p>
+<table>
+<tr><td><code>ul</code></td><td>Ultra light</td></tr>
+<tr><td><code>el</code></td><td>Extra light</td></tr>
+<tr><td><code>l</code></td><td>Light</td></tr>
+<tr><td><code>sl</code></td><td>Semi light</td></tr>
+<tr><td><code>m</code></td><td>Medium (normal)</td></tr>
+<tr><td><code>sb</code></td><td>Semi bold</td></tr>
+<tr><td><code>b</code></td><td>Bold</td></tr>
+<tr><td><code>eb</code></td><td>Extra bold</td></tr>
+<tr><td><code>ub</code></td><td>Ultra bold</td></tr>
+</table>
+ 
+<a name="index-widths_002c-of-fonts"></a>
+<p>The possible values for width, individually, are (the meaning and
+relationship of these terms varies with individual typefaces):
+</p>
+<table>
+<tr><td><code>uc</code></td><td>Ultra condensed</td></tr>
+<tr><td><code>ec</code></td><td>Extra condensed</td></tr>
+<tr><td><code>c</code></td><td>Condensed</td></tr>
+<tr><td><code>sc</code></td><td>Semi condensed</td></tr>
+<tr><td><code>m</code></td><td>Medium</td></tr>
+<tr><td><code>sx</code></td><td>Semi expanded</td></tr>
+<tr><td><code>x</code></td><td>Expanded</td></tr>
+<tr><td><code>ex</code></td><td>Extra expanded</td></tr>
+<tr><td><code>ux</code></td><td>Ultra expanded</td></tr>
+</table>
+
+<p>When forming the <var>series</var> string from the weight and width, drop the
+<code>m</code> that stands for medium weight or medium width, unless both
+weight and width are <code>m</code>, in which case use just one
+(&lsquo;<samp><code>m</code></samp>&rsquo;).
+</p> 
+</dd>
+<dt><code>\fontshape{<var>shape</var>}</code></dt>
+<dd><a name="index-_005cfontshape"></a>
+<a name="index-shapes_002c-of-fonts"></a>
+<a name="low-level-font-commands-fontshape"></a><p>Select font shape. Valid shapes are:
+</p>
+<table>
+<tr><td><code>n</code></td><td>Upright (normal)</td></tr>
+<tr><td><code>it</code></td><td>Italic</td></tr>
+<tr><td><code>sl</code></td><td>Slanted (oblique)</td></tr>
+<tr><td><code>sc</code></td><td>Small caps</td></tr>
+<tr><td><code>ui</code></td><td>Upright italics</td></tr>
+<tr><td><code>ol</code></td><td>Outline</td></tr>
+</table>
+
+<p>The two last shapes are not available for most font families, and
+small caps are often missing as well.
+</p>
+<a name="low-level-font-commands-fontsize"></a></dd>
+<dt><code>\fontsize{<var>size</var>}{<var>skip</var>}</code></dt>
+<dd><a name="index-_005cfontsize"></a>
+<a name="index-font-size"></a>
+<a name="index-_005cbaselineskip"></a>
+<p>Set the font size and the line spacing.  The unit of both parameters
+defaults to points (<code>pt</code>).  The line spacing is the nominal
+vertical space between lines, baseline to baseline.  It is stored in the
+parameter <code>\baselineskip</code>.  The default <code>\baselineskip</code> for
+the Computer Modern typeface is 1.2 times the <code>\fontsize</code>.
+Changing <code>\baselineskip</code> directly is inadvisable since its value is
+reset every time a size change happens; see <code>\baselinestretch</code>, next.
+</p>
+<a name="low-level-font-commands-baselinestretch"></a></dd>
+<dt><code>\baselinestretch</code></dt>
+<dd><a name="index-_005cbaselinestretch"></a>
+<p>LaTeX multiplies the line spacing by the value of the
+<code>\baselinestretch</code> parameter; the default factor is 1.  A change
+takes effect when <code>\selectfont</code> (see below) is called.  You can
+make a line skip change happen for the entire document, for instance
+doubling it, by doing <code>\renewcommand{\baselinestretch}{2.0}</code> in
+the preamble.
+</p>
+<a name="index-package_002c-setspace"></a>
+<a name="index-setspace-package"></a>
+
+<a name="index-double-spacing"></a>
+<p>However, the best way to double-space a document is to use the
+<samp>setspace</samp> package.  In addition to offering a number of spacing
+options, this package keeps the line spacing single-spaced in places
+where that is typically desirable, such as footnotes and figure
+captions.  See the package documentation.
+</p>
+<a name="low-level-font-commands-linespread"></a></dd>
+<dt><code>\linespread{<var>factor</var>}</code></dt>
+<dd><a name="index-_005clinespread"></a>
+<p>Equivalent to
+<code>\renewcommand{\baselinestretch}{<var>factor</var>}</code>, and
+therefore must be followed by <code>\selectfont</code> to have any effect.
+Best specified in the preamble, or use the <code>setspace</code> package, as
+just described.
+</p>
+<a name="low-level-font-commands-selectfont"></a></dd>
+<dt><code>\selectfont</code></dt>
+<dd><a name="index-_005cselectfont"></a>
+<p>The effects of the font commands described above do not happen until
+<code>\selectfont</code> is called, as in
+<code>\fontfamily{<var>familyname</var>}\selectfont</code>.  It is often useful
+to put this in a macro:<br>
+<code>\newcommand*{\myfont}{\fontfamily{<var>familyname</var>}\selectfont}</code><br>
+(see <a href="latex2e_12.html#g_t_005cnewcommand-_0026-_005crenewcommand">\newcommand &amp; \renewcommand</a>).
+</p>
+<a name="low-level-font-commands-usefont"></a></dd>
+<dt><code>\usefont{<var>enc</var>}{<var>family</var>}{<var>series</var>}{<var>shape</var>}</code></dt>
+<dd><a name="index-_005cusefont"></a>
+<p>The same as invoking <code>\fontencoding</code>, <code>\fontfamily</code>,
+<code>\fontseries</code> and <code>\fontshape</code> with the given parameters,
+followed by <code>\selectfont</code>.  For example:
+</p>
+<div class="example">
+<pre class="example">\usefont{ot1}{cmr}{m}{n}
+</pre></div>
+
+</dd>
+</dl>
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#Font-sizes" accesskey="p" rel="prev">Font sizes</a>, Up: <a href="#Fonts" accesskey="u" rel="up">Fonts</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

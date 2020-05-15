@@ -1,0 +1,461 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Page styles (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Page styles (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Page styles (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_19.html#Spaces" rel="next" title="Spaces">
+<link href="latex2e_17.html#g_t_005censuremath" rel="prev" title="\ensuremath">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Page-styles"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_19.html#Spaces" accesskey="n" rel="next">Spaces</a>, Previous: <a href="latex2e_17.html#Modes" accesskey="p" rel="prev">Modes</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Page-styles-1"></a>
+<h2 class="chapter">18 Page styles</h2>
+
+<a name="index-styles_002c-page"></a>
+<a name="index-page-styles"></a>
+
+<p>The style of a page determines where LaTeX places the components of
+that page, such as headers and footers, and the text body.  This
+includes pages in the main part of the document but also includes
+special pages such as the title page of a book, a page from an index, or
+the first page of an article.
+</p>
+<a name="index-package_002c-fancyhdr"></a>
+<a name="index-fancyhdr-package"></a>
+
+<p>The package <samp>fancyhdr</samp> is very helpful for constructing page
+styles.  See its documentation on CTAN.
+</p>
+
+
+<hr>
+<a name="g_t_005cmaketitle"></a>
+<a name="g_t_005cmaketitle-1"></a>
+<h3 class="section">18.1 <code>\maketitle</code></h3>
+
+<a name="index-titles_002c-making"></a>
+<a name="index-_005cmaketitle"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\maketitle
+</pre></div>
+
+<p>Generate a title.  In the standard classes the title appears on a
+separate page, except in the <code>article</code> class where it is at the top
+of the first page.  (See <a href="latex2e_3.html#Document-class-options">Document class options</a> for information about
+the <code>titlepage</code> document class option.)
+</p>
+<p>This example shows <code>\maketitle</code> appearing in its usual place,
+immediately after <code>\begin{document}</code>.
+</p>
+<div class="example">
+<pre class="example">\documentclass{article}
+\title{Constructing a Nuclear Reactor Using Only Coconuts}
+\author{Jonas Grumby\thanks{%
+    With the support of a Ginger Grant from the Roy Hinkley Society.} \\
+  Skipper, \textit{Minnow}
+  \and
+  Willy Gilligan\thanks{%
+    Thanks to the Mary Ann Summers foundation
+    and to Thurston and Lovey Howell.}           \\
+  Mate, \textit{Minnow}
+  }
+\date{1964-Sep-26}
+\begin{document}
+\maketitle
+Just sit right back and you'll hear a tale, a tale of a fateful trip.
+That started from this tropic port, aboard this tiny ship. The mate was
+a mighty sailin' man, the Skipper brave and sure. Five passengers set
+sail that day for a three hour tour. A three hour tour.
+  ...
+</pre></div>
+
+<p>You tell LaTeX the information used to produce the title by making
+the following declarations.  These must come before the
+<code>\maketitle</code>, either in the preamble or in the document body.
+</p>
+<dl compact="compact">
+<dt><code>\author{<var>name1</var> \and <var>name2</var> \and ...}</code>
+<a name="index-_005cauthor_007bname1-_005cand-name2-_005cand-_002e_002e_002e_007d"></a>
+</dt>
+<dd><a name="index-author_002c-for-titlepage"></a>
+<a name="index-_005c_005c-for-_005cauthor"></a>
+<a name="index-_005cand-for-_005cauthor"></a>
+<p>Required.  Declare the document author or authors.  The argument is a
+list of authors separated by <code>\and</code> commands.  To separate lines
+within a single author&rsquo;s entry, for instance to give the author&rsquo;s
+institution or address, use a double backslash, <code>\\</code>.  If you omit
+the <code>\author</code> declaration then you get &lsquo;<samp>LaTeX Warning: No
+\author given</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\date{<var>text</var>}</code>
+<a name="index-_005cdate_007btext_007d"></a>
+</dt>
+<dd><a name="index-date_002c-for-titlepage"></a>
+<p>Optional.  Declare <var>text</var> to be the document&rsquo;s date.  The <var>text</var>
+doesn&rsquo;t need to be in a date format; it can be any text at all.  If you
+omit <code>\date</code> then LaTeX uses the current date (see <a href="latex2e_23.html#g_t_005ctoday">\today</a>).
+To have no date, instead use <code>\date{}</code>.
+</p>
+</dd>
+<dt><code>\thanks{<var>text</var>}</code>
+<a name="index-_005cthanks_007btext_007d"></a>
+</dt>
+<dd><a name="index-thanks_002c-for-titlepage"></a>
+<a name="index-credit-footnote"></a>
+<p>Optional.  Produce a footnote.  You can use it in the author information
+for acknowledgements as illustrated above, but you can also use it in
+the title, or any place a footnote makes sense.  It can be any text at
+all so you can use it for any purpose, such as to print an email
+address.
+</p>
+</dd>
+<dt><code>\title{<var>text</var>}</code>
+<a name="index-_005ctitle_007btext_007d"></a>
+</dt>
+<dd><a name="index-title_002c-for-titlepage"></a>
+<a name="index-_005c_005c-for-_005ctitle"></a>
+<p>Required.  Declare <var>text</var> to be the title of the document.  Get line
+breaks inside <var>text</var> with a double backslash, <code>\\</code>.  If you
+omit the <code>\title</code> declaration then you get &lsquo;<samp>LaTeX Error: No
+\title given</samp>&rsquo;.
+</p>
+</dd>
+</dl>
+
+<p>To make your own title page, see&nbsp;<a href="latex2e_8.html#titlepage">titlepage</a>. You can either
+create this as a one-off or you can include it as part of a renewed
+<code>\maketitle</code> command.  (Many publishers will provide a class to use
+in place of <code>article</code> that formats the title according to their
+house requirements.)
+</p>
+
+<hr>
+<a name="g_t_005cpagenumbering"></a>
+<a name="g_t_005cpagenumbering-1"></a>
+<h3 class="section">18.2 <code>\pagenumbering</code></h3>
+
+<a name="index-_005cpagenumbering"></a>
+<a name="index-page-numbering-style"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\pagenumbering{<var>number-style</var>}
+</pre></div>
+
+<p>Specifies the style of page numbers, and resets the page number.  The
+numbering style is reflected on the page, and also in the table of
+contents and other page references.  This declaration has global scope
+so its effect is not delimited by braces or environments.
+</p>
+<p>In this example, before the Main section the pages are numbered
+&lsquo;<samp>a</samp>&rsquo;, etc.  Starting on the page containing that section, the pages
+are numbered &lsquo;<samp>1</samp>&rsquo;, etc.
+</p>
+<div class="example">
+<pre class="example">\begin{document}\pagenumbering{alph}
+  ...
+\section{Main}\pagenumbering{arabic}
+  ...
+</pre></div>
+
+<p>The argument <var>number-style</var> is one of the following (see
+also&nbsp;<a href="latex2e_13.html#g_t_005calph-_005cAlph-_005carabic-_005croman-_005cRoman-_005cfnsymbol">\alph \Alph \arabic \roman \Roman \fnsymbol</a>).
+</p>
+<dl compact="compact">
+<dt><code>arabic</code></dt>
+<dd><p>Arabic numerals: 1, 2, &hellip; 
+</p>
+</dd>
+<dt><code>roman</code></dt>
+<dd><p>lowercase Roman numerals: i, ii, &hellip;
+</p>
+</dd>
+<dt><code>Roman</code></dt>
+<dd><p>uppercase Roman numerals: I, II, &hellip;
+</p>
+</dd>
+<dt><code>alph</code></dt>
+<dd><p>lowercase letters: a, b, &hellip; If you have more than 26 pages then you
+get &lsquo;<samp>LaTeX Error: Counter too large</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>Alph</code></dt>
+<dd><p>uppercase letters: A, B, &hellip; If you have more than 26 pages then you
+get &lsquo;<samp>LaTeX Error: Counter too large</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>gobble</code></dt>
+<dd><a name="index-package_002c-hyperref-2"></a>
+<a name="index-hyperref-package-2"></a>
+<p>LaTeX does not output a page number, although it
+does get reset.  References to that page also are blank.  (This does not
+work with the popular package <samp>hyperref</samp> so to have the page number
+not appear you may want to instead use <code>\pagestyle{empty}</code> or
+<code>\thispagestyle{empty}</code>.)
+</p>
+</dd>
+</dl>
+
+<p>Traditionally, if a document has front matter&mdash;preface, table of
+contents, etc.&mdash;then it is numbered with lowercase Roman numerals. The
+main matter of a document uses arabic.  See <a href="latex2e_6.html#g_t_005cfrontmatter-_0026-_005cmainmatter-_0026-_005cbackmatter">\frontmatter &amp; \mainmatter &amp; \backmatter</a>.
+</p>
+<p>If you want to address where the page number appears on the page,
+see&nbsp;<a href="#g_t_005cpagestyle">\pagestyle</a>.  If you want to change the value of page
+number then you will manipulate the <code>page</code> counter
+(see <a href="latex2e_13.html#Counters">Counters</a>).
+</p>
+
+<hr>
+<a name="g_t_005cpagestyle"></a>
+<a name="g_t_005cpagestyle-1"></a>
+<h3 class="section">18.3 <code>\pagestyle</code></h3>
+
+<a name="index-_005cpagestyle"></a>
+<a name="index-header-style"></a>
+<a name="index-footer-style"></a>
+<a name="index-running-header-and-footer-style"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\pagestyle{<var>style</var>}
+</pre></div>
+
+<p>Declaration that specifies how the page headers and footers are typeset,
+from the current page onwards.
+</p>
+<a name="index-package_002c-fancyhdr-1"></a>
+<a name="index-fancyhdr-package-1"></a>
+
+<p>A discussion with an example is below.  Note first that the package
+<samp>fancyhdr</samp> is now the standard way to manipulate headers and
+footers.  New documents that need to do anything other than one of the
+standard options below should use this package.  See its documentation
+on CTAN.
+</p>
+<p>Values for <var>style</var>:
+</p>
+<dl compact="compact">
+<dt><code>plain</code></dt>
+<dd><p>The header is empty.  The footer contains only a page number, centered.
+</p>
+</dd>
+<dt><code>empty</code></dt>
+<dd><p>The header and footer is empty.
+</p>
+</dd>
+<dt><code>headings</code></dt>
+<dd><p>Put running headers and footers on each page.  The document style
+specifies what goes in there; see the discussion below.
+</p>
+</dd>
+<dt><code>myheadings</code></dt>
+<dd><p>Custom headers, specified via the <code>\markboth</code> or the
+<code>\markright</code> commands.
+</p>
+</dd>
+</dl>
+
+<p>Some discussion of the motivation for LaTeX&rsquo;s mechanism will help you
+work with the options <code>headings</code> or <code>myheadings</code>.  The
+document source below produces an article, two-sided, with the pagestyle
+<code>headings</code>.  On this document&rsquo;s left hand pages, LaTeX wants (in
+addition to the page number) the title of the current section.  On its
+right hand pages LaTeX wants the title of the current subsection.
+When it makes up a page, LaTeX gets this information from the
+commands <code>\leftmark</code> and <code>\rightmark</code>.  So it is up to
+<code>\section</code> and <code>\subsection</code> to store that information there.
+</p>
+<div class="example">
+<pre class="example">\documentclass[twoside]{article}
+\pagestyle{headings}
+\begin{document}
+  ... \section{Section 1} ... \subsection{Subsection 1.1} ...
+\section{Section 2}
+  ...
+\subsection{Subsection 2.1}
+  ...
+\subsection{Subsection 2.2}
+  ...
+</pre></div>
+
+<p>Suppose that the second section falls on a left page.  Although when the
+page starts it is in the first section, LaTeX will put
+&lsquo;<samp>Section&nbsp;2</samp>&rsquo; in the left page header.  As to the right header,
+if no subsection starts before the end of the right page then LaTeX
+blanks the right hand header.  If a subsection does appear before the
+right page finishes then there are two cases.  If at least one
+subsection starts on the right hand page then LaTeX will put in the
+right header the title of the first subsection starting on that right
+page.  If at least one of 2.1, 2.2, &hellip;, starts on the left page but
+none starts on the right then LaTeX puts in the right hand header the
+title of the last subsection to start, that is, the one in effect during
+the right hand page.
+</p>
+<p>To accomplish this, in a two-sided article, LaTeX has <code>\section</code>
+issue a command <code>\markboth</code>, setting <code>\leftmark</code>
+to &lsquo;<samp>Section&nbsp;2</samp>&rsquo; and setting <code>\rightmark</code> to blank.
+And, LaTeX has <code>\subsection</code> issue a command <code>\markright</code>,
+setting <code>\rightmark</code> to &lsquo;<samp>Subsection&nbsp;2.1</samp>&rsquo;, etc.
+</p>
+<p>Here are the descriptions of <code>\markboth</code> and <code>\markright</code>:
+</p>
+<dl compact="compact">
+<dt><code>\markboth{<var>left-head</var>}{<var>right-head</var>}</code>
+<a name="index-_005cmarkboth_007bleft_002dhead_007d_007bright_002dhead_007d"></a>
+</dt>
+<dd><p>Sets both the right hand and left hand heading information for either a
+page style of <code>headings</code> or <code>myheadings</code>.  A left hand page
+heading <var>left-head</var> is generated by the last <code>\markboth</code>
+command before the end of the page.  A right hand page heading
+<var>right-head</var> is generated by the first <code>\markboth</code> or
+<code>\markright</code> that comes on the page if there is one, otherwise by
+the last one that came before that page.
+</p>
+</dd>
+<dt><code>\markright{<var>right</var>}</code>
+<a name="index-_005cmarkright_007bright_007d"></a>
+</dt>
+<dd><p>Sets the right hand page heading, leaving the left unchanged.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<a name="g_t_005cthispagestyle"></a>
+<a name="g_t_005cthispagestyle-1"></a>
+<h3 class="section">18.4 <code>\thispagestyle</code></h3>
+
+<a name="index-_005cthispagestyle"></a>
+<a name="index-page-style_002c-this-page"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\thispagestyle{<var>style</var>}
+</pre></div>
+
+<p>Works in the same way as the <code>\pagestyle</code> (see <a href="#g_t_005cpagestyle">\pagestyle</a>),
+except that it changes to <var>style</var> for the current page only.  This
+declaration has global scope, so its effect is not delimited by braces
+or environments.
+</p>
+<p>Often the first page of a chapter or section has a different style.  For
+example, this LaTeX book document has the first page of the first
+chapter in <code>plain</code> style, as is the default (see <a href="#Page-styles">Page styles</a>).
+</p>
+<div class="example">
+<pre class="example">\documentclass{book}
+\pagestyle{headings}
+\begin{document}
+\chapter{First chapter}
+  ...
+\chapter{Second chapter}\thispagestyle{empty}
+  ...
+</pre></div>
+
+<p>The <code>plain</code> style has a page number on it, centered in the footer.
+To make the page entirely empty, the command
+<code>\thispagestyle{empty}</code> immediately follows the second
+<code>\chapter</code>.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005cpagestyle" accesskey="p" rel="prev">\pagestyle</a>, Up: <a href="#Page-styles" accesskey="u" rel="up">Page styles</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

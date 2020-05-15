@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>About this document (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="About this document (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="About this document (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_2.html#Overview" rel="next" title="Overview">
+<link href="latex2e_0.html#Top" rel="prev" title="Top">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="About-this-document"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_2.html#Overview" accesskey="n" rel="next">Overview</a>, Previous: <a href="latex2e_0.html#Top" accesskey="p" rel="prev">Top</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="About-this-document-1"></a>
+<h2 class="chapter">1 About this document</h2>
+
+<a name="index-home-page-for-manual"></a>
+<p>This is an unofficial reference manual for the LaTeX2e document
+preparation system, which is a macro package for the TeX
+typesetting program (see <a href="latex2e_2.html#Overview">Overview</a>).
+</p>
+<p>This document&rsquo;s home page is <a href="https://puszcza.gnu.org.ua/software/latexrefman">https://puszcza.gnu.org.ua/software/latexrefman</a>.  There
+you can get the sources, subscribe to the mailing list or read its
+archives, see other infrastructure, and get the current output in
+various formats.  In particular, the output comes in two web formats.
+Probably the most convenient one, shown at <a href="http://latexref.xyz/">http://latexref.xyz/</a>,
+has pages for each topic and so is good for a quick lookup; see also the
+note there about easy-to-remember links.  The other, shown at
+<a href="http://svn.gnu.org.ua/viewvc/latexrefman/trunk/latex2e.html?view=co">http://svn.gnu.org.ua/viewvc/latexrefman/trunk/latex2e.html?view=co</a>,
+has all the information on single page.
+</p>
+<a name="index-LaTeX-vs_002e-LaTeX2e"></a>
+<p>In this document, we will mostly just use &lsquo;LaTeX&rsquo; rather than
+&lsquo;LaTeX2e&rsquo;, since the previous version of LaTeX&nbsp;(2.09) was
+frozen decades ago.
+</p>
+<a name="index-unofficial-nature-of-this-manual"></a>
+<a name="index-LaTeX-Project-team"></a>
+<a name="index-latexrefman_0040tug_002eorg-email-address"></a>
+<p>LaTeX is currently maintained by a group of volunteers
+(<a href="http://latex-project.org">http://latex-project.org</a>).  The official documentation written by
+the LaTeX project is available from their web site.  This document is
+completely unofficial and has not been reviewed by the LaTeX
+maintainers.  
+<a name="index-bug-reporting"></a>
+<a name="index-reporting-bugs"></a>
+Do not send bug reports or anything else about this document to them.
+Instead, please send all comments to <a href="mailto:latexrefman@tug.org">latexrefman@tug.org</a>.
+</p>
+<p>This document is a reference.  There is a vast array of other sources
+of information about LaTeX, at all levels.  Here are a few
+introductions.
+</p>
+<dl compact="compact">
+<dt><a href="http://ctan.org/pkg/latex-doc-ptr">http://ctan.org/pkg/latex-doc-ptr</a></dt>
+<dd><a name="index-latex_002ddoc_002dptr-document"></a>
+<p>Two pages of recommended references to LaTeX documentation.
+</p>
+</dd>
+<dt><a href="http://ctan.org/pkg/first-latex-doc">http://ctan.org/pkg/first-latex-doc</a></dt>
+<dd><a name="index-first_002dlatex_002ddoc-document"></a>
+<p>Writing your first document, with a bit of both text and math.
+</p>
+</dd>
+<dt><a href="http://ctan.org/pkg/usrguide">http://ctan.org/pkg/usrguide</a></dt>
+<dd><a name="index-usrguide-official-documentation"></a>
+<p>The guide for document authors that is maintained as part of LaTeX.
+Many other guides by many other people are also available, independent
+of LaTeX itself; one such is the next item:
+</p>
+</dd>
+<dt><a href="http://ctan.org/pkg/lshort">http://ctan.org/pkg/lshort</a></dt>
+<dd><a name="index-lshort-document"></a>
+<p>A short introduction to LaTeX, translated to many languages.
+</p>
+</dd>
+<dt><a href="http://tug.org/begin.html">http://tug.org/begin.html</a></dt>
+<dd><p>Introduction to the TeX system, including LaTeX, with further
+references.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="latex2e_2.html#Overview" accesskey="n" rel="next">Overview</a>, Previous: <a href="latex2e_0.html#Top" accesskey="p" rel="prev">Top</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Letters (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Letters (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Letters (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_27.html#Terminal-input_002foutput" rel="next" title="Terminal input/output">
+<link href="latex2e_25.html#g_t_005cgls" rel="prev" title="\gls">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Letters"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_27.html#Terminal-input_002foutput" accesskey="n" rel="next">Terminal input/output</a>, Previous: <a href="latex2e_25.html#Front_002fback-matter" accesskey="p" rel="prev">Front/back matter</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Letters-1"></a>
+<h2 class="chapter">26 Letters</h2>
+
+<a name="index-letters_002c-writing"></a>
+<a name="index-writing-letters"></a>
+
+<p>Synopsis: 
+</p>
+<div class="example">
+<pre class="example">\documentclass{letter}
+\address{<var>senders address</var>}   % return address
+\signature{<var>sender name</var>}
+\begin{document}
+\begin{letter}{<var>recipient address</var>}
+\opening{<var>salutation</var>}
+  <var>letter body</var>
+\closing{<var>closing text</var>}
+\end{letter}
+   ...
+\end{document}
+</pre></div>
+
+<p>Produce one or more letters.  
+</p>
+<p>Each letter is in a separate <code>letter</code> environment, whose argument
+<var>recipient address</var> often contains multiple lines separated with a
+double backslash,&nbsp;(<code>\\</code>).  For example, you might have:
+</p>
+<div class="example">
+<pre class="example"> \begin{letter}{Ninon de l'Enclos \\
+                l'h\^otel Sagonne}
+   ...
+ \end{letter}
+</pre></div>
+
+<p>The start of the <code>letter</code> environment resets the page number to 1,
+and the footnote number to 1 also.
+</p>
+<p>The <var>sender address</var> and <var>sender name</var> are common to all of the
+letters, whether there is one or more, so these are best put in the
+preamble.  As with the recipient address, often <var>sender address</var>
+contains multiple lines separated by a double
+backslash&nbsp;(<code>\\</code>).  LaTeX will put the <var>sender name</var>
+under the closing, after a vertical space for the traditional
+hand-written signature.
+</p>
+<p>Each <code>letter</code> environment body begins with a required
+<code>\opening</code> command such as <code>\opening{Dear Madam or Sir:}</code>.
+The <var>letter body</var> text is ordinary LaTeX so it can contain
+everything from enumerated lists to displayed math, except that commands
+such as <code>\chapter</code> that make no sense in a letter are turned off.
+Each <code>letter</code> environment body typically ends with a
+<code>\closing</code> command such as <code>\closing{Yours,}</code>.
+</p>
+<a name="index-_005c_005c-for-letters"></a>
+<p>Additional material may come after the <code>\closing</code>.  You can say who
+is receiving a copy of the letter with a command like <code>\cc{the
+Boss \\ the Boss's Boss}</code>.  There&rsquo;s a similar <code>\encl</code> command for
+a list of enclosures.  And, you can add a postscript with <code>\ps</code>.
+</p>
+<p>LaTeX&rsquo;s default is to indent the sender name and the closing above it
+by a length of <code>\longindentation</code>.  By default this is
+<code>0.5\textwidth</code>. To make them flush left, put
+<code>\setlength{\longindentation}{0em}</code> in your preamble.
+</p>
+<p>To set a fixed date use something like
+<code>\renewcommand{\today}{1958-Oct-12}</code>.  If put in your preamble
+then it will apply to all the letters.
+</p>
+<p>This example shows only one <code>letter</code> environment.  The three lines
+marked as optional are typically omitted.
+</p>
+<div class="example">
+<pre class="example">\documentclass{letter}
+\address{Sender's street \\ Sender's town}
+\signature{Sender's name \\ Sender's title}
+% optional: \location{Mailbox 13}
+% optional: \telephone{(102) 555-0101}
+\begin{document}
+\begin{letter}{Recipient's name \\ Recipient's address}
+\opening{Sir:}
+% optional: \thispagestyle{firstpage}
+I am not interested in entering a business arrangement with you.
+\closing{Your most humble, etc.,}
+\end{letter}
+\end{document}
+</pre></div>
+
+<p>These commands are used with the <code>letter</code> class.
+</p>
+
+
+<hr>
+<a name="g_t_005caddress"></a>
+<a name="g_t_005caddress-1"></a>
+<h3 class="section">26.1 <code>\address</code></h3>
+
+<a name="index-_005caddress"></a>
+
+<p>Synopsis: 
+</p>
+<div class="example">
+<pre class="example">\address{<var>senders address</var>}
+</pre></div>
+
+<p>Specify the return address, as it appears on the letter and on the
+envelope.  Separate multiple lines in <var>senders address</var> with a
+double backslash,&nbsp;<code>\\</code>.
+</p>
+<p>Because it can apply to multiple letters this declaration is often put
+in the preamble.  However, it can go anywhere, including inside an
+individual <code>letter</code> environment.
+</p>
+<p>This command is optional: if you do not use it then the letter is
+formatted with some blank space on top, for copying onto pre-printed
+letterhead paper.  If you do use the <code>\address</code> declaration then it
+is formatted as a personal letter.
+</p>
+<p>Here is an example.
+</p>
+<div class="example">
+<pre class="example">\address{Stephen Maturin \\
+         The Grapes of the Savoy}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005ccc"></a>
+<a name="g_t_005ccc-1"></a>
+<h3 class="section">26.2 <code>\cc</code></h3>
+
+<a name="index-_005ccc"></a>
+<a name="index-cc-list_002c-in-letters"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\cc{<var>name0</var> \\ 
+     ... }
+</pre></div>
+
+<p>Produce a list of names to which copies of the letter were sent.  This
+command is optional.  If it appears then typically it comes after
+<code>\closing</code>.  Put the names on different lines by separating them
+with a double backslash, <code>\\</code>, as in:
+</p>
+<div class="example">
+<pre class="example">\cc{President \\
+    Vice President}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cclosing"></a>
+<a name="g_t_005cclosing-1"></a>
+<h3 class="section">26.3 <code>\closing</code></h3>
+
+<a name="index-_005cclosing"></a>
+<a name="index-letters_002c-ending"></a>
+<a name="index-closing-letters"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\closing{<var>text</var>}
+</pre></div>
+
+<p>Produce the letter&rsquo;s closing.  This is optional, but usual.  It appears
+at the end of a letter, above a handwritten signature.  For example:
+</p>
+<div class="example">
+<pre class="example">\closing{Regards,}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cencl"></a>
+<a name="g_t_005cencl-1"></a>
+<h3 class="section">26.4 <code>\encl</code></h3>
+
+<a name="index-_005cencl"></a>
+<a name="index-enclosure-list"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\encl{<var>first enclosed object</var> \\ 
+       ... }
+</pre></div>
+
+<p>Produce a list of things included with the letter. This command is
+optional; when it is used, it typically is put after <code>\closing</code>.
+Separate multiple lines with a double backslash, <code>\\</code>.
+</p>
+<div class="example">
+<pre class="example">\encl{License \\
+      Passport}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005clocation"></a>
+<a name="g_t_005clocation-1"></a>
+<h3 class="section">26.5 <code>\location</code></h3>
+
+<a name="index-_005clocation"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\location{<var>text</var>}
+</pre></div>
+
+<p>The <var>text</var> appears centered at the bottom of the page.  It only
+appears if the page style is <code>firstpage</code>.
+</p>
+
+<hr>
+<a name="g_t_005cmakelabels"></a>
+<a name="g_t_005cmakelabels-1"></a>
+<h3 class="section">26.6 <code>\makelabels</code></h3>
+
+<a name="index-_005cmakelabels"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\makelabels   % in preamble
+</pre></div>
+
+<p>Optional, for a document that contains <code>letter</code> environments.  If
+you just put <code>\makelabels</code> in the preamble then at the end of the
+document you will get a sheet with labels for all the recipients, one
+for each letter environment, that you can copy to a sheet of peel-off
+address labels.
+</p>
+<p>Customize the labels by redefining the commands <code>\startlabels</code>,
+<code>\mlabel</code>, and <code>\returnaddress</code> (and perhaps <code>\name</code>) in
+the preamble.  The command <code>\startlabels</code> sets the width, height,
+number of columns, etc., of the page onto which the labels are printed.
+The command <code>\mlabel{<var>return address</var>}{<var>recipient
+address</var>}</code> produces the two labels (or one, if you choose to ignore the
+<var>return address</var>) for each letter environment. The first argument,
+<var>return address</var>, is the value returned by the macro
+<code>\returnaddress</code>.  The second argument, <var>recipient address</var>, is
+the value passed in the argument to the <code>letter</code> environment.  By
+default <code>\mlabel</code> ignores the first argument, the <var>return
+address</var>, causing the default behavior described in the prior paragraph.
+</p>
+<p>This illustrates customization.  Its output includes a page with two
+columns having two labels each.
+</p>
+<div class="example">
+<pre class="example">\documentclass{letter}
+\renewcommand*{\returnaddress}{Fred McGuilicuddy \\
+                               Oshkosh, Mineola 12305}
+\newcommand*\originalMlabel{}
+\let\originalMlabel\mlabel
+\def\mlabel#1#2{\originalMlabel{}{#1}\originalMlabel{}{#2}}
+\makelabels
+  ...
+\begin{document}
+\begin{letter}{A Einstein \\
+               112 Mercer Street \\
+               Princeton, New Jersey, USA 08540}
+  ...
+\end{letter}
+\begin{letter}{K G\&quot;odel \\
+               145 Linden Lane \\
+               Princeton, New Jersey, USA 08540}
+  ...
+\end{letter}
+\end{document}
+</pre></div>
+
+<p>The first column contains the return address twice.  The second column
+contains the address for each recipient.
+</p>
+<a name="index-package_002c-envlab"></a>
+<a name="index-envlab-package"></a>
+
+<p>The package <code>envlab</code> makes formatting the labels easier, with
+standard sizes already provided.  The preamble lines
+<code>\usepackage[personalenvelope]{envlab}</code> and <code>\makelabels</code>
+are all that you need to print envelopes.
+</p>
+
+<hr>
+<a name="g_t_005cname"></a>
+<a name="g_t_005cname-1"></a>
+<h3 class="section">26.7 <code>\name</code></h3>
+
+<a name="index-_005cname"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\name{<var>name</var>}
+</pre></div>
+
+<p>Optional.  Sender&rsquo;s name, used for printing on the envelope together
+with the return address.
+</p>
+
+<hr>
+<a name="g_t_005copening"></a>
+<a name="g_t_005copening-1"></a>
+<h3 class="section">26.8 <code>\opening</code></h3>
+
+<a name="index-_005copening"></a>
+<a name="index-letters_002c-starting"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\opening{<var>salutation</var>}
+</pre></div>
+
+<p>Required.  Follows the <code>\begin{letter}{...}</code>. The argument
+<var>salutation</var> is mandatory.  For instance:
+</p>
+<div class="example">
+<pre class="example">\opening{Dear John:}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cps"></a>
+<a name="g_t_005cps-1"></a>
+<h3 class="section">26.9 <code>\ps</code></h3>
+<a name="index-_005cps"></a>
+<a name="index-postscript_002c-in-letters"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\ps{<var>text</var>}
+</pre></div>
+
+<p>Add a postscript.  This command is optional and usually is used after
+<code>\closing</code>.
+</p>
+<div class="example">
+<pre class="example">\ps{P.S. After you have read this letter, burn it. Or eat it.}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005csignature"></a>
+<a name="g_t_005csignature-1"></a>
+<h3 class="section">26.10 <code>\signature</code></h3>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\signature{<var>first line</var> \\
+            ... }
+</pre></div>
+
+<a name="index-_005csignature"></a>
+
+<p>The sender&rsquo;s name.  This command is optional, although its inclusion is
+usual.
+</p>
+<p>The argument text appears at the end of the letter, after the closing.
+LaTeX leaves some vertical space for a handwritten
+signature. Separate multiple lines with a double
+backslash,&nbsp;<code>\\</code>.  For example:
+</p>
+<div class="example">
+<pre class="example">\signature{J Fred Muggs \\
+           White House}
+</pre></div>
+
+<p>LaTeX&rsquo;s default for the vertical space from the <code>\closing</code> text
+down to the <code>\signature</code> text is <code>6\medskipamount</code>, which is
+six times <code>\medskipamount</code> (where <code>\medskipamount</code> is equal to
+a <code>\parskip</code>, which in turn is defined by default here to
+0.7em).
+</p>
+<p>This command is usually in the preamble, to apply to all the letters in
+the document.  To have it apply to one letter only, put it inside a
+<code>letter</code> environment and before the <code>\closing</code>.
+</p>
+<p>You can include a graphic in the signature as here.
+</p>
+<div class="example">
+<pre class="example">\signature{\vspace{-6\medskipamount}\includegraphics{sig.png}\\
+             My name}
+</pre></div>
+
+<p>For this you must put <code>\usepackage{graphicx}</code> in the preamble
+(see <a href="latex2e_22.html#Graphics">Graphics</a>).
+</p>
+
+
+
+
+<hr>
+<a name="g_t_005ctelephone"></a>
+<a name="g_t_005ctelephone-1"></a>
+<h3 class="section">26.11 <code>\telephone</code></h3>
+
+<a name="index-_005ctelephone"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\telephone{<var>number</var>}
+</pre></div>
+
+<p>The sender&rsquo;s telephone number.  This is typically in the preamble, where
+it applies to all letters.  This only appears if the <code>firstpage</code>
+pagestyle is selected.  If so, it appears on the lower right of the
+page.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005csignature" accesskey="p" rel="prev">\signature</a>, Up: <a href="#Letters" accesskey="u" rel="up">Letters</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

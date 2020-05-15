@@ -1,0 +1,434 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Counters (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Counters (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Counters (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_14.html#Lengths" rel="next" title="Lengths">
+<link href="latex2e_12.html#g_t_005cignorespaces-_0026-_005cignorespacesafterend" rel="prev" title="\ignorespaces &amp; \ignorespacesafterend">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Counters"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_14.html#Lengths" accesskey="n" rel="next">Lengths</a>, Previous: <a href="latex2e_12.html#Definitions" accesskey="p" rel="prev">Definitions</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Counters-1"></a>
+<h2 class="chapter">13 Counters</h2>
+
+<a name="index-counters_002c-a-list-of"></a>
+<a name="index-variables_002c-a-list-of"></a>
+
+<p>Everything LaTeX numbers for you has a counter associated with
+it. The name of the counter is often the same as the name of the
+environment or command associated with the number, except that the
+counter&rsquo;s name has no backslash&nbsp;<code>\</code>.  Thus, associated with
+the <code>\chapter</code> command is the <code>chapter</code> counter that keeps
+track of the chapter number.  
+</p>
+<p>Below is a list of the counters used in LaTeX&rsquo;s standard document
+classes to control numbering.
+</p>
+<div class="example">
+<pre class="example">part            paragraph       figure          enumi
+chapter         subparagraph    table           enumii
+section         page            footnote        enumiii
+subsection      equation        mpfootnote      enumiv
+subsubsection
+</pre></div>
+
+<p>The <code>mpfootnote</code> counter is used by the <code>\footnote</code> command
+inside of a minipage (see <a href="latex2e_8.html#minipage">minipage</a>).  The counters <code>enumi</code>
+through <code>enumiv</code> are used in the <code>enumerate</code> environment, for
+up to four levels of nesting (see <a href="latex2e_8.html#enumerate">enumerate</a>).
+</p>
+<p>Counters can have any integer value but they are typically positive.
+</p>
+<p>New counters are created with <code>\newcounter</code>.  See <a href="latex2e_12.html#g_t_005cnewcounter">\newcounter</a>.
+</p>
+
+
+
+<hr>
+<a name="g_t_005calph-_005cAlph-_005carabic-_005croman-_005cRoman-_005cfnsymbol"></a>
+<a name="g_t_005calph-_005cAlph-_005carabic-_005croman-_005cRoman-_005cfnsymbol_003a-Printing-counters"></a>
+<h3 class="section">13.1 <code>\alph \Alph \arabic \roman \Roman \fnsymbol</code>: Printing counters</h3>
+
+<a name="index-counters_002c-printing"></a>
+
+<p>Print the value of a counter, in a specified style.  For instance, if
+the counter <var>counter</var> has the value 1 then a
+<code>\alph{<var>counter</var>}</code> in your source will result in a lowercase
+letter&nbsp;a appearing in the output.
+</p>
+<p>All of these commands take a single counter as an argument, for
+instance, <code>\alph{enumi}</code>.  Note that the counter name does not
+start with a backslash.
+</p>
+<dl compact="compact">
+<dt><code>\alph{<var>counter</var>}</code>
+<a name="index-_005calph_007bcounter_007d"></a>
+</dt>
+<dd><p>Print the value of <var>counter</var> in lowercase letters: &lsquo;a&rsquo;, &lsquo;b&rsquo;,
+<small class="enddots">...</small> If the counter&rsquo;s value is less than 1 or more than 26 then
+you get &lsquo;<samp>LaTeX Error: Counter too large.</samp>&rsquo;
+</p>
+</dd>
+<dt><code>\Alph{<var>counter</var>}</code>
+<a name="index-_005cAlph_007bcounter_007d"></a>
+</dt>
+<dd><p>Print in uppercase letters: &lsquo;A&rsquo;, &lsquo;B&rsquo;, <small class="enddots">...</small> If the counter&rsquo;s value
+is less than 1 or more than 26 then you get &lsquo;<samp>LaTeX Error: Counter
+too large.</samp>&rsquo;
+</p>
+</dd>
+<dt><code>\arabic{<var>counter</var>}</code>
+<a name="index-_005carabic_007bcounter_007d"></a>
+</dt>
+<dd><p>Print in Arabic numbers such as &lsquo;<samp>5</samp>&rsquo; or &lsquo;<samp>-2</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\roman{<var>counter</var>}</code>
+<a name="index-_005croman_007bcounter_007d"></a>
+</dt>
+<dd><p>Print in lowercase roman numerals: &lsquo;i&rsquo;, &lsquo;ii&rsquo;, <small class="enddots">...</small> If the
+counter&rsquo;s value is less than 1 then you get no warning or error but
+LaTeX does not print anything in the output.
+</p>
+</dd>
+<dt><code>\Roman{<var>counter</var>}</code>
+<a name="index-_005cRoman_007bcounter_007d"></a>
+</dt>
+<dd><p>Print in uppercase roman numerals: &lsquo;I&rsquo;, &lsquo;II&rsquo;, <small class="enddots">...</small> If the
+counter&rsquo;s value is less than 1 then you get no warning or error but
+LaTeX does not print anything in the output.
+</p>
+</dd>
+<dt><code>\fnsymbol{<var>counter</var>}</code>
+<a name="index-_005cfnsymbol_007bcounter_007d"></a>
+</dt>
+<dd><p>Prints the value of <var>counter</var> using a sequence of nine symbols that
+are traditionally used for labeling footnotes.  The value of
+<var>counter</var> should be between&nbsp;1 and&nbsp;9, inclusive.  If the
+counter&rsquo;s value is less than 0 or more than 9 then you get &lsquo;<samp>LaTeX
+Error: Counter too large</samp>&rsquo;, while if it is 0 then you get no error or
+warning but LaTeX does not output anything.
+</p>
+<p>Here are the symbols:
+</p>
+<table>
+<thead><tr><th width="10%">Number</th><th width="30%">Name</th><th width="30%">Command</th><th width="30%">Symbol</th></tr></thead>
+<tr><td width="10%">1</td><td width="30%">asterisk</td><td width="30%"><code>\ast</code></td><td width="30%">*</td></tr>
+<tr><td width="10%">2</td><td width="30%">dagger</td><td width="30%"><code>\dagger</code></td><td width="30%">&#x2020;</td></tr>
+<tr><td width="10%">3</td><td width="30%">ddagger</td><td width="30%"><code>\ddagger</code></td><td width="30%">&#x2021;</td></tr>
+<tr><td width="10%">4</td><td width="30%">section-sign</td><td width="30%"><code>\S</code></td><td width="30%">&#x00A7;</td></tr>
+<tr><td width="10%">5</td><td width="30%">paragraph-sign</td><td width="30%"><code>\P</code></td><td width="30%">&#x00B6;</td></tr>
+<tr><td width="10%">6</td><td width="30%">double-vert</td><td width="30%"><code>\parallel</code></td><td width="30%">&#x2016;</td></tr>
+<tr><td width="10%">7</td><td width="30%">double-asterisk</td><td width="30%"><code>\ast\ast</code></td><td width="30%">**</td></tr>
+<tr><td width="10%">8</td><td width="30%">double-dagger</td><td width="30%"><code>\dagger\dagger</code></td><td width="30%">&#x2020;&#x2020;</td></tr>
+<tr><td width="10%">9</td><td width="30%">double-ddagger</td><td width="30%"><code>\ddagger\ddagger</code></td><td width="30%">&#x2021;&#x2021;</td></tr>
+</table>
+
+</dd>
+</dl>
+
+
+<hr>
+<a name="g_t_005cusecounter"></a>
+<a name="g_t_005cusecounter-1"></a>
+<h3 class="section">13.2 <code>\usecounter</code></h3>
+
+<a name="index-_005cusecounter"></a>
+<a name="index-list-items_002c-specifying-counter"></a>
+<a name="index-numbered-items_002c-specifying-counter"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\usecounter{<var>counter</var>}
+</pre></div>
+
+<p>Used in the second argument of the <code>list</code> environment
+(see <a href="latex2e_8.html#list">list</a>), this declares that list items will be numbered by
+<var>counter</var>.  It initializes <var>counter</var> to zero, and arranges that
+when <code>\item</code> is called without its optional argument then
+<var>counter</var> is incremented by <code>\refstepcounter</code>, making its value
+be the current <code>ref</code> value (see <a href="latex2e_7.html#g_t_005cref">\ref</a>).  This command is fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>Put in the document preamble, this example makes a new list environment
+enumerated with <var>testcounter</var>:
+</p>
+<div class="example">
+<pre class="example">\newcounter{testcounter}
+\newenvironment{test}{%
+  \begin{list}{}{%
+    \usecounter{testcounter}
+  }
+}{%
+  \end{list}
+}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cvalue"></a>
+<a name="g_t_005cvalue-1"></a>
+<h3 class="section">13.3 <code>\value</code></h3>
+
+<a name="index-_005cvalue"></a>
+<a name="index-counters_002c-getting-value-of"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\value{<var>counter</var>}
+</pre></div>
+
+<p>Expands to the value of the counter <var>counter</var>. (Note that the name
+of a counter does not begin with a backslash.)
+</p>
+<p>This example outputs &lsquo;<samp>Test counter is&nbsp;6. Other counter
+is&nbsp;5.</samp>&rsquo;.
+</p>
+<div class="example">
+<pre class="example">\newcounter{test} \setcounter{test}{5}
+\newcounter{other} \setcounter{other}{\value{test}}
+\addtocounter{test}{1}
+
+Test counter is \arabic{test}.
+Other counter is \arabic{other}.
+</pre></div>
+
+<p>The <code>\value</code> command is not used for typesetting the value of the
+counter.  For that, see <a href="#g_t_005calph-_005cAlph-_005carabic-_005croman-_005cRoman-_005cfnsymbol">\alph \Alph \arabic \roman \Roman \fnsymbol</a>.
+</p>
+<p>It is often used in <code>\setcounter</code> or <code>\addtocounter</code> but
+<code>\value</code> can be used anywhere that LaTeX expects a number, such
+as in <code>\hspace{\value{foo}\parindent}</code>.  It must not be
+preceded by <code>\protect</code> (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>This example inserts <code>\hspace{4\parindent}</code>.
+</p>
+<div class="example">
+<pre class="example">\setcounter{myctr}{3} \addtocounter{myctr}{1}
+\hspace{\value{myctr}\parindent}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005csetcounter"></a>
+<a name="g_t_005csetcounter-1"></a>
+<h3 class="section">13.4 <code>\setcounter</code></h3>
+
+<a name="index-_005csetcounter"></a>
+<a name="index-counters_002c-setting"></a>
+<a name="index-setting-counters"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\setcounter{<var>counter</var>}{<var>value</var>}
+</pre></div>
+
+<p>Globally set the counter <var>counter</var> to have the value of the
+<var>value</var> argument, which must be an integer.  Thus, you can set a
+counter&rsquo;s value as <code>\setcounter{section}{5}</code>.  Note that the
+counter name does not start with a backslash.
+</p>
+<p>In this example if the counter <code>theorem</code> has value 12 then the
+second line will print &lsquo;<samp>XII</samp>&rsquo;.
+</p>
+<div class="example">
+<pre class="example">\setcounter{exercise}{\value{theorem}}
+Here it is in Roman: \Roman{exercise}.
+</pre></div>
+
+
+<hr>
+<a name="g_t_005caddtocounter"></a>
+<a name="g_t_005caddtocounter-1"></a>
+<h3 class="section">13.5 <code>\addtocounter</code></h3>
+
+<a name="index-_005caddtocounter"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\addtocounter{<var>counter</var>}{<var>value</var>&nbsp;</pre></div>
+
+<p>Globally increment <var>counter</var> by the amount specified by the
+<var>value</var> argument, which may be negative.
+</p>
+<p>In this example the section value appears as &lsquo;<samp>VII</samp>&rsquo;.
+</p>
+<div class="example">
+<pre class="example">\setcounter{section}{5}
+\addtocounter{section}{2}
+Here it is in Roman: \Roman{section}.
+</pre></div>
+
+
+<hr>
+<a name="g_t_005crefstepcounter"></a>
+<a name="g_t_005crefstepcounter-1"></a>
+<h3 class="section">13.6 <code>\refstepcounter</code></h3>
+
+<a name="index-_005crefstepcounter"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\refstepcounter{<var>counter</var>}
+</pre></div>
+
+<p>Globally increments the value of <var>counter</var> by one, as does
+<code>\stepcounter</code> (see <a href="#g_t_005cstepcounter">\stepcounter</a>).  The difference is that this
+command resets the value of any counter numbered within it.  (For the
+definition of &ldquo;counters numbered within&rdquo;, see <a href="latex2e_12.html#g_t_005cnewcounter">\newcounter</a>.)
+</p>
+<p>In addition, this command also defines the current <code>\ref</code> value
+to be the result of <code>\thecounter</code>.
+</p>
+<p>While the counter value is set globally, the <code>\ref</code> value is set
+locally, i.e., inside the current group.
+</p>
+
+<hr>
+<a name="g_t_005cstepcounter"></a>
+<a name="g_t_005cstepcounter-1"></a>
+<h3 class="section">13.7 <code>\stepcounter</code></h3>
+
+<a name="index-_005cstepcounter"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\stepcounter{<var>counter</var>}
+</pre></div>
+
+<p>Globally adds one to <var>counter</var> and resets all counters numbered
+within it.  (For the definition of &ldquo;counters numbered within&rdquo;,
+see <a href="latex2e_12.html#g_t_005cnewcounter">\newcounter</a>.)
+</p>
+<p>This command differs from <code>\refstepcounter</code> in that this one does
+not influence references&nbsp;&mdash; it does not define the current
+<code>\ref</code> value to be the result of <code>\thecounter</code>
+(see <a href="#g_t_005crefstepcounter">\refstepcounter</a>).
+</p>
+
+<hr>
+<a name="g_t_005cday-_0026-_005cmonth-_0026-_005cyear"></a>
+<a name="g_t_005cday-_0026-_005cmonth-_0026-_005cyear-1"></a>
+<h3 class="section">13.8 <code>\day</code> &amp; <code>\month</code> &amp; <code>\year</code></h3>
+
+<a name="index-_005cday"></a>
+<a name="index-_005cmonth"></a>
+<a name="index-_005cyear"></a>
+
+<p>LaTeX defines the counter <code>\day</code> for the day of the month
+(nominally with value between 1 and 31), <code>\month</code> for the month of
+the year (nominally with value between 1 and 12), and year <code>\year</code>.
+When TeX starts up, they are set from the current values on the
+system.  The related command <code>\today</code> produces a string
+representing the current day (see <a href="latex2e_23.html#g_t_005ctoday">\today</a>).
+</p>
+<p>They counters are not updated as the job progresses so in principle they
+could be incorrect by the end.  In addition, TeX does no sanity
+check:
+</p>
+<div class="example">
+<pre class="example">\day=-2 \month=13 \year=-4 \today
+</pre></div>
+
+<p>gives no error or warning and results in the output &lsquo;<samp>-2, -4</samp>&rsquo; (the
+bogus month value produces no output).
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005cstepcounter" accesskey="p" rel="prev">\stepcounter</a>, Up: <a href="#Counters" accesskey="u" rel="up">Counters</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

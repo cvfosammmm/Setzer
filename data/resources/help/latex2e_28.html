@@ -1,0 +1,387 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Command line (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Command line (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Command line (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_29.html#Document-templates" rel="next" title="Document templates">
+<link href="latex2e_27.html#g_t_005ctypeout" rel="prev" title="\typeout">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Command-line"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_29.html#Document-templates" accesskey="n" rel="next">Document templates</a>, Previous: <a href="latex2e_27.html#Terminal-input_002foutput" accesskey="p" rel="prev">Terminal input/output</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Command-line-1"></a>
+<h2 class="chapter">28 Command line</h2>
+
+<a name="index-command-line"></a>
+
+<p>Synopsis (from a terminal command line):
+</p>
+<div class="example">
+<pre class="example">pdflatex <var>options</var> <var>argument</var>
+</pre></div>
+
+<p>Run LaTeX on <var>argument</var>.  In place of <code>pdflatex</code> you can
+also use <code>xelatex</code>, or <code>lualatex</code>, or <code>dviluatex</code>, or
+<code>latex</code>.
+</p>
+<p>For example, this will run LaTeX on the file <samp>thesis.tex</samp>,
+creating the output <samp>thesis.pdf</samp>.
+</p>
+<div class="example">
+<pre class="example">pdflatex thesis
+</pre></div>
+
+<p><a name="index-_002etex_002c-default-extension"></a>
+Note that <samp>.tex</samp> is the default file extension.
+</p>
+<p>pdfTeX is a development of the original TeX program, as are
+XeTeX and LuaTeX (see <a href="latex2e_2.html#TeX-engines">TeX engines</a>).  They are completely
+backward compatible.  But the original program had a custom output
+format, DVI, while the newer ones can output directly to PDF.  This
+allows them to take advantage of the extra features in PDF such as
+hyperlinks, support for modern image formats such as JPG and PNG, and
+ubiquitous viewing programs.  In short, if you run <code>pdflatex</code> or
+<code>xelatex</code> or <code>lualatex</code> then you will by default get PDF
+and have access to all its modern features.  If you run <code>latex</code>,
+or <code>dvilualatex</code>, then you will get DVI.  The description here
+assumes pdfLaTeX.
+</p>
+<p>See <a href="#Command-line-options">Command line options</a>, for a selection of the most useful
+command line options. As to <var>argument</var>, the usual case is that it
+does not begin with a backslash, so the system takes it to be the name
+of a file and it compiles that file. If <var>argument</var> begins with a
+backslash then the system will interpret it as a line of LaTeX
+input, which can be used for special effects (see <a href="#Command-line-input">Command line input</a>).
+</p>
+<p>If you gave no arguments or options then <code>pdflatex</code> prompts for
+input from the terminal. You can escape from this by entering
+<code>&lt;control&gt;-D</code>.
+</p>
+<p>If LaTeX finds an error in your document then by default it stops and
+asks you about it.  See <a href="#Recovering-from-errors">Recovering from errors</a> for an outline of what
+to do.
+</p>
+
+
+<hr>
+<a name="Command-line-options"></a>
+<a name="Command-line-options-1"></a>
+<h3 class="section">28.1 Command line options</h3>
+
+<a name="index-options_002c-command-line"></a>
+
+<p>These are the command-line options relevant to ordinary document
+authoring. For a full list, try running &lsquo;<samp>latex --help</samp>&rsquo; from the
+command line.
+</p>
+<p>With many implementations you can specify command line options by
+prefixing them with &lsquo;<samp>-</samp>&rsquo; or &lsquo;<samp>--</samp>&rsquo;.  This is the case for
+both TeX Live (and MacTeX) and MiKTeX.  We will use both
+conventions interchangeably.
+</p>
+<dl compact="compact">
+<dd><a name="index-_002d_002dversion-command_002dline-option"></a>
+</dd>
+<dt><code>-version</code></dt>
+<dd><p>Show the current version, like &lsquo;<samp>pdfTeX 3.14159265-2.6-1.40.16 (TeX
+Live 2015/Debian)</samp>&rsquo; along with a small amount of additional information,
+and exit.
+</p>
+<a name="index-_002d_002dhelp-command_002dline-option"></a>
+</dd>
+<dt><code>-help</code></dt>
+<dd><p>Give a brief usage message that is useful as a prompt and exit.
+</p>
+<a name="index-_002d_002dinteraction-command_002dline-option"></a>
+</dd>
+<dt><code>-interaction=<var>mode</var></code></dt>
+<dd><p>TeX compiles a document in one of four interaction modes:
+<code>batchmode</code>, <code>nonstopmode</code>, <code>scrollmode</code>,
+<code>errorstopmode</code>. In <em>errorstop mode</em> (the default), TeX
+stops at each error and asks for user intervention. In <em>batch
+mode</em> it prints nothing on the terminal, errors are scrolled as if the
+user hit <code>&lt;return&gt;</code> at every error, and missing files cause the
+job to abort. In <em>nonstop mode</em>, diagnostic message appear on the
+terminal but as in batch mode there is no user interaction. In
+<em>scroll mode</em>, TeX only stops for missing files or keyboard
+input.
+</p>
+<p>For instance, starting LaTeX with this command line
+</p>
+<div class="example">
+<pre class="example">pdflatex -interaction=batchmode <var>filename</var>
+</pre></div>
+
+<p>eliminates most terminal output.
+</p>
+<a name="index-_002d_002djobname-command_002dline-option"></a>
+</dd>
+<dt><code>-jobname=<var>string</var></code></dt>
+<dd><p>Set the value of TeX&rsquo;s <code>jobname</code> to the string.  The log file
+and output file will then be named <samp><var>string</var>.log</samp> and
+<samp><var>string</var>.pdf</samp>.
+</p>
+<p>When you run <code><code>pdflatex</code> <var>options</var> <var>argument</var></code>, if
+<var>argument</var> does not start with a backslash then TeX considers it
+the name of a file to input. Otherwise it waits for the first
+<code>\input</code> instruction and the name of the input file will be the job
+name. This is used to name the log file the output file.  The
+<code>jobname</code> option overrides that process and directly specifies the
+name.  See <a href="#Command-line-input">Command line input</a> for an example of its use.
+</p>
+<a name="index-_002d_002doutput_002ddirectory-command_002dline-option"></a>
+</dd>
+<dt><code>-output-directory=<var>directory</var></code></dt>
+<dd><p>Write files in the directory <var>directory</var>.  It must already exist.
+</p>
+<a name="index-_002d_002dshell_002descape-command_002dline-option"></a>
+<a name="index-_002d_002dno_002dshell_002descape-command_002dline-option"></a>
+<a name="index-_002d_002denable_002dwrite18-command_002dline-option"></a>
+<a name="index-_002d_002ddisable_002dwrite18-command_002dline-option"></a>
+</dd>
+<dt><code>--shell-escape</code></dt>
+<dt><code>--no-shell-escape</code></dt>
+<dt><code>--enable-write18</code></dt>
+<dt><code>--disable-write18</code></dt>
+<dd><p>Enable or disable <code>\write18{<var>shell command</var>}</code>.  The first two
+options are for with TeX Live or MacTeX while the second two are
+for MiKTeX.
+</p>
+<a name="index-package_002c-sagetex"></a>
+<a name="index-sagetex-package"></a>
+
+<p>Sometimes you want to run external system commands from inside a
+LaTeX file. For instance the package <samp>sagetex</samp> allows you to
+have the mathematics software system <i>Sage</i> do calculations or draw
+graphs and then incorporate that output in your document.  For this
+TeX provides the <code>\write18</code> command.
+</p>
+<p>But with this functionality enabled, security issues could happen if you
+compiled a LaTeX file from the Internet.  By default <code>\write18</code>
+is disabled.  (More precisely, by default TeX Live, MacTeX, and
+MiKTeX only allow the execution of a limited number of TeX-related
+programs, which they distribute.)
+</p>
+<p>If you invoke LaTeX with the option <code>no-shell-escape</code>, and in
+your document you call <code>\write18{ls -l}</code>, then you do not get an
+error but the log file says &lsquo;<samp>runsystem(ls -l)...disabled</samp>&rsquo;.
+</p>
+<a name="index-_002d_002dhalt_002don_002derror-command_002dline-option"></a>
+</dd>
+<dt><code>-halt-on-error</code></dt>
+<dd><p>Stop processing at the first error.
+</p>
+<a name="index-_002d_002dfile_002dline_002derror-command_002dline-option"></a>
+<a name="index-_002d_002dno_002dfile_002dline_002derror-command_002dline-option"></a>
+</dd>
+<dt><code>-file-line-error</code></dt>
+<dt><code>-no-file-line-error</code></dt>
+<dd><p>Enable or disable <code><var>filename</var>:<var>lineno</var>:<var>error</var></code>-style
+error messages.  These are only available with TeX Live or MacTeX.
+</p></dd>
+</dl>
+
+
+<hr>
+<a name="Command-line-input"></a>
+<a name="Command-line-input-1"></a>
+<h3 class="section">28.2 Command line input</h3>
+
+<a name="index-input_002c-on-command-line"></a>
+
+<p>As part of the command line invocation <code>pdflatex <var>options</var>
+<var>argument</var></code> you can specify arbitrary LaTeX input by starting
+<var>argument</var> with a backslash. This allows you to do some special
+effects.
+</p>
+<a name="index-package_002c-hyperref-3"></a>
+<a name="index-hyperref-package-3"></a>
+
+<p>For example, this file (which uses the <samp>hyperref</samp> package for
+hyperlinks) can produce two kinds of output, one for paper and one for a
+PDF.
+</p>
+<div class="example">
+<pre class="example">\ifdefined\paperversion        % in preamble
+\newcommand{\urlcolor}{black}
+\else
+\newcommand{\urlcolor}{blue}
+\fi
+\usepackage[colorlinks=true,urlcolor=\urlcolor]{hyperref}
+  ...
+\href{https://www.ctan.org}{CTAN}  % in body
+  ...
+</pre></div>
+
+<p>Compiling this document <samp>book.tex</samp> with the command line
+<code>pdflatex book</code> will give the &lsquo;<samp>CTAN</samp>&rsquo; link in blue.  But
+compiling it with <code>pdflatex &quot;\def\paperversion{}\input book.tex&quot;</code>
+has the link in black.  (Note the use of double quotes to prevent
+interpretation of the symbols by the command line shell; your system may
+do this differently.)
+</p>
+<p>In a similar way, from the single file <samp>main.tex</samp> you can compile
+two different versions.
+</p>
+<div class="example">
+<pre class="example">pdflatex -jobname=students &quot;\def\student{}\input{main}&quot;
+pdflatex -jobname=teachers &quot;\def\teachers{}\input{main}&quot;
+</pre></div>
+
+<p>The <code>jobname</code> option is there because otherwise both files would be
+called <samp>main.pdf</samp> and the second would overwrite the first.
+</p>
+<p>A final example.  This loads the package <samp>graphicx</samp> with the option
+<code>draft</code>
+</p>
+<div class="example">
+<pre class="example">pdflatex -jobname=aa &quot;\RequirePackage[draft]{graphicx}\input{aa.tex}&quot;
+</pre></div>
+
+<p>so the graphic files are read for their size information but not
+incorporated into the PDF.  (The <code>jobname</code> option is there because
+otherwise the output file would be <samp>graphicx.pdf</samp>, as
+<code>\RequirePackage</code> does an <code>\input</code> of its own.)
+</p>
+
+<hr>
+<a name="Recovering-from-errors"></a>
+<a name="Recovering-from-errors-1"></a>
+<h3 class="section">28.3 Recovering from errors</h3>
+
+<p>If LaTeX finds an error in your document then it gives you an error
+message and prompts you with a question mark, <code>?</code>.  For instance,
+running LaTeX on this file
+</p>
+<div class="example">
+<pre class="example">\newcommand{\NP}{\ensuremath{\textbf{NP}}}
+The \PN{} problem is a million dollar one.
+</pre></div>
+
+<p>causes it show this, and wait for input.
+</p>
+<div class="example">
+<pre class="example">! Undefined control sequence.
+l.5 The \PN
+           {} problem is a million dollar one.
+? 
+</pre></div>
+
+<p>The simplest thing is to enter &lsquo;<samp>x</samp>&rsquo; and <code>&lt;return&gt;</code> and fix the
+typo.  You could instead enter &lsquo;<samp>?</samp>&rsquo; and <code>&lt;return&gt;</code> to see other
+options.
+</p>
+<a name="index-_002a-prompt"></a>
+<a name="index-prompt_002c-_002a"></a>
+<a name="index-_005cstop"></a>
+<p>There are two other error scenarios.  The first is that you forgot to
+include the <code>\end{document}</code> or misspelled it.  In this case
+LaTeX gives you a &lsquo;<samp>*</samp>&rsquo; prompt.  You can get back to the command
+line by typing <code>\stop</code> and <code>&lt;return&gt;</code>.
+</p>
+<p>The last scenario is that you mistyped the file name.  For instance,
+instead of <code>pdflatex test</code> you might type <code>pdflatex tste</code>.
+</p>
+<div class="example">
+<pre class="example">! I can't find file `tste'.
+&lt;*&gt; tste
+        
+(Press Enter to retry, or Control-D to exit)
+Please type another input file name:
+</pre></div>
+
+<p>The simplest thing is to enter <code>&lt;Control&gt;</code> and &lsquo;<samp>d</samp>&rsquo; (holding
+them down at the same time), and then retype the correct command line.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#Command-line-input" accesskey="p" rel="prev">Command line input</a>, Up: <a href="#Command-line" accesskey="u" rel="up">Command line</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

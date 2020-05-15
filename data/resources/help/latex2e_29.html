@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Document templates (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Document templates (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Document templates (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_30.html#Index" rel="next" title="Index">
+<link href="latex2e_28.html#Recovering-from-errors" rel="prev" title="Recovering from errors">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Document-templates"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_30.html#Index" accesskey="n" rel="next">Index</a>, Previous: <a href="latex2e_28.html#Command-line" accesskey="p" rel="prev">Command line</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Document-templates-1"></a>
+<h2 class="appendix">Appendix A Document templates</h2>
+
+<a name="index-document-templates"></a>
+<a name="index-templates_002c-document"></a>
+
+<p>Although not reference material, perhaps these document templates will
+be useful.  Additional template resources are listed at
+<a href="http://tug.org/interest.html#latextemplates">http://tug.org/interest.html#latextemplates</a>.
+</p>
+
+
+<hr>
+<a name="beamer-template"></a>
+<a name="beamer-template-1"></a>
+<h3 class="section">A.1 <code>beamer</code> template</h3>
+
+<a name="index-beamer-template-and-class"></a>
+<a name="index-template_002c-beamer"></a>
+
+<p>The <code>beamer</code> class creates presentation slides.  It has a vast
+array of features, but here is a basic template:
+</p>
+<pre class="verbatim">\documentclass{beamer}
+
+\title{Beamer Class template}
+\author{Alex Author}
+\date{July 31, 2007}
+
+\begin{document}
+
+\maketitle
+
+% without [fragile], any {verbatim} code gets mysterious errors.
+\begin{frame}[fragile]
+ \frametitle{First Slide}
+
+\begin{verbatim}
+  This is \verbatim!
+\end{verbatim}
+
+\end{frame}
+
+\end{document}
+</pre>
+<p>One web resource for this:
+<a href="http://robjhyndman.com/hyndsight/beamer/">http://robjhyndman.com/hyndsight/beamer/</a>.
+</p>
+
+<hr>
+<a name="article-template"></a>
+<a name="article-template-1"></a>
+<h3 class="section">A.2 <code>article</code> template</h3>
+
+<a name="index-template_002c-article"></a>
+
+<pre class="verbatim">\documentclass{article}
+\title{Article Class Template}
+\author{Alex Author}
+
+\begin{document}
+\maketitle
+
+\section{First section}
+Some text.
+
+\subsection{First section, first subsection}
+Additional text.
+
+\section{Second section}
+Some more text.
+\end{document}
+</pre>
+
+<hr>
+<a name="book-template"></a>
+<a name="book-template-1"></a>
+<h3 class="section">A.3 <code>book</code> template</h3>
+
+<a name="index-template_002c-book"></a>
+
+<p>This is a straightforward template for a book.  See See <a href="#Larger-book-template">Larger book template</a> for a more elaborate one.
+</p>
+<pre class="verbatim">\documentclass{book}
+\title{Book Class Template}
+\author{Alex Author}
+
+\begin{document}
+\maketitle
+
+\chapter{First}
+Some text.
+
+\chapter{Second}
+Some other text.
+
+\section{A subtopic}
+The end.
+\end{document}
+</pre>
+
+<hr>
+<a name="Larger-book-template"></a>
+<a name="Larger-book-template-1"></a>
+<h3 class="section">A.4 Larger <code>book</code> template</h3>
+
+<a name="index-template_002c-book-1"></a>
+
+<p>This is a more elaborate template for a book.  It has
+<code>\frontmatter</code>, <code>\mainmatter</code>, and <code>\backmatter</code> to
+control the typography of the three main areas of a book
+(see <a href="latex2e_6.html#g_t_005cfrontmatter-_0026-_005cmainmatter-_0026-_005cbackmatter">\frontmatter &amp; \mainmatter &amp; \backmatter</a>).  The book has a
+bibliography and an index.
+</p>
+<p>Notable is that it uses <code>\include</code> and <code>\includeonly</code>
+(see <a href="latex2e_24.html#Splitting-the-input">Splitting the input</a>).  While you are working on a chapter you
+can comment out all the other chapter entries from the argument to
+<code>\includeonly</code>.  That will speed up compilation without losing any
+information such as cross-references.  (Material that does not need to
+come on a new page is brought in with <code>\input</code> instead of
+<code>\include</code>.  You don&rsquo;t get the cross-reference benefit this way.)
+</p>
+<pre class="verbatim">\documentclass[titlepage]{book}
+\usepackage{makeidx}\makeindex
+
+\title{Book Class Template}
+\author{Alex Author}
+
+\includeonly{%
+  frontcover,
+  preface,
+  chap1,
+  ...
+  }
+\begin{document}
+\frontmatter
+\include{frontcover}
+  % maybe comment out while drafting:
+\maketitle \input{dedication} \input{copyright}
+\tableofcontents
+\include{preface}
+\mainmatter
+\include{chap1}
+...
+\appendix
+\include{appena}
+...
+\backmatter
+\bibliographystyle{apalike}
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliography
+\addcontentsline{toc}{chapter}{Index}
+\printindex
+\include{backcover}
+\end{document}
+</pre>
+
+<hr>
+<a name="tugboat-template"></a>
+<a name="tugboat-template-1"></a>
+<h3 class="section">A.5 <code>tugboat</code> template</h3>
+
+<a name="index-template_002c-TUGboat"></a>
+<a name="index-TUGboat-template"></a>
+<a name="index-ltugboat-class"></a>
+
+<p><cite>TUGboat</cite> is the journal of the TeX Users Group,
+<a href="http://tug.org/TUGboat">http://tug.org/TUGboat</a>.
+</p>
+<pre class="verbatim">\documentclass{ltugboat}
+
+\usepackage{graphicx}
+\usepackage{ifpdf}
+\ifpdf
+\usepackage[breaklinks,hidelinks]{hyperref}
+\else
+\usepackage{url}
+\fi
+
+%%% Start of metadata %%%
+
+\title{Example \TUB\ article}
+
+% repeat info for each author.
+\author{First Last}
+\address{Street Address \\ Town, Postal \\ Country}
+\netaddress{user (at) example dot org}
+\personalURL{http://example.org/~user/}
+
+%%% End of metadata %%%
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This is an example article for \TUB{}.
+Please write an abstract.
+\end{abstract}
+
+\section{Introduction}
+
+This is an example article for \TUB, linked from
+\url{http://tug.org/TUGboat/location.html}.
+
+We recommend the \texttt{graphicx} package for image inclusions, and the
+\texttt{hyperref} package if active urls are desired (in the \acro{PDF}
+output).  Nowadays \TUB\ is produced using \acro{PDF} files exclusively.
+
+The \texttt{ltugboat} class provides these abbreviations (and many more):
+% verbatim blocks are often better in \small
+\begin{verbatim}[\small]
+\AllTeX \AMS \AmS \AmSLaTeX \AmSTeX \aw \AW
+\BibTeX \CTAN \DTD \HTML
+\ISBN \ISSN \LaTeXe
+\mf \MFB
+\plain \POBox \PS
+\SGML \TANGLE \TB \TP
+\TUB \TUG \tug
+\UNIX \XeT \WEB \WEAVE
+
+\, \bull \Dash \dash \hyph
+
+\acro{FRED} -&gt; {\small[er] fred}  % please use!
+\cs{fred}   -&gt; \fred
+\meta{fred} -&gt; &lt;fred&gt;
+\nth{n}     -&gt; 1st, 2nd, ...
+\sfrac{3/4} -&gt; 3/4
+\booktitle{Book of Fred}
+\end{verbatim}
+
+For references to other \TUB\ issue, please use the format
+\textsl{volno:issno}, e.g., ``\TUB\ 32:1'' for our \nth{100} issue.
+
+This file is just a template.  The \TUB\ style documentation is the
+\texttt{ltubguid} document at \url{http://ctan.org/pkg/tugboat}.  (For
+\CTAN\ references, where sensible we recommend that form of url, using
+\texttt{/pkg/}; or, if you need to refer to a specific file location,
+\texttt{http://mirror.ctan.org/\textsl{path}}.)
+
+Email \verb|tugboat@tug.org| if problems or questions.
+
+\bibliographystyle{plain}  % we recommend the plain bibliography style
+\nocite{book-minimal}      % just making the bibliography non-empty
+\bibliography{xampl}       % xampl.bib comes with BibTeX
+
+\makesignature
+\end{document}
+</pre>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#Larger-book-template" accesskey="p" rel="prev">Larger book template</a>, Up: <a href="#Document-templates" accesskey="u" rel="up">Document templates</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

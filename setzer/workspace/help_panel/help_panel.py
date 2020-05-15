@@ -28,7 +28,8 @@ class HelpPanel(object):
         self.workspace = workspace
         self.view = ServiceLocator.get_main_window().help_panel
 
-        self.uri = 'file://' + os.path.join(ServiceLocator.get_resources_path(), 'help', 'latex2e_unofficial_reference_manual_october_2018')
+        self.path = 'file://' + os.path.join(ServiceLocator.get_resources_path(), 'help')
+        self.home_uri = self.path + '/latex2e_0.html'
 
         self.controller = help_panel_controller.HelpPanelController(self, self.view)
         self.presenter = help_panel_presenter.HelpPanelPresenter(self, self.view)

@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Modes (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Modes (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Modes (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_18.html#Page-styles" rel="next" title="Page styles">
+<link href="latex2e_16.html#g_t_005cstackrel" rel="prev" title="\stackrel">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Modes"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_18.html#Page-styles" accesskey="n" rel="next">Page styles</a>, Previous: <a href="latex2e_16.html#Math-formulas" accesskey="p" rel="prev">Math formulas</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Modes-1"></a>
+<h2 class="chapter">17 Modes</h2>
+
+<a name="index-modes"></a>
+
+<p>As LaTeX processes your document, at any point it is in one of six
+modes.  They fall into three categories of two each, the horizontal
+modes, the math modes, and the vertical modes. Some commands only work
+in one mode or another (in particular, many commands only work in one of
+the math modes), and error messages will refer to these.
+</p>
+<ul>
+<li> <a name="modes-paragraph-mode"></a><a name="index-paragraph-mode"></a>
+<em>Paragraph mode</em> is what LaTeX is in when processing ordinary
+text.  It breaks the input text into lines and breaks the lines into
+pages.  This is the mode LaTeX is in most of the time.
+
+<a name="index-left_002dto_002dright-mode"></a>
+<a name="index-LR-mode"></a>
+<a name="modes-lr-mode"></a><p><em>LR mode</em> (for left-to-right mode; in plain TeX this is called
+<em>restricted horizontal mode</em>) is in effect when LaTeX starts
+making a box with an <code>\mbox</code> command.  As in paragraph mode,
+LaTeX&rsquo;s output is a string of words with spaces between them.  Unlike
+in paragraph mode, in LR mode LaTeX never starts a new line, it just
+keeps going from left to right.  (Although LaTeX will not complain
+that the LR box is too long, when it is finished and next tries to put
+that box into a line, it could very well complain that the finished LR
+box won&rsquo;t fit there.)
+</p>
+</li><li> <a name="index-math-mode"></a>
+<a name="modes-math-mode"></a><em>Math mode</em> is when LaTeX is generating
+an inline mathematical formula.
+
+<a name="index-display-math-mode"></a>
+<p><em>Display math mode</em> is when LaTeX is generating a displayed
+mathematical formula.  (Displayed formulas differ somewhat from inline
+ones.  One example is that the placement of the subscript on <code>\int</code>
+differs in the two situations.)
+</p>
+</li><li> <a name="index-vertical-mode"></a>
+<a name="modes-vertical-mode"></a><em>Vertical mode</em> is when LaTeX is building the list of lines and
+other material making the output page.  This is the mode LaTeX is in
+when it starts a document.
+
+<a name="index-internal-vertical-mode"></a>
+<a name="modes-internal-vertical-mode"></a><p><em>Internal vertical mode</em> is in effect when LaTeX starts making a
+<code>\vbox</code>.  This is the vertical analogue of LR mode.
+</p>
+</li></ul>
+
+<p>For instance, if you begin a LaTeX article with &lsquo;<samp>Let \( x \) be
+...</samp>&rsquo; then these are the modes: first LaTeX starts every document in
+vertical mode, then it reads the &lsquo;<samp>L</samp>&rsquo; and switches to paragraph
+mode, then the next switch happens at the &lsquo;<samp>\(</samp>&rsquo; where LaTeX
+changes to math mode, and then when it leaves the formula it pops
+back to paragraph mode.
+</p>
+<a name="index-inner-paragraph-mode"></a>
+<a name="index-outer-paragraph-mode"></a>
+<a name="modes-inner-paragraph-mode"></a><a name="modes-outer-paragraph-mode"></a><p>Paragraph mode has two subcases.  If you use a <code>\parbox</code> command
+or a <code>minipage</code> then LaTeX is put into paragraph mode.  But it
+will not put a page break here.  Inside one of these boxes, called a
+<em>parbox</em>, LaTeX is in <em>inner paragraph mode</em>.  Its more usual
+situation, where it can put page breaks, is <em>outer paragraph mode</em>
+(see <a href="latex2e_10.html#Page-breaking">Page breaking</a>).
+</p>
+
+<hr>
+<a name="g_t_005censuremath"></a>
+<a name="g_t_005censuremath-1"></a>
+<h3 class="section">17.1 <code>\ensuremath</code></h3>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\ensuremath{<var>formula</var>}
+</pre></div>
+
+<p>Ensure that <var>formula</var> is typeset in math mode.
+</p>
+<p>For instance, you can redefine commands that ordinarily can be used only
+in math mode, so that they can be used both in math and in plain text.
+</p>
+<div class="example">
+<pre class="example">\newcommand{\dx}{\ensuremath{dx}}
+In $\int f(x)\, \dx$, the \dx{} is an infinitesimal.
+</pre></div>
+
+<p>Caution: the <code>\ensuremath</code> command is useful but not a panacea.
+</p>
+<div class="example">
+<pre class="example">\newcommand{\alf}{\ensuremath{\alpha}}
+You get an alpha in text mode: \alf.
+But compare the correct spacing in $\alf+\alf$ with that in \alf+\alf.
+</pre></div>
+
+<p>Best is to typeset math things in a math mode.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Up: <a href="#Modes" accesskey="u" rel="up">Modes</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

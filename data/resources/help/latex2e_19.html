@@ -1,0 +1,1133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Spaces (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Spaces (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Spaces (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_20.html#Boxes" rel="next" title="Boxes">
+<link href="latex2e_18.html#g_t_005cthispagestyle" rel="prev" title="\thispagestyle">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Spaces"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_20.html#Boxes" accesskey="n" rel="next">Boxes</a>, Previous: <a href="latex2e_18.html#Page-styles" accesskey="p" rel="prev">Page styles</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Spaces-1"></a>
+<h2 class="chapter">19 Spaces</h2>
+
+<a name="index-spaces"></a>
+<a name="index-white-space"></a>
+
+<p>LaTeX has many ways to produce white (or filled) space.  Some of
+these are best suited to mathematical text; see&nbsp;<a href="latex2e_16.html#Spacing-in-math-mode">Spacing in math mode</a>.  Some spacing commands are suitable for both regular text
+and mathematical text; versions of some of these commands are in this
+chapter.
+</p>
+
+
+<hr>
+<a name="g_t_005censpace-_0026-_005cquad-_0026-_005cqquad"></a>
+<a name="g_t_005censpace-_0026-_005cquad-_0026-_005cqquad-1"></a>
+<h3 class="section">19.1 <code>\enspace</code> &amp; <code>\quad</code> &amp; <code>\qquad</code></h3>
+
+<a name="index-_005censpace"></a>
+<a name="index-_005cquad-1"></a>
+<a name="index-_005cqquad-1"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\enspace
+\quad
+\qquad
+</pre></div>
+
+<p>Insert a horizontal space of 1/2em, 1em, or 2em. The
+em is a length defined by a font designer, often thought of as being the
+width of a capital&nbsp;M.  One advantage of describing space in ems is
+that it can be more portable across documents than an absolute
+measurement such as points (see <a href="latex2e_14.html#Lengths_002fem">Lengths/em</a>).
+</p>
+<p>This puts a suitable gap between two graphics.
+</p>
+<div class="example">
+<pre class="example">\begin{center}
+  \includegraphics{womensmile.png}%
+  \qquad\includegraphics{mensmile.png}
+\end{center}
+</pre></div>
+
+<p>See <a href="latex2e_16.html#Spacing-in-math-mode">Spacing in math mode</a> for <code>\quad</code> and <code>\qquad</code>.  These
+are lengths from centuries of typesetting and so may be a better choice
+in many circumstances than arbitrary lengths, such as you get with
+<code>\hspace</code>.
+</p>
+
+<hr>
+<a name="g_t_005chspace"></a>
+<a name="g_t_005chspace-1"></a>
+<h3 class="section">19.2 <code>\hspace</code></h3>
+
+<a name="index-_005chspace"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\hspace{<var>length</var>}
+\hspace*{<var>length</var>}
+</pre></div>
+
+<p>Insert the horizontal space <var>length</var>.  The <var>length</var> can be
+positive, negative, or zero; adding negative space is like backspacing.
+It is a rubber length, that is, it may contain a <code>plus</code> or
+<code>minus</code> component, or both (see <a href="latex2e_14.html#Lengths">Lengths</a>).  Because the space is
+stretchable and shrinkable, it is sometimes called <em>glue</em>.
+</p>
+<p>This makes a line with &lsquo;<samp>Name:</samp>&rsquo; an inch from the right margin.
+</p>
+<div class="example">
+<pre class="example">\noindent\makebox[\linewidth][r]{Name:\hspace{1in}}
+</pre></div>
+
+<p>The <code>*</code>-version inserts horizontal space that non-discardable.
+More precisely, when TeX breaks a paragraph into lines any white
+space&mdash;glues and kerns&mdash;that come at a line break are discarded.  The
+<code>*</code>-version avoids that (technically, it adds a non-discardable
+invisible item in front of the space).
+</p>
+<p>In this example
+</p>
+<div class="example">
+<pre class="example">\parbox{0.8\linewidth}{%
+  Fill in each blank: Four \hspace*{1in} and seven years ago our
+  fathers brought forth on this continent, a new \hspace*{1in},
+  conceived in \hspace*{1in}, and dedicated to the proposition
+  that all men are created \hspace*{1in}.}
+</pre></div>
+
+<p>the 1&nbsp;inch blank following &lsquo;<samp>conceived in</samp>&rsquo; falls at the start
+of a line.  If you erase the <code>*</code> then LaTeX discards the blank.
+</p>
+<p>Here, the <code>\hspace</code> separates the three graphics.
+</p>
+<div class="example">
+<pre class="example">\begin{center}
+  \includegraphics{lion.png}%   comment keeps out extra space
+  \hspace{1cm minus 0.25cm}\includegraphics{tiger.png}%
+  \hspace{1cm minus 0.25cm}\includegraphics{bear.png}
+\end{center}
+</pre></div>
+
+<p>Because the argument to each <code>\hspace</code> has <code>minus 0.25cm</code>,
+each can shrink a little if the three figures are too wide.  But each
+space won&rsquo;t shrink more than 0.25cm (see <a href="latex2e_14.html#Lengths">Lengths</a>).
+</p>
+
+<hr>
+<a name="g_t_005chfill"></a>
+<a name="g_t_005chfill-1"></a>
+<h3 class="section">19.3 <code>\hfill</code></h3>
+
+<a name="index-_005chfill"></a>
+
+<a name="index-stretch_002c-infinite-horizontal"></a>
+<a name="index-infinite-horizontal-stretch"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\hfill
+</pre></div>
+
+<p>Produce a rubber length which has no natural space but that can stretch
+horizontally as far as needed (see <a href="latex2e_14.html#Lengths">Lengths</a>).
+</p>
+<p>This creates a one-line paragraph with &lsquo;<samp>Name:</samp>&rsquo; on the left side
+of the page and &lsquo;<samp>Quiz One</samp>&rsquo; on the right.
+</p>
+<div class="example">
+<pre class="example">\noindent Name:\hfill Quiz One
+</pre></div>
+
+<a name="index-_005cfill"></a>
+<p>The <code>\hfill</code> command is equivalent to <code>\hspace{\fill}</code> and
+so the space can be discarded at line breaks.  To avoid that instead use
+<code>\hspace*{\fill}</code> (see <a href="#g_t_005chspace">\hspace</a>).
+</p>
+<p>Here the graphs are evenly spaced in the middle of the figure.
+</p>
+<div class="example">
+<pre class="example">\newcommand*{\vcenteredhbox}[1]{\begin{tabular}{@{}c@{}}#1\end{tabular}}
+  ...
+\begin{figure}
+  \hspace*{\fill}%
+  \vcenteredhbox{\includegraphics{graph0.png}}%
+    \hfill\vcenteredhbox{\includegraphics{graph1.png}}%
+  \hspace*{\fill}%
+  \caption{Comparison of two graphs} \label{fig:twographs}
+\end{figure}
+</pre></div>
+
+<p>Note the <code>\hspace*</code>&rsquo;s where the space could otherwise be dropped.
+</p>
+
+<hr>
+<a name="g_t_005chss"></a>
+<a name="g_t_005chss-1"></a>
+<h3 class="section">19.4 <code>\hss</code></h3>
+
+<a name="index-_005chss"></a>
+<a name="index-horizontal-space"></a>
+<a name="index-horizontal-space_002c-stretchable"></a>
+<a name="index-space_002c-inserting-horizontal"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\hss
+</pre></div>
+
+<p>Produce a horizontal space that is infinitely shrinkable as well as
+infinitely stretchable (this command is a TeX primitive).  LaTeX
+authors should reach first for the <code>\makebox</code> command to get the
+effects of <code>\hss</code> (see <a href="latex2e_20.html#g_t_005cmbox-_0026-_005cmakebox">\mbox &amp; \makebox</a>).
+</p>
+<p>Here, the first line&rsquo;s <code>\hss</code> makes the Z stick out to the right,
+overwriting the Y.  In the second line the Z sticks out to the left,
+overwriting the X.
+</p>
+<div class="example">
+<pre class="example">X\hbox to 0pt{Z\hss}Y
+X\hbox to 0pt{\hss Z}Y
+</pre></div>
+
+<p>Without the <code>\hss</code> you get something like &lsquo;<samp>Overfull \hbox
+(6.11111pt too wide) detected at line 20</samp>&rsquo;.
+</p>
+
+<hr>
+<a name="g_t_005cspacefactor"></a>
+<a name="g_t_005cspacefactor-1"></a>
+<h3 class="section">19.5 <code>\spacefactor</code></h3>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\spacefactor=<var>integer</var>
+</pre></div>
+
+<a name="index-_005cspacefactor"></a>
+<p>Influence LaTeX&rsquo;s glue stretch and shrink behavior.  Most user-level
+documents do not use this command.
+</p>
+<p>While LaTeX is laying out the material, it may stretch or shrink the
+gaps between words.  (This space is not a character; it is called the
+<em>interword glue</em>; see <a href="#g_t_005chspace">\hspace</a>).  The <code>\spacefactor</code> command
+(from Plain&nbsp;TeX) allows you to, for instance, have the space
+after a period stretch more than the space after a word-ending letter.
+</p>
+<p>After LaTeX places each character, or rule or other box, it sets a
+parameter called the <em>space factor</em>.  If the next thing in the input
+is a space then this parameter affects how much stretching or shrinking
+can happen.  A space factor that is larger than the normal value means
+that the glue can stretch more and shrink less.  Normally, the space
+factor is 1000. This value is in effect following most characters, and
+any non-character box or math formula.  But it is 3000 after a period,
+exclamation mark, or question mark, it is 2000 after a colon, 1500 after
+a semicolon, 1250 after a comma, and 0 after a right parenthesis or
+bracket, or closing double quote or single quote.  Finally, it is 999
+after a capital letter.
+</p>
+<p>If the space factor&nbsp;<var>f</var> is 1000 then the glue gap will be the
+font&rsquo;s normal space value (for Computer Modern Roman 10 point this is
+3.3333&nbsp;points).  Otherwise, if the space factor <var>f</var> is greater
+than 2000 then TeX adds the font&rsquo;s extra space value (for Computer
+Modern Roman 10 point this is 1.11111&nbsp;points), and then the font&rsquo;s
+normal stretch value is multiplied by <em>f /1000</em> and the normal
+shrink value is multiplied by <em>1000/f</em> (for Computer Modern Roman
+10 point these are 1.66666 and 1.11111&nbsp;points).
+</p>
+<p>For example, consider the period ending <code>A man's best friend is his
+dog.</code>  After it, TeX puts in a fixed extra space, and also allows the
+glue to stretch 3 times as much and shrink 1/3 as much, as the glue
+after <code>friend</code>, which does not end in a period.
+</p>
+<p>The rules for space factors are even more complex because they play
+additional roles.  In practice, there are two consequences.  First, if a
+period or other punctuation is followed by a right parenthesis or
+bracket, or right single or double quote then the spacing effect of that
+period carries through those characters (that is, the following glue
+will have increased stretch and shrink).  Second, if
+punctuation comes after a capital letter then its effect is not in place
+so you get an ordinary space.  This second case also affects abbreviations
+that do not end in a capital letter (see <a href="#g_t_005c_0040">\@</a>).
+</p>
+<p>You can only use <code>\spacefactor</code> in paragraph mode or LR mode
+(see <a href="latex2e_17.html#Modes">Modes</a>).  You can see the current value with
+<code>\the\spacefactor</code> or <code>\showthe\spacefactor</code>.
+</p>
+<p>(Comment, not really related to <code>\spacefactor</code>: if you get errors
+like &lsquo;<samp>You can't use `\spacefactor' in vertical mode</samp>&rsquo;, or &lsquo;<samp>You
+can't use `\spacefactor' in math mode.</samp>&rsquo;, or &lsquo;<samp>Improper \spacefactor</samp>&rsquo;
+then you have probably tried to redefine an internal command.
+See <a href="latex2e_12.html#g_t_005cmakeatletter-_0026-_005cmakeatother">\makeatletter &amp; \makeatother</a>.)
+</p>
+
+
+
+<hr>
+<a name="g_t_005c_0040"></a>
+<a name="g_t_005c_0040-1"></a>
+<h4 class="subsection">19.5.1 <code>\@</code></h4>
+
+<a name="index-_005c_0040"></a>
+<a name="index-at_002dsign"></a>
+<a name="index-period_002c-sentence_002dending"></a>
+<a name="index-period_002c-abbreviation_002dending"></a>
+<a name="index-period_002c-spacing-after"></a>
+<a name="g_t_005cAT"></a>
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example"><var>capital-letter</var>\@.    
+</pre></div>
+
+<p>Treat a period as sentence-ending, where LaTeX would otherwise think
+it is part of an abbreviation.  LaTeX thinks that a period ends an
+abbreviation if the period comes after a capital letter, and otherwise
+thinks the period ends the sentence.  By default, in justifying a line
+LaTeX adjusts the space after a sentence-ending period (or a question
+mark, exclamation point, comma, or colon) more than it adjusts the space
+between words (see <a href="#g_t_005cspacefactor">\spacefactor</a>).
+</p>
+<p>This example shows the two cases to remember.
+</p>
+<div class="example">
+<pre class="example">The songs \textit{Red Guitar}, etc.\ are by Loudon Wainwright~III\@.
+</pre></div>
+
+<p>The second period ends the sentence, despite that it is preceded by a
+capital.  We tell LaTeX that it ends the sentence by putting
+<code>\@</code> before it.  The first period ends the abbreviation
+&lsquo;<samp>etc.</samp>&rsquo; but not the sentence.  The backslash-space, <code>\ </code>,
+produces a mid-sentence space.
+</p>
+<p>So: if you have a capital letter followed by a period that ends the
+sentence, then put <code>\@</code> before the period.  This holds even if
+there is an intervening right parenthesis or bracket, or right single or
+double quote, because the spacing effect of that period carries through
+those characters.  For example, this
+</p>
+<div class="example">
+<pre class="example">Use the \textit{Instructional Practices Guide},
+(a book by the MAA)\@.
+</pre></div>
+
+<p>will have correct inter-sentence spacing after the period.
+</p>
+<p>The <code>\@</code> command is only for a text mode. If you use it outside of
+a text mode then you get &lsquo;<samp>You can't use `\spacefactor' in vertical
+mode</samp>&rsquo; (see <a href="latex2e_17.html#Modes">Modes</a>).
+</p>
+<p>Comment: the converse case is a period ending an abbreviation whose last
+letter is not a capital letter, and that abbreviation is not the last
+word in the sentence.  For that case follow the period with a
+backslash-space, (<code>\ </code>), or a tie, (<code>~</code>), or <code>\@</code>.
+Examples are <code>Nat.\ Acad.\ Science</code>, and <code>Mr.~Bean</code>, and
+<code>(manure, etc.\@) for sale</code> (note in the last one that the
+<code>\@</code> comes before the closing parenthesis).
+</p>
+
+<hr>
+<a name="g_t_005cfrenchspacing"></a>
+<a name="g_t_005cfrenchspacing-1"></a>
+<h4 class="subsection">19.5.2 <code>\frenchspacing</code></h4>
+
+<a name="index-_005cfrenchspacing"></a>
+<a name="index-_005cnonfrenchspacing"></a>
+<a name="index-spacing_002c-inter_002dsentence"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\frenchspacing
+\nonfrenchspacing
+</pre></div>
+
+<p>The first declaration causes LaTeX to treat spacing between sentences
+in the same way as spacing between words in the middle of a sentence.
+The second causes spacing between sentences to stretch or shrink more
+(see <a href="#g_t_005cspacefactor">\spacefactor</a>); this is the default.
+</p>
+<p>Some typographic traditions, including English, prefer to adjust the
+space between sentences (or spaces following a question mark,
+exclamation point, comma, or colon) more than the space between words
+that are in the middle of a sentence.  Declaring <code>\frenchspacing</code>
+(the command is from Plain TeX) switches to the tradition that all
+spaces are treated equally.
+</p>
+
+<hr>
+<a name="g_t_005cnormalsfcodes"></a>
+<a name="g_t_005cnormalsfcodes-1"></a>
+<h4 class="subsection">19.5.3 <code>\normalsfcodes</code></h4>
+
+<a name="index-_005cnormalsfcodes"></a>
+<a name="index-spacing_002c-inter_002dsentence-1"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\normalsfcodes
+</pre></div>
+
+<p>Reset the LaTeX space factor values to the default
+(see <a href="#g_t_005cspacefactor">\spacefactor</a>).
+</p>
+
+<hr>
+<a name="g_t_005c_0028SPACE_0029"></a>
+<a name="Backslash_002dspace_002c-_005c-"></a>
+<h3 class="section">19.6 Backslash-space, <code>\ </code></h3>
+
+<a name="index-_005cNEWLINE"></a>
+<a name="index-_005cSPACE"></a>
+<a name="index-_005cTAB"></a>
+
+<p>This section refers to the command consisting of two characters, a
+backslash followed by a space. Synopsis:
+</p>
+<div class="example">
+<pre class="example">\    
+</pre></div>
+
+<p>Produce a space. By default it produces white space of length
+3.33333pt plus 1.66666pt minus 1.11111pt.
+</p>
+<p>When you type one or more blanks between words, LaTeX produces white
+space.  But that is different than an explicit space.  This illustrates.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{l}
+One blank: makes some space \\
+Three blanks:   in a row \\
+Three spaces:\ \ \ in a row \\
+\end{tabular}
+</pre></div>
+
+<p>On the first line LaTeX puts some space after the colon.  On the
+second line LaTeX collapses the three blanks to output one
+whitespace, so you end with the same space after the colon as in the
+first line.  LaTeX would similarly collapse a blank followed by a
+tab, or a blank and a newline and a blank.  However, the bottom line
+asks for three spaces so the white area is wider.  That is, the
+backslash-space command creates a fixed amount of horizontal space.
+(Note that you can define a horizontal space of any width at all with
+<code>\hspace</code>; see&nbsp;<a href="#g_t_005chspace">\hspace</a>.)
+</p>
+<p>The backslash-space command has two main uses.  It is often used after
+control sequences to keep them from gobbling the space that follows, as
+in <code>\TeX\ is nice</code>.  (But using curly parentheses, as in
+<code>\TeX{} is best</code>, has the advantage of still working if the next
+character is a period.)  The other common use is that it marks a period
+as ending an abbreviation instead of ending a sentence, as in <code>So
+says Prof.\ Smith</code> (see <a href="#g_t_005c_0040">\@</a>).
+</p>
+<p>Under normal circumstances, <code>\</code><tt class="key">tab</tt> and <code>\</code><tt class="key">newline</tt>
+are equivalent to backslash-space, <code>\ </code>.
+</p>
+
+
+<hr>
+<a name="g_t_007e"></a>
+<a name="g_t_007e-1"></a>
+<h3 class="section">19.7 <code>~</code></h3>
+
+<a name="index-_007e"></a>
+<a name="index-tie"></a>
+<a name="index-space_002c-hard"></a>
+<a name="index-space_002c-unbreakable"></a>
+<a name="index-NBSP"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example"><var>before</var>~<var>after</var>
+</pre></div>
+
+<p>The tie character, <code>~</code>, produces a space between <var>before</var> and
+<var>after</var> at which the line will not be broken. By default the white
+space has length 3.33333pt plus 1.66666pt minus
+1.11111pt (see <a href="latex2e_14.html#Lengths">Lengths</a>).
+</p>
+<p>Here LaTeX will not break the line between the final two words.
+</p>
+<div class="example">
+<pre class="example">Thanks to Prof.~Lerman.
+</pre></div>
+
+<p>In addition, despite the period, LaTeX does not use the
+end-of-sentence spacing (see <a href="#g_t_005c_0040">\@</a>).
+</p>
+<p>Ties prevent the end of line separation of things where that could cause
+confusion. But they also reduce LaTeX&rsquo;s options when it breaks lines
+into paragraphs, so you can use too many. They are also matters of
+taste, sometimes alarmingly dogmatic taste, among readers. Nevertheless,
+here are some usage models, many of them from the TeXbook.
+</p>
+<ul>
+<li> Between an enumerator and its item, such as in references:
+<code>Chapter~12</code>, or <code>Theorem~\ref{th:Wilsons}</code>, or
+<code>Figure~\ref{fig:KGraph}</code>. When cases are enumerated inline:
+<code>(b)~Show that $f(x)$ is (1)~continuous, and (2)~bounded</code>.
+
+<a name="index-package_002c-siunitx"></a>
+<a name="index-siunitx-package"></a>
+
+</li><li> Between a number and its unit: <code>$745.7.8$~watts</code> (the
+<samp>siunitx</samp> package has a special facility for this) or
+<code>144~eggs</code>. This includes between a month and a date:
+<code>October~12</code> or <code>12~Oct</code>. In general, in any expressions where
+numbers and abbreviations or symbols are separated by a space:
+<code>AD~565</code>, or <code>2:50~pm</code>, or <code>Boeing~747</code>, or
+<code>268~Plains Road</code>, or <code>\$$1.4$~billion</code>.
+
+</li><li> When mathematical phrases are rendered in words: <code>equals~$n$</code>, or
+<code>less than~$\epsilon$</code>, or <code>given~$X$</code>, or <code>modulo~$p^e$
+for all large~$n$</code> (but compare <code>is~$15$</code> with <code>is $15$~times
+the height</code>). Between mathematical symbols in apposition with nouns:
+<code>dimension~$d$</code> or <code>function~$f(x)$</code> (but compare <code>with
+length $l$~or more</code>). When a symbol is a tightly bound object of a
+preposition: <code>of~$x$</code>, or <code>from $0$ to~$1$</code>, or <code>in
+common with~$m$</code>.
+
+</li><li> Between symbols in series: <code>$1$,~$2$, or~$3$</code> or <code>$1$,~$2$,
+\ldots,~$n$</code>.
+
+</li><li> Between a person&rsquo;s forenames and between multiple surnames:
+<code>Donald~E. Knuth</code>, or <code>Luis~I. Trabb~Pardo</code>, or
+<code>Charles~XII</code> (but you must give TeX places to break the line so
+you may do <code>Charles Louis Xavier~Joseph de~la Vall\'ee~Poussin</code>).
+
+</li><li> Before a dash: <code>pages 12~--14</code> or <code>it is~--- it must be
+said~--- plausible</code>.
+
+</li></ul>
+
+
+<hr>
+<a name="g_t_005cthinspace-_0026-_005cnegthinspace"></a>
+<a name="g_t_005cthinspace-_0026-_005cnegthinspace-1"></a>
+<h3 class="section">19.8 <code>\thinspace</code> &amp; <code>\negthinspace</code></h3>
+
+<a name="index-_005cthinspace-1"></a>
+<a name="index-_005cnegthinspace-1"></a>
+<a name="index-thin-space-1"></a>
+<a name="index-space_002c-thin"></a>
+<a name="index-thin-space_002c-negative-1"></a>
+<a name="index-space_002c-negative-thin"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\thinspace
+\negthinspace
+</pre></div>
+
+<p>Produce an unbreakable and unstretchable space of 1/6em and
+-1/6em.  These are the text mode equivalents of <code>\,</code> and
+<code>\!</code> (see <a href="latex2e_16.html#Spacing-in-math-mode_002f_005cthinspace">Spacing in math mode/\thinspace</a>).  You can use
+<code>\,</code> as a synonym for <code>\thinspace</code> in text mode.
+</p>
+<p>The <code>\negthinspace</code> command is used in text mode mostly for
+fiddling with spaces.  One common use of <code>\thinspace</code> is as the
+space between nested quotes.
+</p>
+<div class="example">
+<pre class="example">Killick replied, ``I heard the Captain say, `Ahoy there.'\thinspace''
+</pre></div>
+
+<p>Another use is that some style guides call for a <code>\thinspace</code>
+between an ellipsis and a sentence ending period (other style guides,
+though, think the three dots are quite enough already).  Still another
+use is between initials, as in <code>D.\thinspace E.\ Knuth</code>.
+</p>
+
+<hr>
+<a name="g_t_005c_002f"></a>
+<a name="g_t_005c_002f-1"></a>
+<h3 class="section">19.9 <code>\/</code></h3>
+
+<a name="index-_005c_002f"></a>
+<a name="index-italic-correction"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example"><var>before-character</var>\/<var>after-character</var>
+</pre></div>
+
+<p>Insert an <em>italic correction</em>, a small space defined by the font
+designer for each character, to avoid the character colliding with
+whatever follows. When you use <code>\/</code>, LaTeX takes the correction
+from the font metric file, scales it by any scaling that has been
+applied to the font, and then inserts that much horizontal space.
+</p>
+<p>Here, were it not for the <code>\/</code>, the <var>before-character</var>
+italic&nbsp;f would hit the <var>after-character</var> roman&nbsp;H
+</p>
+<div class="example">
+<pre class="example">\newcommand{\companylogo}{{\it f}\/H}
+</pre></div>
+
+<p>because the italic letter leans far to the right.
+</p>
+<p>If <var>after-character</var> is a period or comma then don&rsquo;t insert an
+italic correction since those punctuation symbols have a very small
+height.  However, with semicolons or colons as well as with normal
+letters, the italic correction can help.
+</p>
+<p>When you use commands such as <code>\textit</code> or <code>\itshape</code> to
+change fonts, LaTeX will automatically insert any needed italic
+correction (see <a href="latex2e_4.html#Font-styles">Font styles</a>).
+</p>
+<p>Roman characters can also have an italic correction.  An example is in
+the name <code>pdf\/\TeX</code>.
+</p>
+<p>There is no concept of italic correction in math mode; spacing is done
+in a different way.
+</p>
+
+<hr>
+<a name="g_t_005chrulefill-_0026-_005cdotfill"></a>
+<a name="g_t_005chrulefill-_0026-_005cdotfill-1"></a>
+<h3 class="section">19.10 <code>\hrulefill</code> &amp; <code>\dotfill</code></h3>
+
+<a name="index-_005chrulefill"></a>
+<a name="index-_005cdotfill"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\hrulefill
+\dotfill
+</pre></div>
+
+<p>Produce an infinite horizontal rubber length (see <a href="latex2e_14.html#Lengths">Lengths</a>) that
+LaTeX fills with a rule (that is, a line) or with dots, instead of
+white space.
+</p>
+<p>This outputs a line 2 inches long.
+</p>
+<div class="example">
+<pre class="example">Name:~\makebox[2in]{\hrulefill}
+</pre></div>
+
+<p>This example, when placed between blank lines, creates a paragraph that
+is left and right justified and where the middle is filled with evenly
+spaced dots.
+</p>
+<div class="example">
+<pre class="example">\noindent John Aubrey, RN \dotfill{} Melbury Lodge
+</pre></div>
+
+<p>To make the rule or dots go to the line&rsquo;s end use <code>\null</code> at the
+start or end.  
+</p>
+<p>To change the rule&rsquo;s thickness, copy the definition and adjust it, as
+here
+</p>
+<div class="example">
+<pre class="example">\renewcommand{\hrulefill}{%
+  \leavevmode\leaders\hrule height 1pt\hfill\kern\z@}
+</pre></div>
+
+<p>which changes the default thickness of 0.4pt to 1pt.
+Similarly, adjust the dot spacing as with
+</p>
+<div class="example">
+<pre class="example">\renewcommand{\dotfill}{%
+  \leavevmode\cleaders\hb@xt@1.00em{\hss .\hss }\hfill\kern\z@}
+</pre></div>
+
+<p>which changes the default length of 0.33em to 1.00em.
+</p>
+<p>This example produces a line for a signature.
+</p>
+<div class="example">
+<pre class="example">\begin{minipage}{4cm}
+  \centering
+  \hrulefill\\
+  Signed
+\end{minipage}
+</pre></div>
+
+<p>The line is 4cm long.
+</p>
+
+<hr>
+<a name="g_t_005cbigskip-_0026-_005cmedskip-_0026-_005csmallskip"></a>
+<a name="g_t_005cbigskip-_0026-_005cmedskip-_0026-_005csmallskip-1"></a>
+<h3 class="section">19.11 <code>\bigskip</code> &amp; <code>\medskip</code> &amp; <code>\smallskip</code></h3>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\bigskip
+\medskip
+\smallskip
+</pre></div>
+
+<p>Produce an amount of vertical space, large or medium-sized or
+small. These commands are fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>Here the skip suggests the passage of time (from <i>The Golden Ocean</i> by
+O&rsquo;Brian).
+</p>
+<div class="example">
+<pre class="example">Mr Saumarez would have something rude to say to him, no doubt: he
+was at home again, and it was delightful.
+
+\bigskip
+``A hundred and fifty-seven miles and one third, in twenty-four hours,''
+said Peter.
+</pre></div>
+
+<p>Each command is associated with a length defined in the document class
+file.
+</p>
+<dl compact="compact">
+<dd><a name="bigskip"></a></dd>
+<dt><code>\bigskip</code>
+<a name="index-_005cbigskip"></a>
+</dt>
+<dd><a name="index-_005cbigskipamount"></a>
+<p>The same as <code>\vspace{\bigskipamount}</code>, ordinarily about one line
+space, with stretch and shrink.  The default for the <code>book</code> and
+<code>article</code> classes is <code>12pt plus 4pt minus 4pt</code>.
+</p>
+<a name="medskip"></a></dd>
+<dt><code>\medskip</code>
+<a name="index-_005cmedskip"></a>
+</dt>
+<dd><a name="index-_005cmedskipamount"></a>
+<p>The same as <code>\vspace{\medskipamount}</code>, ordinarily about half of a
+line space, with stretch and shrink.  The default for the <code>book</code>
+and <code>article</code> classes is <code>6pt plus 2pt minus 2pt</code>.
+</p>
+<a name="smallskip"></a></dd>
+<dt><code>\smallskip</code>
+<a name="index-_005csmallskip"></a>
+</dt>
+<dd><a name="index-_005csmallskipamount"></a>
+<p>The same as <code>\vspace{\smallskipamount}</code>, ordinarily about a
+quarter of a line space, with stretch and shrink.  The default for the
+<code>book</code> and <code>article</code> classes is <code>3pt plus 1pt minus 1pt</code>.
+</p>
+</dd>
+</dl>
+
+<p>Because each command is a <code>\vspace</code>, if you use on in mid-paragraph
+then it will insert its vertical space between the line in which you use
+it and the next line, not necessarily at the place that you use it.  So
+these are best between paragraphs.
+</p>
+<p>The commands <code>\bigbreak</code>, <code>\medbreak</code>, and <code>\smallbreak</code>
+are similar but also suggest to LaTeX that this is a good place to
+put a page break (see <a href="#g_t_005cbigbreak-_0026-_005cmedbreak-_0026-_005csmallbreak">\bigbreak &amp; \medbreak &amp; \smallbreak</a>.
+</p>
+
+<hr>
+<a name="g_t_005cbigbreak-_0026-_005cmedbreak-_0026-_005csmallbreak"></a>
+<a name="g_t_005cbigbreak-_0026-_005cmedbreak-_0026-_005csmallbreak-1"></a>
+<h3 class="section">19.12 <code>\bigbreak</code> &amp; <code>\medbreak</code> &amp; <code>\smallbreak</code></h3>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\bigbreak
+\medbreak
+\smallbreak
+</pre></div>
+
+<p>Produce a vertical space that is big or medium-sized or small, and
+suggest to LaTeX that this is a good place to break the page.  (The
+associated penalties are -200, -100, and -50.)
+</p>
+<p>See <a href="#g_t_005cbigskip-_0026-_005cmedskip-_0026-_005csmallskip">\bigskip &amp; \medskip &amp; \smallskip</a>, for more.  These commands
+produce the same vertical space but differ in that they also remove a
+preceding vertical space if it is less than what they would insert (as
+with <code>\addvspace</code>).  In addition, they terminate a paragraph where
+they are used: this example
+</p>
+<div class="example">
+<pre class="example">abc\bigbreak def ghi
+
+jkl mno pqr
+</pre></div>
+
+<p>will output three paragraphs, the first ending in &lsquo;<samp>abc</samp>&rsquo; and the
+second starting, after an extra vertical space and a paragraph indent,
+with &lsquo;<samp>def</samp>&rsquo;.
+</p>
+
+<hr>
+<a name="g_t_005cstrut"></a>
+<a name="g_t_005cstrut-1"></a>
+<h3 class="section">19.13 <code>\strut</code></h3>
+
+<a name="index-_005cstrut"></a>
+<a name="index-strut"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\strut
+</pre></div>
+
+<p>Ensure that the current line has height at least <code>0.7\baselineskip</code>
+and depth at least <code>0.3\baselineskip</code>.  Essentially, LaTeX
+inserts into the line a rectangle having zero width,
+<code>\rule[-0.3\baselineskip]{0pt}{\baselineskip}</code> (see <a href="latex2e_23.html#g_t_005crule">\rule</a>).
+The <code>\baselineskip</code> changes with the current font and fontsize.
+</p>
+<p>In this example the <code>\strut</code> keeps the box inside the frame from
+having zero height.
+</p>
+<div class="example">
+<pre class="example">\setlength{\fboxsep}{0pt}\framebox[2in]{\strut}
+</pre></div>
+
+<p>This example has four lists.  In the first there is a much bigger gap
+between items 2 and&nbsp;3 than there is between items 1 and&nbsp;2.
+The second list fixes that with a <code>\strut</code> at the end of its first
+item&rsquo;s second line.
+</p>
+<div class="example">
+<pre class="example">\setlength{\fboxsep}{0pt}
+\noindent\begin{minipage}[t]{0.2\linewidth}
+\begin{enumerate}
+  \item \parbox[t]{15pt}{test \\ test}
+  \item test
+  \item test
+\end{enumerate}
+\end{minipage}%
+\begin{minipage}[t]{0.2\linewidth}
+\begin{enumerate}
+  \item \parbox[t]{15pt}{test \\ test\strut}
+  \item test
+  \item test
+\end{enumerate}
+\end{minipage}%
+\begin{minipage}[t]{0.2\linewidth}
+\begin{enumerate}
+  \item \fbox{\parbox[t]{15pt}{test \\ test}}
+  \item \fbox{test}
+  \item \fbox{test}
+\end{enumerate}
+\end{minipage}%
+\begin{minipage}[t]{0.2\linewidth}
+\begin{enumerate}
+  \item \fbox{\parbox[t]{15pt}{test \\ test\strut}}
+  \item \fbox{test}
+  \item \fbox{test}
+\end{enumerate}
+\end{minipage}%
+</pre></div>
+
+<p>The final two lists use <code>\fbox</code> to show what&rsquo;s happening.  The
+third list&rsquo;s <code>\parbox</code> goes only to the bottom of its second
+&lsquo;<samp>test</samp>&rsquo;, which happens not have any characters that descend below
+the baseline.  The fourth list adds the strut that gives the needed
+extra below-baseline space.
+</p>
+<a name="index-package_002c-TikZ-1"></a>
+<a name="index-TikZ-package-1"></a>
+<a name="index-package_002c-Asymptote-1"></a>
+<a name="index-Asymptote-package-1"></a>
+
+<p>The <code>\strut</code> command is often useful in graphics, such as in
+<samp>TikZ</samp> or <samp>Asymptote</samp>.  For instance, you may have a command
+such as <code>\graphnode{<var>node-name</var>}</code> that fits a circle around
+<var>node-name</var>.  However, unless you are careful the <var>node-name</var>&rsquo;s
+&lsquo;<samp>x</samp>&rsquo; and &lsquo;<samp>y</samp>&rsquo; will produce different-diameter circles because
+the characters are different sizes.  A careful <code>\graphnode</code> might
+insert a <code>\strut</code>, then <var>node-name</var>, and then draw the circle.
+</p>
+<p>The general approach of using a zero width <code>\rule</code> is useful in
+many circumstances.  In this table, the zero-width rule keeps the top of
+the first integral from hitting the <code>\hline</code>.  Similarly, the
+second rule keeps the second integral from hitting the first.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{rl}
+  \textsc{Integral}   &amp;\textsc{Value}           \\
+  \hline
+  $\int_0^x t\, dt$   &amp;$x^2/2$  \rule{0em}{2.5ex} \\  
+  $\int_0^x t^2\, dt$ &amp;$x^3/3$  \rule{0em}{2.5ex}
+\end{tabular}
+</pre></div>
+
+<p>(Although the line-ending double backslash command has an available
+optional argument to put in more vertical room, that won&rsquo;t work here.
+Changing the first double backslash to something like <code>\\[2.5ex]</code>
+will put the room between the header line and the <code>\hline</code>, and the
+integral would still hit the line.)
+</p>
+
+<hr>
+<a name="g_t_005cvspace"></a>
+<a name="g_t_005cvspace-1"></a>
+<h3 class="section">19.14 <code>\vspace</code></h3>
+
+<a name="index-_005cvspace"></a>
+<a name="index-vertical-space"></a>
+<a name="index-space_002c-vertical"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\vspace{<var>length</var>}
+\vspace*{<var>length</var>}
+</pre></div>
+
+<p>Add the vertical space <var>length</var>.  The <var>length</var> can be positive,
+negative, or zero.  It is a rubber length&mdash;it may contain a <code>plus</code>
+or <code>minus</code> component (see <a href="latex2e_14.html#Lengths">Lengths</a>).
+</p>
+<p>This puts space between the two paragraphs.
+</p>
+<div class="example">
+<pre class="example">And I slept.
+
+\vspace{1ex plus 0.5ex}
+The new day dawned cold.
+</pre></div>
+
+<p>(See <a href="#g_t_005cbigskip-_0026-_005cmedskip-_0026-_005csmallskip">\bigskip &amp; \medskip &amp; \smallskip</a> for common inter-paragraph
+spaces.)
+</p>
+<p>The <code>*</code>-version inserts vertical space that non-discardable.  More
+precisely, LaTeX discards vertical space at a page break and the
+<code>*</code>-version causes the space to stay.  This example leaves space
+between the two questions.
+</p>
+<div class="example">
+<pre class="example">Question: Find the integral of \( 5x^4+5 \).
+
+\vspace*{2cm plus 0.5cm}
+Question: Find the derivative of \( x^5+5x+9 \).
+</pre></div>
+
+<p>That space will be present even if the page break happens to fall
+between the questions.
+</p>
+<p>If you use <code>\vspace</code> in the middle of a paragraph (i.e., in
+horizontal mode) then the space is inserted after the line containing
+the <code>\vspace</code> command; it does not start a new paragraph at the
+<code>\vspace</code> command.
+</p>
+<p>In this example the two questions will be evenly spaced vertically on
+the page, with at least one inch of space below each.
+</p>
+<div class="example">
+<pre class="example">\begin{document}
+1) Who put the bomp in the bomp bah bomp bah bomp?
+\vspace{1in plus 1fill}
+
+2) Who put the ram in the rama lama ding dong?
+\vspace{1in plus 1fill}
+\end{document}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cvfill"></a>
+<a name="g_t_005cvfill-1"></a>
+<h3 class="section">19.15 <code>\vfill</code></h3>
+
+<a name="index-_005cvfill"></a>
+
+<a name="index-stretch_002c-infinite-vertical"></a>
+<a name="index-infinite-vertical-stretch"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\vfill
+</pre></div>
+
+<p>End the current paragraph and insert a vertical rubber length that is
+infinite, so it can stretch or shrink as far as needed
+(see <a href="latex2e_14.html#Lengths">Lengths</a>).
+</p>
+<p>It is often used in the same way as <code>\vspace{\fill}</code>, except that
+<code>\vfill</code> ends the current paragraph whereas <code>\vspace{\fill}</code>
+adds the infinite vertical space below its line, irrespective of the
+paragraph structure.  In both cases that space will disappear at a page
+boundary; to circumvent this see the starred option
+in&nbsp;<a href="#g_t_005cvspace">\vspace</a>.
+</p>
+<p>In this example the page is filled, so the top and bottom lines contain
+the text &lsquo;<samp>Lost Dog!</samp>&rsquo; and the second &lsquo;<samp>Lost Dog!</samp>&rsquo; is exactly
+halfway between them.
+</p> 
+<div class="example">
+<pre class="example">\begin{document}
+Lost Dog!
+\vfill
+Lost Dog!  % perfectly in the middle
+\vfill
+Lost Dog!
+\end{document}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005caddvspace"></a>
+<a name="g_t_005caddvspace-1"></a>
+<h3 class="section">19.16 <code>\addvspace</code></h3>
+
+<a name="index-_005caddvspace"></a>
+<a name="index-vertical-space-1"></a>
+<a name="index-space_002c-inserting-vertical"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\addvspace{<var>vert-length</var>}
+</pre></div>
+
+<p>Add a vertical space of <var>vert-length</var>.  However, if there are two or
+more <code>\addvspace</code>&rsquo;s in a sequence then together they only add the
+space needed to make the natural length equal to the maximum of the
+<var>vert-length</var>&rsquo;s in that sequence. This command is fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).  The <var>vert-length</var> is a rubber length
+(see <a href="latex2e_14.html#Lengths">Lengths</a>).
+</p>
+<p>This example illustrates.  The <code>picture</code> draws a scale.  In a
+standard LaTeX article the length <code>\baselineskip</code> is 12pt.
+The two rules here are 22pt apart: the sum of the
+<code>\baselineskip</code> and the 10pt from the first <code>addvspace</code>.
+</p>
+<div class="example">
+<pre class="example">\documentclass{article}
+\usepackage{color}
+\begin{document}
+\setlength{\unitlength}{2pt}%
+\noindent\begin{picture}(0,0)%
+  \multiput(0,0)(0,-1){25}{{\color{blue}\line(1,0){1}}}
+  \multiput(0,0)(0,-5){6}{{\color{red}\line(1,0){2}}}
+\end{picture}%
+\rule{0.25\linewidth}{0.1pt}% 
+\par\addvspace{10pt}% \addvspace{20pt}%
+\par\noindent\rule{0.25\linewidth}{0.1pt}%
+\end{document}
+</pre></div>
+
+<p>Now uncomment the second <code>\addvspace</code>.  It does not make the gap
+20pt longer; instead the gap is the sum of <code>\baselineskip</code>
+and 20pt.  So <code>\addvspace</code> in a sense does the opposite of
+its name &mdash; it makes sure that multiple vertical spaces do not
+accumulate, but instead that only the largest one is used.
+</p>
+<p>LaTeX uses this command to adjust the vertical space above or below
+an environment that starts a new paragraph.  For instance, a
+<code>theorem</code> environment begins and ends with <code>\addvspace</code> so
+that two consecutive <code>theorem</code>&rsquo;s are separated by one vertical
+space, not two.
+</p>
+<p>A error &lsquo;<samp>Something's wrong--perhaps a missing \item</samp>&rsquo; pointing to an
+<code>\addvspace</code> means that you were not in vertical mode when you hit
+this command. One way to change that is to precede <code>\addvspace</code>
+with a <code>\par</code> command (see <a href="latex2e_15.html#g_t_005cpar">\par</a>), as in the above example.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005cvfill" accesskey="p" rel="prev">\vfill</a>, Up: <a href="#Spaces" accesskey="u" rel="up">Spaces</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

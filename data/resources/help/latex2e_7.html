@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Cross references (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Cross references (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Cross references (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_8.html#Environments" rel="next" title="Environments">
+<link href="latex2e_6.html#g_t_005c_0040startsection" rel="prev" title="\@startsection">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Cross-references"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_8.html#Environments" accesskey="n" rel="next">Environments</a>, Previous: <a href="latex2e_6.html#Sectioning" accesskey="p" rel="prev">Sectioning</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Cross-references-1"></a>
+<h2 class="chapter">7 Cross references</h2>
+
+<a name="index-cross-references"></a>
+
+<a name="index-label"></a>
+<p>We often want something like &lsquo;<samp>See Theorem~31</samp>&rsquo;.  But by-hand typing
+the 31 is poor practice.  Instead you should write a <em>label</em> such as
+<code>\label{eq:GreensThm}</code> and then <em>reference</em> it, as with
+<code>See equation~\ref{eq:GreensThm}</code>.  LaTeX will automatically
+work out the number, put it into the output, and will change that number
+later if needed.
+</p>
+<div class="example">
+<pre class="example">We will see this with Theorem~\ref{th:GreensThm}. % forward reference
+...
+\begin{theorem} \label{th:GreensThm}
+  ...
+\end{theorem}
+...
+See Theorem~\ref{th:GreensThm} on page~\pageref{th:GreensThm}.
+</pre></div>
+
+<p>LaTeX tracks cross reference information in a file having the
+extension <samp>.aux</samp> and with the same base name as the file containing
+the <code>\label</code>.  So if <code>\label</code> is in <samp>calculus.tex</samp> then
+the information is in <samp>calculus.aux</samp>.  LaTeX puts the
+information in that file every time it runs across a <code>\label</code>.
+</p>
+<a name="index-forward-reference"></a>
+<a name="index-reference_002c-forward"></a>
+<p>The behavior described in the prior paragraph results in a quirk that
+happens when your document has a <em>forward reference</em>, a <code>\ref</code>
+that appears before the associated <code>\label</code>.  If this is the first
+time that you are compiling the document then you will get &lsquo;<samp>LaTeX
+Warning: Label(s) may have changed. Rerun to get cross references right</samp>&rsquo;
+and in the output the forward reference will appear as two question
+marks&nbsp;&lsquo;<samp>??</samp>&rsquo;, in boldface.  A similar thing happens if you
+change some things so the references changes; you get the same warning
+and the output contains the old reference information.  In both cases,
+resolve this by compiling the document a second time.
+</p>
+<a name="index-package_002c-cleveref"></a>
+<a name="index-cleveref-package"></a>
+<p>The <code>cleveref</code> package enhances LaTeX&rsquo;s
+cross referencing features.  You can arrange that if you enter
+<code>\begin{thm}\label{th:Nerode}...\end{thm}</code> then
+<code>\cref{th:Nerode}</code> will output &lsquo;<samp>Theorem 3.21</samp>&rsquo;, without you
+having to enter the &ldquo;Theorem.&rdquo;
+</p>
+
+
+<hr>
+<a name="g_t_005clabel"></a>
+<a name="g_t_005clabel-1"></a>
+<h3 class="section">7.1 <code>\label</code></h3>
+
+<a name="index-_005clabel"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\label{<var>key</var>}
+</pre></div>
+
+<p>Assign a reference number to <var>key</var>.  In ordinary text
+<code>\label{<var>key</var>}</code> assigns to <var>key</var> the number of the
+current sectional unit. Inside an environment with numbering, such as a
+<code>table</code> or <code>theorem</code> environment, <code>\label{<var>key</var>}</code>
+assigns to <var>key</var> the number of that environment.  Retrieve the
+assigned number with the <code>\ref{<var>key</var>}</code> command
+(see <a href="#g_t_005cref">\ref</a>).
+</p>
+<p>A key name can consist of any sequence of letters, digits, or common
+punctuation characters.  Upper and lowercase letters are
+distinguished, as usual.
+</p>
+<p>A common convention is to use labels consisting of a prefix and a suffix
+separated by a colon or period.  Thus, <code>\label{fig:Post}</code> is a
+label for a figure with a portrait of Emil Post.  This helps to avoid
+accidentally creating two labels with the same name, and makes your
+source more readable.  Some commonly-used prefixes:
+</p>
+<dl compact="compact">
+<dt><code>ch</code></dt>
+<dd><p>for chapters
+</p>
+</dd>
+<dt><code>sec</code></dt>
+<dt><code>subsec</code></dt>
+<dd><p>for lower-level sectioning commands
+</p>
+</dd>
+<dt><code>fig</code></dt>
+<dd><p>for figures
+</p>
+</dd>
+<dt><code>tab</code></dt>
+<dd><p>for tables
+</p>
+</dd>
+<dt><code>eq</code></dt>
+<dd><p>for equations
+</p></dd>
+</dl>
+
+<p>In the auxiliary file the reference information is kept as the text of
+a command of the form
+<code>\newlabel{<var>label</var>}{{<var>currentlabel</var>}{<var>pagenumber</var>}}</code>.
+Here <var>currentlabel</var> is the current value of the macro
+<code>\@currentlabel</code> that is usually updated whenever you call
+<code>\refstepcounter{<var>counter</var>}</code>.
+</p>
+<p>Below, the key <code>sec:test</code> will get the number of the current
+section and the key <code>fig:test</code> will get the number of the figure.
+(Incidentally, put labels after captions in figures and tables.)
+</p>
+<div class="example">
+<pre class="example">\section{section name}
+\label{sec:test}
+This is Section~\ref{sec:test}.
+\begin{figure}
+  ...
+  \caption{caption text}
+  \label{fig:test}
+\end{figure}
+See Figure~\ref{fig:test}.
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cpageref"></a>
+<a name="g_t_005cpageref-1"></a>
+<h3 class="section">7.2 <code>\pageref</code></h3>
+
+<a name="index-_005cpageref"></a>
+<a name="index-cross-referencing-with-page-number"></a>
+<a name="index-page-number_002c-cross-referencing"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\pageref{<var>key</var>}
+</pre></div>
+
+<p>Produce the page number of the place in the text where the corresponding
+<code>\label</code>{<var>key</var>} command appears.
+</p>
+<p>If there is no <code>\label{<var>key</var>}</code> then you get something like
+&lsquo;<samp>LaTeX Warning: Reference `th:GrensThm' on page 1 undefined on
+input line 11.</samp>&rsquo;
+</p>
+<p>Below, the <code>\label{eq:main}</code> is used both for the formula number
+and for the page number.  (Note that the two references are forward
+references so this document would need to be compiled twice to resolve
+those.)
+</p>
+<div class="example">
+<pre class="example">The main result is formula~\ref{eq:main} on page~\pageref{eq:main}.
+  ...
+\begin{equation} \label{eq:main}
+   \mathbf{P}=\mathbf{NP}
+\end{equation}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cref"></a>
+<a name="g_t_005cref-1"></a>
+<h3 class="section">7.3 <code>\ref</code></h3>
+
+<a name="index-_005cref"></a>
+<a name="index-cross-referencing_002c-symbolic"></a>
+<a name="index-section-number_002c-cross-referencing"></a>
+<a name="index-equation-number_002c-cross-referencing"></a>
+<a name="index-figure-number_002c-cross-referencing"></a>
+<a name="index-footnote-number_002c-cross-referencing"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\ref{<var>key</var>}
+</pre></div>
+
+<p>Produces the number of the sectional unit,
+equation, footnote, figure, &hellip;, of the corresponding
+<code>\label</code> command (see <a href="#g_t_005clabel">\label</a>).  It does not produce any text,
+such as the word &lsquo;Section&rsquo; or &lsquo;Figure&rsquo;, just the bare number itself.
+</p>
+<p>If there is no <code>\label{<var>key</var>}</code> then you get something like
+&lsquo;<samp>LaTeX Warning: Reference `th:GrensThm' on page 1 undefined on
+input line 11.</samp>&rsquo;
+</p>
+<p>In this example the <code>\ref{popular}</code> produces &lsquo;<samp>2</samp>&rsquo;.  Note that
+it is a forward reference since it comes before <code>\label{popular}</code>
+so this document would have to be compiled twice.
+</p>
+<div class="example">
+<pre class="example">The most widely-used format is item number~\ref{popular}.
+\begin{enumerate}
+\item Plain \TeX
+\item \label{popular} \LaTeX
+\item Con\TeX t
+\end{enumerate}
+</pre></div>
+
+<a name="index-package_002c-cleveref-1"></a>
+<a name="index-cleveref-package-1"></a>
+
+<p>The <samp>cleveref</samp> package includes text such as &lsquo;<samp>Theorem</samp>&rsquo; in the
+reference.  See the documentation on CTAN.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005cpageref" accesskey="p" rel="prev">\pageref</a>, Up: <a href="#Cross-references" accesskey="u" rel="up">Cross references</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

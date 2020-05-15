@@ -1,0 +1,2977 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Math formulas (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Math formulas (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Math formulas (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_17.html#Modes" rel="next" title="Modes">
+<link href="latex2e_15.html#Marginal-notes" rel="prev" title="Marginal notes">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Math-formulas"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_17.html#Modes" accesskey="n" rel="next">Modes</a>, Previous: <a href="latex2e_15.html#Making-paragraphs" accesskey="p" rel="prev">Making paragraphs</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Math-formulas-1"></a>
+<h2 class="chapter">16 Math formulas</h2>
+
+<a name="index-math-formulas"></a>
+<a name="index-formulas_002c-math"></a>
+<a name="index-math-mode_002c-entering"></a>
+<a name="index-environment_002c-math-1"></a>
+<a name="index-math-environment-1"></a>
+        
+<a name="index-environment_002c-displaymath-1"></a>
+<a name="index-displaymath-environment-1"></a>
+        
+<a name="index-environment_002c-equation-1"></a>
+<a name="index-equation-environment-1"></a>
+        
+
+<p>Produce mathematical text by putting LaTeX into math mode or display
+math mode (see <a href="latex2e_17.html#Modes">Modes</a>).  This example shows both.
+</p>
+<div class="example">
+<pre class="example">The wave equation for \( u \) is
+\begin{displaymath}
+  \frac{\partial^2u}{\partial t^2} = c^2\nabla^2u
+\end{displaymath}
+where \( \nabla^2 \) is the spatial Laplacian and \( c \) is constant.
+</pre></div>
+
+<p>Math mode is for inline mathematics.  In the above example it is invoked
+by the starting <code>\(</code> and finished by the matching ending <code>\)</code>.
+Display math mode is for displayed equations and here is invoked by the
+<code>displaymath</code> environment.  Note that any mathematical text
+whatever, including mathematical text consisting of just one character,
+is handled in math mode.
+</p>
+<p>When in math mode or display math mode, LaTeX handles many aspects of
+your input text differently than in other text modes.  For example,
+</p>
+<div class="example">
+<pre class="example">contrast x+y with \( x+y \)
+</pre></div>
+
+<p>in math mode the letters are in italics and the spacing around the plus
+sign is different.
+</p>
+<p>There are three ways to make inline formulas, to put LaTeX in math
+mode.
+</p>
+<div class="example">
+<pre class="example">\( <var>mathematical material</var> \)
+$ <var>mathematical material</var> $
+\begin{math} <var>mathematical material</var> \end{math}
+</pre></div>
+
+<p>The first form is preferred and the second is quite common, but the
+third form is rarely used.  You can sometimes use one and sometimes
+another, as in <code>\(x\) and $y$</code>.  You can use these in paragraph
+mode or in LR mode (see <a href="latex2e_17.html#Modes">Modes</a>).
+</p>
+<p>To make displayed formulas, put LaTeX into display math mode with
+either:
+</p>
+<div class="example">
+<pre class="example">\begin{displaymath}
+  <var>mathematical material</var>
+\end{displaymath}
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\begin{equation}
+  <var>mathematical material</var>
+\end{equation}
+</pre></div>
+
+<p>(see <a href="latex2e_8.html#displaymath">displaymath</a>, see <a href="latex2e_8.html#equation">equation</a>).  The only difference is that
+with the <code>equation</code> environment, LaTeX puts a formula number
+alongside the formula.  The construct <code>\[ <var>math</var> \]</code> is
+equivalent to <code>\begin{displaymath} <var>math</var>
+\end{displaymath}</code>.  These environments can only be used in paragraph
+mode (see <a href="latex2e_17.html#Modes">Modes</a>).
+</p>
+<a name="index-_005cdisplaystyle"></a>
+<p>The two mathematics modes are similar, but there are some differences.
+One involves the placement of subscripts and superscripts; in display
+math mode they are further apart and in inline math mode they are closer
+together.
+</p>
+<p>Sometimes you want the display math typographical treatment to happen in
+the inline math mode.  For this, the <code>\displaystyle</code> declaration
+forces the size and style of the formula to be that of
+<code>displaymath</code>.  Thus <code>\(\displaystyle \sum_{n=0}^\infty
+x_n\)</code> will have the limits above and below the summation sign, not next
+to it.  Another example is that
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{r|cc}
+  \textsc{Name}  &amp;\textsc{Series}  &amp;\textsc{Sum}  \\  \hline
+  Arithmetic     &amp;\( a+(a+b)+(a+2b)+\cdots+(a+(n-1)b) \)
+                   &amp;\( na+(n-1)n\cdot\frac{b}{2}\)  \\
+  Geometric      &amp;\( a+ab+ab^2+\cdots+ab^{n-1} \)
+                   &amp;\(\displaystyle a\cdot\frac{1-b^n}{1-b}\)  \\
+\end{tabular}
+</pre></div>
+
+<p>because it has no <code>\displaystyle</code>, the &lsquo;<samp>Arithmetic</samp>&rsquo; line&rsquo;s
+fraction will be scrunched.  But, because of its <code>\displaystyle</code>,
+the &lsquo;<samp>Geometric</samp>&rsquo; line&rsquo;s fraction will be easy to read, with
+characters the same size as in the rest of the line.
+</p>
+<a name="index-package_002c-amsmath-5"></a>
+<a name="index-amsmath-package-5"></a>
+
+<a name="index-package_002c-amsfonts"></a>
+<a name="index-amsfonts-package"></a>
+
+<a name="index-package_002c-mathtools"></a>
+<a name="index-mathtools-package"></a>
+
+<p>The American Mathematical Society has made freely available a set of
+packages that greatly expand your options for writing mathematics,
+<samp>amsmath</samp> and <samp>amssymb</samp> (also be aware of the <samp>mathtools</samp>
+package that is an extension to, and loads, <samp>amsmath</samp>).  New
+documents that will have mathematical text should use these packages.
+Descriptions of these packages is outside the scope of this document;
+see their documentation on CTAN.
+</p>
+
+
+<hr>
+<a name="Subscripts-_0026-superscripts"></a>
+<a name="Subscripts-_0026-superscripts-1"></a>
+<h3 class="section">16.1 Subscripts &amp; superscripts</h3>
+
+<a name="index-superscript"></a>
+<a name="index-subscript"></a>
+<a name="index-exponent"></a>
+<a name="index-_005f"></a>
+<a name="index-_005e"></a>
+
+<p>Synopsis (in math mode or display math mode), one of:
+</p>
+<div class="example">
+<pre class="example"><var>base</var>^<var>exp</var>
+<var>base</var>^{<var>exp</var>}
+</pre></div>
+
+<p>or, one of:
+</p>
+<div class="example">
+<pre class="example"><var>base</var>_<var>exp</var>
+<var>base</var>_{<var>exp</var>}
+</pre></div>
+
+<p>Make <var>exp</var> appear as a superscript of <var>base</var> (with the caret
+character,&nbsp;<code>^</code>) or a subscript (with
+underscore,&nbsp;<code>_</code>).
+</p>
+<p>In this example the <code>0</code>&rsquo;s and <code>1</code>&rsquo;s are subscripts while the
+<code>2</code>&rsquo;s are superscripts.
+</p>
+<div class="example">
+<pre class="example">\( (x_0+x_1)^2 \leq (x_0)^2+(x_1)^2 \)
+</pre></div>
+
+<p>To have the subscript or superscript contain more than one character,
+surround the expression with curly braces, as in <code>e^{-2x}</code>.
+This example&rsquo;s fourth line shows curly braces used to group an expression
+for the exponent.
+</p>
+<div class="example">
+<pre class="example">\begin{displaymath}
+  (3^3)^3=27^3=19\,683
+  \qquad
+  3^{(3^3)}=3^{27}=7\,625\,597\,484\,987
+\end{displaymath}
+</pre></div>
+
+<p>LaTeX knows how to handle a superscript on a superscript, or a
+subscript on a subscript, or supers on subs, or subs on supers.  So,
+expressions such as <code>e^{x^2}</code> and <code>x_{i_0}</code> give correct
+output.  Note the use in those expressions of curly braces to give the
+<var>base</var> a determined <var>exp</var>.  If you enter <code>\(3^3^3\)</code> then
+you get &lsquo;<samp>Double superscript</samp>&rsquo;.
+</p>
+<p>LaTeX does the right thing when something has both a subscript and a
+superscript.  In this example the integral has both.  They come out in
+the correct place without any author intervention.
+</p>
+<div class="example">
+<pre class="example">\begin{displaymath}
+  \int_{x=a}^b f'(x)\,dx = f(b)-f(a)
+\end{displaymath}
+</pre></div>
+
+<p>Note the parentheses around <code>x=a</code> to make the entire expression a
+subscript.
+</p>
+<p>To put a superscript or subscript before a symbol, use a construct like
+<code>{}_t K^2</code>.  The empty curly braces <code>{}</code> give the
+subscript something to attach to and keeps it from accidentally
+attaching to a prior symbols.
+</p>
+<p>Using the subscript or superscript command outside of math mode or
+display math mode, as in <code>the expression x^2</code>, will get you
+the error &lsquo;<samp>Missing $ inserted</samp>&rsquo;.
+</p>
+<a name="index-package_002c-mhchem"></a>
+<a name="index-mhchem-package"></a>
+
+<p>A common reason to want subscripts outside of a mathematics mode is to
+typeset chemical formulas.  There are packages for that such as
+<samp>mhchem</samp>; see CTAN.
+</p>
+
+<hr>
+<a name="Math-symbols"></a>
+<a name="Math-symbols-1"></a>
+<h3 class="section">16.2 Math symbols</h3>
+
+<a name="index-math-symbols"></a>
+<a name="index-symbols_002c-math"></a>
+<a name="index-greek-letters"></a>
+
+<a name="index-package_002c-symbols"></a>
+<a name="index-symbols-package"></a>
+
+
+<p>LaTeX provides almost any mathematical or technical symbol that
+anyone uses.  For example, if you include <code>$\pi$</code> in your source,
+you will get the pi symbol &#x03C0;.  See the <samp>Comprehensive
+LaTeX Symbol List</samp> at
+<a href="https://ctan.org/tex-archive/info/symbols/comprehensive/">https://ctan.org/tex-archive/info/symbols/comprehensive/</a>.
+</p>
+<p>Here is a list of commonly-used symbols.  It is by no means exhaustive.
+Each symbol is described with a short phrase, and its symbol class,
+which determines the spacing around it, is given in parenthesis.  Unless
+said otherwise, the commands for these symbols can be used only in math
+mode.  To redefine a command so that it can be used whatever the current
+mode, see <a href="latex2e_17.html#g_t_005censuremath">\ensuremath</a>.
+</p>
+
+<dl compact="compact">
+<dt><code>\|</code>
+<a name="index-_005c_007c"></a>
+</dt>
+<dd><p>&#x2225; Parallel (relation). Synonym:&nbsp;<code>\parallel</code>.
+</p>
+</dd>
+<dt><code>\aleph</code>
+<a name="index-_005caleph"></a>
+</dt>
+<dd><p>&#x2135; Aleph, transfinite cardinal (ordinary).
+</p>
+</dd>
+<dt><code>\alpha</code>
+<a name="index-_005calpha"></a>
+</dt>
+<dd><p>&#x03B1; Lowercase Greek letter alpha (ordinary).
+</p>
+</dd>
+<dt><code>\amalg</code>
+<a name="index-_005camalg"></a>
+</dt>
+<dd><p>&#x2A3F; Disjoint union (binary)
+</p>
+</dd>
+<dt><code>\angle</code>
+<a name="index-_005cangle"></a>
+</dt>
+<dd><p>&#x2220; Geometric angle (ordinary). Similar: less-than
+sign&nbsp;<code>&lt;</code> and angle bracket&nbsp;<code>\langle</code>.
+</p>
+</dd>
+<dt><code>\approx</code>
+<a name="index-_005capprox"></a>
+</dt>
+<dd><p>&#x2248; Almost equal to (relation).
+</p>
+</dd>
+<dt><code>\ast</code>
+<a name="index-_005cast"></a>
+</dt>
+<dd><p>&#x2217; Asterisk operator, convolution, six-pointed
+(binary). Synonym:&nbsp;<code>*</code>, which is often a superscript or
+subscript, as in the Kleene star. Similar:&nbsp;<code>\star</code>, which is
+five-pointed, and is sometimes used as a general binary operation, and
+sometimes reserved for cross-correlation.
+</p>
+</dd>
+<dt><code>\asymp</code>
+<a name="index-_005casymp"></a>
+</dt>
+<dd><p>&#x224D; Asymptotically equivalent (relation).
+</p>
+</dd>
+<dt><code>\backslash</code>
+<a name="index-_005cbackslash"></a>
+</dt>
+<dd><p>\ Backslash (ordinary).  Similar: set minus&nbsp;<code>\setminus</code>, and
+<code>\textbackslash</code> for backslash outside of math mode.
+</p>
+</dd>
+<dt><code>\beta</code>
+<a name="index-_005cbeta"></a>
+</dt>
+<dd><p>&#x03B2; Lowercase Greek letter beta (ordinary).
+</p>
+</dd>
+<dt><code>\bigcap</code>
+<a name="index-_005cbigcap"></a>
+</dt>
+<dd><p>&#x22C2; Variable-sized, or n-ary, intersection (operator). Similar:
+binary intersection&nbsp;<code>\cap</code>.
+</p>
+</dd>
+<dt><code>\bigcirc</code>
+<a name="index-_005cbigcirc"></a>
+</dt>
+<dd><p>&#x26AA; Circle, larger (binary).  Similar: function
+composition&nbsp;<code>\circ</code>.
+</p>
+</dd>
+<dt><code>\bigcup</code>
+<a name="index-_005cbigcup"></a>
+</dt>
+<dd><p>&#x22C3; Variable-sized, or n-ary, union (operator). Similar: binary
+union&nbsp;<code>\cup</code>.
+</p>
+</dd>
+<dt><code>\bigodot</code>
+<a name="index-_005cbigodot"></a>
+</dt>
+<dd><p>&#x2A00; Variable-sized, or n-ary, circled dot operator (operator).
+</p>
+</dd>
+<dt><code>\bigoplus</code>
+<a name="index-_005cbigoplus"></a>
+</dt>
+<dd><p>&#x2A01; Variable-sized, or n-ary, circled plus operator (operator).
+</p>
+</dd>
+<dt><code>\bigotimes</code>
+<a name="index-_005cbigotimes"></a>
+</dt>
+<dd><p>&#x2A02; Variable-sized, or n-ary, circled times operator (operator).
+</p>
+</dd>
+<dt><code>\bigtriangledown</code>
+<a name="index-_005cbigtriangledown"></a>
+</dt>
+<dd><p>&#x25BD; Variable-sized, or n-ary, open triangle pointing down
+(operator).
+</p>
+</dd>
+<dt><code>\bigtriangleup</code>
+<a name="index-_005cbigtriangleup"></a>
+</dt>
+<dd><p>&#x25B3; Variable-sized, or n-ary, open triangle pointing up (operator).
+</p>
+</dd>
+<dt><code>\bigsqcup</code>
+<a name="index-_005cbigsqcup"></a>
+</dt>
+<dd><p>&#x2A06; Variable-sized, or n-ary, square union (operator).
+</p>
+</dd>
+<dt><code>\biguplus</code>
+<a name="index-_005cbiguplus"></a>
+</dt>
+<dd><p>&#x2A04; Variable-sized, or n-ary, union operator with a plus
+(operator).  (Note that the name has only one p.)
+</p>
+</dd>
+<dt><code>\bigvee</code>
+<a name="index-_005cbigvee"></a>
+</dt>
+<dd><p>&#x22C1; Variable-sized, or n-ary, logical-and (operator).
+</p>
+</dd>
+<dt><code>\bigwedge</code>
+<a name="index-_005cbigwedge"></a>
+</dt>
+<dd><p>&#x22C0; Variable-sized, or n-ary, logical-or (operator).
+</p>
+</dd>
+<dt><code>\bot</code>
+<a name="index-_005cbot"></a>
+</dt>
+<dd><p>&#x22A5; Up tack, bottom, least element of a partially ordered
+set, or a contradiction (ordinary).  See also&nbsp;<code>\top</code>.
+</p>
+</dd>
+<dt><code>\bowtie</code>
+<a name="index-_005cbowtie"></a>
+</dt>
+<dd><p>&#x22C8; Natural join of two relations (relation).
+</p>
+</dd>
+<dt><code>\Box</code>
+<a name="index-_005cBox"></a>
+</dt>
+<dd><p>&#x25A1; Modal operator for necessity; square open box
+(ordinary).  Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package.
+</p>
+</dd>
+<dt><code>\bullet</code>
+<a name="index-_005cbullet"></a>
+</dt>
+<dd><a name="index-bullet-symbol"></a>
+<p>&#x2022; Bullet (binary).  Similar: multiplication
+dot&nbsp;<code>\cdot</code>.
+</p>
+</dd>
+<dt><code>\cap</code>
+<a name="index-_005ccap"></a>
+</dt>
+<dd><p>&#x2229; Intersection of two sets (binary).  Similar: variable-sized
+operator&nbsp;<code>\bigcap</code>.
+</p>
+</dd>
+<dt><code>\cdot</code>
+<a name="index-_005ccdot"></a>
+</dt>
+<dd><p>&#x22C5; Multiplication (binary).  Similar: Bullet
+dot&nbsp;<code>\bullet</code>.
+</p>
+</dd>
+<dt><code>\chi</code>
+<a name="index-_005cchi"></a>
+</dt>
+<dd><p>&#x03C7; Lowercase Greek chi (ordinary).
+</p>
+</dd>
+<dt><code>\circ</code>
+<a name="index-_005ccirc"></a>
+</dt>
+<dd><p>&#x2218; Function composition, ring operator (binary).  Similar:
+variable-sized operator&nbsp;<code>\bigcirc</code>.
+</p>
+</dd>
+<dt><code>\clubsuit</code>
+<a name="index-_005cclubsuit"></a>
+</dt>
+<dd><p>&#x2663; Club card suit (ordinary).
+</p>
+</dd>
+<dt><code>\complement</code>
+<a name="index-_005ccomplement"></a>
+</dt>
+<dd><p>&#x2201; Set complement, used as a superscript as in
+<code>$S^\complement$</code> (ordinary).  Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package. Also used:
+<code>$S^{\mathsf{c}}$</code> or&nbsp;<code>$\bar{S}$</code>.
+</p>
+</dd>
+<dt><code>\cong</code>
+<a name="index-_005ccong"></a>
+</dt>
+<dd><p>&#x2245; Congruent (relation).
+</p>
+</dd>
+<dt><code>\coprod</code>
+<a name="index-_005ccoprod"></a>
+</dt>
+<dd><p>&#x2210; Coproduct (operator).
+</p>
+</dd>
+<dt><code>\cup</code>
+<a name="index-_005ccup"></a>
+</dt>
+<dd><p>&#x222A; Union of two sets (binary).  Similar: variable-sized
+operator&nbsp;<code>\bigcup</code>.
+</p>
+</dd>
+<dt><code>\dagger</code>
+<a name="index-_005cdagger"></a>
+</dt>
+<dd><p>&#x2020; Dagger relation (binary).
+</p>
+</dd>
+<dt><code>\dashv</code>
+<a name="index-_005cdashv"></a>
+</dt>
+<dd><p>&#x22A3; Dash with vertical, reversed turnstile (relation).  Similar:
+turnstile&nbsp;<code>\vdash</code>.
+</p>
+</dd>
+<dt><code>\ddagger</code>
+<a name="index-_005cddagger"></a>
+</dt>
+<dd><p>&#x2021; Double dagger relation (binary).
+</p>
+</dd>
+<dt><code>\Delta</code>
+<a name="index-_005cDelta"></a>
+</dt>
+<dd><p>&#x0394; Greek uppercase delta, used for increment (ordinary).
+</p>
+</dd>
+<dt><code>\delta</code>
+<a name="index-_005cdelta"></a>
+</dt>
+<dd><p>&#x03B4; Greek lowercase delta (ordinary).
+</p>
+</dd>
+<dt><code>\Diamond</code>
+<a name="index-_005cDiamond"></a>
+</dt>
+<dd><p>&#x25C7; Large diamond operator (ordinary).  Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package.
+</p>
+</dd>
+<dt><code>\diamond</code>
+<a name="index-_005cdiamond"></a>
+</dt>
+<dd><p>&#x22C4; Diamond operator (binary).  Similar: large
+diamond&nbsp;<code>\Diamond</code>, circle bullet&nbsp;<code>\bullet</code>.
+</p>
+</dd>
+<dt><code>\diamondsuit</code>
+<a name="index-_005cdiamondsuit"></a>
+</dt>
+<dd><p>&#x2662; Diamond card suit (ordinary).
+</p>
+</dd>
+<dt><code>\div</code>
+<a name="index-_005cdiv"></a>
+</dt>
+<dd><p>&#x00F7; Division sign (binary).
+</p>
+</dd>
+<dt><code>\doteq</code>
+<a name="index-_005cdoteq"></a>
+</dt>
+<dd><p>&#x2250; Approaches the limit (relation).  Similar: geometrically equal
+to&nbsp;<code>\Doteq</code>.
+</p>
+</dd>
+<dt><code>\downarrow</code>
+<a name="index-_005cdownarrow"></a>
+</dt>
+<dd><p>&#x2193; Down arrow, converges (relation).  Similar:
+<code>\Downarrow</code> double line down arrow.
+</p>
+</dd>
+<dt><code>\Downarrow</code>
+<a name="index-_005cDownarrow"></a>
+</dt>
+<dd><p>&#x21D3; Double line down arrow (relation).  Similar:
+<code>\downarrow</code> single line down arrow.
+</p>
+</dd>
+<dt><code>\ell</code>
+<a name="index-_005cell"></a>
+</dt>
+<dd><p>&#x2113; Lowercase cursive letter l (ordinary).
+</p>
+</dd>
+<dt><code>\emptyset</code>
+<a name="index-_005cemptyset"></a>
+</dt>
+<dd><p>&#x2205; Empty set symbol (ordinary).  The variant form is
+<code>\varnothing</code>.
+</p>	
+</dd>
+<dt><code>\epsilon</code>
+<a name="index-_005cepsilon"></a>
+</dt>
+<dd><p>&#x03F5; Lowercase lunate epsilon (ordinary). Similar to
+Greek text letter. More widely used in mathematics is the script small
+letter epsilon <code>\varepsilon</code>&nbsp;&#x03B5;. Related:
+the set membership relation <code>\in</code>&nbsp;&#x2208;.
+</p>
+</dd>
+<dt><code>\equiv</code>
+<a name="index-_005cequiv"></a>
+</dt>
+<dd><p>&#x2261; Equivalence (relation).
+</p>
+</dd>
+<dt><code>\eta</code>
+<a name="index-_005ceta"></a>
+</dt>
+<dd><p>&#x03B7; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\exists</code>
+<a name="index-_005cexists"></a>
+</dt>
+<dd><p>&#x2203; Existential quantifier (ordinary).
+</p>
+</dd>
+<dt><code>\flat</code>
+<a name="index-_005cflat"></a>
+</dt>
+<dd><p>&#x266D; Musical flat (ordinary).
+</p>
+</dd>
+<dt><code>\forall</code>
+<a name="index-_005cforall"></a>
+</dt>
+<dd><p>&#x2200; Universal quantifier (ordinary).
+</p>
+</dd>
+<dt><code>\frown</code>
+<a name="index-_005cfrown"></a>
+</dt>
+<dd><p>&#x2322; Downward curving arc (ordinary).
+</p>
+</dd>
+<dt><code>\Gamma</code>
+<a name="index-_005cGamma"></a>
+</dt>
+<dd><p>&#x0393; uppercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\gamma</code>
+<a name="index-_005cgamma"></a>
+</dt>
+<dd><p>&#x03B3; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\ge</code>
+<a name="index-_005cge"></a>
+</dt>
+<dd><p>&#x2265; Greater than or equal to (relation).  This is a synonym
+for&nbsp;<code>\geq</code>.
+</p>
+</dd>
+<dt><code>\geq</code>
+<a name="index-_005cgeq"></a>
+</dt>
+<dd><p>&#x2265; Greater than or equal to (relation).  This is a synonym
+for&nbsp;<code>\ge</code>.
+</p>
+</dd>
+<dt><code>\gets</code>
+<a name="index-_005cgets"></a>
+</dt>
+<dd><p>&#x2190; Is assigned the value (relation).
+Synonym:&nbsp;<code>\leftarrow</code>.
+</p>
+</dd>
+<dt><code>\gg</code>
+<a name="index-_005cgg"></a>
+</dt>
+<dd><p>&#x226B; Much greater than (relation).  Similar: much less
+than&nbsp;<code>\ll</code>.
+</p>
+</dd>
+<dt><code>\hbar</code>
+<a name="index-_005chbar"></a>
+</dt>
+<dd><p>&#x210F; Planck constant over two pi (ordinary).
+</p>
+</dd>
+<dt><code>\heartsuit</code>
+<a name="index-_005cheartsuit"></a>
+</dt>
+<dd><p>&#x2661; Heart card suit (ordinary).
+</p>
+</dd>
+<dt><code>\hookleftarrow</code>
+<a name="index-_005chookleftarrow"></a>
+</dt>
+<dd><p>&#x21A9; Hooked left arrow (relation).
+</p>
+</dd>
+<dt><code>\hookrightarrow</code>
+<a name="index-_005chookrightarrow"></a>
+</dt>
+<dd><p>&#x21AA; Hooked right arrow (relation).
+</p>
+</dd>
+<dt><code>\iff</code>
+<a name="index-_005ciff"></a>
+</dt>
+<dd><p>&#x27F7; If and only if (relation).  It is <code>\Longleftrightarrow</code>
+with a <code>\thickmuskip</code> on either side.
+</p>
+</dd>
+<dt><code>\Im</code>
+<a name="index-_005cIm"></a>
+</dt>
+<dd><p>&#x2111; Imaginary part (ordinary).  See: real part&nbsp;<code>\Re</code>.
+</p>
+</dd>
+<dt><code>\imath</code>
+<a name="index-_005cimath"></a>
+</dt>
+<dd><a name="index-dotless-i_002c-math"></a>
+<p>Dotless i; used when you are putting an accent on an i (see <a href="#Math-accents">Math accents</a>).
+</p>
+</dd>
+<dt><code>\in</code>
+<a name="index-_005cin"></a>
+</dt>
+<dd><p>&#x2208; Set element (relation).  See also: lowercase lunate
+epsilon&nbsp;<code>\epsilon</code>&#x03F5; and small letter script
+epsilon&nbsp;<code>\varepsilon</code>.
+</p>
+</dd>
+<dt><code>\infty</code>
+<a name="index-_005cinfty"></a>
+</dt>
+<dd><p>&#x221E; Infinity (ordinary).
+</p>
+</dd>
+<dt><code>\int</code>
+<a name="index-_005cint"></a>
+</dt>
+<dd><p>&#x222B; Integral (operator).
+</p>
+</dd>
+<dt><code>\iota</code>
+<a name="index-_005ciota"></a>
+</dt>
+<dd><p>&#x03B9; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\Join</code>
+<a name="index-_005cJoin"></a>
+</dt>
+<dd><p>&#x2A1D; Condensed bowtie symbol (relation).  Not available in Plain
+TeX.
+</p>
+</dd>
+<dt><code>\jmath</code>
+<a name="index-_005cjmath"></a>
+</dt>
+<dd><a name="index-dotless-j_002c-math"></a>
+<p>Dotless j; used when you are putting an accent on a j (see <a href="#Math-accents">Math accents</a>).
+</p>
+</dd>
+<dt><code>\kappa</code>
+<a name="index-_005ckappa"></a>
+</dt>
+<dd><p>&#x03BA; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\Lambda</code>
+<a name="index-_005cLambda"></a>
+</dt>
+<dd><p>&#x039B; uppercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\lambda</code>
+<a name="index-_005clambda"></a>
+</dt>
+<dd><p>&#x03BB; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\land</code>
+<a name="index-_005cland"></a>
+</dt>
+<dd><p>&#x2227; Logical and (binary).  This is a synonym for <code>\wedge</code>.
+See also logical or&nbsp;<code>\lor</code>.
+</p>
+</dd>
+<dt><code>\langle</code>
+<a name="index-_005clangle"></a>
+</dt>
+<dd><p>&#x27E8; Left angle, or sequence, bracket (opening).  Similar:
+less-than&nbsp;<code>&lt;</code>. Matches&nbsp;<code>\rangle</code>.
+</p>
+</dd>
+<dt><code>\lbrace</code>
+<a name="index-_005clbrace"></a>
+</dt>
+<dd><p>&#x007B; Left curly brace
+(opening). Synonym:&nbsp;<code>\{</code>. Matches&nbsp;<code>\rbrace</code>.
+</p>
+</dd>
+<dt><code>\lbrack</code>
+<a name="index-_005clbrack"></a>
+</dt>
+<dd><p>&#x005B; Left square bracket (opening).
+Synonym:&nbsp;<code>[</code>. Matches&nbsp;<code>\rbrack</code>.
+</p>
+</dd>
+<dt><code>\lceil</code>
+<a name="index-_005clceil"></a>
+</dt>
+<dd><p>&#x2308; Left ceiling bracket, like a square bracket but with the bottom
+shaved off (opening). Matches&nbsp;<code>\rceil</code>.
+</p>
+</dd>
+<dt><code>\le</code>
+<a name="index-_005cle"></a>
+</dt>
+<dd><p>&#x2264; Less than or equal to (relation).  This is a synonym
+for&nbsp;<code>\leq</code>.
+</p>
+</dd>
+<dt><code>\leadsto</code>
+<a name="index-_005cleadsto"></a>
+</dt>
+<dd><p>&#x21DD; Squiggly right arrow (relation).  Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package.
+To get this symbol outside of math mode you can put
+<code>\newcommand*{\Leadsto}{\ensuremath{\leadsto}}</code> in the
+preamble and then use <code>\Leadsto</code> instead.
+</p>
+</dd>
+<dt><code>\Leftarrow</code>
+<a name="index-_005cLeftarrow"></a>
+</dt>
+<dd><p>&#x21D0; Is implied by, double-line left arrow (relation).  Similar:
+single-line left arrow&nbsp;<code>\leftarrow</code>.
+</p>
+</dd>
+<dt><code>\leftarrow</code>
+<a name="index-_005cleftarrow"></a>
+</dt>
+<dd><p>&#x2190; Single-line left arrow (relation).
+Synonym:&nbsp;<code>\gets</code>. Similar: double-line left
+arrow&nbsp;<code>\Leftarrow</code>.
+</p>
+</dd>
+<dt><code>\leftharpoondown</code>
+<a name="index-_005cleftharpoondown"></a>
+</dt>
+<dd><p>&#x21BD; Single-line left harpoon, barb under bar (relation).
+</p>
+</dd>
+<dt><code>\leftharpoonup</code>
+<a name="index-_005cleftharpoonup"></a>
+</dt>
+<dd><p>&#x21BC; Single-line left harpoon, barb over bar (relation).
+</p>
+</dd>
+<dt><code>\Leftrightarrow</code>
+<a name="index-_005cLeftrightarrow"></a>
+</dt>
+<dd><p>&#x21D4; Bi-implication; double-line double-headed arrow (relation).
+Similar: single-line double headed arrow&nbsp;<code>\leftrightarrow</code>.
+</p>
+</dd>
+<dt><code>\leftrightarrow</code>
+<a name="index-_005cleftrightarrow"></a>
+</dt>
+<dd><p>&#x2194; Single-line double-headed arrow (relation).  Similar:
+double-line double headed arrow&nbsp;<code>\Leftrightarrow</code>.
+</p>
+</dd>
+<dt><code>\leq</code>
+<a name="index-_005cleq"></a>
+</dt>
+<dd><p>&#x2264; Less than or equal to (relation).  This is a synonym
+for&nbsp;<code>\le</code>.
+</p>
+</dd>
+<dt><code>\lfloor</code>
+<a name="index-_005clfloor"></a>
+</dt>
+<dd><p>&#x230A; Left floor bracket (opening). Matches:&nbsp;<code>\floor</code>.
+</p>
+</dd>
+<dt><code>\lhd</code>
+<a name="index-_005clhd"></a>
+</dt>
+<dd><p>&#x25C1; Arrowhead, that is, triangle, pointing left (binary).
+Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package. For the normal subgroup symbol you should load
+<samp>amssymb</samp> and use&nbsp;<code>\vartriangleleft</code> (which is a relation
+and so gives better spacing).
+</p>
+</dd>
+<dt><code>\ll</code>
+<a name="index-_005cll"></a>
+</dt>
+<dd><p>&#x226A; Much less than (relation).  Similar: much greater
+than&nbsp;<code>\gg</code>.
+</p>
+</dd>
+<dt><code>\lnot</code>
+<a name="index-_005clnot"></a>
+</dt>
+<dd><p>&#x00AC; Logical negation (ordinary). Synonym:&nbsp;<code>\neg</code>.
+</p>
+</dd>
+<dt><code>\longleftarrow</code>
+<a name="index-_005clongleftarrow"></a>
+</dt>
+<dd><p>&#x27F5; Long single-line left arrow (relation).  Similar: long
+double-line left arrow&nbsp;<code>\Longleftarrow</code>.
+</p>
+</dd>
+<dt><code>\longleftrightarrow</code>
+<a name="index-_005clongleftrightarrow"></a>
+</dt>
+<dd><p>&#x27F7; Long single-line double-headed arrow (relation).  Similar: long
+double-line double-headed arrow&nbsp;<code>\Longleftrightarrow</code>.
+</p>
+</dd>
+<dt><code>\longmapsto</code>
+<a name="index-_005clongmapsto"></a>
+</dt>
+<dd><p>&#x27FC; Long single-line left arrow starting with vertical bar
+(relation).  Similar: shorter version&nbsp;<code>\mapsto</code>.
+</p>
+</dd>
+<dt><code>\longrightarrow</code>
+<a name="index-_005clongrightarrow"></a>
+</dt>
+<dd><p>&#x27F6; Long single-line right arrow (relation).  Similar: long
+double-line right arrow&nbsp;<code>\Longrightarrow</code>.
+</p>
+</dd>
+<dt><code>\lor</code>
+<a name="index-_005clor"></a>
+</dt>
+<dd><p>&#x2228; Logical or (binary).  Synonym: wedge&nbsp;<code>\wedge</code>. 
+</p>
+</dd>
+<dt><code>\mapsto</code>
+<a name="index-_005cmapsto"></a>
+</dt>
+<dd><p>&#x21A6; Single-line left arrow starting with vertical bar (relation).
+Similar: longer version&nbsp;<code>\longmapsto</code>.
+</p>
+</dd>
+<dt><code>\mho</code>
+<a name="index-_005cmho"></a>
+</dt>
+<dd><p>&#x2127; Conductance, half-circle rotated capital omega (ordinary).
+Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package.
+</p>
+</dd>
+<dt><code>\mid</code>
+<a name="index-_005cmid"></a>
+</dt>
+<dd><p>&#x2223; Single-line vertical bar (relation).  A typical use of
+<code>\mid</code> is for a set <code>\{\, x \mid x\geq 5 \,\}</code>.
+</p>
+<p>Similar: <code>\vert</code> and&nbsp;<code>|</code> produce the same single-line
+vertical bar symbol but without any spacing (they fall in class
+ordinary) and you should not use them as relations but instead only as
+ordinals, i.e., footnote symbols.  For absolute value, see the entry
+for&nbsp;<code>\vert</code> and for norm see the entry for&nbsp;<code>\Vert</code>.
+</p>
+</dd>
+<dt><code>\models</code>
+<a name="index-_005cmodels"></a>
+</dt>
+<dd><p>&#x22A8; Entails, or satisfies; double turnstile, short double dash
+(relation).  Similar: long double dash&nbsp;<code>\vDash</code>.
+</p>
+</dd>
+<dt><code>\mp</code>
+<a name="index-_005cmp"></a>
+</dt>
+<dd><p>&#x2213; Minus or plus (relation).
+</p>
+</dd>
+<dt><code>\mu</code>
+<a name="index-_005cmu"></a>
+</dt>
+<dd><p>&#x03BC; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\nabla</code>
+<a name="index-_005cnabla"></a>
+</dt>
+<dd><p>&#x2207; Hamilton&rsquo;s del, or differential, operator (ordinary).
+</p>
+</dd>
+<dt><code>\natural</code>
+<a name="index-_005cnatural"></a>
+</dt>
+<dd><p>&#x266E; Musical natural notation (ordinary).
+</p>
+</dd>
+<dt><code>\ne</code>
+<a name="index-_005cne"></a>
+</dt>
+<dd><p>&#x2260; Not equal (relation). Synonym:&nbsp;<code>\neq</code>.
+</p>
+</dd>
+<dt><code>\nearrow</code>
+<a name="index-_005cnearrow"></a>
+</dt>
+<dd><p>&#x2197; North-east arrow (relation).
+</p>
+</dd>
+<dt><code>\neg</code>
+<a name="index-_005cneg"></a>
+</dt>
+<dd><p>&#x00AC; Logical negation (ordinary).
+Synonym:&nbsp;<code>\lnot</code>. Sometimes instead used for
+negation:&nbsp;<code>\sim</code>.
+</p>
+</dd>
+<dt><code>\neq</code>
+<a name="index-_005cneq"></a>
+</dt>
+<dd><p>&#x2260; Not equal (relation). Synonym:&nbsp;<code>\ne</code>.
+</p>
+</dd>
+<dt><code>\ni</code>
+<a name="index-_005cni"></a>
+</dt>
+<dd><p>&#x220B; Reflected membership epsilon; has the member
+(relation). Synonym:&nbsp;<code>\owns</code>. Similar: is a member
+of&nbsp;<code>\in</code>.
+</p>
+</dd>
+<dt><code>\not</code>
+<a name="index-_005cnot"></a>
+</dt>
+<dd><p>&#x0020;&nbsp;&nbsp;&nbsp;&nbsp;Long solidus, or slash, used to overstrike a
+following operator (relation).
+</p>
+<p>Many negated operators are available that don&rsquo;t require <code>\not</code>,
+particularly with the <samp>amssymb</samp> package. For example, <code>\notin</code>
+is typographically preferable to <code>\not\in</code>.
+</p>
+</dd>
+<dt><code>\notin</code>
+<a name="index-_005cnotin"></a>
+</dt>
+<dd><p>&#x2209; Not an element of (relation).  Similar: not subset
+of&nbsp;<code>\nsubseteq</code>.
+</p>
+</dd>
+<dt><code>\nu</code>
+<a name="index-_005cnu"></a>
+</dt>
+<dd><p>&#x03BD; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\nwarrow</code>
+<a name="index-_005cnwarrow"></a>
+</dt>
+<dd><p>&#x2196; North-west arrow (relation).
+</p>
+</dd>
+<dt><code>\odot</code>
+<a name="index-_005codot"></a>
+</dt>
+<dd><p>&#x2299; Dot inside a circle (binary).  Similar: variable-sized
+operator&nbsp;<code>\bigodot</code>.
+</p>
+</dd>
+<dt><code>\oint</code>
+<a name="index-_005coint"></a>
+</dt>
+<dd><p>&#x222E; Contour integral, integral with circle in the middle
+(operator).
+</p>
+</dd>
+<dt><code>\Omega</code>
+<a name="index-_005cOmega"></a>
+</dt>
+<dd><p>&#x03A9; uppercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\omega</code>
+<a name="index-_005comega"></a>
+</dt>
+<dd><p>&#x03C9; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\ominus</code>
+<a name="index-_005cominus"></a>
+</dt>
+<dd><p>&#x2296; Minus sign, or dash, inside a circle (binary).
+</p>
+</dd>
+<dt><code>\oplus</code>
+<a name="index-_005coplus"></a>
+</dt>
+<dd><p>&#x2295; Plus sign inside a circle (binary).  Similar: variable-sized
+operator&nbsp;<code>\bigoplus</code>.
+</p>
+</dd>
+<dt><code>\oslash</code>
+<a name="index-_005coslash"></a>
+</dt>
+<dd><p>&#x2298; Solidus, or slash, inside a circle (binary).
+</p>
+</dd>
+<dt><code>\otimes</code>
+<a name="index-_005cotimes"></a>
+</dt>
+<dd><p>&#x2297; Times sign, or cross, inside a circle (binary).  Similar:
+variable-sized operator&nbsp;<code>\bigotimes</code>.
+</p>
+</dd>
+<dt><code>\owns</code>
+<a name="index-_005cowns"></a>
+</dt>
+<dd><p>&#x220B; Reflected membership epsilon; has the member
+(relation). Synonym:&nbsp;<code>\ni</code>. Similar: is a member
+of&nbsp;<code>\in</code>.
+</p>
+</dd>
+<dt><code>\parallel</code>
+<a name="index-_005cparallel"></a>
+</dt>
+<dd><p>&#x2225; Parallel (relation). Synonym:&nbsp;<code>\|</code>.
+</p>
+</dd>
+<dt><code>\partial</code>
+<a name="index-_005cpartial"></a>
+</dt>
+<dd><p>&#x2202; Partial differential (ordinary).
+</p>
+</dd>
+<dt><code>\perp</code>
+<a name="index-_005cperp"></a>
+</dt>
+<dd><p>&#x27C2; Perpendicular (relation).  Similar:&nbsp;<code>\bot</code> uses the
+same glyph but the spacing is different because it is in the class
+ordinary.
+</p>
+</dd>
+<dt><code>\phi</code>
+<a name="index-_005cphi"></a>
+</dt>
+<dd><p>&#x03D5; Lowercase Greek letter (ordinary).  The variant form is
+<code>\varphi</code>&nbsp;&#x03C6;.
+</p>
+</dd>
+<dt><code>\Pi</code>
+<a name="index-_005cPi"></a>
+</dt>
+<dd><p>&#x03A0; uppercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\pi</code>
+<a name="index-_005cpi"></a>
+</dt>
+<dd><p>&#x03C0; Lowercase Greek letter (ordinary).  The variant form is
+<code>\varpi</code>&nbsp;&#x03D6;.
+</p>
+</dd>
+<dt><code>\pm</code>
+<a name="index-_005cpm"></a>
+</dt>
+<dd><p>&#x00B1; Plus or minus (binary).
+</p>
+</dd>
+<dt><code>\prec</code>
+<a name="index-_005cprec"></a>
+</dt>
+<dd><p>&#x227A; Precedes (relation). Similar: less than&nbsp;<code>&lt;</code>.
+</p>
+</dd>
+<dt><code>\preceq</code>
+<a name="index-_005cpreceq"></a>
+</dt>
+<dd><p>&#x2AAF; Precedes or equals (relation). Similar: less than or
+equals&nbsp;<code>\leq</code>.
+</p>
+</dd>
+<dt><code>\prime</code>
+<a name="index-_005cprime"></a>
+</dt>
+<dd><p>&#x2032; Prime, or minute in a time expression (ordinary).
+Typically used as a superscript: <code>$f^\prime$</code>; <code>$f^\prime$</code>
+and <code>$f'$</code> produce the same result.  An advantage of the second
+is that <code>$f'''$</code> produces the desired symbol, that is, the same
+result as <code>$f^{\prime\prime\prime}$</code>, but uses rather less
+typing.  You can only use <code>\prime</code> in math mode.  Using the right
+single quote&nbsp;<code>'</code> in text mode produces a different character
+(apostrophe).
+</p>
+</dd>
+<dt><code>\prod</code>
+<a name="index-_005cprod"></a>
+</dt>
+<dd><p>&#x220F; Product (operator).
+</p>
+</dd>
+<dt><code>\propto</code>
+<a name="index-_005cpropto"></a>
+</dt>
+<dd><p>&#x221D; Is proportional to (relation)
+</p>
+</dd>
+<dt><code>\Psi</code>
+<a name="index-_005cPsi"></a>
+</dt>
+<dd><p>&#x03A8; uppercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\psi</code>
+<a name="index-_005cpsi"></a>
+</dt>
+<dd><p>&#x03C8; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\rangle</code>
+<a name="index-_005crangle"></a>
+</dt>
+<dd><p>&#x27E9; Right angle, or sequence, bracket (closing).
+Similar: greater than&nbsp;<code>&gt;</code>. Matches:<code>\langle</code>.
+</p>
+</dd>
+<dt><code>\rbrace</code>
+<a name="index-_005crbrace"></a>
+</dt>
+<dd><p>&#x007D; Right curly brace
+(closing). Synonym:&nbsp;<code>\}</code>. Matches&nbsp;<code>\lbrace</code>.
+</p>
+</dd>
+<dt><code>\rbrack</code>
+<a name="index-_005crbrack"></a>
+</dt>
+<dd><p>&#x005D; Right square bracket
+(closing). Synonym:&nbsp;<code>]</code>. Matches&nbsp;<code>\lbrack</code>.
+</p>
+</dd>
+<dt><code>\rceil</code>
+<a name="index-_005crceil"></a>
+</dt>
+<dd><p>&#x2309; Right ceiling bracket (closing). Matches&nbsp;<code>\lceil</code>.
+</p>
+</dd>
+<dt><code>\Re</code>
+<a name="index-_005cRe"></a>
+</dt>
+<dd><p>&#x211C; Real part, real numbers, cursive capital R (ordinary). Related:
+double-line, or blackboard bold, R&nbsp;<code>\mathbb{R}</code>; to access
+this, load the <samp>amsfonts</samp> package.
+</p>
+</dd>
+<dt><code>\restriction</code>
+<a name="index-_005crestriction"></a>
+</dt>
+<dd><p>&#x21BE; Restriction of a function (relation). Synonym:
+<code>\upharpoonright</code>.  Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package.
+</p>
+</dd>
+<dt><code>\revemptyset</code>
+<a name="index-_005crevemptyset"></a>
+</dt>
+<dd><p>&#x29B0; Reversed empty set symbol (ordinary).  Related:
+<code>\varnothing</code>. Not available in plain TeX. In LaTeX you need to load the <samp>stix</samp> package.
+</p>
+</dd>
+<dt><code>\rfloor</code>
+<a name="index-_005crfloor"></a>
+</dt>
+<dd><p>&#x230B; Right floor bracket, a right square bracket with the top cut
+off (closing). Matches&nbsp;<code>\lfloor</code>.
+</p>
+</dd>
+<dt><code>\rhd</code>
+<a name="index-_005crhd"></a>
+</dt>
+<dd><p>&#x25C1; Arrowhead, that is, triangle, pointing right (binary).
+Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package. For the normal subgroup symbol you should instead
+load <samp>amssymb</samp> and use&nbsp;<code>\vartriangleright</code> (which is a
+relation and so gives better spacing).
+</p>
+</dd>
+<dt><code>\rho</code>
+<a name="index-_005crho"></a>
+</dt>
+<dd><p>&#x03C1; Lowercase Greek letter (ordinary).  The variant form is
+<code>\varrho</code>&nbsp;&#x03F1;.
+</p>
+</dd>
+<dt><code>\Rightarrow</code>
+<a name="index-_005cRightarrow"></a>
+</dt>
+<dd><p>&#x21D2; Implies, right-pointing double line arrow
+(relation). Similar: right single-line arrow&nbsp;<code>\rightarrow</code>.
+</p>
+</dd>
+<dt><code>\rightarrow</code>
+<a name="index-_005crightarrow"></a>
+</dt>
+<dd><p>&#x2192; Right-pointing single line arrow (relation).
+Synonym:&nbsp;<code>\to</code>. Similar: right double line
+arrow&nbsp;<code>\Rightarrow</code>.
+</p>
+</dd>
+<dt><code>\rightharpoondown</code>
+<a name="index-_005crightharpoondown"></a>
+</dt>
+<dd><p>&#x21C1; Right-pointing harpoon with barb below
+the line (relation). 
+</p>
+</dd>
+<dt><code>\rightharpoonup</code>
+<a name="index-_005crightharpoonup"></a>
+</dt>
+<dd><p>&#x21C0; Right-pointing harpoon with barb above the
+line (relation).
+</p>
+</dd>
+<dt><code>\rightleftharpoons</code>
+<a name="index-_005crightleftharpoons"></a>
+</dt>
+<dd><p>&#x21CC; Right harpoon up above left harpoon down
+(relation).
+</p>
+</dd>
+<dt><code>\searrow</code>
+<a name="index-_005csearrow"></a>
+</dt>
+<dd><p>&#x2198; Arrow pointing southeast (relation).
+</p>
+</dd>
+<dt><code>\setminus</code>
+<a name="index-_005csetminus"></a>
+</dt>
+<dd><p>&#x29F5; Set difference, reverse solidus or reverse slash,
+like \ (binary). Similar: backslash&nbsp;<code>\backslash</code> and also
+<code>\textbackslash</code> outside of math mode.
+</p>
+</dd>
+<dt><code>\sharp</code>
+<a name="index-_005csharp"></a>
+</dt>
+<dd><p>&#x266F; Musical sharp (ordinary).
+</p>
+</dd>
+<dt><code>\Sigma</code>
+<a name="index-_005cSigma"></a>
+</dt>
+<dd><p>&#x03A3; uppercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\sigma</code>
+<a name="index-_005csigma"></a>
+</dt>
+<dd><p>&#x03C3; Lowercase Greek letter (ordinary). The variant form is
+<code>\varsigma</code>&nbsp;&#x03C2;.
+</p>
+</dd>
+<dt><code>\sim</code>
+<a name="index-_005csim"></a>
+</dt>
+<dd><p>&#x223C; Similar, in a relation (relation).
+</p>
+</dd>
+<dt><code>\simeq</code>
+<a name="index-_005csimeq"></a>
+</dt>
+<dd><p>&#x2243; Similar or equal to, in a relation (relation).
+</p>
+</dd>
+<dt><code>\smallint</code>
+<a name="index-_005csmallint"></a>
+</dt>
+<dd><p>&#x222B; Integral sign that does not change to a larger size in a
+display (operator).
+</p>
+</dd>
+<dt><code>\smile</code>
+<a name="index-_005csmile"></a>
+</dt>
+<dd><p>&#x2323; Upward curving arc, smile (ordinary).
+</p>
+</dd>
+<dt><code>\spadesuit</code>
+<a name="index-_005cspadesuit"></a>
+</dt>
+<dd><p>&#x2660; Spade card suit (ordinary).
+</p>
+</dd>
+<dt><code>\sqcap</code>
+<a name="index-_005csqcap"></a>
+</dt>
+<dd><p>&#x2293; Square intersection symbol (binary). Similar:
+intersection&nbsp;<code>cap</code>.
+</p>
+</dd>
+<dt><code>\sqcup</code>
+<a name="index-_005csqcup"></a>
+</dt>
+<dd><p>&#x2294; Square union symbol (binary). Similar:
+union&nbsp;<code>cup</code>. Related: variable-sized
+operator&nbsp;<code>\bigsqcup</code>.
+</p>
+</dd>
+<dt><code>\sqsubset</code>
+<a name="index-_005csqsubset"></a>
+</dt>
+<dd><p>&#x228F; Square subset symbol (relation). Similar:
+subset&nbsp;<code>\subset</code>. Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package.
+</p>
+</dd>
+<dt><code>\sqsubseteq</code>
+<a name="index-_005csqsubseteq"></a>
+</dt>
+<dd><p>&#x2291; Square subset or equal symbol (binary). Similar: subset or
+equal to&nbsp;<code>\subseteq</code>.
+</p>
+</dd>
+<dt><code>\sqsupset</code>
+<a name="index-_005csqsupset"></a>
+</dt>
+<dd><p>&#x2290; Square superset symbol (relation). Similar:
+superset&nbsp;<code>\supset</code>. Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package.
+</p>
+</dd>
+<dt><code>\sqsupseteq</code>
+<a name="index-_005csqsupseteq"></a>
+</dt>
+<dd><p>&#x2292; Square superset or equal symbol (binary).
+Similar: superset or equal&nbsp;<code>\supseteq</code>.
+</p>
+</dd>
+<dt><code>\star</code>
+<a name="index-_005cstar"></a>
+</dt>
+<dd><p>&#x22C6; Five-pointed star, sometimes used as a general binary
+operation but sometimes reserved for cross-correlation (binary).
+Similar: the synonyms asterisk&nbsp;<code>*</code> and <code>\ast</code>, which
+are six-pointed, and more often appear as a superscript or subscript,
+as with the Kleene star.
+</p>
+</dd>
+<dt><code>\subset</code>
+<a name="index-_005csubset"></a>
+</dt>
+<dd><p>&#x2282; Subset (occasionally, is implied by) (relation).
+</p>
+</dd>
+<dt><code>\subseteq</code>
+<a name="index-_005csubseteq"></a>
+</dt>
+<dd><p>&#x2286; Subset or equal to (relation).
+</p>
+</dd>
+<dt><code>\succ</code>
+<a name="index-_005csucc"></a>
+</dt>
+<dd><p>&#x227B; Comes after, succeeds (relation). Similar: is less
+than&nbsp;<code>&gt;</code>.
+</p>
+</dd>
+<dt><code>\succeq</code>
+<a name="index-_005csucceq"></a>
+</dt>
+<dd><p>&#x2AB0; Succeeds or is equal to (relation). Similar: less
+than or equal to&nbsp;<code>\leq</code>.
+</p>
+</dd>
+<dt><code>\sum</code>
+<a name="index-_005csum"></a>
+</dt>
+<dd><p>&#x2211; Summation (operator). Similar: Greek capital
+sigma&nbsp;<code>\Sigma</code>.
+</p>
+</dd>
+<dt><code>\supset</code>
+<a name="index-_005csupset"></a>
+</dt>
+<dd><p>&#x2283; Superset (relation).
+</p>
+</dd>
+<dt><code>\supseteq</code>
+<a name="index-_005csupseteq"></a>
+</dt>
+<dd><p>&#x2287; Superset or equal to (relation).
+</p>
+</dd>
+<dt><code>\surd</code>
+<a name="index-_005csurd"></a>
+</dt>
+<dd><p>&#x221A; Radical symbol (ordinary).  The LaTeX command
+<code>\sqrt{...}</code> typesets the square root of the argument, with a bar
+that extends to cover the argument.
+</p>
+</dd>
+<dt><code>\swarrow</code>
+<a name="index-_005cswarrow"></a>
+</dt>
+<dd><p>&#x2199; Southwest-pointing  arrow (relation).
+</p>
+</dd>
+<dt><code>\tau</code>
+<a name="index-_005ctau"></a>
+</dt>
+<dd><p>&#x03C4; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\theta</code>
+<a name="index-_005ctheta"></a>
+</dt>
+<dd><p>&#x03B8; Lowercase Greek letter (ordinary). The variant form is
+<code>\vartheta</code>&nbsp;&#x03D1;.
+</p>
+</dd>
+<dt><code>\times</code>
+<a name="index-_005ctimes"></a>
+</dt>
+<dd><p>&#x00D7; Primary school multiplication sign (binary). See
+also&nbsp;<code>\cdot</code>.
+</p>
+</dd>
+<dt><code>\to</code>
+<a name="index-_005cto"></a>
+</dt>
+<dd><p>&#x2192; Right-pointing single line arrow (relation).
+Synonym:&nbsp;<code>\rightarrow</code>.
+</p>
+</dd>
+<dt><code>\top</code>
+<a name="index-_005ctop"></a>
+</dt>
+<dd><p>&#x22A4; Top, greatest element of a partially ordered set
+(ordinary). See also&nbsp;<code>\bot</code>.
+</p>
+</dd>
+<dt><code>\triangle</code>
+<a name="index-_005ctriangle"></a>
+</dt>
+<dd><p>&#x25B3; Triangle (ordinary).
+</p>
+</dd>
+<dt><code>\triangleleft</code>
+<a name="index-_005ctriangleleft"></a>
+</dt>
+<dd><p>&#x25C1; Not-filled triangle pointing left
+(binary). Similar:&nbsp;<code>\lhd</code>. For the normal subgroup symbol you
+should load <samp>amssymb</samp> and use&nbsp;<code>\vartriangleleft</code> (which
+is a relation and so gives better spacing).
+</p>
+</dd>
+<dt><code>\triangleright</code>
+<a name="index-_005ctriangleright"></a>
+</dt>
+<dd><p>&#x25B7; Not-filled triangle pointing right
+(binary). For the normal subgroup symbol you should instead load
+<samp>amssymb</samp> and use&nbsp;<code>\vartriangleright</code> (which is a
+relation and so gives better spacing).
+</p>
+</dd>
+<dt><code>\unlhd</code>
+<a name="index-_005cunlhd"></a>
+</dt>
+<dd><p>&#x22B4; Left-pointing not-filled underlined arrowhead, that is,
+triangle, with a line under (binary). Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package. For the
+normal subgroup symbol load <samp>amssymb</samp> and
+use&nbsp;<code>\vartrianglelefteq</code> (which is a relation and so gives
+better spacing).
+</p>
+</dd>
+<dt><code>\unrhd</code>
+<a name="index-_005cunrhd"></a>
+</dt>
+<dd><p>&#x22B5; Right-pointing not-filled underlined arrowhead, that is,
+triangle, with a line under (binary). Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package. For the
+normal subgroup symbol load <samp>amssymb</samp> and
+use&nbsp;<code>\vartrianglerighteq</code> (which is a relation and so gives
+better spacing).
+</p>
+</dd>
+<dt><code>\Uparrow</code>
+<a name="index-_005cUparrow"></a>
+</dt>
+<dd><p>&#x21D1; Double-line upward-pointing arrow
+(relation). Similar: single-line up-pointing
+arrow&nbsp;<code>\uparrow</code>.
+</p>
+</dd>
+<dt><code>\uparrow</code>
+<a name="index-_005cuparrow"></a>
+</dt>
+<dd><p>&#x2191; Single-line upward-pointing arrow, diverges
+(relation). Similar: double-line up-pointing
+arrow&nbsp;<code>\Uparrow</code>.
+</p>
+</dd>
+<dt><code>\Updownarrow</code>
+<a name="index-_005cUpdownarrow"></a>
+</dt>
+<dd><p>&#x21D5; Double-line upward-and-downward-pointing arrow
+(relation). Similar: single-line upward-and-downward-pointing
+arrow&nbsp;<code>\updownarrow</code>.
+</p>
+</dd>
+<dt><code>\updownarrow</code>
+<a name="index-_005cupdownarrow"></a>
+</dt>
+<dd><p>&#x2195; Single-line upward-and-downward-pointing arrow
+(relation). Similar: double-line upward-and-downward-pointing
+arrow&nbsp;<code>\Updownarrow</code>.
+</p>
+</dd>
+<dt><code>\upharpoonright</code>
+<a name="index-_005cupharpoonright"></a>
+</dt>
+<dd><p>&#x21BE; Up harpoon, with barb on right side
+(relation). Synonym:&nbsp;<code>\restriction</code>.
+Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package.
+</p>
+</dd>
+<dt><code>\uplus</code>
+<a name="index-_005cuplus"></a>
+</dt>
+<dd><p>&#x228E; Multiset union, a union symbol with a plus symbol in
+the middle (binary). Similar: union&nbsp;<code>\cup</code>. Related:
+variable-sized operator&nbsp;<code>\biguplus</code>.
+</p>
+</dd>
+<dt><code>\Upsilon</code>
+<a name="index-_005cUpsilon"></a>
+</dt>
+<dd><p>&#x03A5; uppercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\upsilon</code>
+<a name="index-_005cupsilon"></a>
+</dt>
+<dd><p>&#x03C5; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\varepsilon</code>
+<a name="index-_005cvarepsilon"></a>
+</dt>
+<dd><p>&#x03B5; Small letter script epsilon (ordinary).  This is
+more widely used in mathematics than the non-variant lunate epsilon form
+<code>\epsilon</code>&nbsp;&#x03F5;. Related: set
+membership&nbsp;<code>\in</code>.
+</p>
+</dd>
+<dt><code>\vanothing</code>
+<a name="index-_005cvanothing"></a>
+</dt>
+<dd><p>&#x2205; Empty set symbol. Similar: <code>\emptyset</code>. Related:
+<code>\revemptyset</code>. Not available in plain TeX. In LaTeX you need to load the <samp>amssymb</samp> package.
+</p>
+</dd>
+<dt><code>\varphi</code>
+<a name="index-_005cvarphi"></a>
+</dt>
+<dd><p>&#x03C6; Variant on the lowercase Greek letter (ordinary).
+The non-variant form is <code>\phi</code>&nbsp;&#x03D5;.
+</p>
+</dd>
+<dt><code>\varpi</code>
+<a name="index-_005cvarpi"></a>
+</dt>
+<dd><p>&#x03D6; Variant on the lowercase Greek letter (ordinary).
+The non-variant form is <code>\pi</code>&nbsp;&#x03C0;.
+</p>
+</dd>
+<dt><code>\varrho</code>
+<a name="index-_005cvarrho"></a>
+</dt>
+<dd><p>&#x03F1; Variant on the lowercase Greek letter (ordinary).
+The non-variant form is <code>\rho</code>&nbsp;&#x03C1;.
+</p>
+</dd>
+<dt><code>\varsigma</code>
+<a name="index-_005cvarsigma"></a>
+</dt>
+<dd><p>&#x03C2; Variant on the lowercase Greek letter
+(ordinary).  The non-variant form is
+<code>\sigma</code>&nbsp;&#x03C3;.
+</p>
+</dd>
+<dt><code>\vartheta</code>
+<a name="index-_005cvartheta"></a>
+</dt>
+<dd><p>&#x03D1; Variant on the lowercase Greek letter
+(ordinary).  The non-variant form is
+<code>\theta</code>&nbsp;&#x03B8;.
+</p>
+</dd>
+<dt><code>\vdash</code>
+<a name="index-_005cvdash"></a>
+</dt>
+<dd><p>&#x22A2; Provable; turnstile, vertical and a dash
+(relation). Similar: turnstile rotated a
+half-circle&nbsp;<code>\dashv</code>.
+</p>
+</dd>
+<dt><code>\vee</code>
+<a name="index-_005cvee"></a>
+</dt>
+<dd><p>&#x2228; Logical or; a downwards v shape (binary). Related:
+logical and&nbsp;<code>\wedge</code>. Similar: variable-sized
+operator&nbsp;<code>\bigvee</code>.
+</p>
+</dd>
+<dt><code>\Vert</code>
+<a name="index-_005cVert"></a>
+</dt>
+<dd><p>&#x2016; Vertical double bar (ordinary). Similar: vertical single
+bar&nbsp;<code>\vert</code>.
+</p>
+<p>For a norm symbol, you can use the <samp>mathtools</samp> package and put in
+your preamble
+<code>\DeclarePairedDelimiter\norm{\lVert}{\rVert}</code>. This gives you
+three command variants for double-line vertical bars that are correctly
+horizontally spaced: if in the document body you write the starred
+version <code>$\norm*{M^\perp}$</code> then the height of the vertical bars
+will match the height of the argument, whereas with
+<code>\norm{M^\perp}</code> the bars do not grow with the height of the
+argument but instead are the default height, and <code>\norm[<var>size
+command</var>]{M^\perp}</code> also gives bars that do not grow but are set to
+the size given in the <var>size command</var>, e.g., <code>\Bigg</code>.
+</p>
+</dd>
+<dt><code>\vert</code>
+<a name="index-_005cvert"></a>
+</dt>
+<dd><p>&#x007C; Single line vertical bar (ordinary). Similar: double-line
+vertical bar&nbsp;<code>\Vert</code>. For such that, as in the definition of a 
+set, use&nbsp;<code>\mid</code> because it is a relation.  
+</p>
+<p>For absolute value you can use the <samp>mathtools</samp> package and in your
+preamble put
+<code>\DeclarePairedDelimiter\abs{\lvert}{\rvert}</code>. This gives you
+three command variants for single-line vertical bars that are correctly
+horizontally spaced: if in the document body you write the starred
+version <code>$\abs*{\frac{22}{7}}$</code> then the height of the
+vertical bars will match the height of the argument, whereas with
+<code>\abs{\frac{22}{7}}</code> the bars do not grow with the height of
+the argument but instead are the default height, and
+<code>\abs[<var>size command</var>]{\frac{22}{7}}</code> also gives bars that
+do not grow but are set to the size given in the <var>size command</var>,
+e.g., <code>\Bigg</code>.
+</p>
+</dd>
+<dt><code>\wedge</code>
+<a name="index-_005cwedge"></a>
+</dt>
+<dd><p>&#x2227; Logical and (binary).  Synonym:&nbsp;<code>\land</code>.  See also
+logical or <code>\vee</code>. Similar: variable-sized
+operator&nbsp;<code>\bigwedge</code>.
+</p>
+</dd>
+<dt><code>\wp</code>
+<a name="index-_005cwp"></a>
+</dt>
+<dd><p>&#x2118; Weierstrass p (ordinary).
+</p>
+</dd>
+<dt><code>\wr</code>
+<a name="index-_005cwr"></a>
+</dt>
+<dd><p>&#x2240; Wreath product (binary).
+</p>
+</dd>
+<dt><code>\Xi</code>
+<a name="index-_005cXi"></a>
+</dt>
+<dd><p>&#x039E; uppercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\xi</code>
+<a name="index-_005cxi"></a>
+</dt>
+<dd><p>&#x03BE; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+<dt><code>\zeta</code>
+<a name="index-_005czeta"></a>
+</dt>
+<dd><p>&#x03B6; Lowercase Greek letter (ordinary).
+</p>
+</dd>
+</dl>
+
+<p>The following symbols are most often used in plain text but LaTeX
+provides versions to use in mathematical text.
+</p>
+<dl compact="compact">
+<dt><code>\mathdollar</code>
+<a name="index-_005cmathdollar"></a>
+</dt>
+<dd><p>Dollar sign in math mode: $.
+</p>
+</dd>
+<dt><code>\mathparagraph</code>
+<a name="index-_005cmathparagraph"></a>
+</dt>
+<dd><p>Paragraph sign (pilcrow) in math mode, &#x00B6;.
+</p>
+</dd>
+<dt><code>\mathsection</code>
+<a name="index-_005cmathsection"></a>
+</dt>
+<dd><p>Section sign in math mode &#x00A7;.
+</p>
+</dd>
+<dt><code>\mathsterling</code>
+<a name="index-_005cmathsterling"></a>
+</dt>
+<dd><p>Sterling sign in math mode: &pound;.
+</p>
+</dd>
+<dt><code>\mathunderscore</code>
+<a name="index-_005cmathunderscore"></a>
+</dt>
+<dd><p>Underscore in math mode: _.
+</p>
+</dd>
+</dl>
+
+
+
+<hr>
+<a name="Blackboard-bold"></a>
+<a name="Blackboard-bold-1"></a>
+<h4 class="subsection">16.2.1 Blackboard bold</h4>
+
+<a name="index-blackboard-bold"></a>
+<a name="index-doublestruck"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\usepackage{amssymb}   % in preamble
+  ... 
+\mathbb{<var>uppercase-letter</var>}
+</pre></div>
+
+<p>Provide blackboard bold symbols, sometimes also known as doublestruck
+letters, used to denote number sets such as the natural numbers, the
+integers, etc.
+</p>
+<p>Here 
+</p>
+<div class="example">
+<pre class="example">\( \forall n \in \mathbb{N}, n^2 \geq 0 \)
+</pre></div>
+
+<p>the <code>\mathbb{N}</code> gives blackboard bold symbol &#x2115;
+representing the natural numbers.
+</p>
+<p>If you use other than an uppercase letter then you do not get an error
+but you get strange results, including unexpected characters.
+</p>
+<p>There are packages that give access to symbols other than just the
+capital letters; look on CTAN.
+</p>
+
+<hr>
+<a name="Calligraphic"></a>
+<a name="Calligraphic-1"></a>
+<h4 class="subsection">16.2.2 Calligraphic</h4>
+
+<a name="index-calligraphic-fonts"></a>
+<a name="index-script-fonts"></a>
+<a name="index-fonts_002c-script"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\mathcal{<var>uppercase-letters</var>}
+</pre></div>
+
+<p>Use a script-like font.
+</p>
+<p>In this example the graph identifier is output in a cursive font.
+</p>
+<div class="example">
+<pre class="example">Let the graph be \( \mathcal{G} \).
+</pre></div>
+
+<p>If you use something other than an uppercase letter then you do not get
+an error.  Instead you get unexpected output.  For instance,
+<code>\mathcal{g}</code> outputs a close curly brace symbol, while
+<code>\mathcal{+}</code> outputs a plus sign.  
+</p>
+
+<hr>
+<a name="g_t_005cboldmath-_0026-_005cunboldmath"></a>
+<a name="g_t_005cboldmath-_0026-_005cunboldmath-1"></a>
+<h4 class="subsection">16.2.3 <code>\boldmath</code> &amp; <code>\unboldmath</code></h4>
+
+<a name="index-boldface-mathematics"></a>
+<a name="index-symbols_002c-boldface"></a>
+<a name="index-_005cboldmath"></a>
+<a name="index-_005cunboldmath"></a>
+
+<p>Synopsis (used in paragraph mode or LR mode):
+</p>
+<div class="example">
+<pre class="example">\boldmath \( <var>math</var> \)
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\unboldmath \( <var>math</var> \)
+</pre></div>
+
+<a name="index-_005cboldmath-1"></a>
+<a name="index-_005cunboldmath-1"></a>
+<p>Declarations to change the letters and symbols in <var>math</var> to be in
+a bold font, or to countermand that and bring back the regular
+(non-bold) default. They must be used when not in math mode or display
+math mode (see <a href="latex2e_17.html#Modes">Modes</a>). Both commands are fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>In this example each <code>\boldmath</code> command takes place inside an
+<code>\mbox</code>,
+</p>
+<div class="example">
+<pre class="example">we have $\mbox{\boldmath \( v \)} = 5\cdot\mbox{\boldmath \( u \)$}$
+</pre></div>
+
+<p>which means <code>\boldmath</code> is only called in a text mode, here LR
+mode, and explains why LaTeX must switch to math mode to set <code>v</code>
+and <code>u</code>.
+</p>
+<p>If you use either command inside math mode, as with <code>Trouble: \(
+\boldmath x \)</code>, then you get something like &lsquo;<samp>LaTeX Font Warning:
+Command \boldmath invalid in math mode on input line 11</samp>&rsquo; and &lsquo;<samp>LaTeX
+Font Warning: Command \mathversion invalid in math mode on input line
+11</samp>&rsquo;.
+</p>
+<a name="index-package_002c-bm"></a>
+<a name="index-bm-package"></a>
+
+<p>There are many issues with <code>\boldmath</code>.  New documents should use
+the <samp>bm</samp> package provided by the LaTeX Project team.  A complete
+description is outside the scope of this document (see the full
+documentation on CTAN) but even this small example
+</p>
+<div class="example">
+<pre class="example">\usepackage{bm}   % in preamble
+...
+we have $\bm{v} = 5\cdot\bm{u}$
+</pre></div>
+
+<p>shows that it is an improvement over <code>\boldmath</code>.
+</p>
+
+<hr>
+<a name="Dots"></a>
+<a name="Dots_002c-horizontal-or-vertical"></a>
+<h4 class="subsection">16.2.4 Dots, horizontal or vertical</h4>
+
+<a name="index-ellipses"></a>
+<a name="index-dots"></a>
+
+<p>Ellipses are the three dots (usually three) indicating that a pattern
+continues.
+</p>
+<div class="example">
+<pre class="example">\begin{array}{cccc}
+  a_{0,0}    &amp;a_{0,1}   &amp;a_{0,2} &amp;\ldots \\
+  a_{1,0}    &amp;\ddots                     \\
+  \vdots
+\end{array}
+</pre></div>
+
+<p>LaTeX provides these.
+</p>
+<dl compact="compact">
+<dd><a name="ellipses-cdots"></a></dd>
+<dt><code>\cdots</code>
+<a name="index-_005ccdots"></a>
+</dt>
+<dd><p>Horizontal ellipsis with the dots raised to the center of the line, as
+in &#x22EF;.  Used as: <code>\( a_0\cdot a_1\cdots a_{n-1}
+\)</code>.
+</p>
+<a name="ellipses-ddots"></a></dd>
+<dt><code>\ddots</code>
+<a name="index-_005cddots"></a>
+</dt>
+<dd><p>Diagonal ellipsis, &#x22F1;.  See the above array example for a
+usage.
+</p>
+<a name="ellipses-ldots"></a></dd>
+<dt><code>\ldots</code>
+<a name="index-_005cldots"></a>
+</dt>
+<dd><p>Ellipsis on the baseline, &#x2026;.  Used as: <code>\(
+x_0,\ldots x_{n-1} \)</code>.  Another example is the above array example. A
+synonym is <code>\mathellipsis</code>.  A synonym from the <samp>amsmath</samp>
+package is <code>\hdots</code>.
+</p>
+<p>You can also use this command outside of mathematical text, as in
+<code>The gears, brakes, \ldots{} are all broken</code>.  (In a paragraph
+mode or LR mode a synonym for <code>\ldots</code> is <code>\dots</code>.)
+</p>
+<a name="ellipses-vdots"></a></dd>
+<dt><code>\vdots</code>
+<a name="index-_005cvdots"></a>
+</dt>
+<dd><p>Vertical ellipsis, &#x22EE;.  See the above array example for a
+usage.
+</p>
+</dd>
+</dl>
+
+<a name="index-package_002c-amsmath-6"></a>
+<a name="index-amsmath-package-6"></a>
+
+<p>The <samp>amsmath</samp> package has the command <code>\dots</code> to semantically
+mark up ellipses.  This example produces two different-looking outputs
+for the first two uses of the <code>\dots</code> command.
+</p>
+<div class="example">
+<pre class="example">\usepackage{amsmath}  % in preamble
+  ...
+Suppose that \( p_0, p_1, \dots, p_{n-1} \) lists all of the primes.
+Observe that \( p_0\cdot p_1 \dots \cdot p_{n-1} +1 \) is not a
+  multiple of any \( p_i \).
+Conclusion: there are infinitely many primes \( p_0, p_1, \dotsc \).
+</pre></div>
+
+<p>In the first line LaTeX looks to the comma following <code>\dots</code> to
+determine that it should output an ellipsis on the baseline.  The second
+line has a <code>\cdot</code> following <code>\dots</code> so LaTeX outputs an
+ellipsis that is on the math axis, vertically centered.  However, the
+third usage has no follow-on character so you have to tell LaTeX what
+to do.  You can use one of the commands: <code>\dotsc</code> if you need the
+ellipsis appropriate for a comma following, <code>\dotsb</code> if you need
+the ellipses that fits when the dots are followed by a binary operator
+or relation symbol, <code>\dotsi</code> for dots with integrals, or
+<code>\dotso</code> for others.
+</p>
+
+<hr>
+<a name="Math-functions"></a>
+<a name="Math-functions-1"></a>
+<h3 class="section">16.3 Math functions</h3>
+
+<a name="index-math-functions"></a>
+<a name="index-functions_002c-math"></a>
+
+<p>These commands produce roman function names in math mode with proper
+spacing.
+</p>
+<dl compact="compact">
+<dt><code>\arccos</code>
+<a name="index-_005carccos"></a>
+</dt>
+<dd><p>Inverse cosine
+</p>
+</dd>
+<dt><code>\arcsin</code>
+<a name="index-_005carcsin"></a>
+</dt>
+<dd><p>Inverse sine
+</p>
+</dd>
+<dt><code>\arctan</code>
+<a name="index-_005carctan"></a>
+</dt>
+<dd><p>Inverse tangent
+</p>
+</dd>
+<dt><code>\arg</code>
+<a name="index-_005carg"></a>
+</dt>
+<dd><p>Angle between the real axis and a point in the complex plane
+</p>
+</dd>
+<dt><code>\bmod</code>
+<a name="index-_005cbmod"></a>
+</dt>
+<dd><p>Binary modulo operator, used as in <code>\( 5\bmod 3=2 \)</code>
+</p>
+</dd>
+<dt><code>\cos</code>
+<a name="index-_005ccos"></a>
+</dt>
+<dd><p>Cosine
+</p>
+</dd>
+<dt><code>\cosh</code>
+<a name="index-_005ccosh"></a>
+</dt>
+<dd><p>Hyperbolic cosine
+</p>
+</dd>
+<dt><code>\cot</code>
+<a name="index-_005ccot"></a>
+</dt>
+<dd><p>Cotangent
+</p>
+</dd>
+<dt><code>\coth</code>
+<a name="index-_005ccoth"></a>
+</dt>
+<dd><p>Hyperbolic cotangent
+</p>
+</dd>
+<dt><code>\csc</code>
+<a name="index-_005ccsc"></a>
+</dt>
+<dd><p>Cosecant
+</p>
+</dd>
+<dt><code>\deg</code>
+<a name="index-_005cdeg"></a>
+</dt>
+<dd><p>Degrees
+</p>
+</dd>
+<dt><code>\det</code>
+<a name="index-_005cdet"></a>
+</dt>
+<dd><p>Determinant
+</p>
+</dd>
+<dt><code>\dim</code>
+<a name="index-_005cdim"></a>
+</dt>
+<dd><p>Dimension
+</p>
+</dd>
+<dt><code>\exp</code>
+<a name="index-_005cexp"></a>
+</dt>
+<dd><p>Exponential
+</p>
+</dd>
+<dt><code>\gcd</code>
+<a name="index-_005cgcd"></a>
+</dt>
+<dd><p>Greatest common divisor
+</p>
+</dd>
+<dt><code>\hom</code>
+<a name="index-_005chom"></a>
+</dt>
+<dd><p>Homomorphism
+</p>
+</dd>
+<dt><code>\inf</code>
+<a name="index-_005cinf"></a>
+</dt>
+<dd><p>Infinum
+</p>
+</dd>
+<dt><code>\ker</code>
+<a name="index-_005cker"></a>
+</dt>
+<dd><p>Kernel
+</p>
+</dd>
+<dt><code>\lg</code>
+<a name="index-_005clg"></a>
+</dt>
+<dd><p>Base 2 logarithm
+</p>
+</dd>
+<dt><code>\lim</code>
+<a name="index-_005clim"></a>
+</dt>
+<dd><p>Limit
+</p>
+</dd>
+<dt><code>\liminf</code>
+<a name="index-_005climinf"></a>
+</dt>
+<dd><p>Limit inferior
+</p>
+</dd>
+<dt><code>\limsup</code>
+<a name="index-_005climsup"></a>
+</dt>
+<dd><p>Limit superior
+</p>
+</dd>
+<dt><code>\ln</code>
+<a name="index-_005cln"></a>
+</dt>
+<dd><p>Natural logarithm
+</p>
+</dd>
+<dt><code>\log</code>
+<a name="index-_005clog"></a>
+</dt>
+<dd><p>Logarithm
+</p>
+</dd>
+<dt><code>\max</code>
+<a name="index-_005cmax"></a>
+</dt>
+<dd><p>Maximum
+</p>
+</dd>
+<dt><code>\min</code>
+<a name="index-_005cmin"></a>
+</dt>
+<dd><p>Minimum
+</p>
+</dd>
+<dt><code>\pmod</code>
+<a name="index-_005cpmod"></a>
+</dt>
+<dd><p>Parenthesized modulus, as used in <code>\( 5\equiv 2\pmod 3 \)</code>
+</p>
+</dd>
+<dt><code>\Pr</code>
+<a name="index-_005cPr"></a>
+</dt>
+<dd><p>Probability
+</p>
+</dd>
+<dt><code>\sec</code>
+<a name="index-_005csec"></a>
+</dt>
+<dd><p>Secant
+</p>
+</dd>
+<dt><code>\sin</code>
+<a name="index-_005csin"></a>
+</dt>
+<dd><p>Sine
+</p>
+</dd>
+<dt><code>\sinh</code>
+<a name="index-_005csinh"></a>
+</dt>
+<dd><p>Hyperbolic sine
+</p>
+</dd>
+<dt><code>\sup</code>
+<a name="index-_005csup"></a>
+</dt>
+<dd><p>sup
+</p>
+</dd>
+<dt><code>\tan</code>
+<a name="index-_005ctan"></a>
+</dt>
+<dd><p>Tangent
+</p>
+</dd>
+<dt><code>\tanh</code>
+<a name="index-_005ctanh"></a>
+</dt>
+<dd><p>Hyperbolic tangent
+</p>
+</dd>
+</dl>
+
+<a name="index-package_002c-amsmath-7"></a>
+<a name="index-amsmath-package-7"></a>
+
+<p>The <samp>amsmath</samp> package adds improvements on some of these, and also
+allows you to define your own.  The full documentation is on CTAN, but
+briefly, you can define an identity operator with
+<code>\DeclareMathOperator{\identity}{id}</code> that is like the ones
+above but prints as &lsquo;<samp>id</samp>&rsquo;.  The starred form
+<code>\DeclareMathOperator*{\op}{op}</code> sets any limits above and
+below, as is traditional with <code>\lim</code>, <code>\sup</code>, or <code>\max</code>.
+</p>
+
+<hr>
+<a name="Math-accents"></a>
+<a name="Math-accents-1"></a>
+<h3 class="section">16.4 Math accents</h3>
+
+<a name="index-math-accents"></a>
+<a name="index-accents_002c-mathematical"></a>
+
+<p>LaTeX provides a variety of commands for producing accented letters
+in math.  These are different from accents in normal text
+(see <a href="latex2e_23.html#Accents">Accents</a>).
+</p>
+<dl compact="compact">
+<dt><code>\acute</code>
+<a name="index-_005cacute"></a>
+</dt>
+<dd><a name="index-acute-accent_002c-math"></a>
+<p>Math acute accent
+</p>
+</dd>
+<dt><code>\bar</code>
+<a name="index-_005cbar"></a>
+</dt>
+<dd><a name="index-bar_002dover-accent_002c-math"></a>
+<a name="index-macron-accent_002c-math"></a>
+<p>Math bar-over accent
+</p>
+</dd>
+<dt><code>\breve</code>
+<a name="index-_005cbreve"></a>
+</dt>
+<dd><a name="index-breve-accent_002c-math"></a>
+<p>Math breve accent
+</p>
+</dd>
+<dt><code>\check</code>
+<a name="index-_005ccheck"></a>
+</dt>
+<dd><a name="index-check-accent_002c-math"></a>
+<a name="index-hacek-accent_002c-math"></a>
+<p>Math h&aacute;&#269;ek (check) accent
+</p>
+</dd>
+<dt><code>\ddot</code>
+<a name="index-_005cddot"></a>
+</dt>
+<dd><a name="index-double-dot-accent_002c-math"></a>
+<p>Math dieresis accent
+</p>
+</dd>
+<dt><code>\dot</code>
+<a name="index-_005cdot"></a>
+</dt>
+<dd><a name="index-overdot-accent_002c-math"></a>
+<a name="index-dot-over-accent_002c-math"></a>
+<p>Math dot accent
+</p>
+</dd>
+<dt><code>\grave</code>
+<a name="index-_005cgrave"></a>
+</dt>
+<dd><a name="index-grave-accent_002c-math"></a>
+<p>Math grave accent
+</p>
+</dd>
+<dt><code>\hat</code>
+<a name="index-_005chat"></a>
+</dt>
+<dd><a name="index-hat-accent_002c-math"></a>
+<a name="index-circumflex-accent_002c-math"></a>
+<p>Math hat (circumflex) accent
+</p>
+</dd>
+<dt><code>\mathring</code>
+<a name="index-_005cmathring"></a>
+</dt>
+<dd><a name="index-ring-accent_002c-math"></a>
+<p>Math ring accent  </p>
+</dd>
+<dt><code>\tilde</code>
+<a name="index-_005ctilde"></a>
+</dt>
+<dd><a name="index-tilde-accent_002c-math"></a>
+<p>Math tilde accent
+</p>
+</dd>
+<dt><code>\vec</code>
+<a name="index-_005cvec"></a>
+</dt>
+<dd><a name="index-vector-symbol_002c-math"></a>
+<p>Math vector symbol
+</p>
+</dd>
+<dt><code>\widehat</code>
+<a name="index-_005cwidehat"></a>
+</dt>
+<dd><a name="index-wide-hat-accent_002c-math"></a>
+<p>Math wide hat accent
+</p>
+</dd>
+<dt><code>\widetilde</code>
+<a name="index-_005cwidetilde"></a>
+</dt>
+<dd><a name="index-wide-tilde-accent_002c-math"></a>
+<p>Math wide tilde accent
+</p>
+</dd>
+</dl>
+
+<p>When you are putting an accent on an i or a j, the tradition is to use
+one without a dot, <code>\imath</code> or <code>jmath</code> (see <a href="#Math-symbols">Math symbols</a>).
+</p>
+
+<hr>
+<a name="Over_002d-and-Underlining"></a>
+<a name="Over_002d-and-Underlining-1"></a>
+<h3 class="section">16.5 Over- and Underlining</h3>
+
+<a name="index-overlining"></a>
+<a name="index-underlining"></a>
+
+<p>LaTeX provides commands for making overlines or underlines, or
+putting braces over or under some material.
+</p>
+<dl compact="compact">
+<dt><code>\underline{<var>text</var>}</code>
+<a name="index-_005cunderline_007btext_007d"></a>
+</dt>
+<dd><p>Underline <var>text</var>.  Works inside math mode, and outside.
+The line is always completely below the text, taking account of
+descenders, so in <code>\(\underline{y}\)</code> the line is lower than in
+<code>\(\underline{x}\)</code>.  This command is fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<a name="index-package_002c-ulem"></a>
+<a name="index-ulem-package"></a>
+
+<p>Note that the package <samp>ulem</samp> does text mode underlining and allows
+line breaking as well as a number of other features.  See the
+documentation on CTAN.  See also&nbsp;<a href="latex2e_19.html#g_t_005chrulefill-_0026-_005cdotfill">\hrulefill &amp; \dotfill</a> for
+producing a line, for such things as a signature.
+</p>        
+</dd>
+<dt><code>\overline{<var>text</var>}</code>
+<a name="index-_005coverline_007btext_007d"></a>
+</dt>
+<dd><p>Put a horizontal line over <var>text</var>.  Works inside math mode, and
+outside.  For example, <code>\overline{x+y}</code>.
+Note that this differs from the command <code>\bar</code> (see <a href="#Math-accents">Math accents</a>).
+</p>
+</dd>
+<dt><code>\underbrace{<var>math</var>}</code>
+<a name="index-_005cunderbrace_007bmath_007d"></a>
+</dt>
+<dd><p>Put a brace under <var>math</var>. For example, this
+<code>(1-\underbrace{1/2)+(1/2}-1/3)</code> emphasizes the telescoping part.
+Attach text to the brace by using subscript, <code>_</code>, or superscript,
+<code>^</code>, as here.
+</p>
+<div class="example">
+<pre class="example">\begin{displaymath}
+  1+1/2+\underbrace{1/3+1/4}_{&gt;1/2}+
+       \underbrace{1/5+1/6+1/7+1/8}_{&gt;1/2}+\cdots
+\end{displaymath}
+</pre></div>
+
+<p>The superscript appears on top of the expression, and so can look
+unconnected to the underbrace.
+</p>
+</dd>
+<dt><code>\overbrace{<var>math</var>}</code>
+<a name="index-_005coverbrace_007bmath_007d"></a>
+</dt>
+<dd><p>Put a brace over <var>math</var>, as with
+<code>\overbrace{x+x+\cdots+x}^{\mbox{\(k\) times}}</code>.  See also
+<code>\underbrace</code>.
+</p>
+</dd>
+</dl>
+
+<a name="index-package_002c-mathtools-1"></a>
+<a name="index-mathtools-package-1"></a>
+
+<p>The package <samp>mathtools</samp> adds an over- and underbrace, as well as
+some improvements on the braces.  See the documentation on CTAN.
+</p>
+
+<hr>
+<a name="Spacing-in-math-mode"></a>
+<a name="Spacing-in-math-mode-1"></a>
+<h3 class="section">16.6 Spacing in math mode</h3>
+
+<a name="index-spacing-within-math-mode"></a>
+<a name="index-math-mode_002c-spacing"></a>
+
+<p>When typesetting mathematics, LaTeX puts in spacing according to the
+normal rules for mathematics texts.  If you enter <code>y=m x</code> then
+LaTeX ignores the space and in the output the m is next to the x,
+as <em>y=mx</em>.
+</p>
+<p>But LaTeX&rsquo;s rules sometimes need tweaking.  For example, in an
+integral the tradition is to put a small extra space between the
+<code>f(x)</code> and the <code>dx</code>, here done with the <code>\,</code> command.
+</p>
+<div class="example">
+<pre class="example">\int_0^1 f(x)\,dx
+</pre></div>
+
+<p>LaTeX provides the commands that follow for use in math mode.  Many
+of these spacing definitions are expressed in terms of the math unit
+<em>mu</em>.  It is defined as 1/18em, where the em is taken from the
+current math symbols family (see <a href="latex2e_14.html#Units-of-length">Units of length</a>).  Thus, a
+<code>\thickspace</code> is something like 5/18 times the width of
+a&nbsp;&lsquo;<samp>M</samp>&rsquo;.
+</p>
+<dl compact="compact">
+<dt><code>\;</code></dt>
+<dd><a name="index-_005c_003b"></a>
+<a name="index-_005cthickspace"></a>
+<a name="spacing-in-math-mode-thickspace"></a><p>Synonym: <code>\thickspace</code>.  Normally <code>5.0mu plus 5.0mu</code>.  Math
+mode only.
+</p>
+</dd>
+<dt><code>\:</code></dt>
+<dt><code>\&gt;</code></dt>
+<dd><a name="index-_005c_003a"></a>
+<a name="index-_005c_003e-1"></a>
+<a name="index-_005cmedspace"></a>
+<a name="spacing-in-math-mode-medspace"></a><p>Synonym: <code>\medspace</code>.  Normally <code>4.0mu plus 2.0mu minus 4.0mu</code>.
+Math mode only.
+</p>
+</dd>
+<dt><code>\,</code></dt>
+<dd><a name="index-_005c_002c"></a>
+<a name="index-_005cthinspace"></a>
+<a name="index-thin-space"></a>
+<a name="Spacing-in-math-mode_002f_005cthinspace"></a><a name="spacing-in-math-mode-thinspace"></a><p>Synonym: <code>\thinspace</code>.  Normally <code>3mu</code>, which is 1/6em.
+Can be used in both math mode and text mode (see <a href="latex2e_19.html#g_t_005cthinspace-_0026-_005cnegthinspace">\thinspace &amp; \negthinspace</a>).
+</p>
+<p>This space is widely used, for instance between the function and the
+infinitesimal in an integral <code>\int f(x)\,dx</code> and, if an author does
+this, before punctuation in a displayed equation.
+</p>
+<div class="example">
+<pre class="example">The antiderivative is
+\begin{equation}
+  3x^{-1/2}+3^{1/2}\,.
+\end{equation}
+</pre></div>
+
+</dd>
+<dt><code>\!</code></dt>
+<dd><a name="index-_005c_0021"></a>
+<a name="index-_005cnegthinspace"></a>
+<a name="index-thin-space_002c-negative"></a>
+<a name="spacing-in-math-mode-negthinspace"></a><p>A negative thin space. Normally <code>-3mu</code>.  The <code>\!</code> command is
+math mode only but the <code>\negthinspace</code> command is available for
+text mode (see <a href="latex2e_19.html#g_t_005cthinspace-_0026-_005cnegthinspace">\thinspace &amp; \negthinspace</a>).
+</p>
+</dd>
+<dt><code>\quad</code></dt>
+<dd><a name="index-quad"></a>
+<a name="index-_005cquad"></a>
+<a name="spacing-in-math-mode-quad"></a><p>This is 18mu, that is, 1em. This is often used for space
+surrounding equations or expressions, for instance for the space between
+two equations inside a <code>displaymath</code> environment.  It is available
+in both text and math mode.
+</p>
+</dd>
+<dt><code>\qquad</code></dt>
+<dd><a name="index-_005cqquad"></a>
+<a name="spacing-in-math-mode-qquad"></a><p>A length of 2 quads, that is, 36mu = 2em.  It is available in
+both text and math mode.
+</p></dd>
+</dl>
+
+
+
+<hr>
+<a name="g_t_005csmash"></a>
+<a name="g_t_005csmash-1"></a>
+<h4 class="subsection">16.6.1 <code>\smash</code></h4>
+
+<a name="index-vertical-spacing_002c-math-mode"></a>
+<a name="index-math-mode_002c-vertical-space"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\smash{<var>subformula</var>}
+</pre></div>
+
+<p>Typeset <var>subformula</var> as if its height and depth were zero.
+</p>
+<p>In this example the exponential is so tall that without the
+<code>\smash</code> command LaTeX would separate its line from the line
+above it, and the uneven line spacing might be unsightly.
+</p>
+<div class="example">
+<pre class="example">To compute the tetration $\smash{2^{2^{2^2}}}$,
+evaluate from the top down, as $2^{2^4}=2^{16}=65536$.
+</pre></div>
+
+<p>(Because of the <code>\smash</code> the printed expression could run into the
+line above so you may want to wait until the final version of the
+document to make such adjustments.)
+</p>
+<p>This pictures the effect of <code>\smash</code> by using <code>\fbox</code> to
+surround the box that LaTeX will put on the line.  The
+<code>\blackbar</code> command makes a bar extending from 10&nbsp;points below
+the baseline to 20&nbsp;points above.
+</p>
+<div class="example">
+<pre class="example">\newcommand{\blackbar}{\rule[-10pt]{5pt}{30pt}}
+\fbox{\blackbar}
+\fbox{\smash{\blackbar}}
+</pre></div>
+
+<p>The first box that LaTeX places is 20&nbsp;points high and
+10&nbsp;points deep.  But the second box is treated by LaTeX as
+having zero height and zero depth, despite that the ink printed on the
+page still extends well above and below the line.
+</p>
+<p>The <code>\smash</code> command appears often in mathematics to adjust the
+size of an element that surrounds a subformula.  Here the first radical
+extends below the baseline while the second lies just on the baseline.
+</p>
+<div class="example">
+<pre class="example">\begin{equation}
+\sqrt{\sum_{0\leq k&lt; n} f(k)}
+\sqrt{\vphantom{\sum}\smash{\sum_{0\leq k&lt; n}} f(k)}
+\end{equation}
+</pre></div>
+
+<p>Note the use of <code>\vphantom</code> to give the <code>\sqrt</code> command an
+argument with the height of the <code>\sum</code> (see <a href="#g_t_005cphantom-_0026-_005cvphantom-_0026-_005chphantom">\phantom &amp; \vphantom &amp; \hphantom</a>).
+</p>
+<p>While most often used in mathematics, the <code>\smash</code> command can
+appear in other contexts.  However, it doesn&rsquo;t change into horizontal
+mode.  So if it starts a paragraph then you should first put a
+<code>\leavevmode</code>, as in the bottom line below.
+</p>
+<div class="example">
+<pre class="example">xxx xxx xxx
+
+\smash{yyy}  % no paragraph indent
+
+\leavevmode\smash{zzz}  % usual paragraph indent
+</pre></div>
+
+<a name="index-package_002c-mathtools-2"></a>
+<a name="index-mathtools-package-2"></a>
+
+<p>The package <code>mathtools</code> has operators that provide even finer
+control over smashing a subformula box.
+</p>
+
+<hr>
+<a name="g_t_005cphantom-_0026-_005cvphantom-_0026-_005chphantom"></a>
+<a name="g_t_005cphantom-_0026-_005cvphantom-_0026-_005chphantom-1"></a>
+<h4 class="subsection">16.6.2 <code>\phantom</code> &amp; <code>\vphantom</code> &amp; <code>\hphantom</code></h4>
+
+<a name="index-spacing_002c-math-mode"></a>
+<a name="index-horizontal-spacing"></a>
+<a name="index-vertical-spacing"></a>
+<a name="index-math-mode_002c-spacing-1"></a>
+<a name="index-invisible-character"></a>
+<a name="index-character_002c-invisible"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\phantom{<var>subformula</var>}
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\vphantom{<var>subformula</var>}
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\hphantom{<var>subformula</var>}
+</pre></div>
+
+<p>The <code>\phantom</code> command creates a box with the same height, depth,
+and width as <var>subformula</var>, but empty.  That is, this command causes
+LaTeX to typeset the box but not its ink.  The <code>\vphantom</code>
+variant also produces an invisible box with the same height and depth as
+<var>subformula</var>, but it has width zero.  And <code>\hphantom</code> makes a
+box with the same width as <var>subformula</var> but with height and depth
+zero.
+</p>
+<p>Without the <code>\vphantom</code> in this example, the top bars of the two
+square roots would be at different heights.
+</p>
+<div class="example">
+<pre class="example">\( \sqrt{\vphantom{a^3}a}\cdot\sqrt{a^3} \)
+</pre></div>
+
+<p>The <code>\vphantom{a^3}</code> causes the first <code>\sqrt</code> to have inside
+it a box of the same height as the second <code>\sqrt</code>, so LaTeX
+makes the bars align.
+</p>
+<p>These commands often are combined with <code>\smash</code>.  See <a href="#g_t_005csmash">\smash</a>
+for another example of the use of <code>\vphantom</code>.
+</p>
+<a name="index-package_002c-mathtools-3"></a>
+<a name="index-mathtools-package-3"></a>
+
+<p>The three phantom commands appear often but note that LaTeX provides
+a suite of other commands to work with box sizes that may be more
+convenient, including <code>\makebox</code> (see <a href="latex2e_20.html#g_t_005cmbox-_0026-_005cmakebox">\mbox &amp; \makebox</a>) as well
+as <code>\settodepth</code> (see <a href="latex2e_14.html#g_t_005csettodepth">\settodepth</a>), <code>\settoheight</code>
+(see <a href="latex2e_14.html#g_t_005csettoheight">\settoheight</a>), and <code>\settowidth</code> (see <a href="latex2e_14.html#g_t_005csettowidth">\settowidth</a>).
+In addition, the <samp>mathtools</samp> package has many commands that offer
+fine-grained control over spacing.
+</p>
+<a name="index-package_002c-amsmath-8"></a>
+<a name="index-amsmath-package-8"></a>
+
+<p>All three commands produce an ordinary box, without any special
+mathematics status.  So to do something like attaching a superscript you
+should give it such a status, for example with the <code>\operatorname</code>
+command from the package <samp>amsmath</samp>.
+</p>
+<p>While most often used in mathematics, these three can appear in other
+contexts.  However, they don&rsquo;t cause LaTeX to change into horizontal
+mode.  So if one of these starts a paragraph then you should prefix it
+with <code>\leavevmode</code>.
+</p>
+
+<hr>
+<a name="Math-miscellany"></a>
+<a name="Math-miscellany-1"></a>
+<h3 class="section">16.7 Math miscellany</h3>
+
+<a name="index-math-miscellany"></a>
+
+<p>LaTeX contains a wide variety of mathematics facilities.  Here are
+some that don&rsquo;t fit into other categories.
+</p>
+
+
+<hr>
+<a name="Colon-character-_0026-_005ccolon"></a>
+<a name="Colon-character-_003a-_0026-_005ccolon"></a>
+<h4 class="subsection">16.7.1 Colon character <code>:</code> &amp; <code>\colon</code></h4>
+
+<a name="index-_003a"></a>
+<a name="index-colon-character"></a>
+<a name="index-_003a-1"></a>
+<a name="index-_005ccolon"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">:
+\colon
+</pre></div>
+
+<p>In mathematics, the colon character, <code>:</code>, is a relation.
+</p>
+<div class="example">
+<pre class="example">With side ratios \( 3:4 \) and \( 4:5 \), the triangle is right.
+</pre></div>
+
+<a name="index-package_002c-amsmath-9"></a>
+<a name="index-amsmath-package-9"></a>
+
+<p>Ordinary LaTeX defines <code>\colon</code> to produce the colon character
+with the spacing appropriate for punctuation, as in set-builder notation
+<code>\{x\colon 0\leq x&lt;1\}</code>.
+</p>
+<a name="index-package_002c-amsmath-10"></a>
+<a name="index-amsmath-package-10"></a>
+
+<p>But the widely-used <samp>amsmath</samp> package defines <code>\colon</code> for use
+in the definition of functions <code>f\colon D\to C</code>.  So if you want
+the colon character as a punctuation then use <code>\mathpunct{:}</code>.
+</p>
+
+<hr>
+<a name="g_t_005c_002a"></a>
+<a name="g_t_005c_002a-1"></a>
+<h4 class="subsection">16.7.2 <code>\*</code></h4>
+
+<a name="index-multiplication_002c-discretionary"></a>
+<a name="index-breaks_002c-multiplication-discretionary"></a>
+<a name="index-line-breaks_002c-multiplication-discretionary"></a>
+<a name="index-discretionary-breaks_002c-multiplication"></a>
+<a name="index-_005c_002a"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\*
+</pre></div>
+
+<p>A multiplication symbol that allows a line break.  If there is a break
+then LaTeX puts a <code>\times</code> symbol, &#x00D7;, before
+that break.
+</p>
+<p>In <code>\( A_1\* A_2\* A_3\* A_4 \)</code>, if there is no line break then
+LaTeX outputs it as though it were <code>\( A_1 A_2 A_3 A_4 \)</code>.  If
+a line break does happen, for example between the two middle ones, then
+LaTeX sets it like <code>\( A_1 A_2 \times \)</code>, followed by the
+break, followed by <code>\( A_3 A_4 \)</code>.
+</p>
+
+<hr>
+<a name="g_t_005cfrac"></a>
+<a name="g_t_005cfrac-1"></a>
+<h4 class="subsection">16.7.3 <code>\frac</code></h4>
+
+<a name="index-fraction"></a>
+<a name="index-_005cfrac"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\frac{<var>numerator</var>}{<var>denominator</var>}
+</pre></div>
+
+<p>Produces the fraction.  Used as: <code>\begin{displaymath}
+\frac{1}{\sqrt{2\pi\sigma}} \end{displaymath}</code>.  In inline math
+mode it comes out small; see the discussion of <code>\displaystyle</code>
+(see <a href="#Math-formulas">Math formulas</a>).
+</p>
+
+<hr>
+<a name="g_t_005cleft-_0026-_005cright"></a>
+<a name="g_t_005cleft-_0026-_005cright-1"></a>
+<h4 class="subsection">16.7.4 <code>\left</code> &amp; <code>\right</code></h4>
+
+<a name="index-delimiters_002c-paired"></a>
+<a name="index-paired-delimiters"></a>
+<a name="index-matching-parentheses"></a>
+<a name="index-matching-brackets"></a>
+<a name="index-null-delimiter"></a>
+<a name="index-_005cleft"></a>
+<a name="index-_005cright"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\left <var>delimiter1</var> ... \right <var>delimiter2</var>
+</pre></div>
+
+<p>Make matching parentheses, braces, or other delimiters.  The delimiters
+are sized according to the math they enclose.  This makes a unit vector
+surrounded by appropriate-height parentheses.
+</p>
+<div class="example">
+<pre class="example">\begin{equation}
+  \left(\begin{array}{c}
+    1   \\
+    0   \\
+  \end{array}\right)
+</pre></div>
+
+<p>Every <code>\left</code> must have a matching <code>\right</code>.  Leaving out the
+<code>\left(</code> in the above gets &lsquo;<samp>Extra \right</samp>&rsquo;.  Leaving off the
+<code>\right)</code> gets &lsquo;<samp>You can't use `\eqno' in math mode</samp>&rsquo;.
+</p>
+<p>However, the two delimiters <var>delimiter1</var> and <var>delimiter2</var> need
+not match.  A common case is that you want an unmatched brace, as
+below. Use a period, &lsquo;<samp>.</samp>&rsquo;, as a null delimiter.
+</p>
+<div class="example">
+<pre class="example">\begin{equation}
+  f(n)=\left\{\begin{array}{ll}
+                1             &amp;\mbox{--if \(n=0\)} \\
+                f(n-1)+3n^2   &amp;\mbox{--else}       
+       \end{array}\right.
+\end{equation}
+</pre></div>
+
+<p>Note that to get a curly brace as a delimiter you must prefix it with a
+backslash, <code>\{</code>.
+</p>
+
+<hr>
+<a name="g_t_005csqrt"></a>
+<a name="g_t_005csqrt-1"></a>
+<h4 class="subsection">16.7.5 <code>\sqrt</code></h4>
+
+<a name="index-square-root"></a>
+<a name="index-roots"></a>
+<a name="index-radical"></a>
+<a name="index-_005csqrt"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\sqrt{<var>arg</var>}
+\sqrt[<var>root-number</var>]{<var>arg</var>}
+</pre></div>
+
+<p>The square root, or optionally other roots, of <var>arg</var>.  The optional
+argument <var>root-number</var> gives the root, i.e., enter the cube root of
+<code>x+y</code> as <code>\sqrt[3]{x+y}</code>.
+The radical grows with the size of <var>arg</var> (as the height of the
+radical grows, the angle on the leftmost part gets steeper, until for
+a large enough <code>arg</code>, it is vertical).
+</p>
+<p>LaTeX has a separate <code>\surd</code> character (see <a href="#Math-symbols">Math symbols</a>).
+</p>
+
+<hr>
+<a name="g_t_005cstackrel"></a>
+<a name="g_t_005cstackrel-1"></a>
+<h4 class="subsection">16.7.6 <code>\stackrel</code></h4>
+
+<a name="index-stack-math"></a>
+<a name="index-relation_002c-text-above"></a>
+<a name="index-_005cstackrel"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\stackrel{<var>text</var>}{<var>relation</var>}
+</pre></div>
+
+<p>Put <var>text</var> above <var>relation</var>.  To put a function name above an
+arrow enter <code>\stackrel{f}{\longrightarrow}</code>.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005csqrt" accesskey="p" rel="prev">\sqrt</a>, Up: <a href="#Math-miscellany" accesskey="u" rel="up">Math miscellany</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

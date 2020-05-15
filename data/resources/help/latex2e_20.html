@@ -1,0 +1,614 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Boxes (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Boxes (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Boxes (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_21.html#Color" rel="next" title="Color">
+<link href="latex2e_19.html#g_t_005caddvspace" rel="prev" title="\addvspace">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Boxes"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_21.html#Color" accesskey="n" rel="next">Color</a>, Previous: <a href="latex2e_19.html#Spaces" accesskey="p" rel="prev">Spaces</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Boxes-1"></a>
+<h2 class="chapter">20 Boxes</h2>
+
+<a name="index-boxes"></a>
+
+<p>At its core, LaTeX puts things in boxes and then puts the boxes on a
+page.  So these commands are central.
+</p>
+<p>There are many packages on CTAN that are useful for manipulating boxes.
+One useful adjunct to the commands here is <samp>adjustbox</samp>.
+</p>
+
+
+<hr>
+<a name="g_t_005cmbox-_0026-_005cmakebox"></a>
+<a name="g_t_005cmbox-_0026-_005cmakebox-1"></a>
+<h3 class="section">20.1 <code>\mbox</code> &amp; <code>\makebox</code></h3>
+
+<a name="index-_005cmbox"></a>
+<a name="index-_005cmakebox"></a>
+<a name="index-box"></a>
+<a name="index-make-a-box"></a>
+<a name="index-hyphenation_002c-preventing"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\mbox{<var>text</var>}
+\makebox{<var>text</var>}
+\makebox[<var>width</var>]{<var>text</var>}
+\makebox[<var>width</var>][<var>position</var>]{<var>text</var>}
+</pre></div>
+
+<p>Create a box, a container for material.  The <var>text</var> is typeset in
+LR mode (see <a href="latex2e_17.html#Modes">Modes</a>) so it is not broken into lines.  The
+<code>\mbox</code> command is robust, while <code>\makebox</code> is fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>Because <code>text</code> is not broken into lines, you can use <code>\mbox</code>
+to prevent hyphenation.  In this example, LaTeX will not hyphenate
+the table name, &lsquo;<samp>T-4</samp>&rsquo;.
+</p>
+<div class="example">
+<pre class="example">See Table~\mbox{T-4}
+</pre></div>
+
+<p>The first two command versions, <code>\mbox</code> and <code>\makebox</code>, are
+roughly equivalent.  They create a box just wide enough to contain the
+<var>text</var>.  (They are like plain TeX&rsquo;s <code>\hbox</code>.)
+</p>
+<p>In the third version the optional argument <var>width</var> specifies the
+width of the box.  Note that the space occupied by the text need not
+equal the width of the box.  For one thing, <var>text</var> can be too small;
+this creates a full-line box
+</p>
+<div class="example">
+<pre class="example">\makebox[\linewidth]{Chapter Exam}
+</pre></div>
+
+<p>with &lsquo;<samp>Chapter Exam</samp>&rsquo; centered.  But <var>text</var> can also be too wide
+for <var>width</var>.  See the example below of zero-width boxes.
+</p>
+<a name="mbox-makebox-depth"></a><a name="mbox-makebox-height"></a><a name="mbox-makebox-width"></a><a name="mbox-makebox-totalheight"></a><p>In the <var>width</var> argument you can use the following lengths that refer
+to the dimension of the box that LaTeX gets on typesetting
+<var>text</var>: <code>\depth</code>, <code>\height</code>, <code>\width</code>,
+<code>\totalheight</code> (this is the box&rsquo;s height plus its depth).  For
+example, to make a box with the text stretched to double the natural
+size you can say this.
+</p>
+<div class="example">
+<pre class="example">\makebox[2\width]{Get a stretcher}
+</pre></div>
+
+<p>For the fourth command version the optional argument <var>position</var>
+gives position of the text within the box. It may take the following
+values:
+</p>
+<dl compact="compact">
+<dt><code>c</code></dt>
+<dd><p>The <var>text</var> is centered (default).
+</p>
+</dd>
+<dt><code>l</code></dt>
+<dd><p>The <var>text</var> is flush left.
+</p>
+</dd>
+<dt><code>r</code></dt>
+<dd><p>Flush right.
+</p>
+</dd>
+<dt><code>s</code></dt>
+<dd><p>Stretch the interword space in <var>text</var> across the entire <var>width</var>.
+The <var>text</var> must contain stretchable space for this to work.  For
+instance, this could head a press release:
+<code>\noindent\makebox[\textwidth][s]{\large\hfil IMMEDIATE\hfil
+RELEASE\hfil}</code>
+</p></dd>
+</dl>
+
+<p>A common use of <code>\makebox</code> is to make zero-width text boxes.  This
+puts the value of the quiz questions to the left of those questions.
+</p>
+<div class="example">
+<pre class="example">\newcommand{\pts}[1]{\makebox[0em][r]{#1 points\hspace*{1em}}}
+\pts{10}What is the air-speed velocity of an unladen swallow?
+
+\pts{90}An African or European swallow?
+</pre></div>
+
+<p><a name="index-package_002c-TikZ-2"></a>
+<a name="index-TikZ-package-2"></a>
+</p>
+<a name="index-package_002c-Asymptote-2"></a>
+<a name="index-Asymptote-package-2"></a>
+
+<p>The right edge of the output &lsquo;<samp>10 points </samp>&rsquo; (note the ending space)
+will be just before the &lsquo;<samp>What</samp>&rsquo; (note the space after
+&lsquo;<samp>points</samp>&rsquo;).  You can use <code>\makebox</code> similarly when making
+graphics, such as in <samp>TikZ</samp> or <samp>Asymptote</samp>, where you put the
+edge of the text at a known location, regardless of the length of that
+text.
+</p>
+<p>For boxes with frames see&nbsp;<a href="#g_t_005cfbox-_0026-_005cframebox">\fbox &amp; \framebox</a>. For colors
+see&nbsp;<a href="latex2e_21.html#Colored-boxes">Colored boxes</a>.
+</p>
+<p>There is a related version of <code>\makebox</code> that is used within the
+<code>picture</code> environment, where the length is given in terms of
+<code>\unitlength</code> (see <a href="latex2e_8.html#g_t_005cmakebox-_0028picture_0029">\makebox (picture)</a>).
+</p>
+<p>If you put a double-backslash into <var>text</var> then LaTeX will not
+give you a new line; for instance <code>\makebox{abc def \\ ghi}</code>
+outputs &lsquo;<samp>abc defghi</samp>&rsquo; while <code>\makebox{abc def \par ghi}</code>
+outputs &lsquo;<samp>abc def ghi</samp>&rsquo;, but neither go to a second line.  To get
+multiple lines see&nbsp;<a href="#g_t_005cparbox">\parbox</a> and&nbsp;<a href="latex2e_8.html#minipage">minipage</a>.
+</p>
+
+<hr>
+<a name="g_t_005cfbox-_0026-_005cframebox"></a>
+<a name="g_t_005cfbox-_0026-_005cframebox-1"></a>
+<h3 class="section">20.2 <code>\fbox</code> &amp; <code>\framebox</code></h3>
+
+<a name="index-_005cfbox"></a>
+<a name="index-_005cframebox-1"></a>
+
+<p>Synopses, one of:
+</p>
+<div class="example">
+<pre class="example">\fbox{<var>text</var>}
+\framebox{<var>text</var>}
+\framebox[<var>width</var>]{<var>text</var>}
+\framebox[<var>width</var>][<var>position</var>]{<var>text</var>}
+</pre></div>
+
+<p>Create a box with an enclosing frame, four lines surrounding the space.
+These commands are the same as <code>\mbox</code> and <code>\makebox</code> except
+for the frame (see <a href="#g_t_005cmbox-_0026-_005cmakebox">\mbox &amp; \makebox</a>). The <code>\fbox</code> command is
+robust, the <code>\framebox</code> command is fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<div class="example">
+<pre class="example">\fbox{Warning! No work shown, no credit given.}
+</pre></div>
+
+<p>LaTeX puts the text into a box that cannot be split or hyphenated.
+Around that box, separated from it by a small gap, are four lines making
+a frame.
+</p>
+<p>The first two command invocations, <code>\fbox{...}</code> and
+<code>\framebox{...}</code>, are roughly the same.  As to the third and
+fourth invocations, the optional arguments allow you to specify the box
+width as <var>width</var> and the position of the text inside that box as
+<var>position</var>.  See <a href="#g_t_005cmbox-_0026-_005cmakebox">\mbox &amp; \makebox</a> for the full description but
+here is an example creating an empty box that is 1/4in wide.
+</p>
+<div class="example">
+<pre class="example">\setlength{\fboxsep}{0pt}\framebox[0.25in]{\strut}}
+</pre></div>
+
+<p>The <code>\strut</code> inserts a vertical height of <code>\baselineskip</code>
+(see <a href="latex2e_19.html#g_t_005cstrut">\strut</a>).
+</p>
+<p>These parameters determine the frame layout.
+</p>
+<dl compact="compact">
+<dd><a name="fbox-framebox-fboxrule"></a></dd>
+<dt><code>\fboxrule</code>
+<a name="index-_005cfboxrule-2"></a>
+</dt>
+<dd><a name="index-frame_002c-line-width"></a>
+<a name="index-frame-rule-width"></a>
+<a name="index-_005cfboxrule"></a>
+<p>The thickness of the lines around the enclosed box.  The default is
+0.2pt.  Change it with a command such as
+<code>\setlength{\fboxrule}{0.8pt}</code> (see <a href="latex2e_14.html#g_t_005csetlength">\setlength</a>).
+</p>
+<a name="fbox-framebox-fboxsep"></a></dd>
+<dt><code>\fboxsep</code>
+<a name="index-_005cfboxsep-2"></a>
+</dt>
+<dd><a name="index-frame_002c-separation-from-contents"></a>
+<a name="index-_005cfboxsep"></a>
+<p>The distance from the frame to the enclosed box. The default is 3pt.
+Change it with a command such as <code>\setlength{\fboxsep}{0pt}</code>
+(see <a href="latex2e_14.html#g_t_005csetlength">\setlength</a>).  Setting it to 0pt is useful sometimes:
+this will put a frame around the picture with no white border.
+</p>
+<div class="example">
+<pre class="example">{\setlength{\fboxsep}{0pt}
+ \framebox{%
+   \includegraphics[width=0.5\textwidth]{prudence.jpg}}}
+</pre></div>
+
+<p>The extra curly braces keep the effect of the <code>\setlength</code> local.
+</p>
+</dd>
+</dl>
+
+<p>As with <code>\mbox</code> and <code>\makebox</code>, LaTeX will not break lines
+in <var>text</var>.  But this example has LaTeX break lines to make a
+paragraph, and then frame the result.
+</p>
+<div class="example">
+<pre class="example">\framebox{%
+  \begin{minipage}{0.6\linewidth}
+    My dear, here we must run as fast as we can, just to stay in place.
+    And if you wish to go anywhere you must run twice as fast as that.
+  \end{minipage}}
+</pre></div>
+
+<p>See <a href="latex2e_21.html#Colored-boxes">Colored boxes</a> for colors other than black and white.
+</p>
+<p>The <code>picture</code> environment has a version of this command where the
+units depend on <code>picture</code>&rsquo;s <code>\unitlength</code> (see <a href="latex2e_8.html#g_t_005cframebox-_0028picture_0029">\framebox (picture)</a>).
+</p>
+
+<hr>
+<a name="g_t_005cparbox"></a>
+<a name="g_t_005cparbox-1"></a>
+<h3 class="section">20.3 <code>\parbox</code></h3>
+
+<a name="index-_005cparbox"></a>
+<a name="index-paragraph-mode-1"></a>
+<a name="index-paragraph_002c-in-a-box"></a>
+
+<p>Synopses, one of:
+</p>
+<div class="example">
+<pre class="example">\parbox{<var>width</var>}{<var>contents</var>}
+\parbox[<var>position</var>]{<var>width</var>}{<var>contents</var>}
+\parbox[<var>position</var>][<var>height</var>]{<var>width</var>}{<var>contents</var>}
+\parbox[<var>position</var>][<var>height</var>][<var>inner-pos</var>]{<var>width</var>}{<var>contents</var>}
+</pre></div>
+
+<p>Produce a box of text that is <var>width</var> wide. Use this command to make
+a box of small pieces of text, of a single paragraph.  This command is
+fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<div class="example">
+<pre class="example">\begin{picture}(0,0)
+  ...
+  \put(1,2){\parbox{1.75in}{\raggedright Because the graph is a line on
+                         this semilog paper, the relationship is
+                         exponential.}}
+\end{picture}
+</pre></div>
+
+<p>The <var>contents</var> are processed in a text mode (see <a href="latex2e_17.html#Modes">Modes</a>) so
+LaTeX will break lines to make a paragraph.  But it won&rsquo;t make
+multiple paragraphs; for that, use a <code>minipage</code> environment
+(see <a href="latex2e_8.html#minipage">minipage</a>).
+</p>
+<p>The options for <code>\parbox</code> (except for <var>contents</var>) are the same
+as those for <code>minipage</code>.  For convenience a summary of the options
+is here but see&nbsp;<a href="latex2e_8.html#minipage">minipage</a> for a complete description.
+</p>
+<p>There are two required arguments.  The <var>width</var> is a rigid length
+(see <a href="latex2e_14.html#Lengths">Lengths</a>).  It sets the width of the box into which LaTeX
+typesets <var>contents</var>.  The <var>contents</var> is the text that is placed
+in that box.  It should not have any paragraph-making components.
+</p>
+<p>There are three optional arguments, <var>position</var>, <var>height</var>, and
+<var>inner-pos</var>.  The <var>position</var> gives the vertical alignment of the
+<code>parbox</code> with respect to the surrounding material.  The possible
+values are <code>c</code> or <code>m</code> to make the vertical center of the
+<code>parbox</code> lines up with the center of the adjacent line (this is the
+default), or <code>t</code> to match the top line of the <code>parbox</code> with
+the baseline of the surrounding material, or <code>b</code> to match the
+bottom line.
+</p>
+<p>The optional argument <var>height</var> overrides the natural height of the
+box.
+</p>
+<p>The optional argument <var>inner-pos</var> controls the placement of
+<var>content</var> inside the <code>parbox</code>. Its default is the value of
+<var>position</var>.  Its possible values are: <code>t</code> to put the
+<var>content</var> at the top of the box, <code>c</code> to put it in the vertical
+center, <code>b</code> to put it at the bottom of the box, and <code>s</code> to
+stretch it out vertically (for this, the text must contain vertically
+stretchable space).
+</p>
+<hr>
+<a name="g_t_005craisebox"></a>
+<a name="g_t_005craisebox-1"></a>
+<h3 class="section">20.4 <code>\raisebox</code></h3>
+
+<a name="index-_005craisebox"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\raisebox{<var>distance</var>}{<var>text</var>}
+\raisebox{<var>distance</var>}[<var>height</var>]{<var>text</var>}
+\raisebox{<var>distance</var>}[<var>height</var>][<var>depth</var>]{<var>text</var>}
+</pre></div>
+
+<p>Raise or lower <var>text</var>. This command is fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>This example makes a command for the restriction of a function by
+lowering the vertical bar symbol.
+</p>
+<div class="example">
+<pre class="example">\newcommand\restricted[1]{\raisebox{-.5ex}{$|$}_{#1}}
+$f\restricted{A}$
+</pre></div>
+
+<p>The first mandatory argument <var>distance</var> specifies how far to raise
+the second mandatory argument <var>text</var>. This is a rigid length
+(see <a href="latex2e_14.html#Lengths">Lengths</a>).  If it is negative then it lowers <var>text</var>.  The
+<var>text</var> is processed in LR mode so it cannot contain line breaks
+(see <a href="latex2e_17.html#Modes">Modes</a>).
+</p>
+<p>The optional arguments <var>height</var> and <var>depth</var> are dimensions.  If
+they are specified, they override the natural height and depth of the
+box LaTeX gets by typesetting <var>text</var>.
+</p>
+<a name="raisebox-depth"></a><a name="raisebox-height"></a><a name="raisebox-width"></a><a name="raisebox-totalheight"></a><p>In the arguments <var>distance</var>, <var>height</var>, and <var>depth</var> you can
+use the following lengths that refer to the dimension of the box that
+LaTeX gets on typesetting <var>text</var>: <code>\depth</code>, <code>\height</code>,
+<code>\width</code>, <code>\totalheight</code> (this is the box&rsquo;s height plus its
+depth).
+</p>
+<p>This will align two graphics on their top (see <a href="latex2e_22.html#Graphics">Graphics</a>).
+</p>
+<div class="example">
+<pre class="example">\usepackage{graphicx} \usepackage{calc}  % in preamble
+   ...
+\begin{center}
+  \raisebox{1ex-\height}{%
+    \includegraphics[width=0.4\linewidth]{lion.png}}
+  \qquad
+  \raisebox{1ex-\height}{%
+    \includegraphics[width=0.4\linewidth]{meta.png}}
+\end{center}
+</pre></div>
+
+<p>The first <code>\height</code> is the height of <samp>lion.png</samp> while the
+second is the height of <samp>meta.png</samp>.
+</p>
+
+<hr>
+<a name="g_t_005csbox-_0026-_005csavebox"></a>
+<a name="g_t_005csbox-_0026-_005csavebox-1"></a>
+<h3 class="section">20.5 <code>\sbox</code> &amp; <code>\savebox</code></h3>
+
+<a name="index-_005csbox"></a>
+<a name="index-_005csavebox"></a>
+<a name="index-box_002c-save"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\sbox{<var>box-cmd</var>}{<var>text</var>}
+\savebox{<var>box-cmd</var>}{<var>text</var>}
+\savebox{<var>box-cmd</var>}[<var>width</var>]{<var>text</var>}
+\savebox{<var>box-cmd</var>}[<var>width</var>][<var>pos</var>]{<var>text</var>}
+</pre></div>
+
+<p>Typeset <var>text</var> just as with <code>\makebox</code> (see <a href="#g_t_005cmbox-_0026-_005cmakebox">\mbox &amp; \makebox</a>) except that LaTeX does not output it but instead saves it
+in a storage bin named <var>box-cmd</var>.  The bin name <var>box-cmd</var> begins
+with a backslash, <code>\</code>.  You must have previously allocated the bin
+<var>box-cmd</var> with <code>\newsavebox</code> (see <a href="latex2e_12.html#g_t_005cnewsavebox">\newsavebox</a>).The
+<code>\sbox</code> command is robust while <code>\savebox</code> is fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>This creates and uses a bin.
+</p>
+<div class="example">
+<pre class="example">\newsavebox{\fullname}
+\sbox{\fullname}{John Jacob Jingleheimer Schmidt}
+  ...
+\usebox{\fullname}! His name is my name, too!
+Whenever we go out, the people always shout!
+There goes \\usebox{\fullname}!  Ya da da da da da da.
+</pre></div>
+
+<p>One advantage of using and reusing a bin over a <code>\newcommand</code> is
+efficiency, that LaTeX need not repeatedly retypeset the contents.
+See the example below.
+</p>
+<p>The first two command invocations,
+<code>\sbox{<var>box-cmd</var>}{<var>text</var>}</code> and
+<code>\savebox{<var>box-cmd</var>}{<var>text</var>}</code>, are roughly equivalent.
+As to the third and fourth, the optional arguments allow you to specify
+the box width as <var>width</var>, and the position of the text inside that
+box as <var>position</var>.  See <a href="#g_t_005cmbox-_0026-_005cmakebox">\mbox &amp; \makebox</a> for the full
+description.
+</p>
+<p>In the <code>\sbox</code> and <code>\savebox</code> commands the <var>text</var> is
+typeset in LR mode so it does not have line breaks (see <a href="latex2e_17.html#Modes">Modes</a>).  If
+you use these then LaTeX doesn&rsquo;t give you an error but it ignores
+what you want: if you enter <code>\sbox{\newbin}{test \\ test}</code> and
+<code>\usebox{\newbin}</code> then you get &lsquo;<samp>testtest</samp>&rsquo;, while if you
+enter <code>\sbox{\newbin}{test \par test}</code> and
+<code>\usebox{\newbin}</code> then you get &lsquo;<samp>test test</samp>&rsquo;, but no error or
+warning.  To fix this use a <code>\parbox</code> or <code>minipage</code> as here.
+</p>
+<div class="example">
+<pre class="example">\savebox{\abin}{%
+  \begin{minipage}{\linewidth}
+    \begin{enumerate}
+      \item First item
+      \item Second item
+    \end{enumerate}
+  \end{minipage}}
+  ...
+\usebox{\abin}
+</pre></div>
+
+<p>As an example of the efficiency of reusing a bin&rsquo;s contents, this puts
+the same picture on each page of the document by putting it in the
+header.  LaTeX only typesets it once.
+</p>
+<div class="example">
+<pre class="example">\usepackage{graphicx}  % all this in the preamble
+\newsavebox{\sealbin}
+\savebox{\sealbin}{%
+  \setlength{\unitlength}{1in}%
+  \begin{picture}(0,0)%
+     \put(1.5,-2.5){%
+       \begin{tabular}{c}
+          \includegraphics[height=2in]{companylogo.png} \\
+          Office of the President
+       \end{tabular}}
+  \end{picture}%
+}
+\markright{\usebox{\sealbin}}
+\pagestyle{headings}
+</pre></div>
+
+<p>The <code>picture</code> environment is good for fine-tuning the placement.
+</p>
+<p>If the bin has not already been defined then you get something like
+&lsquo;<samp>Undefined control sequence. &lt;argument&gt; \nobin</samp>&rsquo;.
+</p>
+
+<hr>
+<a name="lrbox"></a>
+<a name="lrbox-1"></a>
+<h3 class="section">20.6 <code>lrbox</code></h3>
+
+<a name="index-lrbox"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{lrbox}{<var>box-cmd</var>} 
+  <var>text</var>
+\end{lrbox}
+</pre></div>
+
+<p>The <var>text</var> inside the environment is saved in the bin
+<code><var>box-cmd</var></code>.  The <var>box-cmd</var> must begin with a
+backslash. You must create this bin in advance with <code>\newsavebox</code>
+(see <a href="latex2e_12.html#g_t_005cnewsavebox">\newsavebox</a>).  This is the environment form of the <code>\sbox</code>
+and <code>\savebox</code> commands, and is equivalent to them. See <a href="#g_t_005csbox-_0026-_005csavebox">\sbox &amp; \savebox</a> for the full information.
+</p>
+<p>In this example the environment is convenient for entering the
+<code>tabular</code>.
+</p>
+<div class="example">
+<pre class="example">\newsavebox{\jhbin}
+\begin{lrbox}{\jhbin}
+  \begin{tabular}{c}
+    \includegraphics[height=1in]{jh.png} \\
+    Jim Hef{}feron
+  \end{tabular}
+\end{lrbox}    
+  ...
+\usebox{\jhbin}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cusebox"></a>
+<a name="g_t_005cusebox-1"></a>
+<h3 class="section">20.7 <code>\usebox</code></h3>
+
+<a name="index-_005cusebox"></a>
+<a name="index-box_002c-use-saved-box"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\usebox{<var>box-cmd</var>}
+</pre></div>
+
+<p>Produce the box most recently saved in the bin <var>box-cmd</var> by the
+commands <code>\sbox</code> or <code>\savebox</code>, or the <code>lrbox</code>
+environment. See <a href="#g_t_005csbox-_0026-_005csavebox">\sbox &amp; \savebox</a> for more information and examples.
+(Note that <var>box-cmd</var> starts with a backslash.)  This command is
+robust (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#lrbox" accesskey="p" rel="prev">lrbox</a>, Up: <a href="#Boxes" accesskey="u" rel="up">Boxes</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

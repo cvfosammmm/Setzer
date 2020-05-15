@@ -1,0 +1,461 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Footnotes (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Footnotes (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Footnotes (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_12.html#Definitions" rel="next" title="Definitions">
+<link href="latex2e_10.html#g_t_005cpagebreak-_0026-_005cnopagebreak" rel="prev" title="\pagebreak &amp; \nopagebreak">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Footnotes"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_12.html#Definitions" accesskey="n" rel="next">Definitions</a>, Previous: <a href="latex2e_10.html#Page-breaking" accesskey="p" rel="prev">Page breaking</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Footnotes-1"></a>
+<h2 class="chapter">11 Footnotes</h2>
+
+<a name="index-footnotes_002c-creating"></a>
+
+<p>Place a footnote at the bottom of the current page, as here.
+</p>
+<div class="example">
+<pre class="example">No&euml;l Coward quipped that having to read a footnote is like having
+to go downstairs to answer the door, while in the midst of making
+love.\footnote{%
+  I wouldn't know, I don't read footnotes.}
+</pre></div>
+
+<p>You can put multiple footnotes on a page. If the footnote text becomes
+too long then it will flow to the next page.
+</p>
+<p>You can also produce footnotes by combining the <code>\footnotemark</code> and
+the <code>\footnotetext</code> commands, which is useful in special
+circumstances.
+</p>
+<p>To make bibliographic references come out as footnotes you need to
+include a bibliographic style with that behavior (see <a href="latex2e_8.html#Using-BibTeX">Using BibTeX</a>).
+</p>
+
+
+<hr>
+<a name="g_t_005cfootnote"></a>
+<a name="g_t_005cfootnote-1"></a>
+<h3 class="section">11.1 <code>\footnote</code></h3>
+
+<a name="index-_005cfootnote"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\footnote{<var>text</var>}
+\footnote[<var>number</var>]{<var>text</var>}
+</pre></div>
+
+<p>Place a footnote <var>text</var> at the bottom of the current page.
+</p>
+<div class="example">
+<pre class="example">There are over a thousand footnotes in Gibbon's 
+\textit{Decline and Fall of the Roman Empire}.\footnote{%
+  After reading an early version with endnotes David Hume complained, 
+  ``One is also plagued with his Notes, according to the present Method 
+  of printing the Book'' and suggested that they ``only to be printed 
+  at the Margin or the Bottom of the Page.''}
+</pre></div>
+
+<p>The optional argument <var>number</var> allows you to specify the number of
+the footnote.  If you use this then LaTeX does not increment the
+<code>footnote</code> counter.
+</p>
+<a name="index-footnotes_002c-symbols-instead-of-numbers"></a>
+<a name="index-_005cfnsymbol_002c-and-footnotes"></a>
+<a name="index-_005c_0040fnsymbol"></a>
+<p>By default, LaTeX uses arabic numbers as footnote markers.  Change
+this with something like
+<code>\renewcommand{\thefootnote}{\fnsymbol{footnote}}</code>, which
+uses a sequence of symbols (see <a href="latex2e_13.html#g_t_005calph-_005cAlph-_005carabic-_005croman-_005cRoman-_005cfnsymbol">\alph \Alph \arabic \roman \Roman \fnsymbol</a>).  To make this change global put that in the preamble.  If
+you make the change local then you may want to reset the counter with
+<code>\setcounter{footnote}{0}</code>.
+</p>
+<p>LaTeX determines the spacing of footnotes with two parameters.
+</p>
+<a name="index-footnote-parameters"></a>
+<a name="index-parameters_002c-for-footnotes"></a>
+
+<dl compact="compact">
+<dt><code>\footnoterule</code>
+<a name="index-_005cfootnoterule"></a>
+</dt>
+<dd><a name="footnote-footnoterule"></a><p>Produces the rule separating the main text on a page from the page&rsquo;s
+footnotes.  Default dimensions in the standard document classes (except
+<code>slides</code>, where it does not appear) is: vertical thickness of
+<code>0.4pt</code>, and horizontal size of <code>0.4\columnwidth</code> long.
+Change the rule with something like this.
+</p>
+<div class="example">
+<pre class="example">\renewcommand{\footnoterule}{% Kerns avoid vertical space
+  \kern -3pt                         % This -3 is negative
+  \hrule width \textwidth height 1pt % of the sum of this 1
+  \kern 2pt}                         % and this 2
+</pre></div>
+
+</dd>
+<dt><code>\footnotesep</code>
+<a name="index-_005cfootnotesep"></a>
+</dt>
+<dd><a name="footnote-footnotesep"></a><p>The height of the strut placed at the beginning of the footnote
+(see <a href="latex2e_19.html#g_t_005cstrut">\strut</a>).  By default, this is set to the normal strut for
+<code>\footnotesize</code> fonts (see <a href="latex2e_4.html#Font-sizes">Font sizes</a>), therefore there is no
+extra space between footnotes.  This is &lsquo;<samp>6.65pt</samp>&rsquo; for &lsquo;<samp>10pt</samp>&rsquo;,
+&lsquo;<samp>7.7pt</samp>&rsquo; for &lsquo;<samp>11pt</samp>&rsquo;, and &lsquo;<samp>8.4pt</samp>&rsquo; for &lsquo;<samp>12pt</samp>&rsquo;.  Change
+it as with <code>\setlength{\footnotesep}{11pt}</code>.
+</p>
+</dd>
+</dl>
+
+<p>The <code>\footnote</code> command is fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>LaTeX&rsquo;s default puts many restrictions on where you can use a
+<code>\footnote</code>; for instance, you cannot use it in an argument to a
+sectioning command such as <code>\chapter</code> (it can only be used in outer
+paragraph mode; see <a href="latex2e_17.html#Modes">Modes</a>).  There are some workarounds; see
+following sections.
+</p>
+<a name="index-Footnotes_002c-in-a-minipage"></a>
+<a name="index-mpfootnote-counter"></a>
+<p>In a <code>minipage</code> environment the <code>\footnote</code> command uses the
+<code>mpfootnote</code> counter instead of the <code>footnote</code> counter, so
+they are numbered independently.  They are shown at the bottom of the
+environment, not at the bottom of the page.  And by default they are
+shown alphabetically. See <a href="latex2e_8.html#minipage">minipage</a> and <a href="#Footnotes-in-a-table">Footnotes in a table</a>.
+</p>
+
+<hr>
+<a name="g_t_005cfootnotemark"></a>
+<a name="g_t_005cfootnotemark-1"></a>
+<h3 class="section">11.2 <code>\footnotemark</code></h3>
+
+<a name="index-_005cfootnotemark"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\footnotemark
+\footnotemark[<var>number</var>]
+</pre></div>
+
+<p>Put the current footnote mark in the text. To specify associated text
+for the footnote see&nbsp;<a href="#g_t_005cfootnotetext">\footnotetext</a>.  The optional argument
+<var>number</var> causes the command to use that number to determine the
+footnote mark. This command can be used in inner paragraph mode
+(see <a href="latex2e_17.html#Modes">Modes</a>).
+</p>
+<p>If you use <code>\footnotemark</code> without the optional argument then it
+increments the footnote counter but if you use the optional <var>number</var>
+then it does not. The next example produces several consecutive footnote
+markers referring to the same footnote.
+</p>
+<div class="example">
+<pre class="example">The first theorem\footnote{Due to Gauss.} 
+and the second theorem\footnotemark[\value{footnote}] 
+and the third theorem.\footnotemark[\value{footnote}]
+</pre></div>
+
+<p>If there are intervening footnotes then you must remember the value of the
+common mark.  This example gives the same institutional affiliation to
+both the first and third authors (<code>\thanks</code> is a version of
+<code>footnote</code>), by-hand giving the number of the footnote.
+</p>
+<div class="example">
+<pre class="example">\title{A Treatise on the Binomial Theorem}
+\author{J Moriarty\thanks{University of Leeds} 
+  \and A C Doyle\thanks{Durham University} 
+  \and S Holmes\footnotemark[1]}
+\begin{document}
+\maketitle
+</pre></div>
+
+<p>This uses a counter to remember the footnote number.  The third sentence
+is followed by the same footnote marker as the first.
+</p>
+<div class="example">
+<pre class="example">\newcounter{footnoteValueSaver}
+All babies are illogical.\footnote{%
+  Lewis Carroll.}\setcounter{footnoteValueSaver}{\value{footnote}}
+Nobody is despised who can manage a crocodile.\footnote{%
+  Captain Hook.}
+Illogical persons are despised.\footnotemark[\value{footnoteValueSaver}]
+Therefore, anyone who can manage a crocodile is not a baby.
+</pre></div>
+
+<a name="index-package_002c-cleveref-2"></a>
+<a name="index-cleveref-package-2"></a>
+
+<a name="index-package_002c-hyperref"></a>
+<a name="index-hyperref-package"></a>
+
+<p>This example accomplishes the same by using the package <samp>cleveref</samp>.
+</p>
+<div class="example">
+<pre class="example">\usepackage{cleveref}[2012/02/15]   % in preamble 
+\crefformat{footnote}{#2\footnotemark[#1]#3}
+...
+The theorem is from Evers.\footnote{\label{fn:TE}Tinker, Evers, 1994.}
+The corollary is from Chance.\footnote{Evers, Chance, 1990.}
+But the key lemma is from Tinker.\cref{fn:TE}
+</pre></div>
+
+<a name="index-package_002c-hyperref-1"></a>
+<a name="index-hyperref-package-1"></a>
+
+<p>It will work with the package <samp>hyperref</samp>.
+</p>
+
+<hr>
+<a name="g_t_005cfootnotetext"></a>
+<a name="g_t_005cfootnotetext-1"></a>
+<h3 class="section">11.3 <code>\footnotetext</code></h3>
+
+<a name="index-_005cfootnotetext"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\footnotetext{<var>text</var>}
+\footnotetext[<var>number</var>]{<var>text</var>}
+</pre></div>
+
+<p>Place <var>text</var> at the bottom of the page as a footnote.  It pairs with
+<code>\footnotemark</code> (see <a href="#g_t_005cfootnotemark">\footnotemark</a>) and can come anywhere after
+that command, but must appear in outer paragraph mode (see <a href="latex2e_17.html#Modes">Modes</a>).
+The optional argument <var>number</var> changes the number of the footnote
+mark.
+</p>
+<p>See <a href="#g_t_005cfootnotemark">\footnotemark</a> and&nbsp;<a href="#Footnotes-in-a-table">Footnotes in a table</a> for usage
+examples.
+</p>
+
+<hr>
+<a name="Footnotes-in-section-headings"></a>
+<a name="Footnotes-in-section-headings-1"></a>
+<h3 class="section">11.4 Footnotes in section headings</h3>
+
+<a name="index-footnote_002c-in-section-headings"></a>
+<a name="index-table-of-contents_002c-avoiding-footnotes"></a>
+
+<p>Putting a footnote in a section heading, as in:
+</p>
+<div class="example">
+<pre class="example">\section{Full sets\protect\footnote{This material due to ...}}
+</pre></div>
+
+<p>causes the footnote to appear at the bottom of the page where the
+section starts, as usual, but also at the bottom of the table of
+contents, where it is not likely to be desired.  The simplest way
+to have it not appear on the table of contents is to use the optional
+argument to <code>\section</code>
+</p>
+<div class="example">
+<pre class="example">\section[Please]{Please\footnote{%
+  Don't footnote in chapter and section headers!}}
+</pre></div>
+
+<p>No <code>\protect</code> is needed in front of <code>\footnote</code> here because
+what gets moved to the table of contents is the optional argument.
+</p>
+
+<hr>
+<a name="Footnotes-in-a-table"></a>
+<a name="Footnotes-in-a-table-1"></a>
+<h3 class="section">11.5 Footnotes in a table</h3>
+
+<a name="index-footnote_002c-in-a-table"></a>
+
+<p>Inside a <code>tabular</code> or <code>array</code> environment the <code>\footnote</code>
+command does not work; there is a footnote mark in the table cell but
+the footnote text does not appear.  The solution is to use a
+<code>minipage</code> environment as here (see <a href="latex2e_8.html#minipage">minipage</a>).
+</p>
+<div class="example">
+<pre class="example">\begin{center}
+  \begin{minipage}{\textwidth} \centering
+     \begin{tabular}{l|l}
+       \textsc{Ship}           &amp;\textsc{Book} \\ \hline 
+       \textit{HMS Sophie}     &amp;Master and Commander  \\ 
+       \textit{HMS Polychrest} &amp;Post Captain  \\  
+       \textit{HMS Lively}     &amp;Post Captain \\
+       \textit{HMS Surprise}   &amp;A number of books\footnote{%
+                                  Starting with HMS Surprise.}
+     \end{tabular}
+  \end{minipage}                              
+\end{center}
+</pre></div>
+
+<p>Inside a <code>minipage</code>, footnote marks are lowercase letters.  Change
+that with something like
+<code>\renewcommand{\thempfootnote}{\arabic{mpfootnote}}</code>
+(see <a href="latex2e_13.html#g_t_005calph-_005cAlph-_005carabic-_005croman-_005cRoman-_005cfnsymbol">\alph \Alph \arabic \roman \Roman \fnsymbol</a>).
+</p>
+<p>The footnotes in the prior example appear at the bottom of the
+<code>minipage</code>.  To have them appear at the bottom of the main page, as
+part of the regular footnote sequence, use the <code>\footnotemark</code> and
+<code>\footnotetext</code> pair and make a new counter.
+</p>
+<div class="example">
+<pre class="example">\newcounter{mpFootnoteValueSaver}
+\begin{center}
+  \begin{minipage}{\textwidth}
+    \setcounter{mpFootnoteValueSaver}{\value{footnote}} \centering
+     \begin{tabular}{l|l}
+       \textsc{Woman}             &amp;\textsc{Relationship} \\ \hline 
+       Mona                       &amp;Attached\footnotemark  \\ 
+       Diana Villiers             &amp;Eventual wife  \\  
+       Christine Hatherleigh Wood &amp;Fiance\footnotemark 
+     \end{tabular}
+  \end{minipage}%  percent sign keeps footnote text close to minipage
+  \stepcounter{mpFootnoteValueSaver}%
+    \footnotetext[\value{mpFootnoteValueSaver}]{%
+      Little is known other than her death.}%
+  \stepcounter{mpFootnoteValueSaver}%
+    \footnotetext[\value{mpFootnoteValueSaver}]{%
+      Relationship is unresolved in XXI.}
+\end{center}
+</pre></div>
+
+<p>For a floating <code>table</code> environment (see <a href="latex2e_8.html#table">table</a>), use the
+<samp>tablefootnote</samp> package.
+</p>
+<div class="example">
+<pre class="example">\usepackage{tablefootnote}  % in preamble
+   ...
+\begin{table}
+  \centering
+     \begin{tabular}{l|l}
+     \textsc{Date}  &amp;\textsc{Campaign} \\ \hline 
+     1862           &amp;Fort Donelson \\ 
+     1863           &amp;Vicksburg     \\  
+     1865           &amp;Army of Northern Virginia\tablefootnote{%
+                      Ending the war.}
+     \end{tabular}
+    \caption{Forces captured by US Grant}
+\end{table}
+</pre></div>
+
+<p>The footnote appears at the page bottom and is numbered in sequence with
+other footnotes.
+</p>
+
+<hr>
+<a name="Footnotes-of-footnotes"></a>
+<a name="Footnotes-of-footnotes-1"></a>
+<h3 class="section">11.6 Footnotes of footnotes</h3>
+
+<a name="index-footnote_002c-of-a-footnote"></a>
+
+<a name="index-package_002c-bigfoot"></a>
+<a name="index-bigfoot-package"></a>
+
+<p>Particularly in the humanities, authors can have multiple classes of
+footnotes, including having footnotes of footnotes.  The package
+<samp>bigfoot</samp> extends LaTeX&rsquo;s default footnote mechanism in many
+ways, including allow these two, as in this example.
+</p>
+<div class="example">
+<pre class="example">\usepackage{bigfoot}    % in preamble
+\DeclareNewFootnote{Default}
+\DeclareNewFootnote{from}[alph]   % create class \footnotefrom{}
+ ...
+The third theorem is a partial converse of the 
+second.\footnotefrom{%
+  First noted in Wilson.\footnote{Second edition only.}}
+</pre></div>
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#Footnotes-in-a-table" accesskey="p" rel="prev">Footnotes in a table</a>, Up: <a href="#Footnotes" accesskey="u" rel="up">Footnotes</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

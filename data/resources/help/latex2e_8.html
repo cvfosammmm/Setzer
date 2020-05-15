@@ -1,0 +1,4055 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Environments (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Environments (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Environments (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_9.html#Line-breaking" rel="next" title="Line breaking">
+<link href="latex2e_7.html#g_t_005cref" rel="prev" title="\ref">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Environments"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_9.html#Line-breaking" accesskey="n" rel="next">Line breaking</a>, Previous: <a href="latex2e_7.html#Cross-references" accesskey="p" rel="prev">Cross references</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Environments-1"></a>
+<h2 class="chapter">8 Environments</h2>
+
+<a name="index-environments"></a>
+<a name="index-_005cbegin"></a>
+<a name="index-_005cend"></a>
+
+<p>LaTeX provides many environments for delimiting certain behavior.
+An environment begins with <code>\begin</code> and ends with <code>\end</code>,
+like this:
+</p>
+<div class="example">
+<pre class="example">\begin{<var>environment-name</var>}
+  ...
+\end{<var>environment-name</var>}
+</pre></div>
+
+<p>The <var>environment-name</var> at the beginning must exactly match that at
+the end. For instance, the input
+<code>\begin{table*}...\end{table}</code> will cause an error like:
+&lsquo;<samp>! LaTeX Error: \begin{table*} on input line 5 ended by
+\end{table}.</samp>&rsquo;
+</p>
+<a name="index-group_002c-and-environments"></a>
+<p>Environments are executed within a group.
+</p>
+
+
+<hr>
+<a name="abstract"></a>
+<a name="abstract-1"></a>
+<h3 class="section">8.1 <code>abstract</code></h3>
+
+<a name="index-environment_002c-abstract"></a>
+<a name="index-abstract-environment"></a>
+        
+<a name="index-abstracts"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{abstract}
+...
+\end{abstract}
+</pre></div>
+
+<p>Produce an abstract, possibly of multiple paragraphs.  This environment
+is only defined in the <code>article</code> and <code>report</code> document classes
+(see <a href="latex2e_3.html#Document-classes">Document classes</a>).
+</p>
+<p>Using the example below in the <code>article</code> class produces a displayed
+paragraph.  Document class option <code>titlepage</code> causes the abstract
+to be on a separate page (see <a href="latex2e_3.html#Document-class-options">Document class options</a>); this is the
+default only in the <code>report</code> class.
+</p>
+<div class="example">
+<pre class="example">\begin{abstract}
+  We compare all known accounts of the proposal made by Porter Alexander 
+  to Robert E Lee at the Appomattox Court House that the army continue
+  in a guerrilla war, which Lee refused.
+\end{abstract}
+</pre></div>
+
+<p>The next example produces a one column abstract in a two column document (for
+a more flexible solution, use the package <samp>abstract</samp>).
+</p>
+<div class="example">
+<pre class="example">\documentclass[twocolumn]{article}
+  ...
+\begin{document}
+\title{Babe Ruth as Cultural Progenitor: a Atavistic Approach}
+\author{Smith \\ Jones \\ Robinson\thanks{Railroad tracking grant.}}
+\twocolumn[
+  \begin{@twocolumnfalse}
+     \maketitle
+     \begin{abstract}
+       Ruth was not just the Sultan of Swat, he was the entire swat
+       team.   
+     \end{abstract}
+   \end{@twocolumnfalse}
+   ]
+{   % by-hand insert a footnote at page bottom
+ \renewcommand{\thefootnote}{\fnsymbol{footnote}}
+ \footnotetext[1]{Thanks for all the fish.}
+}
+</pre></div>
+
+
+<hr>
+<a name="array"></a>
+<a name="array-1"></a>
+<h3 class="section">8.2 <code>array</code></h3>
+
+<a name="index-environment_002c-array"></a>
+<a name="index-array-environment"></a>
+        
+<a name="index-arrays_002c-math"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{array}{<var>cols</var>}
+  <var>column 1 entry</var> &amp;<var>column 2 entry</var> ... &amp;<var>column n entry</var> \\
+  ...
+\end{array}
+</pre></div>
+
+<p>or:
+</p>
+<div class="example">
+<pre class="example">\begin{array}[<var>pos</var>]{<var>cols</var>}
+  <var>column 1 entry</var> &amp;<var>column 2 entry</var> ... &amp;<var>column n entry</var> \\
+  ...
+\end{array}
+</pre></div>
+
+<p>Produce a mathematical array.  This environment can only be used in math
+mode, and normally appears within a displayed mathematics environment
+such as <code>equation</code> (see <a href="#equation">equation</a>).  Inside of each row the
+column entries are separated by an ampersand, (<code>&amp;</code>).  Rows are
+terminated with double-backslashes (see <a href="latex2e_9.html#g_t_005c_005c">\\</a>).
+</p>
+<p>This example shows a three by three array.
+</p>
+<div class="example">
+<pre class="example">\begin{equation*}
+  \chi(x) =
+  \left|              % vertical bar fence
+    \begin{array}{ccc}
+      x-a  &amp;-b  &amp;-c  \\
+      -d   &amp;x-e &amp;-f  \\
+      -g   &amp;-h  &amp;x-i
+    \end{array}
+ \right|
+\end{equation*}
+</pre></div>
+
+<p>The required argument <var>cols</var> describes the number of columns, their
+alignment, and the formatting of the intercolumn regions.  For instance,
+<code>\begin{array}{rcl}...\end{array}</code> gives three columns: the
+first flush right, the second centered, and the third flush left.  See
+<a href="#tabular">tabular</a> for the complete description of <var>cols</var> and of the
+other common features of the two environments, including the optional
+<var>pos</var> argument.
+</p>
+<p>There are two ways that <code>array</code> diverges from <code>tabular</code>.  The
+first is that <code>array</code> entries are typeset in math mode, in
+textstyle (see <a href="latex2e_17.html#Modes">Modes</a>) except if the <var>cols</var> definition specifies
+the column with <code>p{...}</code>, which causes the entry to be typeset in
+text mode.  The second is that, instead of <code>tabular</code>&rsquo;s parameter
+<code>\tabcolsep</code>, LaTeX&rsquo;s intercolumn space in an <code>array</code> is
+governed by
+<a name="index-_005carraycolsep"></a>
+<code>\arraycolsep</code>, which gives half the width between columns. The
+default for this is &lsquo;<samp>5pt</samp>&rsquo; so that between two columns comes
+10pt of space.
+</p>
+<a name="index-package_002c-amsmath"></a>
+<a name="index-amsmath-package"></a>
+
+<p>To obtain arrays with braces the standard is to use the <samp>amsmath</samp>
+package.  It comes with environments <code>pmatrix</code> for an array
+surrounded by parentheses&nbsp;<code>(...)</code>, <code>bmatrix</code> for an array
+surrounded by square brackets&nbsp;<code>[...]</code>, <code>Bmatrix</code> for an
+array surrounded by curly braces&nbsp;<code>{...}</code>, <code>vmatrix</code> for
+an array surrounded by vertical bars&nbsp;<code>|...|</code>, and
+<code>Vmatrix</code> for an array surrounded by double vertical
+bars&nbsp;<code>||...||</code>, along with a number of other array constructs.
+</p>
+<a name="index-package_002c-amsmath-1"></a>
+<a name="index-amsmath-package-1"></a>
+
+<p>The next example uses the <samp>amsmath</samp> package.
+</p>
+<div class="example">
+<pre class="example">\usepackage{amsmath}  % in preamble
+
+\begin{equation}    
+  \begin{vmatrix}{cc}  % array with vert lines
+    a  &amp;b \\
+    c  &amp;d       
+  \end{vmatrix}=ad-bc
+\end{equation}
+</pre></div>
+
+<a name="index-package_002c-array-_0028package_0029"></a>
+<a name="index-array-_0028package_0029-package"></a>
+
+<a name="index-package_002c-dcolumn"></a>
+<a name="index-dcolumn-package"></a>
+
+<p>There are many packages concerning arrays.  The <samp>array</samp> package has
+many useful extensions, including more column types.  The <samp>dcolumn</samp>
+package adds a column type to center on a decimal point.  For both see
+the documentation on CTAN.
+</p>
+
+<hr>
+<a name="center"></a>
+<a name="center-1"></a>
+<h3 class="section">8.3 <code>center</code></h3>
+
+<a name="index-environment_002c-center"></a>
+<a name="index-center-environment"></a>
+        
+<a name="index-centering-text_002c-environment-for"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{center}
+  <var>line1</var> \\
+  <var>line2</var> \\
+  ...
+\end{center}
+</pre></div>
+
+<p>Create a new paragraph consisting of a sequence of lines that are
+centered within the left and right margins.  Use
+double-backslash, <code>\\</code>, to get a line break (see <a href="latex2e_9.html#g_t_005c_005c">\\</a>).
+<a name="index-_005c_005c-_0028for-center_0029"></a>
+If some text is too long to fit on a line then LaTeX will insert line
+breaks that avoid hyphenation and avoid stretching or shrinking any
+interword space.
+</p>
+<p>This environment inserts space above and below the text body.  See
+<a href="#g_t_005ccentering">\centering</a> to avoid such space, for example inside a <code>figure</code>
+environment.
+</p>
+<p>This example produces three centered lines.  There is extra vertical
+space between the last two lines.
+</p>
+<div class="example">
+<pre class="example">\begin{center}
+  A Thesis Submitted in Partial Fufillment \\
+  of the Requirements of \\[0.5ex]
+  the School of Environmental Engineering
+\end{center}
+</pre></div>
+
+<p>In this example, depending on the page&rsquo;s line width, LaTeX may choose
+a line break for the part before the double backslash.  If so, it will
+center each of the two lines and if not it will center the single line.
+Then LaTeX will break at the double backslash, and will center the
+ending.
+</p>
+<div class="example">
+<pre class="example">\begin{center}
+  My father considered that anyone who went to chapel and didn't drink 
+  alcohol was not to be tolerated.\\ 
+  I grew up in that belief.  --Richard Burton 
+\end{center}
+</pre></div>
+
+<p>A double backslash after the final line is optional.  If present it
+doesn&rsquo;t add any vertical space.
+</p>
+<p>In a two-column document the text is centered in a column, not in the
+entire page.
+</p>
+
+
+<hr>
+<a name="g_t_005ccentering"></a>
+<a name="g_t_005ccentering-1"></a>
+<h4 class="subsection">8.3.1 <code>\centering</code></h4>
+
+<a name="index-_005ccentering"></a>
+<a name="index-centering-text_002c-declaration-for"></a>
+
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">{\centering ... }
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\begin{group}
+  \centering ...
+\end{group}
+</pre></div>
+
+<p>Center the material in its scope.  It is most often used inside an
+environment such as <code>figure</code>, or in a <code>parbox</code>.
+</p>
+<p>This example&rsquo;s <code>\centering</code> declaration causes the graphic to be
+horizontally centered.
+</p>
+<div class="example">
+<pre class="example">\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{ctan_lion.png}
+  \caption{CTAN Lion}  \label{fig:CTANLion}
+\end{figure}
+</pre></div>
+
+<p>The scope of this <code>\centering</code> ends with the <code>\end{figure}</code>.
+</p>
+<p>Unlike the <code>center</code> environment, the <code>\centering</code> command does
+not add vertical space above and below the text.  That&rsquo;s its advantage
+in the above example; there is not an excess of space.
+</p>
+<p>It also does not start a new paragraph; it simply changes how LaTeX
+formats paragraph units.  If <code>ww {\centering xx \\ yy} zz</code> is
+surrounded by blank lines then LaTeX will create a paragraph whose
+first line &lsquo;<samp>ww xx</samp>&rsquo; is centered and whose second line, not centered,
+contains &lsquo;<samp>yy zz</samp>&rsquo;.  Usually what is desired is for the scope of the
+declaration to contain a blank line or the <code>\end</code> command of an
+environment such as <code>figure</code> or <code>table</code> that ends the
+paragraph unit.  Thus, if <code>{\centering xx \\ yy\par} zz</code> is
+surrounded by blank lines then it makes a new paragraph with two
+centered lines &lsquo;<samp>xx</samp>&rsquo; and &lsquo;<samp>yy</samp>&rsquo;, followed by a new paragraph with
+&lsquo;<samp>zz</samp>&rsquo; that is formatted as usual.
+</p>
+
+<hr>
+<a name="description"></a>
+<a name="description-1"></a>
+<h3 class="section">8.4 <code>description</code></h3>
+
+<a name="index-environment_002c-description"></a>
+<a name="index-description-environment"></a>
+        
+<a name="index-labelled-lists_002c-creating"></a>
+<a name="index-description-lists_002c-creating"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{description}
+  \item[<var>label of first item</var>] <var>text of first item</var>
+  \item[<var>label of second item</var>] <var>text of second item</var>
+   ...
+\end{description}
+</pre></div>
+
+<p>Environment to make a list of labeled items.  Each item&rsquo;s <var>label</var> is
+typeset in bold and is flush left, so that long labels continue into the
+first line of the item text.  There must be at least one item; having
+none causes the LaTeX error &lsquo;<samp>Something's wrong--perhaps a
+missing \item</samp>&rsquo;.
+</p>
+<p>This example shows the environment used for a sequence of definitions.
+</p>
+<div class="example">
+<pre class="example">\begin{definition}
+  \item[lama] A priest.
+  \item[llama] A beast.
+\end{definition}
+</pre></div>
+
+<p>The labels &lsquo;<samp>lama</samp>&rsquo; and &lsquo;<samp>llama</samp>&rsquo; are output in boldface, with the
+left edge on the left margin.
+</p>
+<a name="index-_005citem"></a>
+<p>Start list items with the <code>\item</code> command (see <a href="#g_t_005citem">\item</a>).  Use the
+optional labels, as in <code>\item[Main point]</code>, because there is
+no sensible default.  Following the <code>\item</code> is optional text, which
+may contain multiple paragraphs.
+</p>
+<a name="index-bold-typewriter_002c-avoiding"></a>
+<a name="index-typewriter-labels-in-lists"></a>
+<p>Since the labels are in bold style, if the label text calls for a font
+change given in argument style (see <a href="latex2e_4.html#Font-styles">Font styles</a>) then it will come
+out bold.  For instance, if the label text calls for typewriter with
+<code>\item[\texttt{label text}]</code> then it will appear in bold
+typewriter, if that is available. The simplest way around this, in this
+example to get non-bold typewriter, is to use declarative style:
+<code>\item[{\tt label text}]</code>.  Similarly, get the standard roman
+font with <code>\item[{\rm label text}]</code>.
+</p>
+<p>For other major LaTeX labelled list environments, see <a href="#itemize">itemize</a>
+and <a href="#enumerate">enumerate</a>.  Unlike those environments, nesting
+<code>description</code> environments does not change the default label; it is
+boldface and flush left at all levels.
+</p>
+<p>For information about list layout parameters, including the default
+values, and for information about customizing list layout, see
+<a href="#list">list</a>.  The package <samp>enumitem</samp> is useful for customizing
+lists.
+</p>
+<p>This example changes the description labels to small caps.
+</p>
+<div class="example">
+<pre class="example">\renewcommand{\descriptionlabel}[1]{%
+  {\hspace{\labelsep}\textsc{#1}}}
+</pre></div>
+
+
+<hr>
+<a name="displaymath"></a>
+<a name="displaymath-1"></a>
+<h3 class="section">8.5 <code>displaymath</code></h3>
+
+<a name="index-environment_002c-displaymath"></a>
+<a name="index-displaymath-environment"></a>
+        
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{displaymath}
+  <var>mathematical text</var>
+\end{displaymath}
+</pre></div>
+
+<p>Environment to typeset the math text on its own line, in display style
+and centered.  To make the text be flush-left use the global option
+<code>fleqn</code>; see <a href="latex2e_3.html#Document-class-options">Document class options</a>.
+</p>
+<p>In the <code>displaymath</code> environment no equation number is added to the
+math text. One way to get an equation number is to use the
+<code>equation</code> environment (see <a href="#equation">equation</a>).
+</p>
+<p>LaTeX will not break the <var>math text</var> across lines.
+</p>
+<a name="index-package_002c-amsmath-2"></a>
+<a name="index-amsmath-package-2"></a>
+
+<p>Note that the <samp>amsmath</samp> package has significantly more extensive
+displayed equation facilities.  For example, there are a number of
+ways in that package for having math text broken across lines.
+</p>
+<p>The construct <code>\[<var>math text</var>\]</code> is essentially a synonym for
+<code>\begin{displaymath}<var>math text</var>\end{displaymath}</code> but the
+latter is easier to work with in the source file; for instance,
+searching for a square bracket may get false positives but the word
+<code>displaymath</code> will likely be unique.  (The construct
+<code>$$<var>math text</var>$$</code> from Plain&nbsp;TeX is sometimes
+mistakenly used as a synonym for <code>displaymath</code>.  It is not a
+synonym, because the <code>displaymath</code> environment checks that it isn&rsquo;t
+started in math mode and that it ends in math mode begun by the matching
+environment start, because the <code>displaymath</code> environment has
+different vertical spacing, and because the <code>displaymath</code>
+environment honors the <code>fleqn</code> option.)
+</p>
+<p>The output from this example is centered and alone on its line. 
+</p>
+<div class="example">
+<pre class="example">\begin{displaymath}
+  \int_1^2 x^2\,dx=7/3
+\end{displaymath}
+</pre></div>
+
+<p>Also, the integral sign is larger than the inline version  
+<code>\( \int_1^2 x^2\,dx=7/3 \)</code> produces.
+</p>
+
+<hr>
+<a name="document"></a>
+<a name="document-1"></a>
+<h3 class="section">8.6 <code>document</code></h3>
+
+<a name="index-environment_002c-document"></a>
+<a name="index-document-environment"></a>
+        
+
+<p>The <code>document</code> environment encloses the entire body of a document.
+It is required in every LaTeX document.  See <a href="latex2e_2.html#Starting-and-ending">Starting and ending</a>.
+</p>
+
+
+<hr>
+<a name="g_t_005cAtBeginDocument"></a>
+<a name="g_t_005cAtBeginDocument-1"></a>
+<h4 class="subsection">8.6.1 <code>\AtBeginDocument</code></h4>
+
+<a name="index-_005cAtBeginDocument"></a>
+<a name="index-beginning-of-document-hook"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\AtBeginDocument{<var>code</var>}
+</pre></div>
+
+<p>Save <var>code</var> and execute it when <code>\begin{document}</code> is
+executed, at the very end of the preamble.  The code is executed after
+the font selection tables have been set up, so the normal font for the
+document is the current font.  However, the code is executed as part of
+the preamble so you cannot do any typesetting with it.
+</p>
+<p>You can issue this command more than once; the successive code lines
+will be executed in the order that you gave them.
+</p>
+
+<hr>
+<a name="g_t_005cAtEndDocument"></a>
+<a name="g_t_005cAtEndDocument-1"></a>
+<h4 class="subsection">8.6.2 <code>\AtEndDocument</code></h4>
+
+<a name="index-_005cAtEndDocument"></a>
+<a name="index-end-of-document-hook"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\AtEndDocument{<var>code</var>}
+</pre></div>
+
+<p>Save <var>code</var> and execute it near the end of the document.
+Specifically, it is executed when <code>\end{document}</code> is executed,
+before the final page is finished and before any leftover floating
+environments are processed. If you want some of the code to be executed
+after these two processes then include a <code>\clearpage</code> at the
+appropriate point in <var>code</var>.
+</p>
+<p>You can issue this command more than once; the successive code lines
+will be executed in the order that you gave them.
+</p>
+
+<hr>
+<a name="enumerate"></a>
+<a name="enumerate-1"></a>
+<h3 class="section">8.7 <code>enumerate</code></h3>
+
+<a name="index-environment_002c-enumerate"></a>
+<a name="index-enumerate-environment"></a>
+        
+<a name="index-lists-of-items_002c-numbered"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{enumerate}
+  \item[<var>optional label of first item</var>] <var>text of first item</var>
+  \item[<var>optional label of second item</var>] <var>text of second item</var>
+  ...
+\end{enumerate}
+</pre></div>
+
+<p>Environment to produce a numbered list of items.  The format of the
+label numbering depends on the nesting level of this environment; see
+below. The default top-level numbering is &lsquo;<samp>1.</samp>&rsquo;, &lsquo;<samp>2.</samp>&rsquo;,
+etc. Each <code>enumerate</code> list environment must have at least one item;
+having none causes the LaTeX error &lsquo;<samp>Something's wrong--perhaps a
+missing \item</samp>&rsquo;.
+</p>
+<p>This example gives the first two finishers in the 1908 Olympic marathon.
+As a top-level list the labels would come out as &lsquo;<samp>1.</samp>&rsquo; and
+&lsquo;<samp>2.</samp>&rsquo;.
+</p>
+<div class="example">
+<pre class="example">\begin{enumerate}
+ \item Johnny Hayes (USA)
+ \item Charles Hefferon (RSA) 
+\end{enumerate}
+</pre></div>
+
+<a name="index-_005citem-1"></a>
+<p>Start list items with the <code>\item</code> command (see <a href="#g_t_005citem">\item</a>).  If you
+give <code>\item</code> an optional argument by following it with square
+brackets, as in <code>\item[Interstitial label]</code>, then the next item
+will continue the interrupted sequence (see <a href="#g_t_005citem">\item</a>).  That is, you
+will get labels like &lsquo;<samp>1.</samp>&rsquo;, then &lsquo;<samp>Interstitial label</samp>&rsquo;, then
+&lsquo;<samp>2.</samp>&rsquo;.  Following the <code>\item</code> is optional text, which may
+contain multiple paragraphs.
+</p>
+<p>Enumerations may be nested within other <code>enumerate</code> environments,
+or within any paragraph-making environment such as <code>itemize</code>
+(see <a href="#itemize">itemize</a>), up to four levels deep.  This gives LaTeX&rsquo;s
+default for the format at each nesting level, where 1 is the top level,
+the outermost level.
+</p>
+<ol>
+<li> arabic number followed by a period: &lsquo;<samp>1.</samp>&rsquo;, &lsquo;<samp>2.</samp>&rsquo;,&nbsp;&hellip;
+</li><li> lowercase letter inside parentheses: &lsquo;<samp>(a)</samp>&rsquo;, &lsquo;<samp>(b)</samp>&rsquo;&nbsp;&hellip;
+</li><li> lowercase roman numeral followed by a period: &lsquo;<samp>i.</samp>&rsquo;, &lsquo;<samp>ii.</samp>&rsquo;,&nbsp;&hellip;
+</li><li> uppercase letter followed by a period: &lsquo;<samp>A.</samp>&rsquo;, &lsquo;<samp>B.</samp>&rsquo;,&nbsp;&hellip;
+</li></ol>
+
+<a name="index-_005cenumi"></a>
+<a name="index-_005cenumii"></a>
+<a name="index-_005cenumiii"></a>
+<a name="index-_005cenumiv"></a>
+<a name="enumerate-enumi"></a><a name="enumerate-enumii"></a><a name="enumerate-enumiii"></a><a name="enumerate-enumiv"></a><p>The <code>enumerate</code> environment uses the counters <code>\enumi</code> through
+<code>\enumiv</code> (see <a href="latex2e_13.html#Counters">Counters</a>).
+</p>
+<p>For other major LaTeX labeled list environments, see
+<a href="#description">description</a> and <a href="#itemize">itemize</a>.  For information about list layout
+parameters, including the default values, and for information about
+customizing list layout, see <a href="#list">list</a>.  The package <samp>enumitem</samp> is
+useful for customizing lists.
+</p>
+<a name="index-_005clabelenumi"></a>
+<a name="index-_005clabelenumii"></a>
+<a name="index-_005clabelenumiii"></a>
+<a name="index-_005clabelenumiv"></a>
+<a name="enumerate-labelenumi"></a><a name="enumerate-labelenumii"></a><a name="enumerate-labelenumiii"></a><a name="enumerate-labelenumiv"></a><p>To change the format of the label use <code>\renewcommand</code>
+(see <a href="latex2e_12.html#g_t_005cnewcommand-_0026-_005crenewcommand">\newcommand &amp; \renewcommand</a>) on the commands <code>\labelenumi</code>
+through <code>\labelenumiv</code>. For instance, this first level list will be
+labelled with uppercase letters, in boldface, and without a trailing
+period.
+</p>
+<a name="index-_005cAlph-example"></a>
+<div class="example">
+<pre class="example">\renewcommand{\labelenumi}{\textbf{\Alph{enumi}}}
+\begin{enumerate}
+  \item Shows as boldface A
+  \item Shows as boldface B
+\end{enumerate}
+</pre></div>
+
+<p>For a list of counter-labeling commands see <a href="latex2e_13.html#g_t_005calph-_005cAlph-_005carabic-_005croman-_005cRoman-_005cfnsymbol">\alph \Alph \arabic \roman \Roman \fnsymbol</a>.
+</p>
+
+<hr>
+<a name="eqnarray"></a>
+<a name="eqnarray-1"></a>
+<h3 class="section">8.8 <code>eqnarray</code></h3>
+
+<a name="index-environment_002c-eqnarray"></a>
+<a name="index-eqnarray-environment"></a>
+        
+<a name="index-equations_002c-aligning"></a>
+<a name="index-aligning-equations"></a>
+
+<a name="index-align-environment_002c-from-amsmath"></a>
+<a name="index-amsmath-package_002c-replacing-eqnarray"></a>
+<a name="index-Madsen_002c-Lars"></a>
+<p>The <code>eqnarray</code> environment is obsolete.  It has infelicities,
+including spacing that is inconsistent with other mathematics elements.
+(See &ldquo;Avoid eqnarray!&rdquo; by Lars Madsen
+<a href="http://tug.org/TUGboat/tb33-1/tb103madsen.pdf">http://tug.org/TUGboat/tb33-1/tb103madsen.pdf</a>).  New documents
+should include the <samp>amsmath</samp> package and use the displayed
+mathematics environments provided there, such as the <code>align</code>
+environment.  We include a description only for completeness and for
+working with old documents.
+</p>
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{eqnarray} 
+  <var>first formula left</var>  &amp;<var>first formula middle</var>  &amp;<var>first formula right</var> \\
+  ...
+\end{eqnarray}
+</pre></div>
+
+<p>or 
+</p>
+<div class="example">
+<pre class="example">\begin{eqnarray*} 
+  <var>first formula left</var>  &amp;<var>first formula middle</var>  &amp;<var>first formula right</var> \\
+  ...
+\end{eqnarray*}
+</pre></div>
+
+<a name="index-_005c_005c-_0028for-eqnarray_0029"></a>
+<p>Display a sequence of equations or inequalities.  The left and right
+sides are typeset in display mode, while the middle is typeset in text
+mode.
+</p>
+<p>It is similar to a three-column <code>array</code> environment, with items
+within a row separated by an ampersand&nbsp;(<code>&amp;</code>), and with rows
+separated by double backslash&nbsp; <code>\\</code>).
+<a name="index-_005c_005c_002a-_0028for-eqnarray_0029"></a>
+The starred form of line break (<code>\\*</code>) can also be used to separate
+equations, and will disallow a page break there (see <a href="latex2e_9.html#g_t_005c_005c">\\</a>).
+</p>
+<a name="index-_005cnonumber"></a>
+<a name="index-equation-numbers_002c-omitting"></a>
+<p>The unstarred form <code>eqnarray</code> places an equation number on every
+line (using the <code>equation</code> counter), unless that line contains a
+<code>\nonumber</code> command.  The starred form <code>eqnarray*</code> omits
+equation numbering, while otherwise being the same.
+</p>
+<a name="index-_005clefteqn"></a>
+<p>The command <code>\lefteqn</code> is used for splitting long formulas across
+lines. It typesets its argument in display style flush left in a box of
+zero width.
+</p>
+<p>This example shows three lines.  The first two lines make an inequality,
+while the third line has not entry on the left side.
+</p>
+<div class="example">
+<pre class="example">\begin{eqnarray*}
+  \lefteqn{x_1+x_2+\cdots+x_n}     \\
+    &amp;\leq &amp;y_1+y_2+\cdots+y_n      \\
+    &amp;=    &amp;z+y_3+\cdots+y_n
+\end{eqnarray*}
+</pre></div>
+
+
+<hr>
+<a name="equation"></a>
+<a name="equation-1"></a>
+<h3 class="section">8.9 <code>equation</code></h3>
+
+<a name="index-environment_002c-equation"></a>
+<a name="index-equation-environment"></a>
+        
+<a name="index-equations_002c-environment-for"></a>
+<a name="index-formulas_002c-environment-for"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{equation}
+  <var>mathematical text</var>
+\end{equation}
+</pre></div>
+
+<p>The same as a <code>displaymath</code> environment (see <a href="#displaymath">displaymath</a>)
+except that LaTeX puts an equation number flush to the right margin.
+The equation number is generated using the <code>equation</code> counter.
+</p>
+<p>You should have no blank lines between <code>\begin{equation}</code> and
+<code>\begin{equation}</code>, or LaTeX will tell you that there is a
+missing dollar sign.
+</p>
+<a name="index-package_002c-amsmath-3"></a>
+<a name="index-amsmath-package-3"></a>
+
+<p>The package <samp>amsmath</samp> package has extensive displayed equation
+facilities.  New documents should include this package.
+</p>
+
+<hr>
+<a name="figure"></a>
+<a name="figure-1"></a>
+<h3 class="section">8.10 <code>figure</code></h3>
+
+<a name="index-environment_002c-figure"></a>
+<a name="index-figure-environment"></a>
+        
+<a name="index-inserting-figures"></a>
+<a name="index-figures_002c-inserting"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{figure}[<var>placement</var>]
+  <var>figure body</var>
+  \caption[<var>loftitle</var>]{<var>title</var>}  % optional
+  \label{<var>label}</var>              % optional
+\end{figure}
+</pre></div>
+
+<p>or:
+</p>
+<div class="example">
+<pre class="example">\begin{figure*}[<var>placement</var>]
+  <var>figure body</var>
+  \caption[<var>loftitle</var>]{<var>title</var>}  % optional
+  \label{<var>label}</var>              % optional  
+\end{figure*}
+</pre></div>
+
+<p>Figures are for material that is not part of the normal text.  An
+example is material that you cannot have split between two pages, such
+as a graphic.  Because of this, LaTeX does not typeset figures in
+sequence with normal text but instead &ldquo;floats&rdquo; them to a convenient
+place, such as the top of a following page (see <a href="latex2e_5.html#Floats">Floats</a>).
+</p>
+<p>The <var>figure body</var> can consist of imported graphics
+(see <a href="latex2e_22.html#Graphics">Graphics</a>), or text, LaTeX commands, etc.  It is typeset in a
+<code>parbox</code> of width <code>\textwidth</code>.
+</p>
+<p>The possible values of <var>placement</var> are <code>h</code> for &lsquo;<samp>here</samp>&rsquo;,
+<code>t</code> for &lsquo;<samp>top</samp>&rsquo;, <code>b</code> for &lsquo;<samp>bottom</samp>&rsquo;, and <code>p</code> for
+&lsquo;<samp>on a separate page of floats</samp>&rsquo;.  For the effect of these options on
+the float placement algorithm, see <a href="latex2e_5.html#Floats">Floats</a>.
+</p>
+<p>The starred form <code>figure*</code> is used when a document is in
+double-column mode (see <a href="latex2e_5.html#g_t_005ctwocolumn">\twocolumn</a>).  It produces a figure that
+spans both columns, at the top of the page.  To add the possibility of
+placing at a page bottom see the discussion of <var>placement</var> <code>b</code>
+in <a href="latex2e_5.html#Floats">Floats</a>.
+</p>
+<p>The label is optional; it is used for cross references (see <a href="latex2e_7.html#Cross-references">Cross references</a>).
+<a name="index-_005ccaption"></a>
+The optional <code>\caption</code> command specifies caption text for the
+figure.  By default it is numbered.  If <var>loftitle</var> is present, it is
+used in the list of figures instead of <var>title</var> (see <a href="latex2e_25.html#Table-of-contents-etc_002e">Table of contents etc.</a>).
+</p>
+<p>This example makes a figure out of a graphic.  LaTeX will place that
+graphic and its caption at the top of a page or, if it is pushed to the
+end of the document, on a page of floats.
+</p>
+<div class="example">
+<pre class="example">\usepackage{graphicx}  % in preamble
+  ...
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.5\textwidth]{CTANlion.png}
+  \caption{The CTAN lion, by Duane Bibby}
+\end{figure}
+</pre></div>
+
+
+<hr>
+<a name="filecontents"></a>
+<a name="filecontents_003a-Write-an-external-file"></a>
+<h3 class="section">8.11 <code>filecontents</code>: Write an external file</h3>
+
+<a name="index-environment_002c-filecontents"></a>
+<a name="index-filecontents-environment"></a>
+        
+<a name="index-environment_002c-filecontents_002a"></a>
+<a name="index-filecontents_002a-environment"></a>
+        
+<a name="index-external-files_002c-writing"></a>
+<a name="index-writing-external-files"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{filecontents}{<var>filename</var>}
+  <var>text</var>
+\end{filecontents}
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\begin{filecontents*}{<var>filename</var>}
+  <var>text</var>
+\end{filecontents*}
+</pre></div>
+
+<p>Create a file named <var>filename</var> and fill it with <var>text</var>.  The
+unstarred version of the environment <code>filecontents</code> prefixes the
+content of the created file with a header; see the example below.  The
+starred version <code>filecontents*</code> does not include the header.
+</p>
+<p>This environment can be used anywhere in the preamble, although it often
+appears before the <code>\documentclass</code> command.  It is typically used
+when a source file requires a nonstandard style or class file.  The
+environment will write that file to the directory containing the source
+and thus make the source file self-contained.  Another use is to include
+<code>bib</code> references in the file, again to make it self-contained.
+</p>
+<p>The environment checks whether a file of that name already exists and if
+so, does not do anything.  There is a <samp>filecontents</samp> package that
+redefines the <code>filecontents</code> environment so that instead of doing
+nothing in that case, it will overwrite the existing file.
+</p>
+<p>For example, this document
+</p>
+<div class="example">
+<pre class="example">\documentclass{article}
+\begin{filecontents}{JH.sty}
+\newcommand{\myname}{Jim Hef{}feron}
+\end{filecontents}
+\usepackage{JH}
+\begin{document}
+Article by \myname.
+\end{document}
+</pre></div>
+
+<p>produces this file <samp>JH.sty</samp>.
+</p>
+<div class="example">
+<pre class="example">%% LaTeX2e file `JH.sty'
+%% generated by the `filecontents' environment
+%% from source `test' on 2015/10/12.
+%%
+\newcommand{\myname}{Jim Hef{}feron}
+</pre></div>
+
+
+<hr>
+<a name="flushleft"></a>
+<a name="flushleft-1"></a>
+<h3 class="section">8.12 <code>flushleft</code></h3>
+
+<a name="index-environment_002c-flushleft"></a>
+<a name="index-flushleft-environment"></a>
+        
+<a name="index-left_002djustifying-text_002c-environment-for"></a>
+<a name="index-ragged-right-text_002c-environment-for"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{flushleft}
+  <var>line1</var> \\
+  <var>line2</var> \\
+  ...
+\end{flushleft}
+</pre></div>
+
+<a name="index-_005c_005c-for-flushleft"></a>
+<p>An environment that creates a paragraph whose lines are flush to the
+left-hand margin, and ragged right. If you have lines that are too long
+then LaTeX will linebreak them in a way that avoids hyphenation and
+stretching or shrinking spaces.  To force a new line use a double
+backslash, <code>\\</code>.  For the declaration form
+see&nbsp;<a href="#g_t_005craggedright">\raggedright</a>.
+</p>
+<p>This creates a box of text that is at most 3 inches wide, with the text
+flush left and ragged right.
+</p>
+<div class="example">
+<pre class="example">\noindent\begin{minipage}{3in}
+\begin{flushleft}
+  A long sentence that will be broken by \LaTeX{}
+    at a convenient spot. \\
+  And, a fresh line forced by the double backslash.
+\end{flushleft}
+\end{minipage}
+</pre></div>
+
+
+
+
+<hr>
+<a name="g_t_005craggedright"></a>
+<a name="g_t_005craggedright-1"></a>
+<h4 class="subsection">8.12.1 <code>\raggedright</code></h4>
+
+<a name="index-_005craggedright"></a>
+<a name="index-ragged-right-text"></a>
+<a name="index-left_002djustifying-text"></a>
+<a name="index-justification_002c-ragged-right"></a>
+
+<p>Synopses:
+</p>
+<div class="example">
+<pre class="example">{\raggedright  ... }
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\begin{<var>environment</var>} \raggedright
+  ...
+\end{<var>environment</var>}
+</pre></div>
+
+<p>A declaration which causes lines to be flush to the left margin and
+ragged right. It can be used inside an environment such as <code>quote</code>
+or in a <code>parbox</code>.  For the environment form
+see&nbsp;<a href="#flushleft">flushleft</a>.
+</p>
+<p>Unlike the <code>flushleft</code> environment, the <code>\raggedright</code>
+command does not start a new paragraph; it only changes how LaTeX
+formats paragraph units.  To affect a paragraph unit&rsquo;s format, the
+scope of the declaration must contain the blank line or <code>\end</code>
+command that ends the paragraph unit.
+</p>
+<p>Here <code>\raggedright</code> in each second column keeps LaTeX from doing
+very awkward typesetting to fit the text into the narrow column.  Note
+that <code>\raggedright</code> is inside the curly braces <code>{...}</code> to
+delimit its effect.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{rp{2in}}
+  Team alpha  &amp;{\raggedright This team does all the real work.} \\
+  Team beta   &amp;{\raggedright This team ensures that the water
+                cooler is never empty.}                         \\
+\end{tabular}
+</pre></div>
+
+
+<hr>
+<a name="flushright"></a>
+<a name="flushright-1"></a>
+<h3 class="section">8.13 <code>flushright</code></h3>
+
+<a name="index-environment_002c-flushright"></a>
+<a name="index-flushright-environment"></a>
+        
+<a name="index-ragged-left-text_002c-environment-for"></a>
+<a name="index-right_002djustifying-text_002c-environment-for"></a>
+
+<div class="example">
+<pre class="example">\begin{flushright}
+  <var>line1</var> \\
+  <var>line2</var> \\
+  ...
+\end{flushright}
+</pre></div>
+
+<a name="index-_005c_005c-_0028for-flushright_0029"></a>
+<p>An environment that creates a paragraph whose lines are flush to the
+right-hand margin and ragged left. If you have lines that are too long
+to fit the margins then LaTeX will linebreak them in a way that
+avoids hyphenation and stretching or shrinking spaces.  To force a new
+line use a double backslash, <code>\\</code>.  For the declaration form
+see&nbsp;<a href="#g_t_005craggedleft">\raggedleft</a>.
+</p>
+<p>For an example related to this environment, see&nbsp;<a href="#flushleft">flushleft</a>.
+</p>
+
+
+<hr>
+<a name="g_t_005craggedleft"></a>
+<a name="g_t_005craggedleft-1"></a>
+<h4 class="subsection">8.13.1 <code>\raggedleft</code></h4>
+
+<a name="index-_005craggedleft"></a>
+<a name="index-ragged-left-text"></a>
+<a name="index-justification_002c-ragged-left"></a>
+<a name="index-right_002djustifying-text"></a>
+
+<p>Synopses:
+</p>
+<div class="example">
+<pre class="example">{\raggedleft  ... }
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\begin{<var>environment</var>} \raggedleft
+  ...
+\end{<var>environment</var>}
+</pre></div>
+
+<p>A declaration which causes lines to be flush to the right margin and
+ragged left. It can be used inside an environment such as <code>quote</code>
+or in a <code>parbox</code>.  For the environment form
+see&nbsp;<a href="#flushright">flushright</a>.
+</p>
+<p>Unlike the <code>flushright</code> environment, the <code>\raggedleft</code>
+command does not start a new paragraph; it only changes how LaTeX
+formats paragraph units.  To affect a paragraph unit&rsquo;s format, the
+scope of the declaration must contain the blank line or <code>\end</code>
+command that ends the paragraph unit.
+</p>
+<p>For an example related to this environment, see&nbsp;<a href="#g_t_005craggedright">\raggedright</a>.
+</p>
+
+<hr>
+<a name="itemize"></a>
+<a name="itemize-1"></a>
+<h3 class="section">8.14 <code>itemize</code></h3>
+
+<a name="index-environment_002c-itemize"></a>
+<a name="index-itemize-environment"></a>
+        
+<a name="index-_005citem-2"></a>
+<a name="index-lists-of-items"></a>
+<a name="index-unordered-lists"></a>
+<a name="index-bulleted-lists"></a>
+<a name="index-bullet-lists"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{itemize}
+  \item[<var>optional label of first item</var>] <var>text of first item</var>
+  \item[<var>optional label of second item</var>] <var>text of second item</var>
+  ...
+\end{itemize}
+</pre></div>
+
+<p>Produce a list that is unordered, sometimes called a bullet list.  The
+environment must have at least one <code>\item</code>; having none causes the
+LaTeX error &lsquo;<samp>Something's wrong--perhaps a missing \item</samp>&rsquo;.
+</p>
+<p>This gives a two-item list.
+</p>
+<div class="example">
+<pre class="example">\begin{itemize}
+ \item Pencil and watercolor sketch by Cassandra
+ \item Rice portrait 
+\end{itemize}
+</pre></div>
+
+<p>As a top-level list each label would come out as a bullet, &bull;.
+The format of the labeling depends on the nesting level; see below.
+</p>
+<a name="index-_005citem-3"></a>
+<p>Start list items with the <code>\item</code> command (see <a href="#g_t_005citem">\item</a>).  If you
+give <code>\item</code> an optional argument by following it with square
+brackets, as in <code>\item[Optional label]</code>, then by default it will
+appear in bold and be flush right, so it could extend into the left
+margin.  For labels that are flush left see the <a href="#description">description</a>
+environment. Following the <code>\item</code> is optional text, which may
+contain multiple paragraphs.
+</p>
+<a name="index-_005clabelitemi"></a>
+<a name="index-_005clabelitemii"></a>
+<a name="index-_005clabelitemiii"></a>
+<a name="index-_005clabelitemiv"></a>
+<a name="itemize-labelitemi"></a><a name="itemize-labelitemii"></a><a name="itemize-labelitemiii"></a><a name="itemize-labelitemiv"></a><p>Itemized lists can be nested within one another, up to four levels deep.
+They can also be nested within other paragraph-making environments, such
+as <code>enumerate</code> (see <a href="#enumerate">enumerate</a>).  The <code>itemize</code> environment
+uses the commands <code>\labelitemi</code> through <code>\labelitemiv</code> to
+produce the default label (this also uses the convention of lowercase
+roman numerals at the end of the command names that signify the nesting
+level).  These are the default marks at each level.
+</p>
+<ol>
+<li> &bull; (bullet, from <code>\textbullet</code>)
+</li><li> <b>-<span class="nolinebreak">-</span><!-- /@w --></b> (bold en-dash, from <code>\normalfont\bfseries\textendash</code>)
+</li><li> * (asterisk, from <code>\textasteriskcentered</code>)
+</li><li> . (centered dot, rendered here as a period, from <code>\textperiodcentered</code>)
+</li></ol>
+
+<p>Change the labels with <code>\renewcommand</code>.  For instance, this makes
+the first level use diamonds.
+</p>
+<div class="example">
+<pre class="example">\renewcommand{\labelitemi}{$\diamond$}
+</pre></div>
+
+<a name="index-_005cleftmargin"></a>
+<a name="index-_005cleftmargini"></a>
+<a name="index-_005cleftmarginii"></a>
+<a name="index-_005cleftmarginiii"></a>
+<a name="index-_005cleftmarginiv"></a>
+<a name="index-_005cleftmarginv"></a>
+<a name="index-_005cleftmarginvi"></a>
+<a name="itemize-leftmargin"></a><a name="itemize-leftmargini"></a><a name="itemize-leftmarginii"></a><a name="itemize-leftmarginiii"></a><a name="itemize-leftmarginiv"></a><a name="itemize-leftmarginv"></a><a name="itemize-leftmarginvi"></a><p>The distance between the left margin of the enclosing environment and
+the left margin of the <code>itemize</code> list is determined by the
+parameters <code>\leftmargini</code> through <code>\leftmarginvi</code>.  (Note the
+convention of using lowercase roman numerals a the end of the command
+name to denote the nesting level.)  The defaults are: <code>2.5em</code> in
+level 1 (<code>2em</code> in two-column mode), <code>2.2em</code> in level 2,
+<code>1.87em</code> in level 3, and <code>1.7em</code> in level 4, with smaller
+values for more deeply nested levels.
+</p>
+<p>For other major LaTeX labeled list environments, see
+<a href="#description">description</a> and <a href="#enumerate">enumerate</a>.  For information about list
+layout parameters, including the default values, and for information
+about customizing list layout, see <a href="#list">list</a>.  The package
+<samp>enumitem</samp> is useful for customizing lists.
+</p>
+<p>This example greatly reduces the margin space for outermost itemized
+lists.
+</p>
+<div class="example">
+<pre class="example">\setlength{\leftmargini}{1.25em} % default 2.5em
+</pre></div>
+
+<a name="index-_005cparskip-example"></a>
+<p>Especially for lists with short items, it may be desirable to elide
+space between items.  Here is an example defining an <code>itemize*</code>
+environment with no extra spacing between items, or between paragraphs
+within a single item (<code>\parskip</code> is not list-specific,
+see <a href="latex2e_15.html#g_t_005cparindent-_0026-_005cparskip">\parindent &amp; \parskip</a>):
+</p>
+<div class="example">
+<pre class="example">\newenvironment{itemize*}%
+  {\begin{itemize}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parsep}{0pt}}%
+    \setlength{\parskip}{0pt}}%
+  {\end{itemize}}
+</pre></div>
+
+
+<hr>
+<a name="letter"></a>
+<a name="letter-environment_003a-writing-letters"></a>
+<h3 class="section">8.15 <code>letter</code> environment: writing letters</h3>
+
+<a name="index-environment_002c-letter"></a>
+<a name="index-letter-environment"></a>
+        
+
+<p>This environment is used for creating letters.  See <a href="latex2e_26.html#Letters">Letters</a>.
+</p>
+
+<hr>
+<a name="list"></a>
+<a name="list-1"></a>
+<h3 class="section">8.16 <code>list</code></h3>
+
+<a name="index-environment_002c-list"></a>
+<a name="index-list-environment"></a>
+        
+<a name="index-lists-of-items_002c-generic"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{list}{<var>labeling</var>}{<var>spacing</var>}
+  \item[<var>optional label of first item</var>] <var>text of first item</var>
+  \item[<var>optional label of second item</var>] <var>text of second item</var>
+  ...
+\end{list}
+</pre></div>
+
+<p>An environment for constructing lists.
+</p>
+<p>Note that this environment does not typically appear in the document
+body.  Most lists created by LaTeX authors are the ones that come
+standard: the <code>description</code>, <code>enumerate</code>, and <code>itemize</code>
+environments (see <a href="#description">description</a>, <a href="#enumerate">enumerate</a>, and <a href="#itemize">itemize</a>).
+</p>
+<p>Instead, the <code>list</code> environment is most often used in macros.  For
+example, many standard LaTeX environments that do not immediately
+appear to be lists are in fact constructed using <code>list</code>, including
+<code>quotation</code>, <code>quote</code>, and <code>center</code> (see <a href="#quotation-_0026-quote">quotation &amp; quote</a>, see <a href="#center">center</a>).
+</p>
+<p>This uses the <code>list</code> environment to define a new custom
+environment.
+</p>
+<div class="example">
+<pre class="example">\newcounter{namedlistcounter}  % number the items
+\newenvironment{named}
+  {\begin{list}
+     {Item~\Roman{namedlistcounter}.} % labeling 
+     {\usecounter{namedlistcounter}   % set counter
+      \setlength{\leftmargin}{3.5em}} % set spacing 
+  }
+  {\end{list}}
+
+\begin{named}
+  \item Shows as ``Item~I.''
+  \item[Special label.] Shows as ``Special label.''
+  \item Shows as ``Item~II.''
+\end{named}
+</pre></div>
+
+<p>The mandatory first argument <var>labeling</var> specifies the default
+labeling of list items.  It can contain text and LaTeX commands, as
+above where it contains both &lsquo;<samp>Item</samp>&rsquo; and &lsquo;<samp>\Roman{...}</samp>&rsquo;.
+LaTeX forms the label by putting the <var>labeling</var> argument in a box
+of width <code>\labelwidth</code>.  If the label is wider than that, the
+additional material extends to the right.  When making an instance of a
+list you can override the default labeling by giving <code>\item</code> an
+optional argument by including square braces and the text, as in the
+above <code>\item[Special label.]</code>; see <a href="#g_t_005citem">\item</a>.
+</p>
+<p>The mandatory second argument <var>spacing</var> has a list of commands.
+This list can be empty.  A command that can go in here is
+<code>\usecounter{<var>countername</var>}</code> (see <a href="latex2e_13.html#g_t_005cusecounter">\usecounter</a>).  Use this
+to tell LaTeX to number the items using the given counter.  The
+counter will be reset to zero each time LaTeX enters the environment,
+and the counter is incremented by one each time LaTeX encounters an
+<code>\item</code> that does not have an optional argument.
+</p>
+<a name="index-_005cmakelabel"></a>
+<a name="list-makelabel"></a><p>Another command that can go in <var>spacing</var> is
+<code>\makelabel</code>, which constructs the label box.  By default it puts
+the contents flush right.  Its only argument is the label, which it
+typesets in LR mode (see <a href="latex2e_17.html#Modes">Modes</a>). One example of changing its
+definition is that to the above <code>named</code> example, before the
+definition of the environment add
+<code>\newcommand{\namedmakelabel}[1]{\textsc{#1}}</code>, and between
+the <code>\setlength</code> command and the parenthesis that closes the
+<var>spacing</var> argument also add <code>\let\makelabel\namedmakelabel</code>.
+Then the items will be typeset in small caps.  Similarly, changing the
+second code line to <code>\let\makelabel\fbox</code> puts the labels inside a
+framed box.  Another example of the <code>\makelabel</code> command is below,
+in the definition of the <code>redlabel</code> environment.
+</p>
+<p>Also often in <var>spacing</var> are commands to redefine the spacing for the
+list.  Below are the spacing parameters with their default values.
+(Default values for derived environments such as <code>itemize</code> can be
+different than the values shown here.) See also the figure that follows
+the list.  Each is a length (see <a href="latex2e_14.html#Lengths">Lengths</a>).  The vertical spaces are
+normally rubber lengths, with <code>plus</code> and <code>minus</code> components,
+to give TeX flexibility in setting the page.  Change each with a
+command such as <code>\setlength{itemsep}{2pt plus1pt minus1pt}</code>.
+For some effects these lengths should be zero or negative.
+</p>
+<dl compact="compact">
+<dt><code>\itemindent</code>
+<a name="index-_005citemindent"></a>
+</dt>
+<dd><a name="list-itemindent"></a><p>Extra horizontal space indentation, beyond <code>leftmargin</code>, of the
+first line each item.  Its default value is <code>0pt</code>.
+</p>
+</dd>
+<dt><code>\itemsep</code>
+<a name="index-_005citemsep"></a>
+</dt>
+<dd><a name="list-itemsep"></a><p>Vertical space between items, beyond the <code>\parsep</code>.  The defaults
+for the first three levels in LaTeX&rsquo;s &lsquo;<samp>article</samp>&rsquo;, &lsquo;<samp>book</samp>&rsquo;,
+and &lsquo;<samp>report</samp>&rsquo; classes at 10 point size are: <code>4pt plus2pt
+minus1pt</code>, <code>\parsep</code> (that is, <code>2pt plus1pt minus1pt</code>), and
+<code>\topsep</code> (that is, <code>2pt plus1pt minus1pt</code>).  The defaults at
+11 point are: <code>4.5pt plus2pt minus1pt</code>, <code>\parsep</code> (that is,
+<code>2pt plus1pt minus1pt</code>), and <code>topsep</code> (that is, <code>2pt
+plus1pt minus1pt</code>).  The defaults at 12 point are: <code>5pt plus2.5pt
+minus1pt</code>, <code>\parsep</code> (that is, <code>2.5pt plus1pt minus1pt</code>), and
+<code>\topsep</code> (that is, <code>2.5pt plus1pt minus1pt</code>).
+</p>
+</dd>
+<dt><code>\labelsep</code>
+<a name="index-_005clabelsep"></a>
+</dt>
+<dd><a name="list-labelsep"></a><p>Horizontal space between the label and text of an item.
+The default for LaTeX&rsquo;s &lsquo;<samp>article</samp>&rsquo;, &lsquo;<samp>book</samp>&rsquo;,
+and &lsquo;<samp>report</samp>&rsquo; classes is <code>0.5em</code>.
+</p>
+</dd>
+<dt><code>\labelwidth</code>
+<a name="index-_005clabelwidth"></a>
+</dt>
+<dd><a name="list-labelwidth"></a><p>Horizontal width.  The box containing the label is nominally this wide.
+If <code>\makelabel</code> returns text that is wider than this then the first
+line of the item will be indented to make room for this extra material.
+If <code>\makelabel</code> returns text of width less than or equal to
+<code>\labelwidth</code> then LaTeX&rsquo;s default is that the label is typeset
+flush right in a box of this width.
+</p>
+<p>The left edge of the label box is
+<code>\leftmargin</code>+<code>\itemindent</code>-<code>\labelsep</code>-<code>\labelwidth</code>
+from the left margin of the enclosing environment.
+</p>
+<p>The default for LaTeX&rsquo;s &lsquo;<samp>article</samp>&rsquo;, &lsquo;<samp>book</samp>&rsquo;, and
+&lsquo;<samp>report</samp>&rsquo; classes at the top level is
+<code>\leftmargini</code>-<code>\labelsep</code>, (which is <code>2em</code> in one column
+mode and <code>1.5em</code> in two column mode).  At the second level it is
+<code>\leftmarginii</code>-<code>\labelsep</code>, and at the third level it is
+<code>\leftmarginiii</code>-<code>\labelsep</code>.  These definitions make the
+label&rsquo;s left edge coincide with the left margin of the enclosing
+environment.
+</p>
+</dd>
+<dt><code>\leftmargin</code>
+<a name="index-_005cleftmargin-1"></a>
+</dt>
+<dd><a name="list-leftmargin"></a><p>Horizontal space between the left margin of the enclosing environment
+(or the left margin of the page if this is a top-level list), and the
+left margin of this list.  It must be non-negative.
+</p>
+<p>In the standard LaTeX document classes, a top-level list has this set
+to the value of <code>\leftmargini</code>, while a list that is nested inside
+a top-level list has this margin set to <code>\leftmarginii</code>.  More
+deeply nested lists get the values of <code>\leftmarginiii</code> through
+<code>\leftmarginvi</code>.  (Nesting greater than level five generates the
+error message &lsquo;<samp>Too deeply nested</samp>&rsquo;.)
+</p>
+<p>The defaults for the first three levels in LaTeX&rsquo;s &lsquo;<samp>article</samp>&rsquo;,
+&lsquo;<samp>book</samp>&rsquo;, and &lsquo;<samp>report</samp>&rsquo; classes are: <code>\leftmargini</code> is
+<code>2.5em</code> (in two column mode, <code>2em</code>), <code>\leftmarginii</code> is
+<code>2.2em</code>, and <code>\leftmarginiii</code> is <code>1.87em</code>.
+</p>
+</dd>
+<dt><code>\listparindent</code>
+<a name="index-_005clistparindent"></a>
+</dt>
+<dd><a name="list-listparindent"></a><p>Horizontal space of additional line indentation, beyond
+<code>\leftmargin</code>, for second and subsequent paragraphs within a list
+item.  A negative value makes this an &ldquo;outdent&rdquo;.  Its default value
+is <code>0pt</code>.
+</p>
+</dd>
+<dt><code>\parsep</code>
+<a name="index-_005cparsep"></a>
+</dt>
+<dd><a name="list-parsep"></a><p>Vertical space between paragraphs within an item.  In the &lsquo;<samp>book</samp>&rsquo;
+and &lsquo;<samp>article</samp>&rsquo; classes The defaults for the first three levels in
+LaTeX&rsquo;s &lsquo;<samp>article</samp>&rsquo;, &lsquo;<samp>book</samp>&rsquo;, and &lsquo;<samp>report</samp>&rsquo; classes at 10
+point size are: <code>4pt plus2pt minus1pt</code>, <code>2pt plus1pt
+minus1pt</code>, and <code>0pt</code>.  The defaults at 11 point size are:
+<code>4.5pt plus2pt minus1pt</code>, <code>2pt plus1pt minus1pt</code>, and
+<code>0pt</code>.  The defaults at 12 point size are: <code>5pt plus2.5pt
+minus1pt</code>, <code>2.5pt plus1pt minus1pt</code>, and <code>0pt</code>.
+</p>
+</dd>
+<dt><code>\partopsep</code>
+<a name="index-_005cpartopsep"></a>
+</dt>
+<dd><a name="list-partopsep"></a><p>Vertical space added, beyond <code>\topsep</code>+<code>\parskip</code>, to the top
+and bottom of the entire environment if the list instance is preceded by
+a blank line.  (A blank line in the LaTeX source before the list
+changes spacing at both the top and bottom of the list; whether the line
+following the list is blank does not matter.)
+</p>
+<p>The defaults for the first three levels in LaTeX&rsquo;s &lsquo;<samp>article</samp>&rsquo;,
+&lsquo;<samp>book</samp>&rsquo;, and &lsquo;<samp>report</samp>&rsquo; classes at 10 point size are: <code>2pt
+plus1 minus1pt</code>, <code>2pt plus1pt minus1pt</code>, and <code>1pt plus0pt
+minus1pt</code>.  The defaults at 11 point are: <code>3pt plus1pt minus1pt</code>,
+<code>3pt plus1pt minus1pt</code>, and <code>1pt plus0pt minus1pt</code>).  The
+defaults at 12 point are: <code>3pt plus2pt minus3pt</code>, <code>3pt plus2pt
+minus2pt</code>, and <code>1pt plus0pt minus1pt</code>.
+</p>
+</dd>
+<dt><code>\rightmargin</code>
+<a name="index-_005crightmargin"></a>
+</dt>
+<dd><a name="list-rightmargin"></a><p>Horizontal space between the right margin of the list and the right
+margin of the enclosing environment.  Its default value is <code>0pt</code>.
+It must be non-negative.
+</p>
+</dd>
+<dt><code>\topsep</code>
+<a name="index-_005ctopsep"></a>
+</dt>
+<dd><a name="list-topsep"></a><p>Vertical space added to both the top and bottom of the list, in addition
+to <code>\parskip</code> (see <a href="latex2e_15.html#g_t_005cparindent-_0026-_005cparskip">\parindent &amp; \parskip</a>).  The defaults for
+the first three levels in LaTeX&rsquo;s &lsquo;<samp>article</samp>&rsquo;, &lsquo;<samp>book</samp>&rsquo;, and
+&lsquo;<samp>report</samp>&rsquo; classes at 10 point size are: <code>8pt plus2pt minus4pt</code>,
+<code>4pt plus2pt minus1pt</code>, and <code>2pt plus1pt minus1pt</code>.  The
+defaults at 11 point are: <code>9pt plus3pt minus5pt</code>, <code>4.5pt
+plus2pt minus1pt</code>, and <code>2pt plus1pt minus1pt</code>.  The defaults at 12
+point are: <code>10pt plus4pt minus6pt</code>, <code>5pt plus2.5pt minus1pt</code>,
+and <code>2.5pt plus1pt minus1pt</code>.
+</p>
+</dd>
+</dl>
+
+<p>This shows the horizontal and vertical distances.
+</p>
+<div class="float">
+<img src="latex2e-figures/list.png" alt="latex2e-figures/list">
+</div>
+<p>The lengths shown are listed below.  The key relationship is that the
+right edge of the bracket for <var>h1</var> equals the right edge of the
+bracket for <var>h4</var>, so that the left edge of the label box is at
+<var>h3</var>+<var>h4</var>-(<var>h0</var>+<var>h1</var>).
+</p>
+<dl compact="compact">
+<dt><var>v0</var></dt>
+<dd><p><em><code>\topsep</code> + <code>\parskip</code></em> if
+the list environment does not start a new paragraph, and
+<code>\topsep</code>+<code>\parskip</code>+<code>\partopsep</code> if it does
+</p>
+</dd>
+<dt><var>v1</var></dt>
+<dd><p><code>\parsep</code>
+</p>
+</dd>
+<dt><var>v2</var></dt>
+<dd><p><code>\itemsep</code>+<code>\parsep</code>
+</p>
+</dd>
+<dt><var>v3</var></dt>
+<dd><p>Same as <var>v0</var>.  (This space is affected by whether a blank line
+appears in the source above the environment; whether a blank line
+appears in the source below the environment does not matter.)
+</p>
+</dd>
+<dt><var>h0</var></dt>
+<dd><p><code>\labelwidth</code>
+</p>
+</dd>
+<dt><var>h1</var></dt>
+<dd><p><code>\labelsep</code>
+</p>
+</dd>
+<dt><var>h2</var></dt>
+<dd><p><code>\listparindent</code>
+</p>
+</dd>
+<dt><var>h3</var></dt>
+<dd><p><code>\leftmargin</code>
+</p>
+</dd>
+<dt><var>h4</var></dt>
+<dd><p><code>\itemindent</code>
+</p>
+</dd>
+<dt><var>h5</var></dt>
+<dd><p><code>\rightmargin</code>
+</p>
+</dd>
+</dl>
+
+<p>The list&rsquo;s left and right margins, shown above as <var>h3</var> and <var>h5</var>,
+are with respect to the ones provided by the surrounding environment, or
+with respect to the page margins for a top-level list.  The line width
+used for typesetting the list items is <code>\linewidth</code> (see <a href="latex2e_5.html#Page-layout-parameters">Page layout parameters</a>).  For instance, set the list&rsquo;s left margin to be one
+quarter of the distance between the left and right margins of the
+enclosing environment with
+<code>\setlength{\leftmargin}{0.25\linewidth}</code>.
+</p>
+<p>Page breaking in a list structure is controlled by the three
+parameters below. For each, the LaTeX default is
+<code>-\@lowpenalty</code>, that is, <code>-51</code>.  Because it is negative,
+it somewhat encourages a page break at each spot.  Change it with,
+e.g., <code>\@beginparpenalty=9999</code>; a value of 10000 prohibits a
+page break.
+</p>
+<dl compact="compact">
+<dt><code>\@beginparpenalty</code>
+<a name="index-_005c_0040beginparpenalty"></a>
+</dt>
+<dd><a name="list-beginparpenalty"></a><p>The page breaking penalty for breaking before the list (default <code>-51</code>).
+</p>
+</dd>
+<dt><code>\@itempenalty</code>
+<a name="index-_005c_0040itempenalty"></a>
+</dt>
+<dd><a name="list-itempenalty"></a><p>The page breaking penalty for breaking before a list item (default <code>-51</code>).
+</p>
+</dd>
+<dt><code>\@endparpenalty</code>
+<a name="index-_005c_0040endparpenalty"></a>
+</dt>
+<dd><a name="list-endparpenalty"></a><p>The page breaking penalty for breaking after a list (default <code>-51</code>).
+</p>
+</dd>
+</dl>
+
+<a name="index-package_002c-enumitem"></a>
+<a name="index-enumitem-package"></a>
+
+<p>The package <code>enumitem</code> is useful for customizing lists.
+</p>
+<p>This example has the labels in red.  They are numbered, and the left
+edge of the label lines up with the left edge of the item text.
+See <a href="latex2e_13.html#g_t_005cusecounter">\usecounter</a>.
+</p>
+<div class="example">
+<pre class="example">\usepackage{color}
+\newcounter{cnt}  
+\newcommand{\makeredlabel}[1]{\textcolor{red}{#1.}}
+\newenvironment{redlabel}
+  {\begin{list}
+    {\arabic{cnt}}
+    {\usecounter{cnt}
+     \setlength{\labelwidth}{0em}
+     \setlength{\labelsep}{0.5em}
+     \setlength{\leftmargin}{1.5em}
+     \setlength{\itemindent}{0.5em} % equals \labelwidth+\labelsep
+     \let\makelabel=\makeredlabel
+    }
+  }
+{\end{list} }
+</pre></div>
+
+
+
+<hr>
+<a name="g_t_005citem"></a>
+<a name="g_t_005citem_003a-An-entry-in-a-list"></a>
+<h4 class="subsection">8.16.1 <code>\item</code>: An entry in a list</h4>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\item text of item
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\item[<var>optional-label</var>] text of item
+</pre></div>
+
+<p>An entry in a list.  The entries are prefixed by a label, whose default
+depends on the list type.
+</p>
+<p>Because the optional label is surrounded by square brackets
+&lsquo;<samp>[...]</samp>&rsquo;, if you have an item whose text starts with &lsquo;<samp>[</samp>&rsquo;, you
+have to hide the bracket inside curly braces, as in: <code>\item
+{[} is an open square bracket</code>; otherwise, LaTeX will think it
+marks the start of an optional label.
+</p>
+<p>Similarly, if the item does have the optional label and you need a
+close square bracket inside that label, you must hide it in the same
+way: <code>\item[Close square bracket, {]}]</code>.  See <a href="latex2e_2.html#LaTeX-command-syntax">LaTeX command syntax</a>.
+</p>
+<p>In this example the enumerate list has two items that use the default
+label and one that uses the optional label.
+</p>
+<div class="example">
+<pre class="example">\begin{enumerate}
+  \item Moe
+  \item[sometimes] Shemp
+  \item Larry
+\end{enumerate}
+</pre></div>
+
+<p>The first item is labelled &lsquo;<samp>1.</samp>&rsquo;, the second item is labelled
+&lsquo;<samp>sometimes</samp>&rsquo;, and the third item is labelled &lsquo;<samp>2.</samp>&rsquo;.  Because
+of the optional label in the second item, the third item is not
+labelled&nbsp;&lsquo;<samp>3.</samp>&rsquo;.
+</p>   
+
+<hr>
+<a name="trivlist"></a>
+<a name="trivlist_003a-A-restricted-form-of-list"></a>
+<h4 class="subsection">8.16.2 <code>trivlist</code>: A restricted form of <code>list</code></h4>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{trivlist}
+  ...
+\end{trivlist}
+</pre></div>
+
+<p>A restricted version of the list environment, in which margins are not
+indented and an <code>\item</code> without an optional argument produces no
+text.  It is most often used in macros, to define an environment where
+the <code>\item</code> command as part of the environment&rsquo;s definition.  For
+instance, the <code>center</code> environment is defined essentially like
+this:
+</p>
+<div class="example">
+<pre class="example">\newenvironment{center}
+  {\begin{trivlist}\centering\item\relax}
+  {\end{trivlist}}
+</pre></div>
+
+<p>Using <code>trivlist</code> in this way allows the macro to inherit some
+common code: combining vertical space of two adjacent environments;
+detecting whether the text following the environment should be
+considered a new paragraph or a continuation of the previous one;
+adjusting the left and right margins for possible nested list
+environments.
+</p>
+<p>Specifically, <code>trivlist</code> uses the current values of the list
+parameters (see <a href="#list">list</a>), except that <code>\parsep</code> is set to the
+value of <code>\parskip</code>, and <code>\leftmargin</code>, <code>\labelwidth</code>,
+and <code>\itemindent</code> are set to zero.
+</p>
+<p>This example outputs the items as two paragraphs, except that (by
+default) they have no paragraph indent and are vertically separated.
+</p>
+<div class="example">
+<pre class="example">\begin{trivlist}
+\item The \textit{Surprise} is not old; no one would call her old.
+\item She has a bluff bow, lovely lines.
+\end{trivlist}
+</pre></div>
+
+
+<hr>
+<a name="math"></a>
+<a name="math-1"></a>
+<h3 class="section">8.17 <code>math</code></h3>
+
+<a name="index-environment_002c-math"></a>
+<a name="index-math-environment"></a>
+        
+<a name="index-in_002dline-formulas"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{math}
+<var>math</var>
+\end{math}
+</pre></div>
+
+<p>The <code>math</code> environment inserts given <var>math</var> material within
+the running text.  <code>\(...\)</code> and <code>$...$</code> are synonyms.
+See <a href="latex2e_16.html#Math-formulas">Math formulas</a>.
+</p>
+
+<hr>
+<a name="minipage"></a>
+<a name="minipage-1"></a>
+<h3 class="section">8.18 <code>minipage</code></h3>
+
+<a name="index-environment_002c-minipage"></a>
+<a name="index-minipage-environment"></a>
+        
+<a name="index-minipage_002c-creating-a"></a>
+
+<p>Synopses:
+</p>
+<div class="example">
+<pre class="example">\begin{minipage}{<var>width</var>}
+  <var>contents</var>
+\end{minipage}
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\begin{minipage}[<var>position</var>][<var>height</var>][<var>inner-pos</var>]{<var>width</var>}
+  <var>contents</var>
+\end{minipage}
+</pre></div>
+
+<p>Put <var>contents</var> into a box that is <var>width</var> wide.  This is like a
+small version of a page; it can contain its own footnotes, itemized
+lists, etc. (There are some restrictions, including that it cannot have
+floats.)  This box will not be broken across pages.  So <code>minipage</code>
+is similar to <code>\parbox</code> (see <a href="latex2e_20.html#g_t_005cparbox">\parbox</a>) but here you can have
+paragraphs.
+</p>
+<p>This example will be 3&nbsp;inches wide, and has two paragraphs.
+</p>
+<div class="example">
+<pre class="example">\begin{minipage}{3in}
+  Stephen Kleene was a founder of the Theory of Computation.
+
+  He was a student of Church, wrote three influential texts,
+  was President of the Association for Symbolic Logic,
+  and won the National Medal of Science.
+\end{minipage}
+</pre></div>
+
+<p>See below for a discussion of the paragraph indent inside a
+<code>minipage</code>.
+</p>
+<p>The required argument <var>width</var> is a rigid length (see <a href="latex2e_14.html#Lengths">Lengths</a>).
+It gives the width of the box into which <var>contents</var> are typeset.
+</p>
+<p>There are three optional arguments, <var>position</var>, <var>height</var>, and
+<var>inner-pos</var>.  You need not include all three. For example, get the
+default <var>position</var> and set the <var>height</var> with
+<code>\begin{minipage}[c][2.54cm] <var>contents</var> \end{minipage}</code>.
+(Get the natural height with an empty argument, <code>[]</code>.)
+</p>
+<p>The optional argument <var>position</var> governs how the <code>minipage</code>
+vertically aligns with the surrounding material.
+</p>
+<dl compact="compact">
+<dt><code>c</code></dt>
+<dd><p>(synonym <code>m</code>) Default.  Positions the <code>minipage</code> so its
+vertical center lines up with the center of the adjacent text line (what
+Plain TeX calls <code>\vcenter</code>).
+</p>
+</dd>
+<dt><code>t</code></dt>
+<dd><p>Match the top line in the <code>minipage</code> with the baseline of the
+surrounding text (Plain TeX&rsquo;s <code>\vtop</code>.
+</p>
+</dd>
+<dt><code>b</code></dt>
+<dd><p>Match the bottom line in the <code>minipage</code> with the baseline of the
+surrounding text (Plain TeX&rsquo;s <code>\vbox</code>.
+</p></dd>
+</dl>
+
+<p>To see the effects of these, contrast running this
+</p>
+<div class="example">
+<pre class="example">---\begin{minipage}[c]{0.25in}
+  first\\ second\\ third
+\end{minipage}
+</pre></div>
+
+<p>with the results of changing <code>c</code> to <code>b</code> or&nbsp;<code>t</code>.
+</p>
+<p>The optional argument <var>height</var> is a rigid length (see <a href="latex2e_14.html#Lengths">Lengths</a>).
+It sets the height of the <code>minipage</code>.  You can enter any value
+larger than, or equal to, or smaller than the <code>minipage</code>&rsquo;s natural
+height and LaTeX will not give an error or warning.  You can also set
+it to a height of zero or a negative value.
+</p>
+<p>The final optional argument <var>inner-pos</var> controls the placement of
+<var>content</var> inside the box. These are the possible values are (the
+default is the value of <var>position</var>).
+</p>
+<dl compact="compact">
+<dt><code>t</code></dt>
+<dd><p>Place <var>content</var> at the top of the box.
+</p>
+</dd>
+<dt><code>c</code></dt>
+<dd><p>Place it in the vertical center.
+</p>
+</dd>
+<dt><code>b</code></dt>
+<dd><p>Place it at the box bottom.
+</p>
+</dd>
+<dt><code>s</code></dt>
+<dd><p>Stretch <var>contents</var> out vertically; it must contain vertically
+stretchable space.
+</p>
+</dd>
+</dl>
+
+<p>The <var>inner-pos</var> argument makes sense when the <var>height</var> option
+is set to a value larger than the <code>minipage</code>&rsquo;s natural height.  To
+see the effect of the options, run this example with the various choices
+in place of <code>b</code>.
+</p>
+<div class="example">
+<pre class="example">Text before
+\begin{center}
+  ---\begin{minipage}[c][3in][b]{0.25\textwidth}
+       first\\ second\\ third
+  \end{minipage}              
+\end{center}
+Text after  
+</pre></div>
+
+<a name="index-indentation-of-paragraphs_002c-in-minipage"></a>
+<a name="index-paragraph-indentation_002c-in-minipage"></a>
+<a name="index-_005cparindent"></a>
+<p>By default paragraphs are not indented in a <code>minipage</code>.  Change
+that with a command such as <code>\setlength{\parindent}{1pc}</code> at
+the start of <var>contents</var>.
+</p>
+<a name="index-footnotes-in-figures"></a>
+<a name="index-figures_002c-footnotes-in"></a>
+<p>Footnotes in a <code>minipage</code> environment are handled in a way that is
+particularly useful for putting footnotes in figures or tables.  A
+<code>\footnote</code> or <code>\footnotetext</code> command puts the footnote at
+the bottom of the minipage instead of at the bottom of the page, and it
+uses the <code>\mpfootnote</code> counter instead of the ordinary
+<code>footnote</code> counter (see <a href="latex2e_13.html#Counters">Counters</a>).
+</p>
+<p>This puts the footnote at the bottom of the table, not the bottom of the
+page.
+</p>
+<div class="example">
+<pre class="example">\begin{center}           % center the minipage on the line
+\begin{minipage}{2.5in}
+  \begin{center}         % center the table inside the minipage
+    \begin{tabular}{ll}
+      \textsc{Monarch}  &amp;\textsc{Reign}             \\ \hline
+      Elizabeth II      &amp;63 years\footnote{to date} \\
+      Victoria          &amp;63 years                   \\
+      George III        &amp;59 years
+    \end{tabular}
+  \end{center}  
+\end{minipage}
+\end{center}
+</pre></div>
+
+<p>If you nest minipages then there is an oddness when using footnotes.
+Footnotes appear at the bottom of the text ended by the next
+<code>\end{minipage}</code> which may not be their logical place.
+</p>
+<p>This puts a table containing data side by side with a map graphic.  They
+are vertically centered.
+</p>
+<div class="example">
+<pre class="example">\newcommand*{\vcenteredhbox}[1]{\begin{tabular}{@{}c@{}}#1\end{tabular}}
+  ...
+\begin{center}
+  \vcenteredhbox{\includegraphics[width=0.3\textwidth]{nyc.png}}
+  \hspace{0.1\textwidth}
+  \begin{minipage}{0.5\textwidth}
+    \begin{tabular}{r|l}
+      \multicolumn{1}{r}{Borough} &amp;Pop (million)  \\ \hline
+      The Bronx      &amp;$1.5$  \\
+      Brooklyn       &amp;$2.6$  \\
+      Manhattan      &amp;$1.6$  \\
+      Queens         &amp;$2.3$  \\
+      Staten Island  &amp;$0.5$  
+    \end{tabular}
+  \end{minipage}              
+\end{center}
+</pre></div>
+
+
+<hr>
+<a name="picture"></a>
+<a name="picture-1"></a>
+<h3 class="section">8.19 <code>picture</code></h3>
+
+<a name="index-environment_002c-picture"></a>
+<a name="index-picture-environment"></a>
+        
+<a name="index-creating-pictures"></a>
+<a name="index-pictures_002c-creating"></a>
+
+<p>Synopses: 
+</p><div class="example">
+<pre class="example">\begin{picture}(<var>width</var>,<var>height</var>)
+   <var>picture commands</var> 
+\end{picture}
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\begin{picture}(<var>width</var>,<var>height</var>)(<var>xoffset</var>,<var>yoffset</var>)
+  <var>picture commands</var>
+\end{picture}
+</pre></div>
+
+<p>An environment to create simple pictures containing lines, arrows,
+boxes, circles, and text.  Note that while this environment is not
+obsolete, new documents typically use much more powerful graphics
+creation systems, such as <code>TikZ</code>, <code>PSTricks</code>, <code>MetaPost</code>,
+or <code>Asymptote</code>.  These are not covered in this document; see CTAN.
+</p>
+<p>This shows the parallelogram law for adding vectors.
+</p>
+<a name="index-_005cunitlength"></a>
+<div class="example">
+<pre class="example">\setlength{\unitlength}{1cm}
+\begin{picture}(6,6)      % picture box will be 6cm wide by 6cm tall
+  \put(0,0){\vector(2,1){4}}  % for every 2 over this vector goes 1 up
+    \put(2,1){\makebox(0,0)[l]{\ first leg}}
+  \put(4,2){\vector(1,2){2}}
+    \put(5,4){\makebox(0,0)[l]{\ second leg}}  
+  \put(0,0){\line(1,1){6}}
+    \put(3,3){\makebox(0,0)[r]{sum\ }}  
+\end{picture}
+</pre></div>
+
+<p>You can also use this environment to place arbitrary material at an
+exact location.
+</p>
+<div class="example">
+<pre class="example">\usepackage{color,graphicx}  % in preamble
+  ...
+\begin{center}
+\setlength{\unitlength}{\textwidth} 
+\begin{picture}(1,1)      % leave space, \textwidth wide and tall
+  \put(0,0){\includegraphics[width=\textwidth]{desertedisland.jpg}}
+  \put(0.25,0.35){\textcolor{red}{X Treasure here}}
+\end{picture}
+\end{center}
+</pre></div>
+
+<p>The red&nbsp;X will be precisely a quarter of the <code>\linewidth</code> from
+the left margin, and <code>0.35\linewidth</code> up from the bottom.  Another
+example of this usage is to put similar code in the page header to get
+repeat material on each of a document&rsquo;s pages.
+</p>
+<p>The <code>picture</code> environment has one required argument, a pair of
+numbers (<var>width</var>,<var>height</var>).  Multiply these by the value
+<code>\unitlength</code> to get the nominal size of the output, the space that
+LaTeX reserves on the output page.  This nominal size need not be how
+large the picture really is; LaTeX will draw things from the picture
+outside the picture&rsquo;s box.
+</p>
+<p>This environment also has an optional argument
+(<var>xoffset</var>,<var>yoffset</var>).  It is used to shift the origin.  Unlike
+most optional arguments, this one is not contained in square brackets.
+As with the required argument, it consists of two real numbers.
+Multiply these by <code>\unitlength</code> to get the point at the lower-left
+corner of the picture.
+</p>
+<p>For example, if <code>\unitlength</code> has been set to <code>1mm</code>, the
+command
+</p>
+<div class="example">
+<pre class="example">\begin{picture}(100,200)(10,20)
+</pre></div>
+
+<p>produces a box of width 100 millimeters and height 200 millimeters.  The
+picture&rsquo;s origin is the point (10mm,20mm) and so the lower-left corner
+is there, and the upper-right corner is at (110mm,220mm).  When you
+first draw a picture you typically omit the optional argument, leaving
+the origin at the lower-left corner.  If you then want to modify your
+picture by shifting everything, you can just add the appropriate
+optional argument.
+</p>
+<a name="index-position_002c-in-picture"></a>
+<p>Each <var>picture command</var> tells LaTeX where to put something by
+naming its position.  A <em>position</em> is a pair such as <code>(2.4,-5)</code>
+giving the x- and y-coordinates.  A <em>coordinate</em> is a not a length,
+it is a real number (it may have a decimal point or a minus sign).  It
+specifies a length in multiples of the unit length <code>\unitlength</code>,
+so if <code>\unitlength</code> has been set to <code>1cm</code>, then the coordinate
+2.54 specifies a length of 2.54 centimeters.
+</p>
+<p>LaTeX&rsquo;s default for <code>\unitlength</code> is <code>1pt</code>.  it is a rigid
+length (see <a href="latex2e_14.html#Lengths">Lengths</a>).  Change it with the <code>\setlength</code> command
+(see <a href="latex2e_14.html#g_t_005csetlength">\setlength</a>).  Make this change only outside of a <code>picture</code>
+environment.
+</p>
+<p>Coordinates are given with respect to an origin, which is normally at
+the lower-left corner of the picture.  Note that when a position appears
+as an argument, as with <code>\put(1,2){...}</code>, it is not enclosed in
+braces since the parentheses serve to delimit the argument.  Also,
+unlike in some computer graphics systems, larger y-coordinates are
+further up the page.
+</p>
+<p>There are four ways to put things in a picture: <code>\put</code>,
+<code>\multiput</code>, <code>\qbezier</code>, and <code>\graphpaper</code>.  The most
+often used is <code>\put</code>. This
+</p>
+<div class="example">
+<pre class="example">\put(11.3,-0.3){...}
+</pre></div>
+
+<p>places the object with its reference point at coordinates
+<em>(11.3,-0.3)</em>.  The reference points for various objects will be
+described below.
+<a name="index-LR-box"></a>
+The <code>\put</code> command creates an <em>LR box</em> (see <a href="latex2e_17.html#Modes">Modes</a>).
+Anything that can go in an <code>\mbox</code> (see <a href="latex2e_20.html#g_t_005cmbox-_0026-_005cmakebox">\mbox &amp; \makebox</a>) can
+go in the text argument of the <code>\put</code> command.  The reference point
+will be the lower left corner of the box.  In this picture
+</p>
+<div class="example">
+<pre class="example">\setlength{\unitlength}{1cm}
+...\begin{picture}(1,1)
+  \put(0,0){\line(1,0){1}}
+  \put(0,0){\line(1,1){1}}
+\end{picture}
+</pre></div>
+
+<p>the three dots are just slightly left of the point of the angle formed
+by the two lines.  (Also, <code>\line(1,1){1}</code> does not call for a
+line of length one; rather the line has a change in the x coordinate of
+1.)
+</p>
+<p>The <code>\multiput</code>, <code>qbezier</code>, and <code>graphpaper</code> commands are
+described below.
+</p>
+<p>This draws a rectangle with a wavy top, using <code>\qbezier</code> for
+that curve.
+</p>
+<div class="example">
+<pre class="example">\begin{picture}(3,1.5)
+  \put(0,0){\vector(1,0){8}}  % x axis
+  \put(0,0){\vector(0,1){4}}  % y axis
+  \put(2,0){\line(0,1){3}}       % left side rectangle
+  \put(4,0){\line(0,1){3.5}}     % right side
+  \qbezier(2,3)(2.5,2.9)(3,3.25)
+    \qbezier(3,3.25)(3.5,3.6)(4,3.5)
+  \thicklines                 % below here, lines are twice as thick
+  \put(2,3){\line(4,1){2}}
+  \put(4.5,2.5){\framebox{Trapezoidal Rule}}
+\end{picture}
+</pre></div>
+
+
+
+<hr>
+<a name="g_t_005cput"></a>
+<a name="g_t_005cput-1"></a>
+<h4 class="subsection">8.19.1 <code>\put</code></h4>
+
+<a name="index-_005cput"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\put(<var>xcoord</var>,<var>ycoord</var>){<var>content</var>}
+</pre></div>
+
+<p>Place <var>content</var> at the coordinate (<var>xcoord</var>,<var>ycoord</var>).  See
+the discussion of coordinates and <code>\unitlength</code> in <a href="#picture">picture</a>.
+The <var>content</var> is processed in LR mode (see <a href="latex2e_17.html#Modes">Modes</a>) so it cannot
+contain line breaks.
+</p>
+<p>This includes the text into the <code>picture</code>.
+</p>
+<div class="example">
+<pre class="example">\put(4.5,2.5){Apply the \textit{unpoke} move}
+</pre></div>
+
+<p>The reference point, the location (4.5,2.5), is the lower left of the
+text, at the bottom left of the &lsquo;<samp>A</samp>&rsquo;.
+</p>
+
+<hr>
+<a name="g_t_005cmultiput"></a>
+<a name="g_t_005cmultiput-1"></a>
+<h4 class="subsection">8.19.2 <code>\multiput</code></h4>
+
+<a name="index-_005cmultiput"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\multiput(<var>x</var>,<var>y</var>)(<var>delta_x</var>,<var>delta_y</var>){<var>num-copies</var>}{<var>obj</var>}
+</pre></div>
+
+<p>Copy <var>obj</var> a total of <var>num-copies</var> times, with an increment of
+<var>delta_x,delta_y</var>.  The <var>obj</var> first appears at position
+<em>(x,y)</em>, then at <em>(x+\delta_x,y+\delta_y)</em>, and so on.
+</p>
+<p>This draws a simple grid with every fifth line in bold (see also
+<a href="#g_t_005cgraphpaper">\graphpaper</a>).
+</p>
+<div class="example">
+<pre class="example">\begin{picture}(10,10)
+  \linethickness{0.05mm}
+  \multiput(0,0)(1,0){10}{\line(0,1){10}} 
+  \multiput(0,0)(0,1){10}{\line(1,0){10}}
+  \linethickness{0.5mm}
+  \multiput(0,0)(5,0){3}{\line(0,1){10}}
+  \multiput(0,0)(0,5){3}{\line(1,0){10}}
+\end{picture}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005cqbezier"></a>
+<a name="g_t_005cqbezier-1"></a>
+<h4 class="subsection">8.19.3 <code>\qbezier</code></h4>
+
+<a name="index-_005cqbezier"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\qbezier(<var>x1</var>,<var>y1</var>)(<var>x2</var>,<var>y2</var>)(<var>x3</var>,<var>y3</var>)
+\qbezier[<var>num</var>](<var>x1</var>,<var>y1</var>)(<var>x2</var>,<var>y2</var>)(<var>x3</var>,<var>y3</var>)
+</pre></div>
+
+<p>Draw a quadratic Bezier curve whose control points are given by the
+three required arguments <code>(<var>x1</var>,<var>y1</var>)</code>,
+<code>(<var>x2</var>,<var>y2</var>)</code>, and <code>(<var>x3</var>,<var>y3</var>)</code>.  That is,
+the curve runs from <var>(x1,y1)</var> to <var>(x3,y3)</var>, is quadratic, and is
+such that the tangent line at <var>(x1,y1)</var> passes through
+<var>(x2,y2)</var>, as does the tangent line at <var>(x3,y3)</var>.
+</p>
+<p>This draws a curve from the coordinate (1,1) to (1,0).
+</p>
+<div class="example">
+<pre class="example">\qbezier(1,1)(1.25,0.75)(1,0)  
+</pre></div>
+
+<p>The curve&rsquo;s tangent line at (1,1) contains (1.25,0.75), as does the
+curve&rsquo;s tangent line at (1,0).
+</p>
+<p>The optional argument <var>num</var> gives the number of calculated
+intermediate points.  The default is to draw a smooth curve whose
+maximum number of points is <code>\qbeziermax</code> (change this value with
+<code>\renewcommand</code>).
+</p>
+
+<hr>
+<a name="g_t_005cgraphpaper"></a>
+<a name="g_t_005cgraphpaper-1"></a>
+<h4 class="subsection">8.19.4 <code>\graphpaper</code></h4>
+
+<a name="index-_005cgraphpaper"></a>
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\graphpaper(<var>x_init</var>,<var>y_init</var>)(<var>x_dimen</var>,<var>y_dimen</var>)
+\graphpaper[<var>spacing</var>](<var>x_init</var>,<var>y_init</var>)(<var>x_dimen</var>,<var>y_dimen</var>)
+</pre></div>
+
+<p>Draw a coordinate grid.  Requires the <code>graphpap</code> package.
+The grid&rsquo;s origin is <code>(<var>x_init</var>,<var>y_init</var>)</code>.
+Grid lines come every <var>spacing</var> units (the default is 10).
+The grid extends <var>x_dimen</var> units to the right and <var>y_dimen</var> units up.
+All arguments must be positive integers.
+</p>
+<p>This make a grid with seven vertical lines and eleven horizontal lines.
+</p>
+<div class="example">
+<pre class="example">\usepackage{graphpap}    % in preamble
+  ...
+\begin{picture}(6,20)    % in document body
+  \graphpaper[2](0,0)(12,20)
+\end{picture}
+</pre></div>
+
+<p>The lines are numbered every ten units.
+</p>
+
+<hr>
+<a name="g_t_005cline"></a>
+<a name="g_t_005cline-1"></a>
+<h4 class="subsection">8.19.5 <code>\line</code></h4>
+
+<a name="index-_005cline"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\line(<var>x_run</var>,<var>y_rise</var>){<var>travel</var>}
+</pre></div>
+
+<p>Draw a line.  It slopes such that it vertically rises <var>y_rise</var> for
+every horizontal <var>x_run</var>.  The <var>travel</var> is the total horizontal
+change&nbsp;&mdash; it is not the length of the vector, it is the change in
+<em>x</em>.  In the special case of vertical lines, where
+(<var>x_run</var>,<var>y_rise</var>)=(0,1), the <var>travel</var> gives the change in
+<em>y</em>.
+</p>
+<p>This draws a line starting at coordinates (1,3).
+</p>
+<div class="example">
+<pre class="example">\put(1,3){\line(2,5){4}}
+</pre></div>
+
+<p>For every over 2, this line will go up 5.  Because <var>travel</var>
+specifies that this goes over 4, it must go up&nbsp;10.  Thus its
+endpoint is <em>(1,3)+(4,10)=(5,13)</em>.  In particular, note that
+<em><var>travel</var>=4</em> is not the length of the line, it is the change in
+<em>x</em>.
+</p>
+<p>The arguments <var>x_run</var> and <var>y_rise</var> are integers that can be
+positive, negative, or zero. (If both are 0 then LaTeX treats the
+second as 1.)  With
+<code>\put(<var>x_init</var>,<var>y_init</var>){\line(<var>x_run</var>,<var>y_rise</var>){<var>travel</var>}}</code>,
+if <var>x_run</var> is negative then the line&rsquo;s ending point has a first
+coordinate that is less than <var>x_init</var>.  If <var>y_rise</var> is negative
+then the line&rsquo;s ending point has a second coordinate that is less than
+<var>y_init</var>.
+</p>
+<p>If <var>travel</var> is negative then you get <code>LaTeX Error: Bad \line or
+\vector argument.</code>
+</p>
+<a name="index-pict2e-package"></a>
+<a name="index-graphics-packages"></a>
+<a name="index-package_002c-pict2e"></a>
+<a name="index-pict2e-package-1"></a>
+
+<a name="index-package_002c-TikZ"></a>
+<a name="index-TikZ-package"></a>
+
+<a name="index-package_002c-PSTricks"></a>
+<a name="index-PSTricks-package"></a>
+
+<a name="index-package_002c-MetaPost"></a>
+<a name="index-MetaPost-package"></a>
+
+<a name="index-package_002c-Asymptote"></a>
+<a name="index-Asymptote-package"></a>
+
+<p>Standard LaTeX can only draw lines with a limited range of slopes
+because these lines are made by putting together line segments from
+pre-made fonts.  The two numbers <var>x_run</var> and <var>y_rise</var> must have
+integer values from -6 through&nbsp;6.  Also, they must be
+relatively prime, so that <var>(x_run,y_rise)</var> can be (2,1) but not
+(4,2) (if you choose the latter then instead of lines you get sequences
+of arrowheads; the solution is to switch to the former).  To get lines
+of arbitrary slope and plenty of other shapes in a system like
+<code>picture</code>, see the package <samp>pict2e</samp> on CTAN.  Another solution
+is to use a full-featured graphics system such as <samp>TikZ</samp>, or
+<samp>PSTricks</samp>, or <samp>MetaPost</samp>, or <samp>Asymptote</samp>
+</p>
+
+<hr>
+<a name="g_t_005clinethickness"></a>
+<a name="g_t_005clinethickness-1"></a>
+<h4 class="subsection">8.19.6 <code>\linethickness</code></h4>
+
+<a name="index-_005clinethickness"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\linethickness{<var>dim</var>}
+</pre></div>
+
+<p>Declares the thickness of subsequent horizontal and vertical lines in a
+picture to be <var>dim</var>, which must be a positive length
+(see <a href="latex2e_14.html#Lengths">Lengths</a>).  It differs from <code>\thinlines</code> and
+<code>\thicklines</code> in that it does not affect the thickness of slanted
+lines, circles, or ovals.
+</p>
+
+<hr>
+<a name="g_t_005cthinlines"></a>
+<a name="g_t_005cthinlines-1"></a>
+<h4 class="subsection">8.19.7 <code>\thinlines</code></h4>
+
+<a name="index-_005cthinlines"></a>
+
+<p>Declaration to set the thickness of subsequent lines, circles, and ovals
+in a picture environment to be 0.4pt.  This is the default
+thickness, so this command is unnecessary unless the thickness has been
+changed with either <a href="#g_t_005clinethickness">\linethickness</a> or <a href="#g_t_005cthicklines">\thicklines</a>.
+</p>
+
+<hr>
+<a name="g_t_005cthicklines"></a>
+<a name="g_t_005cthicklines-1"></a>
+<h4 class="subsection">8.19.8 <code>\thicklines</code></h4>
+
+<a name="index-_005cthicklines"></a>
+
+<p>Declaration to set the thickness of subsequent lines, circles, and ovals
+in a picture environment to be 0.8pt.  See also
+<a href="#g_t_005clinethickness">\linethickness</a> and <a href="#g_t_005cthinlines">\thinlines</a>.  This command is illustrated
+in the Trapezoidal Rule example of <a href="#picture">picture</a>.
+</p>
+
+<hr>
+<a name="g_t_005ccircle"></a>
+<a name="g_t_005ccircle-1"></a>
+<h4 class="subsection">8.19.9 <code>\circle</code></h4>
+
+<a name="index-_005ccircle"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\circle{<var>diameter</var>}
+\circle*{<var>diameter</var>}
+</pre></div>
+
+<p>Produces a circle with a diameter as close as possible to the specified
+one.  The <code>*</code>&nbsp;form produces a filled-in circle.
+</p>
+<p>This draws a circle of radius 6, centered at <code>(5,7)</code>.
+</p>
+<div class="example">
+<pre class="example">\put(5,7){\circle{6}}
+</pre></div>
+
+<p>The available radii for <code>circle</code> are, in points, the even
+numbers from 2 to 20, inclusive.  For <code>circle*</code> they are all the
+integers from 1 to 15.
+</p>
+
+<hr>
+<a name="g_t_005coval"></a>
+<a name="g_t_005coval-1"></a>
+<h4 class="subsection">8.19.10 <code>\oval</code></h4>
+
+<a name="index-_005coval"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\oval(<var>width</var>,<var>height</var>)
+\oval(<var>width</var>,<var>height</var>)[<var>portion</var>]
+</pre></div>
+
+<p>Produce a rectangle with rounded corners.  The optional argument
+<var>portion</var> allows you to produce only half or a quarter of the oval.
+For half an oval take <var>portion</var> to be one of these.
+</p>
+<dl compact="compact">
+<dt><code>t</code></dt>
+<dd><p>top half
+</p></dd>
+<dt><code>b</code></dt>
+<dd><p>bottom half
+</p></dd>
+<dt><code>r</code></dt>
+<dd><p>right half
+</p></dd>
+<dt><code>l</code></dt>
+<dd><p>left half
+</p></dd>
+</dl>
+
+<p>Produce only one quarter of the oval by setting <var>portion</var> to
+<code>tr</code>, <code>br</code>, <code>bl</code>, or <code>tl</code>.
+</p>
+<p>This draws the top half of an oval that is 3 wide and 7 tall.  
+</p>
+<div class="example">
+<pre class="example">\put(5,7){\oval(3,7)[t]}
+</pre></div>
+
+<p>The (5,7) is the center of the entire oval, not just the center of the
+top half.
+</p>
+<p>These shapes are not ellipses.  They are rectangles whose corners are
+made with quarter circles.  These circles have a maximum radius of
+20pt (see <a href="#g_t_005ccircle">\circle</a> for the sizes).  Thus large ovals are just
+boxes with a small amount of corner rounding.
+</p>
+
+<hr>
+<a name="g_t_005cshortstack"></a>
+<a name="g_t_005cshortstack-1"></a>
+<h4 class="subsection">8.19.11 <code>\shortstack</code></h4>
+
+<a name="index-_005cshortstack"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\shortstack[<var>position</var>]{<var>line 1</var> \\ ... }
+</pre></div>
+
+<p>Produce a vertical stack of objects.
+</p>
+<p>This labels the <em>y</em> axis.
+</p>
+<div class="example">
+<pre class="example">\put(0,0){\vector(1,0){4}}   % x axis
+\put(0,0){\vector(0,1){2}}   % y
+\put(-0.25,2){\makebox[0][r]{\shortstack[r]{$y$\\ axis}}}
+</pre></div>
+
+<p>For a short stack, the reference point is the lower left of the stack.
+In the above example the <a href="latex2e_20.html#g_t_005cmbox-_0026-_005cmakebox">\mbox &amp; \makebox</a> puts the stack flush
+right in a zero width box so in total the short stack sits slightly to
+the left of the <em>y</em>&nbsp;axis.
+</p>
+<p>The valid positions are:
+</p>
+<dl compact="compact">
+<dt><code>r</code></dt>
+<dd><p>Make objects flush right
+</p></dd>
+<dt><code>l</code></dt>
+<dd><p>Make objects flush left
+</p></dd>
+<dt><code>c</code></dt>
+<dd><p>Center objects (default)
+</p></dd>
+</dl>
+
+<a name="index-_005c_005c-_0028for-_005cshortstack-objects_0029"></a>
+<p>Separate objects into lines with <code>\\</code>.  These stacks are short in
+that, unlike in a <code>tabular</code> or <code>array</code> environment, here the
+rows are not spaced out to be of even heights.  Thus, in
+<code>\shortstack{X\\o\\o\\X}</code> the first and last rows are taller than
+the middle two.  You can adjust row heights either by putting in the
+usual interline spacing with <code>\shortstack{X\\ \strut o\\o\\X}</code>,
+or by hand, via an explicit zero-width box <code>\shortstack{X \\
+\rule{0pt}{12pt} o\\o\\X}</code> or by using <code>\\</code>&rsquo;s optional
+argument <code>\shortstack{X\\[2pt] o\\o\\X}</code>.
+</p>
+<p>The <code>\shortstack</code> command is also available outside the
+<code>picture</code> environment.
+</p>
+
+<hr>
+<a name="g_t_005cvector"></a>
+<a name="g_t_005cvector-1"></a>
+<h4 class="subsection">8.19.12 <code>\vector</code></h4>
+
+<a name="index-_005cvector"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\vector(<var>x_run</var>,<var>y_rise</var>){<var>travel</var>}
+</pre></div>
+
+<p>Draw a line ending in an arrow.  The slope of that line is: it
+vertically rises <var>y_rise</var> for every horizontal <var>x_run</var>.  The
+<var>travel</var> is the total horizontal change&nbsp;&mdash; it is not the
+length of the vector, it is the change in <em>x</em>.  In the special case
+of vertical vectors, if (<var>x_run</var>,<var>y_rise</var>)=(0,1), then
+<var>travel</var> gives the change in <em>y</em>.
+</p>
+<p>For an example see <a href="#picture">picture</a>.
+</p>
+<p>For elaboration on <var>x_run</var> and <var>y_rise</var> see <a href="#g_t_005cline">\line</a>.  As
+there, the values of <var>x_run</var> and <var>y_rise</var> are limited.  For
+<code>\vector</code> you must chooses integers between -4 and 4,
+inclusive.  Also, the two you choose must be relatively prime.  Thus,
+<code>\vector(2,1){4}</code> is acceptable but <code>\vector(4,2){4}</code> is
+not (if you use the latter then you get a sequence of arrowheads).
+</p>
+
+<hr>
+<a name="g_t_005cmakebox-_0028picture_0029"></a>
+<a name="g_t_005cmakebox-_0028picture_0029-1"></a>
+<h4 class="subsection">8.19.13 <code>\makebox</code> (picture)</h4>
+
+<a name="index-_005cmakebox-_0028for-picture_0029"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\makebox(<var>rec-width</var>,<var>rec-height</var>){<var>text</var>}
+\makebox(<var>rec-width</var>,<var>rec-height</var>)[<var>position</var>]{<var>text</var>}
+</pre></div>
+
+<p>Make a box to hold <var>text</var>.  This command fits with the
+<code>picture</code> environment, although you can use it outside of there,
+because <var>rec-width</var> and <var>rec-height</var> are numbers specifying
+distances in terms of the <code>\unitlength</code> (see <a href="#picture">picture</a>).  This
+command is similar to the normal <code>\makebox</code> command (see <a href="latex2e_20.html#g_t_005cmbox-_0026-_005cmakebox">\mbox &amp; \makebox</a>) except here that you must specify the width and height.  This
+command is fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>This makes a box of length 3.5 times <code>\unitlength</code> and height 4
+times <code>\unitlength</code>.
+</p>
+<div class="example">
+<pre class="example">\put(1,2){\makebox(3.5,4){...}}
+</pre></div>
+
+<p>The optional argument <code><var>position</var></code> specifies where in the box
+the <var>text</var> appears.  The default is to center it, both horizontally
+and vertically.  To place it somewhere else, use a string with one or
+two of these letters.
+</p>
+<dl compact="compact">
+<dt><code>t</code></dt>
+<dd><p>Puts <var>text</var> the top of the box.
+</p>
+</dd>
+<dt><code>b</code></dt>
+<dd><p>Put <var>text</var> at the bottom.
+</p>
+</dd>
+<dt><code>l</code></dt>
+<dd><p>Put <var>text</var> on the left.
+</p>
+</dd>
+<dt><code>r</code></dt>
+<dd><p>Put <var>text</var> on the right.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<a name="g_t_005cframebox-_0028picture_0029"></a>
+<a name="g_t_005cframebox-_0028picture_0029-1"></a>
+<h4 class="subsection">8.19.14 <code>\framebox</code> (picture)</h4>
+
+<a name="index-_005cframebox"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\framebox(<var>rec-width</var>,<var>rec-height</var>){<var>text</var>}
+\framebox(<var>rec-width</var>,<var>rec-height</var>)[<var>position</var>]{<var>text</var>}
+</pre></div>
+
+<p>This is the same as <a href="#g_t_005cmakebox-_0028picture_0029">\makebox (picture)</a> except that it puts a frame
+around the outside of the box that it creates.  The reference point is
+the bottom left corner of the frame.  This command fits with the
+<code>picture</code> environment, although you can use it outside of there,
+because lengths are numbers specifying the distance in terms of the
+<code>\unitlength</code> (see <a href="#picture">picture</a>).  This command is fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>This example creates a frame 2.5&nbsp;inches by 3&nbsp;inches and puts
+the text in the center.
+</p>
+<div class="example">
+<pre class="example">\setlength{\unitlength}{1in}
+\framebox(2.5,3){test text}
+</pre></div>
+
+<p>The required arguments are that the rectangle has overall width
+<var>rect-width</var> units and height <var>rect-height</var> units.
+</p>
+<p>The optional argument <var>position</var> specifies the position of
+<var>text</var>; see <a href="#g_t_005cmakebox-_0028picture_0029">\makebox (picture)</a> for the values that it can
+take.
+</p>
+<a name="index-_005cfboxrule-1"></a>
+<a name="index-_005cfboxsep-1"></a>
+<p>The rule has thickness <code>\fboxrule</code> and there is a blank space
+<code>\fboxsep</code> between the frame and the contents of the box.
+</p>
+<p>For this command, you must specify the <var>width</var> and <var>height</var>.  If
+you want to just put a frame around some contents whose dimension is
+determined in some other way then either use <code>\fbox</code> (see <a href="latex2e_20.html#g_t_005cfbox-_0026-_005cframebox">\fbox &amp; \framebox</a>) or <code>\frame</code> (see <a href="#g_t_005cframe">\frame</a>).
+</p>
+
+<hr>
+<a name="g_t_005cframe"></a>
+<a name="g_t_005cframe-1"></a>
+<h4 class="subsection">8.19.15 <code>\frame</code></h4>
+
+<a name="index-_005cframe"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\frame{<var>contents</var>}
+</pre></div>
+
+<p>Puts a rectangular frame around <var>contents</var>.  The reference point is
+the bottom left corner of the frame.  In contrast to <code>\framebox</code>
+(see <a href="#g_t_005cframebox-_0028picture_0029">\framebox (picture)</a>), this command puts no extra space is put
+between the frame and the object.  It is fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+
+<hr>
+<a name="g_t_005cdashbox"></a>
+<a name="g_t_005cdashbox-1"></a>
+<h4 class="subsection">8.19.16 <code>\dashbox</code></h4>
+
+<a name="index-_005cdashbox"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\dashbox{<var>dash-len</var>}(<var>rect-width</var>,<var>rect-height</var>){<var>text</var>}
+\dashbox{<var>dash-len</var>}(<var>rect-width</var>,<var>rect-height</var>)[<var>position</var>]{<var>text</var>}
+</pre></div>
+
+<p>Create a dashed rectangle around <var>text</var>.  This command fits with the
+<code>picture</code> environment, although you can use it outside of there,
+because lengths are numbers specifying the distance in terms of the
+<code>\unitlength</code> (see <a href="#picture">picture</a>).
+</p>
+<p>The required arguments are: dashes are <var>dash-len</var> units long, with
+the same length gap, and the rectangle has overall width
+<var>rect-width</var> units and height <var>rect-height</var> units.
+</p>
+<p>The optional argument <var>position</var> specifies the position of
+<var>text</var>; see <a href="#g_t_005cmakebox-_0028picture_0029">\makebox (picture)</a> for the values that it can
+take.
+</p>
+<p>This shows that you can use non-integer value for <var>dash-len</var>.
+</p>
+<div class="example">
+<pre class="example">\put(0,0){\dashbox{0.1}(5,0.5){My hovercraft is full of eels.}}
+</pre></div>
+
+<p>Each dash will be <code>0.1\unitlength</code> long, the box&rsquo;s width is
+<code>5\unitlength</code> and its height is <code>0.5\unitlength</code>.
+</p>
+<p>As in that example, a dashed box looks best when <var>rect-width</var> and
+<var>rect-height</var> are multiples of the <var>dash-len</var>.
+</p>
+
+<hr>
+<a name="quotation-_0026-quote"></a>
+<a name="quotation-_0026-quote-1"></a>
+<h3 class="section">8.20 <code>quotation</code> &amp; <code>quote</code></h3>
+
+<a name="index-environment_002c-quotation"></a>
+<a name="index-quotation-environment"></a>
+        
+<a name="index-quoted-text-with-paragraph-indentation_002c-displaying"></a>
+<a name="index-displaying-quoted-text-with-paragraph-indentation"></a>
+<a name="index-paragraph-indentations-in-quoted-text"></a>
+<a name="index-environment_002c-quote"></a>
+<a name="index-quote-environment"></a>
+        
+<a name="index-quoted-text-without-paragraph-indentation_002c-displaying"></a>
+<a name="index-displaying-quoted-text-without-paragraph-indentation"></a>
+<a name="index-paragraph-indentations-in-quoted-text_002c-omitting"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{quotation}
+  <var>text</var>
+\end{quotation}
+</pre></div>
+
+<p>or 
+</p>
+<div class="example">
+<pre class="example">\begin{quote}
+  <var>text</var>
+\end{quote}
+</pre></div>
+
+<p>Include a quotation. Both environments indent margins on both sides by
+<code>\leftmargin</code> and the text is right-justified.
+</p>
+<p>They differ in how they treat paragraphs. In the <code>quotation</code>
+environment, paragraphs are indented by 1.5em and the space
+between paragraphs is small, <code>0pt plus 1pt</code>.  In the <code>quote</code>
+environment, paragraphs are not indented and there is vertical space
+between paragraphs (it is the rubber length <code>\parsep</code>).
+</p>
+<div class="example">
+<pre class="example">\begin{quotation} \small\it
+  Four score and seven years ago
+  ... shall not perish from the earth.
+  \hspace{1em plus 1fill}---Abraham Lincoln
+\end{quotation}
+</pre></div>
+
+
+<hr>
+<a name="tabbing"></a>
+<a name="tabbing-1"></a>
+<h3 class="section">8.21 <code>tabbing</code></h3>
+
+<a name="index-environment_002c-tabbing"></a>
+<a name="index-tabbing-environment"></a>
+        
+<a name="index-tab-stops_002c-using"></a>
+<a name="index-lining-text-up-using-tab-stops"></a>
+<a name="index-alignment-via-tabbing"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{tabbing}
+<var>row1col1</var> \= <var>row1col2</var> ...  \\
+<var>row2col1</var> \&gt; <var>row2col2</var> ...  \\
+...
+\end{tabbing}
+</pre></div>
+
+<p>Align text in columns, by setting tab stops and tabbing to them much as
+was done on a typewriter.  This is less often used than the environments
+<code>tabular</code> (see <a href="#tabular">tabular</a>) or <code>array</code> (see <a href="#array">array</a>) because
+in those the width of each column need not be constant and need not be
+known in advance.
+</p>
+<p>This example has a first line where the tab stops are set to explicit
+widths, ended by a <code>\kill</code> command (which is described below):
+</p>
+<div class="example">
+<pre class="example">\begin{tabbing}
+\hspace{0.75in}     \= \hspace{0.40in}  \= \hspace{0.40in}    \kill
+Ship                \&gt; Guns             \&gt; Year    \\ 
+\textit{Sophie}     \&gt; 14               \&gt; 1800    \\
+\textit{Polychrest} \&gt; 24               \&gt; 1803    \\
+\textit{Lively}     \&gt; 38               \&gt; 1804    \\
+\textit{Surprise}   \&gt; 28               \&gt; 1805    \\
+\end{tabbing}
+</pre></div>
+
+<p>Both the <code>tabbing</code> environment and the more widely-used
+<code>tabular</code> environment put text in columns.  The most important
+distinction is that in <code>tabular</code> the width of columns is
+determined automatically by LaTeX, while in <code>tabbing</code> the user
+sets the tab stops.  Another distinction is that <code>tabular</code>
+generates a box, but <code>tabbing</code> can be broken across pages.
+Finally, while <code>tabular</code> can be used in any mode, <code>tabbing</code>
+can be used only in paragraph mode and it starts a new paragraph.
+</p>
+<p>A <code>tabbing</code> environment always starts a new paragraph, without
+indentation. Moreover, as shown in the example above, there is no need
+to use the starred form of the <code>\hspace</code> command at the beginning
+of a tabbed row.  The right margin of the <code>tabbing</code> environment is
+the end of line, so that the width of the environment is
+<code>\linewidth</code>.
+</p>
+<a name="index-row_002c-tabbing"></a>
+<p>The <code>tabbing</code> environment contains a sequence of <em>tabbed
+rows</em>.  The first tabbed row begins immediately after
+<code>\begin{tabbing}</code> and each row ends with <code>\\</code> or
+<code>\kill</code>. The last row may omit the <code>\\</code> and end with just
+<code>\end{tabbing}</code>.
+</p>
+<p>At any point the <code>tabbing</code> environment has a current tab stop
+pattern, a sequence of <em><var>n</var> &gt; 0</em> tab stops, numbered 0, 1,
+etc.  These create <var>n</var> corresponding columns.  Tab stop&nbsp;0 is
+always the left margin, defined by the enclosing environment.  Tab
+stop number&nbsp;<var>i</var> is set if it is assigned a horizontal
+position on the page.  Tab stop number&nbsp;<var>i</var> can only be set if
+all the stops 0, &hellip;, <em>i-1</em> have already been set; normally
+later stops are to the right of earlier ones.
+</p>
+<p>By default any text typeset in a <code>tabbing</code> environment is typeset
+ragged right and left-aligned on the current tab stop. Typesetting is
+done in LR mode (see <a href="latex2e_17.html#Modes">Modes</a>).
+</p>
+<p>The following commands can be used inside a <code>tabbing</code> environment.
+They are all fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<dl compact="compact">
+<dt><code>\\ <span class="roman">(tabbing)</span></code>
+<a name="index-_005c_005c-_0028tabbing_0029"></a>
+</dt>
+<dd><p>End a tabbed line and typeset it.
+</p>
+</dd>
+<dt><code>\= <span class="roman">(tabbing)</span></code>
+<a name="index-_005c_003d-_0028tabbing_0029"></a>
+</dt>
+<dd><p>Sets a tab stop at the current position.
+</p>
+</dd>
+<dt><code>\&gt; <span class="roman">(tabbing)</span></code>
+<a name="index-_005c_003e-_0028tabbing_0029"></a>
+</dt>
+<dd><a name="index-_005c_003e"></a>
+<p>Advances to the next tab stop.
+</p>
+</dd>
+<dt><code>\&lt;</code>
+<a name="index-_005c_003c"></a>
+</dt>
+<dd><p>Put following text to the left of the local margin (without changing
+the margin).  Can only be used at the start of the line.
+</p>
+</dd>
+<dt><code>\+</code>
+<a name="index-_005c_002b"></a>
+</dt>
+<dd><p>Moves the left margin of the next and all the
+following commands one tab stop to the right, beginning tabbed line if
+necessary.
+</p>
+</dd>
+<dt><code>\-</code>
+<a name="index-_005c_002d"></a>
+</dt>
+<dd><p>Moves the left margin of the next and all the
+following commands one tab stop to the left, beginning tabbed line if
+necessary.
+</p>
+</dd>
+<dt><code>\' <span class="roman">(tabbing)</span></code>
+<a name="index-_005c_0027-_0028tabbing_0029"></a>
+</dt>
+<dd><p>Moves everything that you have typed so far in the current column, i.e.,
+everything from the most recent <code>\&gt;</code>, <code>\&lt;</code>, <code>\'</code>,
+<code>\\</code>, or <code>\kill</code> command, to the previous column and aligned
+to the right, flush against the current column&rsquo;s tab stop.
+</p>
+</dd>
+<dt><code>\` <span class="roman">(tabbing)</span></code>
+<a name="index-_005c_0060-_0028tabbing_0029"></a>
+</dt>
+<dd><p>Allows you to put text flush right against any tab stop, including tab
+stop&nbsp;0.  However, it can&rsquo;t move text to the right of the last
+column because there&rsquo;s no tab stop there.  The <code>\`</code> command moves
+all the text that follows it, up to the <code>\\</code> or
+<code>\end{tabbing}</code> command that ends the line, to the right margin
+of the <code>tabbing</code> environment.  There must be no <code>\&gt;</code> or
+<code>\'</code> command between the <code>\`</code> and the <code>\\</code> or
+<code>\end{tabbing}</code> command that ends the line.
+</p>
+</dd>
+<dt><code>\a <span class="roman">(tabbing)</span></code>
+<a name="index-_005ca-_0028tabbing_0029"></a>
+</dt>
+<dd><a name="index-_005ca_0027-_0028acute-accent-in-tabbing_0029"></a>
+<a name="index-_005ca_0060-_0028grave-accent-in-tabbing_0029"></a>
+<a name="index-_005ca_003d-_0028macron-accent-in-tabbing_0029"></a>
+<p>In a <code>tabbing</code> environment, the commands <code>\=</code>, <code>\'</code> and
+<code>\`</code> do not produce accents as usual (see <a href="latex2e_23.html#Accents">Accents</a>).  Instead,
+use the commands <code>\a=</code>, <code>\a'</code> and <code>\a`</code>.
+</p>
+</dd>
+<dt><code>\kill</code>
+<a name="index-_005ckill"></a>
+</dt>
+<dd><p>Sets tab stops without producing text.  Works just like <code>\\</code> except
+that it throws away the current line instead of producing output for it.
+Any <code>\=</code>, <code>\+</code> or <code>\-</code> commands in that line remain in
+effect.
+</p>
+</dd>
+<dt><code>\poptabs</code>
+<a name="index-_005cpoptabs"></a>
+</dt>
+<dd><a name="index-_005cpoptabs-1"></a>
+<p>Restores the tab stop positions saved by the last <code>\pushtabs</code>.
+</p>
+</dd>
+<dt><code>\pushtabs</code>
+<a name="index-_005cpushtabs"></a>
+</dt>
+<dd><p>Saves all current tab stop positions. Useful for temporarily changing
+tab stop positions in the middle of a <code>tabbing</code> environment.
+</p>
+</dd>
+<dt><code>\tabbingsep</code>
+<a name="index-_005ctabbingsep"></a>
+</dt>
+<dd><p>Distance of the text moved by <code>\'</code> to left of current tab stop.
+</p>
+</dd>
+</dl>
+
+<p>This example typesets a Pascal function:
+</p>
+<div class="example">
+<pre class="example">\begin{tabbing}
+function \= fact(n : integer) : integer;\\
+         \&gt; begin \= \+ \\
+               \&gt; if \= n &gt; 1 then \+ \\
+                        fact := n * fact(n-1) \- \\
+                  else \+ \\
+                        fact := 1; \-\- \\
+            end;\\
+\end{tabbing}
+</pre></div>
+
+<p>The output looks like this.
+</p>
+<div class="example">
+<pre class="example">function fact(n : integer) : integer;
+         begin
+               if n &gt; 1 then
+                  fact := n * fact(n-1);
+               else
+                  fact := 1;
+         end;
+</pre></div>
+
+<a name="index-package_002c-algorithm2e"></a>
+<a name="index-algorithm2e-package"></a>
+<a name="index-package_002c-listings"></a>
+<a name="index-listings-package"></a>
+<a name="index-package_002c-minted"></a>
+<a name="index-minted-package"></a>
+
+<a name="index-package_002c-fancyvrb"></a>
+<a name="index-fancyvrb-package"></a>
+
+<p>This example is just for illustration of the environment.  To actually
+typeset computer code in typewriter like this, a verbatim environment
+(see <a href="#verbatim">verbatim</a>) would normally be best.  For pretty-printed code,
+there are quite a few packages, including <code>algorithm2e</code>,
+<code>fancyvrb</code>, <code>listings</code>, and <code>minted</code>.
+</p>
+        
+<hr>
+<a name="table"></a>
+<a name="table-1"></a>
+<h3 class="section">8.22 <code>table</code></h3>
+
+<a name="index-environment_002c-table"></a>
+<a name="index-table-environment"></a>
+        
+<a name="index-tables_002c-creating"></a>
+<a name="index-creating-tables"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{table}[<var>placement</var>]
+  <var>table body</var>
+  \caption[<var>loftitle</var>]{<var>title</var>}  % optional
+  \label{<var>label}</var>              % also optional
+\end{table}
+</pre></div>
+
+<p>A class of floats (see <a href="latex2e_5.html#Floats">Floats</a>).  They cannot be split across pages
+and so they are not typeset in sequence with the normal text but instead
+are floated to a convenient place, such as the top of a following page.
+</p>
+<p>This example <code>table</code> environment contains a <code>tabular</code>
+</p>
+<div class="example">
+<pre class="example">\begin{table}
+  \centering\small
+  \begin{tabular}{ll}
+    \multicolumn{1}{c}{\textit{Author}}
+      &amp;\multicolumn{1}{c}{\textit{Piece}}  \\ \hline
+    Bach            &amp;Cello Suite Number 1  \\
+    Beethoven       &amp;Cello Sonata Number 3 \\
+    Brahms          &amp;Cello Sonata Number 1
+  \end{tabular}
+  \caption{Top cello pieces}
+  \label{tab:cello}
+\end{table}
+</pre></div>
+
+<p>but you can put many different kinds of content in a <code>table</code>,
+including text, LaTeX commands, etc.
+</p>
+<p>For the possible values of <var>placement</var> and their effect on the 
+float placement algorithm, see <a href="latex2e_5.html#Floats">Floats</a>.
+</p>
+<p>The table body is typeset in a <code>parbox</code> of width <code>\textwidth</code>.
+It can contain text, commands, graphics, etc.
+</p>
+<p>The label is optional; it is used for cross references (see <a href="latex2e_7.html#Cross-references">Cross references</a>).  
+<a name="index-_005ccaption-1"></a>
+The <code>\caption</code> command is also optional.  It specifies caption text
+for the table.  By default it is numbered.  If its optional
+<var>lottitle</var> is present then that text is used in the list of tables
+instead of <var>title</var> (see <a href="latex2e_25.html#Table-of-contents-etc_002e">Table of contents etc.</a>).
+</p>
+<p>In this example the table and caption will float to the bottom of a page,
+unless it is pushed to a float page at the end.
+</p>
+<div class="example">
+<pre class="example">\begin{table}[b]
+  \centering
+  \begin{tabular}{r|p{2in}} \hline
+    One &amp;The loneliest number \\
+    Two &amp;Can be as sad as one.
+         It's the loneliest number since the number one.
+  \end{tabular}
+  \caption{Cardinal virtues}
+  \label{tab:CardinalVirtues}
+\end{table}
+</pre></div>
+
+
+<hr>
+<a name="tabular"></a>
+<a name="tabular-1"></a>
+<h3 class="section">8.23 <code>tabular</code></h3>
+
+<a name="index-environment_002c-tabular"></a>
+<a name="index-tabular-environment"></a>
+        
+<a name="index-lines-in-tables"></a>
+<a name="index-lining-text-up-in-tables"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}[<var>pos</var>]{<var>cols</var>}
+  <var>column 1 entry</var>  &amp;<var>column 2 entry</var>  ...  &amp;<var>column n entry</var> \\
+  ...
+\end{tabular}
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\begin{tabular*}{<var>width</var>}[<var>pos</var>]{<var>cols</var>}
+  <var>column 1 entry</var>  &amp;<var>column 2 entry</var>  ...  &amp;<var>column n entry</var> \\
+  ...
+\end{tabular*}
+</pre></div>
+
+<p>Produce a table, a box consisting of a sequence of horizontal rows.
+Each row consists of items that are aligned vertically in columns.  This
+illustrates many of the features.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{l|l}
+  \textit{Player name}  &amp;\textit{Career home runs}  \\ 
+  \hline
+  Hank Aaron  &amp;755 \\
+  Babe Ruth   &amp;714
+\end{tabular}
+</pre></div>
+
+<p>The output will have two left-aligned columns with a vertical bar
+between them.  This is specified in <code>tabular</code>&rsquo;s argument
+<code>{l|l}</code>.
+<a name="index-_0026"></a>
+Put the entries into different columns by separating them with an
+ampersand, <code>&amp;</code>.  The end of each row is marked with a double
+backslash, <code>\\</code>.  Put a horizontal rule below a row, after a double
+backslash, with <code>\hline</code>.
+<a name="index-_005c_005c-for-tabular"></a>
+After the last row the <code>\\</code> is optional, unless an <code>\hline</code>
+command follows to put a rule below the table.
+</p>
+<p>The required and optional arguments to <code>tabular</code> consist of:
+</p>
+<dl compact="compact">
+<dt><var>pos</var></dt>
+<dd><p>Optional.  Specifies the table&rsquo;s vertical position.  The default is to
+align the table so its vertical center matches the baseline of the
+surrounding text.  There are two other possible alignments: <code>t</code>
+aligns the table so its top row matches the baseline of the surrounding
+text, and <code>b</code> aligns on the bottom row.
+</p>
+<p>This only has an effect if there is other text.  In the common case of a
+<code>tabular</code> alone in a <code>center</code> environment this option makes
+no difference.
+</p>
+</dd>
+<dt><var>cols</var></dt>
+<dd><p>Required.  Specifies the formatting of columns.  It consists of a
+sequence of the following specifiers, corresponding to the types of
+column and intercolumn material.
+</p>
+<dl compact="compact">
+<dt><code>l</code></dt>
+<dd><p>A column of left-aligned items.
+</p>
+</dd>
+<dt><code>r</code></dt>
+<dd><p>A column of right-aligned items.
+</p>
+</dd>
+<dt><code>c</code></dt>
+<dd><p>A column of centered items.
+</p>
+</dd>
+<dt><code>|</code></dt>
+<dd><p>A vertical line the full height and depth of the environment.
+</p>
+</dd>
+<dt><code>@{<var>text or space</var>}</code></dt>
+<dd><p>Insert <var>text or space</var> at this location in every row.  The <var>text
+or space</var> material is typeset in LR mode.  This text is fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>If between two columns there is no @-expression then LaTeX&rsquo;s
+<code>book</code>, <code>article</code>, and <code>report</code> classes will put on
+either side of each column a space of length <code>\tabcolsep</code>, which by
+default is 6pt.  That is, by default adjacent columns are
+separated by 12pt (so <code>\tabcolsep</code> is misleadingly named
+since it is only half of the separation between tabular columns).  In
+addition, a space of 6pt also comes before the first column and
+after the final column, unless you put a <code>@{...}</code> or <code>|</code>
+there.
+</p>
+<p>If you override the default and use an @-expression then LaTeX does
+not insert <code>\tabcolsep</code> so you must insert any desired space
+yourself, as in <code>@{\hspace{1em}}</code>.
+</p>
+<p>An empty expression <code>@{}</code> will eliminate the space. In
+particular, sometimes you want to eliminate the space before the first
+column or after the last one, as in the example below where the
+tabular lines need to lie on the left margin.
+</p>
+<div class="example">
+<pre class="example">\begin{flushleft}
+  \begin{tabular}{@{}l}
+    ...
+  \end{tabular}
+\end{flushleft}
+</pre></div>
+
+<p>The next example shows text, a decimal point between the columns,
+arranged so the numbers in the table are aligned on it.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{r@{$.$}l}
+  $3$ &amp;$14$  \\
+  $9$ &amp;$80665$
+\end{tabular}
+</pre></div>
+
+<a name="index-_005cextracolsep"></a>
+<p>An <code>\extracolsep{<var>wd</var>}</code> command in an @-expression causes an
+extra space of width <var>wd</var> to appear to the left of all subsequent
+columns, until countermanded by another <code>\extracolsep</code>.  Unlike
+ordinary intercolumn space, this extra space is not suppressed by an
+@-expression.  An <code>\extracolsep</code> command can be used only in an
+@-expression in the <code>cols</code> argument.  Below, LaTeX inserts the
+right amount of intercolumn space to make the entire table 4 inches
+wide.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular*}{4in}{l@{\extracolsep{\fill}}l}
+  Seven times down, eight times up \ldots 
+  &amp;such is life!
+\end{tabular*}
+</pre></div>
+
+<p>To insert commands that are automatically executed before a given
+column, load the <code>array</code> package and use the <code>&gt;{...}</code>
+specifier.
+</p>
+</dd>
+<dt><code>p{<var>wd</var>}</code></dt>
+<dd><p>Each item in the column is typeset in a parbox of width <var>wd</var>, as if
+it were the argument of a <code>\parbox[t]{wd}{...}</code> command.
+</p>
+<p>A line break double backslash <code>\\</code> may not appear in the item,
+except inside an environment like <code>minipage</code>, <code>array</code>, or
+<code>tabular</code>, or inside an explicit <code>\parbox</code>, or in the scope of
+a <code>\centering</code>, <code>\raggedright</code>, or <code>\raggedleft</code>
+declaration (when used in a <code>p</code>-column element these declarations
+must appear inside braces, as with <code>{\centering .. \\
+..}</code>). Otherwise LaTeX will misinterpret the double backslash as
+ending the row.  Instead, to get a line break in there use
+<code>\newline</code> (see <a href="latex2e_9.html#g_t_005cnewline">\newline</a>).
+</p>
+</dd>
+<dt><code>*{<var>num</var>}{<var>cols</var>}</code></dt>
+<dd><p>Equivalent to <var>num</var> copies of <var>cols</var>, where <var>num</var> is a
+positive integer and <var>cols</var> is a list of specifiers.  Thus the
+specifier <code>\begin{tabular}{|*{3}{l|r}|}</code> is equivalent to
+the specifier <code>\begin{tabular}{|l|rl|rl|r|}</code>.  Note that
+<var>cols</var> may contain another <code>*</code>-expression.
+</p> 
+</dd>
+</dl>
+
+</dd>
+<dt><var>width</var></dt>
+<dd><p>Required for <code>tabular*</code>, not allowed for <code>tabular</code>. Specifies
+the width of the <code>tabular*</code> environment.  The space between columns
+should be rubber, as with <code>@{\extracolsep{\fill}}</code>, to allow
+the table to stretch or shrink to make the specified width, or else you
+are likely to get the <code>Underfull \hbox (badness 10000) in alignment
+...</code> warning.
+</p>
+</dd>
+</dl>
+
+<p>Parameters that control formatting:
+</p>
+<dl compact="compact">
+<dt><code>\arrayrulewidth</code>
+<a name="index-_005carrayrulewidth"></a>
+</dt>
+<dd><a name="tabular-arrayrulewidth"></a><p>A length that is the thickness of the rule created by <code>|</code>,
+<code>\hline</code>, and <code>\vline</code> in the <code>tabular</code> and <code>array</code>
+environments.  The default is &lsquo;<samp>.4pt</samp>&rsquo;. Change it as in
+<code>\setlength{\arrayrulewidth}{0.8pt}</code>.
+</p>
+</dd>
+<dt><code>\arraystretch</code>
+<a name="index-_005carraystretch"></a>
+</dt>
+<dd><a name="tabular-arraystrech"></a><p>A factor by which the spacing between rows in the <code>tabular</code> and
+<code>array</code> environments is multiplied.  The default is &lsquo;<samp>1</samp>&rsquo;, for
+no scaling.  Change it as <code>\renewcommand{\arraystretch}{1.2}</code>.
+</p>
+</dd>
+<dt><code>\doublerulesep</code>
+<a name="index-_005cdoublerulesep"></a>
+</dt>
+<dd><a name="tabular-doublerulesep"></a><p>A length that is the distance between the vertical rules produced by the
+<code>||</code> specifier.  The default is &lsquo;<samp>2pt</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\tabcolsep</code>
+<a name="index-_005ctabcolsep"></a>
+</dt>
+<dd><a name="tabular-tabcolsep"></a><p>A length that is half of the space between columns. The default is
+&lsquo;<samp>6pt</samp>&rsquo;.  Change it with <code>\setlength</code>.
+</p>
+</dd>
+</dl>
+
+<p>The following commands can be used inside the body of a <code>tabular</code>
+environment, the first two inside an entry and the second two between
+lines:
+</p>
+
+
+<hr>
+<a name="g_t_005cmulticolumn"></a>
+<a name="g_t_005cmulticolumn-1"></a>
+<h4 class="subsection">8.23.1 <code>\multicolumn</code></h4>
+
+<a name="index-_005cmulticolumn"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\multicolumn{<var>numcols</var>}{<var>cols</var>}{<var>text</var>}
+</pre></div>
+
+<p>Make an <code>array</code> or <code>tabular</code> entry that spans several columns.
+The first argument <var>numcols</var> gives the number of columns to span.
+The second argument <var>cols</var> specifies the formatting of the entry,
+with <code>c</code> for centered, <code>l</code> for flush left, or <code>r</code> for
+flush right.  The third argument <var>text</var> gives the contents of that
+entry.
+</p>
+<p>In this example, in the first row, the second and third columns are
+spanned by the single heading &lsquo;<samp>Name</samp>&rsquo;.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{lccl} 
+  \textit{ID}       &amp;\multicolumn{2}{c}{\textit{Name}} &amp;\textit{Age} \\
+  \hline  
+  978-0-393-03701-2 &amp;O'Brian &amp;Patrick                  &amp;55           \\
+    ...
+\end{tabular}
+</pre></div>
+
+<p>What counts as a column is:&nbsp;the column format specifier for the
+<code>array</code> or <code>tabular</code> environment is broken into parts, where
+each part (except the first) begins with <code>l</code>, <code>c</code>, <code>r</code>,
+or&nbsp;<code>p</code>.  So from <code>\begin{tabular}{|r|ccp{1.5in}|}</code>
+the parts are <code>|r|</code>, <code>c</code>, <code>c</code>,
+and&nbsp;<code>p{1.5in}|</code>.
+</p>
+<p>The <var>cols</var> argument overrides the <code>array</code> or <code>tabular</code>
+environment&rsquo;s intercolumn area default adjoining this multicolumn
+entry. To affect that area, this argument can contain vertical bars
+<code>|</code> indicating the placement of vertical rules, and <code>@{...}</code>
+expressions.  Thus if <var>cols</var> is &lsquo;<samp>|c|</samp>&rsquo; then this multicolumn
+entry will be centered and a vertical rule will come in the intercolumn
+area before it and after it.  This table details the exact behavior.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{|cc|c|c|}
+  \multicolumn{1}{r}{w}       % entry one
+    &amp;\multicolumn{1}{|r|}{x}  % entry two 
+    &amp;\multicolumn{1}{|r}{y}   % entry three
+    &amp;z                        % entry four
+\end{tabular}
+</pre></div>
+
+<p>Before the first entry the output will not have a vertical rule because
+the <code>\multicolumn</code> has the <var>cols</var> specifier &lsquo;<samp>r</samp>&rsquo; with no
+initial vertical bar.  Between entry one and entry two there will be a
+vertical rule; although the first <var>cols</var> does not have an ending
+vertical bar, the second <var>cols</var> does have a starting one.  Between
+entry two and entry three there is a single vertical rule; despite that
+the <var>cols</var> in both of the surrounding <code>multicolumn</code>&rsquo;s call for
+a vertical rule, you only get one rule.  Between entry three and entry
+four there is no vertical rule; the default calls for one but the
+<var>cols</var> in the entry three <code>\multicolumn</code> leaves it out, and
+that takes precedence.  Finally, following entry four there is a
+vertical rule because of the default.
+</p>
+<p>The number of spanned columns <var>numcols</var> can be 1.  Besides giving
+the ability to change the horizontal alignment, this also is useful to
+override for one row the <code>tabular</code> definition&rsquo;s default intercolumn
+area specification, including the placement of vertical rules.
+</p>
+<p>In the example below, in the <code>tabular</code> definition the first column
+is specified to default to left justified but in the first row the entry
+is centered with <code>\multicolumn{1}{c}{\textsc{Period}}</code>.
+Also in the first row, the second and third columns are spanned by a
+single entry with <code>\multicolumn{2}{c}{\textsc{Span}}</code>,
+overriding the specification to center those two columns on the page
+range en-dash.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{l|r@{--}l} 
+  \multicolumn{1}{c}{\textsc{Period}}  
+    &amp;multicolumn{2}{c}{\textsc{Span}} \\ \hline
+  Baroque          &amp;1600           &amp;1760         \\
+  Classical        &amp;1730           &amp;1820         \\
+  Romantic         &amp;1780           &amp;1910         \\
+  Impressionistic  &amp;1875           &amp;1925
+\end{tabular}
+</pre></div>
+
+<p>Although the <code>tabular</code> specification by default puts a vertical
+rule between the first and second columns, no such vertical rule appears
+in the first row here.  That&rsquo;s because there is no vertical bar in the
+<var>cols</var> part of the first row&rsquo;s first <code>\multicolumn</code> command.
+</p>
+
+<hr>
+<a name="g_t_005cvline"></a>
+<a name="g_t_005cvline-1"></a>
+<h4 class="subsection">8.23.2 <code>\vline</code></h4>
+
+<a name="index-_005cvline"></a>
+<p>Draw a vertical line in a <code>tabular</code> or <code>array</code> environment
+extending the full height and depth of an entry&rsquo;s row.  Can also be
+used in an @-expression, although its synonym vertical
+bar&nbsp;<code>|</code> is more common.  This command is rarely used in the
+body of a table; typically a table&rsquo;s vertical lines are specified in
+<code>tabular</code>&rsquo;s <var>cols</var> argument and overridden as needed with
+<code>\multicolumn</code> (see <a href="#tabular">tabular</a>).
+</p>
+<p>The example below illustrates some pitfalls.  In the first row&rsquo;s second
+entry the <code>\hfill</code> moves the <code>\vline</code> to the left edge of the
+cell.  But that is different than putting it halfway between the two
+columns, so between the first and second columns there are two vertical
+rules, with the one from the <code>{c|cc}</code> specifier coming before the
+one produced by the <code>\vline\hfill</code>.  In contrast, the first row&rsquo;s
+third entry shows the usual way to put a vertical bar between two
+columns.  In the second row, the <code>ghi</code> is the widest entry in its
+column so in the <code>\vline\hfill</code> the <code>\hfill</code> has no effect and
+the vertical line in that entry appears immediately next to the
+<code>g</code>, with no whitespace.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{c|cc}
+  x   &amp;\vline\hfill y   &amp;\multicolumn{1}{|r}{z} \\ % row 1  
+  abc &amp;def &amp;\vline\hfill ghi                       % row 2  
+\end{tabular}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005ccline"></a>
+<a name="g_t_005ccline-1"></a>
+<h4 class="subsection">8.23.3 <code>\cline</code></h4>
+
+<a name="index-_005ccline"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\cline{<var>i</var>-<var>j</var>}
+</pre></div>
+
+<p>In an <code>array</code> or <code>tabular</code> environment, draw a horizontal rule
+beginning in column&nbsp;<var>i</var> and ending in column&nbsp;<var>j</var>. The
+dash, <code>-</code>, must appear in the mandatory argument. To span a single
+column use the number twice, as with <code>\cline{2-2}</code>.
+</p>
+<p>This example puts two horizontal lines between the first and second
+rows, one line in the first column only, and the other spanning the
+third and fourth columns.  The two lines are side-by-side, at the same
+height.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{llrr} 
+  a &amp;b &amp;c &amp;d \\ \cline{1-1} \cline{3-4} 
+  e &amp;f &amp;g &amp;h 
+\end{tabular}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005chline"></a>
+<a name="g_t_005chline-1"></a>
+<h4 class="subsection">8.23.4 <code>\hline</code></h4>
+
+<a name="index-_005chline"></a>
+
+<p>Draw a horizontal line the width of the enclosing <code>tabular</code> or
+<code>array</code> environment.  It&rsquo;s most commonly used to draw a line at the
+top, bottom, and between the rows of a table.
+</p>
+<p>In this example the top of the table has two horizontal rules, one above
+the other, that span both columns.  The bottom of the table has a single
+rule spanning both columns.  Because of the <code>\hline</code>, the
+<code>tabular</code> second row&rsquo;s line ending double backslash&nbsp;<code>\\</code>
+is required.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{ll} \hline\hline
+  Baseball   &amp;Red Sox  \\
+  Basketball &amp;Celtics  \\ \hline
+\end{tabular}
+</pre></div>
+
+
+<hr>
+<a name="thebibliography"></a>
+<a name="thebibliography-1"></a>
+<h3 class="section">8.24 <code>thebibliography</code></h3>
+
+<a name="index-environment_002c-thebibliography"></a>
+<a name="index-thebibliography-environment"></a>
+        
+<a name="index-bibliography_002c-creating-_0028manually_0029"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{thebibliography}{<var>widest-label</var>}
+  \bibitem[<var>label</var>]{<var>cite_key}</var>
+  ...
+\end{thebibliography}
+</pre></div>
+
+<p>Produce a bibliography or reference list.  There are two ways to produce
+bibliographic lists.  This environment is suitable when you have only a
+few references and can maintain the list by hand.  See <a href="#Using-BibTeX">Using BibTeX</a>
+for a more sophisticated approach.
+</p>
+<p>This shows the environment with two entries.
+</p>
+<div class="example">
+<pre class="example">This work is based on \cite{latexdps}.
+Together they are \cite{latexdps, texbook}.
+  ...
+\begin{thebibliography}{9}
+\bibitem{latexdps} 
+  Leslie Lamport. 
+  \textit{\LaTeX{}: a document preparation system}. 
+  Addison-Wesley, Reading, Massachusetts, 1993.
+\bibitem{texbook} 
+  Donald Ervin Knuth. 
+  \textit{The \TeX book}. 
+  Addison-Wesley, Reading, Massachusetts, 1983.
+\end{thebibliography}
+</pre></div>
+
+<p>This styles the first reference as &lsquo;<samp>[1] Leslie ...</samp>&rsquo;, and so that
+<code>\cite{latexdps}</code> produces the matching &lsquo;<samp>... based on [1]</samp>&rsquo;.
+The second <code>\cite</code> produces &lsquo;<samp>[1, 2]</samp>&rsquo;.  You must compile the
+document twice to resolve these references.
+</p>
+<p>The mandatory argument <var>widest-label</var> is text that, when typeset, is
+as wide as the widest item label produced by the <code>\bibitem</code>
+commands.  The tradition is to use <code>9</code> for bibliographies with less
+than 10 references, <code>99</code> for ones with less than 100, etc.
+</p>
+<p>The bibliographic list is headed by a title such as &lsquo;<samp>Bibliography</samp>&rsquo;.
+To change it there are two cases.  In the <samp>book</samp> and <samp>report</samp>
+classes, where the top level sectioning is <code>\chapter</code> and the
+default title is &lsquo;<samp>Bibliography</samp>&rsquo;, that title is in the macro
+<code>\bibname</code>.  For <samp>article</samp>, where the class&rsquo;s top level
+sectioning is <code>\section</code> and the default is &lsquo;<samp>References</samp>&rsquo;, the
+title is in macro <code>\refname</code>.  Change it by redefining the command,
+as with <code>\renewcommand{\refname}{Cited references}</code> after
+<code>\begin{document}</code>.
+</p>
+<a name="index-package_002c-babel-1"></a>
+<a name="index-babel-package-1"></a>
+
+<p>Language support packages such as <samp>babel</samp> will automatically
+redefine <code>\refname</code> or <code>\bibname</code> to fit the selected
+language.
+</p>
+
+
+<hr>
+<a name="g_t_005cbibitem"></a>
+<a name="g_t_005cbibitem-1"></a>
+<h4 class="subsection">8.24.1 <code>\bibitem</code></h4>
+
+<a name="index-_005cbibitem"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\bibitem{<var>cite_key</var>}
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\bibitem[<var>label</var>]{<var>cite_key</var>}
+</pre></div>
+
+<p>Generate an entry labeled by <var>label</var>.  The default is for LaTeX to
+generates a number using the <code>enumi</code> counter.  The <em>citation key</em> 
+<a name="index-citation-key"></a>
+<var>cite_key</var> is a string of
+letters, numbers, and punctuation symbols (but not comma).
+</p>
+<p>See <a href="#thebibliography">thebibliography</a> for an example.
+</p>
+<p>The optional <var>label</var> changes the default label from an integer to the
+given string.  With this
+</p>
+<div class="example">
+<pre class="example">\begin{thebibliography}
+\bibitem[Lamport 1993]{latexdps} 
+  Leslie Lamport. 
+  \textit{\LaTeX{}: a document preparation system}. 
+  Addison-Wesley, Reading, Massachusetts, 1993.
+\bibitem{texbook} 
+  Donald Ervin Knuth. 
+  \textit{The \TeX book}. 
+  Addison-Wesley, Reading, Massachusetts, 1983.
+\end{thebibliography}
+</pre></div>
+
+<p>the first entry will be styled as &lsquo;<samp>[Lamport 1993] Leslie ...</samp>&rsquo;  (The
+amount of horizontal space that LaTeX leaves for the label depends on
+the <var>widest-label</var> argument of the <code>thebibliography</code>
+environment; see <a href="#thebibliography">thebibliography</a>.)  Similarly, <code>... based on
+\cite{latexdps}</code> will produce &lsquo;<samp>... based on [Lamport 1994]</samp>&rsquo;.
+</p>
+<p>If you mix <code>\bibitem</code> entries having a <var>label</var> with those that
+do not then LaTeX will number the unlabelled ones sequentially.  In
+the example above the <code>texbook</code> entry will appear as &lsquo;<samp>[1]
+Donald ...</samp>&rsquo;, despite that it is the second entry.
+</p>
+<p>If you use the same <var>cite_key</var> twice then you get &lsquo;<samp>LaTeX
+Warning: There were multiply-defined labels</samp>&rsquo;.
+</p>
+<p>Under the hood, LaTeX remembers the <var>cite_key</var> and <var>label</var>
+information because <code>\bibitem</code> writes it to the auxiliary file
+<samp><var>filename</var>.aux</samp>.  For instance, the above example causes
+<code>\bibcite{latexdps}{Lamport, 1993}</code> and
+<code>\bibcite{texbook}{1}</code> to appear in that file.  The <samp>.aux</samp>
+file is read by the <code>\begin{document}</code> command and then the
+information is available for <code>\cite</code> commands.  This explains why
+you need to run LaTeX twice to resolve references: once to write it
+out and once to read it in.
+</p>
+<p>Because of this two-pass algorithm, when you add a <code>\bibitem</code> or
+change its <var>cite_key</var> you may get &lsquo;<samp>LaTeX Warning: Label(s) may
+have changed. Rerun to get cross-references right</samp>&rsquo;.  Fix it by
+recompiling.
+</p>
+
+<hr>
+<a name="g_t_005ccite"></a>
+<a name="g_t_005ccite-1"></a>
+<h4 class="subsection">8.24.2 <code>\cite</code></h4>
+
+<a name="index-_005ccite"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\cite{<var>keys</var>}
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\cite[<var>subcite</var>]{<var>keys</var>}
+</pre></div>
+
+<p>Generate as output a citation to the references associated with
+<var>keys</var>.  The mandatory <var>keys</var> is a citation key, or a
+comma-separated list of citation keys (see <a href="#g_t_005cbibitem">\bibitem</a>).
+</p>
+<p>This 
+</p>
+<div class="example">
+<pre class="example">The ultimate source is \cite{texbook}.
+  ...
+\begin{thebibliography}
+\bibitem{texbook} 
+  Donald Ervin Knuth. 
+  \textit{The \TeX book}. 
+  Addison-Wesley, Reading, Massachusetts, 1983.
+\end{thebibliography}
+</pre></div>
+
+<p>produces output like &lsquo;<samp>... source is [1]</samp>&rsquo;.  (You can change the
+appearance of the citation with bibliography styles.  More is in
+<a href="#Using-BibTeX">Using BibTeX</a>.)
+</p>
+<p>The optional argument <var>subcite</var> is appended to the citation.  For
+example, <code>See 14.3 in \cite[p.~314]{texbook}</code> might produce
+&lsquo;<samp>See 14.3 in [1, p.&nbsp;314]</samp>&rsquo;.
+</p>
+<p>In addition to what appears in the output, <code>\cite</code> writes
+information to the auxiliary file <samp><var>filename</var>.aux</samp>.  For
+instance, <code>\cite{latexdps}</code> writes &lsquo;<samp>\citation{latexdps}</samp>&rsquo;
+to that file.  This information is used by BibTeX to include in your
+reference list only those works that you have actually cited; see
+<a href="#g_t_005cnocite">\nocite</a> also.
+</p>
+<p>If <var>keys</var> is not in your bibliography information then you get
+&lsquo;<samp>LaTeX Warning: There were undefined references</samp>&rsquo;, and in the output
+the citation shows as a boldface question mark between square brackets.
+There are two possible causes.  If you have mistyped something, as in
+<code>\cite{texbok}</code> then you need to correct the spelling.  On the
+other hand, if you have just added or modified the bibliographic
+information and so changed the <samp>.aux</samp> file (see <a href="#g_t_005cbibitem">\bibitem</a>) then
+the fix may be to run LaTeX again.
+</p>
+
+<hr>
+<a name="g_t_005cnocite"></a>
+<a name="g_t_005cnocite-1"></a>
+<h4 class="subsection">8.24.3 <code>\nocite</code></h4>
+
+<a name="index-_005cnocite"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example"><code>\nocite{<var>keys</var>}</code>
+</pre></div>
+
+<p>Produces no output but writes <var>keys</var> to the auxiliary file
+<samp><var>doc-filename</var>.aux</samp>.
+</p>
+<p>The mandatory argument <var>keys</var> is a comma-separated list of one or
+more citation keys (see <a href="#g_t_005cbibitem">\bibitem</a>).  This information is used by
+BibTeX to include these works in your reference list even though you
+have not cited them (see <a href="#g_t_005ccite">\cite</a>).
+</p>
+
+<hr>
+<a name="Using-BibTeX"></a>
+<a name="Using-BibTeX-1"></a>
+<h4 class="subsection">8.24.4 Using BibTeX</h4>
+
+<a name="index-using-BibTeX"></a>
+<a name="index-bibTeX_002c-using"></a>
+<a name="index-bibliography_002c-creating-_0028automatically_0029"></a>
+<a name="index-_005cbibliographystyle"></a>
+<a name="index-_005cbibliography"></a>
+
+<p>As described in <code>thebibliography</code> (see <a href="#thebibliography">thebibliography</a>), a
+sophisticated approach to managing bibliographies is provided by the
+BibTeX program.  This is only an introduction; see the full
+documentation on CTAN.
+</p>
+<p>With BibTeX, you don&rsquo;t use <code>thebibliography</code>
+(see <a href="#thebibliography">thebibliography</a>). Instead, include these lines.
+</p>
+<div class="example">
+<pre class="example">\bibliographystyle{<var>bibstyle</var>}
+\bibliography{<var>bibfile1</var>, <var>bibfile2</var>, ...}
+</pre></div>
+
+<p>The <var>bibstyle</var> refers to a file <samp><var>bibstyle</var>.bst</samp>, which
+defines how your citations will look.  The standard <var>bibstyle</var>&rsquo;s
+distributed with BibTeX are:
+</p>
+<dl compact="compact">
+<dt><code>alpha</code></dt>
+<dd><p>Labels are formed from name of author and year of publication.
+The bibliographic items are sorted alphabetically.
+</p></dd>
+<dt><code>plain</code></dt>
+<dd><p>Labels are integers.
+Sort the  bibliographic items alphabetically.
+</p></dd>
+<dt><code>unsrt</code></dt>
+<dd><p>Like <code>plain</code>, but entries are in order of citation.
+</p></dd>
+<dt><code>abbrv</code></dt>
+<dd><p>Like <code>plain</code>, but more compact labels.
+</p></dd>
+</dl>
+
+<p>Many, many other BibTeX style files exist,
+tailored to the demands of various publications.  See CTAN&rsquo;s listing
+<a href="http://mirror.ctan.org/biblio/bibtex/contrib">http://mirror.ctan.org/biblio/bibtex/contrib</a>.
+</p>
+<p>The <code>\bibliography</code> command is what actually produces the
+bibliography.  Its argument is a comma-separated list, referring to
+files named <samp><var>bibfile1</var>.bib</samp>, <samp><var>bibfile2</var>.bib</samp>,
+&hellip; These contain your database in BibTeX format.  This shows a
+typical couple of entries in that format.
+</p>
+<div class="example">
+<pre class="example">@book{texbook,
+  title     = {The {{\TeX}}book},
+  author    = {D.E. Knuth},
+  isbn      = {0201134489},
+  series    = {Computers \&amp; typesetting},
+  year      = {1983},
+  publisher = {Addison-Wesley}
+}
+@book{sexbook,
+    author    = {W.H. Masters and V.E. Johnson},
+    title     = {Human Sexual Response},
+    year      = {1966},
+    publisher = {Bantam Books}
+}
+</pre></div>
+
+<p>Only the bibliographic entries referred to via <code>\cite</code> and
+<code>\nocite</code> will be listed in the document&rsquo;s bibliography.  Thus you
+can keep all your sources together in one file, or a small number of
+files, and rely on BibTeX to include in this document only those that
+you used.
+</p>
+
+<hr>
+<a name="theorem"></a>
+<a name="theorem-1"></a>
+<h3 class="section">8.25 <code>theorem</code></h3>
+
+<a name="index-environment_002c-theorem"></a>
+<a name="index-theorem-environment"></a>
+        
+<a name="index-theorems_002c-typesetting"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{theorem}
+  <var>theorem body</var>
+\end{theorem}
+</pre></div>
+
+<p>Produces &lsquo;<samp>Theorem <var>n</var></samp>&rsquo; in boldface followed by <var>theorem
+body</var> in italics.  The numbering possibilities for <var>n</var> are described under
+<code>\newtheorem</code> (see <a href="latex2e_12.html#g_t_005cnewtheorem">\newtheorem</a>).
+</p>
+<div class="example">
+<pre class="example">\newtheorem{lem}{Lemma}      % in preamble
+\newtheorem{thm}{Theorem}    
+  ...
+\begin{lem}                  % in  document body
+  text of lemma
+\end{lem}
+
+The next result follows immediately.
+\begin{thm}[Gauss]   %  put `Gauss' in parens after theorem head
+  text of theorem
+\end{thm}
+</pre></div>
+
+<a name="index-package_002c-amsmath-4"></a>
+<a name="index-amsmath-package-4"></a>
+
+<a name="index-package_002c-amsthm"></a>
+<a name="index-amsthm-package"></a>
+
+<p>Most new documents use the packages <code>amsthm</code> and <code>amsmath</code>
+from the American Mathematical Society.  Among other things these
+packages include a large number of options for theorem environments,
+such as styling options.
+</p>
+
+<hr>
+<a name="titlepage"></a>
+<a name="titlepage-1"></a>
+<h3 class="section">8.26 <code>titlepage</code></h3>
+
+<a name="index-environment_002c-titlepage"></a>
+<a name="index-titlepage-environment"></a>
+        
+<a name="index-making-a-title-page"></a>
+<a name="index-title-pages_002c-creating"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{titlepage}
+  ... text and spacing ...
+\end{titlepage}
+</pre></div>
+
+<p>Create a title page, a page with no printed page number or heading and
+with succeeding pages numbered starting with page one.
+</p>
+<p>In this example all formatting, including vertical spacing, is left to
+the author.
+</p>
+<div class="example">
+<pre class="example">\begin{titlepage}
+\vspace*{\stretch{1}}
+\begin{center}
+  {\huge\bfseries Thesis \\[1ex] 
+                  title}                  \\[6.5ex]
+  {\large\bfseries Author name}           \\
+  \vspace{4ex}
+  Thesis  submitted to                    \\[5pt]
+  \textit{University name}                \\[2cm]
+  in partial fulfilment for the award of the degree of \\[2cm]
+  \textsc{\Large Doctor of Philosophy}    \\[2ex]
+  \textsc{\large Mathematics}             \\[12ex]
+  \vfill
+  Department of Mathematics               \\
+  Address                                 \\
+  \vfill
+  \today
+\end{center}
+\vspace{\stretch{2}}
+\end{titlepage}
+</pre></div>
+
+<p>To instead produce a standard title page without a <code>titlepage</code>
+environment, use <code>\maketitle</code> (see <a href="latex2e_18.html#g_t_005cmaketitle">\maketitle</a>).
+</p>
+
+<hr>
+<a name="verbatim"></a>
+<a name="verbatim-1"></a>
+<h3 class="section">8.27 <code>verbatim</code></h3>
+
+<a name="index-environment_002c-verbatim"></a>
+<a name="index-verbatim-environment"></a>
+        
+<a name="index-verbatim-text"></a>
+<a name="index-simulating-typed-text"></a>
+<a name="index-typed-text_002c-simulating"></a>
+<a name="index-code_002c-typesetting"></a>
+<a name="index-computer-programs_002c-typesetting"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{verbatim}
+<var>literal-text</var>
+\end{verbatim}
+</pre></div>
+
+<p>A paragraph-making environment in which LaTeX produces as output
+exactly what you type as input.  For instance inside <var>literal-text</var>
+the backslash&nbsp;<code>\</code> character does not start commands, it
+produces a printed &lsquo;<samp>\</samp>&rsquo;, and carriage returns and blanks are taken
+literally.  The output appears in a monospaced typewriter-like font
+(<code>\tt</code>).
+</p>
+<div class="example">
+<pre class="example">\begin{verbatim}
+Symbol swearing: %&amp;$#?!.
+\end{verbatim}
+</pre></div>
+
+<p>The only restriction on <code>literal-text</code> is that it cannot include
+the string <code>\end{verbatim}</code>.
+</p>
+<a name="index-package_002c-cprotect"></a>
+<a name="index-cprotect-package"></a>
+
+<p>You cannot use the verbatim environment in the argument to macros, for
+instance in the argument to a <code>\section</code>.  This is not the same as
+commands being fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>), instead it just cannot appear
+there. (But the <code>cprotect</code> package can help with this.)
+</p>
+<a name="index-package_002c-listings-1"></a>
+<a name="index-listings-package-1"></a>
+
+<a name="index-package_002c-minted-1"></a>
+<a name="index-minted-package-1"></a>
+
+<p>One common use of verbatim input is to typeset computer code.  There are
+packages that are an improvement the <code>verbatim</code> environment.  For
+instance, one improvement is to allow the verbatim inclusion of external
+files, or parts of those files.  Such packages include <code>listings</code>,
+and <code>minted</code>.
+</p>
+<a name="index-package_002c-fancyvrb-1"></a>
+<a name="index-fancyvrb-package-1"></a>
+
+<a name="index-package_002c-verbatimbox"></a>
+<a name="index-verbatimbox-package"></a>
+
+<p>A package that provides many more options for verbatim environments is
+<code>fancyvrb</code>.  Another is <code>verbatimbox</code>.
+</p>
+<p>For a list of all the relevant packages, see CTAN.
+</p>
+
+
+<hr>
+<a name="g_t_005cverb"></a>
+<a name="g_t_005cverb-1"></a>
+<h4 class="subsection">8.27.1 <code>\verb</code></h4>
+
+<a name="index-_005cverb"></a>
+<a name="index-verbatim-text_002c-inline"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\verb <var>char</var> <var>literal-text</var> <var>char</var>
+\verb* <var>char</var> <var>literal-text</var> <var>char</var>
+</pre></div>
+
+<p>Typeset <var>literal-text</var> as it is input, including special characters
+and spaces, using the typewriter (<code>\tt</code>) font.
+</p>
+<p>This example shows two different invocations of <code>\verb</code>.
+</p>
+<div class="example">
+<pre class="example">This is \verb!literally! the biggest pumpkin ever.
+And this is the best squash, \verb+literally!+
+</pre></div>
+
+<p>The first <code>\verb</code> has its <var>literal-text</var> surrounded with
+exclamation point, <code>!</code>.  The second instead uses plus, <code>+</code>,
+because the exclamation point is part of <code>literal-text</code>.
+</p>
+<p>The single-character delimiter <var>char</var> surrounds
+<var>literal-text</var>&nbsp;&mdash; it must be the same character before and
+after.  No spaces come between <code>\verb</code> or <code>\verb*</code> and
+<var>char</var>, or between <var>char</var> and <var>literal-text</var>, or between
+<var>literal-text</var> and the second occurrence of <var>char</var> (the synopsis
+shows a space only to distinguish one component from the other).  The
+delimiter must not appear in <var>literal-text</var>. The <var>literal-text</var>
+cannot include a line break.
+</p>
+<a name="index-visible-space"></a>
+<p>The <code>*</code>-form differs only in that spaces are printed with a visible
+space character.
+</p>
+<p>The output from this will include a character showing the spaces.
+</p>
+<div class="example">
+<pre class="example">The commands's first argument is \verb*!filename with extension! and ...
+</pre></div>
+
+<a name="index-package_002c-url"></a>
+<a name="index-url-package"></a>
+
+<p>For typesetting Internet addresses, urls, the package <code>url</code>
+provides an option that is better than the <code>\verb</code> command, since
+it allows line breaks.
+</p>
+<a name="index-package_002c-listings-2"></a>
+<a name="index-listings-package-2"></a>
+
+<a name="index-package_002c-minted-2"></a>
+<a name="index-minted-package-2"></a>
+
+<p>For computer code there are many packages with advantages over
+<code>\verb</code>.  One is <samp>listings</samp>, another is <samp>minted</samp>.
+</p>
+<a name="index-package_002c-cprotect-1"></a>
+<a name="index-cprotect-package-1"></a>
+
+<p>You cannot use <code>\verb</code> in the argument to a macro, for instance in
+the argument to a <code>\section</code>.  It is not a question of <code>\verb</code>
+being fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>), instead it just cannot appear there.
+(But the <code>cprotect</code> package can help with this.)
+</p>
+
+<hr>
+<a name="verse"></a>
+<a name="verse-1"></a>
+<h3 class="section">8.28 <code>verse</code></h3>
+
+<a name="index-environment_002c-verse"></a>
+<a name="index-verse-environment"></a>
+        
+<a name="index-poetry_002c-an-environment-for"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{verse}
+  <var>line1</var> \\
+  <var>line2</var> \\
+  ...
+\end{verse}
+</pre></div>
+
+<p>An environment for poetry.
+</p>
+<p>Here are two lines from Shakespeare&rsquo;s Romeo and Juliet.
+</p>
+<div class="example">
+<pre class="example">Then plainly know my heart's dear love is set \\
+On the fair daughter of rich Capulet.
+</pre></div>
+
+<a name="index-_005c_005c-for-verse"></a>
+<p>Separate the lines of each stanza with <code>\\</code>, and use one or more
+blank lines to separate the stanzas.
+</p>
+<div class="example">
+<pre class="example">\begin{verse}
+\makebox[\linewidth][c]{\textit{Shut Not Your Doors} ---Walt Whitman}
+  \\[1\baselineskip]
+Shut not your doors to me proud libraries,                  \\
+For that which was lacking on all your well-fill'd shelves, \\
+\qquad yet needed most, I bring,                             \\
+Forth from the war emerging, a book I have made,            \\
+The words of my book nothing, the drift of it every thing,  \\
+A book separate, not link'd with the rest nor felt by the intellect, \\
+But you ye untold latencies will thrill to every page.
+\end{verse}
+</pre></div>
+
+<p>The output has margins indented on the left and the right, paragraphs
+are not indented, and the text is not right-justified.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#verbatim" accesskey="p" rel="prev">verbatim</a>, Up: <a href="#Environments" accesskey="u" rel="up">Environments</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

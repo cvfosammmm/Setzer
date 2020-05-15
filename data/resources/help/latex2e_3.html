@@ -1,0 +1,890 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Document classes (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Document classes (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Document classes (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_4.html#Fonts" rel="next" title="Fonts">
+<link href="latex2e_2.html#CTAN" rel="prev" title="CTAN">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Document-classes"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_4.html#Fonts" accesskey="n" rel="next">Fonts</a>, Previous: <a href="latex2e_2.html#Overview" accesskey="p" rel="prev">Overview</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Document-classes-1"></a>
+<h2 class="chapter">3 Document classes</h2>
+
+<a name="index-document-classes"></a>
+<a name="index-classes-of-documents"></a>
+<a name="index-_005cdocumentclass"></a>
+
+<p>The document&rsquo;s overall class is defined with this command, which is
+normally the first command in a LaTeX source file.
+</p>
+<div class="example">
+<pre class="example">\documentclass[<var>options</var>]{<var>class</var>}
+</pre></div>
+
+<a name="index-article-class"></a>
+<a name="index-report-class"></a>
+<a name="index-book-class"></a>
+<a name="index-letter-class"></a>
+<a name="index-slides-class"></a>
+<p>The following document <var>class</var> names are built into LaTeX.
+(Many other document classes are available as separate packages;
+see <a href="latex2e_2.html#Overview">Overview</a>.)
+</p>
+<dl compact="compact">
+<dt><code>article</code></dt>
+<dd><a name="document-classes-article"></a><p>For a journal article, a presentation, and miscellaneous general use.
+</p>
+</dd>
+<dt><code>book</code></dt>
+<dd><a name="document-classes-book"></a><p>Full-length books, including chapters and possibly including front
+matter, such as a preface, and back matter, such as an appendix
+(see <a href="latex2e_25.html#Front_002fback-matter">Front/back matter</a>).
+</p>
+</dd>
+<dt><code>letter</code></dt>
+<dd><a name="document-classes-letter"></a><p>Mail, optionally including mailing labels 
+(see <a href="latex2e_26.html#Letters">Letters</a>).
+</p>
+</dd>
+<dt><code>report</code></dt>
+<dd><a name="document-classes-report"></a><p>For documents of length between an <code>article</code> and a <code>book</code>,
+such as technical reports or theses, which may contain several chapters.
+</p>
+</dd>
+<dt><code>slides</code></dt>
+<dd><a name="document-classes-slides"></a><p>For slide presentations&mdash;rarely used today.  In its place the
+<code>beamer</code> package is perhaps the most prevalent (see <a href="latex2e_29.html#beamer-template">beamer template</a>).
+</p>
+</dd>
+</dl>
+
+<p>Standard <var>options</var> are described in the next section.
+</p>
+
+
+<hr>
+<a name="Document-class-options"></a>
+<a name="Document-class-options-1"></a>
+<h3 class="section">3.1 Document class options</h3>
+
+<a name="index-document-class-options"></a>
+<a name="index-options_002c-document-class"></a>
+<a name="index-class-options"></a>
+<a name="index-global-options"></a>
+
+<p>You can specify <em>global options</em> or <em>class options</em> to the
+<code>\documentclass</code> command by enclosing them in square brackets.  To
+specify more than one <var>option</var>, separate them with a comma.
+</p>
+<div class="example">
+<pre class="example">\documentclass[<var>option1</var>,<var>option2</var>,...]{<var>class</var>}
+</pre></div>
+
+<p>Here is the list of the standard class options.
+</p>
+<a name="index-10pt-option"></a>
+<a name="index-11pt-option"></a>
+<a name="index-12pt-option"></a>
+<p>All of the standard classes except <code>slides</code> accept the following
+options for selecting the typeface size (default is <code>10pt</code>):
+</p>
+<div class="example">
+<pre class="example">10pt  11pt  12pt
+</pre></div>
+
+<a name="index-a4paper-option"></a>
+<a name="index-a5paper-option"></a>
+<a name="index-b5paper-option"></a>
+<a name="index-executivepaper-option"></a>
+<a name="index-legalpaper-option"></a>
+<a name="index-letterpaper-option"></a>
+<p>All of the standard classes accept these options for selecting the paper
+size (these show height by width):
+</p>
+<dl compact="compact">
+<dt><code>a4paper</code></dt>
+<dd><p>210 by 297mm (about 8.25 by 11.75&nbsp;inches)
+</p>
+</dd>
+<dt><code>a5paper</code></dt>
+<dd><p>148 by 210mm (about 5.8 by 8.3&nbsp;inches)
+</p>
+</dd>
+<dt><code>b5paper</code></dt>
+<dd><p>176 by 250mm (about 6.9 by 9.8&nbsp;inches)
+</p> 
+</dd>
+<dt><code>executivepaper</code></dt>
+<dd><p>7.25 by 10.5&nbsp;inches
+</p> 
+</dd>
+<dt><code>legalpaper</code></dt>
+<dd><p>8.5 by 14&nbsp;inches
+</p> 
+</dd>
+<dt><code>letterpaper</code></dt>
+<dd><p>8.5 by 11&nbsp;inches (the default)
+</p></dd>
+</dl>
+
+<a name="index-_005cpdfpagewidth"></a>
+<a name="index-_005cpdfpageheight"></a>
+<a name="index-package_002c-geometry"></a>
+<a name="index-geometry-package"></a>
+
+<p>When using one of the engines pdfLaTeX, LuaLaTeX, or XeLaTeX
+(see <a href="latex2e_2.html#TeX-engines">TeX engines</a>), options other than <code>letterpaper</code> set
+the print area but you must also set the physical paper size.  One way
+to do that is to put <code>\pdfpagewidth=\paperwidth</code> and
+<code>\pdfpageheight=\paperheight</code> in your document&rsquo;s preamble.
+<a name="index-package_002c-geometry-1"></a>
+<a name="index-geometry-package-1"></a>
+</p>
+<p>The <code>geometry</code> package provides flexible ways of setting the print
+area and physical page size.
+</p>
+<a name="index-draft-option"></a>
+<a name="index-final-option"></a>
+<a name="index-fleqn-option"></a>
+<a name="index-landscape-option"></a>
+<a name="index-leqno-option"></a>
+<a name="index-openbib-option"></a>
+<a name="index-titlepage-option"></a>
+<a name="index-notitlepage-option"></a>
+<p>Miscellaneous other options:
+</p>
+<dl compact="compact">
+<dt><code>draft</code></dt>
+<dt><code>final</code></dt>
+<dd><a name="index-black-boxes_002c-omitting"></a>
+<p>Mark (<code>draft</code>) or do not mark (<code>final</code>) overfull boxes with a
+black box in the margin; default is <code>final</code>.
+</p>
+</dd>
+<dt><code>fleqn</code></dt>
+<dd><a name="index-flush-left-equations"></a>
+<a name="index-centered-equations"></a>
+<a name="index-equations_002c-flush-left-vs_002e-centered"></a>
+<p>Put displayed formulas flush left; default is centered.
+</p>
+</dd>
+<dt><code>landscape</code></dt>
+<dd><a name="index-landscape-orientation"></a>
+<a name="index-portrait-orientation"></a>
+<p>Selects landscape format; default is portrait.
+</p>
+</dd>
+<dt><code>leqno</code></dt>
+<dd><a name="index-left_002dhand-equation-numbers"></a>
+<a name="index-right_002dhand-equation-numbers"></a>
+<a name="index-equation-numbers_002c-left-vs_002e-right"></a>
+<p>Put equation numbers on the left side of equations; default is the right side.
+</p>
+</dd>
+<dt><code>openbib</code></dt>
+<dd><a name="index-bibliography-format_002c-open"></a>
+<p>Use &ldquo;open&rdquo; bibliography format.
+</p>
+</dd>
+<dt><code>titlepage</code></dt>
+<dt><code>notitlepage</code></dt>
+<dd><a name="index-title-page_002c-separate-or-run_002din"></a>
+<p>Specifies whether there is a separate page for the title information and
+for the abstract also, if there is one.  The default for the
+<code>report</code> class is <code>titlepage</code>, for the other classes it is
+<code>notitlepage</code>.
+</p></dd>
+</dl>
+
+<p>The following options are not available with the <code>slides</code> class.
+</p>
+<a name="index-onecolumn-option"></a>
+<a name="index-twocolumn-option"></a>
+<a name="index-oneside-option"></a>
+<a name="index-twoside-option"></a>
+<a name="index-openright-option"></a>
+<a name="index-openany-option"></a>
+<dl compact="compact">
+<dt><code>onecolumn</code></dt>
+<dt><code>twocolumn</code></dt>
+<dd><p>Typeset in one or two columns; default is <code>onecolumn</code>.
+</p>
+</dd>
+<dt><code>oneside</code></dt>
+<dt><code>twoside</code></dt>
+<dd><a name="index-_005cevensidemargin"></a>
+<a name="index-_005coddsidemargin"></a>
+<p>Selects one- or two-sided layout; default is <code>oneside</code>, except
+that in the <code>book</code> class the default is <code>twoside</code>.
+</p>
+<p>For one-sided printing, the text is centered on the page.  For two-sided
+printing, the <code>\evensidemargin</code> (<code>\oddsidemargin</code>) parameter
+determines the distance on even (odd) numbered pages between the left
+side of the page and the text&rsquo;s left margin, with <code>\oddsidemargin</code>
+being 40% of the difference between <code>\paperwidth</code> and
+<code>\textwidth</code>, and <code>\evensidemargin</code> is the remainder.
+</p>
+</dd>
+<dt><code>openright</code></dt>
+<dt><code>openany</code></dt>
+<dd><p>Determines if a chapter should start on a right-hand page; default is
+<code>openright</code> for <code>book</code>, and <code>openany</code> for <code>report</code>.
+</p></dd>
+</dl>
+
+<a name="index-clock-option-to-slides-class"></a>
+<p>The <code>slides</code> class offers the option <code>clock</code> for printing
+the time at the bottom of each note.
+</p>
+
+<hr>
+<a name="Additional-packages"></a>
+<a name="Additional-packages-1"></a>
+<h3 class="section">3.2 Additional packages</h3>
+
+<a name="index-loading-additional-packages"></a>
+<a name="index-packages_002c-loading-additional"></a>
+<a name="index-additional-packages_002c-loading"></a>
+<a name="index-_005cusepackage"></a>
+<p>Load a package <var>pkg</var>, with the package options given in the comma-separated
+list <var>options</var>, as here.
+</p>
+<div class="example">
+<pre class="example">\usepackage[<var>options</var>]{<var>pkg</var>}.
+</pre></div>
+
+<p>To specify more than one package you can separate them with a comma,
+as in <code>\usepackage{<var>pkg1</var>,<var>pkg2</var>,...}</code>, or use multiple
+<code>\usepackage</code> commands.
+</p>
+<a name="index-global-options-1"></a>
+<a name="index-options_002c-global"></a>
+<p>Any options given in the <code>\documentclass</code> command that are unknown
+to the selected document class are passed on to the packages loaded with
+<code>\usepackage</code>.
+</p>
+
+<hr>
+<a name="Class-and-package-construction"></a>
+<a name="Class-and-package-construction-1"></a>
+<h3 class="section">3.3 Class and package construction</h3>
+
+<a name="index-document-class-commands"></a>
+<a name="index-commands_002c-document-class"></a>
+<a name="index-new-class-commands"></a>
+
+<p>You can create new document classes and new packages.  For instance, if
+your memos must satisfy some local requirements, such as a
+standard header for each page, then you could create a new class
+<code>smcmemo.cls</code> and begin your documents with
+<code>\documentclass{smcmemo}</code>.
+</p>
+<p>What separates a package from a document class is that the commands in a
+package are useful across classes while those in a document class are
+specific to that class.  Thus, a command to set page headers is for a
+package while a command to make the page headers say <code>Memo from the
+SMC Math Department</code> is for a class.
+<a name="index-class-and-package-difference"></a>
+<a name="index-difference-between-class-and-package"></a>
+</p>
+<p>Inside of a class or package file you can use the at-sign <code>@</code> as a
+character in command names without having to surround the code
+containing that command with <code>\makeatletter</code> and
+<code>\makeatother</code>.  See <a href="latex2e_12.html#g_t_005cmakeatletter-_0026-_005cmakeatother">\makeatletter &amp; \makeatother</a>. This allow
+you to create commands that users will not accidentally redefine.
+Another technique is to preface class- or package-specific commands with
+some string to prevent your class or package from interfering with
+others. For instance, the class <code>smcmemo</code> might have commands
+<code>\smc@tolist</code>, <code>\smc@fromlist</code>, etc.
+</p>
+
+
+
+<hr>
+<a name="Class-and-package-structure"></a>
+<a name="Class-and-package-structure-1"></a>
+<h4 class="subsection">3.3.1 Class and package structure</h4>
+
+<a name="index-class-and-package-structure"></a>
+<a name="index-class-file-layout"></a>
+<a name="index-package-file-layout"></a>
+<a name="index-options_002c-document-class-1"></a>
+<a name="index-options_002c-package"></a>
+<a name="index-class-options-1"></a>
+<a name="index-package-options"></a>
+
+<p>A class file or package file typically has four parts.  
+</p><ol>
+<li> In the <em>identification part</em>, the file says that it is a LaTeX
+package or class and describes itself, using the <code>\NeedsTeXFormat</code>
+and <code>\ProvidesClass</code> or <code>\ProvidesPackage</code> commands.
+
+</li><li> The <em>preliminary declarations part</em> declares some commands and
+can also load other files. Usually these commands will be those needed
+for the code used in the next part.  For example, an <code>smcmemo</code>
+class might be called with an option to read in a file with a list of
+people for the to-head, as <code>\documentclass[mathto]{smcmemo}</code>, and
+therefore needs to define a command
+<code>\newcommand{\setto}[1]{\def\@tolist{#1}}</code> used in that
+file.
+
+</li><li> In the <em>handle options part</em> the class or package declares
+and processes its options.  Class options allow a user to start their
+document as <code>\documentclass[<var>option list</var>]{<var>class
+name</var>}</code>, to modify the behavior of the class.  An example is when you
+declare <code>\documentclass[11pt]{article}</code> to set the default
+document font size.  
+
+</li><li> Finally, in the <em>more declarations part</em> the class or package usually does
+most of its work: declaring new variables, commands and fonts, and
+loading other files.
+</li></ol>
+
+<p>Here is a starting class file, which should be saved as <samp>stub.cls</samp>
+where LaTeX can find it, for example in the same directory as the
+<samp>.tex</samp> file.
+</p>
+<div class="example">
+<pre class="example">\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{stub}[2017/07/06 stub to start building classes from]
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\ProcessOptions\relax
+\LoadClass{article}
+</pre></div>
+<a name="index-class-file-example"></a>
+
+<p>It identifies itself, handles the class options via the default of
+passing them all to the <code>article</code> class, and then loads the
+<code>article</code> class to provide the basis for this class&rsquo;s code.
+</p>
+<p>For more, see the official guide for class and package writers, the
+Class Guide, at
+<a href="http://www.latex-project.org/help/documentation/clsguide.pdf">http://www.latex-project.org/help/documentation/clsguide.pdf</a> (much
+of the descriptions here derive from this document), or the tutorial
+<a href="https://www.tug.org/TUGboat/tb26-3/tb84heff.pdf">https://www.tug.org/TUGboat/tb26-3/tb84heff.pdf</a>.
+</p>
+
+<hr>
+<a name="Class-and-package-commands"></a>
+<a name="Class-and-package-commands-1"></a>
+<h4 class="subsection">3.3.2 Class and package commands</h4>
+<a name="index-class-and-package-commands"></a>
+<a name="index-commands_002c-class-and-package"></a>
+
+<p>These are the commands designed to help writers of classes or packages.
+</p>
+<dl compact="compact">
+<dt><code>\AtBeginDvi{specials}</code></dt>
+<dd><a name="index-_005cAtBeginDvi"></a>
+<p>Save in a box register things that are written to the <samp>.dvi</samp> file
+at the beginning of the shipout of the first page of the document.
+</p>
+</dd>
+<dt><code>\AtEndOfClass{<var>code</var>}</code></dt>
+<dt><code>\AtEndOfPackage{<var>code</var>}</code></dt>
+<dd><a name="index-_005cAtEndOfClass"></a>
+<a name="index-_005cAtEndOfPackage"></a>
+<p>Hook to insert <var>code</var> to be executed when LaTeX finishes
+processing the current class or package.  You can use these hooks
+multiple times; the <code>code</code> will be executed in the order that you
+called it.  See also <a href="latex2e_8.html#g_t_005cAtBeginDocument">\AtBeginDocument</a>.
+</p>
+</dd>
+<dt><code>\CheckCommand{<var>cmd</var>}[<var>num</var>][<var>default</var>]{<var>definition</var>}</code></dt>
+<dt><code>\CheckCommand*{<var>cmd</var>}[<var>num</var>][<var>default</var>]{<var>definition</var>}</code></dt>
+<dd><a name="index-_005cCheckCommand"></a>
+<a name="index-_005cCheckCommand_002a"></a>
+<a name="index-new-command_002c-check"></a>
+<p>Like <code>\newcommand</code> (see <a href="latex2e_12.html#g_t_005cnewcommand-_0026-_005crenewcommand">\newcommand &amp; \renewcommand</a>) but does
+not define <var>cmd</var>; instead it checks that the current definition of
+<var>cmd</var> is exactly as given by <var>definition</var> and is or is not 
+<a name="index-long-command"></a>
+<em>long</em> as expected.  A long command is a command that accepts
+<code>\par</code> within an argument.  The <var>cmd</var> command is expected to be
+long with the unstarred version of <code>\CheckCommand</code>.  Raises an
+error when the check fails.  This allows you to check before you start
+redefining <code>cmd</code> yourself that no other package has already
+redefined this command.
+</p>
+</dd>
+<dt><code>\ClassError{<var>class name</var>}{<var>error text</var>}{<var>help text</var>}</code></dt>
+<dt><code>\PackageError{<var>package name</var>}{<var>error text</var>}{<var>help text</var>}</code></dt>
+<dt><code>\ClassWarning{<var>class name</var>}{<var>warning text</var>}</code></dt>
+<dt><code>\PackageWarning{<var>package name</var>}{<var>warning text</var>}</code></dt>
+<dt><code>\ClassWarningNoLine{<var>class name</var>}{<var>warning text</var>}</code></dt>
+<dt><code>\PackageWarningNoLine{<var>package name</var>}{<var>warning text</var>}</code></dt>
+<dt><code>\ClassInfo{<var>class name</var>}{<var>info text</var>}</code></dt>
+<dt><code>\PackageInfo{<var>package name</var>}{<var>info text</var>}</code></dt>
+<dt><code>\ClassInfoNoLine{<var>class name</var>}{<var>info text</var>}</code></dt>
+<dt><code>\PackageInfoNoLine{<var>package name</var>}{<var>info text</var>}</code></dt>
+<dd><a name="index-_005cClassError"></a>
+<a name="index-_005cPackageError"></a>
+<a name="index-_005cClassWarning"></a>
+<a name="index-_005cPackageWarning"></a>
+<a name="index-_005cClassWarningNoLine"></a>
+<a name="index-_005cPackageWarningNoLine"></a>
+<a name="index-_005cClassInfo"></a>
+<a name="index-_005cPackageInfo"></a>
+<a name="index-_005cClassInfoNoLine"></a>
+<a name="index-_005cPackageInfoNoLine"></a>
+<p>Produce an error message, or warning or informational messages.
+</p>
+<p>For <code>\ClassError</code> and <code>\PackageError</code> the message is
+<var>error text</var>, followed by TeX&rsquo;s <code>?</code> error prompt. If the
+user then asks for help by typing <code>h</code>, they see the <var>help
+text</var>.
+</p>
+<p>The four warning commands are similar except that they write
+<var>warning text</var> on the screen with no error prompt.  The four info
+commands write <var>info text</var> only in the transcript file.  The
+<code>NoLine</code> versions do not show the number of the line generating the
+message, while the other versions do show that number.
+</p>
+<p>To format the messages, including the <var>help text</var>: use
+<code>\protect</code> to stop a command from expanding, get a line break with
+<code>\MessageBreak</code>, and get a space with <code>\space</code> when a space
+character does not allow it, like after a command.  Note that LaTeX
+appends a period to the messages.
+</p>
+</dd>
+<dt><code>\CurrentOption</code></dt>
+<dd><a name="index-_005cCurrentOption"></a>
+<p>Expands to the name of the currently-being-processed option.  Can only
+be used within the <var>code</var> argument of either <code>\DeclareOption</code>
+or <code>\DeclareOption*</code>.
+</p>
+</dd>
+<dt><code>\DeclareOption{<var>option</var>}{<var>code</var>}</code></dt>
+<dt><code>\DeclareOption*{<var>code</var>}</code></dt>
+<dd><a name="index-_005cDeclareOption"></a>
+<a name="index-_005cDeclareOption_002a"></a>
+<a name="index-class-options-2"></a>
+<a name="index-package-options-1"></a>
+<a name="index-options_002c-class"></a>
+<a name="index-options_002c-package-1"></a>
+<p>Make an option available to a user to invoke in their
+<code>\documentclass</code> command.  For example, the <code>smcmemo</code> class
+could have an option <code>\documentclass[logo]{smcmemo}</code> allowing
+users to put the institutional logo on the first page.  The class file
+must contain <code>\DeclareOption{logo}{<var>code</var>}</code> (and later,
+<code>\ProcessOptions</code>).
+</p>
+<p>If you request an option that has not been declared, by default this
+will produce a warning like <code>Unused global option(s): [badoption].</code>
+Change this behaviour with the starred version
+<code>\DeclareOption*{<var>code</var>}</code>.  For example, many classes extend
+an existing class, using a declaration such as
+<code>\LoadClass{article}</code>, and for passing extra options to the
+underlying class use code such as this.
+</p>
+<div class="example">
+<pre class="example">\DeclareOption*{%
+\PassOptionsToClass{\CurrentOption}{article}%
+}
+</pre></div>
+
+<p>Another example is that the class <code>smcmemo</code> may allow users to keep
+lists of memo recipients in external files.  Then the user could invoke
+<code>\documentclass[math]{smcmemo}</code> and it will read the file
+<code>math.memo</code>.  This code handles the file if it exists and otherwise
+passes the option to the <code>article</code> class.
+</p>
+<div class="example">
+<pre class="example">\DeclareOption*{\InputIfFileExists{\CurrentOption.memo}{}{%
+    \PassOptionsToClass{\CurrentOption}{article}}}
+</pre></div>
+
+</dd>
+<dt><code>\DeclareRobustCommand{<var>cmd</var>}[<var>num</var>][<var>default</var>]{<var>definition</var>}</code></dt>
+<dt><code>\DeclareRobustCommand*{<var>cmd</var>}[<var>num</var>][<var>default</var>]{<var>definition</var>}</code></dt>
+<dd><a name="index-_005cDeclareRobustCommand"></a>
+<a name="index-_005cDeclareRobustCommand_002a"></a>
+<a name="index-new-command_002c-definition"></a>
+<p>Like <code>\newcommand</code> and <code>\newcommand*</code> (see <a href="latex2e_12.html#g_t_005cnewcommand-_0026-_005crenewcommand">\newcommand &amp; \renewcommand</a>) but these declare a robust command, even if some code
+within the <var>definition</var> is fragile.  (For a discussion of robust and
+fragile commands see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>.) Use this command to define new
+robust commands or to redefine existing commands and make them
+robust. Unlike <code>\newcommand</code> these do not give an error if macro
+<var>cmd</var> already exists; instead, a log message is put into the
+transcript file if a command is redefined.
+</p>
+<p>Commands defined this way are a bit less efficient than those defined
+using <code>\newcommand</code> so unless the command&rsquo;s data is fragile and the
+command is used within a moving argument, use <code>\newcommand</code>.
+</p>
+<a name="index-package_002c-etoolbox"></a>
+<a name="index-etoolbox-package"></a>
+<p>The <samp>etoolbox</samp> package offers the commands
+<code>\newrobustcmd</code>, <code>\newrobustcmd*</code>, as well as the commands
+<code>\renewrobustcmd</code>, <code>\renewrobustcmd*</code>, and the commands
+<code>\providerobustcmd</code>, and <code>\providerobustcmd*</code>.  These are
+similar to <code>\newcommand</code>, <code>\newcommand*</code>,
+<code>\renewcommand</code>, <code>\renewcommand*</code>, <code>\providecommand</code>, and
+<code>\providecommand*</code>, but define a robust <var>cmd</var> with two
+advantages as compared to <code>\DeclareRobustCommand</code>:
+</p><ol>
+<li> They use the low-level e-TeX protection mechanism rather than the
+higher level LaTeX <code>\protect</code> mechanism, so they do not incur
+the slight loss of performance mentioned above, and
+</li><li> They make the same distinction between <code>\new&hellip;</code>,
+<code>\renew&hellip;</code>, and <code>\provide&hellip;</code>, as the standard
+commands, so they do not just make a log message when you redefine
+<var>cmd</var> that already exists, in that case you need to use either
+<code>\renew&hellip;</code> or <code>\provide&hellip;</code> or you get an error.
+</li></ol>
+
+
+</dd>
+<dt><code>\IfFileExists{<var>file name</var>}{<var>true code</var>}{<var>false code</var>}</code></dt>
+<dt><code>\InputIfFileExists{<var>file name</var>}{<var>true code</var>}{<var>false code</var>}</code></dt>
+<dd><a name="index-_005cIfFileExists"></a>
+<a name="index-_005cInputIfFileExists"></a>
+<p>Execute <var>true code</var> if LaTeX finds the file <samp><var>file
+name</var></samp> or <var>false code</var> otherwise.  In the first case it executing
+<var>true code</var> and then inputs the file.  Thus the command
+</p>
+<div class="example">
+<pre class="example">\IfFileExists{img.pdf}{%
+  \includegraphics{img.pdf}}{\typeout{!! img.pdf not found}
+</pre></div>
+
+<p>will include the graphic <samp>img.pdf</samp> if it is found and otherwise
+give a warning.
+</p>
+<p>This command looks for the file in all search paths that LaTeX uses,
+not only in the current directory.  To look only in the current
+directory do something like <code>\IfFileExists{./filename}{<var>true
+code</var>}{<var>false code</var>}</code>.  If you ask for a filename without a
+<code>.tex</code> extension then LaTeX will first look for the file by
+appending the <code>.tex</code>; for more on how LaTeX handles file
+extensions see <a href="latex2e_24.html#g_t_005cinput">\input</a>.
+</p>
+</dd>
+<dt><code>\LoadClass[<var>options list</var>]{<var>class name</var>}[<var>release date</var>]</code></dt>
+<dt><code>\LoadClassWithOptions{<var>class name</var>}[<var>release date</var>]</code></dt>
+<dd><a name="index-_005cLoadClass"></a>
+<a name="index-_005cLoadClassWithOptions"></a>
+<p>Load a class, as with <code>\documentclass[<var>options
+list</var>]{<var>class name</var>}[<var>release info</var>]</code>.  An example is
+<code>\LoadClass[twoside]{article}</code>.
+</p>
+<p>The <var>options list</var>, if present, is a comma-separated list.  The
+<var>release date</var> is optional.  If present it must have the form
+<var>YYYY/MM/DD</var>.
+</p>
+<p>If you request a <var>release date</var> and the date of the package
+installed on your system is earlier, then you get a warning on the
+screen and in the log like this.
+</p>
+<div class="example">
+<pre class="example">You have requested, on input line 4, version `2038/01/19' of
+document class article, but only version `2014/09/29 v1.4h
+Standard LaTeX document class' is available.
+</pre></div>
+
+<p>The command version <code>\LoadClassWithOptions</code> uses the list of
+options for the current class.  This means it ignores any options passed
+to it via <code>\PassOptionsToClass</code>.  This is a convenience command
+that lets you build classes on existing ones, such as the standard
+<code>article</code> class, without having to track which options were passed.
+</p>
+</dd>
+<dt><code>\ExecuteOptions{<var>options-list</var>}</code></dt>
+<dd><a name="index-_005cExecuteOptions"></a>
+<p>For each option <var>option</var> in the <var>options-list</var>, in order, this command
+executes the command <code>\ds@<var>option</var></code>.  If this command is not
+defined then that option is silently ignored.
+</p>
+<p>It can be used to provide a default option list before
+<code>\ProcessOptions</code>.  For example, if in a class file you want the
+default to be 11pt fonts then you could specify
+<code>\ExecuteOptions{11pt}\ProcessOptions\relax</code>.
+</p>
+</dd>
+<dt><code>\NeedsTeXFormat{<var>format</var>}[<var>format date</var>]</code></dt>
+<dd><a name="index-_005cNeedsTeXFormat"></a>
+<p>Specifies the format that this class must be run under.  Often issued
+as the first line of a class file, and most often used as:
+<code>\NeedsTeXFormat{LaTeX2e}</code>.  When a document using that class is
+processed, the format name given here must match the format that is
+actually being run (including that the <var>format</var> string is case
+sensitive).  If it does not match then execution stops with an error
+like &lsquo;<samp>This file needs format `LaTeX2e' but this is `xxx'.</samp>&rsquo;
+</p>
+<p>To specify a version of the format that you know to have certain
+features, include the optional <var>format date</var> on which those features
+were implemented.  If present it must be in the form <code>YYYY/MM/DD</code>.
+If the format version installed on your system is earlier than
+<var>format date</var> then you get a warning like this.
+</p>
+<div class="example">
+<pre class="example">You have requested release `2038/01/20' of LaTeX, but only
+release `2016/02/01' is available.
+</pre></div>
+
+</dd>
+<dt><code>\OptionNotUsed</code></dt>
+<dd><a name="index-_005cOptionNotUsed"></a>
+<p>Adds the current option to the list of unused options.  Can only be used
+within the <var>code</var> argument of either <code>\DeclareOption</code> or
+<code>\DeclareOption*</code>.
+</p>
+
+</dd>
+<dt><code>\PassOptionsToClass{<var>option list</var>}{<var>class name</var>}</code></dt>
+<dt><code>\PassOptionsToPackage{<var>option list</var>}{<var>package name</var>}</code></dt>
+<dd><a name="index-_005cPassOptionsToClass"></a>
+<a name="index-_005cPassOptionsToPackage"></a>
+<p>Adds the options in the comma-separated list <var>option list</var> to the
+options used by any future <code>\RequirePackage</code> or <code>\usepackage</code>
+command for package <var>package name</var> or the class <var>class name</var>.
+</p>
+<p>The reason for these commands is: you may load a package any number of
+times with no options but if you want options then you may only supply
+them when you first load the package.  Loading a package with options
+more than once will get you an error like <code>Option clash for package
+foo.</code> (LaTeX throws an error even if there is no conflict between the
+options.)
+</p>
+<p>If your own code is bringing in a package twice then you can collapse
+that to once, for example replacing the two
+<code>\RequirePackage[landscape]{geometry}</code> and
+<code>\RequirePackage[margins=1in]{geometry}</code> with the single command
+<code>\RequirePackage[landscape,margins=1in]{geometry}</code>.
+</p>
+<p>However, imagine that you are loading <samp>firstpkg</samp> and inside that
+package it loads <samp>secondpkg</samp>, and you need the second package to be
+loaded with option <code>draft</code>.  Then before doing the first package
+you must queue up the options for the second package, like this.
+</p>
+<div class="example">
+<pre class="example">\PassOptionsToPackage{draft}{secondpkg}
+\RequirePackage{firstpkg}
+</pre></div>
+
+<p>(If <code>firstpkg.sty</code> loads an option in conflict with what you want
+then you may have to alter its source.)
+</p>
+<p>These commands are useful for general users as well as class and package
+writers.  For instance, suppose a user wants to load the <code>graphicx</code>
+package with the option <code>draft</code> and also wants to use a class
+<code>foo</code> that loads the <code>graphicx</code> package, but without that
+option. The user could start their LaTeX file with
+<code>\PassOptionsToPackage{draft}{graphicx}\documentclass{foo}</code>.
+</p>
+</dd>
+<dt><code>\ProcessOptions</code></dt>
+<dt><code>\ProcessOptions*<var>\@options</var></code></dt>
+<dd><a name="index-_005cProcessOptions"></a>
+<a name="index-_005cProcessOptions_002a"></a>
+<p>Execute the code for each option that the user has invoked.  Include it
+in the class file as <code>\ProcessOptions\relax</code> (because of the
+existence of the starred command).
+</p>
+<p>Options come in two types.  <em>Local options</em> have been specified for this
+particular package in the <var>options</var> argument of
+<code>\PassOptionsToPackage{<var>options</var>}</code>,
+<code>\usepackage[<var>options</var>]</code>, or
+<code>\RequirePackage[<var>options</var>]</code>.  <em>Global options</em> are those given
+by the class user in <code>\documentclass[<var>options</var>]</code> (If an option
+is specified both locally and globally then it is local.)
+</p>
+<p>When <code>\ProcessOptions</code> is called for a package <samp>pkg.sty</samp>, the
+following happens:
+</p><ol>
+<li> For each option <var>option</var> so far declared
+with <code>\DeclareOption</code>, it looks to see if that option is either a
+global or a local option for <code>pkg</code>. If so then it executes the
+declared code.  This is done in the order in which these options were
+given in <samp>pkg.sty</samp>.
+</li><li> For each remaining local option, it executes the command
+<code>\ds@</code><var>option</var> if it has been defined somewhere (other than by
+a <code>\DeclareOption</code>); otherwise, it executes the default option code
+given in <code>\DeclareOption*</code>. If no default option code has been
+declared then it gives an error message.  This is done in the order in
+which these options were specified.
+</li></ol>
+
+<p>When <code>\ProcessOptions</code> is called for a class it works in the same
+way except that all options are local, and the default <var>code</var> for
+<code>\DeclareOption*</code> is <code>\OptionNotUsed</code> rather than an error.
+</p>
+<p>The starred version <code>\ProcessOptions*</code> executes the
+options in the order specified in the calling commands, rather than in
+the order of declaration in the class or package. For a package this
+means that the global options are processed first.
+</p>
+</dd>
+<dt><code>\ProvidesClass{<var>class name</var>}[<var>release date</var> <var>brief additional information</var>]</code></dt>
+<dt><code>\ProvidesClass{<var>class name</var>}[<var>release date</var>]</code></dt>
+<dt><code>\ProvidesPackage{<var>package name</var>}[<var>release date</var> <var>brief additional information</var>]</code></dt>
+<dt><code>\ProvidesPackage{<var>package name</var>}[<var>release date</var>]</code></dt>
+<dd><a name="index-_005cProvidesClass"></a>
+<a name="index-_005cProvidesPackage"></a>
+<p>Identifies the class or package, printing a message to the screen and
+the log file.
+</p>
+<p>When you load a class or package, for example with
+<code>\documentclass{smcmemo}</code> or <code>\usepackage{test}</code>, LaTeX
+inputs a file.  If the name of the file does not match the class or
+package name declared in it then you get a warning.  Thus, if you invoke
+<code>\documentclass{smcmemo}</code>, and the file <samp>smcmemo.cls</samp> has
+the statement <code>\ProvidesClass{xxx}</code> then you get a warning like
+<code>You have requested document class `smcmemo', but the document
+class provides 'xxx'.</code>  This warning does not prevent LaTeX from
+processing the rest of the class file normally.
+</p>
+<p>If you include the optional argument then you must include a date,
+before any spaces, of the form <code>YYYY/MM/DD</code>. The rest of the
+optional argument is free-form, although it traditionally identifies the
+class, and is written to the screen during compilation and to the log
+file.  Thus, if your file <samp>smcmemo.cls</samp> contains the line
+<code>\ProvidesClass{smcmemo}[2008/06/01 v1.0 SMC memo class]</code> and
+your document&rsquo;s first line is <code>\documentclass{smcmemo}</code> then you
+will see <code>Document Class: smcmemo 2008/06/01 v1.0 SMC memo class</code>.
+</p>
+<p>The date in the optional argument allows class and package users to ask
+to be warned if the version of the class or package is earlier than
+<var>release date</var>.  For instance, a user could enter
+<code>\documentclass{smcmemo}[2018/10/12]</code> or
+<code>\usepackage{foo}[[2017/07/07]]</code> to require a class or package
+with certain features by specifying that it must be released no earlier
+than the given date.  (Although, in practice package users only rarely
+include a date, and class users almost never do.)
+</p>
+</dd>
+<dt><code>\ProvidesFile{<var>file name</var>}[<var>additional information</var>]</code></dt>
+<dd><a name="index-_005cProvidesFile"></a>
+<p>Declare a file other than the main class and package files, such as
+configuration files or font definition files.  Put this command in that
+file and you get in the log a string like <code>File: test.config
+2017/10/12 config file for test.cls</code> for <var>file name</var> equal to
+&lsquo;<samp>test.config</samp>&rsquo; and <var>additional information</var> equal to
+&lsquo;<samp>2017/10/12 config file for test.cls</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>\RequirePackage[<var>option list</var>]{<var>package name</var>}[<var>release date</var>]</code></dt>
+<dt><code>\RequirePackageWithOptions{<var>package name</var>}[<var>release date</var>]</code></dt>
+<dd><a name="index-_005cRequirePackage"></a>
+<a name="index-_005cRequirePackageWithOptions"></a>
+<p>Load a package, like the command <code>\usepackage</code> (see <a href="#Additional-packages">Additional packages</a>). The LaTeX development team strongly recommends use of
+these commands over Plain&nbsp;TeX&rsquo;s <code>\input</code>; see the Class
+Guide.  An example is
+<code>\RequirePackage[landscape,margin=1in]{geometry}</code>.
+</p>
+<p>The <var>option list</var>, if present, is a comma-separated list.  The
+<var>release date</var>, if present, must have the form <var>YYYY/MM/DD</var>.  If
+the release date of the package as installed on your system is earlier
+than <var>release date</var> then you get a warning like <code>You have
+requested, on input line 9, version `2017/07/03' of package jhtest, but
+only version `2000/01/01' is available</code>.
+</p>
+<p>The <code>\RequirePackageWithOptions</code> version uses the list of options
+for the current class.  This means it ignores any options passed to it
+via <code>\PassOptionsToClass</code>.  This is a convenience command to allow
+easily building classes on existing ones without having to track which
+options were passed.
+</p>
+<p>The difference between <code>\usepackage</code> and <code>\RequirePackage</code> is
+small.  The <code>\usepackage</code> command is intended for the document file
+while <code>\RequirePackage</code> is intended for package and class files.
+Thus, using <code>\usepackage</code> before the <code>\documentclass</code> command
+causes LaTeX to give error like <code>\usepackage before
+\documentclass</code>, but you can use <code>\RequirePackage</code> there.
+</p></dd>
+</dl>
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#Class-and-package-structure" accesskey="p" rel="prev">Class and package structure</a>, Up: <a href="#Class-and-package-construction" accesskey="u" rel="up">Class and package construction</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

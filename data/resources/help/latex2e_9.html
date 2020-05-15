@@ -1,0 +1,500 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Line breaking (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Line breaking (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Line breaking (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_10.html#Page-breaking" rel="next" title="Page breaking">
+<link href="latex2e_8.html#verse" rel="prev" title="verse">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Line-breaking"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_10.html#Page-breaking" accesskey="n" rel="next">Page breaking</a>, Previous: <a href="latex2e_8.html#Environments" accesskey="p" rel="prev">Environments</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Line-breaking-1"></a>
+<h2 class="chapter">9 Line breaking</h2>
+
+<a name="index-line-breaking"></a>
+<a name="index-breaking-lines"></a>
+
+<p>The first thing LaTeX does when processing ordinary text is to
+translate your input file into a sequence of glyphs and spaces.  To
+produce a printed document, this sequence must be broken into lines
+(and these lines must be broken into pages).
+</p>
+<p>LaTeX usually does the line (and page) breaking in the text body for
+you but in some environments you manually force line breaks.
+</p>
+<p>A common workflow is to get a final version of the document content
+before taking a final pass through and considering line breaks (and page
+breaks).  This differs from word processing, where you are formatting
+text as you input it.  Putting these off until the end prevents a lot of
+fiddling with breaks that will change anyway.
+</p>
+
+
+<hr>
+<a name="g_t_005c_005c"></a>
+<a name="g_t_005c_005c-1"></a>
+<h3 class="section">9.1 <code>\\</code></h3>
+
+<a name="index-_005c_005c-force-line-break"></a>
+<a name="index-new-line_002c-starting"></a>
+<a name="index-line-break_002c-forcing"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\\
+\\[<var>morespace</var>]
+</pre></div>
+
+<p>or one of: 
+</p>
+<div class="example">
+<pre class="example">\\*
+\\*[<var>morespace</var>]
+</pre></div>
+
+<p>End the current line.  The optional argument <var>morespace</var> specifies
+extra vertical space to be inserted before the next line.  This is a
+rubber length (see <a href="latex2e_14.html#Lengths">Lengths</a>) and can be negative.  The text before
+the line break is set at its normal length, that is, it is not stretched
+to fill out the line width.  This command is fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>The starred form, <code>\\*</code>, tells LaTeX not to start a new page
+between the two lines, by issuing a <code>\nobreak</code>.
+</p>
+<div class="example">
+<pre class="example">\title{My story: \\[0.25in]
+       a tale of woe}
+</pre></div>
+
+<p>Explicit line breaks in the main text body are unusual in LaTeX.  In
+particular, don&rsquo;t start new paragraphs with <code>\\</code>.  Instead leave a
+blank line between the two paragraphs.  And don&rsquo;t put in a sequence of
+<code>\\</code>&rsquo;s to make vertical space. Instead use
+<code>\vspace{<var>length</var>}</code>, or
+<code>\leavevmode\vspace{<var>length</var>}</code>, or
+<code>\vspace*{<var>length</var>}</code> if you want the space to not be thrown
+out at the top of a new page (see <a href="latex2e_19.html#g_t_005cvspace">\vspace</a>).
+</p>
+<p>The <code>\\</code> command is mostly used outside of the main flow of text
+such as in a <code>tabular</code> or <code>array</code> environment or in an
+equation environment.
+</p>
+<p>The <code>\\</code> command is a synonym for <code>\newline</code>
+(see <a href="#g_t_005cnewline">\newline</a>) under ordinary circumstances (an example of an
+exception is the <code>p{...}</code> column in a <code>tabular</code>
+environment; see <a href="latex2e_8.html#tabular">tabular</a>).
+</p>
+<p>The <code>\\</code> command is a macro, and its definition changes by context
+so that its definition in normal text, a <code>center</code> environment, a
+<code>flushleft</code> environment, and a <code>tabular</code> are all different.
+In normal text when it forces a linebreak it is essentially a shorthand
+for <code>\newline</code>.  It does not end horizontal mode or end the
+paragraph, it just inserts some glue and penalties so that when the
+paragraph does end a linebreak will occur at that point, with the short
+line padded with white space.
+</p>
+<p>You get &lsquo;<samp>LaTeX Error: There's no line here to end</samp>&rsquo; if you use
+<code>\\</code> to ask for a new line, rather than to end the current line.
+An example is if you have <code>\begin{document}\\</code> or, more likely,
+something like this.
+</p>
+<div class="example">
+<pre class="example">\begin{center}
+  \begin{minipage}{0.5\textwidth}
+  \\
+  In that vertical space put your mark.
+  \end{minipage}
+\end{center}
+</pre></div>
+
+<p>Fix it by replacing the double backslash with something like
+<code>\vspace{\baselineskip}</code>.
+</p>
+
+<hr>
+<a name="g_t_005cobeycr-_0026-_005crestorecr"></a>
+<a name="g_t_005cobeycr-_0026-_005crestorecr-1"></a>
+<h3 class="section">9.2 <code>\obeycr</code> &amp; <code>\restorecr</code></h3>
+
+<a name="index-_005cobeycr"></a>
+<a name="index-_005crestorecr"></a>
+<a name="index-new-line_002c-output-as-input"></a>
+
+<p>The <code>\obeycr</code> command makes a return in the input file (&lsquo;<samp>^^M</samp>&rsquo;,
+internally) the same as <code>\\</code>, followed by <code>\relax</code>.  So each
+new line in the input will also be a new line in the output.  The
+<code>\restorecr</code> command restores normal line-breaking behavior.
+</p>
+<p>This is not the way to show verbatim text or computer code.
+See <a href="latex2e_8.html#verbatim">verbatim</a> instead.
+</p>
+<p>With LaTeX&rsquo;s usual defaults, this
+</p>
+<div class="example">
+<pre class="example">aaa
+bbb
+
+\obeycr
+ccc
+ddd
+   eee
+
+\restorecr
+fff
+ggg
+
+hhh
+iii
+</pre></div>
+
+<p>produces output like this.
+</p>
+<div class="example">
+<pre class="example">  aaa bbb
+  ccc
+ddd
+eee
+
+fff ggg
+  hhh iii
+</pre></div>
+
+<p>The indents are paragraph indents.
+</p>
+
+<hr>
+<a name="g_t_005cnewline"></a>
+<a name="g_t_005cnewline-1"></a>
+<h3 class="section">9.3 <code>\newline</code></h3>
+
+<a name="index-_005cnewline"></a>
+<a name="index-new-line_002c-starting-_0028paragraph-mode_0029"></a>
+
+<p>In ordinary text, this ends a line in a way that does not right-justify
+the line, so the prior text is not stretched. That is, in paragraph mode
+(see <a href="latex2e_17.html#Modes">Modes</a>), the <code>\newline</code> command is equivalent to
+double-backslash (see <a href="#g_t_005c_005c">\\</a>).  This command is fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>However, the two commands are different inside a <code>tabular</code> or
+<code>array</code> environment. In a column with a specifier producing a
+paragraph box such as typically <code>p{...}</code>, <code>\newline</code> will
+insert a line end inside of the column; that is, it does not break the
+entire tabular row.  To break the entire row use <code>\\</code> or its
+equivalent <code>\tabularnewline</code>.
+</p>
+<p>This will print &lsquo;<samp>Name:</samp>&rsquo; and &lsquo;<samp>Address:</samp>&rsquo; as two lines in a
+single cell of the table.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{p{1in}{\hspace{2in}}p{1in}}
+  Name: \newline Address: &amp;Date: \\ \hline
+\end{tabular}
+</pre></div>
+
+<p>The &lsquo;<samp>Date:</samp>&rsquo; will be baseline-aligned with &lsquo;<samp>Name:</samp>&rsquo;.
+</p>
+
+<hr>
+<a name="g_t_005c_002d-_0028hyphenation_0029"></a>
+<a name="g_t_005c_002d-_0028discretionary-hyphen_0029"></a>
+<h3 class="section">9.4 <code>\-</code> (discretionary hyphen)</h3>
+
+<a name="index-_005c_002d-_0028hyphenation_0029"></a>
+<a name="index-hyphenation_002c-forcing"></a>
+
+<p>Tell LaTeX that it may hyphenate the word at that point.  When you
+insert <code>\-</code> commands in a word, the word will only be hyphenated at
+those points and not at any of the hyphenation points that LaTeX
+might otherwise have chosen.  This command is robust (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>LaTeX is good at hyphenating and usually finds most of the correct
+hyphenation points, while almost never using an incorrect one.  The
+<code>\-</code> command is for exceptional cases.
+</p>
+<p>For example, LaTeX does not ordinarily hyphenate words containing a
+hyphen.  Below, the long and hyphenated word means LaTeX has to put
+in unacceptably large spaces to set the narrow column.
+</p>
+<div class="example">
+<pre class="example">\begin{tabular}{rp{1.75in}}
+  Isaac Asimov &amp;The strain of
+               anti-intellectualism
+               % an\-ti-in\-tel\-lec\-tu\-al\-ism
+               has been a constant thread winding its way through our
+               political and cultural life, nurtured by
+               the false notion that democracy means that
+               `my ignorance is just as good as your knowledge'.
+\end{tabular}
+</pre></div>
+
+<p>Commenting out the third line and uncommenting the fourth makes a much
+better fit.
+</p>
+<p>The <code>\-</code> command only allows LaTeX to break there, it does not
+require that it break there.  You can insist on a split with something
+like <code>Hef-\linebreak feron</code>.  Of course, if you later change the
+text then this forced break may look very odd, so this approach requires
+care.
+</p>
+
+<hr>
+<a name="g_t_005cdiscretionary"></a>
+<a name="g_t_005cdiscretionary-_0028generalized-hyphenation-point_0029"></a>
+<h3 class="section">9.5 <code>\discretionary</code> (generalized hyphenation point)</h3>
+<a name="index-hyphenation_002c-discretionary"></a>
+<a name="index-discretionary-hyphenation"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\discretionary{<var>pre-break</var>}{<var>post-break</var>}{<var>no-break</var>}
+</pre></div>
+
+<p>Handle word changes around hyphens.  This command is not often used in
+LaTeX documents.
+</p>
+<p>If a line break occurs at the point where <code>\discretionary</code> appears
+then TeX puts <var>pre-break</var> at the end of the current line and puts
+<var>post-break</var> at the start of the next line.  If there is no line
+break here then TeX puts <var>no-break</var>
+</p>
+<p>In &lsquo;<samp>difficult</samp>&rsquo; the three letters <code>ffi</code> form a ligature.  But
+TeX can nonetheless break between the two f&rsquo;s with this.
+</p>
+<div class="example">
+<pre class="example">di\discretionary{f-}{fi}{ffi}cult
+</pre></div>
+
+<p>Note that users do not have to do this.  It is typically handled
+automatically by TeX&rsquo;s hyphenation algorithm.
+</p>
+
+<hr>
+<a name="g_t_005cfussy-_0026-_005csloppy"></a>
+<a name="g_t_005cfussy-_0026-_005csloppy-1"></a>
+<h3 class="section">9.6 <code>\fussy</code> &amp; <code>\sloppy</code></h3>
+
+<a name="index-_005cfussy"></a>
+<a name="index-_005csloppy"></a>
+<a name="index-line-breaks_002c-changing"></a>
+
+<p>Declarations to make TeX more picky or less picky about line
+breaking.  Declaring <code>\fussy</code> usually avoids too much space between
+words, at the cost of an occasional overfull box.  Conversely,
+<code>\sloppy</code> avoids overfull boxes while suffering loose interword
+spacing.
+</p>
+<p>The default is <code>\fussy</code>.  Line breaking in a paragraph is
+controlled by whichever declaration is current at the blank line, or
+<code>\par</code>, or displayed equation ending that paragraph.  So to affect
+the line breaks, include that paragraph-ending material in the scope of
+the command.
+</p>
+
+
+<hr>
+<a name="sloppypar"></a>
+<a name="sloppypar-1"></a>
+<h4 class="subsection">9.6.1 <code>sloppypar</code></h4>
+
+<a name="index-sloppypar"></a>
+<a name="index-sloppypar-environment"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\begin{sloppypar}
+  ... paragraphs ...
+\end{sloppypar}
+</pre></div>
+
+<p>Typeset the paragraphs with <code>\sloppy</code> in effect (see <a href="#g_t_005cfussy-_0026-_005csloppy">\fussy &amp; \sloppy</a>).  Use this to locally adjust line breaking, to avoid
+&lsquo;<samp>Overfull box</samp>&rsquo; or &lsquo;<samp>Underfull box</samp>&rsquo; errors.
+</p>
+<p>The example is simple.
+</p>
+<div class="example">
+<pre class="example">\begin{sloppypar}
+  Her plan for the morning thus settled, she sat quietly down to her
+  book after breakfast, resolving to remain in the same place and the
+  same employment till the clock struck one; and from habitude very
+  little incommoded by the remarks and ejaculations of Mrs.\ Allen,
+  whose vacancy of mind and incapacity for thinking were such, that
+  as she never talked a great deal, so she could never be entirely
+  silent; and, therefore, while she sat at her work, if she lost her
+  needle or broke her thread, if she heard a carriage in the street,
+  or saw a speck upon her gown, she must observe it aloud, whether
+  there were anyone at leisure to answer her or not.
+\end{sloppypar}
+</pre></div>
+
+
+<hr>
+<a name="g_t_005chyphenation"></a>
+<a name="g_t_005chyphenation-1"></a>
+<h3 class="section">9.7 <code>\hyphenation</code></h3>
+
+<a name="index-_005chyphenation"></a>
+<a name="index-hyphenation_002c-defining"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\hyphenation{<var>word1</var> ...}
+</pre></div>
+
+<p>Declares allowed hyphenation points within the words in the list.  The
+words in that list are separated by spaces.  Show permitted points for
+hyphenation with a dash character, <code>-</code>.
+</p>
+<p>Here is an example:
+</p>
+<div class="example">
+<pre class="example">\hyphenation{hat-er il-lit-e-ra-ti tru-th-i-ness}
+</pre></div>
+
+<p>Use lowercase letters.  TeX will only hyphenate if the word matches
+exactly.  Multiple <code>\hyphenation</code> commands accumulate.
+</p>
+
+<hr>
+<a name="g_t_005clinebreak-_0026-_005cnolinebreak"></a>
+<a name="g_t_005clinebreak-_0026-_005cnolinebreak-1"></a>
+<h3 class="section">9.8 <code>\linebreak</code> &amp; <code>\nolinebreak</code></h3>
+
+<a name="index-_005clinebreak"></a>
+<a name="index-_005cnolinebreak"></a>
+<a name="index-line-breaks_002c-forcing"></a>
+<a name="index-line-breaks_002c-preventing"></a>
+
+<p>Synopses, one of:
+</p>
+<div class="example">
+<pre class="example">\linebreak
+\linebreak[<var>zero-to-four</var>]
+</pre></div>
+
+<p>or one of these.
+</p>
+<div class="example">
+<pre class="example">\nolinebreak
+\nolinebreak[<var>zero-to-four</var>]
+</pre></div>
+
+<p>Encourage or discourage a line break.  The optional <var>zero-to-four</var>
+is an integer that allows you to soften the instruction.  The default is
+4, so that without the optional argument these commands entirely force
+or prevent the break.  But for instance, <code>\nolinebreak[1]</code> is a
+suggestion that another place may be better.  The higher the number, the
+more insistent the request.  Both commands are fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>Here we tell LaTeX that a good place to put a linebreak is after the
+standard legal text.
+</p>
+<div class="example">
+<pre class="example">\boilerplatelegal{} \linebreak[2]
+We especially encourage applications from members of traditionally
+underrepresented groups.
+</pre></div>
+
+<p>When you issue <code>\linebreak</code>, the spaces in the line are stretched
+out so that it extends to the right margin.  See <a href="#g_t_005c_005c">\\</a>
+and&nbsp;<a href="#g_t_005cnewline">\newline</a> to have the spaces not stretched out.
+</p>
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005chyphenation" accesskey="p" rel="prev">\hyphenation</a>, Up: <a href="#Line-breaking" accesskey="u" rel="up">Line breaking</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

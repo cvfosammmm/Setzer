@@ -1,0 +1,490 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Lengths (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Lengths (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Lengths (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_15.html#Making-paragraphs" rel="next" title="Making paragraphs">
+<link href="latex2e_13.html#g_t_005cday-_0026-_005cmonth-_0026-_005cyear" rel="prev" title="\day &amp; \month &amp; \year">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Lengths"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_15.html#Making-paragraphs" accesskey="n" rel="next">Making paragraphs</a>, Previous: <a href="latex2e_13.html#Counters" accesskey="p" rel="prev">Counters</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Lengths-1"></a>
+<h2 class="chapter">14 Lengths</h2>
+
+<a name="index-lengths_002c-defining-and-using"></a>
+
+<p>A <em>length</em> is a measure of distance.  Many LaTeX commands take a
+length as an argument.
+</p>
+<p>Lengths come in two types.  A <em>rigid length</em> such as <code>10pt</code>
+does not contain a <code>plus</code> or <code>minus</code> component.  (Plain TeX
+calls this a <em>dimen</em>.)  A <em>rubber length</em> (what Plain TeX
+calls a <em>skip</em>) such as as with <code>1cm plus0.05cm minus0.01cm</code>
+can contain either or both of those components.  In that rubber length,
+the <code>1cm</code> is the <em>natural length</em> while the other two, the
+<code>plus</code> and <code>minus</code> components, allow TeX to stretch or
+shrink the length to optimize placement.
+</p>
+<p>The illustrations below use these two commands.
+</p>
+<div class="example">
+<pre class="example">% make a black bar 10pt tall and #1 wide
+\newcommand{\blackbar}[1]{\rule{#1}{10pt}}
+
+% Make a box around #2 that is #1 wide (excluding the border)
+\newcommand{\showhbox}[2]{%
+  \fboxsep=0pt\fbox{\hbox to #1{#2}}} 
+</pre></div>
+
+<p>This example uses those commands to show a black bar 100&nbsp;points
+long between &lsquo;<samp>XXX</samp>&rsquo; and &lsquo;<samp>YYY</samp>&rsquo;.  This length is rigid.
+</p>
+<div class="example">
+<pre class="example">XXX\showhbox{100pt}{\blackbar{100pt}}YYY
+</pre></div>
+
+<p>As for rubber lengths, shrinking is simpler one: with <code>1cm minus
+0.05cm</code>, the natural length is 1cm but TeX can shrink it down
+as far as 0.95cm.  Beyond that, TeX refuses to shrink any more.
+Thus, below the first one works fine, producing a space of
+98&nbsp;points between the two bars.
+</p>
+<div class="example">
+<pre class="example">XXX\showhbox{300pt}{%
+  \blackbar{101pt}\hspace{100pt minus 2pt}\blackbar{101pt}}YYY
+
+XXX\showhbox{300pt}{%
+  \blackbar{105pt}\hspace{100pt minus 1pt}\blackbar{105pt}}YYY
+</pre></div>
+
+<p>But the second one gets a warning like &lsquo;<samp>Overfull \hbox (1.0pt too
+wide) detected at line 17</samp>&rsquo;.  In the output the first &lsquo;<samp>Y</samp>&rsquo; is
+overwritten by the end of the black bar, because the box&rsquo;s material is
+wider than the 300pt allocated, as TeX has refused to shrink
+the total to less than 309&nbsp;points.
+</p>
+<p>Stretching is like shrinking except that if TeX is asked to stretch
+beyond the given amount, it will do it.  Here the first line is fine,
+producing a space of 110&nbsp;points between the bars.
+</p>
+<div class="example">
+<pre class="example">XXX\showhbox{300pt}{%
+  \blackbar{95pt}\hspace{100pt plus 10pt}\blackbar{95pt}}YYY
+
+XXX\showhbox{300pt}{%
+  \blackbar{95pt}\hspace{100pt plus 1pt}\blackbar{95pt}}YYY
+</pre></div>
+
+<p>In the second line TeX needs a stretch of 10&nbsp;points and only
+1&nbsp;point was specified.  TeX stretches the space to the required
+length but it gives you a warning like &lsquo;<samp>Underfull \hbox (badness
+10000) detected at line 22</samp>&rsquo;.  (We won&rsquo;t discuss badness.)
+</p>
+<p>You can put both stretch and shrink in the same length, as in
+<code>1ex plus 0.05ex minus 0.02ex</code>.
+</p>
+<p>If TeX is setting two or more rubber lengths then it allocates the
+stretch or shrink in proportion.
+</p>
+<div class="example">
+<pre class="example">XXX\showhbox{300pt}{%
+  \blackbar{100pt}%  left
+  \hspace{0pt plus 50pt}\blackbar{80pt}\hspace{0pt plus 10pt}%  middle
+  \blackbar{100pt}}YYY  % right
+</pre></div>
+
+<p>The left and right bars take up 100&nbsp;points, so the middle needs
+another 100.  The middle bar is 80&nbsp;points so the two
+<code>\hspace</code>&rsquo;s must stretch 20&nbsp;points.  Because the two are
+<code>plus 50pt</code> and <code>plus 10pt</code>, TeX gets 5/6 of the stretch
+from the first space and 1/6 from the second.
+</p>
+<p>The <code>plus</code> or <code>minus</code> component of a rubber length can contain
+a <em>fill</em> component, as in <code>1in plus2fill</code>.  This gives the
+length infinite stretchability or shrinkability so that TeX could set
+it to any distance.  Here the two figures will be equal-spaced across
+the page.
+</p>
+<div class="example">
+<pre class="example">\begin{minipage}{\linewidth}
+  \hspace{0pt plus 1fill}\includegraphics{godel.png}%
+  \hspace{0pt plus 1fill}\includegraphics{einstein.png}%
+  \hspace{0pt plus 1fill}
+\end{minipage}
+</pre></div>
+
+<p>TeX actually has three levels of infinity for glue components:
+<code>fil</code>, <code>fill</code>, and <code>filll</code>.  The later ones are more
+infinite than the earlier ones.  Ordinarily document authors only use
+the middle one (see <a href="latex2e_19.html#g_t_005chfill">\hfill</a> and see <a href="latex2e_19.html#g_t_005cvfill">\vfill</a>).
+</p>
+<p>Multiplying a rubber length by a number turns it into a rigid length, so
+that after <code>\setlength{\ylength}{1in plus 0.2in}</code> and
+<code>\setlength{\zlength}{3\ylength}</code> then the value of
+<code>\zlength</code> is <code>3in</code>.
+</p>
+
+
+<hr>
+<a name="Units-of-length"></a>
+<a name="Units-of-length-1"></a>
+<h3 class="section">14.1 Units of length</h3>
+
+<a name="index-units_002c-of-length"></a>
+
+<p>TeX and LaTeX know about these units both inside and outside of
+math mode.
+</p>
+<dl compact="compact">
+<dt><code>pt</code></dt>
+<dd><a name="index-pt"></a>
+<a name="index-Point"></a>
+<a name="units-of-length-pt"></a><p>Point, 1/72.27 inch.  The conversion to metric units, to two decimal
+places, is 1point = 2.85mm = 28.45cm. 
+</p>
+</dd>
+<dt><code>pc</code></dt>
+<dd><a name="index-pica"></a>
+<a name="index-pc"></a>
+<a name="units-of-length-pc"></a><p>Pica, 12 pt
+</p>
+</dd>
+<dt><code>in</code></dt>
+<dd><a name="index-in"></a>
+<a name="index-inch"></a>
+<a name="units-of-length-in"></a><p>Inch,  72.27 pt
+</p>
+</dd>
+<dt><code>bp</code></dt>
+<dd><a name="index-bp"></a>
+<a name="index-Big-point"></a>
+<a name="units-of-length-bp"></a><p>Big point, 1/72 inch.  This length is the definition of a point in
+PostScript and many desktop publishing systems.
+</p>
+</dd>
+<dt><code>cm</code></dt>
+<dd><a name="index-Centimeter"></a>
+<a name="index-cm"></a>
+<a name="units-of-length-cm"></a><p>Centimeter
+</p>
+</dd>
+<dt><code>mm</code></dt>
+<dd><a name="index-Millimeter"></a>
+<a name="index-mm"></a>
+<a name="units-of-length-mm"></a><p>Millimeter
+</p>
+</dd>
+<dt><code>dd</code></dt>
+<dd><a name="index-Didot-point"></a>
+<a name="index-dd"></a>
+<a name="units-of-length-dd"></a><p>Didot point, 1.07 pt
+</p>
+</dd>
+<dt><code>cc</code></dt>
+<dd><a name="index-Cicero"></a>
+<a name="index-cc"></a>
+<a name="units-of-length-cc"></a><p>Cicero, 12 dd
+</p>
+</dd>
+<dt><code>sp</code></dt>
+<dd><a name="index-Scaled-point"></a>
+<a name="index-sp"></a>
+<a name="units-of-length-sp"></a><p>Scaled point, 1/65536 pt
+</p>
+</dd>
+</dl>
+
+<a name="index-ex"></a>
+<a name="index-x_002dheight"></a>
+<a name="index-ex-1"></a>
+<a name="index-m_002dwidth"></a>
+<a name="index-em"></a>
+<a name="index-em-1"></a>
+<a name="Lengths_002fem"></a><a name="Lengths_002fen"></a><a name="Lengths_002fex"></a><a name="units-of-length-em"></a><a name="units-of-length-en"></a><a name="units-of-length-ex"></a><p>Two other lengths that are often used are values set by the designer of
+the font.  The x-height of the current font <em>ex</em>, traditionally the
+height of the lowercase letter x, is often used for vertical
+lengths. Similarly <em>em</em>, traditionally the width of the capital
+letter M, is often used for horizontal lengths (there is also
+<code>\enspace</code>, which is <code>0.5em</code>).  Use of these can help make a
+definition work better across font changes.  For example, a definition
+of the vertical space between list items given as
+<code>\setlength{\itemsep}{1ex plus 0.05ex minus 0.01ex}</code> is more
+likely to still be reasonable if the font is changed than a definition
+given in points.
+</p>
+<a name="index-mu_002c-math-unit"></a>
+<a name="index-mu"></a>
+<p>In math mode, many definitions are expressed in terms of the math unit
+<em>mu</em> given by 1 em = 18 mu, where the em is taken from the current
+math symbols family.  See <a href="latex2e_16.html#Spacing-in-math-mode">Spacing in math mode</a>.
+</p>
+
+<hr>
+<a name="g_t_005csetlength"></a>
+<a name="g_t_005csetlength-1"></a>
+<h3 class="section">14.2 <code>\setlength</code></h3>
+
+<a name="index-_005csetlength"></a>
+<a name="index-lengths_002c-setting"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\setlength{<var>len</var>}{<var>amount</var>}
+</pre></div>
+
+<p>Set the length <var>len</var> to <var>amount</var>.  The length name <var>len</var>
+must begin with a backslash, <code>\</code>.  The <code>amount</code> can be a
+rubber length (see <a href="#Lengths">Lengths</a>).  It can be positive, negative or zero,
+and can be in any units that LaTeX understands (see <a href="#Units-of-length">Units of length</a>).
+</p>
+<p>Below, with LaTeX&rsquo;s defaults the first paragraph will be indented
+while the second will not.
+</p>
+<div class="example">
+<pre class="example">I told the doctor I broke my leg in two places.
+
+\setlength{\parindent}{0em}
+He said stop going to those places.
+</pre></div>
+
+<p>If you did not declare <var>len</var> with <code>\newlength</code>, for example if
+you mistype the above as
+<code>\newlength{\specparindent}\setlength{\sepcparindent}{...}</code>,
+then you get an error like &lsquo;<samp>Undefined control sequence. &lt;argument&gt;
+\sepcindent</samp>&rsquo;.  If you omit the backslash at the start of the length name
+then you get an error like &lsquo;<samp>Missing number, treated as zero. &lt;to be
+read again&gt; \relax l.19 \setlength{specparindent}{0.6\parindent}</samp>&rsquo;
+</p>
+
+<hr>
+<a name="g_t_005caddtolength"></a>
+<a name="g_t_005caddtolength-1"></a>
+<h3 class="section">14.3 <code>\addtolength</code></h3>
+
+<a name="index-_005caddtolength"></a>
+<a name="index-lengths_002c-adding-to"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\addtolength{<var>len</var>}{<var>amount</var>}
+</pre></div>
+
+<p>Increment the length <var>len</var> by <var>amount</var>.  The length name
+<var>len</var> begins with a backslash, <code>\</code>.  The <code>amount</code> is a
+rubber length (see <a href="#Lengths">Lengths</a>).  It can be positive, negative or zero,
+and can be in any units that LaTeX understands (see <a href="#Units-of-length">Units of length</a>).
+</p>
+<p>Below, if <code>\parskip</code> starts with the value <code>0pt plus 1pt</code> 
+</p>
+<div class="example">
+<pre class="example">Doctor: how is the boy who swallowed the silver dollar?
+\addtolength{\parskip}{1pt}
+
+Nurse: no change.
+</pre></div>
+
+<p>then it has the value <code>1pt plus 1pt</code> for the second paragraph.
+</p>
+<p>If you did not declare the length <var>len</var> with <code>\newlength</code>, if
+for example you mistype the above as
+<code>\addtolength{\specparindent}{0.6\praindent}</code>, then you get
+something like &lsquo;<samp>Undefined control sequence. &lt;argument&gt; \praindent</samp>&rsquo;.
+If you leave off the backslash at the start of <var>len</var>, as in
+<code>\addtolength{parindent}{1pt}</code>, then you get something like
+&lsquo;<samp>You can't use `the letter p' after \advance</samp>&rsquo;.
+</p>
+
+<hr>
+<a name="g_t_005csettodepth"></a>
+<a name="g_t_005csettodepth-1"></a>
+<h3 class="section">14.4 <code>\settodepth</code></h3>
+
+<a name="index-_005csettodepth"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\settodepth{<var>len</var>}{<var>text</var>}
+</pre></div>
+
+<p>Set the length <var>len</var> to the depth of box that LaTeX gets on
+typesetting the <var>text</var> argument.  The length name <var>len</var> must
+begin with a backslash, <code>\</code>.
+</p>
+<p>This will show how low the character descenders go.
+</p>
+<div class="example">
+<pre class="example">\newlength{\alphabetdepth}
+\settodepth{\alphabetdepth}{abcdefghijklmnopqrstuvwxyz}
+\the\alphabetdepth
+</pre></div>
+
+<p>If you did not set aside the length <var>len</var>, if for example you
+mistype the above as <code>\settodepth{\aplhabetdepth}{abc...}</code>,
+then you get something like &lsquo;<samp>Undefined control sequence. &lt;argument&gt;
+\aplhabetdepth</samp>&rsquo;.  If you leave the backslash out of <var>len</var>, as in
+<code>\settodepth{alphabetdepth}{...}</code> then you get something like
+&lsquo;<samp>Missing number, treated as zero. &lt;to be read again&gt; \setbox</samp>&rsquo;.
+</p>
+
+<hr>
+<a name="g_t_005csettoheight"></a>
+<a name="g_t_005csettoheight-1"></a>
+<h3 class="section">14.5 <code>\settoheight</code></h3>
+
+<a name="index-_005csettoheight"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\settoheight{<var>len</var>}{text}
+</pre></div>
+
+<p>Sets the length <var>len</var> to the height of box that LaTeX gets on
+typesetting the <code>text</code> argument.  The length name <var>len</var> must
+begin with a backslash, <code>\</code>.
+</p>
+<p>This will show how high the characters go.
+</p>
+<div class="example">
+<pre class="example">\newlength{\alphabetheight}
+\settoheight{\alphabetheight}{abcdefghijklmnopqrstuvwxyz}
+\the\alphabetheight
+</pre></div>
+
+<p>If no such length <var>len</var> has been declared with <code>\newlength</code>, if
+for example you mistype as
+<code>\settoheight{\aplhabetheight}{abc...}</code>, then you get something
+like &lsquo;<samp>Undefined control sequence. &lt;argument&gt; \alphabetheight</samp>&rsquo;.  If
+you leave the backslash out of <var>len</var>, as in
+<code>\settoheight{alphabetheight}{...}</code> then you get something like
+&lsquo;<samp>Missing number, treated as zero. &lt;to be read again&gt; \setbox</samp>&rsquo;.
+</p>
+
+<hr>
+<a name="g_t_005csettowidth"></a>
+<a name="g_t_005csettowidth-1"></a>
+<h3 class="section">14.6 <code>\settowidth</code></h3>
+
+<a name="index-_005csettowidth"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\settowidth{<var>len</var>}{<var>text</var>}
+</pre></div>
+
+<p>Set the length <var>len</var> to the width of the box that LaTeX gets on
+typesetting the <var>text</var> argument.  The length name <var>len</var> must
+begin with a backslash, <code>\</code>.
+</p>
+<p>This measures the width of the lowercase ASCII alphabet.
+</p>
+<div class="example">
+<pre class="example">\newlength{\alphabetwidth}
+\settowidth{\alphabetwidth}{abcdefghijklmnopqrstuvwxyz}
+\the\alphabetwidth
+</pre></div>
+
+<p>If no such length <var>len</var> has been set aside, if for example you
+mistype the above as <code>\settowidth{\aplhabetwidth}{abc...}</code>,
+then you get something like &lsquo;<samp>Undefined control sequence. &lt;argument&gt;
+\aplhabetwidth</samp>&rsquo;.  If you leave the backslash out of <var>len</var>, as in
+<code>\settoheight{alphabetwidth}{...}</code> then you get something like
+&lsquo;<samp>Missing number, treated as zero. &lt;to be read again&gt; \setbox</samp>&rsquo;.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005csettoheight" accesskey="p" rel="prev">\settoheight</a>, Up: <a href="#Lengths" accesskey="u" rel="up">Lengths</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,1108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Front/back matter (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Front/back matter (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Front/back matter (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_26.html#Letters" rel="next" title="Letters">
+<link href="latex2e_24.html#g_t_005cinput" rel="prev" title="\input">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Front_002fback-matter"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_26.html#Letters" accesskey="n" rel="next">Letters</a>, Previous: <a href="latex2e_24.html#Splitting-the-input" accesskey="p" rel="prev">Splitting the input</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Front_002fback-matter-1"></a>
+<h2 class="chapter">25 Front/back matter</h2>
+
+
+
+<hr>
+<a name="Table-of-contents-etc_002e"></a>
+<a name="Table-of-contents-etc_002e-1"></a>
+<h3 class="section">25.1 Table of contents etc.</h3>
+
+<a name="index-table-of-contents_002c-creating"></a>
+
+<a name="index-_005ctableofcontents"></a>
+<a name="index-_002etoc-file-1"></a>
+<a name="index-_005clistoffigures"></a>
+<a name="index-_005clistoftables"></a>
+<a name="index-_002elof-file-1"></a>
+<a name="index-_002elot-file-1"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\tableofcontents
+\listoffigures
+\listoftables
+</pre></div>
+
+<p>Produce a table of contents, or list of figures, or list of tables.  Put
+the command in the input file where you want the table or list to
+go. You do not type the entries; for example, typically the table of
+contents entries are automatically generated from the sectioning
+commands <code>\chapter</code>, etc.
+</p>
+<p>This example illustrates the first command, <code>\tableofcontents</code>.
+LaTeX will produce a table of contents on the book&rsquo;s first page.
+</p>
+<div class="example">
+<pre class="example">\documentclass{book}
+% \setcounter{tocdepth}{1}
+\begin{document}
+\tableofcontents\newpage
+  ...
+\chapter{...}
+  ...
+\section{...}
+  ...
+\subsection{...}
+  ...
+\end{document}
+</pre></div>
+
+<p>Uncommenting the second line would cause that table to contain chapter
+and section listings but not subsection listings, because the
+<code>\section</code> command has level&nbsp;1.  See <a href="latex2e_6.html#Sectioning">Sectioning</a> for level
+numbers of the sectioning units.  For more on the <code>tocdepth</code>
+see <a href="latex2e_6.html#Sectioning_002ftocdepth">Sectioning/tocdepth</a>.
+</p>
+<p>Another example of the use of <code>\tableofcontents</code> is in <a href="latex2e_29.html#Larger-book-template">Larger book template</a>.
+</p>
+<p>If you want a page break after the table of contents, write a
+<code>\newpage</code> command after the <code>\tableofcontents</code> command, as
+above.
+</p>
+<p>To make the table of contents LaTeX stores the information in an
+auxiliary file named <samp><var>root-file</var>.toc</samp> (see <a href="latex2e_24.html#Splitting-the-input">Splitting the input</a>).  For example, this LaTeX file <samp>test.tex</samp>
+</p>
+<div class="example">
+<pre class="example">\documentclass{article}
+\begin{document}
+\tableofcontents\newpage
+\section{First section}
+\subsection{First subsection}
+  ...
+</pre></div>
+
+<p>writes the following line to <samp>test.toc</samp>.
+</p>
+<div class="example">
+<pre class="example">\contentsline {section}{\numberline {1}First section}{2}
+\contentsline {subsection}{\numberline {1.1}First subsection}{2}
+</pre></div>
+
+<p>The <code>section</code> or <code>subsection</code> is the sectioning unit.  The
+hook <code>\numberline</code> lets you to change how the information appears
+in the table of contents.  Of its two arguments, <code>1</code> or <code>1.1</code>
+is the sectioning unit number and <code>First section</code> or <code>First
+subsection</code> is the title.  Finally, <code>2</code> is the page number on which
+the sectioning units start.
+</p>
+<p>One consequence of this auxiliary file storage strategy is that to get the
+contents page correct you must run LaTeX twice, once to store the
+information and once to get it.  In particular, the first time that you
+run LaTeX on a new document, the table of contents page will be empty
+except for its &lsquo;<samp>Contents</samp>&rsquo; header.  Just run it again.
+</p>
+<p>The commands <code>\listoffigures</code> and <code>\listoftables</code> produce a
+list of figures and a list of tables.  They work the same way as the
+contents commands; for instance, these work with information stored in
+<samp>.lof</samp> and <samp>.lot</samp> files.
+</p>
+<a name="index-package_002c-babel-4"></a>
+<a name="index-babel-package-4"></a>
+
+<a name="index-package_002c-polyglossia-2"></a>
+<a name="index-polyglossia-package-2"></a>
+
+<p>To change the header for the table of contents page do something like
+the first line here.
+</p>
+<div class="example">
+<pre class="example">\renewcommand{\contentsname}{Table of contents}
+\renewcommand{\listfigurename}{Plots}
+\renewcommand{\listtablename}{Tables}
+</pre></div>
+
+<p>Similarly, the other two lines will do the other two.
+Internationalization packages such as <samp>babel</samp> or <samp>polyglossia</samp>
+will change the headers depending on the chosen base language.
+</p>
+<a name="index-package_002c-tocloft"></a>
+<a name="index-tocloft-package"></a>
+
+<a name="index-package_002c-tocbibbind"></a>
+<a name="index-tocbibbind-package"></a>
+
+<p>CTAN has many packages for the table of contents and lists of figures
+and tables.  One convenient one for adjusting some aspects of the
+default, such as spacing, is <samp>tocloft</samp>.  And, <samp>tocbibbind</samp>
+will automatically add the bibliography, index, etc. to the table of
+contents.
+</p>
+
+
+<hr>
+<a name="g_t_005caddcontentsline"></a>
+<a name="g_t_005caddcontentsline-1"></a>
+<h4 class="subsection">25.1.1 <code>\addcontentsline</code></h4>
+
+<a name="index-_005caddcontentsline"></a>
+<a name="index-table-of-contents-entry_002c-manually-adding"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\addcontentsline{<var>ext</var>}{<var>unit</var>}{<var>text</var>}
+</pre></div>
+
+<a name="index-_005ccontentsline"></a>
+<p>Add an entry to the file specified by <var>ext</var>.  Usually <var>ext</var> is
+one of <code>toc</code> for the table of contents, <code>lof</code> for the list of
+figures, or <code>lot</code> for the list of tables.
+</p>
+<p>The following will result in an &lsquo;<samp>Appendices</samp>&rsquo; line in the table of
+contents.
+</p>
+<div class="example">
+<pre class="example">\addcontentsline{toc}{section}{\protect\textbf{Appendices}}
+</pre></div>
+
+<p>It will appear at the same indentation level as the sections, will be in
+boldface, and will be assigned the page number associated with the point
+where it appears in the input file.
+</p>
+<p>The <code>\addcontentsline</code> command writes information to the file
+<samp><var>root-name</var>.<var>ext</var></samp>.  It writes that information as the
+text of the command
+<code>\contentsline{<var>unit</var>}{<var>text</var>}{<var>num</var>}</code>, where
+<code><var>num</var></code> is the current value of counter <code><var>unit</var></code>.  The
+most common case is the table of contents and there <var>num</var> is the
+page number of the first page of <var>unit</var>.
+</p>
+<p>This command is invoked by the sectioning commands <code>\chapter</code>,
+etc., and also by <code>\caption</code> inside a float environment.  But it is
+also used by authors.  For example, in a book to have the preface
+unnumbered, you may use the starred <code>\chapter*</code>.  But that does not
+put in table of contents information, so you can enter it manually, as
+here.
+</p>
+<div class="example">
+<pre class="example">\chapter*{Preface}
+\addcontentsline{toc}{chapter}{\protect\numberline{}Preface}
+</pre></div>
+
+<p>In the <samp>.toc</samp> file LaTeX will put the line <code>\contentsline
+{chapter}{\numberline {}Preface}{3}</code>; note the page number
+&lsquo;<samp>3</samp>&rsquo;.
+</p>
+
+<p>All of the arguments for <code>\addcontentsline</code> are required.
+</p>
+<dl compact="compact">
+<dt><var>ext</var></dt>
+<dd><p>Typically one of the strings <code>toc</code> for the table of contents,
+<code>lof</code> for the list of figures, or <code>lot</code> for the list of
+tables. The filename extension of the information file.
+</p>
+</dd>
+<dt><var>unit</var></dt>
+<dd><p>A string that depends on the value of the <var>ext</var> argument:
+</p>
+<dl compact="compact">
+<dt><code>toc</code></dt>
+<dd><p>For the table of contents, this is the name of a sectional unit:
+<code>part</code>, <code>chapter</code>, <code>section</code>, <code>subsection</code>, etc.
+</p>
+</dd>
+<dt><code>lof</code></dt>
+<dd><p>For the list of figures: <code>figure</code>.
+</p>
+</dd>
+<dt><code>lot</code></dt>
+<dd><p>For the list of tables: <code>table</code>.
+</p></dd>
+</dl>
+
+</dd>
+<dt><var>text</var></dt>
+<dd><p>The text of the entry.  You must <code>\protect</code> any commands that are
+fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p></dd>
+</dl>
+
+<p>The <code>\addcontentsline</code> command has an interaction with
+<code>\include</code> (see <a href="latex2e_24.html#g_t_005cinclude-_0026-_005cincludeonly">\include &amp; \includeonly</a>). If you use them at
+the same level, as with
+<code>\addcontentsline{...}{...}{...}\include{...}</code> then lines
+in the table of contents can come out in the wrong order.  The solution
+is to move <code>\addcontentsline</code> into the file being included.
+</p>
+<p>If you use a <var>unit</var> that LaTeX does not recognize, as here
+</p>
+<div class="example">
+<pre class="example">\addcontentsline{toc}{setcion}{\protect\textbf{Appendices}}
+</pre></div>
+
+<p>then you don&rsquo;t get an error but the formatting in the table of contents
+will not make sense.
+</p>
+
+<hr>
+<a name="g_t_005caddtocontents"></a>
+<a name="g_t_005caddtocontents-1"></a>
+<h4 class="subsection">25.1.2 <code>\addtocontents</code></h4>
+
+<a name="index-_005caddtocontents_007bext_007d_007btext_007d"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\addtocontents{<var>ext</var>}{<var>text</var>}
+</pre></div>
+
+<p>Add <var>text</var>, which may be text or formatting commands, directly to
+the auxiliary file with extension <var>ext</var>.  This is most commonly used
+for the table of contents so that is the discussion here, but this also
+applies to the list of figures and list of tables.
+</p>
+<p>This will put some vertical space in the table of contents after the
+&lsquo;<samp>Contents</samp>&rsquo; header.
+</p>
+<div class="example">
+<pre class="example">\tableofcontents\newpage
+\addtocontents{toc}{\protect\vspace*{3ex}}
+</pre></div>
+
+<p>The <code>\addtocontents</code> command has two arguments.  Both are
+required.
+</p>
+<dl compact="compact">
+<dt><var>ext</var></dt>
+<dd><p>Typically one of: <samp>toc</samp> for the table of contents, <samp>lof</samp> for
+the list of figures, or <samp>lot</samp> for the list of tables.  The
+extension of the file holding the information.
+</p>
+</dd>
+<dt><var>text</var></dt>
+<dd><p>The text, and possibly commands, to be written.
+</p></dd>
+</dl>
+
+<p>The sectioning commands such as <code>\chapter</code> use the
+<code>\addcontentsline</code> command to store information.  This command
+creates lines in the <samp>.toc</samp> auxiliary file containing the
+<code>\contentsline</code> command (see <a href="#g_t_005caddcontentsline">\addcontentsline</a>).  In contrast,
+the command <code>\addtocontents</code> puts material directly in that file.
+</p>
+<p>The <code>\addtocontents</code> command has an interaction with
+<code>\include</code> (see <a href="latex2e_24.html#g_t_005cinclude-_0026-_005cincludeonly">\include &amp; \includeonly</a>). If you use them at
+the same level, as with
+<code>\addtocontents{...}{...}\include{...}</code> then lines in the
+table of contents can come out in the wrong order.  The solution is to
+move <code>\addtocontents</code> into the file being included.
+</p>
+
+<hr>
+<a name="g_t_005cnofiles"></a>
+<a name="g_t_005cnofiles-1"></a>
+<h4 class="subsection">25.1.3 <code>\nofiles</code></h4>
+
+<a name="index-_005cnofiles"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\nofiles
+</pre></div>
+
+<p>Prevent LaTeX from writing any auxiliary files.  The only output will
+be the <samp>.log</samp> and <samp>.pdf</samp> (or <samp>.dvi</samp>) files.  This command
+must go in the preamble.
+</p>
+<p>Because of the <code>\nofiles</code> command this example will not produce a
+<samp>.toc</samp> file.
+</p>
+<div class="example">
+<pre class="example">\documentclass{book}
+\nofiles
+\begin{document}
+\tableofcontents\newpage
+\chapter{...}
+  ...
+</pre></div>
+
+<p>LaTeX will not erase any existing auxiliary files, so if you insert
+the <code>\nofiles</code> command after you have run the file and gotten
+a <samp>.toc</samp> then the table of contents page will continue to show
+the old information.
+</p>
+
+<hr>
+<a name="Indexes"></a>
+<a name="Indexes-1"></a>
+<h3 class="section">25.2 Indexes</h3>
+
+<a name="index-indexes"></a>
+
+<a name="index-_005cmakeindex"></a>
+<a name="index-_005cindex"></a>
+<a name="index-_002eidx-file"></a>
+
+<p>This document has an index.
+</p>
+<div class="example">
+<pre class="example">\documentclass{article}
+\usepackage{makeidx} \makeindex
+  ...
+\begin{document}
+  ...
+Recall Wilson's Theorem: \index{Wilson's Theorem}
+a number \( n&gt;1 \) is prime if and only if the factorial of \( n-1 \)
+is congruent to \( -1 \) modulo~\( n \).
+  ...
+\printindex
+  ...
+</pre></div>
+
+<p>The <code>\usepackage{makeidx}</code> and <code>\makeindex</code> in the preamble
+bring in the relevant commands.
+</p>
+<p>Producing an index is a three stage process.  First, in the document
+body you declare index entries with the <code>\index</code> command
+(see <a href="#g_t_005cindex">\index</a>).  When you run LaTeX, the <code>\index</code> writes its
+information to an auxiliary file <samp><var>root-name</var>.idx</samp>.  Next, to
+alphabetize and to do other manipulations you run an external command,
+typically <code>makeindex</code> or <code>xindy</code> (see <a href="#makeindex">makeindex</a>).
+These output a file <samp><var>root-name</var>.ind</samp>.  Finally, you bring the
+information back into your document and typeset it with the
+<code>\printindex</code> command (see <a href="#g_t_005cprintindex">\printindex</a>).
+</p>
+<a name="index-package_002c-showidx"></a>
+<a name="index-showidx-package"></a>
+
+<a name="index-package_002c-multind"></a>
+<a name="index-multind-package"></a>
+
+<p>There are many packages that apply to indexing commands.  The
+<code>showidx</code> package causes each index entries to be shown in the
+margin on the page where the entry appears.  This can help in preparing
+the index.  The <code>multind</code> package supports multiple indexes.  See
+also the TeX FAQ entry on this topic,
+<a href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=multind">http://www.tex.ac.uk/cgi-bin/texfaq2html?label=multind</a>.
+</p>
+
+
+<hr>
+<a name="g_t_005cindex"></a>
+<a name="g_t_005cindex-1"></a>
+<h4 class="subsection">25.2.1 <code>\index</code></h4>
+
+<a name="index-index-entry"></a>
+<a name="index-_005cindex-1"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\index{<var>index-entry-string</var>}
+</pre></div>
+
+<p>Declare an entry in the index.  This command is fragile
+(see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>For example, as described in <a href="#Indexes">Indexes</a>, one way to get an index from
+what&rsquo;s below is to compile the document with <code>pdflatex test</code>, then
+process the index entries with <code>makeindex test</code>, and then compile
+again with <code>pdflatex test</code>.
+</p>
+<div class="example">
+<pre class="example">W~Ackermann (1896--1962).\index{Ackermann}
+  ...
+Ackermann function\index{Ackermann!function}
+  ...
+rate of growth\index{Ackermann!function!growth rate}
+</pre></div>
+
+<p>All three index entries will get a page number, such as &lsquo;<samp>Ackermann,
+22</samp>&rsquo;.  LaTeX will format the second as a subitem of the first, on the
+line below it and indented, and the third as a subitem of the second.
+Three levels deep is as far as you can nest subentries.  (If you add
+<code>\index{Ackermann!function!growth rate!comparison}</code> then
+<code>makeindex</code> says &lsquo;<samp>Scanning input file test.idx....done (4
+entries accepted, 1 rejected)</samp>&rsquo; and nothing appears in the index).
+</p>
+<p>If you enter a second <code>\index</code> with the same
+<var>index-entry-string</var> then you will get a single index entry with two
+page numbers (unless they happen to fall on the same page).  Thus,
+adding <code>as for Ackermann.\index{Ackermann}</code> later in the same
+document as above will give an index entry like &lsquo;<samp>Ackermann, 22,
+151</samp>&rsquo;.  Also, you can enter the index entries in any order, so for
+instance <code>\index{Ackermann!function}</code> could come before
+<code>\index{Ackermann}</code>.
+</p>
+<a name="index-index_002c-page-range"></a>
+<p>Get a page range in the output, like &lsquo;<samp>Hilbert, 23--27</samp>&rsquo;, as here.
+</p>
+<div class="example">
+<pre class="example">W~Ackermann (1896--1962).\index{Ackermann}
+  ...
+D~Hilbert (1862--1943)\index{Ackermann!Hilbert\(}
+  ...
+disapproved of his marriage.\index{Ackermann!Hilbert\)}
+</pre></div>
+
+<p>If the beginning and ending of the page range are equal then the system
+just gives a single page entry, not a range.
+</p>
+<p>If you index subentries but not a main entry, as with
+<code>\index{Jones!program}</code> and <code>\index{Jones!results}</code>, then
+the output is the item &lsquo;<samp>Jones</samp>&rsquo; with no comma or page number,
+followed by two subitems, like &lsquo;<samp>program, 50</samp>&rsquo; and &lsquo;<samp>results,
+51</samp>&rsquo;.
+</p>
+<a name="index-_0060see_0027-and-_0060see-also_0027-index-entries"></a>
+<a name="index-index-entries_002c-_0060see_0027-and-_0060see-also_0027"></a>
+<a name="index-_005cseename"></a>
+<a name="index-_005calsoname"></a>
+<a name="index-package_002c-babel-5"></a>
+<a name="index-babel-package-5"></a>
+<a name="index-package_002c-polyglossia-3"></a>
+<a name="index-polyglossia-package-3"></a>
+
+
+<p>Generate a index entry that says &lsquo;<samp>See</samp>&rsquo; by using a vertical bar
+character: <code>\index{Ackermann!function|see{P\'eter's
+function}}</code>.  You can instead get &lsquo;<samp>See also</samp>&rsquo; with <code>seealso</code>.
+(The text &lsquo;<samp>See</samp>&rsquo; is defined by <code>\seename</code>, and &lsquo;<samp>See also</samp>&rsquo;
+by <code>\alsoname</code>.  You can redefine these either by using an
+internationalization package such as <samp>babel</samp> or <samp>polyglossia</samp>,
+or directly as with <code>\renewcommand{\alsoname}[1]{Also see
+#1}</code>.)
+</p>
+<p>The &lsquo;<samp>See</samp>&rsquo; feature is part of a more general functionality.  After
+the vertical bar you can put the name of a one-input command, as in
+<code>\index{group|textit}</code> (note the missing backslash on the
+<code>\textit</code> command) and the system will apply that command to the
+page number, here giving something like <code>\textit{7}</code>.  You can
+define your own one-input commands, such as
+<code>\newcommand{\definedpage}[1]{{\color{blue}#1}}</code> and then
+<code>\index{Ackermann!function|definedpage}</code> will give a blue page
+number (see <a href="latex2e_21.html#Color">Color</a>).  Another, less practical, example is this,
+</p>
+<div class="example">
+<pre class="example">\newcommand\indexownpage[1]{#1, \thepage}
+  ... Epimenides.\index{self-reference|indexownpage}
+</pre></div>
+
+<p>which creates an entry citing the page number of its own index listing.
+</p>
+<p>The two functions just described combine, as here
+</p>
+<div class="example">
+<pre class="example">\index{Ackermann!function|(definedpage}
+  ...
+\index{Ackermann!function|)}
+</pre></div>
+
+<p>which outputs an index entry like &lsquo;<samp>function, 23--27</samp>&rsquo; where the page
+number range is in blue.
+</p>
+<p>Consider an index entry such as &lsquo;<samp>&#x03B1;-ring</samp>&rsquo;.  Entering
+it as <code>$\alpha$-ring</code> will cause it to be alphabetized according to
+the dollar sign. You can instead enter it using an at-sign, as
+<code>\index{alpha-ring@$\alpha$-ring}</code>.  If you specify an entry
+with an at-sign separating two strings, <code><var>pos</var>@<var>text</var></code>,
+then <var>pos</var> gives the alphabetical position of the entry while
+<var>text</var> produces the text of the entry.  Another example is that
+<code>\index{Saint Michael's College@SMC}</code> produces an index entry
+&lsquo;<samp>SMC</samp>&rsquo; alphabetized into a different location than its spelling
+would naturally give it.
+</p>
+<p>To put a <code>!</code>, or <code>@</code>, or <code>|</code> character in an index
+entry, preceding it with a double quote, <code>&quot;</code>.  (The double quote
+gets deleted before alphabetization.)
+</p>
+<a name="index-package_002c-index"></a>
+<a name="index-index-package"></a>
+
+<p>A number of packages on CTAN have additional functionality beyond that
+provided by <samp>makeidx</samp>.  One is <samp>index</samp>, which allows for
+multiple indices and contains a command
+<code>\index*{<var>index-entry-string</var>}</code> that prints the
+<var>index-entry-string</var> as well as indexing it.
+</p>
+<a name="index-_005cindexentry"></a>
+<a name="index-idx-file"></a>
+<p>The <code>\index</code> command writes the indexing information to the file
+<samp><var>root-name</var>.idx</samp> file.  Specifically, it writes text of the
+command
+<code>\indexentry{<var>index-entry-string</var>}{<var>page-num</var>}</code>,
+where <var>page-num</var> is the value of the <code>\thepage</code> counter.  On
+occasion, when the <code>\printindex</code> command is confused, you have to
+delete this file to start with a fresh slate.
+</p>
+<p>If you omit the closing brace of an <code>\index</code> command then you get a
+message like this.
+</p>
+<div class="example">
+<pre class="example">Runaway argument?  {Ackermann!function
+!  Paragraph ended before \@wrindex was complete.
+</pre></div>
+
+
+<hr>
+<a name="makeindex"></a>
+<a name="makeindex-1"></a>
+<h4 class="subsection">25.2.2 <code>makeindex</code></h4>
+
+<a name="index-index_002c-processing"></a>
+<a name="index-makeindex"></a>
+<a name="index-makeindex-program"></a>
+<a name="index-_002eind-file"></a>
+<a name="index-_002eidx-file-1"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">makeindex <var>filename</var>
+makeindex -s <var>style-file</var> <var>filename</var>
+makeindex <var>options</var> <var>filename0</var> ...
+</pre></div>
+
+<p>Sort, and otherwise process, the index information in the auxiliary file
+<var>filename</var>.  This is a command line program.  It takes one or more
+raw index files, <samp><var>filename</var>.idx</samp> files, and produces the
+actual index file, the <samp><var>filename</var>.ind</samp> file that is input by
+<code>\printindex</code> (see <a href="#g_t_005cprintindex">\printindex</a>).
+</p>
+<a name="index-_002eisty-file"></a>
+<a name="index-index_002c-style-file"></a>
+<a name="index-makeindex_002c-style-file"></a>
+<p>The first form of the command suffices for many uses.  The second allows
+you to format the index by using an <em>index style file</em>, a
+<samp>.isty</samp> file.  The third form is the most general; see the full
+documentation on CTAN.
+</p>
+<p>This is a simple <samp>.isty</samp> file.
+</p>
+<div class="example">
+<pre class="example">% book.isty 
+%   $ makeindex -s book.isty -p odd book.idx
+% creates the index as book.ind, starting on an odd page. 
+preamble
+&quot;\\pagestyle{empty}
+\\small
+\\begin{theindex}
+\\thispagestyle{empty}&quot;
+
+postamble
+&quot;\n
+\\end{theindex}&quot;
+</pre></div>
+
+<p>The description here covers only some of the index formatting
+possibilities in <var>style-file</var>. For a full list see the documentation
+on CTAN.
+</p>
+<p>A style file consists of a list of pairs: <var>specifier</var> and
+<var>attribute</var>.  These can appear in the file in any order.  All of the
+<var>attributes</var> are strings, except where noted.  Strings are
+surrounded with double quotes, <code>&quot;</code>, and the maximum length of a
+string is 144 characters.  The <code>\n</code> is for a newline and <code>\t</code>
+is for a tab.  Backslashes are escaped with another backslash,
+<code>\\</code>.  If a line begins with a percent sign, <code>%</code>, then it is a
+comment.
+</p>
+<dl compact="compact">
+<dd><a name="makeindex-preamble"></a></dd>
+<dt><code>preamble</code>
+<a name="index-preamble"></a>
+</dt>
+<dd><p>Preamble of the output file. Defines the context in which the index is
+formatted.  Default: <code>&quot;\\begin{theindex}\n&quot;</code>.
+</p>
+<a name="makeindex-postamble"></a></dd>
+<dt><code>postamble</code>
+<a name="index-postamble"></a>
+</dt>
+<dd><p>Postamble of the output file.  Default: <code>&quot;\n\n\\end{theindex}\n&quot;</code>.
+</p>
+<a name="makeindex-group-skip"></a></dd>
+<dt><code>group_skip</code>
+<a name="index-group_005fskip"></a>
+</dt>
+<dd><a name="index-_005cindexspace"></a>
+<p>Traditionally index items are broken into groups, typically a group for
+entries starting with &lsquo;<samp>a</samp>&rsquo;, etc.  This specifier gives what is
+inserted when a new group begins.  Default: <code>&quot;\n\n \\indexspace\n&quot;</code>
+(<code>\indexspace</code> is a rubber length with default value <code>10pt
+plus5pt minus3pt</code>).
+</p>
+<a name="makeindex-letheadflag"></a></dd>
+<dt><code>lethead_flag</code>
+<a name="index-lethead_005fflag"></a>
+</dt>
+<dd><p>An integer.  It governs what is inserted for a new group or letter.  If
+it is 0 (which is the default) then other than <code>group_skip</code> nothing
+will be inserted before the group. If it is positive then at a new
+letter the <code>lethead_prefix</code> and <code>lethead_suffix</code> will be
+inserted, with that letter in uppercase between them.  If it is negative
+then what will be inserted is the letter in lowercase.  The default
+is&nbsp;0.
+</p>
+<a name="makeindex-lethead-prefix"></a></dd>
+<dt><code>lethead_prefix</code>
+<a name="index-lethead_005fprefix"></a>
+</dt>
+<dd><p>If a new group begins with a different letter then this is the prefix
+inserted before the new letter header.  Default: <code>&quot;&quot;</code>
+</p>
+<a name="makeindex-lethead-suffix"></a></dd>
+<dt><code>lethead_suffix</code>
+<a name="index-lethead_005fsuffix"></a>
+</dt>
+<dd><p>If a group begins with a different letter then this is the suffix
+inserted after the new letter header.  Default: <code>&quot;&quot;</code>.
+</p>
+<a name="makeindex-item-0"></a></dd>
+<dt><code>item_0</code>
+<a name="index-item_005f0"></a>
+</dt>
+<dd><p>What is put between two level&nbsp;0 items.  Default: <code>&quot;\n \\item
+&quot;</code>.
+</p>
+<a name="makeindex-item-1"></a></dd>
+<dt><code>item_1</code>
+<a name="index-item_005f1"></a>
+</dt>
+<dd><p>Put between two level&nbsp;1 items.  Default: <code>&quot;\n \\subitem &quot;</code>.
+</p>
+<a name="makeindex-item-2"></a></dd>
+<dt><code>item_2</code>
+<a name="index-item_005f2"></a>
+</dt>
+<dd><p>put between two level&nbsp;2 items.  Default: <code>&quot;\n \\subsubitem &quot;</code>.
+</p>
+<a name="makeindex-item-01"></a></dd>
+<dt><code>item_01</code>
+<a name="index-item_005f01"></a>
+</dt>
+<dd><p>What is put between a level&nbsp;0 item and a level&nbsp;1 item.
+Default: <code>&quot;\n \\subitem &quot;</code>.
+</p>
+<a name="makeindex-item-x1"></a></dd>
+<dt><code>item_x1</code>
+<a name="index-item_005fx1"></a>
+</dt>
+<dd><p>What is put between a level&nbsp;0 item and a level&nbsp;1 item in the
+case that the level&nbsp;0 item doesn&rsquo;t have any page numbers (as in
+<code>\index{aaa|see{bbb}}</code>).  Default: <code>&quot;\n \\subitem &quot;</code>.
+</p>
+<a name="makeindex-item-12"></a></dd>
+<dt><code>item_12</code>
+<a name="index-item_005f12"></a>
+</dt>
+<dd><p>What is put between a level&nbsp;1 item and a level&nbsp;2 item.
+Default: <code>&quot;\n \\subsubitem &quot;</code>.
+</p>
+<a name="makeindex-item-x2"></a></dd>
+<dt><code>item_x2</code>
+<a name="index-item_005fx2"></a>
+</dt>
+<dd><p>What is put between a level&nbsp;1 item and a level&nbsp;2 item, if the
+level&nbsp;1 item doesn&rsquo;t have page numbers.  Default: <code>&quot;\n
+\\subsubitem &quot;</code>.
+</p>
+<a name="makeindex-delim-0"></a></dd>
+<dt><code>delim_0</code>
+<a name="index-delim_005f0"></a>
+</dt>
+<dd><p>Delimiter put between a level&nbsp;0 key and its first page
+number. Default: a comma followed by a blank, <code>&quot;, &quot;</code>.
+</p>
+<a name="makeindex-delim-1"></a></dd>
+<dt><code>delim_1</code>
+<a name="index-delim_005f1"></a>
+</dt>
+<dd><p>Delimiter put between a level&nbsp;1 key and its first page
+number. Default: a comma followed by a blank, <code>&quot;, &quot;</code>.
+</p>
+<a name="makeindex-delim-2"></a></dd>
+<dt><code>delim_2</code>
+<a name="index-delim_005f2"></a>
+</dt>
+<dd><p>Delimiter between a level&nbsp;2 key and its first page number. Default:
+a comma followed by a blank, <code>&quot;, &quot;</code>.
+</p>
+<a name="makeindex-delim-n"></a></dd>
+<dt><code>delim_n</code>
+<a name="index-delim_005fn"></a>
+</dt>
+<dd><p>Delimiter between two page numbers for the same key (at any
+level). Default: a comma followed by a blank, <code>&quot;, &quot;</code>.
+</p>
+<a name="makeindex-delim-r"></a></dd>
+<dt><code>delim_r</code>
+<a name="index-delim_005fr"></a>
+</dt>
+<dd><p>What is put between the starting and ending page numbers of a range.
+Default: <code>&quot;--&quot;</code>.
+</p>
+<a name="makeindex-line-max"></a></dd>
+<dt><code>line_max</code>
+<a name="index-line_005fmax"></a>
+</dt>
+<dd><p>An integer.  Maximum length of an index entry&rsquo;s line in the output,
+beyond which the line wraps.  Default: <code>72</code>.
+</p>
+<a name="makeindex-indent-space"></a></dd>
+<dt><code>indent_space</code>
+<a name="index-indent_005fspace"></a>
+</dt>
+<dd><p>What is inserted at the start of a wrapped line.  Default:
+<code>&quot;\t\t&quot;</code>.
+</p>
+<a name="makeindex-indent-length"></a></dd>
+<dt><code>indent_length</code>
+<a name="index-indent_005flength"></a>
+</dt>
+<dd><p>A number.  The length of the wrapped line indentation.  The default
+<code>indent_space</code> is two tabs and each tab is eight spaces so the
+default here is <code>16</code>.
+</p>
+<a name="makeindex-page-precedence"></a></dd>
+<dt><code>page_precedence</code>
+<a name="index-page_005fprecedence"></a>
+</dt>
+<dd><p>A document may have pages numbered in different ways.  For example, a
+book may have front matter pages numbered in lowercase roman while main
+matter pages are in arabic.  This string specifies the order in which
+they will appear in the index.  The <code>makeindex</code> command supports
+five different types of numerals: lowercase roman <code>r</code>, and numeric
+or arabic <code>n</code>, and lowercase alphabetic <code>a</code>, and uppercase
+roman <code>R</code>, and uppercase alphabetic <code>A</code>.  Default:
+<code>&quot;rnaRA&quot;</code>.
+</p>
+</dd>
+</dl>
+
+<a name="index-xindy"></a>
+<a name="index-xindy-program"></a>
+<p>There are a number of other programs that do the job
+<code>makeindex</code> does. One is <code>xindy</code>, which does
+internationalization and can process indexes for documents marked up
+using LaTeX and a number of other languages. It is highly
+configurable, both in markup terms and in terms of the collating order
+of the text, as described in its documentation.
+</p>
+
+<hr>
+<a name="g_t_005cprintindex"></a>
+<a name="g_t_005cprintindex-1"></a>
+<h4 class="subsection">25.2.3 <code>\printindex</code></h4>
+
+<a name="index-index_002c-printing"></a>
+<a name="index-_005cprintindex"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\printindex
+</pre></div>
+
+<a name="index-_005cprintindex-1"></a>
+<p>Place the index into the output.
+</p>
+<p>To get an index you must first include
+<code>\usepackage{makeidx}\makeindex</code> in the document preamble and
+compile the document, then run the system command <code>makeindex</code>,
+and then compile the document again.  See <a href="#Indexes">Indexes</a> for further
+discussion and an example of the use of <code>\printindex</code>.
+</p>
+
+<hr>
+<a name="Glossaries"></a>
+<a name="Glossaries-1"></a>
+<h3 class="section">25.3 Glossaries</h3>
+
+<a name="index-glossary"></a>
+<a name="index-glossaries"></a>
+<a name="index-acronyms_002c-list-of"></a>
+<a name="index-_005cmakeglossary"></a>
+<a name="index-_005cprintglossaries"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\usepackage{glossaries} \makeglossaries
+  ...
+\newglossaryentry{<var>label</var>}{<var>settings</var>}  
+  ...
+\gls{<var>label</var>}.  
+  ...
+\printglossaries
+</pre></div>
+
+<p>The <samp>glossaries</samp> package allows you to make glossaries, including
+multiple glossaries, as well as lists of acronyms.
+</p>
+<p>To get the output from this example, compile the document (for instance
+with <code>pdflatex filename</code>), then run the command line command
+<code>makeglossaries filename</code>, and then compile the document again.
+</p>
+<div class="example">
+<pre class="example">\documentclass{...}  
+\usepackage{glossaries} \makeglossaries
+\newglossaryentry{tm}{%
+  name={Turing machine},
+  description={A model of a machine that computes.  The model is simple
+               but can compute anything any existing device can compute.
+               It is the standard model used in Computer Science.},
+  }  
+\begin{document}  
+Everything begins with the definition of a \gls{tm}.  
+  ...
+\printglossaries
+\end{document}
+</pre></div>
+
+<p>That gives two things.  In the main text it outputs &lsquo;<samp>... definition
+of a Turing machine</samp>&rsquo;.  In addition, in a separate sectional unit headed
+&lsquo;<samp>Glossary</samp>&rsquo; there appears a description list.  In boldface it says
+&lsquo;<samp>Turing machine</samp>&rsquo; and the rest of the item says in normal type
+&lsquo;<samp>A model of a machine &hellip; Computer Science</samp>&rsquo;.
+</p>
+<a name="index-_005cmakeglossary-1"></a>
+<a name="index-_005cprintglossaries-1"></a>
+<a name="index-_002eglo-file"></a>
+<p>The command <code>\makeglossary</code> opens the file that will contain the
+entry information, <samp><var>root-file</var>.glo</samp>.  Put the
+<code>\printglossaries</code> command where you want the glossaries to appear
+in your document.
+</p>
+<p>The <samp>glossaries</samp> package is very powerful.  For instance, besides
+the commands <code>\newglossaryentry</code> and <code>\gls</code>, there are similar
+commands for a list of acronyms.  See the package documentations on
+CTAN.
+</p>
+
+
+<hr>
+<a name="g_t_005cnewglossaryentry"></a>
+<a name="g_t_005cnewglossaryentry-1"></a>
+<h4 class="subsection">25.3.1 <code>\newglossaryentry</code></h4>
+
+<a name="index-glossary_002c-entries"></a>
+<a name="index-_005cnewglossaryentry"></a>
+
+<p>Synopsis, one of: 
+</p>
+<div class="example">
+<pre class="example">\newglossaryentry{<var>label</var>} 
+{ 
+  name={<var>name</var>}, 
+  description={<var>description</var>}, 
+  <var>other options</var>, ... 
+}
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\longnewglossaryentry{<var>label</var>} 
+{ 
+  name={<var>name</var>}, 
+  <var>other options</var> ..., 
+} 
+{<var>description</var>}
+</pre></div>
+
+<p>Declare a new entry for a glossary.  The <var>label</var> must be unique for
+the document.  The settings associated with the label are pairs:
+<code><var>key</var>=<var>value</var></code>.
+</p>
+<p>This puts the blackboard bold symbol for the real numbers &#x211D; in the
+glossary.
+</p>
+<div class="example">
+<pre class="example">\newglossaryentry{R}  
+{  
+  name={\ensuremath{\mathbb{R}}},  
+  description={the real numbers},  
+}
+</pre></div>
+
+<p>Use the second command form if the <var>description</var> spans more than one
+paragraph.
+</p>
+<p>For a full list of <var>key</var>s see the package documentation on CTAN but
+here are a few.
+</p>
+<dl compact="compact">
+<dt><code>name</code>
+<a name="index-name"></a>
+</dt>
+<dd><p>(Required.) The word, phrase, or symbol that you are defining.
+</p>
+</dd>
+<dt><code>description</code>
+<a name="index-description"></a>
+</dt>
+<dd><p>(Required.) The description that will appear in the glossary.
+If this has more than one paragraph then you must use the second command
+form given in the synopsis.
+</p>
+</dd>
+<dt><code>plural</code>
+<a name="index-plural"></a>
+</dt>
+<dd><p>The plural form of <var>name</var>.  Refer to the plural form using
+<code>\glspl</code> or <code>\Glspl</code> (see <a href="#g_t_005cgls">\gls</a>).
+</p>
+</dd>
+<dt><code>sort</code>
+<a name="index-sort"></a>
+</dt>
+<dd><p>How to place this entry in the list of entries that the glossary holds.
+</p>
+</dd>
+<dt><code>symbol</code>
+<a name="index-symbol"></a>
+</dt>
+<dd><p>A symbol, such as a mathematical symbol, besides the name.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<a name="g_t_005cgls"></a>
+<a name="g_t_005cgls-1"></a>
+<h4 class="subsection">25.3.2 <code>\gls</code></h4>
+
+<a name="index-glossary_002c-entry-reference"></a>
+<a name="index-_005cgls"></a>
+
+<p>Synopsis, one of: 
+</p>
+<div class="example">
+<pre class="example">\gls{<var>label</var>}
+\glspl{<var>label</var>}
+\Gls{<var>label</var>}
+\Glspl{<var>label</var>}
+</pre></div>
+
+<p>Refer to a glossary entry.  The entries are declared with
+<code>\newglossaryentry</code> (see <a href="#g_t_005cnewglossaryentry">\newglossaryentry</a>).
+</p>
+<p>This
+</p>
+<div class="example">
+<pre class="example">\newglossaryentry{N}{%
+  name={the natural numbers},
+  description={The numbers $0$, $1$, $2$, $\ldots$\@},
+  symbol={\ensuremath{\mathbb{N}}},
+  }  
+  ...
+Consider \gls{N}.
+</pre></div>
+
+<p>gives the output &lsquo;<samp>Consider the natural numbers</samp>&rsquo;.
+</p>
+<p>The second command form <code>\glspl{<var>label</var>}</code> produces the plural
+of <var>name</var> (by default it tries adding an &lsquo;<samp>s</samp>&rsquo;).  The third form
+capitalizes the first letter of <var>name</var>, as does the fourth form,
+which also takes the plural.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005cnewglossaryentry" accesskey="p" rel="prev">\newglossaryentry</a>, Up: <a href="#Glossaries" accesskey="u" rel="up">Glossaries</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

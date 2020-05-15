@@ -1,0 +1,405 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This document is an unofficial reference manual for LaTeX, a
+document preparation system, version of October 2018.
+
+This manual was originally translated from LATEX.HLP v1.0a in the
+VMS Help Library.  The pre-translation version was written by
+George D. Greenwade of Sam Houston State University.  The
+LaTeX 2.09 version was written by Stephen Gilmore.  The
+LaTeX2e version was adapted from this by Torsten Martinsen.  Karl
+Berry made further updates and additions, and gratefully acknowledges
+using Hypertext Help with LaTeX, by Sheldon Green, and
+LaTeX Command Summary (for LaTeX 2.09) by
+L. Botway and C. Biemesderfer (published by the TeX Users
+Group as TeXniques number 10), as reference material.  We also
+gratefully acknowledge additional material appearing in
+latex2e-reference by Martin Herbert Dietze.  (From these references no
+text was directly copied.)
+
+Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+2014, 2015, 2016, 2017, 2018 Karl Berry.
+
+Copyright 1988, 1994, 2007 Stephen Gilmore.
+
+Copyright 1994, 1995, 1996 Torsten Martinsen.
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Making paragraphs (LaTeX2e unofficial reference manual (October 2018))</title>
+
+<meta name="description" content="Making paragraphs (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="keywords" content="Making paragraphs (LaTeX2e unofficial reference manual (October 2018))">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="latex2e_0.html#Top" rel="start" title="Top">
+<link href="latex2e_30.html#Index" rel="index" title="Index">
+<link href="latex2e_0.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="latex2e_0.html#Top" rel="up" title="Top">
+<link href="latex2e_16.html#Math-formulas" rel="next" title="Math formulas">
+<link href="latex2e_14.html#g_t_005csettowidth" rel="prev" title="\settowidth">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Making-paragraphs"></a>
+<div class="header">
+<p>
+Next: <a href="latex2e_16.html#Math-formulas" accesskey="n" rel="next">Math formulas</a>, Previous: <a href="latex2e_14.html#Lengths" accesskey="p" rel="prev">Lengths</a>, Up: <a href="latex2e_0.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Making-paragraphs-1"></a>
+<h2 class="chapter">15 Making paragraphs</h2>
+
+<a name="index-making-paragraphs"></a>
+<a name="index-paragraphs"></a>
+
+<p>To start a paragraph, just type some text.  To end the current
+paragraph, put an empty line.  This is three paragraphs, separated by
+two empty lines.
+</p>
+<div class="example">
+<pre class="example">It is a truth universally acknowledged, that a single man in possession
+of a good fortune, must be in want of a wife.
+
+However little known the feelings or views of such a man may be on his
+first entering a neighbourhood, this truth is so well fixed in the minds
+of the surrounding families, that he is considered the rightful property
+of some one or other of their daughters.
+
+``My dear Mr. Bennet,'' said his lady to him one day,
+``have you heard that Netherfield Park is let at last?''
+</pre></div>
+
+<p>The separator lines must be empty, including not containing a comment
+character, <code>%</code>.
+</p>
+<p>Once LaTeX has gathered all of a paragraph&rsquo;s contents it divides that
+content into lines in a way that is optimized over the entire paragraph
+(see <a href="latex2e_9.html#Line-breaking">Line breaking</a>).
+</p>
+<p>There are places where a new paragraph is not permitted.  Don&rsquo;t put a
+blank line in math mode (see <a href="latex2e_17.html#Modes">Modes</a>); here the line before the
+<code>\end{equation}</code>
+</p>
+<div class="example">
+<pre class="example">\begin{equation}
+  2^{|S|} &gt; |S|
+
+\end{equation}
+</pre></div>
+
+<p>will get you the error &lsquo;<samp>Missing $ inserted</samp>&rsquo;.  Similarly, the blank
+line in this <code>section</code> argument
+</p>
+<div class="example">
+<pre class="example">\section{aaa
+
+bbb}
+</pre></div>
+
+<p>gets &lsquo;<samp>Runaway argument? {aaa ! Paragraph ended before \@sect was
+complete</samp>&rsquo;.
+</p>
+
+
+
+<hr>
+<a name="g_t_005cpar"></a>
+<a name="g_t_005cpar-1"></a>
+<h3 class="section">15.1 <code>\par</code></h3>
+
+<a name="index-_005cpar"></a>
+<a name="index-paragraph_002c-ending"></a>
+
+<p>Synopsis (note that while reading the input TeX converts two
+consecutive newlines to a <code>\par</code>):
+</p>
+<div class="example">
+<pre class="example">\par
+</pre></div>
+
+<p>End the current paragraph.  The usual way to separate paragraphs is with
+a blank line but the <code>\par</code> command is entirely equivalent.  This
+command is robust (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>This example uses <code>\par</code> rather than a blank line simply for
+readability.
+</p>
+<div class="example">
+<pre class="example">\newcommand{\syllabusLegalese}{%
+  \whatCheatingIs\par\whatHappensWhenICatchYou}
+</pre></div>
+
+<p>In LR mode or a vertical mode the <code>\par</code> command does nothing but
+it terminates paragraph mode, switching LaTeX to vertical mode
+(see <a href="latex2e_17.html#Modes">Modes</a>).
+</p>
+<p>You cannot use the <code>\par</code> command in a math mode.  You also cannot
+use it in the argument of many commands, such as the <code>\section</code>
+command (see <a href="#Making-paragraphs">Making paragraphs</a> and <a href="latex2e_12.html#g_t_005cnewcommand-_0026-_005crenewcommand">\newcommand &amp; \renewcommand</a>).
+</p>
+<p>The <code>\par</code> command is not the same as the <code>\paragraph</code>
+command. The latter is, like <code>\section</code> or <code>\subsection</code>, a
+sectioning unit used by the standard LaTeX documents
+(see <a href="latex2e_6.html#g_t_005csubsubsection-_0026-_005cparagraph-_0026-_005csubparagraph">\subsubsection &amp; \paragraph &amp; \subparagraph</a>).
+</p>
+<p>The <code>\par</code> command is not the same as <code>\newline</code> or the line
+break double backslash, <code>\\</code>.  The difference is that <code>\par</code>
+ends the paragraph, not just the line, and also triggers the addition of
+the between-paragraph vertical space <code>\parskip</code> (see <a href="#g_t_005cparindent-_0026-_005cparskip">\parindent &amp; \parskip</a>).
+</p>
+<p>The output from this example
+</p>
+<div class="example">
+<pre class="example">xyz
+
+\setlength{\parindent}{3in}
+\setlength{\parskip}{5in}
+\noindent test\indent test1\par test2 
+</pre></div>
+
+<p>is: after &lsquo;<samp>xyz</samp>&rsquo; there is a vertical skip of 5&nbsp;inches and then
+&lsquo;<samp>test</samp>&rsquo; appears, aligned with the left margin.  On the same line,
+there is an empty horizontal space of 3&nbsp;inches and then
+&lsquo;<samp>test1</samp>&rsquo; appears.  Finally. there is a vertical space of
+5&nbsp;inches, followed by a fresh paragraph with a paragraph indent of
+3&nbsp;inches, and then LaTeX puts the text &lsquo;<samp>test2</samp>&rsquo;.
+</p>
+
+<hr>
+<a name="g_t_005cindent-_0026-_005cnoindent"></a>
+<a name="g_t_005cindent-_0026-_005cnoindent-1"></a>
+<h3 class="section">15.2 <code>\indent</code> &amp; <code>\noindent</code></h3>
+
+<a name="index-_005cindent"></a>
+<a name="index-_005cnoindent"></a>
+<a name="index-_005cparindent-1"></a>
+<a name="index-indent_002c-forcing"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\indent
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example">\noindent
+</pre></div>
+
+<p>Go into horizontal mode (see <a href="latex2e_17.html#Modes">Modes</a>).  The <code>\indent</code> command
+first outputs an empty box whose width is <code>\parindent</code>.  These
+commands are robust (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>).
+</p>
+<p>Ordinarily you create a new paragraph by putting in a blank line.
+See <a href="#g_t_005cpar">\par</a> for the difference between this command and <code>\par</code>.  To
+start a paragraph without an indent, or to continue an interrupted
+paragraph, use <code>\noindent</code>.
+</p>
+<p>In the middle of a paragraph the <code>\noindent</code> command has no effect,
+because LaTeX is already in horizontal mode there.  The
+<code>\indent</code> command&rsquo;s only effect is to output a space.
+</p>
+<p>This example starts a fresh paragraph.
+</p>
+<div class="example">
+<pre class="example">... end of the prior paragraph.
+
+\noindent This paragraph is not indented.
+</pre></div>
+
+<p>and this continues an interrupted paragraph.
+</p>
+<div class="example">
+<pre class="example">The data 
+
+\begin{center}
+  \begin{tabular}{rl} ... \end{tabular}
+\end{center}
+
+\noindent shows this clearly.
+</pre></div>
+
+<p>To omit indentation in the entire document put
+<code>\setlength{\parindent}{0pt}</code> in the preamble.  If you do that,
+you may want to also set the length of spaces between paragraphs,
+<code>\parskip</code> (see <a href="#g_t_005cparindent-_0026-_005cparskip">\parindent &amp; \parskip</a>).
+</p>
+<a name="index-package_002c-indentfirst-5"></a>
+<a name="index-indentfirst-package-5"></a>
+
+<p>Default LaTeX styles have the first paragraph after a section that is
+not indented, as is traditional typesetting in English.  To change that,
+look on CTAN for the package <code>indentfirst</code>.
+</p>
+
+<hr>
+<a name="g_t_005cparindent-_0026-_005cparskip"></a>
+<a name="g_t_005cparindent-_0026-_005cparskip-1"></a>
+<h3 class="section">15.3 <code>\parindent</code> &amp; <code>\parskip</code></h3>
+
+<a name="index-_005cparindent-2"></a>
+<a name="index-_005cparskip"></a>
+<a name="index-paragraph-indentation"></a>
+<a name="index-vertical-space-before-paragraphs"></a>
+
+<p>Synopsis:
+</p>
+<div class="example">
+<pre class="example">\setlength{\parskip}{<var>horizontal len</var>}
+\setlength{\parinden}{<var>vertical len</var>}
+</pre></div>
+
+<p>Both are a rubber lengths (see <a href="latex2e_14.html#Lengths">Lengths</a>).  They give the indentation
+of ordinary paragraphs, not paragraphs inside minipages
+(see <a href="latex2e_8.html#minipage">minipage</a>), and the vertical space between paragraphs.
+</p>
+<p>This, put in the preamble,
+</p>
+<div class="example">
+<pre class="example">\setlength{\parindent}{0em}
+\setlength{\parskip}{1ex}
+</pre></div>
+
+<p>arranges that the document will have paragraphs that are not indented,
+but instead are vertically separated by about the height of a lowercase
+&lsquo;<samp>x</samp>&rsquo;.
+</p>
+<p>In standard LaTeX documents, the default value for <code>\parindent</code>
+in one-column documents is <code>15pt</code> when the default text size is
+<code>10pt</code> , <code>17pt</code> for <code>11pt</code>, and <code>1.5em</code> for
+<code>12pt</code>.  In two-column documents it is <code>1em</code>.  The default
+value for <code>\parskip</code> in LaTeX&rsquo;s standard document styles is
+<code>0pt plus1pt</code>.
+</p>
+
+<hr>
+<a name="Marginal-notes"></a>
+<a name="Marginal-notes-1"></a>
+<h3 class="section">15.4 Marginal notes</h3>
+
+<a name="index-marginal-notes"></a>
+<a name="index-notes-in-the-margin"></a>
+<a name="index-remarks-in-the-margin"></a>
+<a name="index-_005cmarginpar"></a>
+
+<p>Synopsis, one of:
+</p>
+<div class="example">
+<pre class="example">\marginpar{<var>right</var>}
+\marginpar[<var>left</var>]{<var>right</var>}
+</pre></div>
+
+<p>Create a note in the margin.  The first line of the note will have the
+same baseline as the line in the text where the <code>\marginpar</code>
+occurs.
+</p>
+<p>The margin that LaTeX uses for the note depends on the current layout
+(see <a href="latex2e_3.html#Document-class-options">Document class options</a>) and also on <code>\reversemarginpar</code>
+(see below).  If you are using one-sided layout (document option
+<code>oneside</code>) then it goes in the right margin.  If you are using
+two-sided layout (document option <code>twoside</code>) then it goes in the
+outside margin.  If you are in two-column layout (document option
+<code>twocolumn</code>) then it goes in the nearest margin.
+</p>
+<a name="index-_005creversemarginpar"></a>
+<a name="index-_005cnormalmarginpar"></a>
+<p>If you declare <code>\reversemarginpar</code> then LaTeX will place
+subsequent marginal notes in the opposite margin to that given in the
+prior paragraph.  Revert that to the default position with
+<code>\normalmarginpar</code>.
+</p>
+<p>When you specify the optional argument <var>left</var> then it is used for
+a note in the left margin, while the mandatory argument <var>right</var> is
+used for a note in the right margin.
+</p>
+<p>Normally, a note&rsquo;s first word will not be hyphenated.  You can enable
+hyphenation there by beginning <var>left</var> or <var>right</var> with
+<code>\hspace{0pt}</code>.
+</p>
+<p>These parameters affect the formatting of the note:
+</p>
+<dl compact="compact">
+<dt><code>\marginparpush</code>
+<a name="index-_005cmarginparpush-2"></a>
+</dt>
+<dd><a name="marginal-notes-marginparpush"></a><p>Minimum vertical space between notes; default &lsquo;<samp>7pt</samp>&rsquo; for
+&lsquo;<samp>12pt</samp>&rsquo; documents, &lsquo;<samp>5pt</samp>&rsquo; else.
+</p>
+</dd>
+<dt><code>\marginparsep</code>
+<a name="index-_005cmarginparsep"></a>
+</dt>
+<dd><a name="marginal-notes-marginparsep"></a><p>Horizontal space between the main text and the note; default
+&lsquo;<samp>11pt</samp>&rsquo; for &lsquo;<samp>10pt</samp>&rsquo; documents, &lsquo;<samp>10pt</samp>&rsquo; else.
+</p>
+</dd>
+<dt><code>\marginparwidth</code>
+<a name="index-_005cmarginparwidth-2"></a>
+</dt>
+<dd><a name="marginal-notes-marginparwidth"></a><p>Width of the note itself; default for a one-sided &lsquo;<samp>10pt</samp>&rsquo; document
+is &lsquo;<samp>90pt</samp>&rsquo;, &lsquo;<samp>83pt</samp>&rsquo; for &lsquo;<samp>11pt</samp>&rsquo;, and &lsquo;<samp>68pt</samp>&rsquo; for
+&lsquo;<samp>12pt</samp>&rsquo;; &lsquo;<samp>17pt</samp>&rsquo; more in each case for a two-sided document.
+In two column mode, the default is &lsquo;<samp>48pt</samp>&rsquo;.
+</p>
+</dd>
+</dl>
+
+<p>The standard LaTeX routine for marginal notes does not prevent
+notes from falling off the bottom of the page.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#g_t_005cparindent-_0026-_005cparskip" accesskey="p" rel="prev">\parindent &amp; \parskip</a>, Up: <a href="#Making-paragraphs" accesskey="u" rel="up">Making paragraphs</a> &nbsp; [<a href="latex2e_0.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="latex2e_30.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>
