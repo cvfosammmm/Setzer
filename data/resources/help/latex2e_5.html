@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_4.html#Low_002dlevel-font-commands" rel="prev" title="Low-level font commands">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,23 +86,23 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Layout"></a>
-<a name="Layout-1"></a>
+<a name="Layout" class="anchor"></a>
+<a name="Layout-1" class="anchor"></a>
 <h2 class="chapter">5 Layout</h2>
 
-<a name="index-layout-commands"></a>
+<a name="index-layout-commands" class="anchor"></a>
 
 <p>Commands for controlling the general page layout.
 </p>
 
 
 <hr>
-<a name="g_t_005conecolumn"></a>
-<a name="g_t_005conecolumn-1"></a>
+<a name="g_t_005conecolumn" class="anchor"></a>
+<a name="g_t_005conecolumn-1" class="anchor"></a>
 <h3 class="section">5.1 <code>\onecolumn</code></h3>
 
-<a name="index-_005conecolumn"></a>
-<a name="index-one_002dcolumn-output"></a>
+<a name="index-_005conecolumn" class="anchor"></a>
+<a name="index-one_002dcolumn-output" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -116,13 +117,13 @@ behavior (see <a href="latex2e_3.html#Document-class-options">Document class opt
 </p>
 
 <hr>
-<a name="g_t_005ctwocolumn"></a>
-<a name="g_t_005ctwocolumn-1"></a>
+<a name="g_t_005ctwocolumn" class="anchor"></a>
+<a name="g_t_005ctwocolumn-1" class="anchor"></a>
 <h3 class="section">5.2 <code>\twocolumn</code></h3>
 
-<a name="index-_005ctwocolumn"></a>
-<a name="index-multicolumn-text"></a>
-<a name="index-two_002dcolumn-output"></a>
+<a name="index-_005ctwocolumn" class="anchor"></a>
+<a name="index-multicolumn-text" class="anchor"></a>
+<a name="index-two_002dcolumn-output" class="anchor"></a>
 
 <p>Synopses:
 </p>
@@ -144,18 +145,18 @@ typesetting starts.
 </p>
 <dl compact="compact">
 <dt><code>\columnsep</code>
-<a name="index-_005ccolumnsep"></a>
+<a name="index-_005ccolumnsep" class="anchor"></a>
 </dt>
-<dd><a name="twocolumn-columnsep"></a><p>The distance between columns. The default is 35pt.  Change it with a
+<dd><a name="twocolumn-columnsep" class="anchor"></a><p>The distance between columns. The default is 35pt.  Change it with a
 command such as <code>\setlength{\columnsep}{40pt}</code> You must change
 it before the two column environment starts; in the preamble is a good
 place.
 </p>
 </dd>
 <dt><code>\columnseprule</code>
-<a name="index-_005ccolumnseprule"></a>
+<a name="index-_005ccolumnseprule" class="anchor"></a>
 </dt>
-<dd><a name="twocolumn-columnseprule"></a><p>The width of the rule between columns. The rule appears halfway between
+<dd><a name="twocolumn-columnseprule" class="anchor"></a><p>The width of the rule between columns. The rule appears halfway between
 the two columns.  The default is 0pt, meaning that there is no rule.
 Change it with a command such as
 <code>\setlength{\columnseprule}{0.4pt}</code>, before the two-column
@@ -163,9 +164,9 @@ environment starts.
 </p>
 </dd>
 <dt><code>\columnwidth</code>
-<a name="index-_005ccolumnwidth"></a>
+<a name="index-_005ccolumnwidth" class="anchor"></a>
 </dt>
-<dd><a name="twocolumn-columnwidth"></a><p>The width of a single column.  In one-column mode this is equal to
+<dd><a name="twocolumn-columnwidth" class="anchor"></a><p>The width of a single column.  In one-column mode this is equal to
 <code>\textwidth</code>.  In two-column mode by default LaTeX sets the
 width of each of the two columns to be half of <code>\textwidth</code> minus
 <code>\columnsep</code>.
@@ -180,9 +181,9 @@ and see <a href="latex2e_8.html#table">table</a>). LaTeX places starred floats a
 The following parameters control float behavior of two-column output.
 </p>
 <dl compact="compact">
-<dd><a name="twocolumn-dbltopfraction"></a></dd>
+<dd><a name="twocolumn-dbltopfraction" class="anchor"></a></dd>
 <dt><code>\dbltopfraction</code>
-<a name="index-_005cdbltopfraction"></a>
+<a name="index-_005cdbltopfraction" class="anchor"></a>
 </dt>
 <dd><p>The maximum fraction at the top of a two-column page that may be
 occupied by two-column wide floats.  The default is 0.7, meaning that
@@ -205,17 +206,17 @@ to avoid going to float pages so soon.
 <p>You can redefine it, as with
 <code>\renewcommand{\dbltopfraction}{0.9}</code>.
 </p>
-<a name="twocolumn-dblfloatpagefraction"></a></dd>
+<a name="twocolumn-dblfloatpagefraction" class="anchor"></a></dd>
 <dt><code>\dblfloatpagefraction</code>
-<a name="index-_005cdblfloatpagefraction"></a>
+<a name="index-_005cdblfloatpagefraction" class="anchor"></a>
 </dt>
 <dd><p>For a float page of two-column wide floats, this is the minimum fraction
 that must be occupied by floats, limiting the amount of blank space.
 LaTeX&rsquo;s default is <code>0.5</code>.  Change it with <code>\renewcommand</code>.
 </p>
-<a name="twocolumn-dblfloatsep"></a></dd>
+<a name="twocolumn-dblfloatsep" class="anchor"></a></dd>
 <dt><code>\dblfloatsep</code>
-<a name="index-_005cdblfloatsep"></a>
+<a name="index-_005cdblfloatsep" class="anchor"></a>
 </dt>
 <dd><p>On a float page of two-column wide floats, this length is the distance
 between floats, at both the top and bottom of the page.  The default is
@@ -223,17 +224,17 @@ between floats, at both the top and bottom of the page.  The default is
 <code>11pt</code>, and <code>14pt plus2pt minus4pt</code> for a document set at
 <code>12pt</code>.
 </p>
-<a name="twocolumn-dbltextfloatsep"></a></dd>
+<a name="twocolumn-dbltextfloatsep" class="anchor"></a></dd>
 <dt><code>\dbltextfloatsep</code>
-<a name="index-_005cdbltextfloatsep"></a>
+<a name="index-_005cdbltextfloatsep" class="anchor"></a>
 </dt>
 <dd><p>This length is the distance between a multi-column float at the top or
 bottom of a page and the main text.  The default is <code>20pt plus2pt
 minus4pt</code>.
 </p>
-<a name="twocolumn-dbltopnumber"></a></dd>
+<a name="twocolumn-dbltopnumber" class="anchor"></a></dd>
 <dt><code>\dbltopnumber</code>
-<a name="index-_005cdbltopnumber"></a>
+<a name="index-_005cdbltopnumber" class="anchor"></a>
 </dt>
 <dd><p>On a float page of two-column wide floats, this counter gives the
 maximum number of floats allowed at the top of the page.  The LaTeX
@@ -267,11 +268,11 @@ Two column text here.
 
 
 <hr>
-<a name="g_t_005cflushbottom"></a>
-<a name="g_t_005cflushbottom-1"></a>
+<a name="g_t_005cflushbottom" class="anchor"></a>
+<a name="g_t_005cflushbottom-1" class="anchor"></a>
 <h3 class="section">5.3 <code>\flushbottom</code></h3>
 
-<a name="index-_005cflushbottom"></a>
+<a name="index-_005cflushbottom" class="anchor"></a>
 
 <p>Make all pages in the documents after this declaration have the same
 height, by stretching the vertical space where necessary to fill out the
@@ -293,12 +294,12 @@ is to, in a final editing stage, adjust the height of individual pages
 </p>
 
 <hr>
-<a name="g_t_005craggedbottom"></a>
-<a name="g_t_005craggedbottom-1"></a>
+<a name="g_t_005craggedbottom" class="anchor"></a>
+<a name="g_t_005craggedbottom-1" class="anchor"></a>
 <h3 class="section">5.4 <code>\raggedbottom</code></h3>
 
-<a name="index-_005craggedbottom"></a>
-<a name="index-stretch_002c-omitting-vertical"></a>
+<a name="index-_005craggedbottom" class="anchor"></a>
+<a name="index-stretch_002c-omitting-vertical" class="anchor"></a>
 
 <p>Make all later pages the natural height of the material on that page; no
 rubber vertical lengths will be stretched.  Thus, in a two-sided
@@ -310,50 +311,50 @@ option (see <a href="latex2e_3.html#Document-class-options">Document class optio
 </p>
 
 <hr>
-<a name="Page-layout-parameters"></a>
-<a name="Page-layout-parameters-1"></a>
+<a name="Page-layout-parameters" class="anchor"></a>
+<a name="Page-layout-parameters-1" class="anchor"></a>
 <h3 class="section">5.5 Page layout parameters</h3>
 
-<a name="index-page-layout-parameters"></a>
-<a name="index-parameters_002c-page-layout"></a>
-<a name="index-layout_002c-page-parameters-for"></a>
-<a name="index-header_002c-parameters-for"></a>
-<a name="index-footer_002c-parameters-for"></a>
-<a name="index-running-header-and-footer"></a>
+<a name="index-page-layout-parameters" class="anchor"></a>
+<a name="index-parameters_002c-page-layout" class="anchor"></a>
+<a name="index-layout_002c-page-parameters-for" class="anchor"></a>
+<a name="index-header_002c-parameters-for" class="anchor"></a>
+<a name="index-footer_002c-parameters-for" class="anchor"></a>
+<a name="index-running-header-and-footer" class="anchor"></a>
 
 <dl compact="compact">
 <dt><code>\columnsep</code>
-<a name="index-_005ccolumnsep-1"></a>
+<a name="index-_005ccolumnsep-1" class="anchor"></a>
 </dt>
 <dt><code>\columnseprule</code>
-<a name="index-_005ccolumnseprule-1"></a>
+<a name="index-_005ccolumnseprule-1" class="anchor"></a>
 </dt>
 <dt><code>\columnwidth</code>
-<a name="index-_005ccolumnwidth-1"></a>
+<a name="index-_005ccolumnwidth-1" class="anchor"></a>
 </dt>
-<dd><a name="index-_005ccolumnsep-2"></a>
-<a name="index-_005ccolumnseprule-2"></a>
-<a name="index-_005ccolumnwidth-2"></a>
-<a name="page-layout-parameters-columnsep"></a><a name="page-layout-parameters-columnseprule"></a><a name="page-layout-parameters-columnwidth"></a><p>The distance between the two columns, the width of a rule between the
+<dd><a name="index-_005ccolumnsep-2" class="anchor"></a>
+<a name="index-_005ccolumnseprule-2" class="anchor"></a>
+<a name="index-_005ccolumnwidth-2" class="anchor"></a>
+<a name="page-layout-parameters-columnsep" class="anchor"></a><a name="page-layout-parameters-columnseprule" class="anchor"></a><a name="page-layout-parameters-columnwidth" class="anchor"></a><p>The distance between the two columns, the width of a rule between the
 columns, and the width of the columns, when the document class option
 <code>twocolumn</code> is in effect (see <a href="latex2e_3.html#Document-class-options">Document class options</a>).
 See <a href="#g_t_005ctwocolumn">\twocolumn</a>.
 </p>
 </dd>
 <dt><code>\headheight</code>
-<a name="index-_005cheadheight"></a>
+<a name="index-_005cheadheight" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cheadheight-1"></a>
-<a name="page-layout-parameters-headheight"></a><p>Height of the box that contains the running head.  The default in the
+<dd><a name="index-_005cheadheight-1" class="anchor"></a>
+<a name="page-layout-parameters-headheight" class="anchor"></a><p>Height of the box that contains the running head.  The default in the
 <code>article</code>, <code>report</code>, and <code>book</code> classes is &lsquo;<samp>12pt</samp>&rsquo;,
 at all type sizes.
 </p>
 </dd>
 <dt><code>\headsep</code>
-<a name="index-_005cheadsep"></a>
+<a name="index-_005cheadsep" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cheadsep-1"></a>
-<a name="page-layout-parameters-headsep"></a><p>Vertical distance between the bottom of the header line and the top of
+<dd><a name="index-_005cheadsep-1" class="anchor"></a>
+<a name="page-layout-parameters-headsep" class="anchor"></a><p>Vertical distance between the bottom of the header line and the top of
 the main text.  The default in the <code>article</code> and <code>report</code>
 classes is &lsquo;<samp>25pt</samp>&rsquo;.  In the <code>book</code> class the default is: if the
 document is set at 10pt then it is &lsquo;<samp>0.25in</samp>&rsquo;, and at 11pt and 12pt
@@ -361,10 +362,10 @@ it is &lsquo;<samp>0.275in</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>\footskip</code>
-<a name="index-_005cfootskip"></a>
+<a name="index-_005cfootskip" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cfootskip-1"></a>
-<a name="page-layout-parameters-footskip"></a><p>Distance from the baseline of the last line of text to the baseline of
+<dd><a name="index-_005cfootskip-1" class="anchor"></a>
+<a name="page-layout-parameters-footskip" class="anchor"></a><p>Distance from the baseline of the last line of text to the baseline of
 the page footer.  The default in the <code>article</code> and <code>report</code>
 classes is &lsquo;<samp>30pt</samp>&rsquo;.  In the <code>book</code> class the default is: when
 the type size is 10pt the default is &lsquo;<samp>0.35in</samp>&rsquo;, while at 11pt it is
@@ -372,10 +373,10 @@ the type size is 10pt the default is &lsquo;<samp>0.35in</samp>&rsquo;, while at
 </p>
 </dd>
 <dt><code>\linewidth</code>
-<a name="index-_005clinewidth"></a>
+<a name="index-_005clinewidth" class="anchor"></a>
 </dt>
-<dd><a name="index-_005clinewidth-1"></a>
-<a name="page-layout-parameters-linewidth"></a><p>Width of the current line, decreased for each nested <code>list</code>
+<dd><a name="index-_005clinewidth-1" class="anchor"></a>
+<a name="page-layout-parameters-linewidth" class="anchor"></a><p>Width of the current line, decreased for each nested <code>list</code>
 (see <a href="latex2e_8.html#list">list</a>).  That is, the nominal value for <code>\linewidth</code> is to
 equal <code>\textwidth</code> but for each nested list the <code>\linewidth</code>
 is decreased by the sum of that list&rsquo;s <code>\leftmargin</code> and
@@ -383,18 +384,18 @@ is decreased by the sum of that list&rsquo;s <code>\leftmargin</code> and
 </p>
 </dd>
 <dt><code>\marginparpush</code>
-<a name="index-_005cmarginparpush"></a>
+<a name="index-_005cmarginparpush" class="anchor"></a>
 </dt>
 <dt><code>\marginsep</code>
-<a name="index-_005cmarginsep"></a>
+<a name="index-_005cmarginsep" class="anchor"></a>
 </dt>
 <dt><code>\marginparwidth</code>
-<a name="index-_005cmarginparwidth"></a>
+<a name="index-_005cmarginparwidth" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cmarginparpush-1"></a>
-<a name="index-_005cmarginsep-1"></a>
-<a name="index-_005cmarginparwidth-1"></a>
-<a name="page-layout-parameters-marginparpush"></a><a name="page-layout-parameters-marginsep"></a><a name="page-layout-parameters-marginparwidth"></a><p>The minimum vertical space between two marginal notes, the horizontal
+<dd><a name="index-_005cmarginparpush-1" class="anchor"></a>
+<a name="index-_005cmarginsep-1" class="anchor"></a>
+<a name="index-_005cmarginparwidth-1" class="anchor"></a>
+<a name="page-layout-parameters-marginparpush" class="anchor"></a><a name="page-layout-parameters-marginsep" class="anchor"></a><a name="page-layout-parameters-marginparwidth" class="anchor"></a><p>The minimum vertical space between two marginal notes, the horizontal
 space between the text body and the marginal notes, and the horizontal
 width of the notes.
 </p>
@@ -420,14 +421,14 @@ distance.
 </p>
 </dd>
 <dt><code>\oddsidemargin</code>
-<a name="index-_005coddsidemargin-1"></a>
+<a name="index-_005coddsidemargin-1" class="anchor"></a>
 </dt>
 <dt><code>\evensidemargin</code>
-<a name="index-_005cevensidemargin-1"></a>
+<a name="index-_005cevensidemargin-1" class="anchor"></a>
 </dt>
-<dd><a name="index-_005coddsidemargin-2"></a>
-<a name="index-_005cevensidemargin-2"></a>
-<a name="page-layout-parameters-oddsidemargin"></a><a name="page-layout-parameters-evensidemargin"></a><p>The <code>\oddsidemargin</code> is the extra distance between the left side of
+<dd><a name="index-_005coddsidemargin-2" class="anchor"></a>
+<a name="index-_005cevensidemargin-2" class="anchor"></a>
+<a name="page-layout-parameters-oddsidemargin" class="anchor"></a><a name="page-layout-parameters-evensidemargin" class="anchor"></a><p>The <code>\oddsidemargin</code> is the extra distance between the left side of
 the page and the text&rsquo;s left margin, on odd-numbered pages when the
 document class option <code>twoside</code> is chosen and on all pages when
 <code>oneside</code> is in effect.  When <code>twoside</code> is in effect, on
@@ -440,28 +441,28 @@ difference between <code>\paperwidth</code> and <code>\textwidth</code>, and
 </p>
 </dd>
 <dt><code>\paperheight</code>
-<a name="index-_005cpaperheight"></a>
+<a name="index-_005cpaperheight" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cpaperheight-1"></a>
-<a name="page-layout-parameters-paperheight"></a><p>The height of the paper, as distinct from the height of the print area.
+<dd><a name="index-_005cpaperheight-1" class="anchor"></a>
+<a name="page-layout-parameters-paperheight" class="anchor"></a><p>The height of the paper, as distinct from the height of the print area.
 Normally set with a document class option, as in
 <code>\documentclass[a4paper]{article}</code> (see <a href="latex2e_3.html#Document-class-options">Document class options</a>).
 </p>
 </dd>
 <dt><code>\paperwidth</code>
-<a name="index-_005cpaperwidth"></a>
+<a name="index-_005cpaperwidth" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cpaperwidth-1"></a>
-<a name="page-layout-parameters-paperwidth"></a><p>The width of the paper, as distinct from the width of the print area.
+<dd><a name="index-_005cpaperwidth-1" class="anchor"></a>
+<a name="page-layout-parameters-paperwidth" class="anchor"></a><p>The width of the paper, as distinct from the width of the print area.
 Normally set with a document class option, as in
 <code>\documentclass[a4paper]{article}</code> (see <a href="latex2e_3.html#Document-class-options">Document class options</a>).
 </p>
 </dd>
 <dt><code>\textheight</code>
-<a name="index-_005ctextheight"></a>
+<a name="index-_005ctextheight" class="anchor"></a>
 </dt>
-<dd><a name="index-_005ctextheight-1"></a>
-<a name="page-layout-parameters-textheight"></a><p>The normal vertical height of the page body.  If the document is set at
+<dd><a name="index-_005ctextheight-1" class="anchor"></a>
+<a name="page-layout-parameters-textheight" class="anchor"></a><p>The normal vertical height of the page body.  If the document is set at
 a nominal type size of 10pt then for an <code>article</code> or <code>report</code>
 the default is &lsquo;<samp>43\baselineskip</samp>&rsquo;, while for a <code>book</code> it is
 &lsquo;<samp>41\baselineskip</samp>&rsquo;.  At a type size of 11pt the default is
@@ -470,10 +471,10 @@ the default is &lsquo;<samp>43\baselineskip</samp>&rsquo;, while for a <code>boo
 </p>
 </dd>
 <dt><code>\textwidth</code>
-<a name="index-_005ctextwidth"></a>
+<a name="index-_005ctextwidth" class="anchor"></a>
 </dt>
-<dd><a name="index-_005ctextwidth-1"></a>
-<a name="page-layout-parameters-textwidth"></a><p>The full horizontal width of the entire page body.  For an
+<dd><a name="index-_005ctextwidth-1" class="anchor"></a>
+<a name="page-layout-parameters-textwidth" class="anchor"></a><p>The full horizontal width of the entire page body.  For an
 <code>article</code> or <code>report</code> document, the default is &lsquo;<samp>345pt</samp>&rsquo;
 when the chosen type size is 10pt, the default is &lsquo;<samp>360pt</samp>&rsquo; at 11pt,
 and it is &lsquo;<samp>390pt</samp>&rsquo; at 12pt.  For a <code>book</code> document, the default
@@ -492,10 +493,10 @@ column), while <code>\linewidth</code> may decrease for nested lists.
 specified width, and revert to their normal values at the end of the
 <code>minipage</code> or <code>\parbox</code>.
 </p>
-<a name="index-_005chsize"></a>
-<a name="page-layout-parameters-hsize"></a></dd>
+<a name="index-_005chsize" class="anchor"></a>
+<a name="page-layout-parameters-hsize" class="anchor"></a></dd>
 <dt><code>\hsize</code>
-<a name="index-_005chsize-1"></a>
+<a name="index-_005chsize-1" class="anchor"></a>
 </dt>
 <dd><p>This entry is included for completeness: <code>\hsize</code> is the TeX
 primitive parameter used when text is broken into lines.  It should not
@@ -503,10 +504,10 @@ be used in normal LaTeX documents.
 </p>
 </dd>
 <dt><code>\topmargin</code>
-<a name="index-_005ctopmargin"></a>
+<a name="index-_005ctopmargin" class="anchor"></a>
 </dt>
-<dd><a name="index-topmargin"></a>
-<a name="page-layout-parameters-topmargin"></a><p>Space between the top of the TeX page (one inch from the top of the
+<dd><a name="index-topmargin" class="anchor"></a>
+<a name="page-layout-parameters-topmargin" class="anchor"></a><p>Space between the top of the TeX page (one inch from the top of the
 paper, by default) and the top of the header.  The value is computed
 based on many other parameters: <code>\paperheight - 2in -
 \headheight - \headsep - \textheight - \footskip</code>,
@@ -514,10 +515,10 @@ and then divided by two.
 </p>
 </dd>
 <dt><code>\topskip</code>
-<a name="index-_005ctopskip"></a>
+<a name="index-_005ctopskip" class="anchor"></a>
 </dt>
-<dd><a name="index-_005ctopskip-1"></a>
-<a name="page-layout-parameters-topskip"></a><p>Minimum distance between the top of the page body and the baseline of
+<dd><a name="index-_005ctopskip-1" class="anchor"></a>
+<a name="page-layout-parameters-topskip" class="anchor"></a><p>Minimum distance between the top of the page body and the baseline of
 the first line of text.  For the standard classes, the default is the
 same as the font size, e.g., &lsquo;<samp>10pt</samp>&rsquo; at a type size of 10pt.
 </p>
@@ -526,8 +527,8 @@ same as the font size, e.g., &lsquo;<samp>10pt</samp>&rsquo; at a type size of 1
 
 
 <hr>
-<a name="Floats"></a>
-<a name="Floats-1"></a>
+<a name="Floats" class="anchor"></a>
+<a name="Floats-1" class="anchor"></a>
 <h3 class="section">5.6 Floats</h3>
 
 <p>Some typographic elements, such as figures and tables, cannot be broken
@@ -555,8 +556,8 @@ float that is big may migrate to the end of the document. In which
 event, because all floats in a class must appear in sequential order,
 every following float in that class also appears at the end.
 </p>
-<a name="index-placement-of-floats"></a>
-<a name="index-specifier_002c-float-placement"></a>
+<a name="index-placement-of-floats" class="anchor"></a>
+<a name="index-specifier_002c-float-placement" class="anchor"></a>
 <p>In addition to changing the parameters, for each float you can tweak
 where the float placement algorithm tries to place it by using its
 <var>placement</var> argument.  The possible values are a sequence of the
@@ -581,9 +582,9 @@ FAQ: <a href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=2colfloat">http://w
 appears.  However, <code>h</code> is not allowed by itself; <code>t</code> is
 automatically added.
 </p>
-<a name="index-here_002c-putting-floats"></a>
-<a name="index-package_002c-float"></a>
-<a name="index-float-package"></a>
+<a name="index-here_002c-putting-floats" class="anchor"></a>
+<a name="index-package_002c-float" class="anchor"></a>
+<a name="index-float-package" class="anchor"></a>
 
 <p>To absolutely force a float to appear &ldquo;here&rdquo;, you can
 <code>\usepackage{float}</code> and use the <code>H</code> specifier which it
@@ -592,7 +593,7 @@ defines.  For further discussion, see the FAQ entry at
 </p>
 </dd>
 <dt><code>p</code></dt>
-<dd><a name="index-float-page"></a>
+<dd><a name="index-float-page" class="anchor"></a>
 <p>(Page of floats)&mdash;on a separate <em>float page</em>, which is a page
 containing no text, only floats.
 </p>
@@ -622,8 +623,8 @@ use the <samp>afterpage</samp> package and issue
 <code>\afterpage{\clearpage}</code>.  This will wait until the current page
 is finished and then flush all outstanding floats.
 </p>
-<a name="index-package_002c-flafter"></a>
-<a name="index-flafter-package"></a>
+<a name="index-package_002c-flafter" class="anchor"></a>
+<a name="index-flafter-package" class="anchor"></a>
 
 <p>LaTeX can typeset a float before where it appears in the source
 (although on the same output page) if there is a <code>t</code> specifier in
@@ -631,7 +632,7 @@ the <var>placement</var> parameter.  If this is not desired, and deleting
 the <code>t</code> is not acceptable as it keeps the float from being placed
 at the top of the next page, then you can prevent it by either using
 the <samp>flafter</samp> package or using the command
-<a name="index-_005csuppressfloats"></a>
+<a name="index-_005csuppressfloats" class="anchor"></a>
 <code>\suppressfloats[t]</code>, which causes floats for the top position on
 this page to moved to the next page.
 </p>
@@ -641,35 +642,35 @@ non-float text (change them with
 </p>
 <dl compact="compact">
 <dt><code>\bottomfraction</code>
-<a name="index-_005cbottomfraction"></a>
+<a name="index-_005cbottomfraction" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cbottomfraction-1"></a>
-<a name="floats-bottomfraction"></a><p>The maximum fraction of the page allowed to be occupied by floats at
+<dd><a name="index-_005cbottomfraction-1" class="anchor"></a>
+<a name="floats-bottomfraction" class="anchor"></a><p>The maximum fraction of the page allowed to be occupied by floats at
 the bottom; default &lsquo;<samp>.3</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>\floatpagefraction</code>
-<a name="index-_005cfloatpagefraction"></a>
+<a name="index-_005cfloatpagefraction" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cfloatpagefraction-1"></a>
-<a name="floats-floatpagefraction"></a><p>The minimum fraction of a float page that must be occupied by floats;
+<dd><a name="index-_005cfloatpagefraction-1" class="anchor"></a>
+<a name="floats-floatpagefraction" class="anchor"></a><p>The minimum fraction of a float page that must be occupied by floats;
 default &lsquo;<samp>.5</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>\textfraction</code>
-<a name="index-_005ctextfraction"></a>
+<a name="index-_005ctextfraction" class="anchor"></a>
 </dt>
-<dd><a name="index-_005ctextfraction-1"></a>
-<a name="floats-textfraction"></a><p>Minimum fraction of a page that must be text; if floats take up too
+<dd><a name="index-_005ctextfraction-1" class="anchor"></a>
+<a name="floats-textfraction" class="anchor"></a><p>Minimum fraction of a page that must be text; if floats take up too
 much space to preserve this much text, floats will be moved to a
 different page.  The default is &lsquo;<samp>.2</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>\topfraction</code>
-<a name="index-_005ctopfraction"></a>
+<a name="index-_005ctopfraction" class="anchor"></a>
 </dt>
-<dd><a name="index-_005ctopfraction-1"></a>
-<a name="floats-topfraction"></a><p>Maximum fraction at the top of a page that may be occupied before
+<dd><a name="index-_005ctopfraction-1" class="anchor"></a>
+<a name="floats-topfraction" class="anchor"></a><p>Maximum fraction at the top of a page that may be occupied before
 floats; default &lsquo;<samp>.7</samp>&rsquo;.
 </p></dd>
 </dl>
@@ -680,27 +681,27 @@ expression</var>}</code>):
 </p>
 <dl compact="compact">
 <dt><code>\floatsep</code>
-<a name="index-_005cfloatsep"></a>
+<a name="index-_005cfloatsep" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cfloatsep-1"></a>
-<a name="floats-floatsep"></a><p>Space between floats at the top or bottom of a page; default
+<dd><a name="index-_005cfloatsep-1" class="anchor"></a>
+<a name="floats-floatsep" class="anchor"></a><p>Space between floats at the top or bottom of a page; default
 &lsquo;<samp>12pt plus2pt minus2pt</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>\intextsep</code>
-<a name="index-_005cintextsep"></a>
+<a name="index-_005cintextsep" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cintextsep-1"></a>
-<a name="floats-intextsep"></a><p>Space above and below a float in the middle of the main text; default
+<dd><a name="index-_005cintextsep-1" class="anchor"></a>
+<a name="floats-intextsep" class="anchor"></a><p>Space above and below a float in the middle of the main text; default
 &lsquo;<samp>12pt plus2pt minus2pt</samp>&rsquo; for 10 point and 11 point documents,
 and &lsquo;<samp>14pt plus4pt minus4pt</samp>&rsquo; for 12 point documents.
 </p>
 </dd>
 <dt><code>\textfloatsep</code>
-<a name="index-_005ctextfloatsep"></a>
+<a name="index-_005ctextfloatsep" class="anchor"></a>
 </dt>
-<dd><a name="index-_005ctextfloatsep-1"></a>
-<a name="floats-textfloatsep"></a><p>Space between the last (first) float at the top (bottom) of a page;
+<dd><a name="index-_005ctextfloatsep-1" class="anchor"></a>
+<a name="floats-textfloatsep" class="anchor"></a><p>Space between the last (first) float at the top (bottom) of a page;
 default &lsquo;<samp>20pt plus2pt minus4pt</samp>&rsquo;.
 </p></dd>
 </dl>
@@ -711,34 +712,34 @@ number</var>}</code>):
 </p>
 <dl compact="compact">
 <dt><code>bottomnumber</code>
-<a name="index-bottomnumber"></a>
+<a name="index-bottomnumber" class="anchor"></a>
 </dt>
-<dd><a name="index-bottomnumber-1"></a>
-<a name="floats-bottomnumber"></a><p>Maximum number of floats that can appear at the bottom of a text page;
+<dd><a name="index-bottomnumber-1" class="anchor"></a>
+<a name="floats-bottomnumber" class="anchor"></a><p>Maximum number of floats that can appear at the bottom of a text page;
 default 1.
 </p>
 </dd>
 <dt><code>dbltopnumber</code>
-<a name="index-dbltopnumber"></a>
+<a name="index-dbltopnumber" class="anchor"></a>
 </dt>
-<dd><a name="index-dbltopnumber-1"></a>
-<a name="floats-dbltopnumber"></a><p>Maximum number of full-sized floats that can appear at the top of a
+<dd><a name="index-dbltopnumber-1" class="anchor"></a>
+<a name="floats-dbltopnumber" class="anchor"></a><p>Maximum number of full-sized floats that can appear at the top of a
 two-column page; default 2.
 </p>
 </dd>
 <dt><code>topnumber</code>
-<a name="index-topnumber"></a>
+<a name="index-topnumber" class="anchor"></a>
 </dt>
-<dd><a name="index-topnumber-1"></a>
-<a name="floats-topnumber"></a><p>Maximum number of floats that can appear at the top of a text page;
+<dd><a name="index-topnumber-1" class="anchor"></a>
+<a name="floats-topnumber" class="anchor"></a><p>Maximum number of floats that can appear at the top of a text page;
 default 2.
 </p>
 </dd>
 <dt><code>totalnumber</code>
-<a name="index-totalnumber"></a>
+<a name="index-totalnumber" class="anchor"></a>
 </dt>
-<dd><a name="index-totalnumber-1"></a>
-<a name="floats-totalnumber"></a><p>Maximum number of floats that can appear on a text page; default 3.
+<dd><a name="index-totalnumber-1" class="anchor"></a>
+<a name="floats-totalnumber" class="anchor"></a><p>Maximum number of floats that can appear on a text page; default 3.
 </p></dd>
 </dl>
 

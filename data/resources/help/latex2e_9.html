@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_8.html#verse" rel="prev" title="verse">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,12 +86,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Line-breaking"></a>
-<a name="Line-breaking-1"></a>
+<a name="Line-breaking" class="anchor"></a>
+<a name="Line-breaking-1" class="anchor"></a>
 <h2 class="chapter">9 Line breaking</h2>
 
-<a name="index-line-breaking"></a>
-<a name="index-breaking-lines"></a>
+<a name="index-line-breaking" class="anchor"></a>
+<a name="index-breaking-lines" class="anchor"></a>
 
 <p>The first thing LaTeX does when processing ordinary text is to
 translate your input file into a sequence of glyphs and spaces.  To
@@ -109,13 +110,13 @@ fiddling with breaks that will change anyway.
 
 
 <hr>
-<a name="g_t_005c_005c"></a>
-<a name="g_t_005c_005c-1"></a>
+<a name="g_t_005c_005c" class="anchor"></a>
+<a name="g_t_005c_005c-1" class="anchor"></a>
 <h3 class="section">9.1 <code>\\</code></h3>
 
-<a name="index-_005c_005c-force-line-break"></a>
-<a name="index-new-line_002c-starting"></a>
-<a name="index-line-break_002c-forcing"></a>
+<a name="index-_005c_005c-force-line-break" class="anchor"></a>
+<a name="index-new-line_002c-starting" class="anchor"></a>
+<a name="index-line-break_002c-forcing" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -191,13 +192,13 @@ something like this.
 </p>
 
 <hr>
-<a name="g_t_005cobeycr-_0026-_005crestorecr"></a>
-<a name="g_t_005cobeycr-_0026-_005crestorecr-1"></a>
+<a name="g_t_005cobeycr-_0026-_005crestorecr" class="anchor"></a>
+<a name="g_t_005cobeycr-_0026-_005crestorecr-1" class="anchor"></a>
 <h3 class="section">9.2 <code>\obeycr</code> &amp; <code>\restorecr</code></h3>
 
-<a name="index-_005cobeycr"></a>
-<a name="index-_005crestorecr"></a>
-<a name="index-new-line_002c-output-as-input"></a>
+<a name="index-_005cobeycr" class="anchor"></a>
+<a name="index-_005crestorecr" class="anchor"></a>
+<a name="index-new-line_002c-output-as-input" class="anchor"></a>
 
 <p>The <code>\obeycr</code> command makes a return in the input file (&lsquo;<samp>^^M</samp>&rsquo;,
 internally) the same as <code>\\</code>, followed by <code>\relax</code>.  So each
@@ -242,12 +243,12 @@ fff ggg
 </p>
 
 <hr>
-<a name="g_t_005cnewline"></a>
-<a name="g_t_005cnewline-1"></a>
+<a name="g_t_005cnewline" class="anchor"></a>
+<a name="g_t_005cnewline-1" class="anchor"></a>
 <h3 class="section">9.3 <code>\newline</code></h3>
 
-<a name="index-_005cnewline"></a>
-<a name="index-new-line_002c-starting-_0028paragraph-mode_0029"></a>
+<a name="index-_005cnewline" class="anchor"></a>
+<a name="index-new-line_002c-starting-_0028paragraph-mode_0029" class="anchor"></a>
 
 <p>In ordinary text, this ends a line in a way that does not right-justify
 the line, so the prior text is not stretched. That is, in paragraph mode
@@ -275,12 +276,12 @@ single cell of the table.
 </p>
 
 <hr>
-<a name="g_t_005c_002d-_0028hyphenation_0029"></a>
-<a name="g_t_005c_002d-_0028discretionary-hyphen_0029"></a>
+<a name="g_t_005c_002d-_0028hyphenation_0029" class="anchor"></a>
+<a name="g_t_005c_002d-_0028discretionary-hyphen_0029" class="anchor"></a>
 <h3 class="section">9.4 <code>\-</code> (discretionary hyphen)</h3>
 
-<a name="index-_005c_002d-_0028hyphenation_0029"></a>
-<a name="index-hyphenation_002c-forcing"></a>
+<a name="index-_005c_002d-_0028hyphenation_0029" class="anchor"></a>
+<a name="index-hyphenation_002c-forcing" class="anchor"></a>
 
 <p>Tell LaTeX that it may hyphenate the word at that point.  When you
 insert <code>\-</code> commands in a word, the word will only be hyphenated at
@@ -318,11 +319,11 @@ care.
 </p>
 
 <hr>
-<a name="g_t_005cdiscretionary"></a>
-<a name="g_t_005cdiscretionary-_0028generalized-hyphenation-point_0029"></a>
+<a name="g_t_005cdiscretionary" class="anchor"></a>
+<a name="g_t_005cdiscretionary-_0028generalized-hyphenation-point_0029" class="anchor"></a>
 <h3 class="section">9.5 <code>\discretionary</code> (generalized hyphenation point)</h3>
-<a name="index-hyphenation_002c-discretionary"></a>
-<a name="index-discretionary-hyphenation"></a>
+<a name="index-hyphenation_002c-discretionary" class="anchor"></a>
+<a name="index-discretionary-hyphenation" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -350,13 +351,13 @@ automatically by TeX&rsquo;s hyphenation algorithm.
 </p>
 
 <hr>
-<a name="g_t_005cfussy-_0026-_005csloppy"></a>
-<a name="g_t_005cfussy-_0026-_005csloppy-1"></a>
+<a name="g_t_005cfussy-_0026-_005csloppy" class="anchor"></a>
+<a name="g_t_005cfussy-_0026-_005csloppy-1" class="anchor"></a>
 <h3 class="section">9.6 <code>\fussy</code> &amp; <code>\sloppy</code></h3>
 
-<a name="index-_005cfussy"></a>
-<a name="index-_005csloppy"></a>
-<a name="index-line-breaks_002c-changing"></a>
+<a name="index-_005cfussy" class="anchor"></a>
+<a name="index-_005csloppy" class="anchor"></a>
+<a name="index-line-breaks_002c-changing" class="anchor"></a>
 
 <p>Declarations to make TeX more picky or less picky about line
 breaking.  Declaring <code>\fussy</code> usually avoids too much space between
@@ -373,12 +374,12 @@ the command.
 
 
 <hr>
-<a name="sloppypar"></a>
-<a name="sloppypar-1"></a>
+<a name="sloppypar" class="anchor"></a>
+<a name="sloppypar-1" class="anchor"></a>
 <h4 class="subsection">9.6.1 <code>sloppypar</code></h4>
 
-<a name="index-sloppypar"></a>
-<a name="index-sloppypar-environment"></a>
+<a name="index-sloppypar" class="anchor"></a>
+<a name="index-sloppypar-environment" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -410,12 +411,12 @@ the command.
 
 
 <hr>
-<a name="g_t_005chyphenation"></a>
-<a name="g_t_005chyphenation-1"></a>
+<a name="g_t_005chyphenation" class="anchor"></a>
+<a name="g_t_005chyphenation-1" class="anchor"></a>
 <h3 class="section">9.7 <code>\hyphenation</code></h3>
 
-<a name="index-_005chyphenation"></a>
-<a name="index-hyphenation_002c-defining"></a>
+<a name="index-_005chyphenation" class="anchor"></a>
+<a name="index-hyphenation_002c-defining" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -438,14 +439,14 @@ exactly.  Multiple <code>\hyphenation</code> commands accumulate.
 </p>
 
 <hr>
-<a name="g_t_005clinebreak-_0026-_005cnolinebreak"></a>
-<a name="g_t_005clinebreak-_0026-_005cnolinebreak-1"></a>
+<a name="g_t_005clinebreak-_0026-_005cnolinebreak" class="anchor"></a>
+<a name="g_t_005clinebreak-_0026-_005cnolinebreak-1" class="anchor"></a>
 <h3 class="section">9.8 <code>\linebreak</code> &amp; <code>\nolinebreak</code></h3>
 
-<a name="index-_005clinebreak"></a>
-<a name="index-_005cnolinebreak"></a>
-<a name="index-line-breaks_002c-forcing"></a>
-<a name="index-line-breaks_002c-preventing"></a>
+<a name="index-_005clinebreak" class="anchor"></a>
+<a name="index-_005cnolinebreak" class="anchor"></a>
+<a name="index-line-breaks_002c-forcing" class="anchor"></a>
+<a name="index-line-breaks_002c-preventing" class="anchor"></a>
 
 <p>Synopses, one of:
 </p>

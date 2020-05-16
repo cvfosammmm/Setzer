@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_23.html#g_t_005ctoday" rel="prev" title="\today">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,20 +86,20 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Splitting-the-input"></a>
-<a name="Splitting-the-input-1"></a>
+<a name="Splitting-the-input" class="anchor"></a>
+<a name="Splitting-the-input-1" class="anchor"></a>
 <h2 class="chapter">24 Splitting the input</h2>
 
-<a name="index-splitting-the-input-file"></a>
-<a name="index-input-file"></a>
+<a name="index-splitting-the-input-file" class="anchor"></a>
+<a name="index-input-file" class="anchor"></a>
 
 <p>LaTeX lets you split a large document into several smaller ones.
 This can simplify editing or allow multiple authors to work on the
 document.  It can also speed processing.
 </p>
 <p>Regardless of how many separate files you use, there is always one
-<a name="index-root-file"></a>
-<a name="index-file_002c-root"></a>
+<a name="index-root-file" class="anchor"></a>
+<a name="index-file_002c-root" class="anchor"></a>
 <em>root file</em>, on which LaTeX compilation starts.  This shows such
 a file with five included files.
 </p>
@@ -141,11 +142,11 @@ your output correctly.
 
 
 <hr>
-<a name="g_t_005cendinput"></a>
-<a name="g_t_005cendinput-1"></a>
+<a name="g_t_005cendinput" class="anchor"></a>
+<a name="g_t_005cendinput-1" class="anchor"></a>
 <h3 class="section">24.1 <code>\endinput</code></h3>
 
-<a name="index-_005cendinput"></a>
+<a name="index-_005cendinput" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -183,12 +184,12 @@ This allows you, for instance, to close an <code>\if...</code> with a
 </p>
 
 <hr>
-<a name="g_t_005cinclude-_0026-_005cincludeonly"></a>
-<a name="g_t_005cinclude-_0026-_005cincludeonly-1"></a>
+<a name="g_t_005cinclude-_0026-_005cincludeonly" class="anchor"></a>
+<a name="g_t_005cinclude-_0026-_005cincludeonly-1" class="anchor"></a>
 <h3 class="section">24.2 <code>\include</code> &amp; <code>\includeonly</code></h3>
 
-<a name="index-_005cinclude"></a>
-<a name="index-_005cincludeonly"></a>
+<a name="index-_005cinclude" class="anchor"></a>
+<a name="index-_005cincludeonly" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -305,7 +306,7 @@ this works under TeX Live on GNU/Linux:
 \end{document}
 </pre></div>
 
-<a name="index-nested-_005cinclude_002c-not-allowed"></a>
+<a name="index-nested-_005cinclude_002c-not-allowed" class="anchor"></a>
 <p>You cannot use <code>\include</code> inside a file that is being included or
 you get &lsquo;<samp>LaTeX Error: \include cannot be nested.</samp>&rsquo;  The
 <code>\include</code> command cannot appear in the document preamble; you will
@@ -324,11 +325,11 @@ delete the file <samp><var>root</var>.aux</samp> and rerun LaTeX.
 </p>
 
 <hr>
-<a name="g_t_005cinput"></a>
-<a name="g_t_005cinput-1"></a>
+<a name="g_t_005cinput" class="anchor"></a>
+<a name="g_t_005cinput-1" class="anchor"></a>
 <h3 class="section">24.3 <code>\input</code></h3>
 
-<a name="index-_005cinput"></a>
+<a name="index-_005cinput" class="anchor"></a>
 
 <p>Synopsis:
 </p>

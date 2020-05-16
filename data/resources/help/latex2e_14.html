@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_13.html#g_t_005cday-_0026-_005cmonth-_0026-_005cyear" rel="prev" title="\day &amp; \month &amp; \year">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,11 +86,11 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Lengths"></a>
-<a name="Lengths-1"></a>
+<a name="Lengths" class="anchor"></a>
+<a name="Lengths-1" class="anchor"></a>
 <h2 class="chapter">14 Lengths</h2>
 
-<a name="index-lengths_002c-defining-and-using"></a>
+<a name="index-lengths_002c-defining-and-using" class="anchor"></a>
 
 <p>A <em>length</em> is a measure of distance.  Many LaTeX commands take a
 length as an argument.
@@ -204,81 +205,81 @@ that after <code>\setlength{\ylength}{1in plus 0.2in}</code> and
 
 
 <hr>
-<a name="Units-of-length"></a>
-<a name="Units-of-length-1"></a>
+<a name="Units-of-length" class="anchor"></a>
+<a name="Units-of-length-1" class="anchor"></a>
 <h3 class="section">14.1 Units of length</h3>
 
-<a name="index-units_002c-of-length"></a>
+<a name="index-units_002c-of-length" class="anchor"></a>
 
 <p>TeX and LaTeX know about these units both inside and outside of
 math mode.
 </p>
 <dl compact="compact">
 <dt><code>pt</code></dt>
-<dd><a name="index-pt"></a>
-<a name="index-Point"></a>
-<a name="units-of-length-pt"></a><p>Point, 1/72.27 inch.  The conversion to metric units, to two decimal
+<dd><a name="index-pt" class="anchor"></a>
+<a name="index-Point" class="anchor"></a>
+<a name="units-of-length-pt" class="anchor"></a><p>Point, 1/72.27 inch.  The conversion to metric units, to two decimal
 places, is 1point = 2.85mm = 28.45cm. 
 </p>
 </dd>
 <dt><code>pc</code></dt>
-<dd><a name="index-pica"></a>
-<a name="index-pc"></a>
-<a name="units-of-length-pc"></a><p>Pica, 12 pt
+<dd><a name="index-pica" class="anchor"></a>
+<a name="index-pc" class="anchor"></a>
+<a name="units-of-length-pc" class="anchor"></a><p>Pica, 12 pt
 </p>
 </dd>
 <dt><code>in</code></dt>
-<dd><a name="index-in"></a>
-<a name="index-inch"></a>
-<a name="units-of-length-in"></a><p>Inch,  72.27 pt
+<dd><a name="index-in" class="anchor"></a>
+<a name="index-inch" class="anchor"></a>
+<a name="units-of-length-in" class="anchor"></a><p>Inch,  72.27 pt
 </p>
 </dd>
 <dt><code>bp</code></dt>
-<dd><a name="index-bp"></a>
-<a name="index-Big-point"></a>
-<a name="units-of-length-bp"></a><p>Big point, 1/72 inch.  This length is the definition of a point in
+<dd><a name="index-bp" class="anchor"></a>
+<a name="index-Big-point" class="anchor"></a>
+<a name="units-of-length-bp" class="anchor"></a><p>Big point, 1/72 inch.  This length is the definition of a point in
 PostScript and many desktop publishing systems.
 </p>
 </dd>
 <dt><code>cm</code></dt>
-<dd><a name="index-Centimeter"></a>
-<a name="index-cm"></a>
-<a name="units-of-length-cm"></a><p>Centimeter
+<dd><a name="index-Centimeter" class="anchor"></a>
+<a name="index-cm" class="anchor"></a>
+<a name="units-of-length-cm" class="anchor"></a><p>Centimeter
 </p>
 </dd>
 <dt><code>mm</code></dt>
-<dd><a name="index-Millimeter"></a>
-<a name="index-mm"></a>
-<a name="units-of-length-mm"></a><p>Millimeter
+<dd><a name="index-Millimeter" class="anchor"></a>
+<a name="index-mm" class="anchor"></a>
+<a name="units-of-length-mm" class="anchor"></a><p>Millimeter
 </p>
 </dd>
 <dt><code>dd</code></dt>
-<dd><a name="index-Didot-point"></a>
-<a name="index-dd"></a>
-<a name="units-of-length-dd"></a><p>Didot point, 1.07 pt
+<dd><a name="index-Didot-point" class="anchor"></a>
+<a name="index-dd" class="anchor"></a>
+<a name="units-of-length-dd" class="anchor"></a><p>Didot point, 1.07 pt
 </p>
 </dd>
 <dt><code>cc</code></dt>
-<dd><a name="index-Cicero"></a>
-<a name="index-cc"></a>
-<a name="units-of-length-cc"></a><p>Cicero, 12 dd
+<dd><a name="index-Cicero" class="anchor"></a>
+<a name="index-cc" class="anchor"></a>
+<a name="units-of-length-cc" class="anchor"></a><p>Cicero, 12 dd
 </p>
 </dd>
 <dt><code>sp</code></dt>
-<dd><a name="index-Scaled-point"></a>
-<a name="index-sp"></a>
-<a name="units-of-length-sp"></a><p>Scaled point, 1/65536 pt
+<dd><a name="index-Scaled-point" class="anchor"></a>
+<a name="index-sp" class="anchor"></a>
+<a name="units-of-length-sp" class="anchor"></a><p>Scaled point, 1/65536 pt
 </p>
 </dd>
 </dl>
 
-<a name="index-ex"></a>
-<a name="index-x_002dheight"></a>
-<a name="index-ex-1"></a>
-<a name="index-m_002dwidth"></a>
-<a name="index-em"></a>
-<a name="index-em-1"></a>
-<a name="Lengths_002fem"></a><a name="Lengths_002fen"></a><a name="Lengths_002fex"></a><a name="units-of-length-em"></a><a name="units-of-length-en"></a><a name="units-of-length-ex"></a><p>Two other lengths that are often used are values set by the designer of
+<a name="index-ex" class="anchor"></a>
+<a name="index-x_002dheight" class="anchor"></a>
+<a name="index-ex-1" class="anchor"></a>
+<a name="index-m_002dwidth" class="anchor"></a>
+<a name="index-em" class="anchor"></a>
+<a name="index-em-1" class="anchor"></a>
+<a name="Lengths_002fem" class="anchor"></a><a name="Lengths_002fen" class="anchor"></a><a name="Lengths_002fex" class="anchor"></a><a name="units-of-length-em" class="anchor"></a><a name="units-of-length-en" class="anchor"></a><a name="units-of-length-ex" class="anchor"></a><p>Two other lengths that are often used are values set by the designer of
 the font.  The x-height of the current font <em>ex</em>, traditionally the
 height of the lowercase letter x, is often used for vertical
 lengths. Similarly <em>em</em>, traditionally the width of the capital
@@ -290,20 +291,20 @@ of the vertical space between list items given as
 likely to still be reasonable if the font is changed than a definition
 given in points.
 </p>
-<a name="index-mu_002c-math-unit"></a>
-<a name="index-mu"></a>
+<a name="index-mu_002c-math-unit" class="anchor"></a>
+<a name="index-mu" class="anchor"></a>
 <p>In math mode, many definitions are expressed in terms of the math unit
 <em>mu</em> given by 1 em = 18 mu, where the em is taken from the current
 math symbols family.  See <a href="latex2e_16.html#Spacing-in-math-mode">Spacing in math mode</a>.
 </p>
 
 <hr>
-<a name="g_t_005csetlength"></a>
-<a name="g_t_005csetlength-1"></a>
+<a name="g_t_005csetlength" class="anchor"></a>
+<a name="g_t_005csetlength-1" class="anchor"></a>
 <h3 class="section">14.2 <code>\setlength</code></h3>
 
-<a name="index-_005csetlength"></a>
-<a name="index-lengths_002c-setting"></a>
+<a name="index-_005csetlength" class="anchor"></a>
+<a name="index-lengths_002c-setting" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -336,12 +337,12 @@ read again&gt; \relax l.19 \setlength{specparindent}{0.6\parindent}</samp>&rsquo
 </p>
 
 <hr>
-<a name="g_t_005caddtolength"></a>
-<a name="g_t_005caddtolength-1"></a>
+<a name="g_t_005caddtolength" class="anchor"></a>
+<a name="g_t_005caddtolength-1" class="anchor"></a>
 <h3 class="section">14.3 <code>\addtolength</code></h3>
 
-<a name="index-_005caddtolength"></a>
-<a name="index-lengths_002c-adding-to"></a>
+<a name="index-_005caddtolength" class="anchor"></a>
+<a name="index-lengths_002c-adding-to" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -375,11 +376,11 @@ If you leave off the backslash at the start of <var>len</var>, as in
 </p>
 
 <hr>
-<a name="g_t_005csettodepth"></a>
-<a name="g_t_005csettodepth-1"></a>
+<a name="g_t_005csettodepth" class="anchor"></a>
+<a name="g_t_005csettodepth-1" class="anchor"></a>
 <h3 class="section">14.4 <code>\settodepth</code></h3>
 
-<a name="index-_005csettodepth"></a>
+<a name="index-_005csettodepth" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -408,11 +409,11 @@ then you get something like &lsquo;<samp>Undefined control sequence. &lt;argumen
 </p>
 
 <hr>
-<a name="g_t_005csettoheight"></a>
-<a name="g_t_005csettoheight-1"></a>
+<a name="g_t_005csettoheight" class="anchor"></a>
+<a name="g_t_005csettoheight-1" class="anchor"></a>
 <h3 class="section">14.5 <code>\settoheight</code></h3>
 
-<a name="index-_005csettoheight"></a>
+<a name="index-_005csettoheight" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -442,11 +443,11 @@ you leave the backslash out of <var>len</var>, as in
 </p>
 
 <hr>
-<a name="g_t_005csettowidth"></a>
-<a name="g_t_005csettowidth-1"></a>
+<a name="g_t_005csettowidth" class="anchor"></a>
+<a name="g_t_005csettowidth-1" class="anchor"></a>
 <h3 class="section">14.6 <code>\settowidth</code></h3>
 
-<a name="index-_005csettowidth"></a>
+<a name="index-_005csettowidth" class="anchor"></a>
 
 <p>Synopsis:
 </p>

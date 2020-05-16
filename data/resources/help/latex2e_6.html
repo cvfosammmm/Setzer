@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_5.html#Floats" rel="prev" title="Floats">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,23 +86,23 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Sectioning"></a>
-<a name="Sectioning-1"></a>
+<a name="Sectioning" class="anchor"></a>
+<a name="Sectioning-1" class="anchor"></a>
 <h2 class="chapter">6 Sectioning</h2>
 
-<a name="index-sectioning-commands"></a>
-<a name="index-part"></a>
-<a name="index-chapter"></a>
-<a name="index-section"></a>
-<a name="index-subsection"></a>
-<a name="index-paragraph"></a>
-<a name="index-subparagraph"></a>
-<a name="index-_005cpart"></a>
-<a name="index-_005cchapter"></a>
-<a name="index-_005csection"></a>
-<a name="index-_005csubsection"></a>
-<a name="index-_005cparagraph"></a>
-<a name="index-_005csubparagraph"></a>
+<a name="index-sectioning-commands" class="anchor"></a>
+<a name="index-part" class="anchor"></a>
+<a name="index-chapter" class="anchor"></a>
+<a name="index-section" class="anchor"></a>
+<a name="index-subsection" class="anchor"></a>
+<a name="index-paragraph" class="anchor"></a>
+<a name="index-subparagraph" class="anchor"></a>
+<a name="index-_005cpart" class="anchor"></a>
+<a name="index-_005cchapter" class="anchor"></a>
+<a name="index-_005csection" class="anchor"></a>
+<a name="index-_005csubsection" class="anchor"></a>
+<a name="index-_005cparagraph" class="anchor"></a>
+<a name="index-_005csubparagraph" class="anchor"></a>
 
 <p>Structure your text into divisions: parts, chapters, sections, etc.  All
 sectioning commands have the same form, one of:
@@ -131,7 +132,7 @@ not available in <code>article</code>.
 <tr><td width="25%">Subparagraph</td><td width="25%"><code>\subparagraph</code></td><td width="40%">5</td></tr>
 </table>
 
-<a name="index-_002a_002dform-of-sectioning-commands"></a>
+<a name="index-_002a_002dform-of-sectioning-commands" class="anchor"></a>
 <p>All these commands have a <code>*</code>-form that prints <var>title</var> as usual
 but is not numbered and does not make an entry in the table of contents.
 An example of using this is for an appendix in an <code>article</code> .  The
@@ -165,11 +166,11 @@ subsection numbered &lsquo;<samp>3.0.1</samp>&rsquo;.
 </p>
 <dl compact="compact">
 <dt><code>secnumdepth</code>
-<a name="index-secnumdepth"></a>
+<a name="index-secnumdepth" class="anchor"></a>
 </dt>
-<dd><a name="index-secnumdepth-counter"></a>
-<a name="index-section-numbers_002c-printing"></a>
-<a name="sectioning-secnumdepth"></a><a name="Sectioning_002fsecnumdepth"></a><p>Controls which sectioning commands are
+<dd><a name="index-secnumdepth-counter" class="anchor"></a>
+<a name="index-section-numbers_002c-printing" class="anchor"></a>
+<a name="sectioning-secnumdepth" class="anchor"></a><a name="Sectioning_002fsecnumdepth" class="anchor"></a><p>Controls which sectioning commands are
 numbered.  Suppress numbering of sectioning at any depth greater than
 <var>level</var> <code>\setcounter{secnumdepth}{<var>level</var>}</code>
 (see <a href="latex2e_13.html#g_t_005csetcounter">\setcounter</a>).  See the above table for the level numbers.  For
@@ -182,11 +183,11 @@ like &lsquo;<samp>Discussion</samp>&rsquo;, without the number. LaTeX&rsquo;s de
 </p>
 </dd>
 <dt><code>tocdepth</code>
-<a name="index-tocdepth"></a>
+<a name="index-tocdepth" class="anchor"></a>
 </dt>
-<dd><a name="index-tocdepth-counter"></a>
-<a name="index-table-of-contents_002c-sectioning-numbers-printed"></a>
-<a name="sectioning-tocdepth"></a><a name="Sectioning_002ftocdepth"></a><p>Controls which sectioning units are listed in the table of contents.
+<dd><a name="index-tocdepth-counter" class="anchor"></a>
+<a name="index-table-of-contents_002c-sectioning-numbers-printed" class="anchor"></a>
+<a name="sectioning-tocdepth" class="anchor"></a><a name="Sectioning_002ftocdepth" class="anchor"></a><p>Controls which sectioning units are listed in the table of contents.
 The setting <code>\setcounter{tocdepth}{<var>level</var>}</code> makes the
 sectioning units at <var>level</var> be the smallest ones listed
 (see <a href="latex2e_13.html#g_t_005csetcounter">\setcounter</a>).  See the above table for the level numbers.  For
@@ -201,13 +202,13 @@ list sections but not subsections.  LaTeX&rsquo;s default
 
 
 <hr>
-<a name="g_t_005cpart"></a>
-<a name="g_t_005cpart-1"></a>
+<a name="g_t_005cpart" class="anchor"></a>
+<a name="g_t_005cpart-1" class="anchor"></a>
 <h3 class="section">6.1 <code>\part</code></h3>
 
-<a name="index-_005cpart-1"></a>
-<a name="index-part-1"></a>
-<a name="index-sectioning_002c-part"></a>
+<a name="index-_005cpart-1" class="anchor"></a>
+<a name="index-part-1" class="anchor"></a>
+<a name="index-sectioning_002c-part" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -259,27 +260,27 @@ out the break in the table of contents.
 the table of contents, the level number of a part is&nbsp;-1
 (see <a href="#Sectioning_002fsecnumdepth">Sectioning/secnumdepth</a> and see <a href="#Sectioning_002ftocdepth">Sectioning/tocdepth</a>).
 </p>
-<a name="index-package_002c-indentfirst"></a>
-<a name="index-indentfirst-package"></a>
+<a name="index-package_002c-indentfirst" class="anchor"></a>
+<a name="index-indentfirst-package" class="anchor"></a>
 
 <p>In the class <code>article</code>, if a paragraph immediately follows the part
 title then it is not indented.  To get an indent you can use the package
 <samp>indentfirst</samp>.
 </p>
-<a name="index-package_002c-titlesec"></a>
-<a name="index-titlesec-package"></a>
+<a name="index-package_002c-titlesec" class="anchor"></a>
+<a name="index-titlesec-package" class="anchor"></a>
 
 <p>One package to change the behavior of <code>\part</code> is <samp>titlesec</samp>.
 See its documentation on CTAN.
 </p>
 
 <hr>
-<a name="g_t_005cchapter"></a>
-<a name="g_t_005cchapter-1"></a>
+<a name="g_t_005cchapter" class="anchor"></a>
+<a name="g_t_005cchapter-1" class="anchor"></a>
 <h3 class="section">6.2 <code>\chapter</code></h3>
 
-<a name="index-_005cchapter-1"></a>
-<a name="index-chapter-1"></a>
+<a name="index-_005cchapter-1" class="anchor"></a>
+<a name="index-chapter-1" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -345,8 +346,8 @@ the break in the contents
 the table of contents, the level number of a chapter is&nbsp;0
 (see <a href="#Sectioning_002fsecnumdepth">Sectioning/secnumdepth</a> and see <a href="#Sectioning_002ftocdepth">Sectioning/tocdepth</a>).
 </p>
-<a name="index-package_002c-indentfirst-1"></a>
-<a name="index-indentfirst-package-1"></a>
+<a name="index-package_002c-indentfirst-1" class="anchor"></a>
+<a name="index-indentfirst-package-1" class="anchor"></a>
 
 <p>The paragraph that follows the chapter title is not indented, as is a
 standard typographical practice.  To get an indent use the package
@@ -363,8 +364,8 @@ something like &lsquo;<samp>Lecture 1</samp>&rsquo;, put in the preamble either
 \makeatother
 </pre></div>
 
-<a name="index-package_002c-babel"></a>
-<a name="index-babel-package"></a>
+<a name="index-package_002c-babel" class="anchor"></a>
+<a name="index-babel-package" class="anchor"></a>
 
 <p>To make this change because of the primary language for
 the document, see the package <samp>babel</samp>.
@@ -374,8 +375,8 @@ necessary leaving an even-numbered page that is blank except for any
 running headers.  To make that page completely blank,
 see&nbsp;<a href="latex2e_10.html#g_t_005cclearpage-_0026-_005ccleardoublepage">\clearpage &amp; \cleardoublepage</a>.
 </p>
-<a name="index-package_002c-titlesec-1"></a>
-<a name="index-titlesec-package-1"></a>
+<a name="index-package_002c-titlesec-1" class="anchor"></a>
+<a name="index-titlesec-package-1" class="anchor"></a>
 
 <p>To change the behavior of the <code>\chapter</code> command, you can copy its
 definition from the LaTeX format file and make adjustments.  But
@@ -398,12 +399,12 @@ running headers.
 </p>
 
 <hr>
-<a name="g_t_005csection"></a>
-<a name="g_t_005csection-1"></a>
+<a name="g_t_005csection" class="anchor"></a>
+<a name="g_t_005csection-1" class="anchor"></a>
 <h3 class="section">6.3 <code>\section</code></h3>
 
-<a name="index-_005csection-1"></a>
-<a name="index-section-1"></a>
+<a name="index-_005csection-1" class="anchor"></a>
+<a name="index-section-1" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -470,15 +471,15 @@ so it is omitted from the contents and headers.
 the table of contents, the level number of a section is&nbsp;1
 (see <a href="#Sectioning_002fsecnumdepth">Sectioning/secnumdepth</a> and see <a href="#Sectioning_002ftocdepth">Sectioning/tocdepth</a>).
 </p>
-<a name="index-package_002c-indentfirst-2"></a>
-<a name="index-indentfirst-package-2"></a>
+<a name="index-package_002c-indentfirst-2" class="anchor"></a>
+<a name="index-indentfirst-package-2" class="anchor"></a>
 
 <p>The paragraph that follows the section title is not indented, as is a
 standard typographical practice.  One way to get an indent is to use the
 package <samp>indentfirst</samp>.
 </p>
-<a name="index-package_002c-titlesec-2"></a>
-<a name="index-titlesec-package-2"></a>
+<a name="index-package_002c-titlesec-2" class="anchor"></a>
+<a name="index-titlesec-package-2" class="anchor"></a>
 
 <p>In general, to change the behavior of the <code>\section</code> command, there
 are a number of options.  One is the <code>\@startsection</code> command
@@ -501,12 +502,12 @@ example below gives a sense of what they can do.
 </p>
 
 <hr>
-<a name="g_t_005csubsection"></a>
-<a name="g_t_005csubsection-1"></a>
+<a name="g_t_005csubsection" class="anchor"></a>
+<a name="g_t_005csubsection-1" class="anchor"></a>
 <h3 class="section">6.4 <code>\subsection</code></h3>
 
-<a name="index-_005csubsection-1"></a>
-<a name="index-subsection-1"></a>
+<a name="index-_005csubsection-1" class="anchor"></a>
+<a name="index-subsection-1" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -558,15 +559,15 @@ paper</samp>&rsquo; on the contents page.
 the table of contents, the level number of a subsection is&nbsp;2
 (see <a href="#Sectioning_002fsecnumdepth">Sectioning/secnumdepth</a> and see <a href="#Sectioning_002ftocdepth">Sectioning/tocdepth</a>).
 </p>
-<a name="index-package_002c-indentfirst-3"></a>
-<a name="index-indentfirst-package-3"></a>
+<a name="index-package_002c-indentfirst-3" class="anchor"></a>
+<a name="index-indentfirst-package-3" class="anchor"></a>
 
 <p>The paragraph that follows the subsection title is not indented, as is a
 standard typographical practice.  One way to get an indent is to use the
 package <samp>indentfirst</samp>.
 </p>
-<a name="index-package_002c-titlesec-3"></a>
-<a name="index-titlesec-package-3"></a>
+<a name="index-package_002c-titlesec-3" class="anchor"></a>
+<a name="index-titlesec-package-3" class="anchor"></a>
 
 <p>There are a number of ways to change the behavior of the
 <code>\subsection</code> command.  One is the <code>\@startsection</code> command
@@ -588,17 +589,17 @@ text.
 </p>
 
 <hr>
-<a name="g_t_005csubsubsection-_0026-_005cparagraph-_0026-_005csubparagraph"></a>
+<a name="g_t_005csubsubsection-_0026-_005cparagraph-_0026-_005csubparagraph" class="anchor"></a>
 
-<a name="g_t_005csubsubsection_002c-_005cparagraph_002c-_005csubparagraph"></a>
+<a name="g_t_005csubsubsection_002c-_005cparagraph_002c-_005csubparagraph" class="anchor"></a>
 <h3 class="section">6.5 <code>\subsubsection</code>, <code>\paragraph</code>, <code>\subparagraph</code></h3>
 
-<a name="index-_005csubsubsection"></a>
-<a name="index-subsubsection"></a>
-<a name="index-_005cparagraph-1"></a>
-<a name="index-paragraph-1"></a>
-<a name="index-_005csubparagraph-1"></a>
-<a name="index-subparagraph-1"></a>
+<a name="index-_005csubsubsection" class="anchor"></a>
+<a name="index-subsubsection" class="anchor"></a>
+<a name="index-_005cparagraph-1" class="anchor"></a>
+<a name="index-paragraph-1" class="anchor"></a>
+<a name="index-_005csubparagraph-1" class="anchor"></a>
+<a name="index-subparagraph-1" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -662,15 +663,15 @@ the table of contents, the level number of a subsubsection is&nbsp;3, of
 a paragraph is&nbsp;4, and of a subparagraph is&nbsp;5
 (see <a href="#Sectioning_002fsecnumdepth">Sectioning/secnumdepth</a> and see <a href="#Sectioning_002ftocdepth">Sectioning/tocdepth</a>).
 </p>
-<a name="index-package_002c-indentfirst-4"></a>
-<a name="index-indentfirst-package-4"></a>
+<a name="index-package_002c-indentfirst-4" class="anchor"></a>
+<a name="index-indentfirst-package-4" class="anchor"></a>
 
 <p>The paragraph that follows the subsubsection title is not indented, as is a
 standard typographical practice.  One way to get an indent is to use the
 package <samp>indentfirst</samp>.
 </p>
-<a name="index-package_002c-titlesec-4"></a>
-<a name="index-titlesec-package-4"></a>
+<a name="index-package_002c-titlesec-4" class="anchor"></a>
+<a name="index-titlesec-package-4" class="anchor"></a>
 
 <p>There are a number of ways to change the behavior of the these commands.
 One is the <code>\@startsection</code> command (see <a href="#g_t_005c_0040startsection">\@startsection</a>).
@@ -679,14 +680,14 @@ There are also many packages on CTAN that address this, including
 </p>
 
 <hr>
-<a name="g_t_005cappendix"></a>
+<a name="g_t_005cappendix" class="anchor"></a>
 
-<a name="g_t_005cappendix-1"></a>
+<a name="g_t_005cappendix-1" class="anchor"></a>
 <h3 class="section">6.6 <code>\appendix</code></h3>
 
-<a name="index-_005cappendix"></a>
-<a name="index-appendix"></a>
-<a name="index-appendices"></a>
+<a name="index-_005cappendix" class="anchor"></a>
+<a name="index-appendix" class="anchor"></a>
+<a name="index-appendices" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -717,8 +718,8 @@ book or report, and in an article resets the <code>section</code> and
 &lsquo;<samp>Appendix A</samp>&rsquo; and &lsquo;<samp>Appendix B</samp>&rsquo;.  See <a href="latex2e_29.html#Larger-book-template">Larger book template</a>
 for another example.
 </p>
-<a name="index-package_002c-appendix"></a>
-<a name="index-appendix-package"></a>
+<a name="index-package_002c-appendix" class="anchor"></a>
+<a name="index-appendix-package" class="anchor"></a>
 <p>The <samp>appendix</samp> package adds the command
 <code>\appendixpage</code> to put a separate &lsquo;<samp>Appendices</samp>&rsquo; in the document
 body before the first appendix, and the command <code>\addappheadtotoc</code>
@@ -729,18 +730,18 @@ number of other features.  See the documentation on CTAN.
 </p>
 
 <hr>
-<a name="g_t_005cfrontmatter-_0026-_005cmainmatter-_0026-_005cbackmatter"></a>
+<a name="g_t_005cfrontmatter-_0026-_005cmainmatter-_0026-_005cbackmatter" class="anchor"></a>
 
-<a name="g_t_005cfrontmatter_002c-_005cmainmatter_002c-_005cbackmatter"></a>
+<a name="g_t_005cfrontmatter_002c-_005cmainmatter_002c-_005cbackmatter" class="anchor"></a>
 <h3 class="section">6.7 <code>\frontmatter</code>, <code>\mainmatter</code>, <code>\backmatter</code></h3>
 
-<a name="index-_005cfrontmatter"></a>
-<a name="index-book_002c-front-matter"></a>
-<a name="index-_005cmainmatter"></a>
-<a name="index-book_002c-main-matter"></a>
-<a name="index-_005cbackmatter"></a>
-<a name="index-book_002c-back-matter"></a>
-<a name="index-book_002c-end-matter"></a>
+<a name="index-_005cfrontmatter" class="anchor"></a>
+<a name="index-book_002c-front-matter" class="anchor"></a>
+<a name="index-_005cmainmatter" class="anchor"></a>
+<a name="index-book_002c-main-matter" class="anchor"></a>
+<a name="index-_005cbackmatter" class="anchor"></a>
+<a name="index-book_002c-back-matter" class="anchor"></a>
+<a name="index-book_002c-end-matter" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -771,12 +772,12 @@ numbered.  See <a href="latex2e_29.html#Larger-book-template">Larger book templa
 </p>
 
 <hr>
-<a name="g_t_005c_0040startsection"></a>
-<a name="g_t_005c_0040startsection-1"></a>
+<a name="g_t_005c_0040startsection" class="anchor"></a>
+<a name="g_t_005c_0040startsection-1" class="anchor"></a>
 <h3 class="section">6.8 <code>\@startsection</code></h3>
 
-<a name="index-_005c_0040startsection"></a>
-<a name="index-section_002c-redefining"></a>
+<a name="index-_005c_0040startsection" class="anchor"></a>
+<a name="index-section_002c-redefining" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -825,7 +826,7 @@ the examples below.
 </p>
 <dl compact="compact">
 <dt><var>name</var></dt>
-<dd><a name="startsection-name"></a><a name="g_t_005c_0040startsection_002fname"></a><p>Name of the counter used to number the sectioning header.  This counter
+<dd><a name="startsection-name" class="anchor"></a><a name="g_t_005c_0040startsection_002fname" class="anchor"></a><p>Name of the counter used to number the sectioning header.  This counter
 must be defined separately.  Most commonly this is either
 <code>section</code>, <code>subsection</code>, or <code>paragraph</code>.  Although in
 those cases the counter name is the same as the sectioning command
@@ -837,7 +838,7 @@ example below.
 </p>
 </dd>
 <dt><var>level</var></dt>
-<dd><a name="startsection-level"></a><a name="g_t_005c_0040startsection_002flevel"></a><p>An integer giving the depth of the sectioning command.
+<dd><a name="startsection-level" class="anchor"></a><a name="g_t_005c_0040startsection_002flevel" class="anchor"></a><p>An integer giving the depth of the sectioning command.
 See <a href="#Sectioning">Sectioning</a> for the list of standard level numbers.
 </p>
 <p>If <var>level</var> is less than or equal to the value of the counter
@@ -856,14 +857,14 @@ list sections but not subsections.
 </p>
 </dd>
 <dt><var>indent</var></dt>
-<dd><a name="startsection-indent"></a><a name="g_t_005c_0040startsection_002findent"></a><p>A length giving the indentation of all of the title lines with respect
+<dd><a name="startsection-indent" class="anchor"></a><a name="g_t_005c_0040startsection_002findent" class="anchor"></a><p>A length giving the indentation of all of the title lines with respect
 to the left margin.  To have the title flush with the margin use
 <code>0pt</code>.  A negative indentation such as <code>-\parindent</code> will move
 the title into the left margin.
 </p>
 </dd>
 <dt><var>beforeskip</var></dt>
-<dd><a name="startsection-beforeskip"></a><a name="g_t_005c_0040startsection_002fbeforeskip"></a><p>The absolute value of this length is the amount of vertical space that
+<dd><a name="startsection-beforeskip" class="anchor"></a><a name="g_t_005c_0040startsection_002fbeforeskip" class="anchor"></a><p>The absolute value of this length is the amount of vertical space that
 is inserted before this sectioning unit&rsquo;s title.  This space will be
 discarded if the sectioning unit happens to start at the top of a fresh
 page.  If this number is negative then the first paragraph following the
@@ -890,7 +891,7 @@ page.)
 </p>
 </dd>
 <dt><var>afterskip</var></dt>
-<dd><a name="startsection-afterskip"></a><a name="g_t_005c_0040startsection_002fafterskip"></a><p>This is a length.  If <var>afterskip</var> is non-negative then this is the
+<dd><a name="startsection-afterskip" class="anchor"></a><a name="g_t_005c_0040startsection_002fafterskip" class="anchor"></a><p>This is a length.  If <var>afterskip</var> is non-negative then this is the
 vertical space inserted after the sectioning unit&rsquo;s title header.  If it
 is negative then the title header becomes a run-in header, so that it
 becomes part of the next paragraph.  In this case the absolute value of
@@ -914,7 +915,7 @@ header&rsquo;s from standalone to run-in, you cannot use a negative
 </p>
 </dd>
 <dt><var>style</var></dt>
-<dd><a name="startsection-style"></a><a name="g_t_005c_0040startsection_002fstyle"></a><p>Controls the styling of the title.  See the examples below.  Typical
+<dd><a name="startsection-style" class="anchor"></a><a name="g_t_005c_0040startsection_002fstyle" class="anchor"></a><p>Controls the styling of the title.  See the examples below.  Typical
 commands to use here are <code>\centering</code>, <code>\raggedright</code>,
 <code>\normalfont</code>, <code>\hrule</code>, or <code>\newpage</code>.  The last command
 in <var>style</var> may be one that takes one argument, such as

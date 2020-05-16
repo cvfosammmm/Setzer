@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_1.html#About-this-document" rel="prev" title="About this document">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,22 +86,22 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Overview"></a>
-<a name="Overview-of-LaTeX"></a>
+<a name="Overview" class="anchor"></a>
+<a name="Overview-of-LaTeX" class="anchor"></a>
 <h2 class="chapter">2 Overview of LaTeX</h2>
 
-<a name="index-overview-of-LaTeX"></a>
-<a name="index-basics-of-LaTeX"></a>
-<a name="index-Knuth_002c-Donald-E_002e"></a>
-<a name="index-Lamport_002c-Leslie"></a>
-<a name="index-LaTeX-overview"></a>
+<a name="index-overview-of-LaTeX" class="anchor"></a>
+<a name="index-basics-of-LaTeX" class="anchor"></a>
+<a name="index-Knuth_002c-Donald-E_002e" class="anchor"></a>
+<a name="index-Lamport_002c-Leslie" class="anchor"></a>
+<a name="index-LaTeX-overview" class="anchor"></a>
 
 <p>LaTeX is a system for typesetting documents.  It was originally
 created by Leslie Lamport and is now maintained by a group of volunteers
 (<a href="http://latex-project.org">http://latex-project.org</a>).  It is widely used, particularly for
 complex and technical documents, such as those involving mathematics.
 </p>
-<a name="index-macro-package_002c-LaTeX-as"></a>
+<a name="index-macro-package_002c-LaTeX-as" class="anchor"></a>
 <p>A LaTeX user writes an input file containing text along with
 interspersed commands, for instance commands describing how the text
 should be formatted.  It is implemented as a set of related commands
@@ -113,8 +114,8 @@ input file to the TeX engine.
 the document is marked up, that is, to mean the set of commands
 available to a LaTeX user.
 </p>
-<a name="index-Lamport-TeX"></a>
-<a name="index-pronunciation"></a>
+<a name="index-Lamport-TeX" class="anchor"></a>
+<a name="index-pronunciation" class="anchor"></a>
 <p>The name LaTeX is short for &ldquo;Lamport TeX&rdquo;.  It is pronounced
 LAH-teck or LAY-teck, or sometimes LAY-tecks.  Inside a document,
 produce the logo with <code>\LaTeX</code>.  Where use of the logo is not
@@ -123,13 +124,13 @@ sensible, such as in plain text, write it as &lsquo;<samp>LaTeX</samp>&rsquo;.
 
 
 <hr>
-<a name="Starting-and-ending"></a>
-<a name="Starting-and-ending-1"></a>
+<a name="Starting-and-ending" class="anchor"></a>
+<a name="Starting-and-ending-1" class="anchor"></a>
 <h3 class="section">2.1 Starting and ending</h3>
 
-<a name="Starting-_0026-ending"></a><a name="index-starting-and-ending"></a>
-<a name="index-ending-and-starting"></a>
-<a name="index-hello_002c-world"></a>
+<a name="Starting-_0026-ending" class="anchor"></a><a name="index-starting-and-ending" class="anchor"></a>
+<a name="index-ending-and-starting" class="anchor"></a>
+<a name="index-hello_002c-world" class="anchor"></a>
 
 <p>LaTeX files have a simple global structure, with a standard beginning
 and ending.  This is a small example.
@@ -144,19 +145,19 @@ Hello, \LaTeX\ world.
 <p>Every LaTeX document has a <code>\begin{document}</code> line and an
 <code>\end{document}</code> line.
 </p>
-<a name="index-document-class_002c-defined"></a>
+<a name="index-document-class_002c-defined" class="anchor"></a>
 <p>Here, the &lsquo;<samp>article</samp>&rsquo; is the <em>document class</em>.  It is implemented
 in a file <samp>article.cls</samp>.  You can use any document class on your
 system.  A few document classes are defined by LaTeX itself, and vast
 array of others are widely available.  See <a href="latex2e_3.html#Document-classes">Document classes</a>.
 </p>
-<a name="index-preamble_002c-defined"></a>
+<a name="index-preamble_002c-defined" class="anchor"></a>
 <p>You can include other LaTeX commands between the
 <code>\documentclass</code> and the <code>\begin{document}</code> commands.
 This area is called the <em>preamble</em>.
 </p>
 <p>The <code>\begin{document}</code>, <code>\end{document}</code> pair defines an
-<a name="index-environment"></a>
+<a name="index-environment" class="anchor"></a>
 <em>environment</em>; the &lsquo;<samp>document</samp>&rsquo; environment (and no others) is
 required in all LaTeX documents (see <a href="latex2e_8.html#document">document</a>).  LaTeX make
 available to you many environments that are documented here
@@ -168,8 +169,8 @@ a LaTeX input file.
 </p>
 
 <hr>
-<a name="Output-files"></a>
-<a name="Output-files-1"></a>
+<a name="Output-files" class="anchor"></a>
+<a name="Output-files-1" class="anchor"></a>
 <h3 class="section">2.2 Output files</h3>
 
 <p>LaTeX produces a main output file and at least two auxiliary files.
@@ -177,13 +178,13 @@ The main output file&rsquo;s name ends in either <samp>.dvi</samp> or <samp>.pdf
 </p>
 <dl compact="compact">
 <dt><code>.dvi</code></dt>
-<dd><a name="index-_002edvi-file"></a>
-<a name="index-latex-command"></a>
-<a name="index-xdvi-command"></a>
-<a name="index-dvips-command"></a>
-<a name="index-dvipdfmx-command"></a>
-<a name="index-dvitype-command"></a>
-<a name="output-files-dvi"></a><p>If LaTeX is invoked with the system command <code>latex</code> then it
+<dd><a name="index-_002edvi-file" class="anchor"></a>
+<a name="index-latex-command" class="anchor"></a>
+<a name="index-xdvi-command" class="anchor"></a>
+<a name="index-dvips-command" class="anchor"></a>
+<a name="index-dvipdfmx-command" class="anchor"></a>
+<a name="index-dvitype-command" class="anchor"></a>
+<a name="output-files-dvi" class="anchor"></a><p>If LaTeX is invoked with the system command <code>latex</code> then it
 produces a DeVice Independent file, with extension <samp>.dvi</samp>.  You
 can view this file with a command such as <code>xdvi</code>, or convert
 it to a PostScript <code>.ps</code> file with <code>dvips</code> or to a
@@ -194,10 +195,10 @@ available (<a href="http://mirror.ctan.org/dviware">http://mirror.ctan.org/dviwa
 </p>
 </dd>
 <dt><code>.pdf</code></dt>
-<dd><a name="index-_002epdf-file"></a>
-<a name="index-pdfTeX"></a>
-<a name="index-pdflatex-command"></a>
-<a name="output-files-pdf"></a><p>If LaTeX is invoked via the system command <code>pdflatex</code>,
+<dd><a name="index-_002epdf-file" class="anchor"></a>
+<a name="index-pdfTeX" class="anchor"></a>
+<a name="index-pdflatex-command" class="anchor"></a>
+<a name="output-files-pdf" class="anchor"></a><p>If LaTeX is invoked via the system command <code>pdflatex</code>,
 among other commands (see <a href="#TeX-engines">TeX engines</a>), then the main output is
 a Portable Document Format (PDF) file.  Typically this is a
 self-contained file, with all fonts and images included.
@@ -209,21 +210,21 @@ self-contained file, with all fonts and images included.
 </p>
 <dl compact="compact">
 <dt><code>.log</code></dt>
-<dd><a name="index-transcript-file"></a>
-<a name="index-log-file"></a>
-<a name="index-_002elog-file"></a>
-<a name="output-files-log"></a><p>This transcript file contains summary information such as a list of
+<dd><a name="index-transcript-file" class="anchor"></a>
+<a name="index-log-file" class="anchor"></a>
+<a name="index-_002elog-file" class="anchor"></a>
+<a name="output-files-log" class="anchor"></a><p>This transcript file contains summary information such as a list of
 loaded packages.  It also includes diagnostic messages and perhaps
 additional information for any errors.
 </p>
 </dd>
 <dt><code>.aux</code></dt>
-<dd><a name="index-auxiliary-file"></a>
-<a name="index-_002eaux-file"></a>
-<a name="index-cross-references_002c-resolving"></a>
-<a name="index-forward-references_002c-resolving"></a>
-<a name="index-references_002c-resolving-forward"></a>
-<a name="output-files-aux"></a><p>Auxiliary information is used by LaTeX for things such as
+<dd><a name="index-auxiliary-file" class="anchor"></a>
+<a name="index-_002eaux-file" class="anchor"></a>
+<a name="index-cross-references_002c-resolving" class="anchor"></a>
+<a name="index-forward-references_002c-resolving" class="anchor"></a>
+<a name="index-references_002c-resolving-forward" class="anchor"></a>
+<a name="output-files-aux" class="anchor"></a><p>Auxiliary information is used by LaTeX for things such as
 cross references.  For example, the first time that LaTeX finds a
 forward reference&mdash;a cross reference to something that has not yet
 appeared in the source&mdash;it will appear in the output as a doubled
@@ -237,13 +238,13 @@ location.
 </dd>
 </dl>
 
-<a name="index-_002elof-file"></a>
-<a name="index-list-of-figures-file"></a>
-<a name="index-_002elot-file"></a>
-<a name="index-list-of-tables-file"></a>
-<a name="index-_002etoc-file"></a>
-<a name="index-table-of-contents-file"></a>
-<a name="index-contents-file"></a>
+<a name="index-_002elof-file" class="anchor"></a>
+<a name="index-list-of-figures-file" class="anchor"></a>
+<a name="index-_002elot-file" class="anchor"></a>
+<a name="index-list-of-tables-file" class="anchor"></a>
+<a name="index-_002etoc-file" class="anchor"></a>
+<a name="index-table-of-contents-file" class="anchor"></a>
+<a name="index-contents-file" class="anchor"></a>
 <p>LaTeX may produce yet more files, characterized by the filename
 ending.  These include a <code>.lof</code> file that is used to make a list of
 figures, a <code>.lot</code> file used to make a list of tables, and a
@@ -252,16 +253,16 @@ open-ended.
 </p>
 
 <hr>
-<a name="TeX-engines"></a>
-<a name="TeX-engines-1"></a>
+<a name="TeX-engines" class="anchor"></a>
+<a name="TeX-engines-1" class="anchor"></a>
 <h3 class="section">2.3 TeX engines</h3>
 
-<a name="index-engines_002c-TeX"></a>
-<a name="index-implementations-of-TeX"></a>
-<a name="index-UTF_002d8"></a>
-<a name="index-Unicode-input_002c-native"></a>
-<a name="index-TrueType-fonts"></a>
-<a name="index-OpenType-fonts"></a>
+<a name="index-engines_002c-TeX" class="anchor"></a>
+<a name="index-implementations-of-TeX" class="anchor"></a>
+<a name="index-UTF_002d8" class="anchor"></a>
+<a name="index-Unicode-input_002c-native" class="anchor"></a>
+<a name="index-TrueType-fonts" class="anchor"></a>
+<a name="index-OpenType-fonts" class="anchor"></a>
 
 <p>LaTeX is defined to be a set of commands that are run by a TeX
 implementation (see <a href="#Overview">Overview</a>).  This section gives a terse
@@ -270,10 +271,10 @@ overview of the main programs (see also&nbsp;<a href="latex2e_28.html#Command-li
 <dl compact="compact">
 <dt><code>latex</code></dt>
 <dt><code>pdflatex</code></dt>
-<dd><a name="index-pdfTeX-engine"></a>
-<a name="index-etex-command"></a>
-<a name="index-e_002dTeX"></a>
-<a name="tex-engines-latex"></a><p>In TeX Live (<a href="http://tug.org/texlive">http://tug.org/texlive</a>), if LaTeX is invoked
+<dd><a name="index-pdfTeX-engine" class="anchor"></a>
+<a name="index-etex-command" class="anchor"></a>
+<a name="index-e_002dTeX" class="anchor"></a>
+<a name="tex-engines-latex" class="anchor"></a><p>In TeX Live (<a href="http://tug.org/texlive">http://tug.org/texlive</a>), if LaTeX is invoked
 via either the system command <code>latex</code> or <code>pdflatex</code>,
 then the pdfTeX engine is run (<a href="http://ctan.org/pkg/pdftex">http://ctan.org/pkg/pdftex</a>).
 When invoked as <code>latex</code>, the main output is a <samp>.dvi</samp>
@@ -292,9 +293,9 @@ assumed to be available in LaTeX.
 </p>
 </dd>
 <dt><code>lualatex</code></dt>
-<dd><a name="index-lualatex-command"></a>
-<a name="index-LuaTeX"></a>
-<a name="tex-engines-lualatex"></a><p>If LaTeX is invoked via the system command <code>lualatex</code>, the
+<dd><a name="index-lualatex-command" class="anchor"></a>
+<a name="index-LuaTeX" class="anchor"></a>
+<a name="tex-engines-lualatex" class="anchor"></a><p>If LaTeX is invoked via the system command <code>lualatex</code>, the
 LuaTeX engine is run (<a href="http://ctan.org/pkg/luatex">http://ctan.org/pkg/luatex</a>).  This
 program allows code written in the scripting language Lua
 (<a href="http://luatex.org">http://luatex.org</a>) to interact with TeX&rsquo;s typesetting.
@@ -305,11 +306,11 @@ but this is rarely used.
 </p>
 </dd>
 <dt><code>xelatex</code></dt>
-<dd><a name="index-xelatex-command"></a>
-<a name="index-XeTeX"></a>
-<a name="index-_002exdv-file"></a>
-<a name="index-xdvipdfmx"></a>
-<a name="tex-engines-xelatex"></a><p>If LaTeX is invoked with the system command <code>xelatex</code>, the
+<dd><a name="index-xelatex-command" class="anchor"></a>
+<a name="index-XeTeX" class="anchor"></a>
+<a name="index-_002exdv-file" class="anchor"></a>
+<a name="index-xdvipdfmx" class="anchor"></a>
+<a name="tex-engines-xelatex" class="anchor"></a><p>If LaTeX is invoked with the system command <code>xelatex</code>, the
 XeTeX engine is run (<a href="http://tug.org/xetex">http://tug.org/xetex</a>).  Like LuaTeX,
 XeTeX natively supports UTF-8 Unicode and TrueType and OpenType
 fonts, though the implementation is completely different, mainly using
@@ -330,14 +331,14 @@ additional support for Japanese and other languages ([u]pTeX,
 </p>
 
 <hr>
-<a name="LaTeX-command-syntax"></a>
-<a name="LaTeX-command-syntax-1"></a>
+<a name="LaTeX-command-syntax" class="anchor"></a>
+<a name="LaTeX-command-syntax-1" class="anchor"></a>
 <h3 class="section">2.4 LaTeX command syntax</h3>
 
-<a name="index-command-syntax"></a>
-<a name="index-_005c-character-starting-commands"></a>
-<a name="index-_005b_002e_002e_002e_005d-for-optional-arguments"></a>
-<a name="index-_007b_002e_002e_002e_007d-for-required-arguments"></a>
+<a name="index-command-syntax" class="anchor"></a>
+<a name="index-_005c-character-starting-commands" class="anchor"></a>
+<a name="index-_005b_002e_002e_002e_005d-for-optional-arguments" class="anchor"></a>
+<a name="index-_007b_002e_002e_002e_007d-for-required-arguments" class="anchor"></a>
 <p>In the LaTeX input file, a command name starts with a backslash
 character, <code>\</code>.  The name itself then consists of either
 (a)&nbsp;a string of letters or (b)&nbsp;a single non-letter.
@@ -376,8 +377,8 @@ commands it covers (barring unintentional omissions, a.k.a. bugs).
 </p>
 
 <hr>
-<a name="Environment"></a>
-<a name="Environment-1"></a>
+<a name="Environment" class="anchor"></a>
+<a name="Environment-1" class="anchor"></a>
 <h3 class="section">2.5 Environment</h3>
 
 <p>Synopsis:
@@ -421,11 +422,11 @@ required (it specifies the formatting of columns).
 
 
 <hr>
-<a name="CTAN"></a>
-<a name="CTAN_003a-the-Comprehensive-TeX-Archive-Network"></a>
+<a name="CTAN" class="anchor"></a>
+<a name="CTAN_003a-the-Comprehensive-TeX-Archive-Network" class="anchor"></a>
 <h3 class="section">2.6 CTAN: the Comprehensive TeX Archive Network</h3>
 
-<a name="index-CTAN"></a>
+<a name="index-CTAN" class="anchor"></a>
 
 <p>The Comprehensive TeX Archive Network, CTAN, is the TeX and
 LaTeX community&rsquo;s repository of free material.  It is a set of
@@ -441,8 +442,8 @@ specifications.
 <p>In addition to the massive holdings, the web site offers features such
 as search by name or by functionality.
 </p>
-<a name="index-DANTE-e_002eV_002e"></a>
-<a name="index-mirrors-of-CTAN"></a>
+<a name="index-DANTE-e_002eV_002e" class="anchor"></a>
+<a name="index-mirrors-of-CTAN" class="anchor"></a>
 <p>CTAN is not a single site, but instead is a set of sites. One of the
 sites is the core. This site actively manages the material, for
 instance, by accepting uploads of new or updated packages. It is

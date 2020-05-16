@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_7.html#g_t_005cref" rel="prev" title="\ref">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,13 +86,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Environments"></a>
-<a name="Environments-1"></a>
+<a name="Environments" class="anchor"></a>
+<a name="Environments-1" class="anchor"></a>
 <h2 class="chapter">8 Environments</h2>
 
-<a name="index-environments"></a>
-<a name="index-_005cbegin"></a>
-<a name="index-_005cend"></a>
+<a name="index-environments" class="anchor"></a>
+<a name="index-_005cbegin" class="anchor"></a>
+<a name="index-_005cend" class="anchor"></a>
 
 <p>LaTeX provides many environments for delimiting certain behavior.
 An environment begins with <code>\begin</code> and ends with <code>\end</code>,
@@ -109,20 +110,20 @@ the end. For instance, the input
 &lsquo;<samp>! LaTeX Error: \begin{table*} on input line 5 ended by
 \end{table}.</samp>&rsquo;
 </p>
-<a name="index-group_002c-and-environments"></a>
+<a name="index-group_002c-and-environments" class="anchor"></a>
 <p>Environments are executed within a group.
 </p>
 
 
 <hr>
-<a name="abstract"></a>
-<a name="abstract-1"></a>
+<a name="abstract" class="anchor"></a>
+<a name="abstract-1" class="anchor"></a>
 <h3 class="section">8.1 <code>abstract</code></h3>
 
-<a name="index-environment_002c-abstract"></a>
-<a name="index-abstract-environment"></a>
+<a name="index-environment_002c-abstract" class="anchor"></a>
+<a name="index-abstract-environment" class="anchor"></a>
         
-<a name="index-abstracts"></a>
+<a name="index-abstracts" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -175,14 +176,14 @@ a more flexible solution, use the package <samp>abstract</samp>).
 
 
 <hr>
-<a name="array"></a>
-<a name="array-1"></a>
+<a name="array" class="anchor"></a>
+<a name="array-1" class="anchor"></a>
 <h3 class="section">8.2 <code>array</code></h3>
 
-<a name="index-environment_002c-array"></a>
-<a name="index-array-environment"></a>
+<a name="index-environment_002c-array" class="anchor"></a>
+<a name="index-array-environment" class="anchor"></a>
         
-<a name="index-arrays_002c-math"></a>
+<a name="index-arrays_002c-math" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -238,13 +239,13 @@ the column with <code>p{...}</code>, which causes the entry to be typeset in
 text mode.  The second is that, instead of <code>tabular</code>&rsquo;s parameter
 <code>\tabcolsep</code>, LaTeX&rsquo;s intercolumn space in an <code>array</code> is
 governed by
-<a name="index-_005carraycolsep"></a>
+<a name="index-_005carraycolsep" class="anchor"></a>
 <code>\arraycolsep</code>, which gives half the width between columns. The
 default for this is &lsquo;<samp>5pt</samp>&rsquo; so that between two columns comes
 10pt of space.
 </p>
-<a name="index-package_002c-amsmath"></a>
-<a name="index-amsmath-package"></a>
+<a name="index-package_002c-amsmath" class="anchor"></a>
+<a name="index-amsmath-package" class="anchor"></a>
 
 <p>To obtain arrays with braces the standard is to use the <samp>amsmath</samp>
 package.  It comes with environments <code>pmatrix</code> for an array
@@ -255,8 +256,8 @@ an array surrounded by vertical bars&nbsp;<code>|...|</code>, and
 <code>Vmatrix</code> for an array surrounded by double vertical
 bars&nbsp;<code>||...||</code>, along with a number of other array constructs.
 </p>
-<a name="index-package_002c-amsmath-1"></a>
-<a name="index-amsmath-package-1"></a>
+<a name="index-package_002c-amsmath-1" class="anchor"></a>
+<a name="index-amsmath-package-1" class="anchor"></a>
 
 <p>The next example uses the <samp>amsmath</samp> package.
 </p>
@@ -271,11 +272,11 @@ bars&nbsp;<code>||...||</code>, along with a number of other array constructs.
 \end{equation}
 </pre></div>
 
-<a name="index-package_002c-array-_0028package_0029"></a>
-<a name="index-array-_0028package_0029-package"></a>
+<a name="index-package_002c-array-_0028package_0029" class="anchor"></a>
+<a name="index-array-_0028package_0029-package" class="anchor"></a>
 
-<a name="index-package_002c-dcolumn"></a>
-<a name="index-dcolumn-package"></a>
+<a name="index-package_002c-dcolumn" class="anchor"></a>
+<a name="index-dcolumn-package" class="anchor"></a>
 
 <p>There are many packages concerning arrays.  The <samp>array</samp> package has
 many useful extensions, including more column types.  The <samp>dcolumn</samp>
@@ -284,14 +285,14 @@ the documentation on CTAN.
 </p>
 
 <hr>
-<a name="center"></a>
-<a name="center-1"></a>
+<a name="center" class="anchor"></a>
+<a name="center-1" class="anchor"></a>
 <h3 class="section">8.3 <code>center</code></h3>
 
-<a name="index-environment_002c-center"></a>
-<a name="index-center-environment"></a>
+<a name="index-environment_002c-center" class="anchor"></a>
+<a name="index-center-environment" class="anchor"></a>
         
-<a name="index-centering-text_002c-environment-for"></a>
+<a name="index-centering-text_002c-environment-for" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -306,7 +307,7 @@ the documentation on CTAN.
 <p>Create a new paragraph consisting of a sequence of lines that are
 centered within the left and right margins.  Use
 double-backslash, <code>\\</code>, to get a line break (see <a href="latex2e_9.html#g_t_005c_005c">\\</a>).
-<a name="index-_005c_005c-_0028for-center_0029"></a>
+<a name="index-_005c_005c-_0028for-center_0029" class="anchor"></a>
 If some text is too long to fit on a line then LaTeX will insert line
 breaks that avoid hyphenation and avoid stretching or shrinking any
 interword space.
@@ -349,12 +350,12 @@ entire page.
 
 
 <hr>
-<a name="g_t_005ccentering"></a>
-<a name="g_t_005ccentering-1"></a>
+<a name="g_t_005ccentering" class="anchor"></a>
+<a name="g_t_005ccentering-1" class="anchor"></a>
 <h4 class="subsection">8.3.1 <code>\centering</code></h4>
 
-<a name="index-_005ccentering"></a>
-<a name="index-centering-text_002c-declaration-for"></a>
+<a name="index-_005ccentering" class="anchor"></a>
+<a name="index-centering-text_002c-declaration-for" class="anchor"></a>
 
 
 <p>Synopsis:
@@ -405,15 +406,15 @@ centered lines &lsquo;<samp>xx</samp>&rsquo; and &lsquo;<samp>yy</samp>&rsquo;, 
 </p>
 
 <hr>
-<a name="description"></a>
-<a name="description-1"></a>
+<a name="description" class="anchor"></a>
+<a name="description-1" class="anchor"></a>
 <h3 class="section">8.4 <code>description</code></h3>
 
-<a name="index-environment_002c-description"></a>
-<a name="index-description-environment"></a>
+<a name="index-environment_002c-description" class="anchor"></a>
+<a name="index-description-environment" class="anchor"></a>
         
-<a name="index-labelled-lists_002c-creating"></a>
-<a name="index-description-lists_002c-creating"></a>
+<a name="index-labelled-lists_002c-creating" class="anchor"></a>
+<a name="index-description-lists_002c-creating" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -443,14 +444,14 @@ missing \item</samp>&rsquo;.
 <p>The labels &lsquo;<samp>lama</samp>&rsquo; and &lsquo;<samp>llama</samp>&rsquo; are output in boldface, with the
 left edge on the left margin.
 </p>
-<a name="index-_005citem"></a>
+<a name="index-_005citem" class="anchor"></a>
 <p>Start list items with the <code>\item</code> command (see <a href="#g_t_005citem">\item</a>).  Use the
 optional labels, as in <code>\item[Main point]</code>, because there is
 no sensible default.  Following the <code>\item</code> is optional text, which
 may contain multiple paragraphs.
 </p>
-<a name="index-bold-typewriter_002c-avoiding"></a>
-<a name="index-typewriter-labels-in-lists"></a>
+<a name="index-bold-typewriter_002c-avoiding" class="anchor"></a>
+<a name="index-typewriter-labels-in-lists" class="anchor"></a>
 <p>Since the labels are in bold style, if the label text calls for a font
 change given in argument style (see <a href="latex2e_4.html#Font-styles">Font styles</a>) then it will come
 out bold.  For instance, if the label text calls for typewriter with
@@ -479,12 +480,12 @@ lists.
 
 
 <hr>
-<a name="displaymath"></a>
-<a name="displaymath-1"></a>
+<a name="displaymath" class="anchor"></a>
+<a name="displaymath-1" class="anchor"></a>
 <h3 class="section">8.5 <code>displaymath</code></h3>
 
-<a name="index-environment_002c-displaymath"></a>
-<a name="index-displaymath-environment"></a>
+<a name="index-environment_002c-displaymath" class="anchor"></a>
+<a name="index-displaymath-environment" class="anchor"></a>
         
 
 <p>Synopsis:
@@ -505,8 +506,8 @@ math text. One way to get an equation number is to use the
 </p>
 <p>LaTeX will not break the <var>math text</var> across lines.
 </p>
-<a name="index-package_002c-amsmath-2"></a>
-<a name="index-amsmath-package-2"></a>
+<a name="index-package_002c-amsmath-2" class="anchor"></a>
+<a name="index-amsmath-package-2" class="anchor"></a>
 
 <p>Note that the <samp>amsmath</samp> package has significantly more extensive
 displayed equation facilities.  For example, there are a number of
@@ -538,12 +539,12 @@ environment honors the <code>fleqn</code> option.)
 </p>
 
 <hr>
-<a name="document"></a>
-<a name="document-1"></a>
+<a name="document" class="anchor"></a>
+<a name="document-1" class="anchor"></a>
 <h3 class="section">8.6 <code>document</code></h3>
 
-<a name="index-environment_002c-document"></a>
-<a name="index-document-environment"></a>
+<a name="index-environment_002c-document" class="anchor"></a>
+<a name="index-document-environment" class="anchor"></a>
         
 
 <p>The <code>document</code> environment encloses the entire body of a document.
@@ -552,12 +553,12 @@ It is required in every LaTeX document.  See <a href="latex2e_2.html#Starting-an
 
 
 <hr>
-<a name="g_t_005cAtBeginDocument"></a>
-<a name="g_t_005cAtBeginDocument-1"></a>
+<a name="g_t_005cAtBeginDocument" class="anchor"></a>
+<a name="g_t_005cAtBeginDocument-1" class="anchor"></a>
 <h4 class="subsection">8.6.1 <code>\AtBeginDocument</code></h4>
 
-<a name="index-_005cAtBeginDocument"></a>
-<a name="index-beginning-of-document-hook"></a>
+<a name="index-_005cAtBeginDocument" class="anchor"></a>
+<a name="index-beginning-of-document-hook" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -576,12 +577,12 @@ will be executed in the order that you gave them.
 </p>
 
 <hr>
-<a name="g_t_005cAtEndDocument"></a>
-<a name="g_t_005cAtEndDocument-1"></a>
+<a name="g_t_005cAtEndDocument" class="anchor"></a>
+<a name="g_t_005cAtEndDocument-1" class="anchor"></a>
 <h4 class="subsection">8.6.2 <code>\AtEndDocument</code></h4>
 
-<a name="index-_005cAtEndDocument"></a>
-<a name="index-end-of-document-hook"></a>
+<a name="index-_005cAtEndDocument" class="anchor"></a>
+<a name="index-end-of-document-hook" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -601,14 +602,14 @@ will be executed in the order that you gave them.
 </p>
 
 <hr>
-<a name="enumerate"></a>
-<a name="enumerate-1"></a>
+<a name="enumerate" class="anchor"></a>
+<a name="enumerate-1" class="anchor"></a>
 <h3 class="section">8.7 <code>enumerate</code></h3>
 
-<a name="index-environment_002c-enumerate"></a>
-<a name="index-enumerate-environment"></a>
+<a name="index-environment_002c-enumerate" class="anchor"></a>
+<a name="index-enumerate-environment" class="anchor"></a>
         
-<a name="index-lists-of-items_002c-numbered"></a>
+<a name="index-lists-of-items_002c-numbered" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -638,7 +639,7 @@ As a top-level list the labels would come out as &lsquo;<samp>1.</samp>&rsquo; a
 \end{enumerate}
 </pre></div>
 
-<a name="index-_005citem-1"></a>
+<a name="index-_005citem-1" class="anchor"></a>
 <p>Start list items with the <code>\item</code> command (see <a href="#g_t_005citem">\item</a>).  If you
 give <code>\item</code> an optional argument by following it with square
 brackets, as in <code>\item[Interstitial label]</code>, then the next item
@@ -660,11 +661,11 @@ the outermost level.
 </li><li> uppercase letter followed by a period: &lsquo;<samp>A.</samp>&rsquo;, &lsquo;<samp>B.</samp>&rsquo;,&nbsp;&hellip;
 </li></ol>
 
-<a name="index-_005cenumi"></a>
-<a name="index-_005cenumii"></a>
-<a name="index-_005cenumiii"></a>
-<a name="index-_005cenumiv"></a>
-<a name="enumerate-enumi"></a><a name="enumerate-enumii"></a><a name="enumerate-enumiii"></a><a name="enumerate-enumiv"></a><p>The <code>enumerate</code> environment uses the counters <code>\enumi</code> through
+<a name="index-_005cenumi" class="anchor"></a>
+<a name="index-_005cenumii" class="anchor"></a>
+<a name="index-_005cenumiii" class="anchor"></a>
+<a name="index-_005cenumiv" class="anchor"></a>
+<a name="enumerate-enumi" class="anchor"></a><a name="enumerate-enumii" class="anchor"></a><a name="enumerate-enumiii" class="anchor"></a><a name="enumerate-enumiv" class="anchor"></a><p>The <code>enumerate</code> environment uses the counters <code>\enumi</code> through
 <code>\enumiv</code> (see <a href="latex2e_13.html#Counters">Counters</a>).
 </p>
 <p>For other major LaTeX labeled list environments, see
@@ -673,17 +674,17 @@ parameters, including the default values, and for information about
 customizing list layout, see <a href="#list">list</a>.  The package <samp>enumitem</samp> is
 useful for customizing lists.
 </p>
-<a name="index-_005clabelenumi"></a>
-<a name="index-_005clabelenumii"></a>
-<a name="index-_005clabelenumiii"></a>
-<a name="index-_005clabelenumiv"></a>
-<a name="enumerate-labelenumi"></a><a name="enumerate-labelenumii"></a><a name="enumerate-labelenumiii"></a><a name="enumerate-labelenumiv"></a><p>To change the format of the label use <code>\renewcommand</code>
+<a name="index-_005clabelenumi" class="anchor"></a>
+<a name="index-_005clabelenumii" class="anchor"></a>
+<a name="index-_005clabelenumiii" class="anchor"></a>
+<a name="index-_005clabelenumiv" class="anchor"></a>
+<a name="enumerate-labelenumi" class="anchor"></a><a name="enumerate-labelenumii" class="anchor"></a><a name="enumerate-labelenumiii" class="anchor"></a><a name="enumerate-labelenumiv" class="anchor"></a><p>To change the format of the label use <code>\renewcommand</code>
 (see <a href="latex2e_12.html#g_t_005cnewcommand-_0026-_005crenewcommand">\newcommand &amp; \renewcommand</a>) on the commands <code>\labelenumi</code>
 through <code>\labelenumiv</code>. For instance, this first level list will be
 labelled with uppercase letters, in boldface, and without a trailing
 period.
 </p>
-<a name="index-_005cAlph-example"></a>
+<a name="index-_005cAlph-example" class="anchor"></a>
 <div class="example">
 <pre class="example">\renewcommand{\labelenumi}{\textbf{\Alph{enumi}}}
 \begin{enumerate}
@@ -696,19 +697,19 @@ period.
 </p>
 
 <hr>
-<a name="eqnarray"></a>
-<a name="eqnarray-1"></a>
+<a name="eqnarray" class="anchor"></a>
+<a name="eqnarray-1" class="anchor"></a>
 <h3 class="section">8.8 <code>eqnarray</code></h3>
 
-<a name="index-environment_002c-eqnarray"></a>
-<a name="index-eqnarray-environment"></a>
+<a name="index-environment_002c-eqnarray" class="anchor"></a>
+<a name="index-eqnarray-environment" class="anchor"></a>
         
-<a name="index-equations_002c-aligning"></a>
-<a name="index-aligning-equations"></a>
+<a name="index-equations_002c-aligning" class="anchor"></a>
+<a name="index-aligning-equations" class="anchor"></a>
 
-<a name="index-align-environment_002c-from-amsmath"></a>
-<a name="index-amsmath-package_002c-replacing-eqnarray"></a>
-<a name="index-Madsen_002c-Lars"></a>
+<a name="index-align-environment_002c-from-amsmath" class="anchor"></a>
+<a name="index-amsmath-package_002c-replacing-eqnarray" class="anchor"></a>
+<a name="index-Madsen_002c-Lars" class="anchor"></a>
 <p>The <code>eqnarray</code> environment is obsolete.  It has infelicities,
 including spacing that is inconsistent with other mathematics elements.
 (See &ldquo;Avoid eqnarray!&rdquo; by Lars Madsen
@@ -736,7 +737,7 @@ working with old documents.
 \end{eqnarray*}
 </pre></div>
 
-<a name="index-_005c_005c-_0028for-eqnarray_0029"></a>
+<a name="index-_005c_005c-_0028for-eqnarray_0029" class="anchor"></a>
 <p>Display a sequence of equations or inequalities.  The left and right
 sides are typeset in display mode, while the middle is typeset in text
 mode.
@@ -744,18 +745,18 @@ mode.
 <p>It is similar to a three-column <code>array</code> environment, with items
 within a row separated by an ampersand&nbsp;(<code>&amp;</code>), and with rows
 separated by double backslash&nbsp; <code>\\</code>).
-<a name="index-_005c_005c_002a-_0028for-eqnarray_0029"></a>
+<a name="index-_005c_005c_002a-_0028for-eqnarray_0029" class="anchor"></a>
 The starred form of line break (<code>\\*</code>) can also be used to separate
 equations, and will disallow a page break there (see <a href="latex2e_9.html#g_t_005c_005c">\\</a>).
 </p>
-<a name="index-_005cnonumber"></a>
-<a name="index-equation-numbers_002c-omitting"></a>
+<a name="index-_005cnonumber" class="anchor"></a>
+<a name="index-equation-numbers_002c-omitting" class="anchor"></a>
 <p>The unstarred form <code>eqnarray</code> places an equation number on every
 line (using the <code>equation</code> counter), unless that line contains a
 <code>\nonumber</code> command.  The starred form <code>eqnarray*</code> omits
 equation numbering, while otherwise being the same.
 </p>
-<a name="index-_005clefteqn"></a>
+<a name="index-_005clefteqn" class="anchor"></a>
 <p>The command <code>\lefteqn</code> is used for splitting long formulas across
 lines. It typesets its argument in display style flush left in a box of
 zero width.
@@ -773,15 +774,15 @@ while the third line has not entry on the left side.
 
 
 <hr>
-<a name="equation"></a>
-<a name="equation-1"></a>
+<a name="equation" class="anchor"></a>
+<a name="equation-1" class="anchor"></a>
 <h3 class="section">8.9 <code>equation</code></h3>
 
-<a name="index-environment_002c-equation"></a>
-<a name="index-equation-environment"></a>
+<a name="index-environment_002c-equation" class="anchor"></a>
+<a name="index-equation-environment" class="anchor"></a>
         
-<a name="index-equations_002c-environment-for"></a>
-<a name="index-formulas_002c-environment-for"></a>
+<a name="index-equations_002c-environment-for" class="anchor"></a>
+<a name="index-formulas_002c-environment-for" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -799,23 +800,23 @@ The equation number is generated using the <code>equation</code> counter.
 <code>\begin{equation}</code>, or LaTeX will tell you that there is a
 missing dollar sign.
 </p>
-<a name="index-package_002c-amsmath-3"></a>
-<a name="index-amsmath-package-3"></a>
+<a name="index-package_002c-amsmath-3" class="anchor"></a>
+<a name="index-amsmath-package-3" class="anchor"></a>
 
 <p>The package <samp>amsmath</samp> package has extensive displayed equation
 facilities.  New documents should include this package.
 </p>
 
 <hr>
-<a name="figure"></a>
-<a name="figure-1"></a>
+<a name="figure" class="anchor"></a>
+<a name="figure-1" class="anchor"></a>
 <h3 class="section">8.10 <code>figure</code></h3>
 
-<a name="index-environment_002c-figure"></a>
-<a name="index-figure-environment"></a>
+<a name="index-environment_002c-figure" class="anchor"></a>
+<a name="index-figure-environment" class="anchor"></a>
         
-<a name="index-inserting-figures"></a>
-<a name="index-figures_002c-inserting"></a>
+<a name="index-inserting-figures" class="anchor"></a>
+<a name="index-figures_002c-inserting" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -859,7 +860,7 @@ placing at a page bottom see the discussion of <var>placement</var> <code>b</cod
 in <a href="latex2e_5.html#Floats">Floats</a>.
 </p>
 <p>The label is optional; it is used for cross references (see <a href="latex2e_7.html#Cross-references">Cross references</a>).
-<a name="index-_005ccaption"></a>
+<a name="index-_005ccaption" class="anchor"></a>
 The optional <code>\caption</code> command specifies caption text for the
 figure.  By default it is numbered.  If <var>loftitle</var> is present, it is
 used in the list of figures instead of <var>title</var> (see <a href="latex2e_25.html#Table-of-contents-etc_002e">Table of contents etc.</a>).
@@ -880,18 +881,18 @@ end of the document, on a page of floats.
 
 
 <hr>
-<a name="filecontents"></a>
-<a name="filecontents_003a-Write-an-external-file"></a>
+<a name="filecontents" class="anchor"></a>
+<a name="filecontents_003a-Write-an-external-file" class="anchor"></a>
 <h3 class="section">8.11 <code>filecontents</code>: Write an external file</h3>
 
-<a name="index-environment_002c-filecontents"></a>
-<a name="index-filecontents-environment"></a>
+<a name="index-environment_002c-filecontents" class="anchor"></a>
+<a name="index-filecontents-environment" class="anchor"></a>
         
-<a name="index-environment_002c-filecontents_002a"></a>
-<a name="index-filecontents_002a-environment"></a>
+<a name="index-environment_002c-filecontents_002a" class="anchor"></a>
+<a name="index-filecontents_002a-environment" class="anchor"></a>
         
-<a name="index-external-files_002c-writing"></a>
-<a name="index-writing-external-files"></a>
+<a name="index-external-files_002c-writing" class="anchor"></a>
+<a name="index-writing-external-files" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -951,15 +952,15 @@ Article by \myname.
 
 
 <hr>
-<a name="flushleft"></a>
-<a name="flushleft-1"></a>
+<a name="flushleft" class="anchor"></a>
+<a name="flushleft-1" class="anchor"></a>
 <h3 class="section">8.12 <code>flushleft</code></h3>
 
-<a name="index-environment_002c-flushleft"></a>
-<a name="index-flushleft-environment"></a>
+<a name="index-environment_002c-flushleft" class="anchor"></a>
+<a name="index-flushleft-environment" class="anchor"></a>
         
-<a name="index-left_002djustifying-text_002c-environment-for"></a>
-<a name="index-ragged-right-text_002c-environment-for"></a>
+<a name="index-left_002djustifying-text_002c-environment-for" class="anchor"></a>
+<a name="index-ragged-right-text_002c-environment-for" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -971,7 +972,7 @@ Article by \myname.
 \end{flushleft}
 </pre></div>
 
-<a name="index-_005c_005c-for-flushleft"></a>
+<a name="index-_005c_005c-for-flushleft" class="anchor"></a>
 <p>An environment that creates a paragraph whose lines are flush to the
 left-hand margin, and ragged right. If you have lines that are too long
 then LaTeX will linebreak them in a way that avoids hyphenation and
@@ -996,14 +997,14 @@ flush left and ragged right.
 
 
 <hr>
-<a name="g_t_005craggedright"></a>
-<a name="g_t_005craggedright-1"></a>
+<a name="g_t_005craggedright" class="anchor"></a>
+<a name="g_t_005craggedright-1" class="anchor"></a>
 <h4 class="subsection">8.12.1 <code>\raggedright</code></h4>
 
-<a name="index-_005craggedright"></a>
-<a name="index-ragged-right-text"></a>
-<a name="index-left_002djustifying-text"></a>
-<a name="index-justification_002c-ragged-right"></a>
+<a name="index-_005craggedright" class="anchor"></a>
+<a name="index-ragged-right-text" class="anchor"></a>
+<a name="index-left_002djustifying-text" class="anchor"></a>
+<a name="index-justification_002c-ragged-right" class="anchor"></a>
 
 <p>Synopses:
 </p>
@@ -1045,15 +1046,15 @@ delimit its effect.
 
 
 <hr>
-<a name="flushright"></a>
-<a name="flushright-1"></a>
+<a name="flushright" class="anchor"></a>
+<a name="flushright-1" class="anchor"></a>
 <h3 class="section">8.13 <code>flushright</code></h3>
 
-<a name="index-environment_002c-flushright"></a>
-<a name="index-flushright-environment"></a>
+<a name="index-environment_002c-flushright" class="anchor"></a>
+<a name="index-flushright-environment" class="anchor"></a>
         
-<a name="index-ragged-left-text_002c-environment-for"></a>
-<a name="index-right_002djustifying-text_002c-environment-for"></a>
+<a name="index-ragged-left-text_002c-environment-for" class="anchor"></a>
+<a name="index-right_002djustifying-text_002c-environment-for" class="anchor"></a>
 
 <div class="example">
 <pre class="example">\begin{flushright}
@@ -1063,7 +1064,7 @@ delimit its effect.
 \end{flushright}
 </pre></div>
 
-<a name="index-_005c_005c-_0028for-flushright_0029"></a>
+<a name="index-_005c_005c-_0028for-flushright_0029" class="anchor"></a>
 <p>An environment that creates a paragraph whose lines are flush to the
 right-hand margin and ragged left. If you have lines that are too long
 to fit the margins then LaTeX will linebreak them in a way that
@@ -1076,14 +1077,14 @@ see&nbsp;<a href="#g_t_005craggedleft">\raggedleft</a>.
 
 
 <hr>
-<a name="g_t_005craggedleft"></a>
-<a name="g_t_005craggedleft-1"></a>
+<a name="g_t_005craggedleft" class="anchor"></a>
+<a name="g_t_005craggedleft-1" class="anchor"></a>
 <h4 class="subsection">8.13.1 <code>\raggedleft</code></h4>
 
-<a name="index-_005craggedleft"></a>
-<a name="index-ragged-left-text"></a>
-<a name="index-justification_002c-ragged-left"></a>
-<a name="index-right_002djustifying-text"></a>
+<a name="index-_005craggedleft" class="anchor"></a>
+<a name="index-ragged-left-text" class="anchor"></a>
+<a name="index-justification_002c-ragged-left" class="anchor"></a>
+<a name="index-right_002djustifying-text" class="anchor"></a>
 
 <p>Synopses:
 </p>
@@ -1114,18 +1115,18 @@ command that ends the paragraph unit.
 </p>
 
 <hr>
-<a name="itemize"></a>
-<a name="itemize-1"></a>
+<a name="itemize" class="anchor"></a>
+<a name="itemize-1" class="anchor"></a>
 <h3 class="section">8.14 <code>itemize</code></h3>
 
-<a name="index-environment_002c-itemize"></a>
-<a name="index-itemize-environment"></a>
+<a name="index-environment_002c-itemize" class="anchor"></a>
+<a name="index-itemize-environment" class="anchor"></a>
         
-<a name="index-_005citem-2"></a>
-<a name="index-lists-of-items"></a>
-<a name="index-unordered-lists"></a>
-<a name="index-bulleted-lists"></a>
-<a name="index-bullet-lists"></a>
+<a name="index-_005citem-2" class="anchor"></a>
+<a name="index-lists-of-items" class="anchor"></a>
+<a name="index-unordered-lists" class="anchor"></a>
+<a name="index-bulleted-lists" class="anchor"></a>
+<a name="index-bullet-lists" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -1153,7 +1154,7 @@ LaTeX error &lsquo;<samp>Something's wrong--perhaps a missing \item</samp>&rsquo
 <p>As a top-level list each label would come out as a bullet, &bull;.
 The format of the labeling depends on the nesting level; see below.
 </p>
-<a name="index-_005citem-3"></a>
+<a name="index-_005citem-3" class="anchor"></a>
 <p>Start list items with the <code>\item</code> command (see <a href="#g_t_005citem">\item</a>).  If you
 give <code>\item</code> an optional argument by following it with square
 brackets, as in <code>\item[Optional label]</code>, then by default it will
@@ -1162,11 +1163,11 @@ margin.  For labels that are flush left see the <a href="#description">descripti
 environment. Following the <code>\item</code> is optional text, which may
 contain multiple paragraphs.
 </p>
-<a name="index-_005clabelitemi"></a>
-<a name="index-_005clabelitemii"></a>
-<a name="index-_005clabelitemiii"></a>
-<a name="index-_005clabelitemiv"></a>
-<a name="itemize-labelitemi"></a><a name="itemize-labelitemii"></a><a name="itemize-labelitemiii"></a><a name="itemize-labelitemiv"></a><p>Itemized lists can be nested within one another, up to four levels deep.
+<a name="index-_005clabelitemi" class="anchor"></a>
+<a name="index-_005clabelitemii" class="anchor"></a>
+<a name="index-_005clabelitemiii" class="anchor"></a>
+<a name="index-_005clabelitemiv" class="anchor"></a>
+<a name="itemize-labelitemi" class="anchor"></a><a name="itemize-labelitemii" class="anchor"></a><a name="itemize-labelitemiii" class="anchor"></a><a name="itemize-labelitemiv" class="anchor"></a><p>Itemized lists can be nested within one another, up to four levels deep.
 They can also be nested within other paragraph-making environments, such
 as <code>enumerate</code> (see <a href="#enumerate">enumerate</a>).  The <code>itemize</code> environment
 uses the commands <code>\labelitemi</code> through <code>\labelitemiv</code> to
@@ -1188,14 +1189,14 @@ the first level use diamonds.
 <pre class="example">\renewcommand{\labelitemi}{$\diamond$}
 </pre></div>
 
-<a name="index-_005cleftmargin"></a>
-<a name="index-_005cleftmargini"></a>
-<a name="index-_005cleftmarginii"></a>
-<a name="index-_005cleftmarginiii"></a>
-<a name="index-_005cleftmarginiv"></a>
-<a name="index-_005cleftmarginv"></a>
-<a name="index-_005cleftmarginvi"></a>
-<a name="itemize-leftmargin"></a><a name="itemize-leftmargini"></a><a name="itemize-leftmarginii"></a><a name="itemize-leftmarginiii"></a><a name="itemize-leftmarginiv"></a><a name="itemize-leftmarginv"></a><a name="itemize-leftmarginvi"></a><p>The distance between the left margin of the enclosing environment and
+<a name="index-_005cleftmargin" class="anchor"></a>
+<a name="index-_005cleftmargini" class="anchor"></a>
+<a name="index-_005cleftmarginii" class="anchor"></a>
+<a name="index-_005cleftmarginiii" class="anchor"></a>
+<a name="index-_005cleftmarginiv" class="anchor"></a>
+<a name="index-_005cleftmarginv" class="anchor"></a>
+<a name="index-_005cleftmarginvi" class="anchor"></a>
+<a name="itemize-leftmargin" class="anchor"></a><a name="itemize-leftmargini" class="anchor"></a><a name="itemize-leftmarginii" class="anchor"></a><a name="itemize-leftmarginiii" class="anchor"></a><a name="itemize-leftmarginiv" class="anchor"></a><a name="itemize-leftmarginv" class="anchor"></a><a name="itemize-leftmarginvi" class="anchor"></a><p>The distance between the left margin of the enclosing environment and
 the left margin of the <code>itemize</code> list is determined by the
 parameters <code>\leftmargini</code> through <code>\leftmarginvi</code>.  (Note the
 convention of using lowercase roman numerals a the end of the command
@@ -1217,7 +1218,7 @@ lists.
 <pre class="example">\setlength{\leftmargini}{1.25em} % default 2.5em
 </pre></div>
 
-<a name="index-_005cparskip-example"></a>
+<a name="index-_005cparskip-example" class="anchor"></a>
 <p>Especially for lists with short items, it may be desirable to elide
 space between items.  Here is an example defining an <code>itemize*</code>
 environment with no extra spacing between items, or between paragraphs
@@ -1235,26 +1236,26 @@ see <a href="latex2e_15.html#g_t_005cparindent-_0026-_005cparskip">\parindent &a
 
 
 <hr>
-<a name="letter"></a>
-<a name="letter-environment_003a-writing-letters"></a>
+<a name="letter" class="anchor"></a>
+<a name="letter-environment_003a-writing-letters" class="anchor"></a>
 <h3 class="section">8.15 <code>letter</code> environment: writing letters</h3>
 
-<a name="index-environment_002c-letter"></a>
-<a name="index-letter-environment"></a>
+<a name="index-environment_002c-letter" class="anchor"></a>
+<a name="index-letter-environment" class="anchor"></a>
         
 
 <p>This environment is used for creating letters.  See <a href="latex2e_26.html#Letters">Letters</a>.
 </p>
 
 <hr>
-<a name="list"></a>
-<a name="list-1"></a>
+<a name="list" class="anchor"></a>
+<a name="list-1" class="anchor"></a>
 <h3 class="section">8.16 <code>list</code></h3>
 
-<a name="index-environment_002c-list"></a>
-<a name="index-list-environment"></a>
+<a name="index-environment_002c-list" class="anchor"></a>
+<a name="index-list-environment" class="anchor"></a>
         
-<a name="index-lists-of-items_002c-generic"></a>
+<a name="index-lists-of-items_002c-generic" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -1316,8 +1317,8 @@ counter will be reset to zero each time LaTeX enters the environment,
 and the counter is incremented by one each time LaTeX encounters an
 <code>\item</code> that does not have an optional argument.
 </p>
-<a name="index-_005cmakelabel"></a>
-<a name="list-makelabel"></a><p>Another command that can go in <var>spacing</var> is
+<a name="index-_005cmakelabel" class="anchor"></a>
+<a name="list-makelabel" class="anchor"></a><p>Another command that can go in <var>spacing</var> is
 <code>\makelabel</code>, which constructs the label box.  By default it puts
 the contents flush right.  Its only argument is the label, which it
 typesets in LR mode (see <a href="latex2e_17.html#Modes">Modes</a>). One example of changing its
@@ -1343,16 +1344,16 @@ For some effects these lengths should be zero or negative.
 </p>
 <dl compact="compact">
 <dt><code>\itemindent</code>
-<a name="index-_005citemindent"></a>
+<a name="index-_005citemindent" class="anchor"></a>
 </dt>
-<dd><a name="list-itemindent"></a><p>Extra horizontal space indentation, beyond <code>leftmargin</code>, of the
+<dd><a name="list-itemindent" class="anchor"></a><p>Extra horizontal space indentation, beyond <code>leftmargin</code>, of the
 first line each item.  Its default value is <code>0pt</code>.
 </p>
 </dd>
 <dt><code>\itemsep</code>
-<a name="index-_005citemsep"></a>
+<a name="index-_005citemsep" class="anchor"></a>
 </dt>
-<dd><a name="list-itemsep"></a><p>Vertical space between items, beyond the <code>\parsep</code>.  The defaults
+<dd><a name="list-itemsep" class="anchor"></a><p>Vertical space between items, beyond the <code>\parsep</code>.  The defaults
 for the first three levels in LaTeX&rsquo;s &lsquo;<samp>article</samp>&rsquo;, &lsquo;<samp>book</samp>&rsquo;,
 and &lsquo;<samp>report</samp>&rsquo; classes at 10 point size are: <code>4pt plus2pt
 minus1pt</code>, <code>\parsep</code> (that is, <code>2pt plus1pt minus1pt</code>), and
@@ -1365,17 +1366,17 @@ minus1pt</code>, <code>\parsep</code> (that is, <code>2.5pt plus1pt minus1pt</co
 </p>
 </dd>
 <dt><code>\labelsep</code>
-<a name="index-_005clabelsep"></a>
+<a name="index-_005clabelsep" class="anchor"></a>
 </dt>
-<dd><a name="list-labelsep"></a><p>Horizontal space between the label and text of an item.
+<dd><a name="list-labelsep" class="anchor"></a><p>Horizontal space between the label and text of an item.
 The default for LaTeX&rsquo;s &lsquo;<samp>article</samp>&rsquo;, &lsquo;<samp>book</samp>&rsquo;,
 and &lsquo;<samp>report</samp>&rsquo; classes is <code>0.5em</code>.
 </p>
 </dd>
 <dt><code>\labelwidth</code>
-<a name="index-_005clabelwidth"></a>
+<a name="index-_005clabelwidth" class="anchor"></a>
 </dt>
-<dd><a name="list-labelwidth"></a><p>Horizontal width.  The box containing the label is nominally this wide.
+<dd><a name="list-labelwidth" class="anchor"></a><p>Horizontal width.  The box containing the label is nominally this wide.
 If <code>\makelabel</code> returns text that is wider than this then the first
 line of the item will be indented to make room for this extra material.
 If <code>\makelabel</code> returns text of width less than or equal to
@@ -1397,9 +1398,9 @@ environment.
 </p>
 </dd>
 <dt><code>\leftmargin</code>
-<a name="index-_005cleftmargin-1"></a>
+<a name="index-_005cleftmargin-1" class="anchor"></a>
 </dt>
-<dd><a name="list-leftmargin"></a><p>Horizontal space between the left margin of the enclosing environment
+<dd><a name="list-leftmargin" class="anchor"></a><p>Horizontal space between the left margin of the enclosing environment
 (or the left margin of the page if this is a top-level list), and the
 left margin of this list.  It must be non-negative.
 </p>
@@ -1417,18 +1418,18 @@ error message &lsquo;<samp>Too deeply nested</samp>&rsquo;.)
 </p>
 </dd>
 <dt><code>\listparindent</code>
-<a name="index-_005clistparindent"></a>
+<a name="index-_005clistparindent" class="anchor"></a>
 </dt>
-<dd><a name="list-listparindent"></a><p>Horizontal space of additional line indentation, beyond
+<dd><a name="list-listparindent" class="anchor"></a><p>Horizontal space of additional line indentation, beyond
 <code>\leftmargin</code>, for second and subsequent paragraphs within a list
 item.  A negative value makes this an &ldquo;outdent&rdquo;.  Its default value
 is <code>0pt</code>.
 </p>
 </dd>
 <dt><code>\parsep</code>
-<a name="index-_005cparsep"></a>
+<a name="index-_005cparsep" class="anchor"></a>
 </dt>
-<dd><a name="list-parsep"></a><p>Vertical space between paragraphs within an item.  In the &lsquo;<samp>book</samp>&rsquo;
+<dd><a name="list-parsep" class="anchor"></a><p>Vertical space between paragraphs within an item.  In the &lsquo;<samp>book</samp>&rsquo;
 and &lsquo;<samp>article</samp>&rsquo; classes The defaults for the first three levels in
 LaTeX&rsquo;s &lsquo;<samp>article</samp>&rsquo;, &lsquo;<samp>book</samp>&rsquo;, and &lsquo;<samp>report</samp>&rsquo; classes at 10
 point size are: <code>4pt plus2pt minus1pt</code>, <code>2pt plus1pt
@@ -1439,9 +1440,9 @@ minus1pt</code>, <code>2.5pt plus1pt minus1pt</code>, and <code>0pt</code>.
 </p>
 </dd>
 <dt><code>\partopsep</code>
-<a name="index-_005cpartopsep"></a>
+<a name="index-_005cpartopsep" class="anchor"></a>
 </dt>
-<dd><a name="list-partopsep"></a><p>Vertical space added, beyond <code>\topsep</code>+<code>\parskip</code>, to the top
+<dd><a name="list-partopsep" class="anchor"></a><p>Vertical space added, beyond <code>\topsep</code>+<code>\parskip</code>, to the top
 and bottom of the entire environment if the list instance is preceded by
 a blank line.  (A blank line in the LaTeX source before the list
 changes spacing at both the top and bottom of the list; whether the line
@@ -1457,17 +1458,17 @@ minus2pt</code>, and <code>1pt plus0pt minus1pt</code>.
 </p>
 </dd>
 <dt><code>\rightmargin</code>
-<a name="index-_005crightmargin"></a>
+<a name="index-_005crightmargin" class="anchor"></a>
 </dt>
-<dd><a name="list-rightmargin"></a><p>Horizontal space between the right margin of the list and the right
+<dd><a name="list-rightmargin" class="anchor"></a><p>Horizontal space between the right margin of the list and the right
 margin of the enclosing environment.  Its default value is <code>0pt</code>.
 It must be non-negative.
 </p>
 </dd>
 <dt><code>\topsep</code>
-<a name="index-_005ctopsep"></a>
+<a name="index-_005ctopsep" class="anchor"></a>
 </dt>
-<dd><a name="list-topsep"></a><p>Vertical space added to both the top and bottom of the list, in addition
+<dd><a name="list-topsep" class="anchor"></a><p>Vertical space added to both the top and bottom of the list, in addition
 to <code>\parskip</code> (see <a href="latex2e_15.html#g_t_005cparindent-_0026-_005cparskip">\parindent &amp; \parskip</a>).  The defaults for
 the first three levels in LaTeX&rsquo;s &lsquo;<samp>article</samp>&rsquo;, &lsquo;<samp>book</samp>&rsquo;, and
 &lsquo;<samp>report</samp>&rsquo; classes at 10 point size are: <code>8pt plus2pt minus4pt</code>,
@@ -1554,27 +1555,27 @@ page break.
 </p>
 <dl compact="compact">
 <dt><code>\@beginparpenalty</code>
-<a name="index-_005c_0040beginparpenalty"></a>
+<a name="index-_005c_0040beginparpenalty" class="anchor"></a>
 </dt>
-<dd><a name="list-beginparpenalty"></a><p>The page breaking penalty for breaking before the list (default <code>-51</code>).
+<dd><a name="list-beginparpenalty" class="anchor"></a><p>The page breaking penalty for breaking before the list (default <code>-51</code>).
 </p>
 </dd>
 <dt><code>\@itempenalty</code>
-<a name="index-_005c_0040itempenalty"></a>
+<a name="index-_005c_0040itempenalty" class="anchor"></a>
 </dt>
-<dd><a name="list-itempenalty"></a><p>The page breaking penalty for breaking before a list item (default <code>-51</code>).
+<dd><a name="list-itempenalty" class="anchor"></a><p>The page breaking penalty for breaking before a list item (default <code>-51</code>).
 </p>
 </dd>
 <dt><code>\@endparpenalty</code>
-<a name="index-_005c_0040endparpenalty"></a>
+<a name="index-_005c_0040endparpenalty" class="anchor"></a>
 </dt>
-<dd><a name="list-endparpenalty"></a><p>The page breaking penalty for breaking after a list (default <code>-51</code>).
+<dd><a name="list-endparpenalty" class="anchor"></a><p>The page breaking penalty for breaking after a list (default <code>-51</code>).
 </p>
 </dd>
 </dl>
 
-<a name="index-package_002c-enumitem"></a>
-<a name="index-enumitem-package"></a>
+<a name="index-package_002c-enumitem" class="anchor"></a>
+<a name="index-enumitem-package" class="anchor"></a>
 
 <p>The package <code>enumitem</code> is useful for customizing lists.
 </p>
@@ -1603,8 +1604,8 @@ See <a href="latex2e_13.html#g_t_005cusecounter">\usecounter</a>.
 
 
 <hr>
-<a name="g_t_005citem"></a>
-<a name="g_t_005citem_003a-An-entry-in-a-list"></a>
+<a name="g_t_005citem" class="anchor"></a>
+<a name="g_t_005citem_003a-An-entry-in-a-list" class="anchor"></a>
 <h4 class="subsection">8.16.1 <code>\item</code>: An entry in a list</h4>
 
 <p>Synopsis:
@@ -1650,8 +1651,8 @@ labelled&nbsp;&lsquo;<samp>3.</samp>&rsquo;.
 </p>   
 
 <hr>
-<a name="trivlist"></a>
-<a name="trivlist_003a-A-restricted-form-of-list"></a>
+<a name="trivlist" class="anchor"></a>
+<a name="trivlist_003a-A-restricted-form-of-list" class="anchor"></a>
 <h4 class="subsection">8.16.2 <code>trivlist</code>: A restricted form of <code>list</code></h4>
 
 <p>Synopsis:
@@ -1699,14 +1700,14 @@ default) they have no paragraph indent and are vertically separated.
 
 
 <hr>
-<a name="math"></a>
-<a name="math-1"></a>
+<a name="math" class="anchor"></a>
+<a name="math-1" class="anchor"></a>
 <h3 class="section">8.17 <code>math</code></h3>
 
-<a name="index-environment_002c-math"></a>
-<a name="index-math-environment"></a>
+<a name="index-environment_002c-math" class="anchor"></a>
+<a name="index-math-environment" class="anchor"></a>
         
-<a name="index-in_002dline-formulas"></a>
+<a name="index-in_002dline-formulas" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -1722,14 +1723,14 @@ See <a href="latex2e_16.html#Math-formulas">Math formulas</a>.
 </p>
 
 <hr>
-<a name="minipage"></a>
-<a name="minipage-1"></a>
+<a name="minipage" class="anchor"></a>
+<a name="minipage-1" class="anchor"></a>
 <h3 class="section">8.18 <code>minipage</code></h3>
 
-<a name="index-environment_002c-minipage"></a>
-<a name="index-minipage-environment"></a>
+<a name="index-environment_002c-minipage" class="anchor"></a>
+<a name="index-minipage-environment" class="anchor"></a>
         
-<a name="index-minipage_002c-creating-a"></a>
+<a name="index-minipage_002c-creating-a" class="anchor"></a>
 
 <p>Synopses:
 </p>
@@ -1854,15 +1855,15 @@ in place of <code>b</code>.
 Text after  
 </pre></div>
 
-<a name="index-indentation-of-paragraphs_002c-in-minipage"></a>
-<a name="index-paragraph-indentation_002c-in-minipage"></a>
-<a name="index-_005cparindent"></a>
+<a name="index-indentation-of-paragraphs_002c-in-minipage" class="anchor"></a>
+<a name="index-paragraph-indentation_002c-in-minipage" class="anchor"></a>
+<a name="index-_005cparindent" class="anchor"></a>
 <p>By default paragraphs are not indented in a <code>minipage</code>.  Change
 that with a command such as <code>\setlength{\parindent}{1pc}</code> at
 the start of <var>contents</var>.
 </p>
-<a name="index-footnotes-in-figures"></a>
-<a name="index-figures_002c-footnotes-in"></a>
+<a name="index-footnotes-in-figures" class="anchor"></a>
+<a name="index-figures_002c-footnotes-in" class="anchor"></a>
 <p>Footnotes in a <code>minipage</code> environment are handled in a way that is
 particularly useful for putting footnotes in figures or tables.  A
 <code>\footnote</code> or <code>\footnotetext</code> command puts the footnote at
@@ -1916,15 +1917,15 @@ are vertically centered.
 
 
 <hr>
-<a name="picture"></a>
-<a name="picture-1"></a>
+<a name="picture" class="anchor"></a>
+<a name="picture-1" class="anchor"></a>
 <h3 class="section">8.19 <code>picture</code></h3>
 
-<a name="index-environment_002c-picture"></a>
-<a name="index-picture-environment"></a>
+<a name="index-environment_002c-picture" class="anchor"></a>
+<a name="index-picture-environment" class="anchor"></a>
         
-<a name="index-creating-pictures"></a>
-<a name="index-pictures_002c-creating"></a>
+<a name="index-creating-pictures" class="anchor"></a>
+<a name="index-pictures_002c-creating" class="anchor"></a>
 
 <p>Synopses: 
 </p><div class="example">
@@ -1949,7 +1950,7 @@ or <code>Asymptote</code>.  These are not covered in this document; see CTAN.
 </p>
 <p>This shows the parallelogram law for adding vectors.
 </p>
-<a name="index-_005cunitlength"></a>
+<a name="index-_005cunitlength" class="anchor"></a>
 <div class="example">
 <pre class="example">\setlength{\unitlength}{1cm}
 \begin{picture}(6,6)      % picture box will be 6cm wide by 6cm tall
@@ -2011,7 +2012,7 @@ the origin at the lower-left corner.  If you then want to modify your
 picture by shifting everything, you can just add the appropriate
 optional argument.
 </p>
-<a name="index-position_002c-in-picture"></a>
+<a name="index-position_002c-in-picture" class="anchor"></a>
 <p>Each <var>picture command</var> tells LaTeX where to put something by
 naming its position.  A <em>position</em> is a pair such as <code>(2.4,-5)</code>
 giving the x- and y-coordinates.  A <em>coordinate</em> is a not a length,
@@ -2043,7 +2044,7 @@ often used is <code>\put</code>. This
 <p>places the object with its reference point at coordinates
 <em>(11.3,-0.3)</em>.  The reference points for various objects will be
 described below.
-<a name="index-LR-box"></a>
+<a name="index-LR-box" class="anchor"></a>
 The <code>\put</code> command creates an <em>LR box</em> (see <a href="latex2e_17.html#Modes">Modes</a>).
 Anything that can go in an <code>\mbox</code> (see <a href="latex2e_20.html#g_t_005cmbox-_0026-_005cmakebox">\mbox &amp; \makebox</a>) can
 go in the text argument of the <code>\put</code> command.  The reference point
@@ -2085,11 +2086,11 @@ that curve.
 
 
 <hr>
-<a name="g_t_005cput"></a>
-<a name="g_t_005cput-1"></a>
+<a name="g_t_005cput" class="anchor"></a>
+<a name="g_t_005cput-1" class="anchor"></a>
 <h4 class="subsection">8.19.1 <code>\put</code></h4>
 
-<a name="index-_005cput"></a>
+<a name="index-_005cput" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2113,11 +2114,11 @@ text, at the bottom left of the &lsquo;<samp>A</samp>&rsquo;.
 </p>
 
 <hr>
-<a name="g_t_005cmultiput"></a>
-<a name="g_t_005cmultiput-1"></a>
+<a name="g_t_005cmultiput" class="anchor"></a>
+<a name="g_t_005cmultiput-1" class="anchor"></a>
 <h4 class="subsection">8.19.2 <code>\multiput</code></h4>
 
-<a name="index-_005cmultiput"></a>
+<a name="index-_005cmultiput" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2145,11 +2146,11 @@ text, at the bottom left of the &lsquo;<samp>A</samp>&rsquo;.
 
 
 <hr>
-<a name="g_t_005cqbezier"></a>
-<a name="g_t_005cqbezier-1"></a>
+<a name="g_t_005cqbezier" class="anchor"></a>
+<a name="g_t_005cqbezier-1" class="anchor"></a>
 <h4 class="subsection">8.19.3 <code>\qbezier</code></h4>
 
-<a name="index-_005cqbezier"></a>
+<a name="index-_005cqbezier" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2181,11 +2182,11 @@ maximum number of points is <code>\qbeziermax</code> (change this value with
 </p>
 
 <hr>
-<a name="g_t_005cgraphpaper"></a>
-<a name="g_t_005cgraphpaper-1"></a>
+<a name="g_t_005cgraphpaper" class="anchor"></a>
+<a name="g_t_005cgraphpaper-1" class="anchor"></a>
 <h4 class="subsection">8.19.4 <code>\graphpaper</code></h4>
 
-<a name="index-_005cgraphpaper"></a>
+<a name="index-_005cgraphpaper" class="anchor"></a>
 <p>Synopsis:
 </p>
 <div class="example">
@@ -2213,11 +2214,11 @@ All arguments must be positive integers.
 </p>
 
 <hr>
-<a name="g_t_005cline"></a>
-<a name="g_t_005cline-1"></a>
+<a name="g_t_005cline" class="anchor"></a>
+<a name="g_t_005cline-1" class="anchor"></a>
 <h4 class="subsection">8.19.5 <code>\line</code></h4>
 
-<a name="index-_005cline"></a>
+<a name="index-_005cline" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2256,22 +2257,22 @@ then the line&rsquo;s ending point has a second coordinate that is less than
 <p>If <var>travel</var> is negative then you get <code>LaTeX Error: Bad \line or
 \vector argument.</code>
 </p>
-<a name="index-pict2e-package"></a>
-<a name="index-graphics-packages"></a>
-<a name="index-package_002c-pict2e"></a>
-<a name="index-pict2e-package-1"></a>
+<a name="index-pict2e-package" class="anchor"></a>
+<a name="index-graphics-packages" class="anchor"></a>
+<a name="index-package_002c-pict2e" class="anchor"></a>
+<a name="index-pict2e-package-1" class="anchor"></a>
 
-<a name="index-package_002c-TikZ"></a>
-<a name="index-TikZ-package"></a>
+<a name="index-package_002c-TikZ" class="anchor"></a>
+<a name="index-TikZ-package" class="anchor"></a>
 
-<a name="index-package_002c-PSTricks"></a>
-<a name="index-PSTricks-package"></a>
+<a name="index-package_002c-PSTricks" class="anchor"></a>
+<a name="index-PSTricks-package" class="anchor"></a>
 
-<a name="index-package_002c-MetaPost"></a>
-<a name="index-MetaPost-package"></a>
+<a name="index-package_002c-MetaPost" class="anchor"></a>
+<a name="index-MetaPost-package" class="anchor"></a>
 
-<a name="index-package_002c-Asymptote"></a>
-<a name="index-Asymptote-package"></a>
+<a name="index-package_002c-Asymptote" class="anchor"></a>
+<a name="index-Asymptote-package" class="anchor"></a>
 
 <p>Standard LaTeX can only draw lines with a limited range of slopes
 because these lines are made by putting together line segments from
@@ -2287,11 +2288,11 @@ is to use a full-featured graphics system such as <samp>TikZ</samp>, or
 </p>
 
 <hr>
-<a name="g_t_005clinethickness"></a>
-<a name="g_t_005clinethickness-1"></a>
+<a name="g_t_005clinethickness" class="anchor"></a>
+<a name="g_t_005clinethickness-1" class="anchor"></a>
 <h4 class="subsection">8.19.6 <code>\linethickness</code></h4>
 
-<a name="index-_005clinethickness"></a>
+<a name="index-_005clinethickness" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2307,11 +2308,11 @@ lines, circles, or ovals.
 </p>
 
 <hr>
-<a name="g_t_005cthinlines"></a>
-<a name="g_t_005cthinlines-1"></a>
+<a name="g_t_005cthinlines" class="anchor"></a>
+<a name="g_t_005cthinlines-1" class="anchor"></a>
 <h4 class="subsection">8.19.7 <code>\thinlines</code></h4>
 
-<a name="index-_005cthinlines"></a>
+<a name="index-_005cthinlines" class="anchor"></a>
 
 <p>Declaration to set the thickness of subsequent lines, circles, and ovals
 in a picture environment to be 0.4pt.  This is the default
@@ -2320,11 +2321,11 @@ changed with either <a href="#g_t_005clinethickness">\linethickness</a> or <a hr
 </p>
 
 <hr>
-<a name="g_t_005cthicklines"></a>
-<a name="g_t_005cthicklines-1"></a>
+<a name="g_t_005cthicklines" class="anchor"></a>
+<a name="g_t_005cthicklines-1" class="anchor"></a>
 <h4 class="subsection">8.19.8 <code>\thicklines</code></h4>
 
-<a name="index-_005cthicklines"></a>
+<a name="index-_005cthicklines" class="anchor"></a>
 
 <p>Declaration to set the thickness of subsequent lines, circles, and ovals
 in a picture environment to be 0.8pt.  See also
@@ -2333,11 +2334,11 @@ in the Trapezoidal Rule example of <a href="#picture">picture</a>.
 </p>
 
 <hr>
-<a name="g_t_005ccircle"></a>
-<a name="g_t_005ccircle-1"></a>
+<a name="g_t_005ccircle" class="anchor"></a>
+<a name="g_t_005ccircle-1" class="anchor"></a>
 <h4 class="subsection">8.19.9 <code>\circle</code></h4>
 
-<a name="index-_005ccircle"></a>
+<a name="index-_005ccircle" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2361,11 +2362,11 @@ integers from 1 to 15.
 </p>
 
 <hr>
-<a name="g_t_005coval"></a>
-<a name="g_t_005coval-1"></a>
+<a name="g_t_005coval" class="anchor"></a>
+<a name="g_t_005coval-1" class="anchor"></a>
 <h4 class="subsection">8.19.10 <code>\oval</code></h4>
 
-<a name="index-_005coval"></a>
+<a name="index-_005coval" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2412,11 +2413,11 @@ boxes with a small amount of corner rounding.
 </p>
 
 <hr>
-<a name="g_t_005cshortstack"></a>
-<a name="g_t_005cshortstack-1"></a>
+<a name="g_t_005cshortstack" class="anchor"></a>
+<a name="g_t_005cshortstack-1" class="anchor"></a>
 <h4 class="subsection">8.19.11 <code>\shortstack</code></h4>
 
-<a name="index-_005cshortstack"></a>
+<a name="index-_005cshortstack" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2453,7 +2454,7 @@ the left of the <em>y</em>&nbsp;axis.
 </p></dd>
 </dl>
 
-<a name="index-_005c_005c-_0028for-_005cshortstack-objects_0029"></a>
+<a name="index-_005c_005c-_0028for-_005cshortstack-objects_0029" class="anchor"></a>
 <p>Separate objects into lines with <code>\\</code>.  These stacks are short in
 that, unlike in a <code>tabular</code> or <code>array</code> environment, here the
 rows are not spaced out to be of even heights.  Thus, in
@@ -2469,11 +2470,11 @@ argument <code>\shortstack{X\\[2pt] o\\o\\X}</code>.
 </p>
 
 <hr>
-<a name="g_t_005cvector"></a>
-<a name="g_t_005cvector-1"></a>
+<a name="g_t_005cvector" class="anchor"></a>
+<a name="g_t_005cvector-1" class="anchor"></a>
 <h4 class="subsection">8.19.12 <code>\vector</code></h4>
 
-<a name="index-_005cvector"></a>
+<a name="index-_005cvector" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2499,11 +2500,11 @@ not (if you use the latter then you get a sequence of arrowheads).
 </p>
 
 <hr>
-<a name="g_t_005cmakebox-_0028picture_0029"></a>
-<a name="g_t_005cmakebox-_0028picture_0029-1"></a>
+<a name="g_t_005cmakebox-_0028picture_0029" class="anchor"></a>
+<a name="g_t_005cmakebox-_0028picture_0029-1" class="anchor"></a>
 <h4 class="subsection">8.19.13 <code>\makebox</code> (picture)</h4>
 
-<a name="index-_005cmakebox-_0028for-picture_0029"></a>
+<a name="index-_005cmakebox-_0028for-picture_0029" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2552,11 +2553,11 @@ two of these letters.
 
 
 <hr>
-<a name="g_t_005cframebox-_0028picture_0029"></a>
-<a name="g_t_005cframebox-_0028picture_0029-1"></a>
+<a name="g_t_005cframebox-_0028picture_0029" class="anchor"></a>
+<a name="g_t_005cframebox-_0028picture_0029-1" class="anchor"></a>
 <h4 class="subsection">8.19.14 <code>\framebox</code> (picture)</h4>
 
-<a name="index-_005cframebox"></a>
+<a name="index-_005cframebox" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2588,8 +2589,8 @@ the text in the center.
 <var>text</var>; see <a href="#g_t_005cmakebox-_0028picture_0029">\makebox (picture)</a> for the values that it can
 take.
 </p>
-<a name="index-_005cfboxrule-1"></a>
-<a name="index-_005cfboxsep-1"></a>
+<a name="index-_005cfboxrule-1" class="anchor"></a>
+<a name="index-_005cfboxsep-1" class="anchor"></a>
 <p>The rule has thickness <code>\fboxrule</code> and there is a blank space
 <code>\fboxsep</code> between the frame and the contents of the box.
 </p>
@@ -2599,11 +2600,11 @@ determined in some other way then either use <code>\fbox</code> (see <a href="la
 </p>
 
 <hr>
-<a name="g_t_005cframe"></a>
-<a name="g_t_005cframe-1"></a>
+<a name="g_t_005cframe" class="anchor"></a>
+<a name="g_t_005cframe-1" class="anchor"></a>
 <h4 class="subsection">8.19.15 <code>\frame</code></h4>
 
-<a name="index-_005cframe"></a>
+<a name="index-_005cframe" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2618,11 +2619,11 @@ between the frame and the object.  It is fragile (see <a href="latex2e_12.html#g
 </p>
 
 <hr>
-<a name="g_t_005cdashbox"></a>
-<a name="g_t_005cdashbox-1"></a>
+<a name="g_t_005cdashbox" class="anchor"></a>
+<a name="g_t_005cdashbox-1" class="anchor"></a>
 <h4 class="subsection">8.19.16 <code>\dashbox</code></h4>
 
-<a name="index-_005cdashbox"></a>
+<a name="index-_005cdashbox" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2658,22 +2659,22 @@ take.
 </p>
 
 <hr>
-<a name="quotation-_0026-quote"></a>
-<a name="quotation-_0026-quote-1"></a>
+<a name="quotation-_0026-quote" class="anchor"></a>
+<a name="quotation-_0026-quote-1" class="anchor"></a>
 <h3 class="section">8.20 <code>quotation</code> &amp; <code>quote</code></h3>
 
-<a name="index-environment_002c-quotation"></a>
-<a name="index-quotation-environment"></a>
+<a name="index-environment_002c-quotation" class="anchor"></a>
+<a name="index-quotation-environment" class="anchor"></a>
         
-<a name="index-quoted-text-with-paragraph-indentation_002c-displaying"></a>
-<a name="index-displaying-quoted-text-with-paragraph-indentation"></a>
-<a name="index-paragraph-indentations-in-quoted-text"></a>
-<a name="index-environment_002c-quote"></a>
-<a name="index-quote-environment"></a>
+<a name="index-quoted-text-with-paragraph-indentation_002c-displaying" class="anchor"></a>
+<a name="index-displaying-quoted-text-with-paragraph-indentation" class="anchor"></a>
+<a name="index-paragraph-indentations-in-quoted-text" class="anchor"></a>
+<a name="index-environment_002c-quote" class="anchor"></a>
+<a name="index-quote-environment" class="anchor"></a>
         
-<a name="index-quoted-text-without-paragraph-indentation_002c-displaying"></a>
-<a name="index-displaying-quoted-text-without-paragraph-indentation"></a>
-<a name="index-paragraph-indentations-in-quoted-text_002c-omitting"></a>
+<a name="index-quoted-text-without-paragraph-indentation_002c-displaying" class="anchor"></a>
+<a name="index-displaying-quoted-text-without-paragraph-indentation" class="anchor"></a>
+<a name="index-paragraph-indentations-in-quoted-text_002c-omitting" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2710,16 +2711,16 @@ between paragraphs (it is the rubber length <code>\parsep</code>).
 
 
 <hr>
-<a name="tabbing"></a>
-<a name="tabbing-1"></a>
+<a name="tabbing" class="anchor"></a>
+<a name="tabbing-1" class="anchor"></a>
 <h3 class="section">8.21 <code>tabbing</code></h3>
 
-<a name="index-environment_002c-tabbing"></a>
-<a name="index-tabbing-environment"></a>
+<a name="index-environment_002c-tabbing" class="anchor"></a>
+<a name="index-tabbing-environment" class="anchor"></a>
         
-<a name="index-tab-stops_002c-using"></a>
-<a name="index-lining-text-up-using-tab-stops"></a>
-<a name="index-alignment-via-tabbing"></a>
+<a name="index-tab-stops_002c-using" class="anchor"></a>
+<a name="index-lining-text-up-using-tab-stops" class="anchor"></a>
+<a name="index-alignment-via-tabbing" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2767,7 +2768,7 @@ of a tabbed row.  The right margin of the <code>tabbing</code> environment is
 the end of line, so that the width of the environment is
 <code>\linewidth</code>.
 </p>
-<a name="index-row_002c-tabbing"></a>
+<a name="index-row_002c-tabbing" class="anchor"></a>
 <p>The <code>tabbing</code> environment contains a sequence of <em>tabbed
 rows</em>.  The first tabbed row begins immediately after
 <code>\begin{tabbing}</code> and each row ends with <code>\\</code> or
@@ -2792,33 +2793,33 @@ They are all fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>
 </p>
 <dl compact="compact">
 <dt><code>\\ <span class="roman">(tabbing)</span></code>
-<a name="index-_005c_005c-_0028tabbing_0029"></a>
+<a name="index-_005c_005c-_0028tabbing_0029" class="anchor"></a>
 </dt>
 <dd><p>End a tabbed line and typeset it.
 </p>
 </dd>
 <dt><code>\= <span class="roman">(tabbing)</span></code>
-<a name="index-_005c_003d-_0028tabbing_0029"></a>
+<a name="index-_005c_003d-_0028tabbing_0029" class="anchor"></a>
 </dt>
 <dd><p>Sets a tab stop at the current position.
 </p>
 </dd>
 <dt><code>\&gt; <span class="roman">(tabbing)</span></code>
-<a name="index-_005c_003e-_0028tabbing_0029"></a>
+<a name="index-_005c_003e-_0028tabbing_0029" class="anchor"></a>
 </dt>
-<dd><a name="index-_005c_003e"></a>
+<dd><a name="index-_005c_003e" class="anchor"></a>
 <p>Advances to the next tab stop.
 </p>
 </dd>
 <dt><code>\&lt;</code>
-<a name="index-_005c_003c"></a>
+<a name="index-_005c_003c" class="anchor"></a>
 </dt>
 <dd><p>Put following text to the left of the local margin (without changing
 the margin).  Can only be used at the start of the line.
 </p>
 </dd>
 <dt><code>\+</code>
-<a name="index-_005c_002b"></a>
+<a name="index-_005c_002b" class="anchor"></a>
 </dt>
 <dd><p>Moves the left margin of the next and all the
 following commands one tab stop to the right, beginning tabbed line if
@@ -2826,7 +2827,7 @@ necessary.
 </p>
 </dd>
 <dt><code>\-</code>
-<a name="index-_005c_002d"></a>
+<a name="index-_005c_002d" class="anchor"></a>
 </dt>
 <dd><p>Moves the left margin of the next and all the
 following commands one tab stop to the left, beginning tabbed line if
@@ -2834,7 +2835,7 @@ necessary.
 </p>
 </dd>
 <dt><code>\' <span class="roman">(tabbing)</span></code>
-<a name="index-_005c_0027-_0028tabbing_0029"></a>
+<a name="index-_005c_0027-_0028tabbing_0029" class="anchor"></a>
 </dt>
 <dd><p>Moves everything that you have typed so far in the current column, i.e.,
 everything from the most recent <code>\&gt;</code>, <code>\&lt;</code>, <code>\'</code>,
@@ -2843,7 +2844,7 @@ to the right, flush against the current column&rsquo;s tab stop.
 </p>
 </dd>
 <dt><code>\` <span class="roman">(tabbing)</span></code>
-<a name="index-_005c_0060-_0028tabbing_0029"></a>
+<a name="index-_005c_0060-_0028tabbing_0029" class="anchor"></a>
 </dt>
 <dd><p>Allows you to put text flush right against any tab stop, including tab
 stop&nbsp;0.  However, it can&rsquo;t move text to the right of the last
@@ -2856,18 +2857,18 @@ of the <code>tabbing</code> environment.  There must be no <code>\&gt;</code> or
 </p>
 </dd>
 <dt><code>\a <span class="roman">(tabbing)</span></code>
-<a name="index-_005ca-_0028tabbing_0029"></a>
+<a name="index-_005ca-_0028tabbing_0029" class="anchor"></a>
 </dt>
-<dd><a name="index-_005ca_0027-_0028acute-accent-in-tabbing_0029"></a>
-<a name="index-_005ca_0060-_0028grave-accent-in-tabbing_0029"></a>
-<a name="index-_005ca_003d-_0028macron-accent-in-tabbing_0029"></a>
+<dd><a name="index-_005ca_0027-_0028acute-accent-in-tabbing_0029" class="anchor"></a>
+<a name="index-_005ca_0060-_0028grave-accent-in-tabbing_0029" class="anchor"></a>
+<a name="index-_005ca_003d-_0028macron-accent-in-tabbing_0029" class="anchor"></a>
 <p>In a <code>tabbing</code> environment, the commands <code>\=</code>, <code>\'</code> and
 <code>\`</code> do not produce accents as usual (see <a href="latex2e_23.html#Accents">Accents</a>).  Instead,
 use the commands <code>\a=</code>, <code>\a'</code> and <code>\a`</code>.
 </p>
 </dd>
 <dt><code>\kill</code>
-<a name="index-_005ckill"></a>
+<a name="index-_005ckill" class="anchor"></a>
 </dt>
 <dd><p>Sets tab stops without producing text.  Works just like <code>\\</code> except
 that it throws away the current line instead of producing output for it.
@@ -2876,21 +2877,21 @@ effect.
 </p>
 </dd>
 <dt><code>\poptabs</code>
-<a name="index-_005cpoptabs"></a>
+<a name="index-_005cpoptabs" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cpoptabs-1"></a>
+<dd><a name="index-_005cpoptabs-1" class="anchor"></a>
 <p>Restores the tab stop positions saved by the last <code>\pushtabs</code>.
 </p>
 </dd>
 <dt><code>\pushtabs</code>
-<a name="index-_005cpushtabs"></a>
+<a name="index-_005cpushtabs" class="anchor"></a>
 </dt>
 <dd><p>Saves all current tab stop positions. Useful for temporarily changing
 tab stop positions in the middle of a <code>tabbing</code> environment.
 </p>
 </dd>
 <dt><code>\tabbingsep</code>
-<a name="index-_005ctabbingsep"></a>
+<a name="index-_005ctabbingsep" class="anchor"></a>
 </dt>
 <dd><p>Distance of the text moved by <code>\'</code> to left of current tab stop.
 </p>
@@ -2923,15 +2924,15 @@ function \= fact(n : integer) : integer;\\
          end;
 </pre></div>
 
-<a name="index-package_002c-algorithm2e"></a>
-<a name="index-algorithm2e-package"></a>
-<a name="index-package_002c-listings"></a>
-<a name="index-listings-package"></a>
-<a name="index-package_002c-minted"></a>
-<a name="index-minted-package"></a>
+<a name="index-package_002c-algorithm2e" class="anchor"></a>
+<a name="index-algorithm2e-package" class="anchor"></a>
+<a name="index-package_002c-listings" class="anchor"></a>
+<a name="index-listings-package" class="anchor"></a>
+<a name="index-package_002c-minted" class="anchor"></a>
+<a name="index-minted-package" class="anchor"></a>
 
-<a name="index-package_002c-fancyvrb"></a>
-<a name="index-fancyvrb-package"></a>
+<a name="index-package_002c-fancyvrb" class="anchor"></a>
+<a name="index-fancyvrb-package" class="anchor"></a>
 
 <p>This example is just for illustration of the environment.  To actually
 typeset computer code in typewriter like this, a verbatim environment
@@ -2941,15 +2942,15 @@ there are quite a few packages, including <code>algorithm2e</code>,
 </p>
         
 <hr>
-<a name="table"></a>
-<a name="table-1"></a>
+<a name="table" class="anchor"></a>
+<a name="table-1" class="anchor"></a>
 <h3 class="section">8.22 <code>table</code></h3>
 
-<a name="index-environment_002c-table"></a>
-<a name="index-table-environment"></a>
+<a name="index-environment_002c-table" class="anchor"></a>
+<a name="index-table-environment" class="anchor"></a>
         
-<a name="index-tables_002c-creating"></a>
-<a name="index-creating-tables"></a>
+<a name="index-tables_002c-creating" class="anchor"></a>
+<a name="index-creating-tables" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -2992,7 +2993,7 @@ float placement algorithm, see <a href="latex2e_5.html#Floats">Floats</a>.
 It can contain text, commands, graphics, etc.
 </p>
 <p>The label is optional; it is used for cross references (see <a href="latex2e_7.html#Cross-references">Cross references</a>).  
-<a name="index-_005ccaption-1"></a>
+<a name="index-_005ccaption-1" class="anchor"></a>
 The <code>\caption</code> command is also optional.  It specifies caption text
 for the table.  By default it is numbered.  If its optional
 <var>lottitle</var> is present then that text is used in the list of tables
@@ -3016,15 +3017,15 @@ unless it is pushed to a float page at the end.
 
 
 <hr>
-<a name="tabular"></a>
-<a name="tabular-1"></a>
+<a name="tabular" class="anchor"></a>
+<a name="tabular-1" class="anchor"></a>
 <h3 class="section">8.23 <code>tabular</code></h3>
 
-<a name="index-environment_002c-tabular"></a>
-<a name="index-tabular-environment"></a>
+<a name="index-environment_002c-tabular" class="anchor"></a>
+<a name="index-tabular-environment" class="anchor"></a>
         
-<a name="index-lines-in-tables"></a>
-<a name="index-lining-text-up-in-tables"></a>
+<a name="index-lines-in-tables" class="anchor"></a>
+<a name="index-lining-text-up-in-tables" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -3060,12 +3061,12 @@ illustrates many of the features.
 <p>The output will have two left-aligned columns with a vertical bar
 between them.  This is specified in <code>tabular</code>&rsquo;s argument
 <code>{l|l}</code>.
-<a name="index-_0026"></a>
+<a name="index-_0026" class="anchor"></a>
 Put the entries into different columns by separating them with an
 ampersand, <code>&amp;</code>.  The end of each row is marked with a double
 backslash, <code>\\</code>.  Put a horizontal rule below a row, after a double
 backslash, with <code>\hline</code>.
-<a name="index-_005c_005c-for-tabular"></a>
+<a name="index-_005c_005c-for-tabular" class="anchor"></a>
 After the last row the <code>\\</code> is optional, unless an <code>\hline</code>
 command follows to put a rule below the table.
 </p>
@@ -3148,7 +3149,7 @@ arranged so the numbers in the table are aligned on it.
 \end{tabular}
 </pre></div>
 
-<a name="index-_005cextracolsep"></a>
+<a name="index-_005cextracolsep" class="anchor"></a>
 <p>An <code>\extracolsep{<var>wd</var>}</code> command in an @-expression causes an
 extra space of width <var>wd</var> to appear to the left of all subsequent
 columns, until countermanded by another <code>\extracolsep</code>.  Unlike
@@ -3211,33 +3212,33 @@ are likely to get the <code>Underfull \hbox (badness 10000) in alignment
 </p>
 <dl compact="compact">
 <dt><code>\arrayrulewidth</code>
-<a name="index-_005carrayrulewidth"></a>
+<a name="index-_005carrayrulewidth" class="anchor"></a>
 </dt>
-<dd><a name="tabular-arrayrulewidth"></a><p>A length that is the thickness of the rule created by <code>|</code>,
+<dd><a name="tabular-arrayrulewidth" class="anchor"></a><p>A length that is the thickness of the rule created by <code>|</code>,
 <code>\hline</code>, and <code>\vline</code> in the <code>tabular</code> and <code>array</code>
 environments.  The default is &lsquo;<samp>.4pt</samp>&rsquo;. Change it as in
 <code>\setlength{\arrayrulewidth}{0.8pt}</code>.
 </p>
 </dd>
 <dt><code>\arraystretch</code>
-<a name="index-_005carraystretch"></a>
+<a name="index-_005carraystretch" class="anchor"></a>
 </dt>
-<dd><a name="tabular-arraystrech"></a><p>A factor by which the spacing between rows in the <code>tabular</code> and
+<dd><a name="tabular-arraystrech" class="anchor"></a><p>A factor by which the spacing between rows in the <code>tabular</code> and
 <code>array</code> environments is multiplied.  The default is &lsquo;<samp>1</samp>&rsquo;, for
 no scaling.  Change it as <code>\renewcommand{\arraystretch}{1.2}</code>.
 </p>
 </dd>
 <dt><code>\doublerulesep</code>
-<a name="index-_005cdoublerulesep"></a>
+<a name="index-_005cdoublerulesep" class="anchor"></a>
 </dt>
-<dd><a name="tabular-doublerulesep"></a><p>A length that is the distance between the vertical rules produced by the
+<dd><a name="tabular-doublerulesep" class="anchor"></a><p>A length that is the distance between the vertical rules produced by the
 <code>||</code> specifier.  The default is &lsquo;<samp>2pt</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>\tabcolsep</code>
-<a name="index-_005ctabcolsep"></a>
+<a name="index-_005ctabcolsep" class="anchor"></a>
 </dt>
-<dd><a name="tabular-tabcolsep"></a><p>A length that is half of the space between columns. The default is
+<dd><a name="tabular-tabcolsep" class="anchor"></a><p>A length that is half of the space between columns. The default is
 &lsquo;<samp>6pt</samp>&rsquo;.  Change it with <code>\setlength</code>.
 </p>
 </dd>
@@ -3250,11 +3251,11 @@ lines:
 
 
 <hr>
-<a name="g_t_005cmulticolumn"></a>
-<a name="g_t_005cmulticolumn-1"></a>
+<a name="g_t_005cmulticolumn" class="anchor"></a>
+<a name="g_t_005cmulticolumn-1" class="anchor"></a>
 <h4 class="subsection">8.23.1 <code>\multicolumn</code></h4>
 
-<a name="index-_005cmulticolumn"></a>
+<a name="index-_005cmulticolumn" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -3349,11 +3350,11 @@ in the first row here.  That&rsquo;s because there is no vertical bar in the
 </p>
 
 <hr>
-<a name="g_t_005cvline"></a>
-<a name="g_t_005cvline-1"></a>
+<a name="g_t_005cvline" class="anchor"></a>
+<a name="g_t_005cvline-1" class="anchor"></a>
 <h4 class="subsection">8.23.2 <code>\vline</code></h4>
 
-<a name="index-_005cvline"></a>
+<a name="index-_005cvline" class="anchor"></a>
 <p>Draw a vertical line in a <code>tabular</code> or <code>array</code> environment
 extending the full height and depth of an entry&rsquo;s row.  Can also be
 used in an @-expression, although its synonym vertical
@@ -3383,11 +3384,11 @@ the vertical line in that entry appears immediately next to the
 
 
 <hr>
-<a name="g_t_005ccline"></a>
-<a name="g_t_005ccline-1"></a>
+<a name="g_t_005ccline" class="anchor"></a>
+<a name="g_t_005ccline-1" class="anchor"></a>
 <h4 class="subsection">8.23.3 <code>\cline</code></h4>
 
-<a name="index-_005ccline"></a>
+<a name="index-_005ccline" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -3414,11 +3415,11 @@ height.
 
 
 <hr>
-<a name="g_t_005chline"></a>
-<a name="g_t_005chline-1"></a>
+<a name="g_t_005chline" class="anchor"></a>
+<a name="g_t_005chline-1" class="anchor"></a>
 <h4 class="subsection">8.23.4 <code>\hline</code></h4>
 
-<a name="index-_005chline"></a>
+<a name="index-_005chline" class="anchor"></a>
 
 <p>Draw a horizontal line the width of the enclosing <code>tabular</code> or
 <code>array</code> environment.  It&rsquo;s most commonly used to draw a line at the
@@ -3439,14 +3440,14 @@ is required.
 
 
 <hr>
-<a name="thebibliography"></a>
-<a name="thebibliography-1"></a>
+<a name="thebibliography" class="anchor"></a>
+<a name="thebibliography-1" class="anchor"></a>
 <h3 class="section">8.24 <code>thebibliography</code></h3>
 
-<a name="index-environment_002c-thebibliography"></a>
-<a name="index-thebibliography-environment"></a>
+<a name="index-environment_002c-thebibliography" class="anchor"></a>
+<a name="index-thebibliography-environment" class="anchor"></a>
         
-<a name="index-bibliography_002c-creating-_0028manually_0029"></a>
+<a name="index-bibliography_002c-creating-_0028manually_0029" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -3500,8 +3501,8 @@ title is in macro <code>\refname</code>.  Change it by redefining the command,
 as with <code>\renewcommand{\refname}{Cited references}</code> after
 <code>\begin{document}</code>.
 </p>
-<a name="index-package_002c-babel-1"></a>
-<a name="index-babel-package-1"></a>
+<a name="index-package_002c-babel-1" class="anchor"></a>
+<a name="index-babel-package-1" class="anchor"></a>
 
 <p>Language support packages such as <samp>babel</samp> will automatically
 redefine <code>\refname</code> or <code>\bibname</code> to fit the selected
@@ -3510,11 +3511,11 @@ language.
 
 
 <hr>
-<a name="g_t_005cbibitem"></a>
-<a name="g_t_005cbibitem-1"></a>
+<a name="g_t_005cbibitem" class="anchor"></a>
+<a name="g_t_005cbibitem-1" class="anchor"></a>
 <h4 class="subsection">8.24.1 <code>\bibitem</code></h4>
 
-<a name="index-_005cbibitem"></a>
+<a name="index-_005cbibitem" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -3530,7 +3531,7 @@ language.
 
 <p>Generate an entry labeled by <var>label</var>.  The default is for LaTeX to
 generates a number using the <code>enumi</code> counter.  The <em>citation key</em> 
-<a name="index-citation-key"></a>
+<a name="index-citation-key" class="anchor"></a>
 <var>cite_key</var> is a string of
 letters, numbers, and punctuation symbols (but not comma).
 </p>
@@ -3583,11 +3584,11 @@ recompiling.
 </p>
 
 <hr>
-<a name="g_t_005ccite"></a>
-<a name="g_t_005ccite-1"></a>
+<a name="g_t_005ccite" class="anchor"></a>
+<a name="g_t_005ccite-1" class="anchor"></a>
 <h4 class="subsection">8.24.2 <code>\cite</code></h4>
 
-<a name="index-_005ccite"></a>
+<a name="index-_005ccite" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -3644,11 +3645,11 @@ the fix may be to run LaTeX again.
 </p>
 
 <hr>
-<a name="g_t_005cnocite"></a>
-<a name="g_t_005cnocite-1"></a>
+<a name="g_t_005cnocite" class="anchor"></a>
+<a name="g_t_005cnocite-1" class="anchor"></a>
 <h4 class="subsection">8.24.3 <code>\nocite</code></h4>
 
-<a name="index-_005cnocite"></a>
+<a name="index-_005cnocite" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -3666,15 +3667,15 @@ have not cited them (see <a href="#g_t_005ccite">\cite</a>).
 </p>
 
 <hr>
-<a name="Using-BibTeX"></a>
-<a name="Using-BibTeX-1"></a>
+<a name="Using-BibTeX" class="anchor"></a>
+<a name="Using-BibTeX-1" class="anchor"></a>
 <h4 class="subsection">8.24.4 Using BibTeX</h4>
 
-<a name="index-using-BibTeX"></a>
-<a name="index-bibTeX_002c-using"></a>
-<a name="index-bibliography_002c-creating-_0028automatically_0029"></a>
-<a name="index-_005cbibliographystyle"></a>
-<a name="index-_005cbibliography"></a>
+<a name="index-using-BibTeX" class="anchor"></a>
+<a name="index-bibTeX_002c-using" class="anchor"></a>
+<a name="index-bibliography_002c-creating-_0028automatically_0029" class="anchor"></a>
+<a name="index-_005cbibliographystyle" class="anchor"></a>
+<a name="index-_005cbibliography" class="anchor"></a>
 
 <p>As described in <code>thebibliography</code> (see <a href="#thebibliography">thebibliography</a>), a
 sophisticated approach to managing bibliographies is provided by the
@@ -3745,14 +3746,14 @@ you used.
 </p>
 
 <hr>
-<a name="theorem"></a>
-<a name="theorem-1"></a>
+<a name="theorem" class="anchor"></a>
+<a name="theorem-1" class="anchor"></a>
 <h3 class="section">8.25 <code>theorem</code></h3>
 
-<a name="index-environment_002c-theorem"></a>
-<a name="index-theorem-environment"></a>
+<a name="index-environment_002c-theorem" class="anchor"></a>
+<a name="index-theorem-environment" class="anchor"></a>
         
-<a name="index-theorems_002c-typesetting"></a>
+<a name="index-theorems_002c-typesetting" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -3780,11 +3781,11 @@ The next result follows immediately.
 \end{thm}
 </pre></div>
 
-<a name="index-package_002c-amsmath-4"></a>
-<a name="index-amsmath-package-4"></a>
+<a name="index-package_002c-amsmath-4" class="anchor"></a>
+<a name="index-amsmath-package-4" class="anchor"></a>
 
-<a name="index-package_002c-amsthm"></a>
-<a name="index-amsthm-package"></a>
+<a name="index-package_002c-amsthm" class="anchor"></a>
+<a name="index-amsthm-package" class="anchor"></a>
 
 <p>Most new documents use the packages <code>amsthm</code> and <code>amsmath</code>
 from the American Mathematical Society.  Among other things these
@@ -3793,15 +3794,15 @@ such as styling options.
 </p>
 
 <hr>
-<a name="titlepage"></a>
-<a name="titlepage-1"></a>
+<a name="titlepage" class="anchor"></a>
+<a name="titlepage-1" class="anchor"></a>
 <h3 class="section">8.26 <code>titlepage</code></h3>
 
-<a name="index-environment_002c-titlepage"></a>
-<a name="index-titlepage-environment"></a>
+<a name="index-environment_002c-titlepage" class="anchor"></a>
+<a name="index-titlepage-environment" class="anchor"></a>
         
-<a name="index-making-a-title-page"></a>
-<a name="index-title-pages_002c-creating"></a>
+<a name="index-making-a-title-page" class="anchor"></a>
+<a name="index-title-pages_002c-creating" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -3845,18 +3846,18 @@ environment, use <code>\maketitle</code> (see <a href="latex2e_18.html#g_t_005cm
 </p>
 
 <hr>
-<a name="verbatim"></a>
-<a name="verbatim-1"></a>
+<a name="verbatim" class="anchor"></a>
+<a name="verbatim-1" class="anchor"></a>
 <h3 class="section">8.27 <code>verbatim</code></h3>
 
-<a name="index-environment_002c-verbatim"></a>
-<a name="index-verbatim-environment"></a>
+<a name="index-environment_002c-verbatim" class="anchor"></a>
+<a name="index-verbatim-environment" class="anchor"></a>
         
-<a name="index-verbatim-text"></a>
-<a name="index-simulating-typed-text"></a>
-<a name="index-typed-text_002c-simulating"></a>
-<a name="index-code_002c-typesetting"></a>
-<a name="index-computer-programs_002c-typesetting"></a>
+<a name="index-verbatim-text" class="anchor"></a>
+<a name="index-simulating-typed-text" class="anchor"></a>
+<a name="index-typed-text_002c-simulating" class="anchor"></a>
+<a name="index-code_002c-typesetting" class="anchor"></a>
+<a name="index-computer-programs_002c-typesetting" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -3882,19 +3883,19 @@ Symbol swearing: %&amp;$#?!.
 <p>The only restriction on <code>literal-text</code> is that it cannot include
 the string <code>\end{verbatim}</code>.
 </p>
-<a name="index-package_002c-cprotect"></a>
-<a name="index-cprotect-package"></a>
+<a name="index-package_002c-cprotect" class="anchor"></a>
+<a name="index-cprotect-package" class="anchor"></a>
 
 <p>You cannot use the verbatim environment in the argument to macros, for
 instance in the argument to a <code>\section</code>.  This is not the same as
 commands being fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>), instead it just cannot appear
 there. (But the <code>cprotect</code> package can help with this.)
 </p>
-<a name="index-package_002c-listings-1"></a>
-<a name="index-listings-package-1"></a>
+<a name="index-package_002c-listings-1" class="anchor"></a>
+<a name="index-listings-package-1" class="anchor"></a>
 
-<a name="index-package_002c-minted-1"></a>
-<a name="index-minted-package-1"></a>
+<a name="index-package_002c-minted-1" class="anchor"></a>
+<a name="index-minted-package-1" class="anchor"></a>
 
 <p>One common use of verbatim input is to typeset computer code.  There are
 packages that are an improvement the <code>verbatim</code> environment.  For
@@ -3902,11 +3903,11 @@ instance, one improvement is to allow the verbatim inclusion of external
 files, or parts of those files.  Such packages include <code>listings</code>,
 and <code>minted</code>.
 </p>
-<a name="index-package_002c-fancyvrb-1"></a>
-<a name="index-fancyvrb-package-1"></a>
+<a name="index-package_002c-fancyvrb-1" class="anchor"></a>
+<a name="index-fancyvrb-package-1" class="anchor"></a>
 
-<a name="index-package_002c-verbatimbox"></a>
-<a name="index-verbatimbox-package"></a>
+<a name="index-package_002c-verbatimbox" class="anchor"></a>
+<a name="index-verbatimbox-package" class="anchor"></a>
 
 <p>A package that provides many more options for verbatim environments is
 <code>fancyvrb</code>.  Another is <code>verbatimbox</code>.
@@ -3916,12 +3917,12 @@ and <code>minted</code>.
 
 
 <hr>
-<a name="g_t_005cverb"></a>
-<a name="g_t_005cverb-1"></a>
+<a name="g_t_005cverb" class="anchor"></a>
+<a name="g_t_005cverb-1" class="anchor"></a>
 <h4 class="subsection">8.27.1 <code>\verb</code></h4>
 
-<a name="index-_005cverb"></a>
-<a name="index-verbatim-text_002c-inline"></a>
+<a name="index-_005cverb" class="anchor"></a>
+<a name="index-verbatim-text_002c-inline" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -3953,7 +3954,7 @@ shows a space only to distinguish one component from the other).  The
 delimiter must not appear in <var>literal-text</var>. The <var>literal-text</var>
 cannot include a line break.
 </p>
-<a name="index-visible-space"></a>
+<a name="index-visible-space" class="anchor"></a>
 <p>The <code>*</code>-form differs only in that spaces are printed with a visible
 space character.
 </p>
@@ -3963,24 +3964,24 @@ space character.
 <pre class="example">The commands's first argument is \verb*!filename with extension! and ...
 </pre></div>
 
-<a name="index-package_002c-url"></a>
-<a name="index-url-package"></a>
+<a name="index-package_002c-url" class="anchor"></a>
+<a name="index-url-package" class="anchor"></a>
 
 <p>For typesetting Internet addresses, urls, the package <code>url</code>
 provides an option that is better than the <code>\verb</code> command, since
 it allows line breaks.
 </p>
-<a name="index-package_002c-listings-2"></a>
-<a name="index-listings-package-2"></a>
+<a name="index-package_002c-listings-2" class="anchor"></a>
+<a name="index-listings-package-2" class="anchor"></a>
 
-<a name="index-package_002c-minted-2"></a>
-<a name="index-minted-package-2"></a>
+<a name="index-package_002c-minted-2" class="anchor"></a>
+<a name="index-minted-package-2" class="anchor"></a>
 
 <p>For computer code there are many packages with advantages over
 <code>\verb</code>.  One is <samp>listings</samp>, another is <samp>minted</samp>.
 </p>
-<a name="index-package_002c-cprotect-1"></a>
-<a name="index-cprotect-package-1"></a>
+<a name="index-package_002c-cprotect-1" class="anchor"></a>
+<a name="index-cprotect-package-1" class="anchor"></a>
 
 <p>You cannot use <code>\verb</code> in the argument to a macro, for instance in
 the argument to a <code>\section</code>.  It is not a question of <code>\verb</code>
@@ -3989,14 +3990,14 @@ being fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>), inst
 </p>
 
 <hr>
-<a name="verse"></a>
-<a name="verse-1"></a>
+<a name="verse" class="anchor"></a>
+<a name="verse-1" class="anchor"></a>
 <h3 class="section">8.28 <code>verse</code></h3>
 
-<a name="index-environment_002c-verse"></a>
-<a name="index-verse-environment"></a>
+<a name="index-environment_002c-verse" class="anchor"></a>
+<a name="index-verse-environment" class="anchor"></a>
         
-<a name="index-poetry_002c-an-environment-for"></a>
+<a name="index-poetry_002c-an-environment-for" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -4017,7 +4018,7 @@ being fragile (see <a href="latex2e_12.html#g_t_005cprotect">\protect</a>), inst
 On the fair daughter of rich Capulet.
 </pre></div>
 
-<a name="index-_005c_005c-for-verse"></a>
+<a name="index-_005c_005c-for-verse" class="anchor"></a>
 <p>Separate the lines of each stanza with <code>\\</code>, and use one or more
 blank lines to separate the stanzas.
 </p>

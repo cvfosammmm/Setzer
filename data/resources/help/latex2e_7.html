@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_6.html#g_t_005c_0040startsection" rel="prev" title="\@startsection">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,13 +86,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Cross-references"></a>
-<a name="Cross-references-1"></a>
+<a name="Cross-references" class="anchor"></a>
+<a name="Cross-references-1" class="anchor"></a>
 <h2 class="chapter">7 Cross references</h2>
 
-<a name="index-cross-references"></a>
+<a name="index-cross-references" class="anchor"></a>
 
-<a name="index-label"></a>
+<a name="index-label" class="anchor"></a>
 <p>We often want something like &lsquo;<samp>See Theorem~31</samp>&rsquo;.  But by-hand typing
 the 31 is poor practice.  Instead you should write a <em>label</em> such as
 <code>\label{eq:GreensThm}</code> and then <em>reference</em> it, as with
@@ -115,8 +116,8 @@ the <code>\label</code>.  So if <code>\label</code> is in <samp>calculus.tex</sa
 the information is in <samp>calculus.aux</samp>.  LaTeX puts the
 information in that file every time it runs across a <code>\label</code>.
 </p>
-<a name="index-forward-reference"></a>
-<a name="index-reference_002c-forward"></a>
+<a name="index-forward-reference" class="anchor"></a>
+<a name="index-reference_002c-forward" class="anchor"></a>
 <p>The behavior described in the prior paragraph results in a quirk that
 happens when your document has a <em>forward reference</em>, a <code>\ref</code>
 that appears before the associated <code>\label</code>.  If this is the first
@@ -128,8 +129,8 @@ change some things so the references changes; you get the same warning
 and the output contains the old reference information.  In both cases,
 resolve this by compiling the document a second time.
 </p>
-<a name="index-package_002c-cleveref"></a>
-<a name="index-cleveref-package"></a>
+<a name="index-package_002c-cleveref" class="anchor"></a>
+<a name="index-cleveref-package" class="anchor"></a>
 <p>The <code>cleveref</code> package enhances LaTeX&rsquo;s
 cross referencing features.  You can arrange that if you enter
 <code>\begin{thm}\label{th:Nerode}...\end{thm}</code> then
@@ -139,11 +140,11 @@ having to enter the &ldquo;Theorem.&rdquo;
 
 
 <hr>
-<a name="g_t_005clabel"></a>
-<a name="g_t_005clabel-1"></a>
+<a name="g_t_005clabel" class="anchor"></a>
+<a name="g_t_005clabel-1" class="anchor"></a>
 <h3 class="section">7.1 <code>\label</code></h3>
 
-<a name="index-_005clabel"></a>
+<a name="index-_005clabel" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -217,13 +218,13 @@ See Figure~\ref{fig:test}.
 
 
 <hr>
-<a name="g_t_005cpageref"></a>
-<a name="g_t_005cpageref-1"></a>
+<a name="g_t_005cpageref" class="anchor"></a>
+<a name="g_t_005cpageref-1" class="anchor"></a>
 <h3 class="section">7.2 <code>\pageref</code></h3>
 
-<a name="index-_005cpageref"></a>
-<a name="index-cross-referencing-with-page-number"></a>
-<a name="index-page-number_002c-cross-referencing"></a>
+<a name="index-_005cpageref" class="anchor"></a>
+<a name="index-cross-referencing-with-page-number" class="anchor"></a>
+<a name="index-page-number_002c-cross-referencing" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -253,16 +254,16 @@ those.)
 
 
 <hr>
-<a name="g_t_005cref"></a>
-<a name="g_t_005cref-1"></a>
+<a name="g_t_005cref" class="anchor"></a>
+<a name="g_t_005cref-1" class="anchor"></a>
 <h3 class="section">7.3 <code>\ref</code></h3>
 
-<a name="index-_005cref"></a>
-<a name="index-cross-referencing_002c-symbolic"></a>
-<a name="index-section-number_002c-cross-referencing"></a>
-<a name="index-equation-number_002c-cross-referencing"></a>
-<a name="index-figure-number_002c-cross-referencing"></a>
-<a name="index-footnote-number_002c-cross-referencing"></a>
+<a name="index-_005cref" class="anchor"></a>
+<a name="index-cross-referencing_002c-symbolic" class="anchor"></a>
+<a name="index-section-number_002c-cross-referencing" class="anchor"></a>
+<a name="index-equation-number_002c-cross-referencing" class="anchor"></a>
+<a name="index-figure-number_002c-cross-referencing" class="anchor"></a>
+<a name="index-footnote-number_002c-cross-referencing" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -292,8 +293,8 @@ so this document would have to be compiled twice.
 \end{enumerate}
 </pre></div>
 
-<a name="index-package_002c-cleveref-1"></a>
-<a name="index-cleveref-package-1"></a>
+<a name="index-package_002c-cleveref-1" class="anchor"></a>
+<a name="index-cleveref-package-1" class="anchor"></a>
 
 <p>The <samp>cleveref</samp> package includes text such as &lsquo;<samp>Theorem</samp>&rsquo; in the
 reference.  See the documentation on CTAN.

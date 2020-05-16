@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_20.html#g_t_005cusebox" rel="prev" title="\usebox">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,11 +86,11 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Color"></a>
-<a name="Color-1"></a>
+<a name="Color" class="anchor"></a>
+<a name="Color-1" class="anchor"></a>
 <h2 class="chapter">21 Color</h2>
 
-<a name="index-color"></a>
+<a name="index-color" class="anchor"></a>
 
 <p>You can add color to text, rules, etc.  You can also have color in a box
 or on an entire page and write text on top of it.
@@ -106,12 +107,12 @@ significantly extends the capabilities described here, including adding
 
 
 <hr>
-<a name="Color-package-options"></a>
-<a name="color-package-options"></a>
+<a name="Color-package-options" class="anchor"></a>
+<a name="color-package-options" class="anchor"></a>
 <h3 class="section">21.1 <code>color</code> package options</h3>
 
-<a name="index-color-package-options"></a>
-<a name="index-options_002c-color-package"></a>
+<a name="index-color-package-options" class="anchor"></a>
+<a name="index-options_002c-color-package" class="anchor"></a>
 
 <p>Synopsis (must be in the document preamble):
 </p>
@@ -160,11 +161,11 @@ memory space.
 
 
 <hr>
-<a name="Color-models"></a>
-<a name="Color-models-1"></a>
+<a name="Color-models" class="anchor"></a>
+<a name="Color-models-1" class="anchor"></a>
 <h3 class="section">21.2 Color models</h3>
 
-<a name="index-color-models"></a>
+<a name="index-color-models" class="anchor"></a>
 
 <p>A <em>color model</em> is a way of representing colors.  LaTeX&rsquo;s
 capabilities depend on the printer driver.  However, the <samp>pdftex</samp>,
@@ -180,7 +181,7 @@ such as with inks, so that combining full intensity of cyan, magenta,
 and yellow makes black.
 </p>
 <dl compact="compact">
-<dd><a name="color-models-cmyk"></a></dd>
+<dd><a name="color-models-cmyk" class="anchor"></a></dd>
 <dt><code>cmyk</code></dt>
 <dd><p>A comma-separated list with four real numbers between 0 and 1,
 inclusive.  The first number is the intensity of cyan, the second is
@@ -188,12 +189,12 @@ magenta, and the others are yellow and black.  A number value of 0 means
 minimal intensity, while a 1 is for full intensity.  This model is often
 used in color printing.  It is a subtractive model.
 </p>
-<a name="color-models-gray"></a></dd>
+<a name="color-models-gray" class="anchor"></a></dd>
 <dt><code>gray</code></dt>
 <dd><p>A single real number between 0 and 1, inclusive.  The colors are shades
 of grey.  The number 0 produces black while 1 gives white.
 </p>
-<a name="color-models-rgb"></a></dd>
+<a name="color-models-rgb" class="anchor"></a></dd>
 <dt><code>rgb</code></dt>
 <dd><p>A comma-separated list with three real numbers between 0 and 1,
 inclusive.  The first number is the intensity of the red component, the
@@ -201,7 +202,7 @@ second is green, and the third the blue.  A number value of 0 means that
 none of that component is added in, while a 1 means full intensity.
 This is an additive model.
 </p>
-<a name="color-models-RGB"></a></dd>
+<a name="color-models-RGB" class="anchor"></a></dd>
 <dt><code>RGB</code></dt>
 <dd><p>(<samp>pdftex</samp>, <samp>xetex</samp>, <samp>luatex</samp> drivers) A comma-separated
 list with three integers between 0 and 255, inclusive.  This model is a
@@ -210,7 +211,7 @@ often described in a red-green-blue model using numbers in this range.
 The values entered here are converted to the <code>rgb</code> model by
 dividing by 255.
 </p>
-<a name="color-models-named"></a></dd>
+<a name="color-models-named" class="anchor"></a></dd>
 <dt><code>named</code></dt>
 <dd><p>Colors are accessed by name, such as &lsquo;<samp>PrussianBlue</samp>&rsquo;.  The list of
 names depends on the driver, but all support the names &lsquo;<samp>black</samp>&rsquo;,
@@ -223,24 +224,24 @@ names depends on the driver, but all support the names &lsquo;<samp>black</samp>
 
 
 <hr>
-<a name="Commands-for-color"></a>
-<a name="Commands-for-color-1"></a>
+<a name="Commands-for-color" class="anchor"></a>
+<a name="Commands-for-color-1" class="anchor"></a>
 <h3 class="section">21.3 Commands for color</h3>
 
-<a name="index-color-package-commands"></a>
+<a name="index-color-package-commands" class="anchor"></a>
 
 <p>These are the commands available with the <samp>color</samp> package.
 </p>
 
 
 <hr>
-<a name="Define-colors"></a>
-<a name="Define-colors-1"></a>
+<a name="Define-colors" class="anchor"></a>
+<a name="Define-colors-1" class="anchor"></a>
 <h4 class="subsection">21.3.1 Define colors</h4>
 
-<a name="index-color-1"></a>
-<a name="index-define-color"></a>
-<a name="index-color_002c-define"></a>
+<a name="index-color-1" class="anchor"></a>
+<a name="index-define-color" class="anchor"></a>
+<a name="index-color_002c-define" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -270,12 +271,12 @@ or style, rather than in the document body.
 </p>
 
 <hr>
-<a name="Colored-text"></a>
-<a name="Colored-text-1"></a>
+<a name="Colored-text" class="anchor"></a>
+<a name="Colored-text-1" class="anchor"></a>
 <h4 class="subsection">21.3.2 Colored text</h4>
 
-<a name="index-color-2"></a>
-<a name="index-colored-text"></a>
+<a name="index-color-2" class="anchor"></a>
+<a name="index-colored-text" class="anchor"></a>
 
 <p>Synopses:
 </p>
@@ -368,13 +369,13 @@ numbers, <code>gray</code> takes only one.
 
 
 <hr>
-<a name="Colored-boxes"></a>
-<a name="Colored-boxes-1"></a>
+<a name="Colored-boxes" class="anchor"></a>
+<a name="Colored-boxes-1" class="anchor"></a>
 <h4 class="subsection">21.3.3 Colored boxes</h4>
 
-<a name="index-color-3"></a>
-<a name="index-colored-boxes"></a>
-<a name="index-box_002c-colored"></a>
+<a name="index-color-3" class="anchor"></a>
+<a name="index-colored-boxes" class="anchor"></a>
+<a name="index-box_002c-colored" class="anchor"></a>
 
 <p>Synopses:
 </p>
@@ -423,14 +424,14 @@ of the second line.
 
 
 <hr>
-<a name="Colored-pages"></a>
-<a name="Colored-pages-1"></a>
+<a name="Colored-pages" class="anchor"></a>
+<a name="Colored-pages-1" class="anchor"></a>
 <h4 class="subsection">21.3.4 Colored pages</h4>
 
-<a name="index-color-4"></a>
-<a name="index-colored-page"></a>
-<a name="index-page_002c-colored"></a>
-<a name="index-background_002c-colored"></a>
+<a name="index-color-4" class="anchor"></a>
+<a name="index-colored-page" class="anchor"></a>
+<a name="index-page_002c-colored" class="anchor"></a>
+<a name="index-background_002c-colored" class="anchor"></a>
 
 <p>Synopses:
 </p>

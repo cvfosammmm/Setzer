@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_10.html#g_t_005cpagebreak-_0026-_005cnopagebreak" rel="prev" title="\pagebreak &amp; \nopagebreak">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,11 +86,11 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Footnotes"></a>
-<a name="Footnotes-1"></a>
+<a name="Footnotes" class="anchor"></a>
+<a name="Footnotes-1" class="anchor"></a>
 <h2 class="chapter">11 Footnotes</h2>
 
-<a name="index-footnotes_002c-creating"></a>
+<a name="index-footnotes_002c-creating" class="anchor"></a>
 
 <p>Place a footnote at the bottom of the current page, as here.
 </p>
@@ -113,11 +114,11 @@ include a bibliographic style with that behavior (see <a href="latex2e_8.html#Us
 
 
 <hr>
-<a name="g_t_005cfootnote"></a>
-<a name="g_t_005cfootnote-1"></a>
+<a name="g_t_005cfootnote" class="anchor"></a>
+<a name="g_t_005cfootnote-1" class="anchor"></a>
 <h3 class="section">11.1 <code>\footnote</code></h3>
 
-<a name="index-_005cfootnote"></a>
+<a name="index-_005cfootnote" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -141,9 +142,9 @@ include a bibliographic style with that behavior (see <a href="latex2e_8.html#Us
 the footnote.  If you use this then LaTeX does not increment the
 <code>footnote</code> counter.
 </p>
-<a name="index-footnotes_002c-symbols-instead-of-numbers"></a>
-<a name="index-_005cfnsymbol_002c-and-footnotes"></a>
-<a name="index-_005c_0040fnsymbol"></a>
+<a name="index-footnotes_002c-symbols-instead-of-numbers" class="anchor"></a>
+<a name="index-_005cfnsymbol_002c-and-footnotes" class="anchor"></a>
+<a name="index-_005c_0040fnsymbol" class="anchor"></a>
 <p>By default, LaTeX uses arabic numbers as footnote markers.  Change
 this with something like
 <code>\renewcommand{\thefootnote}{\fnsymbol{footnote}}</code>, which
@@ -153,14 +154,14 @@ you make the change local then you may want to reset the counter with
 </p>
 <p>LaTeX determines the spacing of footnotes with two parameters.
 </p>
-<a name="index-footnote-parameters"></a>
-<a name="index-parameters_002c-for-footnotes"></a>
+<a name="index-footnote-parameters" class="anchor"></a>
+<a name="index-parameters_002c-for-footnotes" class="anchor"></a>
 
 <dl compact="compact">
 <dt><code>\footnoterule</code>
-<a name="index-_005cfootnoterule"></a>
+<a name="index-_005cfootnoterule" class="anchor"></a>
 </dt>
-<dd><a name="footnote-footnoterule"></a><p>Produces the rule separating the main text on a page from the page&rsquo;s
+<dd><a name="footnote-footnoterule" class="anchor"></a><p>Produces the rule separating the main text on a page from the page&rsquo;s
 footnotes.  Default dimensions in the standard document classes (except
 <code>slides</code>, where it does not appear) is: vertical thickness of
 <code>0.4pt</code>, and horizontal size of <code>0.4\columnwidth</code> long.
@@ -175,9 +176,9 @@ Change the rule with something like this.
 
 </dd>
 <dt><code>\footnotesep</code>
-<a name="index-_005cfootnotesep"></a>
+<a name="index-_005cfootnotesep" class="anchor"></a>
 </dt>
-<dd><a name="footnote-footnotesep"></a><p>The height of the strut placed at the beginning of the footnote
+<dd><a name="footnote-footnotesep" class="anchor"></a><p>The height of the strut placed at the beginning of the footnote
 (see <a href="latex2e_19.html#g_t_005cstrut">\strut</a>).  By default, this is set to the normal strut for
 <code>\footnotesize</code> fonts (see <a href="latex2e_4.html#Font-sizes">Font sizes</a>), therefore there is no
 extra space between footnotes.  This is &lsquo;<samp>6.65pt</samp>&rsquo; for &lsquo;<samp>10pt</samp>&rsquo;,
@@ -195,8 +196,8 @@ sectioning command such as <code>\chapter</code> (it can only be used in outer
 paragraph mode; see <a href="latex2e_17.html#Modes">Modes</a>).  There are some workarounds; see
 following sections.
 </p>
-<a name="index-Footnotes_002c-in-a-minipage"></a>
-<a name="index-mpfootnote-counter"></a>
+<a name="index-Footnotes_002c-in-a-minipage" class="anchor"></a>
+<a name="index-mpfootnote-counter" class="anchor"></a>
 <p>In a <code>minipage</code> environment the <code>\footnote</code> command uses the
 <code>mpfootnote</code> counter instead of the <code>footnote</code> counter, so
 they are numbered independently.  They are shown at the bottom of the
@@ -205,11 +206,11 @@ shown alphabetically. See <a href="latex2e_8.html#minipage">minipage</a> and <a 
 </p>
 
 <hr>
-<a name="g_t_005cfootnotemark"></a>
-<a name="g_t_005cfootnotemark-1"></a>
+<a name="g_t_005cfootnotemark" class="anchor"></a>
+<a name="g_t_005cfootnotemark-1" class="anchor"></a>
 <h3 class="section">11.2 <code>\footnotemark</code></h3>
 
-<a name="index-_005cfootnotemark"></a>
+<a name="index-_005cfootnotemark" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -262,11 +263,11 @@ Illogical persons are despised.\footnotemark[\value{footnoteValueSaver}]
 Therefore, anyone who can manage a crocodile is not a baby.
 </pre></div>
 
-<a name="index-package_002c-cleveref-2"></a>
-<a name="index-cleveref-package-2"></a>
+<a name="index-package_002c-cleveref-2" class="anchor"></a>
+<a name="index-cleveref-package-2" class="anchor"></a>
 
-<a name="index-package_002c-hyperref"></a>
-<a name="index-hyperref-package"></a>
+<a name="index-package_002c-hyperref" class="anchor"></a>
+<a name="index-hyperref-package" class="anchor"></a>
 
 <p>This example accomplishes the same by using the package <samp>cleveref</samp>.
 </p>
@@ -279,18 +280,18 @@ The corollary is from Chance.\footnote{Evers, Chance, 1990.}
 But the key lemma is from Tinker.\cref{fn:TE}
 </pre></div>
 
-<a name="index-package_002c-hyperref-1"></a>
-<a name="index-hyperref-package-1"></a>
+<a name="index-package_002c-hyperref-1" class="anchor"></a>
+<a name="index-hyperref-package-1" class="anchor"></a>
 
 <p>It will work with the package <samp>hyperref</samp>.
 </p>
 
 <hr>
-<a name="g_t_005cfootnotetext"></a>
-<a name="g_t_005cfootnotetext-1"></a>
+<a name="g_t_005cfootnotetext" class="anchor"></a>
+<a name="g_t_005cfootnotetext-1" class="anchor"></a>
 <h3 class="section">11.3 <code>\footnotetext</code></h3>
 
-<a name="index-_005cfootnotetext"></a>
+<a name="index-_005cfootnotetext" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -310,12 +311,12 @@ examples.
 </p>
 
 <hr>
-<a name="Footnotes-in-section-headings"></a>
-<a name="Footnotes-in-section-headings-1"></a>
+<a name="Footnotes-in-section-headings" class="anchor"></a>
+<a name="Footnotes-in-section-headings-1" class="anchor"></a>
 <h3 class="section">11.4 Footnotes in section headings</h3>
 
-<a name="index-footnote_002c-in-section-headings"></a>
-<a name="index-table-of-contents_002c-avoiding-footnotes"></a>
+<a name="index-footnote_002c-in-section-headings" class="anchor"></a>
+<a name="index-table-of-contents_002c-avoiding-footnotes" class="anchor"></a>
 
 <p>Putting a footnote in a section heading, as in:
 </p>
@@ -339,11 +340,11 @@ what gets moved to the table of contents is the optional argument.
 </p>
 
 <hr>
-<a name="Footnotes-in-a-table"></a>
-<a name="Footnotes-in-a-table-1"></a>
+<a name="Footnotes-in-a-table" class="anchor"></a>
+<a name="Footnotes-in-a-table-1" class="anchor"></a>
 <h3 class="section">11.5 Footnotes in a table</h3>
 
-<a name="index-footnote_002c-in-a-table"></a>
+<a name="index-footnote_002c-in-a-table" class="anchor"></a>
 
 <p>Inside a <code>tabular</code> or <code>array</code> environment the <code>\footnote</code>
 command does not work; there is a footnote mark in the table cell but
@@ -420,14 +421,14 @@ other footnotes.
 </p>
 
 <hr>
-<a name="Footnotes-of-footnotes"></a>
-<a name="Footnotes-of-footnotes-1"></a>
+<a name="Footnotes-of-footnotes" class="anchor"></a>
+<a name="Footnotes-of-footnotes-1" class="anchor"></a>
 <h3 class="section">11.6 Footnotes of footnotes</h3>
 
-<a name="index-footnote_002c-of-a-footnote"></a>
+<a name="index-footnote_002c-of-a-footnote" class="anchor"></a>
 
-<a name="index-package_002c-bigfoot"></a>
-<a name="index-bigfoot-package"></a>
+<a name="index-package_002c-bigfoot" class="anchor"></a>
+<a name="index-bigfoot-package" class="anchor"></a>
 
 <p>Particularly in the humanities, authors can have multiple classes of
 footnotes, including having footnotes of footnotes.  The package

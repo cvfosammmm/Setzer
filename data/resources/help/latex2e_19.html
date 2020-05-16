@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_18.html#g_t_005cthispagestyle" rel="prev" title="\thispagestyle">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,12 +86,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Spaces"></a>
-<a name="Spaces-1"></a>
+<a name="Spaces" class="anchor"></a>
+<a name="Spaces-1" class="anchor"></a>
 <h2 class="chapter">19 Spaces</h2>
 
-<a name="index-spaces"></a>
-<a name="index-white-space"></a>
+<a name="index-spaces" class="anchor"></a>
+<a name="index-white-space" class="anchor"></a>
 
 <p>LaTeX has many ways to produce white (or filled) space.  Some of
 these are best suited to mathematical text; see&nbsp;<a href="latex2e_16.html#Spacing-in-math-mode">Spacing in math mode</a>.  Some spacing commands are suitable for both regular text
@@ -100,13 +101,13 @@ chapter.
 
 
 <hr>
-<a name="g_t_005censpace-_0026-_005cquad-_0026-_005cqquad"></a>
-<a name="g_t_005censpace-_0026-_005cquad-_0026-_005cqquad-1"></a>
+<a name="g_t_005censpace-_0026-_005cquad-_0026-_005cqquad" class="anchor"></a>
+<a name="g_t_005censpace-_0026-_005cquad-_0026-_005cqquad-1" class="anchor"></a>
 <h3 class="section">19.1 <code>\enspace</code> &amp; <code>\quad</code> &amp; <code>\qquad</code></h3>
 
-<a name="index-_005censpace"></a>
-<a name="index-_005cquad-1"></a>
-<a name="index-_005cqquad-1"></a>
+<a name="index-_005censpace" class="anchor"></a>
+<a name="index-_005cquad-1" class="anchor"></a>
+<a name="index-_005cqquad-1" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -138,11 +139,11 @@ in many circumstances than arbitrary lengths, such as you get with
 </p>
 
 <hr>
-<a name="g_t_005chspace"></a>
-<a name="g_t_005chspace-1"></a>
+<a name="g_t_005chspace" class="anchor"></a>
+<a name="g_t_005chspace-1" class="anchor"></a>
 <h3 class="section">19.2 <code>\hspace</code></h3>
 
-<a name="index-_005chspace"></a>
+<a name="index-_005chspace" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -198,14 +199,14 @@ space won&rsquo;t shrink more than 0.25cm (see <a href="latex2e_14.html#Lengths"
 </p>
 
 <hr>
-<a name="g_t_005chfill"></a>
-<a name="g_t_005chfill-1"></a>
+<a name="g_t_005chfill" class="anchor"></a>
+<a name="g_t_005chfill-1" class="anchor"></a>
 <h3 class="section">19.3 <code>\hfill</code></h3>
 
-<a name="index-_005chfill"></a>
+<a name="index-_005chfill" class="anchor"></a>
 
-<a name="index-stretch_002c-infinite-horizontal"></a>
-<a name="index-infinite-horizontal-stretch"></a>
+<a name="index-stretch_002c-infinite-horizontal" class="anchor"></a>
+<a name="index-infinite-horizontal-stretch" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -223,7 +224,7 @@ of the page and &lsquo;<samp>Quiz One</samp>&rsquo; on the right.
 <pre class="example">\noindent Name:\hfill Quiz One
 </pre></div>
 
-<a name="index-_005cfill"></a>
+<a name="index-_005cfill" class="anchor"></a>
 <p>The <code>\hfill</code> command is equivalent to <code>\hspace{\fill}</code> and
 so the space can be discarded at line breaks.  To avoid that instead use
 <code>\hspace*{\fill}</code> (see <a href="#g_t_005chspace">\hspace</a>).
@@ -246,14 +247,14 @@ so the space can be discarded at line breaks.  To avoid that instead use
 </p>
 
 <hr>
-<a name="g_t_005chss"></a>
-<a name="g_t_005chss-1"></a>
+<a name="g_t_005chss" class="anchor"></a>
+<a name="g_t_005chss-1" class="anchor"></a>
 <h3 class="section">19.4 <code>\hss</code></h3>
 
-<a name="index-_005chss"></a>
-<a name="index-horizontal-space"></a>
-<a name="index-horizontal-space_002c-stretchable"></a>
-<a name="index-space_002c-inserting-horizontal"></a>
+<a name="index-_005chss" class="anchor"></a>
+<a name="index-horizontal-space" class="anchor"></a>
+<a name="index-horizontal-space_002c-stretchable" class="anchor"></a>
+<a name="index-space_002c-inserting-horizontal" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -280,8 +281,8 @@ X\hbox to 0pt{\hss Z}Y
 </p>
 
 <hr>
-<a name="g_t_005cspacefactor"></a>
-<a name="g_t_005cspacefactor-1"></a>
+<a name="g_t_005cspacefactor" class="anchor"></a>
+<a name="g_t_005cspacefactor-1" class="anchor"></a>
 <h3 class="section">19.5 <code>\spacefactor</code></h3>
 
 <p>Synopsis:
@@ -290,7 +291,7 @@ X\hbox to 0pt{\hss Z}Y
 <pre class="example">\spacefactor=<var>integer</var>
 </pre></div>
 
-<a name="index-_005cspacefactor"></a>
+<a name="index-_005cspacefactor" class="anchor"></a>
 <p>Influence LaTeX&rsquo;s glue stretch and shrink behavior.  Most user-level
 documents do not use this command.
 </p>
@@ -350,16 +351,16 @@ See <a href="latex2e_12.html#g_t_005cmakeatletter-_0026-_005cmakeatother">\makea
 
 
 <hr>
-<a name="g_t_005c_0040"></a>
-<a name="g_t_005c_0040-1"></a>
+<a name="g_t_005c_0040" class="anchor"></a>
+<a name="g_t_005c_0040-1" class="anchor"></a>
 <h4 class="subsection">19.5.1 <code>\@</code></h4>
 
-<a name="index-_005c_0040"></a>
-<a name="index-at_002dsign"></a>
-<a name="index-period_002c-sentence_002dending"></a>
-<a name="index-period_002c-abbreviation_002dending"></a>
-<a name="index-period_002c-spacing-after"></a>
-<a name="g_t_005cAT"></a>
+<a name="index-_005c_0040" class="anchor"></a>
+<a name="index-at_002dsign" class="anchor"></a>
+<a name="index-period_002c-sentence_002dending" class="anchor"></a>
+<a name="index-period_002c-abbreviation_002dending" class="anchor"></a>
+<a name="index-period_002c-spacing-after" class="anchor"></a>
+<a name="g_t_005cAT" class="anchor"></a>
 <p>Synopsis:
 </p>
 <div class="example">
@@ -413,13 +414,13 @@ Examples are <code>Nat.\ Acad.\ Science</code>, and <code>Mr.~Bean</code>, and
 </p>
 
 <hr>
-<a name="g_t_005cfrenchspacing"></a>
-<a name="g_t_005cfrenchspacing-1"></a>
+<a name="g_t_005cfrenchspacing" class="anchor"></a>
+<a name="g_t_005cfrenchspacing-1" class="anchor"></a>
 <h4 class="subsection">19.5.2 <code>\frenchspacing</code></h4>
 
-<a name="index-_005cfrenchspacing"></a>
-<a name="index-_005cnonfrenchspacing"></a>
-<a name="index-spacing_002c-inter_002dsentence"></a>
+<a name="index-_005cfrenchspacing" class="anchor"></a>
+<a name="index-_005cnonfrenchspacing" class="anchor"></a>
+<a name="index-spacing_002c-inter_002dsentence" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -442,12 +443,12 @@ spaces are treated equally.
 </p>
 
 <hr>
-<a name="g_t_005cnormalsfcodes"></a>
-<a name="g_t_005cnormalsfcodes-1"></a>
+<a name="g_t_005cnormalsfcodes" class="anchor"></a>
+<a name="g_t_005cnormalsfcodes-1" class="anchor"></a>
 <h4 class="subsection">19.5.3 <code>\normalsfcodes</code></h4>
 
-<a name="index-_005cnormalsfcodes"></a>
-<a name="index-spacing_002c-inter_002dsentence-1"></a>
+<a name="index-_005cnormalsfcodes" class="anchor"></a>
+<a name="index-spacing_002c-inter_002dsentence-1" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -460,13 +461,13 @@ spaces are treated equally.
 </p>
 
 <hr>
-<a name="g_t_005c_0028SPACE_0029"></a>
-<a name="Backslash_002dspace_002c-_005c-"></a>
+<a name="g_t_005c_0028SPACE_0029" class="anchor"></a>
+<a name="Backslash_002dspace_002c-_005c-" class="anchor"></a>
 <h3 class="section">19.6 Backslash-space, <code>\ </code></h3>
 
-<a name="index-_005cNEWLINE"></a>
-<a name="index-_005cSPACE"></a>
-<a name="index-_005cTAB"></a>
+<a name="index-_005cNEWLINE" class="anchor"></a>
+<a name="index-_005cSPACE" class="anchor"></a>
+<a name="index-_005cTAB" class="anchor"></a>
 
 <p>This section refers to the command consisting of two characters, a
 backslash followed by a space. Synopsis:
@@ -513,15 +514,15 @@ are equivalent to backslash-space, <code>\ </code>.
 
 
 <hr>
-<a name="g_t_007e"></a>
-<a name="g_t_007e-1"></a>
+<a name="g_t_007e" class="anchor"></a>
+<a name="g_t_007e-1" class="anchor"></a>
 <h3 class="section">19.7 <code>~</code></h3>
 
-<a name="index-_007e"></a>
-<a name="index-tie"></a>
-<a name="index-space_002c-hard"></a>
-<a name="index-space_002c-unbreakable"></a>
-<a name="index-NBSP"></a>
+<a name="index-_007e" class="anchor"></a>
+<a name="index-tie" class="anchor"></a>
+<a name="index-space_002c-hard" class="anchor"></a>
+<a name="index-space_002c-unbreakable" class="anchor"></a>
+<a name="index-NBSP" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -555,8 +556,8 @@ here are some usage models, many of them from the TeXbook.
 <code>Figure~\ref{fig:KGraph}</code>. When cases are enumerated inline:
 <code>(b)~Show that $f(x)$ is (1)~continuous, and (2)~bounded</code>.
 
-<a name="index-package_002c-siunitx"></a>
-<a name="index-siunitx-package"></a>
+<a name="index-package_002c-siunitx" class="anchor"></a>
+<a name="index-siunitx-package" class="anchor"></a>
 
 </li><li> Between a number and its unit: <code>$745.7.8$~watts</code> (the
 <samp>siunitx</samp> package has a special facility for this) or
@@ -590,16 +591,16 @@ said~--- plausible</code>.
 
 
 <hr>
-<a name="g_t_005cthinspace-_0026-_005cnegthinspace"></a>
-<a name="g_t_005cthinspace-_0026-_005cnegthinspace-1"></a>
+<a name="g_t_005cthinspace-_0026-_005cnegthinspace" class="anchor"></a>
+<a name="g_t_005cthinspace-_0026-_005cnegthinspace-1" class="anchor"></a>
 <h3 class="section">19.8 <code>\thinspace</code> &amp; <code>\negthinspace</code></h3>
 
-<a name="index-_005cthinspace-1"></a>
-<a name="index-_005cnegthinspace-1"></a>
-<a name="index-thin-space-1"></a>
-<a name="index-space_002c-thin"></a>
-<a name="index-thin-space_002c-negative-1"></a>
-<a name="index-space_002c-negative-thin"></a>
+<a name="index-_005cthinspace-1" class="anchor"></a>
+<a name="index-_005cnegthinspace-1" class="anchor"></a>
+<a name="index-thin-space-1" class="anchor"></a>
+<a name="index-space_002c-thin" class="anchor"></a>
+<a name="index-thin-space_002c-negative-1" class="anchor"></a>
+<a name="index-space_002c-negative-thin" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -628,12 +629,12 @@ use is between initials, as in <code>D.\thinspace E.\ Knuth</code>.
 </p>
 
 <hr>
-<a name="g_t_005c_002f"></a>
-<a name="g_t_005c_002f-1"></a>
+<a name="g_t_005c_002f" class="anchor"></a>
+<a name="g_t_005c_002f-1" class="anchor"></a>
 <h3 class="section">19.9 <code>\/</code></h3>
 
-<a name="index-_005c_002f"></a>
-<a name="index-italic-correction"></a>
+<a name="index-_005c_002f" class="anchor"></a>
+<a name="index-italic-correction" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -673,12 +674,12 @@ in a different way.
 </p>
 
 <hr>
-<a name="g_t_005chrulefill-_0026-_005cdotfill"></a>
-<a name="g_t_005chrulefill-_0026-_005cdotfill-1"></a>
+<a name="g_t_005chrulefill-_0026-_005cdotfill" class="anchor"></a>
+<a name="g_t_005chrulefill-_0026-_005cdotfill-1" class="anchor"></a>
 <h3 class="section">19.10 <code>\hrulefill</code> &amp; <code>\dotfill</code></h3>
 
-<a name="index-_005chrulefill"></a>
-<a name="index-_005cdotfill"></a>
+<a name="index-_005chrulefill" class="anchor"></a>
+<a name="index-_005cdotfill" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -740,8 +741,8 @@ Similarly, adjust the dot spacing as with
 </p>
 
 <hr>
-<a name="g_t_005cbigskip-_0026-_005cmedskip-_0026-_005csmallskip"></a>
-<a name="g_t_005cbigskip-_0026-_005cmedskip-_0026-_005csmallskip-1"></a>
+<a name="g_t_005cbigskip-_0026-_005cmedskip-_0026-_005csmallskip" class="anchor"></a>
+<a name="g_t_005cbigskip-_0026-_005cmedskip-_0026-_005csmallskip-1" class="anchor"></a>
 <h3 class="section">19.11 <code>\bigskip</code> &amp; <code>\medskip</code> &amp; <code>\smallskip</code></h3>
 
 <p>Synopsis, one of:
@@ -771,29 +772,29 @@ said Peter.
 file.
 </p>
 <dl compact="compact">
-<dd><a name="bigskip"></a></dd>
+<dd><a name="bigskip" class="anchor"></a></dd>
 <dt><code>\bigskip</code>
-<a name="index-_005cbigskip"></a>
+<a name="index-_005cbigskip" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cbigskipamount"></a>
+<dd><a name="index-_005cbigskipamount" class="anchor"></a>
 <p>The same as <code>\vspace{\bigskipamount}</code>, ordinarily about one line
 space, with stretch and shrink.  The default for the <code>book</code> and
 <code>article</code> classes is <code>12pt plus 4pt minus 4pt</code>.
 </p>
-<a name="medskip"></a></dd>
+<a name="medskip" class="anchor"></a></dd>
 <dt><code>\medskip</code>
-<a name="index-_005cmedskip"></a>
+<a name="index-_005cmedskip" class="anchor"></a>
 </dt>
-<dd><a name="index-_005cmedskipamount"></a>
+<dd><a name="index-_005cmedskipamount" class="anchor"></a>
 <p>The same as <code>\vspace{\medskipamount}</code>, ordinarily about half of a
 line space, with stretch and shrink.  The default for the <code>book</code>
 and <code>article</code> classes is <code>6pt plus 2pt minus 2pt</code>.
 </p>
-<a name="smallskip"></a></dd>
+<a name="smallskip" class="anchor"></a></dd>
 <dt><code>\smallskip</code>
-<a name="index-_005csmallskip"></a>
+<a name="index-_005csmallskip" class="anchor"></a>
 </dt>
-<dd><a name="index-_005csmallskipamount"></a>
+<dd><a name="index-_005csmallskipamount" class="anchor"></a>
 <p>The same as <code>\vspace{\smallskipamount}</code>, ordinarily about a
 quarter of a line space, with stretch and shrink.  The default for the
 <code>book</code> and <code>article</code> classes is <code>3pt plus 1pt minus 1pt</code>.
@@ -812,8 +813,8 @@ put a page break (see <a href="#g_t_005cbigbreak-_0026-_005cmedbreak-_0026-_005c
 </p>
 
 <hr>
-<a name="g_t_005cbigbreak-_0026-_005cmedbreak-_0026-_005csmallbreak"></a>
-<a name="g_t_005cbigbreak-_0026-_005cmedbreak-_0026-_005csmallbreak-1"></a>
+<a name="g_t_005cbigbreak-_0026-_005cmedbreak-_0026-_005csmallbreak" class="anchor"></a>
+<a name="g_t_005cbigbreak-_0026-_005cmedbreak-_0026-_005csmallbreak-1" class="anchor"></a>
 <h3 class="section">19.12 <code>\bigbreak</code> &amp; <code>\medbreak</code> &amp; <code>\smallbreak</code></h3>
 
 <p>Synopsis, one of:
@@ -846,12 +847,12 @@ with &lsquo;<samp>def</samp>&rsquo;.
 </p>
 
 <hr>
-<a name="g_t_005cstrut"></a>
-<a name="g_t_005cstrut-1"></a>
+<a name="g_t_005cstrut" class="anchor"></a>
+<a name="g_t_005cstrut-1" class="anchor"></a>
 <h3 class="section">19.13 <code>\strut</code></h3>
 
-<a name="index-_005cstrut"></a>
-<a name="index-strut"></a>
+<a name="index-_005cstrut" class="anchor"></a>
+<a name="index-strut" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -915,10 +916,10 @@ third list&rsquo;s <code>\parbox</code> goes only to the bottom of its second
 the baseline.  The fourth list adds the strut that gives the needed
 extra below-baseline space.
 </p>
-<a name="index-package_002c-TikZ-1"></a>
-<a name="index-TikZ-package-1"></a>
-<a name="index-package_002c-Asymptote-1"></a>
-<a name="index-Asymptote-package-1"></a>
+<a name="index-package_002c-TikZ-1" class="anchor"></a>
+<a name="index-TikZ-package-1" class="anchor"></a>
+<a name="index-package_002c-Asymptote-1" class="anchor"></a>
+<a name="index-Asymptote-package-1" class="anchor"></a>
 
 <p>The <code>\strut</code> command is often useful in graphics, such as in
 <samp>TikZ</samp> or <samp>Asymptote</samp>.  For instance, you may have a command
@@ -950,13 +951,13 @@ integral would still hit the line.)
 </p>
 
 <hr>
-<a name="g_t_005cvspace"></a>
-<a name="g_t_005cvspace-1"></a>
+<a name="g_t_005cvspace" class="anchor"></a>
+<a name="g_t_005cvspace-1" class="anchor"></a>
 <h3 class="section">19.14 <code>\vspace</code></h3>
 
-<a name="index-_005cvspace"></a>
-<a name="index-vertical-space"></a>
-<a name="index-space_002c-vertical"></a>
+<a name="index-_005cvspace" class="anchor"></a>
+<a name="index-vertical-space" class="anchor"></a>
+<a name="index-space_002c-vertical" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -1016,14 +1017,14 @@ the page, with at least one inch of space below each.
 
 
 <hr>
-<a name="g_t_005cvfill"></a>
-<a name="g_t_005cvfill-1"></a>
+<a name="g_t_005cvfill" class="anchor"></a>
+<a name="g_t_005cvfill-1" class="anchor"></a>
 <h3 class="section">19.15 <code>\vfill</code></h3>
 
-<a name="index-_005cvfill"></a>
+<a name="index-_005cvfill" class="anchor"></a>
 
-<a name="index-stretch_002c-infinite-vertical"></a>
-<a name="index-infinite-vertical-stretch"></a>
+<a name="index-stretch_002c-infinite-vertical" class="anchor"></a>
+<a name="index-infinite-vertical-stretch" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -1058,13 +1059,13 @@ Lost Dog!
 
 
 <hr>
-<a name="g_t_005caddvspace"></a>
-<a name="g_t_005caddvspace-1"></a>
+<a name="g_t_005caddvspace" class="anchor"></a>
+<a name="g_t_005caddvspace-1" class="anchor"></a>
 <h3 class="section">19.16 <code>\addvspace</code></h3>
 
-<a name="index-_005caddvspace"></a>
-<a name="index-vertical-space-1"></a>
-<a name="index-space_002c-inserting-vertical"></a>
+<a name="index-_005caddvspace" class="anchor"></a>
+<a name="index-vertical-space-1" class="anchor"></a>
+<a name="index-space_002c-inserting-vertical" class="anchor"></a>
 
 <p>Synopsis:
 </p>

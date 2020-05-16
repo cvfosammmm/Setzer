@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_16.html#g_t_005cstackrel" rel="prev" title="\stackrel">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,11 +86,11 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Modes"></a>
-<a name="Modes-1"></a>
+<a name="Modes" class="anchor"></a>
+<a name="Modes-1" class="anchor"></a>
 <h2 class="chapter">17 Modes</h2>
 
-<a name="index-modes"></a>
+<a name="index-modes" class="anchor"></a>
 
 <p>As LaTeX processes your document, at any point it is in one of six
 modes.  They fall into three categories of two each, the horizontal
@@ -98,14 +99,14 @@ in one mode or another (in particular, many commands only work in one of
 the math modes), and error messages will refer to these.
 </p>
 <ul>
-<li> <a name="modes-paragraph-mode"></a><a name="index-paragraph-mode"></a>
+<li> <a name="modes-paragraph-mode" class="anchor"></a><a name="index-paragraph-mode" class="anchor"></a>
 <em>Paragraph mode</em> is what LaTeX is in when processing ordinary
 text.  It breaks the input text into lines and breaks the lines into
 pages.  This is the mode LaTeX is in most of the time.
 
-<a name="index-left_002dto_002dright-mode"></a>
-<a name="index-LR-mode"></a>
-<a name="modes-lr-mode"></a><p><em>LR mode</em> (for left-to-right mode; in plain TeX this is called
+<a name="index-left_002dto_002dright-mode" class="anchor"></a>
+<a name="index-LR-mode" class="anchor"></a>
+<a name="modes-lr-mode" class="anchor"></a><p><em>LR mode</em> (for left-to-right mode; in plain TeX this is called
 <em>restricted horizontal mode</em>) is in effect when LaTeX starts
 making a box with an <code>\mbox</code> command.  As in paragraph mode,
 LaTeX&rsquo;s output is a string of words with spaces between them.  Unlike
@@ -115,23 +116,23 @@ that the LR box is too long, when it is finished and next tries to put
 that box into a line, it could very well complain that the finished LR
 box won&rsquo;t fit there.)
 </p>
-</li><li> <a name="index-math-mode"></a>
-<a name="modes-math-mode"></a><em>Math mode</em> is when LaTeX is generating
+</li><li> <a name="index-math-mode" class="anchor"></a>
+<a name="modes-math-mode" class="anchor"></a><em>Math mode</em> is when LaTeX is generating
 an inline mathematical formula.
 
-<a name="index-display-math-mode"></a>
+<a name="index-display-math-mode" class="anchor"></a>
 <p><em>Display math mode</em> is when LaTeX is generating a displayed
 mathematical formula.  (Displayed formulas differ somewhat from inline
 ones.  One example is that the placement of the subscript on <code>\int</code>
 differs in the two situations.)
 </p>
-</li><li> <a name="index-vertical-mode"></a>
-<a name="modes-vertical-mode"></a><em>Vertical mode</em> is when LaTeX is building the list of lines and
+</li><li> <a name="index-vertical-mode" class="anchor"></a>
+<a name="modes-vertical-mode" class="anchor"></a><em>Vertical mode</em> is when LaTeX is building the list of lines and
 other material making the output page.  This is the mode LaTeX is in
 when it starts a document.
 
-<a name="index-internal-vertical-mode"></a>
-<a name="modes-internal-vertical-mode"></a><p><em>Internal vertical mode</em> is in effect when LaTeX starts making a
+<a name="index-internal-vertical-mode" class="anchor"></a>
+<a name="modes-internal-vertical-mode" class="anchor"></a><p><em>Internal vertical mode</em> is in effect when LaTeX starts making a
 <code>\vbox</code>.  This is the vertical analogue of LR mode.
 </p>
 </li></ul>
@@ -143,9 +144,9 @@ mode, then the next switch happens at the &lsquo;<samp>\(</samp>&rsquo; where La
 changes to math mode, and then when it leaves the formula it pops
 back to paragraph mode.
 </p>
-<a name="index-inner-paragraph-mode"></a>
-<a name="index-outer-paragraph-mode"></a>
-<a name="modes-inner-paragraph-mode"></a><a name="modes-outer-paragraph-mode"></a><p>Paragraph mode has two subcases.  If you use a <code>\parbox</code> command
+<a name="index-inner-paragraph-mode" class="anchor"></a>
+<a name="index-outer-paragraph-mode" class="anchor"></a>
+<a name="modes-inner-paragraph-mode" class="anchor"></a><a name="modes-outer-paragraph-mode" class="anchor"></a><p>Paragraph mode has two subcases.  If you use a <code>\parbox</code> command
 or a <code>minipage</code> then LaTeX is put into paragraph mode.  But it
 will not put a page break here.  Inside one of these boxes, called a
 <em>parbox</em>, LaTeX is in <em>inner paragraph mode</em>.  Its more usual
@@ -154,8 +155,8 @@ situation, where it can put page breaks, is <em>outer paragraph mode</em>
 </p>
 
 <hr>
-<a name="g_t_005censuremath"></a>
-<a name="g_t_005censuremath-1"></a>
+<a name="g_t_005censuremath" class="anchor"></a>
+<a name="g_t_005censuremath-1" class="anchor"></a>
 <h3 class="section">17.1 <code>\ensuremath</code></h3>
 
 <p>Synopsis:

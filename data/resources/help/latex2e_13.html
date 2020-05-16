@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_12.html#g_t_005cignorespaces-_0026-_005cignorespacesafterend" rel="prev" title="\ignorespaces &amp; \ignorespacesafterend">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,12 +86,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Counters"></a>
-<a name="Counters-1"></a>
+<a name="Counters" class="anchor"></a>
+<a name="Counters-1" class="anchor"></a>
 <h2 class="chapter">13 Counters</h2>
 
-<a name="index-counters_002c-a-list-of"></a>
-<a name="index-variables_002c-a-list-of"></a>
+<a name="index-counters_002c-a-list-of" class="anchor"></a>
+<a name="index-variables_002c-a-list-of" class="anchor"></a>
 
 <p>Everything LaTeX numbers for you has a counter associated with
 it. The name of the counter is often the same as the name of the
@@ -123,11 +124,11 @@ up to four levels of nesting (see <a href="latex2e_8.html#enumerate">enumerate</
 
 
 <hr>
-<a name="g_t_005calph-_005cAlph-_005carabic-_005croman-_005cRoman-_005cfnsymbol"></a>
-<a name="g_t_005calph-_005cAlph-_005carabic-_005croman-_005cRoman-_005cfnsymbol_003a-Printing-counters"></a>
+<a name="g_t_005calph-_005cAlph-_005carabic-_005croman-_005cRoman-_005cfnsymbol" class="anchor"></a>
+<a name="g_t_005calph-_005cAlph-_005carabic-_005croman-_005cRoman-_005cfnsymbol_003a-Printing-counters" class="anchor"></a>
 <h3 class="section">13.1 <code>\alph \Alph \arabic \roman \Roman \fnsymbol</code>: Printing counters</h3>
 
-<a name="index-counters_002c-printing"></a>
+<a name="index-counters_002c-printing" class="anchor"></a>
 
 <p>Print the value of a counter, in a specified style.  For instance, if
 the counter <var>counter</var> has the value 1 then a
@@ -140,7 +141,7 @@ start with a backslash.
 </p>
 <dl compact="compact">
 <dt><code>\alph{<var>counter</var>}</code>
-<a name="index-_005calph_007bcounter_007d"></a>
+<a name="index-_005calph_007bcounter_007d" class="anchor"></a>
 </dt>
 <dd><p>Print the value of <var>counter</var> in lowercase letters: &lsquo;a&rsquo;, &lsquo;b&rsquo;,
 <small class="enddots">...</small> If the counter&rsquo;s value is less than 1 or more than 26 then
@@ -148,7 +149,7 @@ you get &lsquo;<samp>LaTeX Error: Counter too large.</samp>&rsquo;
 </p>
 </dd>
 <dt><code>\Alph{<var>counter</var>}</code>
-<a name="index-_005cAlph_007bcounter_007d"></a>
+<a name="index-_005cAlph_007bcounter_007d" class="anchor"></a>
 </dt>
 <dd><p>Print in uppercase letters: &lsquo;A&rsquo;, &lsquo;B&rsquo;, <small class="enddots">...</small> If the counter&rsquo;s value
 is less than 1 or more than 26 then you get &lsquo;<samp>LaTeX Error: Counter
@@ -156,13 +157,13 @@ too large.</samp>&rsquo;
 </p>
 </dd>
 <dt><code>\arabic{<var>counter</var>}</code>
-<a name="index-_005carabic_007bcounter_007d"></a>
+<a name="index-_005carabic_007bcounter_007d" class="anchor"></a>
 </dt>
 <dd><p>Print in Arabic numbers such as &lsquo;<samp>5</samp>&rsquo; or &lsquo;<samp>-2</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>\roman{<var>counter</var>}</code>
-<a name="index-_005croman_007bcounter_007d"></a>
+<a name="index-_005croman_007bcounter_007d" class="anchor"></a>
 </dt>
 <dd><p>Print in lowercase roman numerals: &lsquo;i&rsquo;, &lsquo;ii&rsquo;, <small class="enddots">...</small> If the
 counter&rsquo;s value is less than 1 then you get no warning or error but
@@ -170,7 +171,7 @@ LaTeX does not print anything in the output.
 </p>
 </dd>
 <dt><code>\Roman{<var>counter</var>}</code>
-<a name="index-_005cRoman_007bcounter_007d"></a>
+<a name="index-_005cRoman_007bcounter_007d" class="anchor"></a>
 </dt>
 <dd><p>Print in uppercase roman numerals: &lsquo;I&rsquo;, &lsquo;II&rsquo;, <small class="enddots">...</small> If the
 counter&rsquo;s value is less than 1 then you get no warning or error but
@@ -178,7 +179,7 @@ LaTeX does not print anything in the output.
 </p>
 </dd>
 <dt><code>\fnsymbol{<var>counter</var>}</code>
-<a name="index-_005cfnsymbol_007bcounter_007d"></a>
+<a name="index-_005cfnsymbol_007bcounter_007d" class="anchor"></a>
 </dt>
 <dd><p>Prints the value of <var>counter</var> using a sequence of nine symbols that
 are traditionally used for labeling footnotes.  The value of
@@ -207,13 +208,13 @@ warning but LaTeX does not output anything.
 
 
 <hr>
-<a name="g_t_005cusecounter"></a>
-<a name="g_t_005cusecounter-1"></a>
+<a name="g_t_005cusecounter" class="anchor"></a>
+<a name="g_t_005cusecounter-1" class="anchor"></a>
 <h3 class="section">13.2 <code>\usecounter</code></h3>
 
-<a name="index-_005cusecounter"></a>
-<a name="index-list-items_002c-specifying-counter"></a>
-<a name="index-numbered-items_002c-specifying-counter"></a>
+<a name="index-_005cusecounter" class="anchor"></a>
+<a name="index-list-items_002c-specifying-counter" class="anchor"></a>
+<a name="index-numbered-items_002c-specifying-counter" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -245,12 +246,12 @@ enumerated with <var>testcounter</var>:
 
 
 <hr>
-<a name="g_t_005cvalue"></a>
-<a name="g_t_005cvalue-1"></a>
+<a name="g_t_005cvalue" class="anchor"></a>
+<a name="g_t_005cvalue-1" class="anchor"></a>
 <h3 class="section">13.3 <code>\value</code></h3>
 
-<a name="index-_005cvalue"></a>
-<a name="index-counters_002c-getting-value-of"></a>
+<a name="index-_005cvalue" class="anchor"></a>
+<a name="index-counters_002c-getting-value-of" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -290,13 +291,13 @@ preceded by <code>\protect</code> (see <a href="latex2e_12.html#g_t_005cprotect"
 
 
 <hr>
-<a name="g_t_005csetcounter"></a>
-<a name="g_t_005csetcounter-1"></a>
+<a name="g_t_005csetcounter" class="anchor"></a>
+<a name="g_t_005csetcounter-1" class="anchor"></a>
 <h3 class="section">13.4 <code>\setcounter</code></h3>
 
-<a name="index-_005csetcounter"></a>
-<a name="index-counters_002c-setting"></a>
-<a name="index-setting-counters"></a>
+<a name="index-_005csetcounter" class="anchor"></a>
+<a name="index-counters_002c-setting" class="anchor"></a>
+<a name="index-setting-counters" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -319,11 +320,11 @@ Here it is in Roman: \Roman{exercise}.
 
 
 <hr>
-<a name="g_t_005caddtocounter"></a>
-<a name="g_t_005caddtocounter-1"></a>
+<a name="g_t_005caddtocounter" class="anchor"></a>
+<a name="g_t_005caddtocounter-1" class="anchor"></a>
 <h3 class="section">13.5 <code>\addtocounter</code></h3>
 
-<a name="index-_005caddtocounter"></a>
+<a name="index-_005caddtocounter" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -343,11 +344,11 @@ Here it is in Roman: \Roman{section}.
 
 
 <hr>
-<a name="g_t_005crefstepcounter"></a>
-<a name="g_t_005crefstepcounter-1"></a>
+<a name="g_t_005crefstepcounter" class="anchor"></a>
+<a name="g_t_005crefstepcounter-1" class="anchor"></a>
 <h3 class="section">13.6 <code>\refstepcounter</code></h3>
 
-<a name="index-_005crefstepcounter"></a>
+<a name="index-_005crefstepcounter" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -368,11 +369,11 @@ locally, i.e., inside the current group.
 </p>
 
 <hr>
-<a name="g_t_005cstepcounter"></a>
-<a name="g_t_005cstepcounter-1"></a>
+<a name="g_t_005cstepcounter" class="anchor"></a>
+<a name="g_t_005cstepcounter-1" class="anchor"></a>
 <h3 class="section">13.7 <code>\stepcounter</code></h3>
 
-<a name="index-_005cstepcounter"></a>
+<a name="index-_005cstepcounter" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -391,13 +392,13 @@ not influence references&nbsp;&mdash; it does not define the current
 </p>
 
 <hr>
-<a name="g_t_005cday-_0026-_005cmonth-_0026-_005cyear"></a>
-<a name="g_t_005cday-_0026-_005cmonth-_0026-_005cyear-1"></a>
+<a name="g_t_005cday-_0026-_005cmonth-_0026-_005cyear" class="anchor"></a>
+<a name="g_t_005cday-_0026-_005cmonth-_0026-_005cyear-1" class="anchor"></a>
 <h3 class="section">13.8 <code>\day</code> &amp; <code>\month</code> &amp; <code>\year</code></h3>
 
-<a name="index-_005cday"></a>
-<a name="index-_005cmonth"></a>
-<a name="index-_005cyear"></a>
+<a name="index-_005cday" class="anchor"></a>
+<a name="index-_005cmonth" class="anchor"></a>
+<a name="index-_005cyear" class="anchor"></a>
 
 <p>LaTeX defines the counter <code>\day</code> for the day of the month
 (nominally with value between 1 and 31), <code>\month</code> for the month of

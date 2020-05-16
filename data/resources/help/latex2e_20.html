@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_19.html#g_t_005caddvspace" rel="prev" title="\addvspace">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,11 +86,11 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Boxes"></a>
-<a name="Boxes-1"></a>
+<a name="Boxes" class="anchor"></a>
+<a name="Boxes-1" class="anchor"></a>
 <h2 class="chapter">20 Boxes</h2>
 
-<a name="index-boxes"></a>
+<a name="index-boxes" class="anchor"></a>
 
 <p>At its core, LaTeX puts things in boxes and then puts the boxes on a
 page.  So these commands are central.
@@ -100,15 +101,15 @@ One useful adjunct to the commands here is <samp>adjustbox</samp>.
 
 
 <hr>
-<a name="g_t_005cmbox-_0026-_005cmakebox"></a>
-<a name="g_t_005cmbox-_0026-_005cmakebox-1"></a>
+<a name="g_t_005cmbox-_0026-_005cmakebox" class="anchor"></a>
+<a name="g_t_005cmbox-_0026-_005cmakebox-1" class="anchor"></a>
 <h3 class="section">20.1 <code>\mbox</code> &amp; <code>\makebox</code></h3>
 
-<a name="index-_005cmbox"></a>
-<a name="index-_005cmakebox"></a>
-<a name="index-box"></a>
-<a name="index-make-a-box"></a>
-<a name="index-hyphenation_002c-preventing"></a>
+<a name="index-_005cmbox" class="anchor"></a>
+<a name="index-_005cmakebox" class="anchor"></a>
+<a name="index-box" class="anchor"></a>
+<a name="index-make-a-box" class="anchor"></a>
+<a name="index-hyphenation_002c-preventing" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -148,7 +149,7 @@ this creates a full-line box
 <p>with &lsquo;<samp>Chapter Exam</samp>&rsquo; centered.  But <var>text</var> can also be too wide
 for <var>width</var>.  See the example below of zero-width boxes.
 </p>
-<a name="mbox-makebox-depth"></a><a name="mbox-makebox-height"></a><a name="mbox-makebox-width"></a><a name="mbox-makebox-totalheight"></a><p>In the <var>width</var> argument you can use the following lengths that refer
+<a name="mbox-makebox-depth" class="anchor"></a><a name="mbox-makebox-height" class="anchor"></a><a name="mbox-makebox-width" class="anchor"></a><a name="mbox-makebox-totalheight" class="anchor"></a><p>In the <var>width</var> argument you can use the following lengths that refer
 to the dimension of the box that LaTeX gets on typesetting
 <var>text</var>: <code>\depth</code>, <code>\height</code>, <code>\width</code>,
 <code>\totalheight</code> (this is the box&rsquo;s height plus its depth).  For
@@ -195,11 +196,11 @@ puts the value of the quiz questions to the left of those questions.
 \pts{90}An African or European swallow?
 </pre></div>
 
-<p><a name="index-package_002c-TikZ-2"></a>
-<a name="index-TikZ-package-2"></a>
+<p><a name="index-package_002c-TikZ-2" class="anchor"></a>
+<a name="index-TikZ-package-2" class="anchor"></a>
 </p>
-<a name="index-package_002c-Asymptote-2"></a>
-<a name="index-Asymptote-package-2"></a>
+<a name="index-package_002c-Asymptote-2" class="anchor"></a>
+<a name="index-Asymptote-package-2" class="anchor"></a>
 
 <p>The right edge of the output &lsquo;<samp>10 points </samp>&rsquo; (note the ending space)
 will be just before the &lsquo;<samp>What</samp>&rsquo; (note the space after
@@ -223,12 +224,12 @@ multiple lines see&nbsp;<a href="#g_t_005cparbox">\parbox</a> and&nbsp;<a href="
 </p>
 
 <hr>
-<a name="g_t_005cfbox-_0026-_005cframebox"></a>
-<a name="g_t_005cfbox-_0026-_005cframebox-1"></a>
+<a name="g_t_005cfbox-_0026-_005cframebox" class="anchor"></a>
+<a name="g_t_005cfbox-_0026-_005cframebox-1" class="anchor"></a>
 <h3 class="section">20.2 <code>\fbox</code> &amp; <code>\framebox</code></h3>
 
-<a name="index-_005cfbox"></a>
-<a name="index-_005cframebox-1"></a>
+<a name="index-_005cfbox" class="anchor"></a>
+<a name="index-_005cframebox-1" class="anchor"></a>
 
 <p>Synopses, one of:
 </p>
@@ -269,23 +270,23 @@ here is an example creating an empty box that is 1/4in wide.
 <p>These parameters determine the frame layout.
 </p>
 <dl compact="compact">
-<dd><a name="fbox-framebox-fboxrule"></a></dd>
+<dd><a name="fbox-framebox-fboxrule" class="anchor"></a></dd>
 <dt><code>\fboxrule</code>
-<a name="index-_005cfboxrule-2"></a>
+<a name="index-_005cfboxrule-2" class="anchor"></a>
 </dt>
-<dd><a name="index-frame_002c-line-width"></a>
-<a name="index-frame-rule-width"></a>
-<a name="index-_005cfboxrule"></a>
+<dd><a name="index-frame_002c-line-width" class="anchor"></a>
+<a name="index-frame-rule-width" class="anchor"></a>
+<a name="index-_005cfboxrule" class="anchor"></a>
 <p>The thickness of the lines around the enclosed box.  The default is
 0.2pt.  Change it with a command such as
 <code>\setlength{\fboxrule}{0.8pt}</code> (see <a href="latex2e_14.html#g_t_005csetlength">\setlength</a>).
 </p>
-<a name="fbox-framebox-fboxsep"></a></dd>
+<a name="fbox-framebox-fboxsep" class="anchor"></a></dd>
 <dt><code>\fboxsep</code>
-<a name="index-_005cfboxsep-2"></a>
+<a name="index-_005cfboxsep-2" class="anchor"></a>
 </dt>
-<dd><a name="index-frame_002c-separation-from-contents"></a>
-<a name="index-_005cfboxsep"></a>
+<dd><a name="index-frame_002c-separation-from-contents" class="anchor"></a>
+<a name="index-_005cfboxsep" class="anchor"></a>
 <p>The distance from the frame to the enclosed box. The default is 3pt.
 Change it with a command such as <code>\setlength{\fboxsep}{0pt}</code>
 (see <a href="latex2e_14.html#g_t_005csetlength">\setlength</a>).  Setting it to 0pt is useful sometimes:
@@ -321,13 +322,13 @@ units depend on <code>picture</code>&rsquo;s <code>\unitlength</code> (see <a hr
 </p>
 
 <hr>
-<a name="g_t_005cparbox"></a>
-<a name="g_t_005cparbox-1"></a>
+<a name="g_t_005cparbox" class="anchor"></a>
+<a name="g_t_005cparbox-1" class="anchor"></a>
 <h3 class="section">20.3 <code>\parbox</code></h3>
 
-<a name="index-_005cparbox"></a>
-<a name="index-paragraph-mode-1"></a>
-<a name="index-paragraph_002c-in-a-box"></a>
+<a name="index-_005cparbox" class="anchor"></a>
+<a name="index-paragraph-mode-1" class="anchor"></a>
+<a name="index-paragraph_002c-in-a-box" class="anchor"></a>
 
 <p>Synopses, one of:
 </p>
@@ -386,11 +387,11 @@ stretch it out vertically (for this, the text must contain vertically
 stretchable space).
 </p>
 <hr>
-<a name="g_t_005craisebox"></a>
-<a name="g_t_005craisebox-1"></a>
+<a name="g_t_005craisebox" class="anchor"></a>
+<a name="g_t_005craisebox-1" class="anchor"></a>
 <h3 class="section">20.4 <code>\raisebox</code></h3>
 
-<a name="index-_005craisebox"></a>
+<a name="index-_005craisebox" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -420,7 +421,7 @@ the second mandatory argument <var>text</var>. This is a rigid length
 they are specified, they override the natural height and depth of the
 box LaTeX gets by typesetting <var>text</var>.
 </p>
-<a name="raisebox-depth"></a><a name="raisebox-height"></a><a name="raisebox-width"></a><a name="raisebox-totalheight"></a><p>In the arguments <var>distance</var>, <var>height</var>, and <var>depth</var> you can
+<a name="raisebox-depth" class="anchor"></a><a name="raisebox-height" class="anchor"></a><a name="raisebox-width" class="anchor"></a><a name="raisebox-totalheight" class="anchor"></a><p>In the arguments <var>distance</var>, <var>height</var>, and <var>depth</var> you can
 use the following lengths that refer to the dimension of the box that
 LaTeX gets on typesetting <var>text</var>: <code>\depth</code>, <code>\height</code>,
 <code>\width</code>, <code>\totalheight</code> (this is the box&rsquo;s height plus its
@@ -445,13 +446,13 @@ second is the height of <samp>meta.png</samp>.
 </p>
 
 <hr>
-<a name="g_t_005csbox-_0026-_005csavebox"></a>
-<a name="g_t_005csbox-_0026-_005csavebox-1"></a>
+<a name="g_t_005csbox-_0026-_005csavebox" class="anchor"></a>
+<a name="g_t_005csbox-_0026-_005csavebox-1" class="anchor"></a>
 <h3 class="section">20.5 <code>\sbox</code> &amp; <code>\savebox</code></h3>
 
-<a name="index-_005csbox"></a>
-<a name="index-_005csavebox"></a>
-<a name="index-box_002c-save"></a>
+<a name="index-_005csbox" class="anchor"></a>
+<a name="index-_005csavebox" class="anchor"></a>
+<a name="index-box_002c-save" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -541,11 +542,11 @@ header.  LaTeX only typesets it once.
 </p>
 
 <hr>
-<a name="lrbox"></a>
-<a name="lrbox-1"></a>
+<a name="lrbox" class="anchor"></a>
+<a name="lrbox-1" class="anchor"></a>
 <h3 class="section">20.6 <code>lrbox</code></h3>
 
-<a name="index-lrbox"></a>
+<a name="index-lrbox" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -578,12 +579,12 @@ and <code>\savebox</code> commands, and is equivalent to them. See <a href="#g_t
 
 
 <hr>
-<a name="g_t_005cusebox"></a>
-<a name="g_t_005cusebox-1"></a>
+<a name="g_t_005cusebox" class="anchor"></a>
+<a name="g_t_005cusebox-1" class="anchor"></a>
 <h3 class="section">20.7 <code>\usebox</code></h3>
 
-<a name="index-_005cusebox"></a>
-<a name="index-box_002c-use-saved-box"></a>
+<a name="index-_005cusebox" class="anchor"></a>
+<a name="index-box_002c-use-saved-box" class="anchor"></a>
 
 <p>Synopsis:
 </p>

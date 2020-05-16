@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_27.html#g_t_005ctypeout" rel="prev" title="\typeout">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,11 +86,11 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Command-line"></a>
-<a name="Command-line-1"></a>
+<a name="Command-line" class="anchor"></a>
+<a name="Command-line-1" class="anchor"></a>
 <h2 class="chapter">28 Command line</h2>
 
-<a name="index-command-line"></a>
+<a name="index-command-line" class="anchor"></a>
 
 <p>Synopsis (from a terminal command line):
 </p>
@@ -108,7 +109,7 @@ creating the output <samp>thesis.pdf</samp>.
 <pre class="example">pdflatex thesis
 </pre></div>
 
-<p><a name="index-_002etex_002c-default-extension"></a>
+<p><a name="index-_002etex_002c-default-extension" class="anchor"></a>
 Note that <samp>.tex</samp> is the default file extension.
 </p>
 <p>pdfTeX is a development of the original TeX program, as are
@@ -141,11 +142,11 @@ to do.
 
 
 <hr>
-<a name="Command-line-options"></a>
-<a name="Command-line-options-1"></a>
+<a name="Command-line-options" class="anchor"></a>
+<a name="Command-line-options-1" class="anchor"></a>
 <h3 class="section">28.1 Command line options</h3>
 
-<a name="index-options_002c-command-line"></a>
+<a name="index-options_002c-command-line" class="anchor"></a>
 
 <p>These are the command-line options relevant to ordinary document
 authoring. For a full list, try running &lsquo;<samp>latex --help</samp>&rsquo; from the
@@ -157,19 +158,19 @@ both TeX Live (and MacTeX) and MiKTeX.  We will use both
 conventions interchangeably.
 </p>
 <dl compact="compact">
-<dd><a name="index-_002d_002dversion-command_002dline-option"></a>
+<dd><a name="index-_002d_002dversion-command_002dline-option" class="anchor"></a>
 </dd>
 <dt><code>-version</code></dt>
 <dd><p>Show the current version, like &lsquo;<samp>pdfTeX 3.14159265-2.6-1.40.16 (TeX
 Live 2015/Debian)</samp>&rsquo; along with a small amount of additional information,
 and exit.
 </p>
-<a name="index-_002d_002dhelp-command_002dline-option"></a>
+<a name="index-_002d_002dhelp-command_002dline-option" class="anchor"></a>
 </dd>
 <dt><code>-help</code></dt>
 <dd><p>Give a brief usage message that is useful as a prompt and exit.
 </p>
-<a name="index-_002d_002dinteraction-command_002dline-option"></a>
+<a name="index-_002d_002dinteraction-command_002dline-option" class="anchor"></a>
 </dd>
 <dt><code>-interaction=<var>mode</var></code></dt>
 <dd><p>TeX compiles a document in one of four interaction modes:
@@ -191,7 +192,7 @@ input.
 
 <p>eliminates most terminal output.
 </p>
-<a name="index-_002d_002djobname-command_002dline-option"></a>
+<a name="index-_002d_002djobname-command_002dline-option" class="anchor"></a>
 </dd>
 <dt><code>-jobname=<var>string</var></code></dt>
 <dd><p>Set the value of TeX&rsquo;s <code>jobname</code> to the string.  The log file
@@ -206,15 +207,15 @@ name. This is used to name the log file the output file.  The
 <code>jobname</code> option overrides that process and directly specifies the
 name.  See <a href="#Command-line-input">Command line input</a> for an example of its use.
 </p>
-<a name="index-_002d_002doutput_002ddirectory-command_002dline-option"></a>
+<a name="index-_002d_002doutput_002ddirectory-command_002dline-option" class="anchor"></a>
 </dd>
 <dt><code>-output-directory=<var>directory</var></code></dt>
 <dd><p>Write files in the directory <var>directory</var>.  It must already exist.
 </p>
-<a name="index-_002d_002dshell_002descape-command_002dline-option"></a>
-<a name="index-_002d_002dno_002dshell_002descape-command_002dline-option"></a>
-<a name="index-_002d_002denable_002dwrite18-command_002dline-option"></a>
-<a name="index-_002d_002ddisable_002dwrite18-command_002dline-option"></a>
+<a name="index-_002d_002dshell_002descape-command_002dline-option" class="anchor"></a>
+<a name="index-_002d_002dno_002dshell_002descape-command_002dline-option" class="anchor"></a>
+<a name="index-_002d_002denable_002dwrite18-command_002dline-option" class="anchor"></a>
+<a name="index-_002d_002ddisable_002dwrite18-command_002dline-option" class="anchor"></a>
 </dd>
 <dt><code>--shell-escape</code></dt>
 <dt><code>--no-shell-escape</code></dt>
@@ -224,8 +225,8 @@ name.  See <a href="#Command-line-input">Command line input</a> for an example o
 options are for with TeX Live or MacTeX while the second two are
 for MiKTeX.
 </p>
-<a name="index-package_002c-sagetex"></a>
-<a name="index-sagetex-package"></a>
+<a name="index-package_002c-sagetex" class="anchor"></a>
+<a name="index-sagetex-package" class="anchor"></a>
 
 <p>Sometimes you want to run external system commands from inside a
 LaTeX file. For instance the package <samp>sagetex</samp> allows you to
@@ -243,13 +244,13 @@ programs, which they distribute.)
 your document you call <code>\write18{ls -l}</code>, then you do not get an
 error but the log file says &lsquo;<samp>runsystem(ls -l)...disabled</samp>&rsquo;.
 </p>
-<a name="index-_002d_002dhalt_002don_002derror-command_002dline-option"></a>
+<a name="index-_002d_002dhalt_002don_002derror-command_002dline-option" class="anchor"></a>
 </dd>
 <dt><code>-halt-on-error</code></dt>
 <dd><p>Stop processing at the first error.
 </p>
-<a name="index-_002d_002dfile_002dline_002derror-command_002dline-option"></a>
-<a name="index-_002d_002dno_002dfile_002dline_002derror-command_002dline-option"></a>
+<a name="index-_002d_002dfile_002dline_002derror-command_002dline-option" class="anchor"></a>
+<a name="index-_002d_002dno_002dfile_002dline_002derror-command_002dline-option" class="anchor"></a>
 </dd>
 <dt><code>-file-line-error</code></dt>
 <dt><code>-no-file-line-error</code></dt>
@@ -260,19 +261,19 @@ error messages.  These are only available with TeX Live or MacTeX.
 
 
 <hr>
-<a name="Command-line-input"></a>
-<a name="Command-line-input-1"></a>
+<a name="Command-line-input" class="anchor"></a>
+<a name="Command-line-input-1" class="anchor"></a>
 <h3 class="section">28.2 Command line input</h3>
 
-<a name="index-input_002c-on-command-line"></a>
+<a name="index-input_002c-on-command-line" class="anchor"></a>
 
 <p>As part of the command line invocation <code>pdflatex <var>options</var>
 <var>argument</var></code> you can specify arbitrary LaTeX input by starting
 <var>argument</var> with a backslash. This allows you to do some special
 effects.
 </p>
-<a name="index-package_002c-hyperref-3"></a>
-<a name="index-hyperref-package-3"></a>
+<a name="index-package_002c-hyperref-3" class="anchor"></a>
+<a name="index-hyperref-package-3" class="anchor"></a>
 
 <p>For example, this file (which uses the <samp>hyperref</samp> package for
 hyperlinks) can produce two kinds of output, one for paper and one for a
@@ -322,8 +323,8 @@ otherwise the output file would be <samp>graphicx.pdf</samp>, as
 </p>
 
 <hr>
-<a name="Recovering-from-errors"></a>
-<a name="Recovering-from-errors-1"></a>
+<a name="Recovering-from-errors" class="anchor"></a>
+<a name="Recovering-from-errors-1" class="anchor"></a>
 <h3 class="section">28.3 Recovering from errors</h3>
 
 <p>If LaTeX finds an error in your document then it gives you an error
@@ -348,9 +349,9 @@ l.5 The \PN
 typo.  You could instead enter &lsquo;<samp>?</samp>&rsquo; and <code>&lt;return&gt;</code> to see other
 options.
 </p>
-<a name="index-_002a-prompt"></a>
-<a name="index-prompt_002c-_002a"></a>
-<a name="index-_005cstop"></a>
+<a name="index-_002a-prompt" class="anchor"></a>
+<a name="index-prompt_002c-_002a" class="anchor"></a>
+<a name="index-_005cstop" class="anchor"></a>
 <p>There are two other error scenarios.  The first is that you forgot to
 include the <code>\end{document}</code> or misspelled it.  In this case
 LaTeX gives you a &lsquo;<samp>*</samp>&rsquo; prompt.  You can get back to the command

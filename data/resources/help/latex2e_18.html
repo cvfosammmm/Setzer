@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_17.html#g_t_005censuremath" rel="prev" title="\ensuremath">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,12 +86,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Page-styles"></a>
-<a name="Page-styles-1"></a>
+<a name="Page-styles" class="anchor"></a>
+<a name="Page-styles-1" class="anchor"></a>
 <h2 class="chapter">18 Page styles</h2>
 
-<a name="index-styles_002c-page"></a>
-<a name="index-page-styles"></a>
+<a name="index-styles_002c-page" class="anchor"></a>
+<a name="index-page-styles" class="anchor"></a>
 
 <p>The style of a page determines where LaTeX places the components of
 that page, such as headers and footers, and the text body.  This
@@ -98,8 +99,8 @@ includes pages in the main part of the document but also includes
 special pages such as the title page of a book, a page from an index, or
 the first page of an article.
 </p>
-<a name="index-package_002c-fancyhdr"></a>
-<a name="index-fancyhdr-package"></a>
+<a name="index-package_002c-fancyhdr" class="anchor"></a>
+<a name="index-fancyhdr-package" class="anchor"></a>
 
 <p>The package <samp>fancyhdr</samp> is very helpful for constructing page
 styles.  See its documentation on CTAN.
@@ -107,12 +108,12 @@ styles.  See its documentation on CTAN.
 
 
 <hr>
-<a name="g_t_005cmaketitle"></a>
-<a name="g_t_005cmaketitle-1"></a>
+<a name="g_t_005cmaketitle" class="anchor"></a>
+<a name="g_t_005cmaketitle-1" class="anchor"></a>
 <h3 class="section">18.1 <code>\maketitle</code></h3>
 
-<a name="index-titles_002c-making"></a>
-<a name="index-_005cmaketitle"></a>
+<a name="index-titles_002c-making" class="anchor"></a>
+<a name="index-_005cmaketitle" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -156,11 +157,11 @@ the following declarations.  These must come before the
 </p>
 <dl compact="compact">
 <dt><code>\author{<var>name1</var> \and <var>name2</var> \and ...}</code>
-<a name="index-_005cauthor_007bname1-_005cand-name2-_005cand-_002e_002e_002e_007d"></a>
+<a name="index-_005cauthor_007bname1-_005cand-name2-_005cand-_002e_002e_002e_007d" class="anchor"></a>
 </dt>
-<dd><a name="index-author_002c-for-titlepage"></a>
-<a name="index-_005c_005c-for-_005cauthor"></a>
-<a name="index-_005cand-for-_005cauthor"></a>
+<dd><a name="index-author_002c-for-titlepage" class="anchor"></a>
+<a name="index-_005c_005c-for-_005cauthor" class="anchor"></a>
+<a name="index-_005cand-for-_005cauthor" class="anchor"></a>
 <p>Required.  Declare the document author or authors.  The argument is a
 list of authors separated by <code>\and</code> commands.  To separate lines
 within a single author&rsquo;s entry, for instance to give the author&rsquo;s
@@ -170,9 +171,9 @@ the <code>\author</code> declaration then you get &lsquo;<samp>LaTeX Warning: No
 </p>
 </dd>
 <dt><code>\date{<var>text</var>}</code>
-<a name="index-_005cdate_007btext_007d"></a>
+<a name="index-_005cdate_007btext_007d" class="anchor"></a>
 </dt>
-<dd><a name="index-date_002c-for-titlepage"></a>
+<dd><a name="index-date_002c-for-titlepage" class="anchor"></a>
 <p>Optional.  Declare <var>text</var> to be the document&rsquo;s date.  The <var>text</var>
 doesn&rsquo;t need to be in a date format; it can be any text at all.  If you
 omit <code>\date</code> then LaTeX uses the current date (see <a href="latex2e_23.html#g_t_005ctoday">\today</a>).
@@ -180,10 +181,10 @@ To have no date, instead use <code>\date{}</code>.
 </p>
 </dd>
 <dt><code>\thanks{<var>text</var>}</code>
-<a name="index-_005cthanks_007btext_007d"></a>
+<a name="index-_005cthanks_007btext_007d" class="anchor"></a>
 </dt>
-<dd><a name="index-thanks_002c-for-titlepage"></a>
-<a name="index-credit-footnote"></a>
+<dd><a name="index-thanks_002c-for-titlepage" class="anchor"></a>
+<a name="index-credit-footnote" class="anchor"></a>
 <p>Optional.  Produce a footnote.  You can use it in the author information
 for acknowledgements as illustrated above, but you can also use it in
 the title, or any place a footnote makes sense.  It can be any text at
@@ -192,10 +193,10 @@ address.
 </p>
 </dd>
 <dt><code>\title{<var>text</var>}</code>
-<a name="index-_005ctitle_007btext_007d"></a>
+<a name="index-_005ctitle_007btext_007d" class="anchor"></a>
 </dt>
-<dd><a name="index-title_002c-for-titlepage"></a>
-<a name="index-_005c_005c-for-_005ctitle"></a>
+<dd><a name="index-title_002c-for-titlepage" class="anchor"></a>
+<a name="index-_005c_005c-for-_005ctitle" class="anchor"></a>
 <p>Required.  Declare <var>text</var> to be the title of the document.  Get line
 breaks inside <var>text</var> with a double backslash, <code>\\</code>.  If you
 omit the <code>\title</code> declaration then you get &lsquo;<samp>LaTeX Error: No
@@ -212,12 +213,12 @@ house requirements.)
 </p>
 
 <hr>
-<a name="g_t_005cpagenumbering"></a>
-<a name="g_t_005cpagenumbering-1"></a>
+<a name="g_t_005cpagenumbering" class="anchor"></a>
+<a name="g_t_005cpagenumbering-1" class="anchor"></a>
 <h3 class="section">18.2 <code>\pagenumbering</code></h3>
 
-<a name="index-_005cpagenumbering"></a>
-<a name="index-page-numbering-style"></a>
+<a name="index-_005cpagenumbering" class="anchor"></a>
+<a name="index-page-numbering-style" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -268,8 +269,8 @@ get &lsquo;<samp>LaTeX Error: Counter too large</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>gobble</code></dt>
-<dd><a name="index-package_002c-hyperref-2"></a>
-<a name="index-hyperref-package-2"></a>
+<dd><a name="index-package_002c-hyperref-2" class="anchor"></a>
+<a name="index-hyperref-package-2" class="anchor"></a>
 <p>LaTeX does not output a page number, although it
 does get reset.  References to that page also are blank.  (This does not
 work with the popular package <samp>hyperref</samp> so to have the page number
@@ -290,14 +291,14 @@ number then you will manipulate the <code>page</code> counter
 </p>
 
 <hr>
-<a name="g_t_005cpagestyle"></a>
-<a name="g_t_005cpagestyle-1"></a>
+<a name="g_t_005cpagestyle" class="anchor"></a>
+<a name="g_t_005cpagestyle-1" class="anchor"></a>
 <h3 class="section">18.3 <code>\pagestyle</code></h3>
 
-<a name="index-_005cpagestyle"></a>
-<a name="index-header-style"></a>
-<a name="index-footer-style"></a>
-<a name="index-running-header-and-footer-style"></a>
+<a name="index-_005cpagestyle" class="anchor"></a>
+<a name="index-header-style" class="anchor"></a>
+<a name="index-footer-style" class="anchor"></a>
+<a name="index-running-header-and-footer-style" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -308,8 +309,8 @@ number then you will manipulate the <code>page</code> counter
 <p>Declaration that specifies how the page headers and footers are typeset,
 from the current page onwards.
 </p>
-<a name="index-package_002c-fancyhdr-1"></a>
-<a name="index-fancyhdr-package-1"></a>
+<a name="index-package_002c-fancyhdr-1" class="anchor"></a>
+<a name="index-fancyhdr-package-1" class="anchor"></a>
 
 <p>A discussion with an example is below.  Note first that the package
 <samp>fancyhdr</samp> is now the standard way to manipulate headers and
@@ -386,7 +387,7 @@ setting <code>\rightmark</code> to &lsquo;<samp>Subsection&nbsp;2.1</samp>&rsquo
 </p>
 <dl compact="compact">
 <dt><code>\markboth{<var>left-head</var>}{<var>right-head</var>}</code>
-<a name="index-_005cmarkboth_007bleft_002dhead_007d_007bright_002dhead_007d"></a>
+<a name="index-_005cmarkboth_007bleft_002dhead_007d_007bright_002dhead_007d" class="anchor"></a>
 </dt>
 <dd><p>Sets both the right hand and left hand heading information for either a
 page style of <code>headings</code> or <code>myheadings</code>.  A left hand page
@@ -398,7 +399,7 @@ the last one that came before that page.
 </p>
 </dd>
 <dt><code>\markright{<var>right</var>}</code>
-<a name="index-_005cmarkright_007bright_007d"></a>
+<a name="index-_005cmarkright_007bright_007d" class="anchor"></a>
 </dt>
 <dd><p>Sets the right hand page heading, leaving the left unchanged.
 </p>
@@ -407,12 +408,12 @@ the last one that came before that page.
 
 
 <hr>
-<a name="g_t_005cthispagestyle"></a>
-<a name="g_t_005cthispagestyle-1"></a>
+<a name="g_t_005cthispagestyle" class="anchor"></a>
+<a name="g_t_005cthispagestyle-1" class="anchor"></a>
 <h3 class="section">18.4 <code>\thispagestyle</code></h3>
 
-<a name="index-_005cthispagestyle"></a>
-<a name="index-page-style_002c-this-page"></a>
+<a name="index-_005cthispagestyle" class="anchor"></a>
+<a name="index-page-style_002c-this-page" class="anchor"></a>
 
 <p>Synopsis:
 </p>

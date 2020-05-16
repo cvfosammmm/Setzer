@@ -54,7 +54,8 @@ into another language, under the above conditions for modified versions. -->
 <link href="latex2e_11.html#Footnotes-of-footnotes" rel="prev" title="Footnotes of footnotes">
 <style type="text/css">
 <!--
-body { margin: 1em; margin-top: 0px; padding-top: 1px; }
+body {margin: 1em; margin-top: 0px; padding-top: 1px}
+a.anchor {float: right}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -85,26 +86,26 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body id="top" lang="en">
-<a name="Definitions"></a>
-<a name="Definitions-1"></a>
+<a name="Definitions" class="anchor"></a>
+<a name="Definitions-1" class="anchor"></a>
 <h2 class="chapter">12 Definitions</h2>
 
-<a name="index-definitions"></a>
+<a name="index-definitions" class="anchor"></a>
 
 <p>LaTeX has support for making new commands of many different kinds.
 </p>
 
 
 <hr>
-<a name="g_t_005cnewcommand-_0026-_005crenewcommand"></a>
-<a name="g_t_005cnewcommand-_0026-_005crenewcommand-1"></a>
+<a name="g_t_005cnewcommand-_0026-_005crenewcommand" class="anchor"></a>
+<a name="g_t_005cnewcommand-_0026-_005crenewcommand-1" class="anchor"></a>
 <h3 class="section">12.1 <code>\newcommand</code> &amp; <code>\renewcommand</code></h3>
 
-<a name="index-_005cnewcommand"></a>
-<a name="index-commands_002c-defining-new-ones"></a>
-<a name="index-commands_002c-redefining"></a>
-<a name="index-defining-a-new-command"></a>
-<a name="index-new-commands_002c-defining"></a>
+<a name="index-_005cnewcommand" class="anchor"></a>
+<a name="index-commands_002c-defining-new-ones" class="anchor"></a>
+<a name="index-commands_002c-redefining" class="anchor"></a>
+<a name="index-defining-a-new-command" class="anchor"></a>
+<a name="index-new-commands_002c-defining" class="anchor"></a>
 
 <p>Synopses, one of:
 </p>
@@ -130,8 +131,8 @@ ul.no-bullet {list-style: none}
 
 <p>Define or redefine a command.  See also the discussion of
 <code>\DeclareRobustCommand</code> in <a href="latex2e_3.html#Class-and-package-commands">Class and package commands</a>.
-<a name="index-starred-form_002c-defining-new-commands"></a>
-<a name="index-_002a_002dform_002c-defining-new-commands"></a>
+<a name="index-starred-form_002c-defining-new-commands" class="anchor"></a>
+<a name="index-_002a_002dform_002c-defining-new-commands" class="anchor"></a>
 The starred form of these two requires that the arguments not contain
 multiple paragraphs of text (in plain TeX terms that it not be
 <code>\long</code>).
@@ -161,7 +162,7 @@ different number of arguments than the old version.
 (which may be the empty string).  If this argument is not present then
 <code>\<var>cmd</var></code> does not take an optional argument.
 </p>
-<a name="index-positional-parameter"></a>
+<a name="index-positional-parameter" class="anchor"></a>
 <p>That is, if <code>\<var>cmd</var></code> is used with square brackets, as in
 <code>\<var>cmd</var>[<var>optval</var>]{...}...</code>, then within <var>defn</var> the
 parameter&nbsp;<code>#1</code> is set to the value of <var>optval</var>.  On the
@@ -257,14 +258,14 @@ is to put another pair of braces inside the definition:
 </p>
 
 <hr>
-<a name="g_t_005cprovidecommand"></a>
-<a name="g_t_005cprovidecommand-1"></a>
+<a name="g_t_005cprovidecommand" class="anchor"></a>
+<a name="g_t_005cprovidecommand-1" class="anchor"></a>
 <h3 class="section">12.2 <code>\providecommand</code></h3>
 
-<a name="index-_005cprovidecommand"></a>
-<a name="index-commands_002c-defining-new-ones-1"></a>
-<a name="index-defining-a-new-command-1"></a>
-<a name="index-new-commands_002c-defining-1"></a>
+<a name="index-_005cprovidecommand" class="anchor"></a>
+<a name="index-commands_002c-defining-new-ones-1" class="anchor"></a>
+<a name="index-defining-a-new-command-1" class="anchor"></a>
+<a name="index-new-commands_002c-defining-1" class="anchor"></a>
 
 <p>Synopses, one of:
 </p>
@@ -297,8 +298,8 @@ the repeated use of <code>\providecommand</code> does not give an error.
 </p>
 
 <hr>
-<a name="g_t_005cmakeatletter-_0026-_005cmakeatother"></a>
-<a name="g_t_005cmakeatletter-_0026-_005cmakeatother-1"></a>
+<a name="g_t_005cmakeatletter-_0026-_005cmakeatother" class="anchor"></a>
+<a name="g_t_005cmakeatletter-_0026-_005cmakeatother-1" class="anchor"></a>
 <h3 class="section">12.3 <code>\makeatletter</code> &amp; <code>\makeatother</code></h3>
 
 <p>Synopsis:
@@ -316,9 +317,9 @@ letter, code&nbsp;11.  The <code>\makeatother</code> declaration sets the
 category code of the at-sign to code&nbsp;12, its default value.
 </p>
 <p>As TeX reads characters, it assigns each one a category code, or
-<a name="index-catcode"></a>
-<a name="index-character-category-code"></a>
-<a name="index-category-code_002c-character"></a>
+<a name="index-catcode" class="anchor"></a>
+<a name="index-character-category-code" class="anchor"></a>
+<a name="index-category-code_002c-character" class="anchor"></a>
 <em>catcode</em>. For instance, it assigns the backslash
 character&nbsp;&lsquo;<samp><code>\</code></samp>&rsquo; the catcode&nbsp;0.  Command names
 consist of a category&nbsp;0 character, ordinarily backslash, followed
@@ -340,8 +341,8 @@ use these inside <samp>.sty</samp> or <samp>.cls</samp> files since the
 <code>\usepackage</code> and <code>\documentclass</code> commands already arrange
 that the at-sign has the character code of a letter, catcode&nbsp;11.
 </p>
-<a name="index-package_002c-macros2e"></a>
-<a name="index-macros2e-package"></a>
+<a name="index-package_002c-macros2e" class="anchor"></a>
+<a name="index-macros2e-package" class="anchor"></a>
 
 <p>For a comprehensive list of macros with an at-sign in their names see
 <a href="http://ctan.org/pkg/macros2e">http://ctan.org/pkg/macros2e</a>.
@@ -359,13 +360,13 @@ three lines should go in the preamble, before the
 
 
 <hr>
-<a name="g_t_005c_0040ifstar"></a>
-<a name="g_t_005c_0040ifstar-1"></a>
+<a name="g_t_005c_0040ifstar" class="anchor"></a>
+<a name="g_t_005c_0040ifstar-1" class="anchor"></a>
 <h3 class="section">12.4 <code>\@ifstar</code></h3>
 
-<a name="index-_005c_0040ifstar"></a>
-<a name="index-commands_002c-star_002dvariants"></a>
-<a name="index-star_002dvariants_002c-commands"></a>
+<a name="index-_005c_0040ifstar" class="anchor"></a>
+<a name="index-commands_002c-star_002dvariants" class="anchor"></a>
+<a name="index-star_002dvariants_002c-commands" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -434,12 +435,12 @@ LaTeX3 has the <samp>xparse</samp> package that allows this code.
 
 
 <hr>
-<a name="g_t_005cnewcounter"></a>
-<a name="g_t_005cnewcounter_003a-Allocating-a-counter"></a>
+<a name="g_t_005cnewcounter" class="anchor"></a>
+<a name="g_t_005cnewcounter_003a-Allocating-a-counter" class="anchor"></a>
 <h3 class="section">12.5 <code>\newcounter</code>: Allocating a counter</h3>
 
-<a name="index-_005cnewcounter"></a>
-<a name="index-counters_002c-defining-new"></a>
+<a name="index-_005cnewcounter" class="anchor"></a>
+<a name="index-counters_002c-defining-new" class="anchor"></a>
 
 <p>Synopsis, one of:
 </p>
@@ -488,15 +489,15 @@ defined.</samp>&rsquo;
 </p>
 
 <hr>
-<a name="g_t_005cnewlength"></a>
-<a name="g_t_005cnewlength-1"></a>
+<a name="g_t_005cnewlength" class="anchor"></a>
+<a name="g_t_005cnewlength-1" class="anchor"></a>
 <h3 class="section">12.6 <code>\newlength</code></h3>
 
-<a name="index-_005cnewlength"></a>
-<a name="index-lengths_002c-allocating-new"></a>
-<a name="index-rubber-lengths_002c-defining-new"></a>
-<a name="index-skip-register_002c-plain-TeX"></a>
-<a name="index-glue-register_002c-plain-TeX"></a>
+<a name="index-_005cnewlength" class="anchor"></a>
+<a name="index-lengths_002c-allocating-new" class="anchor"></a>
+<a name="index-rubber-lengths_002c-defining-new" class="anchor"></a>
+<a name="index-skip-register_002c-plain-TeX" class="anchor"></a>
+<a name="index-glue-register_002c-plain-TeX" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -524,12 +525,12 @@ Or name \end... illegal, see p.192 of the manual</samp>&rsquo;.
 </p>
 
 <hr>
-<a name="g_t_005cnewsavebox"></a>
-<a name="g_t_005cnewsavebox-1"></a>
+<a name="g_t_005cnewsavebox" class="anchor"></a>
+<a name="g_t_005cnewsavebox-1" class="anchor"></a>
 <h3 class="section">12.7 <code>\newsavebox</code></h3>
 
-<a name="index-_005cnewsavebox"></a>
-<a name="index-box_002c-allocating-new"></a>
+<a name="index-_005cnewsavebox" class="anchor"></a>
+<a name="index-box_002c-allocating-new" class="anchor"></a>
 
 <p>Synopsis:
 </p>
@@ -562,15 +563,15 @@ Our logo is \usebox{\logobox}.
 </p>
 
 <hr>
-<a name="g_t_005cnewenvironment-_0026-_005crenewenvironment"></a>
-<a name="g_t_005cnewenvironment-_0026-_005crenewenvironment-1"></a>
+<a name="g_t_005cnewenvironment-_0026-_005crenewenvironment" class="anchor"></a>
+<a name="g_t_005cnewenvironment-_0026-_005crenewenvironment-1" class="anchor"></a>
 <h3 class="section">12.8 <code>\newenvironment</code> &amp; <code>\renewenvironment</code></h3>
 
-<a name="index-_005cnewenvironment"></a>
-<a name="index-_005crenewenvironment"></a>
-<a name="index-environments_002c-defining"></a>
-<a name="index-defining-new-environments"></a>
-<a name="index-redefining-environments"></a>
+<a name="index-_005cnewenvironment" class="anchor"></a>
+<a name="index-_005crenewenvironment" class="anchor"></a>
+<a name="index-environments_002c-defining" class="anchor"></a>
+<a name="index-defining-new-environments" class="anchor"></a>
+<a name="index-redefining-environments" class="anchor"></a>
 
 <p>Synopses, one of:
 </p>
@@ -597,7 +598,7 @@ Our logo is \usebox{\logobox}.
 <p>Define or redefine the environment <var>env</var>, that is, create the
 construct <code>\begin{<var>env</var>} ... <var>body</var> ... \end{<var>env</var>}</code>.
 </p>
-<a name="index-_002a_002dform-of-environment-commands"></a>
+<a name="index-_002a_002dform-of-environment-commands" class="anchor"></a>
 <p>The starred form of these commands requires that the arguments not
 contain multiple paragraphs of text.  However, the body of these
 environments can contain multiple paragraphs.
@@ -730,16 +731,16 @@ the document, use the environment like this.
 
 
 <hr>
-<a name="g_t_005cnewtheorem"></a>
-<a name="g_t_005cnewtheorem-1"></a>
+<a name="g_t_005cnewtheorem" class="anchor"></a>
+<a name="g_t_005cnewtheorem-1" class="anchor"></a>
 <h3 class="section">12.9 <code>\newtheorem</code></h3>
 
-<a name="index-_005cnewtheorem"></a>
-<a name="index-theorems_002c-defining"></a>
-<a name="index-defining-new-theorems"></a>
+<a name="index-_005cnewtheorem" class="anchor"></a>
+<a name="index-theorems_002c-defining" class="anchor"></a>
+<a name="index-defining-new-theorems" class="anchor"></a>
 
-<a name="index-theorem_002dlike-environment"></a>
-<a name="index-environment_002c-theorem_002dlike"></a>
+<a name="index-theorem_002dlike-environment" class="anchor"></a>
+<a name="index-environment_002c-theorem_002dlike" class="anchor"></a>
 <p>Synopses:
 </p>
 <div class="example">
@@ -870,13 +871,13 @@ by &lsquo;<samp>Theorem&nbsp;2.1</samp>&rsquo; and &lsquo;<samp>Definition&nbsp;
 
 
 <hr>
-<a name="g_t_005cnewfont"></a>
-<a name="g_t_005cnewfont-1"></a>
+<a name="g_t_005cnewfont" class="anchor"></a>
+<a name="g_t_005cnewfont-1" class="anchor"></a>
 <h3 class="section">12.10 <code>\newfont</code></h3>
 
-<a name="index-_005cnewfont"></a>
-<a name="index-fonts_002c-new-commands-for"></a>
-<a name="index-defining-new-fonts"></a>
+<a name="index-_005cnewfont" class="anchor"></a>
+<a name="index-fonts_002c-new-commands-for" class="anchor"></a>
+<a name="index-defining-new-fonts" class="anchor"></a>
 
 <p>This command is obsolete. This description is here only to help with old
 documents.  New documents should define fonts in families through the
@@ -893,8 +894,8 @@ boldface with a roman (see <a href="latex2e_4.html#Fonts">Fonts</a>).
 The control sequence must not already be defined. It must begin with a
 backslash, <code>\</code>.
 </p>
-<a name="index-at-clause_002c-in-font-definitions"></a>
-<a name="index-design-size_002c-in-font-definitions"></a>
+<a name="index-at-clause_002c-in-font-definitions" class="anchor"></a>
+<a name="index-design-size_002c-in-font-definitions" class="anchor"></a>
 <p>The <var>font description</var> consists of a <var>fontname</var> and an optional
 <em>at clause</em>.  LaTeX will look on your system for a file named
 <samp><var>fontname</var>.tfm</samp>.  The at clause can have the form either
@@ -915,13 +916,13 @@ relative to the font&rsquo;s design size, which is a value defined in the
 
 
 <hr>
-<a name="g_t_005cprotect"></a>
-<a name="g_t_005cprotect-1"></a>
+<a name="g_t_005cprotect" class="anchor"></a>
+<a name="g_t_005cprotect-1" class="anchor"></a>
 <h3 class="section">12.11 <code>\protect</code></h3>
 
-<a name="index-_005cprotect"></a>
-<a name="index-fragile-commands"></a>
-<a name="index-robust-commands"></a>
+<a name="index-_005cprotect" class="anchor"></a>
+<a name="index-fragile-commands" class="anchor"></a>
+<a name="index-robust-commands" class="anchor"></a>
 
 <p>All LaTeX commands are either <em>fragile</em> or <em>robust</em>.  A
 fragile command can break when it is used in the argument to certain
@@ -939,7 +940,7 @@ name</var>}</code> command it writes the <var>section name</var> text to the
 document such as in the table of contents.  Any argument that is
 internally expanded by LaTeX without typesetting it directly is
 referred to as a 
-<a name="index-moving-arguments"></a>
+<a name="index-moving-arguments" class="anchor"></a>
 <em>moving argument</em>.  A command is fragile if it can
 expand during this process into invalid TeX code.  Some examples of
 moving arguments are those that appear in the <code>\caption{...}</code>
@@ -982,14 +983,14 @@ to <code>\protect\(..\protect\)</code>.
 
 
 <hr>
-<a name="g_t_005cignorespaces-_0026-_005cignorespacesafterend"></a>
-<a name="g_t_005cignorespaces-_0026-_005cignorespacesafterend-1"></a>
+<a name="g_t_005cignorespaces-_0026-_005cignorespacesafterend" class="anchor"></a>
+<a name="g_t_005cignorespaces-_0026-_005cignorespacesafterend-1" class="anchor"></a>
 <h3 class="section">12.12 <code>\ignorespaces &amp; \ignorespacesafterend</code></h3>
 
-<a name="index-_005cignorespaces"></a>
-<a name="index-_005cignorespacesafterend"></a>
-<a name="index-spaces_002c-ignore-around-commands"></a>
-<a name="index-commands_002c-ignore-spaces"></a>
+<a name="index-_005cignorespaces" class="anchor"></a>
+<a name="index-_005cignorespacesafterend" class="anchor"></a>
+<a name="index-spaces_002c-ignore-around-commands" class="anchor"></a>
+<a name="index-commands_002c-ignore-spaces" class="anchor"></a>
 
 <p>Synopsis:
 </p>
