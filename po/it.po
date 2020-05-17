@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: kowalski.7cc@gmail.com\n"
-"POT-Creation-Date: 2020-05-15 23:30+0200\n"
-"PO-Revision-Date: 2020-05-15 23:32+0200\n"
+"POT-Creation-Date: 2020-05-17 18:59+0200\n"
+"PO-Revision-Date: 2020-05-17 19:08+0200\n"
 "Last-Translator: Kowalski7cc <kowalski.7cc@gmail.com>\n"
 "Language-Team: \n"
 "Language: it\n"
@@ -183,7 +183,7 @@ msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:43
 msgid "Book"
-msgstr "Libro"
+msgstr "Book"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:43
 msgid ""
@@ -615,7 +615,7 @@ msgid ""
 "Please save your document to a file, so the build system knows where to put "
 "the .pdf (it will be in the same folder as your document)."
 msgstr ""
-"Salvare il documento in un file, in modo che il sistema di generazione "
+"Salvare il documento in un file, in modo che il sistema di compilazione "
 "sappia dove inserire il file .pdf (sarà nella stessa cartella del documento)."
 
 #: setzer/dialogs/build_save/build_save.py:50
@@ -771,7 +771,7 @@ msgid ""
 "is often used as a starting point for more\n"
 "custom layouts."
 msgstr ""
-"<b>Articolo:</b>  Per articoli su riviste scientifiche, tesine,\n"
+"<b>Article:</b>  Per articoli su riviste scientifiche, tesine,\n"
 "volantini, brevi relazioni, ...\n"
 "\n"
 "Questa classe da sola è piuttosto semplicistica e\n"
@@ -783,7 +783,7 @@ msgid ""
 "<b>Book:</b>  For actual books containing many chapters\n"
 "and sections."
 msgstr ""
-"<b>Libro:</b>  Per libri reali contenenti molti capitoli\n"
+"<b>Book:</b>  Per libri reali contenenti molti capitoli\n"
 "e sezioni."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:83
@@ -791,12 +791,12 @@ msgid ""
 "<b>Report:</b>  For longer reports and articles containing\n"
 "more than one chapter, small books, thesis."
 msgstr ""
-"<b>Rapporto:</b>  Per rapporti e articoli più lunghi contenenti\n"
+"<b>Report:</b>  Per rapporti e articoli più lunghi contenenti\n"
 "più di un capitolo, piccoli libri, tesi."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:84
 msgid "<b>Letter:</b>  For writing letters."
-msgstr "<b>Lettera:</b>  Per scrivere lettere."
+msgstr "<b>Letter:</b>  Per scrivere lettere."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:85
 msgid ""
@@ -805,7 +805,7 @@ msgid ""
 "\n"
 "There are many predefined presentation styles."
 msgstr ""
-"<b>Proiezione:</b> Una classe per creare diapositive di presentazione\n"
+"<b>Beamer:</b> Una classe per creare diapositive di presentazione\n"
 "con LaTeX.\n"
 "\n"
 "Esistono molti stili di presentazione predefiniti."
@@ -861,7 +861,7 @@ msgstr "Formato pagina"
 
 #: setzer/dialogs/document_wizard/pages/page.py:69
 msgid "Portrait"
-msgstr "Veritcale"
+msgstr "Verticale"
 
 #: setzer/dialogs/document_wizard/pages/page.py:70
 msgid "Landscape"
@@ -1066,7 +1066,7 @@ msgstr "Strumenti"
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:47
 #: setzer/document/build_widget/build_widget_viewgtk.py:37
 msgid "Build .pdf-file from document"
-msgstr "compila file PDF dal documento"
+msgstr "Compila file PDF dal documento"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:48
 msgid "Spellchecking dialog"
@@ -1301,7 +1301,7 @@ msgstr "Inserisci spazi anziché tabs"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:76
 msgid "Set Tab Width:"
-msgstr "Imposta larghezza Tab:"
+msgstr "Imposta larghezza tab:"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:87
 msgid "Line Numbers"
@@ -1352,7 +1352,7 @@ msgstr ""
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:159
 msgid "Automatically show build log .."
-msgstr "Mostra automaticamente il registro build .."
+msgstr "Mostra automaticamente il registro di compilazione .."
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:164
 msgid ".. only when errors occurred."
@@ -1377,7 +1377,7 @@ msgid ""
 msgstr ""
 "Attenzione: abilitare questo solo se è necessario. Può causare problemi di "
 "sicurezza\n"
-"durante la creazione di file da fonti non attendibili."
+"durante la compilazione di file da fonti non attendibili."
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:183
 msgid "Disable"
@@ -1478,7 +1478,7 @@ msgstr "Lettere greche"
 
 #: setzer/document/autocomplete/autocomplete.py:302
 msgid "Verbatim environment, content won't be interpreted as LaTeX."
-msgstr "Ambiente verbale, il contenuto non verrà interpretato come LaTeX"
+msgstr "Ambiente letterale, il contenuto non verrà interpretato come LaTeX"
 
 #: setzer/document/autocomplete/autocomplete.py:497
 msgid "Include a non-cited item from the bibliography"
@@ -1498,7 +1498,7 @@ msgstr "Carattere monospace"
 
 #: setzer/document/autocomplete/autocomplete.py:624
 msgid "Inline verbatim text that won't be interpreted as LaTeX."
-msgstr "Testo verbale in linea che non verrà interpretato come LaTeX."
+msgstr "Testo letterale in linea che non verrà interpretato come LaTeX."
 
 #: setzer/document/autocomplete/autocomplete.py:636
 msgid "Make text 'tiny' within current scope"
@@ -1610,7 +1610,7 @@ msgstr ""
 
 #: setzer/document/preview/preview_viewgtk.py:106
 msgid "Page "
-msgstr "Pagina"
+msgstr "Pagina "
 
 #: setzer/document/preview/preview_viewgtk.py:109
 msgid " of "
@@ -1798,12 +1798,12 @@ msgid ""
 "a top level document (the master) will contain multiple lower\n"
 "level files via include statements."
 msgstr ""
-"Il documento principale verrà creato, indipendentemente dai documenti\n"
-"stai attualmente modificando e l'anteprima sarà sempre in formato .pdf.\n"
-"Il registro di build farà anche riferimento al documento principale.\n"
-"Questo è spesso utile per lavorare su grandi progetti dove in genere\n"
-"un documento di livello superiore (il master) conterrà multipli inferiori\n"
-"file di livello tramite istruzioni include."
+"Il documento principale verrà creato, indipendentemente dal documento"
+"che stai modificando, e verrà sempre visualizzato nell'anteprima .pdf."
+"Il registro di compilazione farà anche riferimento al documento principale."
+"Ciò è spesso utile per lavorare su grandi progetti in cui un documento"
+"di livello superiore (il master) conterrà più file di livello"
+"inferiore tramite istruzioni include."
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:48
 msgid "Toggle sidebar"
@@ -2075,7 +2075,7 @@ msgstr "Sezionando"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:182
 msgid "Verbatim Environment"
-msgstr "Ambiente verbale"
+msgstr "Ambiente letterale"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:183
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:252
@@ -2342,7 +2342,7 @@ msgstr "Lettere greche"
 
 #: setzer/workspace/sidebar/sidebar.py:43
 msgid "Arrows"
-msgstr "Freccie"
+msgstr "Frecce"
 
 #: setzer/workspace/sidebar/sidebar.py:45
 msgid "Relations"
