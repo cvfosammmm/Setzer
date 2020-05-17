@@ -41,6 +41,7 @@ class HelpPanel(Observable):
 
         self.search_results_blank = list()
         self.search_results = self.search_results_blank
+        self.query = ''
 
         self.controller = help_panel_controller.HelpPanelController(self, self.view)
         self.presenter = help_panel_presenter.HelpPanelPresenter(self, self.view)
@@ -63,6 +64,7 @@ class HelpPanel(Observable):
         self.add_change_code('uri_changed', self.current_uri)
 
     def set_search_query(self, query):
+        self.query = query
         if query == '':
             self.search_results = self.search_results_blank
         else:

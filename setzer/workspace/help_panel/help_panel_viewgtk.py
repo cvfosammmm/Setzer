@@ -84,7 +84,7 @@ class HelpPanelView(Gtk.VBox):
         self.search_entry.set_margin_bottom(18)
         self.search_result_items = list()
         self.search_results = Gtk.ListBox()
-        self.search_results.set_size_request(300, 400)
+        self.search_results.set_size_request(300, 344)
         self.search_results.set_can_focus(False)
         self.search_results.set_selection_mode(Gtk.SelectionMode.NONE)
         self.search_results.set_margin_left(26)
