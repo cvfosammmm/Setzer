@@ -248,6 +248,10 @@ class Workspace(Observable):
                 for item in data['recently_opened_documents'].values():
                     self.update_recently_opened_document(item['filename'], item['date'], notify=False)
                 try:
+                    self.help_panel.search_results_blank = data['recently_help_searches']
+                except KeyError:
+                    pass
+                try:
                     recently_opened_session_files = data['recently_opened_session_files'].values()
                 except KeyError:
                     recently_opened_session_files = []
@@ -292,7 +296,8 @@ class Workspace(Observable):
             data = {
                 'open_documents': open_documents,
                 'recently_opened_documents': self.recently_opened_documents,
-                'recently_opened_session_files': self.recently_opened_session_files
+                'recently_opened_session_files': self.recently_opened_session_files,
+                'recently_help_searches': self.help_panel.search_results_blank
             }
             if self.master_document != None:
                 data['master_document_filename'] = self.master_document.get_filename()
