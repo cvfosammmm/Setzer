@@ -51,8 +51,15 @@ class HelpPanel(Observable):
         self.current_uri = uri
         self.add_change_code('uri_changed', uri)
 
-    def set_uri_by_ending(self, uri_ending):
+    def set_uri_by_search_item(self, uri_ending, text, location):
         self.current_uri = self.path + '/' + uri_ending
+
+        self.search_results_blank = [item for item in self.search_results_blank if (item[0] != uri_ending or item[1] != text or item[2] != location)]
+        self.search_results_blank.append([uri_ending, text, location])
+
+        if len(self.search_results_blank) > 8:
+            self.search_results_blank.pop()
+
         self.add_change_code('uri_changed', self.current_uri)
 
     def set_search_query(self, query):

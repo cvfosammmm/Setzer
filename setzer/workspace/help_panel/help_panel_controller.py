@@ -66,6 +66,7 @@ class HelpPanelController(object):
             self.view.stack.set_visible_child_name('search')
             self.view.search_entry.set_text('')
             self.view.search_entry.grab_focus()
+            self.help_panel.set_search_query(self.view.search_entry.get_text())
         else:
             self.view.stack.set_visible_child_name('content')
             self.help_panel.workspace.presenter.focus_active_document()
@@ -77,7 +78,7 @@ class HelpPanelController(object):
         self.view.search_button.set_active(False)
 
     def on_search_result_activated(self, box, row):
-        self.help_panel.set_uri_by_ending(row.uri_ending)
+        self.help_panel.set_uri_by_search_item(row.uri_ending, row.text_label.get_text(), row.location_label.get_text())
 
     def on_back_forward_list_changed(self, back_forward_list, item_added=None, items_removed=None):
         self.view.back_button.set_sensitive(self.view.content.can_go_back())
