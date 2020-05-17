@@ -36,21 +36,48 @@ class HelpPanelController(object):
         self.view.next_button.connect('clicked', self.on_next_button_clicked)
         self.view.up_button.connect('clicked', self.on_up_button_clicked)
         self.view.home_button.connect('clicked', self.on_home_button_clicked)
+        self.view.search_button.connect('toggled', self.on_search_button_toggled)
+        self.view.search_entry.connect('changed', self.on_search_entry_changed)
+        self.view.search_entry.connect('stop-search', self.on_search_stopped)
+
+        self.view.search_results.connect('row-activated', self.on_search_result_activated)
 
     def on_back_button_clicked(self, button):
+        self.view.search_button.set_active(False)
         self.view.content.go_back()
 
     def on_next_button_clicked(self, button):
+        self.view.search_button.set_active(False)
         self.view.content.go_forward()
 
     def on_up_button_clicked(self, button):
-        if self.view.content.get_uri() != self.help_panel.current_uri + '#':
-            self.view.content.load_uri(self.help_panel.current_uri + '#')
+        self.view.search_button.set_active(False)
+        if self.view.content.get_uri() != self.help_panel.current_uri.split('#')[0] + '#':
+            self.view.content.load_uri(self.help_panel.current_uri.split('#')[0] + '#')
         else:
-            self.view.content.load_uri(self.help_panel.current_uri + '#top')
+            self.view.content.load_uri(self.help_panel.current_uri.split('#')[0] + '#top')
 
     def on_home_button_clicked(self, button):
+        self.view.search_button.set_active(False)
         self.view.content.load_uri(self.help_panel.home_uri)
+
+    def on_search_button_toggled(self, button):
+        if button.get_active():
+            self.view.stack.set_visible_child_name('search')
+            self.view.search_entry.set_text('')
+            self.view.search_entry.grab_focus()
+        else:
+            self.view.stack.set_visible_child_name('content')
+            self.help_panel.workspace.presenter.focus_active_document()
+
+    def on_search_entry_changed(self, entry):
+        self.help_panel.set_search_query(entry.get_text())
+
+    def on_search_stopped(self, entry):
+        self.view.search_button.set_active(False)
+
+    def on_search_result_activated(self, box, row):
+        self.help_panel.set_uri_by_ending(row.uri_ending)
 
     def on_back_forward_list_changed(self, back_forward_list, item_added=None, items_removed=None):
         self.view.back_button.set_sensitive(self.view.content.can_go_back())
@@ -63,7 +90,8 @@ class HelpPanelController(object):
         if decision_type == na or decision_type == nwa:
             uri = decision.get_navigation_action().get_request().get_uri()
             if uri.startswith(self.help_panel.path):
-                self.help_panel.current_uri = uri.split('#')[0]
+                self.help_panel.set_uri(uri)
+                return True
             else:
                 webbrowser.open_new_tab(uri)
                 decision.ignore()

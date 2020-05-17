@@ -106,8 +106,16 @@ class WorkspacePresenter(object):
         if change_code == 'set_show_preview_or_help':
             if self.workspace.show_preview:
                 self.main_window.preview_help_stack.set_visible_child_name('preview')
+                self.focus_active_document()
             elif self.workspace.show_help:
                 self.main_window.preview_help_stack.set_visible_child_name('help')
+                if self.main_window.help_panel.stack.get_visible_child_name() == 'search':
+                    self.main_window.help_panel.search_entry.set_text('')
+                    self.main_window.help_panel.search_entry.grab_focus()
+                else:
+                    self.focus_active_document()
+            else:
+                self.focus_active_document()
             self.animate_preview(self.workspace.show_preview, self.workspace.show_help, True)
 
         if change_code == 'show_build_log_state_change':
@@ -173,6 +181,11 @@ class WorkspacePresenter(object):
         self.main_window.include_latex_file_action.set_enabled(value)
         self.main_window.add_packages_action.set_enabled(value)
         self.main_window.document_wizard_action.set_enabled(value)
+
+    def focus_active_document(self):
+        active_document = self.workspace.get_active_document()
+        if active_document != None:
+            active_document.view.source_view.grab_focus()
 
     def on_realize(self, view=None, cr=None, user_data=None):
         if self.sidebars_initialized == False:
