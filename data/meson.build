@@ -1,13 +1,16 @@
+# .desktop file
 install_data(
   files('org.cvfosammmm.Setzer.desktop'),
   install_dir: join_paths(datadir, 'applications'),
 )
 
+# icon
 install_data(
   files('org.cvfosammmm.Setzer.svg'),
   install_dir: join_paths(datadir, 'icons', 'hicolor', 'scalable', 'apps'),
 )
 
+# metainfo
 metainfo_file = i18n.merge_file(
   input:  files('org.cvfosammmm.Setzer.appdata.xml.in'),
   output: 'org.cvfosammmm.Setzer.appdata.xml',
@@ -17,6 +20,7 @@ metainfo_file = i18n.merge_file(
   install_dir: join_paths(datadir, 'metainfo'),
 )
 
+# man page
 config_man = configuration_data()
 config_man.set('VERSION', meson.project_version())
 
