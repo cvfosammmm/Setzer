@@ -1,5 +1,5 @@
 .\" Generated with help2man.
-.TH SETZER "1"
+.TH SETZER "1" "" "@VERSION@" "User Commands"
 .SH NAME
 Setzer \- simple yet full-featured LaTeX editor
 .SH DESCRIPTION
