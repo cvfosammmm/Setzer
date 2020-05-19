@@ -19,5 +19,5 @@ metainfo_file = i18n.merge_file(
 
 install_man(
   files('setzer.1'),
-  install_dir: mandir,
+  install_dir: join_paths(mandir, 'man1'),
 )
