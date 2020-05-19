@@ -17,7 +17,16 @@ metainfo_file = i18n.merge_file(
   install_dir: join_paths(datadir, 'metainfo'),
 )
 
+config_man = configuration_data()
+config_man.set('VERSION', meson.project_version())
+
+man_file = configure_file(
+  input: files('setzer.1.in'),
+  output: 'setzer.1',
+  configuration: config_man,
+)
+
 install_man(
-  files('setzer.1'),
+  man_file,
   install_dir: join_paths(mandir, 'man1'),
 )
