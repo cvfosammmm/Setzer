@@ -69,12 +69,7 @@ class DocumentController(object):
 
     def on_button_press(self, widget, event):
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
-            has_selection = self.document.source_buffer.get_has_selection()
-            self.view.menu_item_cut.set_sensitive(has_selection)
-            self.view.menu_item_copy.set_sensitive(has_selection)
-            self.view.menu_item_delete.set_sensitive(has_selection)
-            self.view.context_menu.show_all()
-            self.view.context_menu.popup_at_pointer(event)
+            self.show_context_menu(event)
             return True
 
     def on_show_in_preview(self, menu_item):
@@ -102,7 +97,11 @@ class DocumentController(object):
                 if event.state & modifiers == 0:
                     return autocomplete.on_return_press()
 
-        if event.keyval == Gdk.keyval_from_name('Tab') or event.keyval == Gdk.keyval_from_name('ISO_Left_Tab'):
+        if event.keyval == Gdk.keyval_from_name('Menu') and event.state & modifiers == 0:
+            self.show_context_menu(event)
+            return True
+
+        elif event.keyval == Gdk.keyval_from_name('Tab') or event.keyval == Gdk.keyval_from_name('ISO_Left_Tab'):
             if event.state & modifiers == 0:
                 buffer = self.document.get_buffer()
                 insert = buffer.get_iter_at_mark(buffer.get_insert())
@@ -141,6 +140,14 @@ class DocumentController(object):
                     self.view.source_view.scroll_to_iter(result[0], 0, False, 0, 0)
                     return True
         return False
+
+    def show_context_menu(self, event):
+        has_selection = self.document.source_buffer.get_has_selection()
+        self.view.menu_item_cut.set_sensitive(has_selection)
+        self.view.menu_item_copy.set_sensitive(has_selection)
+        self.view.menu_item_delete.set_sensitive(has_selection)
+        self.view.context_menu.show_all()
+        self.view.context_menu.popup_at_pointer(event)
 
     def save_date_loop(self):
         if self.document.filename == None: return True
