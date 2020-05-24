@@ -18,6 +18,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from gi.repository import Gio
 
 import sys
 import gettext
@@ -31,16 +32,19 @@ from setzer.dialogs.dialog_locator import DialogLocator
 class MainApplicationController(Gtk.Application):
 
     def __init__(self):
-        Gtk.Application.__init__(self, application_id='org.cvfosammmm.Setzer')
+        Gtk.Application.__init__(self, application_id='org.cvfosammmm.Setzer', flags=Gio.ApplicationFlags.HANDLES_OPEN)
 
-    def do_activate(self):
+    def do_startup(self):
         ''' Everything starts here. '''
+
+        Gtk.Application.do_startup(self)
+        self.is_active = False
 
         # setup gettext
         gettext.install('setzer', names=('ngettext',), localedir='@localedir_path@')
 
         # get settings
-        settings = ServiceLocator.get_settings()
+        self.settings = ServiceLocator.get_settings()
 
         # init static variables
         ServiceLocator.init_setzer_version('@setzer_version@')
@@ -48,41 +52,73 @@ class MainApplicationController(Gtk.Application):
         ServiceLocator.init_app_icons_path('@app_icons_path@')
 
         # init main window, model, dialogs
-        self.main_window = view.MainWindow(self, settings)
+        self.main_window = view.MainWindow(self, self.settings)
         ServiceLocator.init_main_window(self.main_window)
 
+    def do_open(self, files, number_of_files, hint=""):
+        if not self.is_active:
+            self.activate()
+            self.is_active = True
+
+        # open first session file if any
+        for file in files:
+            if file.get_path().endswith('.stzs'):
+                filename = file.get_path()
+
+                active_document = self.workspace.get_active_document()
+                documents = self.workspace.get_all_documents()
+                unsaved_documents = self.workspace.get_unsaved_documents()
+                dialog = DialogLocator.get_dialog('close_confirmation')
+                not_save_to_close_documents = dialog.run(unsaved_documents)['not_save_to_close_documents']
+
+                if len(not_save_to_close_documents) == 0:
+                    if documents != None:
+                        for document in documents:
+                            self.workspace.remove_document(document)
+                    self.workspace.load_documents_from_session_file(filename)
+
+        # open latex and bibtex files
+        for file in files:
+            if file.get_path().endswith('.tex') or file.get_path().endswith('.bib'):
+                document_candidate = self.workspace.get_document_by_filename(file.get_path())
+                if document_candidate != None:
+                    self.workspace.set_active_document(document_candidate)
+                else:
+                    self.workspace.create_document_from_filename(file.get_path(), activate=True)
+
+    def do_activate(self):
+        if not self.is_active:
+            self.activate()
+            self.is_active = True
+
+    def activate(self):
         self.workspace = Workspace()
         DialogLocator.init_dialogs(self.main_window, self.workspace)
 
         # init view
-        if settings.get_value('window_state', 'is_maximized'):
+        if self.settings.get_value('window_state', 'is_maximized'):
             self.main_window.maximize()
         else: 
             self.main_window.unmaximize()
-        self.main_window.set_default_size(settings.get_value('window_state', 'width'), 
-                                          settings.get_value('window_state', 'height'))
-        self.main_window.current_width = settings.get_value('window_state', 'width')
-        self.main_window.current_height = settings.get_value('window_state', 'height')
+        self.main_window.set_default_size(self.settings.get_value('window_state', 'width'), 
+                                          self.settings.get_value('window_state', 'height'))
+        self.main_window.current_width = self.settings.get_value('window_state', 'width')
+        self.main_window.current_height = self.settings.get_value('window_state', 'height')
         self.fg_color = ServiceLocator.get_theme_fg_color()
         self.bg_color = ServiceLocator.get_theme_bg_color()
         self.style_context = self.main_window.get_style_context()
         self.first_window_state_event = True
         self.main_window.show_all()
-        self.observe_main_window()
+
+        self.main_window.connect('size-allocate', self.on_window_size_allocate)
+        self.main_window.connect('notify::is-maximized', self.on_window_maximize_event)
+        self.main_window.connect('delete-event', self.on_window_close)
+        self.main_window.connect('draw', self.on_window_draw)
 
         # init controller
         self.workspace.init_workspace_controller()
         self.main_window.quit_action.connect('activate', self.on_quit_action)
 
-    def do_startup(self):
-        Gtk.Application.do_startup(self)
-
-    def observe_main_window(self):
-        self.main_window.connect('size-allocate', self.on_window_size_allocate)
-        self.main_window.connect('notify::is-maximized', self.on_window_maximize_event)
-        self.main_window.connect('delete-event', self.on_window_close)
-        self.main_window.connect('draw', self.on_window_draw)
-    
     def on_window_size_allocate(self, main_window, window_size):
         ''' signal handler, update window size variables '''
 
@@ -113,19 +149,18 @@ class MainApplicationController(Gtk.Application):
         return False
 
     def save_window_state(self):
-        settings = ServiceLocator.get_settings()
         main_window = self.main_window
-        settings.set_value('window_state', 'width', main_window.current_width)
-        settings.set_value('window_state', 'height', main_window.current_height)
-        settings.set_value('window_state', 'is_maximized', main_window.ismaximized)
-        settings.set_value('window_state', 'show_sidebar', self.workspace.show_sidebar)
-        settings.set_value('window_state', 'sidebar_paned_position', self.workspace.sidebar_position)
-        settings.set_value('window_state', 'show_help', self.workspace.show_help)
-        settings.set_value('window_state', 'show_preview', self.workspace.show_preview)
-        settings.set_value('window_state', 'preview_paned_position', self.workspace.preview_position)
-        settings.set_value('window_state', 'show_build_log', self.workspace.show_build_log)
-        settings.set_value('window_state', 'build_log_paned_position', self.workspace.build_log_position)
-        settings.pickle()
+        self.settings.set_value('window_state', 'width', main_window.current_width)
+        self.settings.set_value('window_state', 'height', main_window.current_height)
+        self.settings.set_value('window_state', 'is_maximized', main_window.ismaximized)
+        self.settings.set_value('window_state', 'show_sidebar', self.workspace.show_sidebar)
+        self.settings.set_value('window_state', 'sidebar_paned_position', self.workspace.sidebar_position)
+        self.settings.set_value('window_state', 'show_help', self.workspace.show_help)
+        self.settings.set_value('window_state', 'show_preview', self.workspace.show_preview)
+        self.settings.set_value('window_state', 'preview_paned_position', self.workspace.preview_position)
+        self.settings.set_value('window_state', 'show_build_log', self.workspace.show_build_log)
+        self.settings.set_value('window_state', 'build_log_paned_position', self.workspace.build_log_position)
+        self.settings.pickle()
 
     def on_window_close(self, window=None, parameter=None):
         self.save_quit()
