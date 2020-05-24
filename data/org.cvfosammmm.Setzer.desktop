@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Setzer
-Exec=setzer
+Exec=setzer %F
 Type=Application
 Icon=org.cvfosammmm.Setzer
 Categories=GNOME;GTK;Science;Office;
