@@ -588,6 +588,7 @@ class BibTeXDocument(Document):
         self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
 
+        self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = bibtex_parser.BibTeXParser()
 
     def get_folded_regions(self):

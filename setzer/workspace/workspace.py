@@ -96,8 +96,8 @@ class Workspace(Observable):
         self.open_documents.append(document)
         if document.is_latex_document():
             self.open_latex_documents.append(document)
-            document.spellchecker.set_enabled(self.inline_spellchecking)
-            document.spellchecker.set_language(self.spellchecking_language_code)
+        document.spellchecker.set_enabled(self.inline_spellchecking)
+        document.spellchecker.set_language(self.spellchecking_language_code)
         document.state_manager.load_document_state()
         self.add_change_code('new_document', document)
         self.update_recently_opened_document(document.get_filename(), notify=True)
@@ -407,14 +407,14 @@ class Workspace(Observable):
         if self.inline_spellchecking != value:
             self.inline_spellchecking = value
             self.settings.set_value('preferences', 'inline_spellchecking', self.inline_spellchecking)
-            for document in self.open_latex_documents:
+            for document in self.open_documents:
                 document.spellchecker.set_enabled(value)
 
     def set_spellchecking_language(self, language_code):
         if self.spellchecking_language_code != language_code:
             self.spellchecking_language_code = language_code
             self.settings.set_value('preferences', 'spellchecking_language_code', self.spellchecking_language_code)
-            for document in self.open_latex_documents:
+            for document in self.open_documents:
                 document.spellchecker.set_language(language_code)
 
 

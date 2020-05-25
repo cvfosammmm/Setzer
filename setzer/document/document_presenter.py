@@ -40,16 +40,6 @@ class DocumentPresenter(object):
         else:
             self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
 
-        undo_manager = self.document.source_buffer.get_undo_manager()
-        def can_undo_changed(manager, user_data=None): self.view.menu_item_undo.set_sensitive(manager.can_undo())
-        undo_manager.connect('can-undo-changed', can_undo_changed)
-        can_undo_changed(undo_manager)
-        def can_redo_changed(manager, user_data=None): self.view.menu_item_redo.set_sensitive(manager.can_redo())
-        undo_manager.connect('can-redo-changed', can_redo_changed)
-        can_redo_changed(undo_manager)
-        if self.document.is_latex_document():
-            self.view.menu_item_show_in_preview.set_sensitive(False)
-
         self.document.register_observer(self)
         self.settings.register_observer(self)
 
@@ -76,9 +66,5 @@ class DocumentPresenter(object):
                     self.view.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
                 else:
                     self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
-
-        if change_code == 'can_forward_sync_changed':
-            if self.document.is_latex_document():
-                self.view.menu_item_show_in_preview.set_sensitive(parameter)
 
 
