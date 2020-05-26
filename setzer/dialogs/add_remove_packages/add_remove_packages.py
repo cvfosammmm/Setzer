@@ -53,6 +53,7 @@ class AddRemovePackagesDialog(Dialog):
         self.packages['listings'] = {'command': 'listings', 'description': _('provides a listing environment for embedding programming code.')}
         self.packages['natbib'] = {'command': 'natbib', 'description': _('provides additional bibliography and citation styles.')}
         self.packages['parskip'] = {'command': 'parskip', 'description': _('paragraphs without indentation.')}
+        self.packages['pgfplots'] = {'command': 'pgfplots', 'description': _('create plots in two and three dimensions.')}
         self.packages['textcomp'] = {'command': 'textcomp', 'description': _('contains symbols to be used in textmode.') + ' (' + _('recommended') + ')'}
         self.packages['theorem'] = {'command': 'theorem', 'description': _('define theorem environments (like "definition", "lemma", ...) with custom styling.')}
         self.packages['tikz'] = {'command': 'tikz', 'description': _('graphics and plotting.')}
