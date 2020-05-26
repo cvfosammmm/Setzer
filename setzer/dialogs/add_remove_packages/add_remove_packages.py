@@ -42,7 +42,7 @@ class AddRemovePackagesDialog(Dialog):
         self.packages['glossaries'] = {'command': 'glossaries', 'description': _('create a glossary for your document.')}
         self.packages['graphicx'] = {'command': 'graphicx', 'description': _('include graphics in your document.') + ' (' + _('recommended') + ')'}
         self.packages['hyperref'] = {'command': 'hyperref', 'description': _('create hyperlinks within your document.')}
-        self.packages['listings'] = {'command': 'listings', 'description': _('provides the \\listing environment for embedding programming code.')}
+        self.packages['listings'] = {'command': 'listings', 'description': _('provides a listing environment for embedding programming code.')}
         self.packages['natbib'] = {'command': 'natbib', 'description': _('provides additional bibliography and citation styles.')}
         self.packages['parskip'] = {'command': 'parskip', 'description': _('paragraphs without indentation.')}
         self.packages['textcomp'] = {'command': 'textcomp', 'description': _('contains symbols to be used in textmode.') + ' (' + _('recommended') + ')'}
