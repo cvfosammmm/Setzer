@@ -58,6 +58,7 @@ body {margin: 1em; margin-top: 0px; padding-top: 1px}
 a.anchor {float: right}
 a:visited {color: #00e}
 a:active {color: #000}
+a.external {background: url('./images/external-link.png') no-repeat; background-position: right center; padding-right: 18px}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -100,7 +101,7 @@ ul.no-bullet {list-style: none}
 
 <p>LaTeX is a system for typesetting documents.  It was originally
 created by Leslie Lamport and is now maintained by a group of volunteers
-(<a href="http://latex-project.org">http://latex-project.org</a>).  It is widely used, particularly for
+(<a class="external" href="http://latex-project.org">http://latex-project.org</a>).  It is widely used, particularly for
 complex and technical documents, such as those involving mathematics.
 </p>
 <a name="index-macro-package_002c-LaTeX-as" class="anchor"></a>
@@ -193,7 +194,7 @@ it to a PostScript <code>.ps</code> file with <code>dvips</code> or to a
 Portable Document Format <code>.pdf</code> file with <code>dvipdfmx</code>.
 The contents of the file can be dumped in human-readable form with
 <code>dvitype</code>.  A vast array of other DVI utility programs are
-available (<a href="http://mirror.ctan.org/dviware">http://mirror.ctan.org/dviware</a>).
+available (<a class="external" href="http://mirror.ctan.org/dviware">http://mirror.ctan.org/dviware</a>).
 </p>
 </dd>
 <dt><code>.pdf</code></dt>
@@ -276,14 +277,14 @@ overview of the main programs (see also&nbsp;<a href="latex2e_28.html#Command-li
 <dd><a name="index-pdfTeX-engine" class="anchor"></a>
 <a name="index-etex-command" class="anchor"></a>
 <a name="index-e_002dTeX" class="anchor"></a>
-<a name="tex-engines-latex" class="anchor"></a><p>In TeX Live (<a href="http://tug.org/texlive">http://tug.org/texlive</a>), if LaTeX is invoked
+<a name="tex-engines-latex" class="anchor"></a><p>In TeX Live (<a class="external" href="http://tug.org/texlive">http://tug.org/texlive</a>), if LaTeX is invoked
 via either the system command <code>latex</code> or <code>pdflatex</code>,
-then the pdfTeX engine is run (<a href="http://ctan.org/pkg/pdftex">http://ctan.org/pkg/pdftex</a>).
+then the pdfTeX engine is run (<a class="external" href="http://ctan.org/pkg/pdftex">http://ctan.org/pkg/pdftex</a>).
 When invoked as <code>latex</code>, the main output is a <samp>.dvi</samp>
 file; as <code>pdflatex</code>, the main output is a <samp>.pdf</samp> file.
 </p>
 <p>pdfTeX incorporates the e-TeX extensions to Knuth&rsquo;s original
-program (<a href="http://ctan.org/pkg/etex">http://ctan.org/pkg/etex</a>), including additional
+program (<a class="external" href="http://ctan.org/pkg/etex">http://ctan.org/pkg/etex</a>), including additional
 programming features and bi-directional typesetting, and has plenty of
 extensions of its own.  e-TeX is available on its own as the system
 command <code>etex</code>, but this is plain TeX (and produces
@@ -298,9 +299,9 @@ assumed to be available in LaTeX.
 <dd><a name="index-lualatex-command" class="anchor"></a>
 <a name="index-LuaTeX" class="anchor"></a>
 <a name="tex-engines-lualatex" class="anchor"></a><p>If LaTeX is invoked via the system command <code>lualatex</code>, the
-LuaTeX engine is run (<a href="http://ctan.org/pkg/luatex">http://ctan.org/pkg/luatex</a>).  This
+LuaTeX engine is run (<a class="external" href="http://ctan.org/pkg/luatex">http://ctan.org/pkg/luatex</a>).  This
 program allows code written in the scripting language Lua
-(<a href="http://luatex.org">http://luatex.org</a>) to interact with TeX&rsquo;s typesetting.
+(<a class="external" href="http://luatex.org">http://luatex.org</a>) to interact with TeX&rsquo;s typesetting.
 LuaTeX handles UTF-8 Unicode input natively, can handle OpenType
 and TrueType fonts, and produces a <samp>.pdf</samp> file by default.
 There is also <code>dvilualatex</code> to produce a <samp>.dvi</samp> file,
@@ -313,7 +314,7 @@ but this is rarely used.
 <a name="index-_002exdv-file" class="anchor"></a>
 <a name="index-xdvipdfmx" class="anchor"></a>
 <a name="tex-engines-xelatex" class="anchor"></a><p>If LaTeX is invoked with the system command <code>xelatex</code>, the
-XeTeX engine is run (<a href="http://tug.org/xetex">http://tug.org/xetex</a>).  Like LuaTeX,
+XeTeX engine is run (<a class="external" href="http://tug.org/xetex">http://tug.org/xetex</a>).  Like LuaTeX,
 XeTeX natively supports UTF-8 Unicode and TrueType and OpenType
 fonts, though the implementation is completely different, mainly using
 external libraries instead of internal code.  XeTeX produces a
@@ -329,7 +330,7 @@ useful for debugging.
 
 <p>Other variants of LaTeX and TeX exist, e.g., to provide
 additional support for Japanese and other languages ([u]pTeX,
-<a href="http://ctan.org/pkg/ptex">http://ctan.org/pkg/ptex</a>, <a href="http://ctan.org/pkg/uptex">http://ctan.org/pkg/uptex</a>).
+<a class="external" href="http://ctan.org/pkg/ptex">http://ctan.org/pkg/ptex</a>, <a class="external" href="http://ctan.org/pkg/uptex">http://ctan.org/pkg/uptex</a>).
 </p>
 
 <hr>
@@ -433,7 +434,7 @@ required (it specifies the formatting of columns).
 <p>The Comprehensive TeX Archive Network, CTAN, is the TeX and
 LaTeX community&rsquo;s repository of free material.  It is a set of
 Internet sites around the world that offer material related to LaTeX
-for download.  Visit CTAN on the web at <a href="https://ctan.org">https://ctan.org</a>.
+for download.  Visit CTAN on the web at <a class="external" href="https://ctan.org">https://ctan.org</a>.
 </p>
 <p>This material is organized into packages, discrete bundles that
 typically offer some coherent functionality and are maintained by one
@@ -454,7 +455,7 @@ world help out by mirroring, that is, automatically syncing their
 collections with the core site and then in turn making their copies
 publicly available. This gives users close to their location better
 access and relieves the load on the core site. The list of mirrors is
-at <a href="https://ctan.org/mirrors">https://ctan.org/mirrors</a>.
+at <a class="external" href="https://ctan.org/mirrors">https://ctan.org/mirrors</a>.
 </p>
 
 
