@@ -53,6 +53,11 @@
     </provides>
 
     <releases>
+        <release version="0.2.8" date="2020-5-27">
+            <description>
+                <p translatable="no">Redesigned help panel homepage, LaTeX package documentation links, ...</p>
+            </description>
+        </release>
         <release version="0.2.7" date="2020-5-24">
             <description>
                 <p translatable="no">Italian translation, help panel with LaTeX documentation, open files from the file manager and command line, ...</p>
