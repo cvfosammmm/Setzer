@@ -492,7 +492,7 @@ class Query(object):
 
 class QueryBuild(Query):
 
-    def __init__(self, text, tex_filename, latex_interpreter, additional_arguments, do_cleanup):
+    def __init__(self, text, tex_filename, latex_interpreter, use_latexmk, additional_arguments, do_cleanup):
         Query.__init__(self)
 
         self.text = text
@@ -514,11 +514,17 @@ class QueryBuild(Query):
 
         self.latex_interpreter = latex_interpreter
         self.build_command_defaults = dict()
-        self.build_command_defaults['latexmk'] = 'latexmk -synctex=1 -interaction=nonstopmode -pdf'
         self.build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode -pdf'
         self.build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode'
-        self.build_command_defaults['lualatex'] = 'lualatex -synctex=1 -interaction=nonstopmode -pdf'
-        self.build_command = self.build_command_defaults[self.latex_interpreter] + self.additional_arguments
+        self.build_command_defaults['lualatex'] = 'lualatex --synctex=1 --interaction=nonstopmode'
+        if use_latexmk:
+            if self.latex_interpreter == 'pdflatex':
+                interpreter_option = 'pdf'
+            else:
+                interpreter_option = self.latex_interpreter
+            self.build_command = 'latexmk -' + interpreter_option + ' -synctex=1 -interaction=nonstopmode' + self.additional_arguments
+        else:
+            self.build_command = self.build_command_defaults[self.latex_interpreter] + self.additional_arguments
 
         self.do_another_latex_build = True
         self.do_a_bibtex_build = False
@@ -564,7 +570,7 @@ class QueryBackwardSync(Query):
 
 class QueryBuildAndForwardSync(Query):
 
-    def __init__(self, text, tex_filename, latex_interpreter, additional_arguments, do_cleanup, synctex_arguments):
+    def __init__(self, text, tex_filename, latex_interpreter, use_latexmk, additional_arguments, do_cleanup, synctex_arguments):
         Query.__init__(self)
 
         self.text = text

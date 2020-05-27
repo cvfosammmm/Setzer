@@ -51,16 +51,18 @@ class DocumentBuilder(object):
 
             if mode in ['build', 'build_and_forward_sync']:
                 interpreter = self.settings.get_value('preferences', 'latex_interpreter')
+                use_latexmk = self.settings.get_value('preferences', 'use_latexmk')
                 build_option_system_commands = self.settings.get_value('preferences', 'build_option_system_commands')
                 additional_arguments = ''
+
                 lualatex_prefix = ' -' if interpreter == 'lualatex' else ' '
-                latexmk_prefix = ' -latexoption=' if interpreter == 'latexmk' else ' '
                 if build_option_system_commands == 'disable':
                     additional_arguments += lualatex_prefix + '-no-shell-escape'
                 elif build_option_system_commands == 'restricted':
                     additional_arguments += lualatex_prefix + '-shell-restricted'
                 elif build_option_system_commands == 'enable':
                     additional_arguments += lualatex_prefix + '-shell-escape'
+
                 buffer = document.get_buffer()
                 if buffer != None:
                     text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True)
@@ -69,7 +71,7 @@ class DocumentBuilder(object):
                 do_cleanup = self.settings.get_value('preferences', 'cleanup_build_files')
 
             if mode == 'build':
-                query = build_system.QueryBuild(text, filename, interpreter, additional_arguments, do_cleanup)
+                query = build_system.QueryBuild(text, filename, interpreter, use_latexmk, additional_arguments, do_cleanup)
             elif mode == 'forward_sync':
                 if document.build_pathname != None:
                     query = build_system.QueryForwardSync(filename, document.build_pathname, synctex_arguments)
@@ -77,7 +79,7 @@ class DocumentBuilder(object):
                 if document.backward_sync_data != None:
                     query = build_system.QueryBackwardSync(filename, document.build_pathname, document.backward_sync_data)
             else:
-                query = build_system.QueryBuildAndForwardSync(text, filename, interpreter, additional_arguments, do_cleanup, synctex_arguments)
+                query = build_system.QueryBuildAndForwardSync(text, filename, interpreter, use_latexmk, additional_arguments, do_cleanup, synctex_arguments)
 
             self.build_system.add_query(query)
 
