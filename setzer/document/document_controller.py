@@ -72,10 +72,13 @@ class DocumentController(object):
         menu_item_delete.set_sensitive(has_selection)
 
         if self.document.is_latex_document():
+            menu_item_comment = Gtk.MenuItem.new_with_label(_('Toggle Comment'))
+            menu_item_comment.connect('activate', self.on_toggle_comment)
             menu_item_show_in_preview = Gtk.MenuItem.new_with_label(_('Show in Preview'))
             menu_item_show_in_preview.set_sensitive(self.document.can_forward_sync)
             menu_item_show_in_preview.connect('activate', self.on_show_in_preview)
             menu.append(Gtk.SeparatorMenuItem())
+            menu.append(menu_item_comment)
             menu.append(menu_item_show_in_preview)
         menu.show_all()
 
@@ -96,6 +99,9 @@ class DocumentController(object):
 
     def on_show_in_preview(self, menu_item):
         self.document.forward_sync()
+
+    def on_toggle_comment(self, menu_item):
+        self.document.comment_uncomment()
 
     def on_keypress(self, widget, event, data=None):
         modifiers = Gtk.accelerator_get_default_mod_mask()
