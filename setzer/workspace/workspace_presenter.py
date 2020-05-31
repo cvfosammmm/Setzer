@@ -180,6 +180,7 @@ class WorkspacePresenter(object):
         self.main_window.include_bibtex_file_action.set_enabled(value)
         self.main_window.include_latex_file_action.set_enabled(value)
         self.main_window.add_packages_action.set_enabled(value)
+        self.main_window.comment_uncomment_action.set_enabled(value)
         self.main_window.document_wizard_action.set_enabled(value)
 
     def focus_active_document(self):

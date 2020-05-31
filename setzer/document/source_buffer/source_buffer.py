@@ -203,6 +203,42 @@ class SourceBuffer(GtkSource.Buffer):
             text = before + '•' + after
             self.insert_text_at_cursor(text)
 
+    def comment_uncomment(self):
+        self.begin_user_action()
+
+        bounds = self.get_selection_bounds()
+
+        if len(bounds) > 1:
+            end = (bounds[1].get_line() + 1) if (bounds[1].get_line_index() > 0) else bounds[1].get_line()
+            line_numbers = list(range(bounds[0].get_line(), end))
+        else:
+            line_numbers = [self.get_iter_at_mark(self.get_insert()).get_line()]
+
+        do_comment = False
+        for line_number in line_numbers:
+            line = self.get_line(line_number)
+            if not line.startswith('%'):
+                do_comment = True
+
+        if do_comment:
+            for line_number in line_numbers:
+                self.insert(self.get_iter_at_line(line_number), '%')
+        else:
+            for line_number in line_numbers:
+                start = self.get_iter_at_line(line_number)
+                end = start.copy()
+                end.forward_char()
+                self.delete(start, end)
+
+        self.end_user_action()
+
+    def get_line(self, line_number):
+        start = self.get_iter_at_line(line_number)
+        end = start.copy()
+        if not end.ends_line():
+            end.forward_to_line_end()
+        return self.get_slice(start, end, False)
+
     def set_synctex_position(self, position):
         start = self.get_iter_at_line(position['line'])
         end = start.copy()

@@ -172,6 +172,10 @@ class Document(Observable):
     def insert_before_after(self, before, after):
         self.get_buffer().insert_before_after(before, after)
 
+    def comment_uncomment(self):
+        if self.is_latex_document():
+            self.get_buffer().comment_uncomment()
+
 
 class LaTeXDocument(Document):
 

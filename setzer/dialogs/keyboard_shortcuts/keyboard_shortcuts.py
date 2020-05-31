@@ -98,6 +98,7 @@ class KeyboardShortcutsDialog(Dialog):
         section['items'].append({'title': _('Quotation Marks'), 'shortcut': '&lt;ctrl&gt;quotedbl'})
         section['items'].append({'title': _('List Item'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;I'})
         section['items'].append({'title': _('Environment'), 'shortcut': '&lt;ctrl&gt;E'})
+        section['items'].append({'title': _('Comment / Uncomment current line(s)'), 'shortcut': '&lt;ctrl&gt;K'})
         data.append(section)
 
         section = {'title': _('Math Shortcuts'), 'items': list()}

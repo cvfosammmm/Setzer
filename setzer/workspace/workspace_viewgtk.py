@@ -197,6 +197,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.add_packages_action = Gio.SimpleAction.new('add-packages', GLib.VariantType('as'))
         self.add_action(self.add_packages_action)
 
+        self.comment_uncomment_action = Gio.SimpleAction.new('comment-uncomment', None)
+        self.add_action(self.comment_uncomment_action)
+
         self.shortcuts_window_action = Gio.SimpleAction.new('show-shortcuts-window', None)
         self.add_action(self.shortcuts_window_action)
 
