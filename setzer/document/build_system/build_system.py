@@ -159,6 +159,7 @@ class Query(object):
                         with self.build_result_lock:
                             self.build_result = {'error': 'interpreter_not_working',
                                                  'error_arg': self.latex_interpreter}
+                        tex_file.close()
                         return
                     self.process.wait()
 
@@ -175,6 +176,7 @@ class Query(object):
                         with self.build_result_lock:
                             self.build_result = {'error': 'interpreter_missing',
                                                  'error_arg': arguments[0]}
+                        tex_file.close()
                         return
                     self.process.communicate()
                     try:
@@ -190,6 +192,7 @@ class Query(object):
                         with self.build_result_lock:
                             self.build_result = {'error': 'interpreter_not_working',
                                                  'error_arg': 'log file missing'}
+                        tex_file.close()
                         return
         
             self.parse_bibtex_log(tex_file.name[:-3] + 'blg')
@@ -593,11 +596,17 @@ class QueryBuildAndForwardSync(Query):
 
         self.latex_interpreter = latex_interpreter
         self.build_command_defaults = dict()
-        self.build_command_defaults['latexmk'] = 'latexmk -synctex=1 -interaction=nonstopmode -pdf'
         self.build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode -pdf'
         self.build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode'
-        self.build_command_defaults['lualatex'] = 'lualatex -synctex=1 -interaction=nonstopmode -pdf'
-        self.build_command = self.build_command_defaults[self.latex_interpreter] + self.additional_arguments
+        self.build_command_defaults['lualatex'] = 'lualatex --synctex=1 --interaction=nonstopmode'
+        if use_latexmk:
+            if self.latex_interpreter == 'pdflatex':
+                interpreter_option = 'pdf'
+            else:
+                interpreter_option = self.latex_interpreter
+            self.build_command = 'latexmk -' + interpreter_option + ' -synctex=1 -interaction=nonstopmode' + self.additional_arguments
+        else:
+            self.build_command = self.build_command_defaults[self.latex_interpreter] + self.additional_arguments
 
         self.do_another_latex_build = True
         self.do_a_bibtex_build = False
