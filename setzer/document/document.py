@@ -78,6 +78,9 @@ class Document(Observable):
     def get_buffer(self):
         return self.source_buffer
 
+    def get_search_context(self):
+        return self.source_buffer.search_context
+
     def set_filename(self, filename):
         self.filename = filename
         self.add_change_code('filename_change', filename)
