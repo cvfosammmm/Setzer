@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-20 22:15+0100\n"
-"PO-Revision-Date: 2020-05-20 22:44+0100\n"
+"PO-Revision-Date: 2020-05-31 17:52+0100\n"
 "Last-Translator: Lyes Saadi <mail@lyes.eu>\n"
 "Language-Team: French <>\n"
 "Language: fr\n"
@@ -1366,11 +1366,11 @@ msgstr "seulement quand il y a des erreurs."
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:165
 msgid ".. on errors and warnings."
-msgstr "s'il y a des erreurs ou des avertissements."
+msgstr "s'il y a des erreurs ou des alertes."
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:166
 msgid ".. on errors, warnings and badboxes."
-msgstr "s'il y a des erreurs, des avertissements ou des débordements."
+msgstr "s'il y a des erreurs, des alertes ou des badbox."
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:172
 msgid "Embedded system commands"
@@ -1724,8 +1724,8 @@ msgstr[1] "Construction échouée avec {amount} erreurs"
 #: setzer/workspace/build_log/build_log_presenter.py:57
 msgid "{amount} warning or badbox"
 msgid_plural "{amount} warnings or badboxes"
-msgstr[0] "{amount} avertissement ou débordement"
-msgstr[1] "{amount} avertissements ou débordements"
+msgstr[0] "{amount} alerte ou badbox"
+msgstr[1] "{amount} alertes ou badbox"
 
 #: setzer/workspace/build_log/build_log_presenter.py:60
 msgid "Building successful"
@@ -1733,11 +1733,11 @@ msgstr "Construction réussie"
 
 #: setzer/workspace/build_log/build_log_presenter.py:65
 msgid "no warnings or badboxes"
-msgstr "aucun avertissement ou débordement"
+msgstr "aucune alerte ou badbox"
 
 #: setzer/workspace/build_log/build_log_viewgtk.py:112
 msgid "Badbox"
-msgstr "Débordement"
+msgstr "Badbox"
 
 #: setzer/workspace/build_log/build_log_viewgtk.py:112
 msgid "Error"
@@ -1745,7 +1745,7 @@ msgstr "Erreur"
 
 #: setzer/workspace/build_log/build_log_viewgtk.py:112
 msgid "Warning"
-msgstr "Avertissement"
+msgstr "Alerte"
 
 #: setzer/workspace/build_log/build_log_viewgtk.py:120
 #, python-brace-format
