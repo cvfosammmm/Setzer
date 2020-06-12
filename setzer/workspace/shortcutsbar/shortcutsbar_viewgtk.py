@@ -54,7 +54,7 @@ class ShortcutsBar(Gtk.HBox):
         
     def populate_right_toolbar(self):
         self.button_build_log = Gtk.ToggleToolButton()
-        self.button_build_log.set_icon_name('gnome-system-monitor-symbolic')
+        self.button_build_log.set_icon_name('build-log-symbolic')
         self.button_build_log.set_tooltip_text(_('Build log') + ' (F8)')
         self.button_build_log.get_child().set_can_focus(False)
         self.right_icons.insert(self.button_build_log, 0)
