@@ -139,27 +139,26 @@ class Query(object):
     
     def build(self):
         with tempfile.TemporaryDirectory() as tmp_directory_name:
-            tex_file = tempfile.NamedTemporaryFile(suffix='.tex', dir=tmp_directory_name)
-            self.build_pathname = tex_file.name
-            with open(tex_file.name, 'w') as f: f.write(self.text)
-            pdf_filename = tmp_directory_name + '/' + os.path.basename(tex_file.name).rsplit('.tex', 1)[0] + '.pdf'
-            log_filename = tmp_directory_name + '/' + os.path.basename(tex_file.name).rsplit('.tex', 1)[0] + '.log'
+            tex_file = tmp_directory_name + '/' + os.path.basename(self.tex_filename)
+            self.build_pathname = tex_file
+            with open(tex_file, 'w') as f: f.write(self.text)
+            pdf_filename = tmp_directory_name + '/' + os.path.basename(tex_file).rsplit('.tex', 1)[0] + '.pdf'
+            log_filename = tmp_directory_name + '/' + os.path.basename(tex_file).rsplit('.tex', 1)[0] + '.log'
 
             # build pdf
             while (self.do_another_latex_build or self.do_a_bibtex_build) and not self.force_building_to_stop:
                 if self.do_a_bibtex_build:
                     arguments = ['bibtex']
-                    arguments.append(tex_file.name.rsplit('/', 1)[1][:-3] + 'aux')
+                    arguments.append(tex_file.rsplit('/', 1)[1][:-3] + 'aux')
                     custom_env = os.environ.copy()
                     custom_env['BIBINPUTS'] = self.directory_name + ':' + tmp_directory_name
                     try:
                         self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=tmp_directory_name, env=custom_env)
                     except FileNotFoundError:
-                        self.cleanup_build_files(tex_file.name)
+                        self.cleanup_build_files(tex_file)
                         with self.build_result_lock:
                             self.build_result = {'error': 'interpreter_not_working',
                                                  'error_arg': self.latex_interpreter}
-                        tex_file.close()
                         return
                     self.process.wait()
 
@@ -168,15 +167,14 @@ class Query(object):
                 else:
                     arguments = self.build_command.split()
                     arguments.append('-output-directory=' + tmp_directory_name)
-                    arguments.append(tex_file.name)
+                    arguments.append(tex_file)
                     try:
                         self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
                     except FileNotFoundError:
-                        self.cleanup_build_files(tex_file.name)
+                        self.cleanup_build_files(tex_file)
                         with self.build_result_lock:
                             self.build_result = {'error': 'interpreter_missing',
                                                  'error_arg': arguments[0]}
-                        tex_file.close()
                         return
                     self.process.communicate()
                     try:
@@ -186,16 +184,15 @@ class Query(object):
 
                     # parse results
                     try:
-                        self.parse_build_log(log_filename, tex_file.name)
+                        self.parse_build_log(log_filename, tex_file)
                     except FileNotFoundError as e:
-                        self.cleanup_build_files(tex_file.name)
+                        self.cleanup_build_files(tex_file)
                         with self.build_result_lock:
                             self.build_result = {'error': 'interpreter_not_working',
                                                  'error_arg': 'log file missing'}
-                        tex_file.close()
                         return
         
-            self.parse_bibtex_log(tex_file.name[:-3] + 'blg')
+            self.parse_bibtex_log(tex_file[:-3] + 'blg')
 
             self.build_pathname = self.copy_synctex_file(self.build_pathname)
 
@@ -205,7 +202,7 @@ class Query(object):
                 if self.do_cleanup:
                     self.cleanup_build_files(self.tex_filename)
                 else:
-                    self.rename_build_files(tex_file.name)
+                    self.rename_build_files(tex_file)
 
                 if self.error_count == 0:
                     try: shutil.move(pdf_filename, self.new_pdf_filename)
@@ -220,8 +217,7 @@ class Query(object):
                                          'error': None,
                                          'error_arg': None}
             else:
-                self.cleanup_build_files(tex_file.name)
-            tex_file.close()
+                self.cleanup_build_files(tex_file)
 
     def parse_build_log(self, log_filename, tex_filename):
         try: file = open(log_filename, 'rb')
