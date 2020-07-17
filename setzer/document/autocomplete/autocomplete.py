@@ -19,6 +19,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import GObject
 from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import Pango
 
 import setzer.document.autocomplete.autocomplete_viewgtk as view
@@ -92,6 +93,31 @@ class Autocomplete(object):
     def on_focus_in(self, widget, event, user_data=None):
         self.focus_show()
 
+    def on_keypress(self, event):
+        ''' returns whether the keypress has been handled. '''
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if event.keyval == Gdk.keyval_from_name('Down'):
+            if event.state & modifiers == 0:
+                return self.on_down_press()
+
+        if event.keyval == Gdk.keyval_from_name('Up'):
+            if event.state & modifiers == 0:
+                return self.on_up_press()
+
+        if event.keyval == Gdk.keyval_from_name('Escape'):
+            if event.state & modifiers == 0:
+                return self.on_escape_press()
+
+        if event.keyval == Gdk.keyval_from_name('Return'):
+            if event.state & modifiers == 0:
+                return self.on_return_press()
+
+        tab_keyvals = [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]
+        if event.keyval in tab_keyvals:
+            if event.state & modifiers == 0:
+                return self.on_tab_press()
+
     def on_return_press(self):
         if self.autocomplete_visible == True:
             self.autocomplete_insert()
@@ -120,6 +146,9 @@ class Autocomplete(object):
             return True
         else:
             return False
+
+    def on_tab_press(self):
+        return False
 
     def focus_hide(self):
         self.view.hide()
