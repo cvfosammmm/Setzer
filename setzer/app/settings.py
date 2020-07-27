@@ -80,9 +80,15 @@ class Settings(Observable):
         self.defaults['preferences']['enable_line_wrapping'] = True
         self.defaults['preferences']['highlight_current_line'] = False
         self.defaults['preferences']['highlight_matching_brackets'] = False
-        self.defaults['preferences']['inline_spellchecking'] = False
-        self.defaults['preferences']['spellchecking_language_code'] = Gspell.Language.get_default().get_code()
         self.defaults['preferences']['build_option_system_commands'] = 'disable'
+
+        default_language = Gspell.Language.get_default()
+        if default_language != None:
+            self.defaults['preferences']['inline_spellchecking'] = False
+            self.defaults['preferences']['spellchecking_language_code'] = Gspell.Language.get_default().get_code()
+        else:
+            self.defaults['preferences']['inline_spellchecking'] = False
+            self.defaults['preferences']['spellchecking_language_code'] = None
 
     def get_value(self, section, item):
         try: value = self.data[section][item]

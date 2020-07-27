@@ -34,7 +34,10 @@ class Spellchecker(object):
         self.spell_view.set_inline_spell_checking(value)
 
     def set_language(self, language_code):
-        language = Gspell.Language.lookup(language_code)
+        if language_code != None:
+            language = Gspell.Language.lookup(language_code)
+        else:
+            language = None
         self.checker.set_language(language)
 
 

@@ -17,7 +17,9 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
+gi.require_version('Gspell', '1')
 from gi.repository import GLib, Gio
+from gi.repository import Gspell
 
 from setzer.app.service_locator import ServiceLocator
 
@@ -136,7 +138,7 @@ class WorkspacePresenter(object):
         self.main_window.mode_stack.set_visible_child_name('latex_documents')
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(True)
         self.set_document_actions_active(True)
-        self.main_window.spellchecking_action.set_enabled(True)
+        self.enable_spellchecking_action()
         self.main_window.add_remove_packages_dialog_action.set_enabled(True)
 
     def activate_bibtex_documents_mode(self):
@@ -145,6 +147,11 @@ class WorkspacePresenter(object):
         self.set_document_actions_active(True)
         self.main_window.spellchecking_action.set_enabled(False)
         self.main_window.add_remove_packages_dialog_action.set_enabled(False)
+
+    def enable_spellchecking_action(self):
+        default_language = Gspell.Language.get_default()
+        if default_language != None:
+            self.main_window.spellchecking_action.set_enabled(True)
 
     def update_latex_shortcuts_bar(self):
         document = self.workspace.active_document
