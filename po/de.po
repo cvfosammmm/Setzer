@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-20 14:25+0200\n"
-"PO-Revision-Date: 2020-07-20 15:06+0200\n"
+"POT-Creation-Date: 2020-07-27 14:04+0200\n"
+"PO-Revision-Date: 2020-07-27 14:13+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -721,45 +721,39 @@ msgstr "Dokumentenklasse wählen"
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:81
 msgid ""
-"<b>Article:</b>  For articles in scientific journals, term\n"
-"papers, handouts, short reports, ...\n"
+"<b>Article:</b>  For articles in scientific journals, term papers, handouts, "
+"short reports, ...\n"
 "\n"
-"This class on its own is pretty simplistic and\n"
-"is often used as a starting point for more\n"
-"custom layouts."
+"This class on its own is pretty simplistic and is often used as a starting "
+"point for more custom layouts."
 msgstr ""
-"<b>Article:</b>  Für Artikel in wissenschaftlichen\n"
-"Zeitschriften, Hausarbeiten, Handouts, kurze\n"
-"Berichte, ...\n"
+"<b>Article:</b>  Für Artikel in wissenschaftlichen Zeitschriften, "
+"Hausarbeiten, Handouts, kurze Berichte, ...\n"
 "\n"
-"Diese Klasse ist an sich ziemlich einfach und wird oft\n"
-"als Ausgangspunkt für kompliziertere Layouts benutzt."
+"Diese Klasse ist an sich ziemlich einfach und wird oft als Ausgangspunkt für "
+"kompliziertere Layouts benutzt."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:82
-msgid ""
-"<b>Book:</b>  For actual books containing many chapters\n"
-"and sections."
+msgid "<b>Book:</b>  For actual books containing many chapters and sections."
 msgstr ""
-"<b>Book:</b>  Für eigentliche Bücher mit mehreren\n"
-"Kapiteln und Abschnitten."
+"<b>Book:</b>  Für eigentliche Bücher mit mehreren Kapiteln und Abschnitten."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:83
 msgid ""
-"<b>Report:</b>  For longer reports and articles containing\n"
-"more than one chapter, small books, thesis."
+"<b>Report:</b>  For longer reports and articles containing more than one "
+"chapter, small books, thesis."
 msgstr ""
-"<b>Report:</b>  Für längere Berichte und Artikel mit\n"
-"mehr als einem Kapitel, kurze Bücher,\n"
-"Abschlussarbeiten."
+"<b>Report:</b>  Für längere Berichte und Artikel mit mehr als einem Kapitel, "
+"kurze Bücher, Abschlussarbeiten."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:84
 msgid "<b>Letter:</b>  For writing letters."
 msgstr "<b>Letter:</b>  Zum Schreiben von Briefen."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:85
+#, fuzzy
 msgid ""
-"<b>Beamer:</b>  A class for making presentation slides\n"
-"with LaTeX.\n"
+"<b>Beamer:</b>  A class for making presentation slides with LaTeX.\n"
 "\n"
 "There are many predefined presentation styles."
 msgstr ""
@@ -1131,56 +1125,56 @@ msgstr "Zahl am Cursor erhöhen"
 msgid "Decrement number at cursor"
 msgstr "Zahl am Cursor verringern"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:91
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:89
+msgid "Comment / Uncomment current line(s)"
+msgstr "Zeile aus- / entkommentieren"
+
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:92
 msgid "LaTeX Shortcuts"
 msgstr "LaTeX"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:92
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:93
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:225
 msgid "New Line"
 msgstr "Zeilenumbruch"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:93
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:94
 #: setzer/document/autocomplete/autocomplete.py:607
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:74
 msgid "Bold Text"
 msgstr "Fett"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:94
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:95
 #: setzer/document/autocomplete/autocomplete.py:609
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:65
 msgid "Italic Text"
 msgstr "Kursiv"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:95
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:96
 msgid "Underlined Text"
 msgstr "Unterstrichen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:96
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:97
 msgid "Typewriter Text"
 msgstr "Schreibmaschine"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:97
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:98
 msgid "Emphasized Text"
 msgstr "Hervorgehoben"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:98
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:99
 msgid "Quotation Marks"
 msgstr "Anführungszeichen"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:99
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:100
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:443
 msgid "List Item"
 msgstr "Listeneintrag"
 
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:100
+#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:101
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:181
 msgid "Environment"
 msgstr "Umgebung"
-
-#: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:101
-msgid "Comment / Uncomment current line(s)"
-msgstr "Zeile aus- / entkommentieren"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:104
 msgid "Math Shortcuts"
