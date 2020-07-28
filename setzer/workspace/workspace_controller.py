@@ -74,6 +74,7 @@ class WorkspaceController(object):
         self.main_window.set_spellchecking_language_action.connect('activate', self.start_spellchecking_language_dialog)
         self.main_window.spellchecking_action.connect('activate', self.start_spellchecking_dialog)
         self.main_window.toggle_dark_mode_action.connect('activate', self.on_dark_mode_toggle_toggled)
+        self.main_window.toggle_invert_pdf_action.connect('activate', self.on_invert_pdf_toggle_toggled)
 
         # populate workspace
         self.workspace.populate_from_disk()
@@ -284,6 +285,11 @@ class WorkspaceController(object):
         new_state = not action.get_state().get_boolean()
         action.set_state(GLib.Variant.new_boolean(new_state))
         self.workspace.set_dark_mode(new_state)
+
+    def on_invert_pdf_toggle_toggled(self, action, parameter=None):
+        new_state = not action.get_state().get_boolean()
+        action.set_state(GLib.Variant.new_boolean(new_state))
+        self.workspace.set_invert_pdf(new_state)
 
     def on_sidebar_size_allocate(self, sidebar, allocation):
         if not self.workspace.presenter.sidebars_initialized: return

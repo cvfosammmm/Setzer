@@ -74,7 +74,7 @@ class Document(Observable):
 
     def set_use_dark_scheme(self, use_dark_scheme):
         self.get_buffer().set_use_dark_scheme(use_dark_scheme)
-    
+
     def get_buffer(self):
         return self.source_buffer
 
@@ -308,6 +308,9 @@ class LaTeXDocument(Document):
         if self.has_visible_build_system != has_visible_build_system:
             self.has_visible_build_system = has_visible_build_system
             self.add_change_code('build_system_visibility_change', has_visible_build_system)
+
+    def set_invert_pdf(self, invert_pdf):
+        self.preview.set_invert_pdf(invert_pdf)
 
     def set_synctex_position(self, position):
         self.get_buffer().set_synctex_position(position)

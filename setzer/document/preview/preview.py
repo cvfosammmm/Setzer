@@ -42,6 +42,7 @@ class Preview(Observable):
 
         self.pdf_filename = None
         self.pdf_date = None
+        self.invert_pdf = False
 
         self.poppler_document_lock = thread.allocate_lock()
         self.poppler_document = None
@@ -93,6 +94,10 @@ class Preview(Observable):
             self.pdf_filename = pdf_filename
         self.set_pdf_date()
         self.load_pdf()
+
+    def set_invert_pdf(self, invert_pdf):
+        self.invert_pdf = invert_pdf
+        self.add_change_code('invert_pdf_changed')
 
     def reset_pdf_data(self):
         self.pdf_loaded = False

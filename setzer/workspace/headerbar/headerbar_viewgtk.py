@@ -147,6 +147,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('View'))
         self.pmb.add_action_button(box, _('Dark Mode'), 'win.toggle-dark-mode')
+        self.pmb.add_action_button(box, _('Invert Colors in .pdf-Preview'), 'win.toggle-invert-pdf')
         stack.add_named(box, 'view')
         box.show_all()
 

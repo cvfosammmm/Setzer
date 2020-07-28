@@ -230,6 +230,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.add_action(self.toggle_dark_mode_action)
         settings.gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', dm_default)
 
+        ip_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'invert_pdf'))
+        self.toggle_invert_pdf_action = Gio.SimpleAction.new_stateful('toggle-invert-pdf', None, ip_default)
+        self.add_action(self.toggle_invert_pdf_action)
+
 
 class DocumentViewWrapper(Gtk.Notebook):
 
