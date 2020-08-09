@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-27 14:04+0200\n"
-"PO-Revision-Date: 2020-07-27 14:13+0200\n"
+"PO-Revision-Date: 2020-08-09 17:30+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -751,7 +751,6 @@ msgid "<b>Letter:</b>  For writing letters."
 msgstr "<b>Letter:</b>  Zum Schreiben von Briefen."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:85
-#, fuzzy
 msgid ""
 "<b>Beamer:</b>  A class for making presentation slides with LaTeX.\n"
 "\n"
