@@ -36,11 +36,10 @@ Note: Some distributions may not include systemwide installations of Python modu
 
 ## Building your documents from within the app
 
-To build your documents from within the app you have to specify a build command. I recommend building with latexmk, which on Debian can be installed like so:
-`apt-get install latexmk`
+To build your documents from within the app you have to install a LaTeX interpreter. For example if you want to build with XeLaTeX, on Debian this can be installed like so:
+`apt-get install texlive-xetex`
 
-To specify a build command open the "Preferences" dialog and type in the command you want to use under "Build command", which in the case of latexmk could be the following:
-`latexmk -synctex=1 -interaction=nonstopmode -pdf -output-directory=%OUTDIR %FILENAME`
+To specify a build command open the "Preferences" dialog and choose the command you want to use under "LaTeX Interpreter".
 
 ## Getting in touch
 
