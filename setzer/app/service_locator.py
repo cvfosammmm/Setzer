@@ -33,10 +33,12 @@ class ServiceLocator(object):
     build_log_doc_regex = re.compile('( *\((.*\.tex))')
     build_log_item_regex = re.compile('((?<!.) *' + 
     '(?:Overfull \\\\hbox|Underfull \\\\hbox|' + 
-    'No file .*\.|File .* does not exist\.|! I can\'t find file\.|! File .* not found\.|' + 
-    '(?:LaTeX|pdfTeX|LuaTeX|Package|Class) .*Warning.*:|LaTeX Font Warning:|' + 
+    'No file .*\.|File .* does not exist\.|! I can\'t find file\.|! File .* not found\.|' +
+    '(?:LaTeX|pdfTeX|LuaTeX|Package|Class) .*Warning.*:|LaTeX Font Warning:|' +
+    'Package glossaries Info: Writing glossary file |' +
     '! Undefined control sequence\.|! Missing (?:.*) inserted.|! Package .* Error:|! (?:LaTeX|LuaTeX) Error:|No file .*\.bbl.).*\\n)')
     build_log_badbox_line_number_regex = re.compile('lines ([0-9]+)--([0-9]+)')
+    build_log_glo_file_regex = re.compile('Package glossaries Info: Writing glossary file (.*\.glo)')
     build_log_other_line_number_regex = re.compile('(l.| input line \n| input line )([0-9]+)( |.)')
     bibtex_log_item_regex = re.compile('Warning--(.*)\n--line ([0-9]+) of file (.*)|I couldn\'t open style file (.*).bst\n---line ([0-9]+) of file (.*)')
     symbols_regex = re.compile('\\\\(label|include|input|bibliography)\{((?:\s|\w|\:|,)*)\}|\\\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}')
@@ -69,9 +71,12 @@ class ServiceLocator(object):
     
     def get_build_log_item_regex():
         return ServiceLocator.build_log_item_regex
-    
+
     def get_build_log_badbox_line_number_regex():
         return ServiceLocator.build_log_badbox_line_number_regex
+    
+    def get_build_log_glo_file_regex():
+        return ServiceLocator.build_log_glo_file_regex
     
     def get_build_log_other_line_number_regex():
         return ServiceLocator.build_log_other_line_number_regex

@@ -293,7 +293,7 @@ class LaTeXDocument(Document):
         self.change_build_state('building_to_stop')
         
     def cleanup_build_files(self):
-        file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,'.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc']
+        file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,'.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc', '.glo', '.ist']
         for ending in file_endings:
             filename = os.path.splitext(self.get_filename())[0] + ending
             try: os.remove(filename)
