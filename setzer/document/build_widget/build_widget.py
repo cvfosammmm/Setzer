@@ -122,7 +122,7 @@ class BuildWidget(Observable):
     
     def set_clean_button_state(self):
         def get_clean_button_state(document):
-            file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,'.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc', '.glo', '.ist']
+            file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,'.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc', '.ist', '.glo', '.glg', '.acn', '.alg']
             if document != None:
                 if document.filename != None:
                     pathname = document.get_filename().rsplit('/', 1)
