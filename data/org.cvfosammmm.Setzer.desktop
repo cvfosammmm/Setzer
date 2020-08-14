@@ -5,4 +5,4 @@ Type=Application
 Icon=org.cvfosammmm.Setzer
 Categories=GNOME;GTK;Science;Office;
 Keywords=latex;bibtex;editor;
-MimeType=text/x-tex;text/x-bibtex;
+MimeType=application/vdn.setzer.session.stzs;text/x-tex;text/x-bibtex;
