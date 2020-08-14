@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-27 14:04+0200\n"
-"PO-Revision-Date: 2020-07-27 14:14+0200\n"
+"POT-Creation-Date: 2020-08-14 20:11+0200\n"
+"PO-Revision-Date: 2020-08-14 20:18+0200\n"
 "Last-Translator: Kowalski7cc <kowalski.7cc@gmail.com>\n"
 "Language-Team: \n"
 "Language: it\n"
@@ -97,8 +97,8 @@ msgstr "Includi grafica nel tuo documento"
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:158
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:159
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:160
-#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:79
-#: setzer/dialogs/preferences/preferences_viewgtk.py:195
+#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:80
+#: setzer/dialogs/preferences/preferences_viewgtk.py:196
 msgid "recommended"
 msgstr "Raccomandato"
 
@@ -662,7 +662,7 @@ msgstr ""
 #: setzer/dialogs/close_confirmation/close_confirmation.py:119
 #: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:60
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:109
-#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:93
+#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:94
 #: setzer/dialogs/interpreter_missing/interpreter_missing.py:53
 #: setzer/dialogs/open_document/open_document.py:46
 #: setzer/dialogs/open_session/open_session.py:46
@@ -972,7 +972,7 @@ msgid "Include BibTeX file"
 msgstr "Includi file BibTeX"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:112
-#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:96
+#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:97
 msgid "_Include"
 msgstr "_Includi"
 
@@ -992,27 +992,25 @@ msgstr "Seleziona un file LaTeX"
 msgid "Type of path to included file"
 msgstr "Tipo di percorso da includere"
 
-#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:79
+#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:80
 msgid ""
-"<b>Relative Path:</b> Set the path relative to the main document.\n"
-"This is useful when the included file is in the same folder as\n"
-"the main document and you want to move around both of\n"
-"them together."
+"<b>Relative Path:</b> Set the path relative to the main document. This is "
+"useful when the included file is in the same folder as the main document and "
+"you want to move around both of them together."
 msgstr ""
 "<b>Percorso relativo:</b> Imposta il percorso relativo al documento "
-"principale.\n"
-"Ciò è utile quando il file incluso si trova nella stessa cartella di\n"
-"il documento principale e vuoi spostarli entrambi insieme."
+"principale. Ciò è utile quando il file incluso si trova nella stessa "
+"cartella di il documento principale e vuoi spostarli entrambi insieme."
 
-#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:79
+#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:80
 msgid ""
-"<b>Absolute Path:</b> Specify the absolute location of the included\n"
-"file in your filesystem."
+"<b>Absolute Path:</b> Specify the absolute location of the included file in "
+"your filesystem."
 msgstr ""
-"<b>Percorso assoluto:</b> Specifica la posizione assoluta del file\n"
-"incluso nel tuo filesystem."
+"<b>Percorso assoluto:</b> Specifica la posizione assoluta del file incluso "
+"nel tuo filesystem."
 
-#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:91
+#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:92
 msgid "Include LaTeX file"
 msgstr "Includi file LaTeX"
 
@@ -1095,7 +1093,7 @@ msgstr "Chiudi documento corrente"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:46
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:132
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:174
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:175
 msgid "Tools"
 msgstr "Strumenti"
 
@@ -1383,11 +1381,11 @@ msgstr "Evidenzia parentesi abbinate"
 msgid "LaTeX Interpreter"
 msgstr "Interprete LaTeX"
 
-#: setzer/dialogs/preferences/preferences_viewgtk.py:139
+#: setzer/dialogs/preferences/preferences_viewgtk.py:140
 msgid ""
-"No LaTeX interpreter found. For instructions on installing LaTeX\n"
-"see <a href=\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en."
-"wikibooks.org/wiki/LaTeX/Installation</a>"
+"No LaTeX interpreter found. For instructions on installing LaTeX see <a href="
+"\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en.wikibooks."
+"org/wiki/LaTeX/Installation</a>"
 msgstr ""
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:165
@@ -1421,24 +1419,23 @@ msgstr ".. su errori, avvisi e badboxes."
 msgid "Embedded system commands"
 msgstr "Comandi di sistema integrati"
 
-#: setzer/dialogs/preferences/preferences_viewgtk.py:190
+#: setzer/dialogs/preferences/preferences_viewgtk.py:191
 msgid ""
-"Warning: enable this only if you have to. It can cause security problems\n"
+"Warning: enable this only if you have to. It can cause security problems "
 "when building files from untrusted sources."
 msgstr ""
 "Attenzione: abilitare questo solo se è necessario. Può causare problemi di "
-"sicurezza\n"
-"durante la compilazione di file da fonti non attendibili."
+"sicurezza durante la compilazione di file da fonti non attendibili."
 
-#: setzer/dialogs/preferences/preferences_viewgtk.py:195
+#: setzer/dialogs/preferences/preferences_viewgtk.py:196
 msgid "Disable"
 msgstr "Disabilita"
 
-#: setzer/dialogs/preferences/preferences_viewgtk.py:196
+#: setzer/dialogs/preferences/preferences_viewgtk.py:197
 msgid "Enable restricted \\write18{SHELL COMMAND}"
 msgstr "Abilita \\write18{SHELL COMMAND} limitato"
 
-#: setzer/dialogs/preferences/preferences_viewgtk.py:197
+#: setzer/dialogs/preferences/preferences_viewgtk.py:198
 msgid "Fully enable \\write18{SHELL COMMAND}"
 msgstr "Abilita \\write18{SHELL COMMAND} completo"
 
@@ -1877,7 +1874,7 @@ msgid "Save All Documents"
 msgstr "Salva tutti i documenti"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:129
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:156
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:157
 msgid "Session"
 msgstr "Sessione"
 
@@ -1910,7 +1907,11 @@ msgstr "Esci"
 msgid "Dark Mode"
 msgstr "Modalità scura"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:157
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:150
+msgid "Invert Colors in .pdf-Preview"
+msgstr ""
+
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:158
 msgid ""
 "Save the list of open documents in a session file\n"
 "and restore it later, a convenient way to work\n"
@@ -1920,31 +1921,31 @@ msgstr ""
 "e ripristinarlo in un secondo momento, un modo conveniente\n"
 "per lavorare su più progetti."
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:163
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:164
 msgid "Restore Previous Session"
 msgstr "Ripristina sessione precedente"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:164
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:165
 msgid "Save Current Session"
 msgstr "Salva sessione corrente"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:175
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:176
 msgid "Check Spelling"
 msgstr "Controllo ortografico"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:176
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:177
 msgid "Automatic Spellchecking"
 msgstr "Controllo ortografico automatico"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:177
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:178
 msgid "Set Spellchecking Language"
 msgstr "Imposta lingua di controllo ortografico"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:217
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:218
 msgid "No results"
 msgstr "Nessun risultato"
 
-#: setzer/workspace/headerbar/headerbar_viewgtk.py:222
+#: setzer/workspace/headerbar/headerbar_viewgtk.py:223
 msgid "Other Documents"
 msgstr "Altri documenti"
 
@@ -2379,11 +2380,11 @@ msgstr "Matematica varia"
 msgid "Misc. Symbols"
 msgstr "Simboli vari"
 
-#: setzer/workspace/workspace_viewgtk.py:255
+#: setzer/workspace/workspace_viewgtk.py:259
 msgid "No open documents"
 msgstr "Nessun documento aperto"
 
-#: setzer/workspace/workspace.py:94
+#: setzer/workspace/workspace.py:95
 #, python-brace-format
 msgid "Untitled Document {number}"
 msgstr "Documento senza nome {number}"
@@ -2448,24 +2449,29 @@ msgid "Document creation wizard"
 msgstr "Creazione guidata documento"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:58
-msgid "Redesigned help panel homepage, LaTeX package documentation links, ..."
+msgid ""
+"Use Latexmk with any LaTeX interpreter, invert colors in .pdf preview, ..."
 msgstr ""
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:63
+msgid "Redesigned help panel homepage, LaTeX package documentation links, ..."
+msgstr ""
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:68
 msgid ""
 "Italian translation, help panel with LaTeX documentation, open files from "
 "the file manager and command line, ..."
 msgstr ""
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:68
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:73
 msgid "German translation, external .pdf viewer button, ..."
 msgstr "Traduzione tedesca, pulsante visualizzatore .pdf esterno, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:73
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:78
 msgid "Bug fix"
 msgstr "Bug fix"
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:78
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:83
 msgid ""
 "Initial backward synctex support, improved synctex highlighting, search UI "
 "improvements, ..."
@@ -2473,11 +2479,11 @@ msgstr ""
 "Supporto iniziale per la sintassi all'indietro, evidenziazione della "
 "sintassi migliorata, miglioramenti dell'interfaccia utente di ricerca, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:83
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:88
 msgid "Session management, highlight passages on build, ..."
 msgstr "Gestione della sessione, evidenziare i passaggi su compilazione, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:88
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:93
 msgid ""
 "Zoom level popover for the .pdf preview, preview should use far less memory "
 "now, ..."
@@ -2485,11 +2491,11 @@ msgstr ""
 "Popover di livello di zoom per l'anteprima .pdf, l'anteprima dovrebbe usare "
 "molta meno memoria ora, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:93
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:98
 msgid "Bug fixes"
 msgstr "Bug fixes"
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:98
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:103
 msgid ""
 "Enable embedded system commands, document modified on disk dialog, option to "
 "highlight current line, option to highlight matching brackets, ..."
@@ -2498,35 +2504,35 @@ msgstr ""
 "dialogo del disco, opzione per evidenziare la riga corrente, opzione per "
 "evidenziare parentesi corrispondenti, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:103
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:108
 msgid "Add/remove packages dialog, improved HiDPI support, ..."
 msgstr ""
 "Finestra di dialogo aggiungi / rimuovi pacchetti, supporto HiDPI "
 "migliorato, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:108
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:113
 msgid "Keyboard shortcuts in popovers, more commands in shortcuts bar, ..."
 msgstr ""
 "Scorciatoie da tastiera in popover, più comandi nella barra delle "
 "scorciatoie, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:113
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:118
 msgid "More commands in shortcuts bar, autocomplete now case insensitive, ..."
 msgstr ""
 "Più comandi nella barra delle scorciatoie, completamento automatico ora "
 "senza distinzione tra maiuscole e minuscole, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:118
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:123
 msgid "HiDPI support in .pdf preview, presistent code folding, ..."
 msgstr ""
 "Supporto HiDPI in anteprima .pdf, compressione del codice presente nella "
 "vista, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:123
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:128
 msgid "Initial code folding support, ..."
 msgstr "Supporto pieghevole codice iniziale, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:128
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:133
 msgid ""
 "References to existing labels in autocomplete, persistent master document "
 "state, ..."
@@ -2534,27 +2540,27 @@ msgstr ""
 "Riferimenti a etichette esistenti in stato di completamento automatico, "
 "documento master persistente, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:133
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:138
 msgid "Initial spellchecking support, ..."
 msgstr "Supporto per il controllo ortografico iniziale, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:138
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:143
 msgid "Simple BibTeX wizard, more bibliography features in LaTeX editor, ..."
 msgstr ""
 "Semplice procedura guidata BibTeX, più funzioni bibliografiche nell'editor "
 "LaTeX, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:143
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:148
 msgid "BibTeX support in the build system, edit BibTeX files, ..."
 msgstr ""
 "Supporto BibTeX nel sistema di compilazione, modifica di file BibTeX, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:148
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:153
 msgid "Editor settings in preferences dialog, ..."
 msgstr ""
 "Impostazioni dell'editor nella finestra di dialogo delle preferenze, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:153
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:158
 msgid ""
 "Build multiple times to resolve undefined references, show warnings in build "
 "log, ..."
@@ -2562,31 +2568,31 @@ msgstr ""
 "Compila più volte per risolvere riferimenti indefiniti, mostra avvisi nel "
 "registro di compilazione, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:158
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:163
 msgid "Indent multi-line inserts, ..."
 msgstr "Rientri per gli inserti multilinea, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:163
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:168
 msgid "Multiple documents in build log, build in temporary folder, ..."
 msgstr ""
 "Più documenti nel registro di compilazione, compilazione nella cartella "
 "temporanea, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:168
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:173
 msgid "Master document function, ..."
 msgstr "Funzione documento principale, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:173
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:178
 msgid "New app layout, animated wizard button, big code refactor, ..."
 msgstr ""
 "Nuovo layout di app, pulsante della procedura guidata animato, refactor di "
 "grandi dimensioni, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:178
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:183
 msgid "Set margins in wizard, improved icon, ..."
 msgstr "Imposta i margini nella procedura guidata, icona migliorata, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:183
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:188
 msgid "Initial release"
 msgstr "Rilascio iniziale"
 
