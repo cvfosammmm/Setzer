@@ -136,8 +136,8 @@ class Preferences(object):
         self.page_build_system.pack_start(label, False, False, 0)
 
         self.no_interpreter_label = Gtk.Label()
-        self.no_interpreter_label.set_markup(_('''No LaTeX interpreter found. For instructions on installing LaTeX
-see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibooks.org/wiki/LaTeX/Installation</a>'''))
+        self.no_interpreter_label.set_line_wrap(True)
+        self.no_interpreter_label.set_markup(_('No LaTeX interpreter found. For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibooks.org/wiki/LaTeX/Installation</a>'))
         self.no_interpreter_label.set_xalign(0)
         self.no_interpreter_label.set_margin_bottom(6)
         self.page_build_system.pack_start(self.no_interpreter_label, False, False, 0)
@@ -187,7 +187,8 @@ see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibo
         label.set_margin_bottom(6)
         self.page_build_system.pack_start(label, False, False, 0)
         label = Gtk.Label()
-        label.set_markup(_('Warning: enable this only if you have to. It can cause security problems\nwhen building files from untrusted sources.'))
+        label.set_line_wrap(True)
+        label.set_markup(_('Warning: enable this only if you have to. It can cause security problems when building files from untrusted sources.'))
         label.set_xalign(0)
         label.set_margin_bottom(9)
         label.get_style_context().add_class('description')
