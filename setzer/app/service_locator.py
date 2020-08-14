@@ -35,10 +35,10 @@ class ServiceLocator(object):
     '(?:Overfull \\\\hbox|Underfull \\\\hbox|' + 
     'No file .*\.|File .* does not exist\.|! I can\'t find file\.|! File .* not found\.|' +
     '(?:LaTeX|pdfTeX|LuaTeX|Package|Class) .*Warning.*:|LaTeX Font Warning:|' +
-    '! Undefined control sequence\.|! Missing (?:.*) inserted.|! Package .* Error:|! (?:LaTeX|LuaTeX) Error:|No file .*\.bbl.).*\\n)')
+    '! Undefined control sequence\.|! Missing (?:.*) inserted.|! Package .* Error:|! (?:LaTeX|LuaTeX) Error:).*\\n)')
     build_log_badbox_line_number_regex = re.compile('lines ([0-9]+)--([0-9]+)')
     build_log_other_line_number_regex = re.compile('(l.| input line \n| input line )([0-9]+)( |.)')
-    bibtex_log_item_regex = re.compile('Warning--(.*)\n--line ([0-9]+) of file (.*)|I couldn\'t open style file (.*).bst\n---line ([0-9]+) of file (.*)')
+    bibtex_log_item_regex = re.compile('Warning--(.*)\n--line ([0-9]+) of file (.*)|I couldn\'t open style file (.*)\n---line ([0-9]+) of file (.*)')
     symbols_regex = re.compile('\\\\(label|include|input|bibliography)\{((?:\s|\w|\:|,)*)\}|\\\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}')
     blocks_regex = re.compile('\n.*\\\\(begin|end)\{((?:\w)*(?:\*){0,1})\}|\n.*\\\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{')
     forward_synctex_regex = re.compile('\nOutput:.*\nPage:([0-9]+)\nx:.*\ny:.*\nh:((?:[0-9]|\\.)+)\nv:((?:[0-9]|\\.)+)\nW:((?:[0-9]|\\.)+)\nH:((?:[0-9]|\\.)+)\nbefore:.*\noffset:.*\nmiddle:.*\nafter:.*')

@@ -174,7 +174,7 @@ class Query(object):
                             self.build_result = {'error': 'interpreter_not_working',
                                                  'error_arg': 'log file missing'}
                         return
-        
+
                 if self.do_a_bibtex_build:
                     arguments = ['bibtex']
                     arguments.append(tex_file.rsplit('/', 1)[1][:-3] + 'aux')
@@ -303,10 +303,10 @@ class Query(object):
                         matchiter = iter(match.splitlines())
                         line = next(matchiter)
 
-                        if line.startswith('No file ' + tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1] + '.bbl.') and not self.done_bibtex_build:
+                        if line.startswith('No file ') and line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and line.find('.bbl.') >= 0 and not self.done_bibtex_build:
                             self.do_a_bibtex_build = True
 
-                        elif (line.startswith('No file ' + tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1] + '.gls.') or line.startswith('No file ' + tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1] + '.acr.')) and not self.glossaries_made:
+                        elif line.startswith('No file ') and line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (line.find('.gls.') >= 0 or line.find('.acr.') >= 0) and not self.glossaries_made:
                             self.glossary_files_to_make.append(tex_filename)
 
                         elif line.startswith('LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.'):
@@ -315,10 +315,7 @@ class Query(object):
                         elif line.startswith('Package natbib Warning: Citation(s) may have changed.'):
                             self.do_another_latex_build = True
 
-                        elif line.startswith('No file ' + tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1] + '.toc.'):
-                            self.do_another_latex_build = True
-
-                        elif line.startswith('No file ' + tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1] + '.aux.'):
+                        elif line.startswith('No file ') and line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (line.find('.toc.') >= 0 or line.find('.aux.') >= 0) and not self.glossaries_made:
                             self.do_another_latex_build = True
 
                         elif line.startswith('Overfull \hbox'):
@@ -367,7 +364,7 @@ class Query(object):
                         elif line.startswith('No file ') or (line.startswith('File') and line.endswith(' does not exist.\n')):
                             text = line.strip()
                             line_number = -1
-                            if not line.startswith('No file ' + os.path.basename(log_filename).rsplit('.log', 1)[0]):
+                            if not (line.startswith('No file ') and line.find(os.path.basename(log_filename).rsplit('.log', 1)[0]) >= 0):
                                 self.log_messages.append(('Error', None, filename, file_no, line_number, text))
                                 self.error_count += 1
 
