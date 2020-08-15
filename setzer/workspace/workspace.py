@@ -146,9 +146,11 @@ class Workspace(Observable):
             self.add_document(document)
             if activate:
                 self.set_active_document(document)
-        if document.is_latex_document():
-            document.preview.set_pdf_filename_from_tex_filename(filename)
-        return document
+            if document.is_latex_document():
+                document.preview.set_pdf_filename_from_tex_filename(filename)
+            return document
+        else:
+            return None
 
     def get_document_by_filename(self, filename):
         for document in self.open_documents:

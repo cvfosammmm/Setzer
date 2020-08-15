@@ -109,7 +109,9 @@ class Document(Observable):
         
     def populate_from_filename(self):
         if self.filename == None: return False
-        if not os.path.isfile(self.filename): return False
+        if not os.path.isfile(self.filename):
+            self.filename = None
+            return False
         if self.get_buffer() == None: return False
 
         with open(self.filename) as f:
