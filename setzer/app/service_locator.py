@@ -18,6 +18,7 @@
 import re
 import os.path
 from xdg.BaseDirectory import xdg_config_home
+import xml.etree.ElementTree as ET
 
 import setzer.app.settings as settingscontroller
 import setzer.helpers.popover_menu_builder as popover_menu_builder
@@ -43,6 +44,7 @@ class ServiceLocator(object):
     blocks_regex = re.compile('\n.*\\\\(begin|end)\{((?:\w)*(?:\*){0,1})\}|\n.*\\\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{')
     forward_synctex_regex = re.compile('\nOutput:.*\nPage:([0-9]+)\nx:.*\ny:.*\nh:((?:[0-9]|\\.)+)\nv:((?:[0-9]|\\.)+)\nW:((?:[0-9]|\\.)+)\nH:((?:[0-9]|\\.)+)\nbefore:.*\noffset:.*\nmiddle:.*\nafter:.*')
     backward_synctex_regex = re.compile('\nOutput:.*\nInput:(.*\\.tex)\nLine:([0-9]+)\nColumn:(?:[0-9]|-)+\nOffset:(?:[0-9]|-)+\nContext:.*\n')
+    autocomplete_commands = None
 
     def init_main_window(main_window):
         ServiceLocator.main_window = main_window
@@ -100,6 +102,18 @@ class ServiceLocator(object):
         if ServiceLocator.popover_menu_builder == None:
             ServiceLocator.popover_menu_builder = popover_menu_builder.PopoverMenuBuilder()
         return ServiceLocator.popover_menu_builder
+
+    def get_autocomplete_commands():
+        if ServiceLocator.autocomplete_commands == None:
+            ServiceLocator.autocomplete_commands = dict()
+
+            resources_path = ServiceLocator.get_resources_path()
+            tree = ET.parse(os.path.join(resources_path, 'completion', 'general.xml'))
+            root = tree.getroot()
+            for child in root:
+                attrib = child.attrib
+                ServiceLocator.autocomplete_commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description']}
+        return ServiceLocator.autocomplete_commands
 
     def get_config_folder():
         return os.path.join(xdg_config_home, 'setzer')
