@@ -108,7 +108,7 @@ class ServiceLocator(object):
             ServiceLocator.autocomplete_commands = dict()
 
             resources_path = ServiceLocator.get_resources_path()
-            tree = ET.parse(os.path.join(resources_path, 'completion', 'general.xml'))
+            tree = ET.parse(os.path.join(resources_path, 'latexdb', 'commands', 'general.xml'))
             root = tree.getroot()
             for child in root:
                 attrib = child.attrib
