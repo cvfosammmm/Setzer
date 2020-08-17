@@ -1,2 +1,5 @@
 _build
 builddir
+**/__pycache__/
+.flatpak-builder/
+po/setzer.pot
