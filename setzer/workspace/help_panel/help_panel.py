@@ -77,8 +77,18 @@ class HelpPanel(Observable):
                 for word in words:
                     if item[0].find(word.lower()) == -1:
                         found = False
+                        break
                 if found:
-                    self.search_results.append(item[1:])
+                    headline = item[2]
+                    headline = headline.replace('&gt;', '>').replace('&lt;', '<').replace('&quot;', '"').replace('&amp;', '&')
+                    location = item[3]
+                    location = location.replace('&gt;', '>').replace('&lt;', '<').replace('&quot;', '"').replace('&amp;', '&')
+                    for word in words:
+                        headline = headline.replace(word, 'BBEGIN' + word + 'BEND').replace(word.lower(), 'BBEGIN' + word.lower() + 'BEND').replace(word.title(), 'BBEGIN' + word.title() + 'BEND')
+                        location = location.replace(word, 'BBEGIN' + word + 'BEND').replace(word.lower(), 'BBEGIN' + word.lower() + 'BEND').replace(word.title(), 'BBEGIN' + word.title() + 'BEND')
+                    headline = headline.replace('&', '&amp;').replace('"', '&quot;').replace('<', '&lt;').replace('>', '&gt;').replace('BBEGIN', '<b>').replace('BEND', '</b>')
+                    location = location.replace('&', '&amp;').replace('"', '&quot;').replace('<', '&lt;').replace('>', '&gt;').replace('BBEGIN', '<b>').replace('BEND', '</b>')
+                    self.search_results.append([item[1], headline, location])
         self.add_change_code('search_query_changed')
 
 
