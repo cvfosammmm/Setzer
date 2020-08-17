@@ -154,7 +154,7 @@ class Query(object):
                     try:
                         self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
                     except FileNotFoundError:
-                        self.cleanup_build_files(tex_file)
+                        self.move_build_files(tex_file)
                         with self.build_result_lock:
                             self.build_result = {'error': 'interpreter_missing',
                                                  'error_arg': arguments[0]}
@@ -169,7 +169,7 @@ class Query(object):
                     try:
                         self.parse_build_log(log_filename, tex_file)
                     except FileNotFoundError as e:
-                        self.cleanup_build_files(tex_file)
+                        self.move_build_files(tex_file)
                         with self.build_result_lock:
                             self.build_result = {'error': 'interpreter_not_working',
                                                  'error_arg': 'log file missing'}
@@ -183,7 +183,7 @@ class Query(object):
                     try:
                         self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=tmp_directory_name, env=custom_env)
                     except FileNotFoundError:
-                        self.cleanup_build_files(tex_file)
+                        self.move_build_files(tex_file)
                         with self.build_result_lock:
                             self.build_result = {'error': 'interpreter_not_working',
                                                  'error_arg': self.latex_interpreter}
@@ -202,7 +202,7 @@ class Query(object):
                     try:
                         self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=tmp_directory_name)
                     except FileNotFoundError:
-                        self.cleanup_build_files(tex_file)
+                        self.move_build_files(tex_file)
                         with self.build_result_lock:
                             self.build_result = {'error': 'interpreter_not_working',
                                                  'error_arg': self.latex_interpreter}
@@ -225,10 +225,7 @@ class Query(object):
             if self.process != None:
                 self.process = None
 
-                if self.do_cleanup:
-                    self.cleanup_build_files(self.tex_filename)
-                else:
-                    self.rename_build_files(tex_file)
+                self.move_build_files(tex_file)
 
                 if self.error_count == 0:
                     try: shutil.move(pdf_filename, self.new_pdf_filename)
@@ -243,7 +240,7 @@ class Query(object):
                                          'error': None,
                                          'error_arg': None}
             else:
-                self.cleanup_build_files(tex_file)
+                self.move_build_files(tex_file)
 
     def parse_build_log(self, log_filename, tex_filename):
         try: file = open(log_filename, 'rb')
@@ -437,12 +434,24 @@ class Query(object):
         except FileNotFoundError: return None
         else: return tex_file_name
 
+    def move_build_files(self, tex_file_name):
+        if self.do_cleanup:
+            self.cleanup_build_files(self.tex_filename)
+            self.cleanup_glossaries_files()
+        else:
+            self.rename_build_files(tex_file_name)
+
     def cleanup_build_files(self, tex_file_name):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' , '.ilg',
                         '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc',
                         '.ist', '.glo', '.glg', '.acn', '.alg']
         for ending in file_endings:
             try: os.remove(os.path.splitext(tex_file_name)[0] + ending)
+            except FileNotFoundError: pass
+
+    def cleanup_glossaries_files(self):
+        for ending in ['.gls', '.acr']:
+            try: os.remove(os.path.splitext(self.tex_filename)[0] + ending)
             except FileNotFoundError: pass
 
     def rename_build_files(self, tex_file_name):
