@@ -10,6 +10,12 @@ install_data(
   install_dir: join_paths(datadir, 'icons', 'hicolor', 'scalable', 'apps'),
 )
 
+# MIME type
+install_data(
+  files('org.cvfosammmm.Setzer.mime.xml'),
+  install_dir: join_paths(datadir, 'mime', 'packages'),
+)
+
 # metainfo
 metainfo_file = i18n.merge_file(
   input:  files('org.cvfosammmm.Setzer.appdata.xml.in'),
