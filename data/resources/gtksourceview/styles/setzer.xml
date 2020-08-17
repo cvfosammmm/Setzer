@@ -90,7 +90,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <style name="background-pattern"          background="#f3f3f3"/>
   <style name="line-numbers"                foreground="#222222" background="white"/>
   <style name="text"                        foreground="black" background="white"/>
-  <style name="current-line-number"         background="aluminium1"/>
 
   <!-- Bracket Matching -->
   <style name="bracket-match"               foreground="aluminium1" background="aluminium3"/>
