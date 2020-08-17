@@ -45,6 +45,7 @@ class ServiceLocator(object):
     forward_synctex_regex = re.compile('\nOutput:.*\nPage:([0-9]+)\nx:.*\ny:.*\nh:((?:[0-9]|\\.)+)\nv:((?:[0-9]|\\.)+)\nW:((?:[0-9]|\\.)+)\nH:((?:[0-9]|\\.)+)\nbefore:.*\noffset:.*\nmiddle:.*\nafter:.*')
     backward_synctex_regex = re.compile('\nOutput:.*\nInput:(.*\\.tex)\nLine:([0-9]+)\nColumn:(?:[0-9]|-)+\nOffset:(?:[0-9]|-)+\nContext:.*\n')
     autocomplete_commands = None
+    packages_dict = None
 
     def init_main_window(main_window):
         ServiceLocator.main_window = main_window
@@ -114,6 +115,18 @@ class ServiceLocator(object):
                 attrib = child.attrib
                 ServiceLocator.autocomplete_commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description']}
         return ServiceLocator.autocomplete_commands
+
+    def get_packages_dict():
+        if ServiceLocator.packages_dict == None:
+            ServiceLocator.packages_dict = dict()
+
+            resources_path = ServiceLocator.get_resources_path()
+            tree = ET.parse(os.path.join(resources_path, 'latexdb', 'packages', 'general.xml'))
+            root = tree.getroot()
+            for child in root:
+                attrib = child.attrib
+                ServiceLocator.packages_dict[attrib['name']] = {'command': attrib['text'], 'description': attrib['description']}
+        return ServiceLocator.packages_dict
 
     def get_config_folder():
         return os.path.join(xdg_config_home, 'setzer')

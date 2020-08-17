@@ -24,6 +24,7 @@ from gi.repository import GLib
 
 from setzer.dialogs.dialog import Dialog
 import setzer.dialogs.add_remove_packages.add_remove_packages_viewgtk as view
+from setzer.app.service_locator import ServiceLocator
 
 import pickle
 import os
@@ -34,32 +35,8 @@ class AddRemovePackagesDialog(Dialog):
     def __init__(self, main_window, workspace):
         self.main_window = main_window
         self.workspace = workspace
-        self.packages = dict()
-        self.packages['amsfonts'] = {'command': 'amsfonts', 'description': _('additional math fonts from AMS.')}
-        self.packages['amsmath'] = {'command': 'amsmath', 'description': _('mathematics package from AMS.')}
-        self.packages['amssymb'] = {'command': 'amssymb', 'description': _('mathematical symbols from AMS.')}
-        self.packages['amsthm'] = {'command': 'amsthm', 'description': _('math theorems setting package from AMS.')}
-        self.packages['babel'] = {'command': 'babel', 'description': _('multilingual documents.')}
-        self.packages['braket'] = {'command': 'braket', 'description': _('dirac braket and set notations.')}
-        self.packages['calc'] = {'command': 'calc', 'description': _('simple arithmetic in LaTeX commands.')}
-        self.packages['color'] = {'command': 'color', 'description': _('foreground and background colors.')}
-        self.packages['colortbl'] = {'command': 'colortbl', 'description': _('colored tables.')}
-        self.packages['enumerate'] = {'command': 'enumerate', 'description': _('enumerate with redefinable labels.')}
-        self.packages['geometry'] = {'command': 'geometry', 'description': _('interface to document dimensions.')}
-        self.packages['glossaries'] = {'command': 'glossaries', 'description': _('create a glossary for your document.')}
-        self.packages['graphicx'] = {'command': 'graphicx', 'description': _('include graphics in your document.') + ' (' + _('recommended') + ')'}
-        self.packages['hyperref'] = {'command': 'hyperref', 'description': _('create hyperlinks within your document.')}
-        self.packages['ifthen'] = {'command': 'ifthen', 'description': _('conditional commands.')}
-        self.packages['listings'] = {'command': 'listings', 'description': _('provides a listing environment for embedding programming code.')}
-        self.packages['natbib'] = {'command': 'natbib', 'description': _('provides additional bibliography and citation styles.')}
-        self.packages['parskip'] = {'command': 'parskip', 'description': _('paragraphs without indentation.')}
-        self.packages['pgfplots'] = {'command': 'pgfplots', 'description': _('create plots in two and three dimensions.')}
-        self.packages['textcomp'] = {'command': 'textcomp', 'description': _('contains symbols to be used in textmode.') + ' (' + _('recommended') + ')'}
-        self.packages['theorem'] = {'command': 'theorem', 'description': _('define theorem environments (like "definition", "lemma", ...) with custom styling.')}
-        self.packages['tikz'] = {'command': 'tikz', 'description': _('graphics and plotting.')}
-        self.packages['transparent'] = {'command': 'transparent', 'description': _('set transparency for sections in your document.')}
-        self.packages['url'] = {'command': 'url', 'description': _('type urls with the \\url{..} command without escaping them.') + ' (' + _('recommended') + ')'}
-        self.packages['xcolor'] = {'command': 'xcolor', 'description': _('enables colored text.') + ' (' + _('recommended') + ')'}
+
+        self.packages = ServiceLocator.get_packages_dict()
 
         self.current_values = dict()
 

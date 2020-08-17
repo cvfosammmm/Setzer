@@ -1,0 +1,27 @@
+<packages>
+  <package name="amsfonts" text="amsfonts" description="additional math fonts from AMS." />
+  <package name="amsmath" text="amsmath" description="mathematics package from AMS." />
+  <package name="amssymb" text="amssymb" description="mathematical symbols from AMS." />
+  <package name="amsthm" text="amsthm" description="math theorems setting package from AMS." />
+  <package name="babel" text="babel" description="multilingual documents." />
+  <package name="braket" text="braket" description="dirac braket and set notations." />
+  <package name="calc" text="calc" description="simple arithmetic in LaTeX commands." />
+  <package name="color" text="color" description="foreground and background colors." />
+  <package name="colortbl" text="colortbl" description="colored tables." />
+  <package name="enumerate" text="enumerate" description="enumerate with redefinable labels." />
+  <package name="geometry" text="geometry" description="interface to document dimensions." />
+  <package name="glossaries" text="glossaries" description="create a glossary for your document." />
+  <package name="graphicx" text="graphicx" description="include graphics in your document." />
+  <package name="hyperref" text="hyperref" description="create hyperlinks within your document." />
+  <package name="ifthen" text="ifthen" description="conditional commands." />
+  <package name="listings" text="listings" description="provides a listing environment for embedding programming code." />
+  <package name="natbib" text="natbib" description="provides additional bibliography and citation styles." />
+  <package name="parskip" text="parskip" description="paragraphs without indentation." />
+  <package name="pgfplots" text="pgfplots" description="create plots in two and three dimensions." />
+  <package name="textcomp" text="textcomp" description="contains symbols to be used in textmode." />
+  <package name="theorem" text="theorem" description="define theorem environments (like &quot;definition&quot;, &quot;lemma&quot;, ...) with custom styling." />
+  <package name="tikz" text="tikz" description="graphics and plotting." />
+  <package name="transparent" text="transparent" description="set transparency for sections in your document." />
+  <package name="url" text="url" description="type urls with the \\url{..} command without escaping them." />
+  <package name="xcolor" text="xcolor" description="enables colored text." />
+</packages>
