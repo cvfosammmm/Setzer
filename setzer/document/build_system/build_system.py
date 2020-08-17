@@ -155,9 +155,7 @@ class Query(object):
                         self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
                     except FileNotFoundError:
                         self.move_build_files(tex_file)
-                        with self.build_result_lock:
-                            self.build_result = {'error': 'interpreter_missing',
-                                                 'error_arg': arguments[0]}
+                        self.throw_build_error('interpreter_missing', arguments[0])
                         return
                     self.process.communicate()
                     try:
@@ -170,9 +168,7 @@ class Query(object):
                         self.parse_build_log(log_filename, tex_file)
                     except FileNotFoundError as e:
                         self.move_build_files(tex_file)
-                        with self.build_result_lock:
-                            self.build_result = {'error': 'interpreter_not_working',
-                                                 'error_arg': 'log file missing'}
+                        self.throw_build_error('interpreter_not_working', 'log file missing')
                         return
 
                 if self.do_a_bibtex_build:
@@ -184,9 +180,7 @@ class Query(object):
                         self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=tmp_directory_name, env=custom_env)
                     except FileNotFoundError:
                         self.move_build_files(tex_file)
-                        with self.build_result_lock:
-                            self.build_result = {'error': 'interpreter_not_working',
-                                                 'error_arg': self.latex_interpreter}
+                        self.throw_build_error('interpreter_not_working', 'bibtex missing')
                         return
                     self.process.wait()
 
@@ -203,9 +197,7 @@ class Query(object):
                         self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=tmp_directory_name)
                     except FileNotFoundError:
                         self.move_build_files(tex_file)
-                        with self.build_result_lock:
-                            self.build_result = {'error': 'interpreter_not_working',
-                                                 'error_arg': self.latex_interpreter}
+                        self.throw_build_error('interpreter_not_working', 'makeglossaries missing')
                         return
                     self.process.wait()
                     for ending in ['.gls', '.acr']:
@@ -382,6 +374,11 @@ class Query(object):
                             line_number = self.bl_get_line_number(line, matchiter)
                             self.log_messages.append(('Error', None, filename, file_no, line_number, text))
                             self.error_count += 1
+
+    def throw_build_error(self, error, error_arg):
+        with self.build_result_lock:
+            self.build_result = {'error': error,
+                                 'error_arg': error_arg}
 
     def parse_bibtex_log(self, log_filename):
         try: file = open(log_filename, 'rb')
