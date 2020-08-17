@@ -99,7 +99,7 @@ class SourceBuffer(GtkSource.Buffer):
                 self.insert_text_at_cursor(text)
 
     def remove_packages(self, packages):
-        packages_dict = self.parser.symbols['packages_detailed']
+        packages_dict = self.document.parser.symbols['packages_detailed']
         for package in packages:
             try:
                 match_obj = packages_dict[package]
