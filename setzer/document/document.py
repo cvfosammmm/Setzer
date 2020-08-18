@@ -148,8 +148,9 @@ class Document(Observable):
     def set_initial_folded_regions(self, folded_regions):
         self.code_folding.set_initial_folded_regions(folded_regions)
         
-    def place_cursor(self, text_iter):
+    def place_cursor(self, line_number, offset=0):
         buff = self.get_buffer()
+        text_iter = buff.get_iter_at_line_offset(line_number, offset)
         buff.place_cursor(text_iter)
         self.source_buffer.scroll_cursor_onscreen()
 

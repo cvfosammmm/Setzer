@@ -291,7 +291,7 @@ class BibTeXWizard(Dialog):
             text += '\n}\n\n'
 
             self.document.insert_text_at_iter(buff.get_start_iter(), text, False)
-            self.document.place_cursor(buff.get_start_iter())
+            self.document.place_cursor(0)
             buff.end_user_action()
 
 
