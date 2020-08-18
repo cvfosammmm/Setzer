@@ -33,7 +33,7 @@ class BuildLogController(object):
                 line_number = item.line_number - 1
                 if line_number >= 0:
                     buff.place_cursor(buff.get_iter_at_line(line_number))
-                self.build_log.document.view.source_view.scroll_mark_onscreen(buff.get_insert())
+                self.build_log.document.source_buffer.scroll_cursor_onscreen()
                 self.build_log.document.view.source_view.grab_focus()
         else:
             if item.filename != None:
@@ -47,7 +47,7 @@ class BuildLogController(object):
                     line_number = item.line_number - 1
                     if line_number >= 0:
                         buff.place_cursor(buff.get_iter_at_line(line_number))
-                    self.build_log.workspace.active_document.view.source_view.scroll_mark_onscreen(buff.get_insert())
+                    self.build_log.document.source_buffer.scroll_cursor_onscreen()
                     self.build_log.workspace.active_document.view.source_view.grab_focus()
 
 

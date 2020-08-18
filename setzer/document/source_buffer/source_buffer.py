@@ -161,7 +161,7 @@ class SourceBuffer(GtkSource.Buffer):
             end = start.copy()
             end.forward_char()
             self.select_range(start, end)
-        self.view.scroll_to_mark(self.get_insert(), 0, False, 0, 0)
+        self.scroll_cursor_onscreen()
 
         self.end_user_action()
 
@@ -268,7 +268,7 @@ class SourceBuffer(GtkSource.Buffer):
         if not self.synctex_highlight_tags:
             GObject.timeout_add(15, self.remove_or_color_synctex_tags)
         self.synctex_highlight_tags[self.synctex_tag_count] = {'tag': tag, 'time': time.time()}
-        self.view.scroll_mark_onscreen(self.get_insert())
+        self.scroll_cursor_onscreen()
 
     def get_synctex_word_bounds(self, text, word, context):
         if not word: return None
@@ -317,6 +317,15 @@ class SourceBuffer(GtkSource.Buffer):
         return bool(self.synctex_highlight_tags)
 
     def ease(self, factor): return (factor - 1)**3 + 1
+
+    def scroll_cursor_onscreen(self):
+        self.scroll_mark_onscreen(self.get_insert())
+
+    def scroll_mark_onscreen(self, text_mark):
+        self.view.scroll_to_mark(text_mark, 0.2, False, 0, 0)
+
+    def scroll_iter_onscreen(self, text_iter):
+        self.view.scroll_to_iter(text_iter, 0.2, False, 0, 0)
 
     def set_use_dark_scheme(self, use_dark_scheme):
         if use_dark_scheme: self.set_style_scheme(self.source_style_scheme_dark)

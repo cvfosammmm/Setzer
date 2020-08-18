@@ -151,7 +151,7 @@ class Document(Observable):
     def place_cursor(self, text_iter):
         buff = self.get_buffer()
         buff.place_cursor(text_iter)
-        self.view.source_view.scroll_to_mark(buff.get_insert(), 0, False, 0, 0)
+        self.source_buffer.scroll_cursor_onscreen()
 
     def insert_before_document_end(self, text):
         self.get_buffer().insert_before_document_end(text)
