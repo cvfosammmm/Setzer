@@ -112,6 +112,10 @@ class SourceBuffer(GtkSource.Buffer):
                     start_iter.backward_char()
                 self.delete(start_iter, end_iter)
 
+    def insert_text(self, line_number, offset, text, indent_lines=True):
+        insert_iter = self.get_iter_at_line_offset(line_number, offset)
+        self.insert_text_at_iter(insert_iter, text, indent_lines)
+
     def insert_text_at_iter(self, insert_iter, text, indent_lines=True):
         self.place_cursor(insert_iter)
         self.insert_text_at_cursor(text, indent_lines)
@@ -239,6 +243,9 @@ class SourceBuffer(GtkSource.Buffer):
             end.forward_to_line_end()
         return self.get_slice(start, end, False)
 
+    def get_all_text(self):
+        return self.get_text(self.get_start_iter(), self.get_end_iter(), True)
+
     def set_synctex_position(self, position):
         start = self.get_iter_at_line(position['line'])
         end = start.copy()
@@ -317,6 +324,11 @@ class SourceBuffer(GtkSource.Buffer):
         return bool(self.synctex_highlight_tags)
 
     def ease(self, factor): return (factor - 1)**3 + 1
+
+    def place_cursor_and_scroll(self, line_number, offset=0):
+        text_iter = self.get_iter_at_line_offset(line_number, offset)
+        self.place_cursor(text_iter)
+        self.scroll_cursor_onscreen()
 
     def scroll_cursor_onscreen(self):
         self.scroll_mark_onscreen(self.get_insert())

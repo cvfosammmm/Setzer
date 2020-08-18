@@ -140,19 +140,13 @@ class Document(Observable):
         self.save_date = os.path.getmtime(self.filename)
 
     def get_text(self):
-        buff = self.get_buffer()
-        if buff != None:
-            return buff.get_text(buff.get_start_iter(), buff.get_end_iter(), True)
-        return None
+        return self.get_buffer().get_all_text()
 
     def set_initial_folded_regions(self, folded_regions):
         self.code_folding.set_initial_folded_regions(folded_regions)
         
     def place_cursor(self, line_number, offset=0):
-        buff = self.get_buffer()
-        text_iter = buff.get_iter_at_line_offset(line_number, offset)
-        buff.place_cursor(text_iter)
-        self.source_buffer.scroll_cursor_onscreen()
+        self.get_buffer().place_cursor_and_scroll(line_number, offset)
 
     def insert_before_document_end(self, text):
         self.get_buffer().insert_before_document_end(text)
@@ -162,6 +156,9 @@ class Document(Observable):
 
     def remove_packages(self, packages):
         self.get_buffer().remove_packages(packages)
+
+    def insert_text(self, line_number, offset, text, indent_lines=True):
+        self.get_buffer().insert_text(line_number, offset, text, indent_lines)
 
     def insert_text_at_iter(self, insert_iter, text, indent_lines=True):
         self.get_buffer().insert_text_at_iter(insert_iter, text, indent_lines)
@@ -302,6 +299,9 @@ class LaTeXDocument(Document):
             try: os.remove(filename)
             except FileNotFoundError: pass
         self.add_change_code('cleaned_up_build_files')
+
+    def invalidate_build_log(self):
+        self.add_change_code('build_log_update')
 
     def set_is_master(self, is_master):
         self.is_master = is_master

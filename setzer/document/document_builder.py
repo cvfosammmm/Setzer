@@ -158,4 +158,7 @@ class DocumentBuilder(object):
 
             self.document.change_build_state('idle')
 
+            if result_blob['build'] != None:
+                self.document.invalidate_build_log()
+
 
