@@ -20,12 +20,19 @@ from gi.repository import GObject
 
 import _thread as thread, queue
 
+import setzer.document.build_system.build_system_controller as build_system_controller
+import setzer.document.build_system.build_system_presenter as build_system_presenter
+
 
 class BuildSystem(object):
 
-    def __init__(self):
+    def __init__(self, document):
         self.observers = set()
         self.active_query = None
+
+        self.controller = build_system_controller.BuildSystemController(document, self)
+        self.presenter = build_system_presenter.BuildSystemPresenter(document, self)
+
         self.change_code_queue = queue.Queue() # change code for observers are put on here
         GObject.timeout_add(50, self.results_loop)
         GObject.timeout_add(50, self.change_code_loop)

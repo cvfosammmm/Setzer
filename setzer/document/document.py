@@ -20,7 +20,7 @@ import time
 
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
-import setzer.document.build_system.build_system_controller as build_system_controller
+import setzer.document.build_system.build_system as build_system
 import setzer.document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
 import setzer.document.document_viewgtk as document_view
 import setzer.document.document_switcher_item.document_switcher_item as document_switcher_item
@@ -208,7 +208,7 @@ class LaTeXDocument(Document):
         self.build_widget = build_widget.BuildWidget(self)
 
         self.autocomplete = autocomplete.Autocomplete(self, self.view)
-        self.build_system = build_system_controller.BuildSystemController(self)
+        self.build_system = build_system.BuildSystem(self)
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
         self.code_folding = code_folding.CodeFolding(self)
