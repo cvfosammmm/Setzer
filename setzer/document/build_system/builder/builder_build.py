@@ -22,11 +22,20 @@ import tempfile
 import shutil
 import subprocess
 
+from setzer.app.service_locator import ServiceLocator
+
 
 class BuilderBuild(object):
 
     def __init__(self):
-        pass
+        self.config_folder = ServiceLocator.get_config_folder()
+        self.doc_regex = ServiceLocator.get_build_log_doc_regex()
+        self.item_regex = ServiceLocator.get_build_log_item_regex()
+        self.badbox_line_number_regex = ServiceLocator.get_build_log_badbox_line_number_regex()
+        self.other_line_number_regex = ServiceLocator.get_build_log_other_line_number_regex()
+        self.bibtex_log_item_regex = ServiceLocator.get_bibtex_log_item_regex()
+
+        self.process = None
 
     def run(self, query):
         with tempfile.TemporaryDirectory() as tmp_directory_name:
@@ -38,7 +47,7 @@ class BuilderBuild(object):
                 query.forward_sync_data['build_pathname'] = self.copy_synctex_file(query, tex_file)
                 self.move_build_files(query, tex_file)
 
-                if query.process != None:
+                if self.process != None:
                     if query.error_count == 0:
                         pdf_filename = tmp_directory_name + '/' + os.path.basename(tex_file).rsplit('.tex', 1)[0] + '.pdf'
                         new_pdf_filename = os.path.splitext(query.tex_filename)[0] + '.pdf'
@@ -55,7 +64,7 @@ class BuilderBuild(object):
                                              'error_arg': None}
                 else:
                     self.move_build_files(query, tex_file)
-            query.process = None
+            self.process = None
 
     def latex_build(self, query, tex_filename):
         if query.force_building_to_stop: return False
@@ -77,14 +86,14 @@ class BuilderBuild(object):
         arguments.append('-output-directory=' + os.path.dirname(tex_filename))
         arguments.append(tex_filename)
         try:
-            query.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(query.tex_filename))
+            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(query.tex_filename))
         except FileNotFoundError:
             self.move_build_files(query, tex_filename)
             self.throw_build_error(query, 'interpreter_missing', arguments[0])
             return False
-        query.process.communicate()
+        self.process.communicate()
         try:
-            query.process.wait()
+            self.process.wait()
         except AttributeError:
             pass
 
@@ -106,15 +115,15 @@ class BuilderBuild(object):
             text = file.read().decode('utf-8', errors='ignore')
             doc_texts = dict()
 
-            matches = query.doc_regex.split(text)
+            matches = self.doc_regex.split(text)
             buffer = ''
             for match in reversed(matches):
-                if not query.doc_regex.fullmatch(match):
+                if not self.doc_regex.fullmatch(match):
                     buffer += match
                 else:
                     match = match.strip() + buffer
                     buffer = ''
-                    filename = query.doc_regex.match(match).group(2).strip()
+                    filename = self.doc_regex.match(match).group(2).strip()
                     if not filename.startswith('/'):
                         filename = os.path.normpath(os.path.dirname(query.tex_filename) + '/' + filename)
                     if not filename == tex_filename:
@@ -144,10 +153,10 @@ class BuilderBuild(object):
                 else:
                     file_no += 1
 
-                matches = query.item_regex.split(text)
+                matches = self.item_regex.split(text)
                 buffer = ''
                 for match in reversed(matches):
-                    if not query.item_regex.fullmatch(match):
+                    if not self.item_regex.fullmatch(match):
                         buffer += match
                     else:
                         match += buffer
@@ -171,14 +180,14 @@ class BuilderBuild(object):
                             return True
 
                         elif line.startswith('Overfull \hbox'):
-                            line_number_match = query.badbox_line_number_regex.search(line)
+                            line_number_match = self.badbox_line_number_regex.search(line)
                             if line_number_match != None:
                                 line_number = int(line_number_match.group(1))
                                 text = line.strip()
                                 query.log_messages.append(('Badbox', None, filename, file_no, line_number, text))
 
                         elif line.startswith('Underfull \hbox'):
-                            line_number_match = query.badbox_line_number_regex.search(line)
+                            line_number_match = self.badbox_line_number_regex.search(line)
                             if line_number_match != None:
                                 line_number = int(line_number_match.group(1))
                                 text = line.strip()
@@ -251,12 +260,12 @@ class BuilderBuild(object):
         arguments = ['makeglossaries']
         arguments.append(basename)
         try:
-            query.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(tex_filename))
+            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(tex_filename))
         except FileNotFoundError:
             self.move_build_files(query, tex_filename)
             self.throw_build_error(query, 'interpreter_not_working', 'makeglossaries missing')
             return False
-        query.process.wait()
+        self.process.wait()
         for ending in ['.gls', '.acr']:
             move_from = os.path.join(os.path.dirname(tex_filename), basename + ending)
             move_to = os.path.join(os.path.dirname(query.tex_filename), basename + ending)
@@ -274,12 +283,12 @@ class BuilderBuild(object):
         custom_env = os.environ.copy()
         custom_env['BIBINPUTS'] = os.path.dirname(query.tex_filename) + ':' + os.path.dirname(tex_filename)
         try:
-            query.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(tex_filename), env=custom_env)
+            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(tex_filename), env=custom_env)
         except FileNotFoundError:
             self.move_build_files(query, tex_filename)
             self.throw_build_error(query, 'interpreter_not_working', 'bibtex missing')
             return False
-        query.process.wait()
+        self.process.wait()
 
         return True
 
@@ -291,7 +300,7 @@ class BuilderBuild(object):
 
             query.bibtex_log_messages = list()
             file_numbers = dict()
-            for item in query.bibtex_log_item_regex.finditer(text):
+            for item in self.bibtex_log_item_regex.finditer(text):
                 line = item.group(0)
 
                 if line.startswith('I couldn\'t open style file'):
@@ -312,7 +321,7 @@ class BuilderBuild(object):
 
     def bl_get_line_number(self, query, line, matchiter):
         for i in range(10):
-            line_number_match = query.other_line_number_regex.search(line)
+            line_number_match = self.other_line_number_regex.search(line)
             if line_number_match != None:
                 return int(line_number_match.group(2))
             else:
@@ -324,7 +333,7 @@ class BuilderBuild(object):
 
     def copy_synctex_file(self, query, tex_file_name):
         move_from = os.path.splitext(tex_file_name)[0] + '.synctex.gz'
-        folder = query.config_folder + '/' + base64.urlsafe_b64encode(str.encode(query.tex_filename)).decode()
+        folder = self.config_folder + '/' + base64.urlsafe_b64encode(str.encode(query.tex_filename)).decode()
         move_to = folder + '/' + os.path.splitext(os.path.basename(query.tex_filename))[0] + '.synctex.gz'
 
         if not os.path.exists(folder):

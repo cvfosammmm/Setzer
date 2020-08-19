@@ -78,8 +78,7 @@ class BuildSystem(object):
         return True
     
     def add_query(self, query):
-        if self.active_query != None:
-            self.active_query.stop_building()
+        self.stop_building(notify=False)
         self.active_query = query
         thread.start_new_thread(self.execute_query, (query,))
         self.add_change_code('reset_timer')
@@ -87,13 +86,19 @@ class BuildSystem(object):
 
     def execute_query(self, query):
         while len(query.jobs) > 0:
-            self.builders[query.jobs.pop(0)].run(query)
+            if not query.force_building_to_stop:
+                self.builders[query.jobs.pop(0)].run(query)
         query.mark_done()
 
-    def stop_building(self):
+    def stop_building(self, notify=True):
         if self.active_query != None:
-            self.active_query.stop_building()
+            self.active_query.force_building_to_stop = True
             self.active_query = None
-        self.add_change_code('building_stopped')
+        for builder in self.builders.values():
+            if builder.process != None:
+                builder.process.kill()
+                builder.process = None
+        if notify:
+            self.add_change_code('building_stopped')
 
 

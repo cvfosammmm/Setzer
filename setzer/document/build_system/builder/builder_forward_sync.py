@@ -19,31 +19,36 @@ import _thread as thread
 import base64
 import subprocess
 
+from setzer.app.service_locator import ServiceLocator
+
 
 class BuilderForwardSync(object):
 
     def __init__(self):
-        pass
+        self.config_folder = ServiceLocator.get_config_folder()
+        self.forward_synctex_regex = ServiceLocator.get_forward_synctex_regex()
+
+        self.process = None
 
     def run(self, query):
         if query.forward_sync_data['build_pathname'] == None:
             query.forward_sync_result = None
             return
 
-        synctex_folder = query.config_folder + '/' + base64.urlsafe_b64encode(str.encode(query.tex_filename)).decode()
+        synctex_folder = self.config_folder + '/' + base64.urlsafe_b64encode(str.encode(query.tex_filename)).decode()
         arguments = ['synctex', 'view', '-i']
         arguments.append(str(query.forward_sync_data['line']) + ':' + str(query.forward_sync_data['line_offset']) + ':' + query.forward_sync_data['build_pathname'])
         arguments.append('-o')
         arguments.append(query.tex_filename[:-3] + 'pdf')
         arguments.append('-d')
         arguments.append(synctex_folder)
-        process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        process.wait()
-        raw = process.communicate()[0].decode('utf-8')
-        process = None
+        self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.process.wait()
+        raw = self.process.communicate()[0].decode('utf-8')
+        self.process = None
 
         rectangles = list()
-        for match in query.forward_synctex_regex.finditer(raw):
+        for match in self.forward_synctex_regex.finditer(raw):
             rectangle = dict()
             rectangle['page'] = int(match.group(1))
             rectangle['h'] = float(match.group(2))

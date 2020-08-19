@@ -16,30 +16,11 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import _thread as thread
-import os
-import os.path
-import base64
-import tempfile
-import shutil
-import subprocess
-
-from setzer.app.service_locator import ServiceLocator
 
 
 class Query(object):
 
     def __init__(self):
-        self.config_folder = ServiceLocator.get_config_folder()
-
-        self.backward_synctex_regex = ServiceLocator.get_backward_synctex_regex()
-        self.forward_synctex_regex = ServiceLocator.get_forward_synctex_regex()
-        self.doc_regex = ServiceLocator.get_build_log_doc_regex()
-        self.item_regex = ServiceLocator.get_build_log_item_regex()
-        self.badbox_line_number_regex = ServiceLocator.get_build_log_badbox_line_number_regex()
-        self.other_line_number_regex = ServiceLocator.get_build_log_other_line_number_regex()
-        self.bibtex_log_item_regex = ServiceLocator.get_bibtex_log_item_regex()
-
-        self.process = None
         self.build_result = None
         self.build_result_lock = thread.allocate_lock()
         self.forward_sync_result = None
@@ -60,12 +41,6 @@ class Query(object):
         self.bibtex_log_messages = list()
         self.force_building_to_stop = False
         self.error_count = 0
-
-    def stop_building(self):
-        if self.process != None:
-            self.process.kill()
-            self.process = None
-            self.force_building_to_stop = True
 
     def get_build_result(self):
         return_value = None

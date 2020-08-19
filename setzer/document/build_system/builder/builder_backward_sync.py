@@ -18,28 +18,33 @@
 import base64
 import subprocess
 
+from setzer.app.service_locator import ServiceLocator
+
 
 class BuilderBackwardSync(object):
 
     def __init__(self):
-        pass
+        self.config_folder = ServiceLocator.get_config_folder()
+        self.backward_synctex_regex = ServiceLocator.get_backward_synctex_regex()
+
+        self.process = None
 
     def run(self, query):
         if query.backward_sync_data['build_pathname'] == None:
             query.backward_sync_result = None
             return
 
-        synctex_folder = query.config_folder + '/' + base64.urlsafe_b64encode(str.encode(query.tex_filename)).decode()
+        synctex_folder = self.config_folder + '/' + base64.urlsafe_b64encode(str.encode(query.tex_filename)).decode()
         arguments = ['synctex', 'edit', '-o']
         arguments.append(str(query.backward_sync_data['page']) + ':' + str(query.backward_sync_data['x']) + ':' + str(query.backward_sync_data['y']) + ':' + query.tex_filename[:-3] + 'pdf')
         arguments.append('-d')
         arguments.append(synctex_folder)
-        process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        process.wait()
-        raw = process.communicate()[0].decode('utf-8')
-        process = None
+        self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.process.wait()
+        raw = self.process.communicate()[0].decode('utf-8')
+        self.process = None
 
-        match = query.backward_synctex_regex.search(raw)
+        match = self.backward_synctex_regex.search(raw)
         result = None
         if match != None and match.group(1) == query.backward_sync_data['build_pathname']:
             result = dict()
