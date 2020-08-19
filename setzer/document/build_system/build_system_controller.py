@@ -18,6 +18,7 @@
 import time
 
 import setzer.document.build_system.build_system as build_system
+import setzer.document.build_system.query.query as query
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 
@@ -71,17 +72,17 @@ class BuildSystemController(object):
                 do_cleanup = self.settings.get_value('preferences', 'cleanup_build_files')
 
             if mode == 'build':
-                query = build_system.QueryBuild(text, filename, interpreter, use_latexmk, additional_arguments, do_cleanup)
+                query_obj = query.QueryBuild(text, filename, interpreter, use_latexmk, additional_arguments, do_cleanup)
             elif mode == 'forward_sync':
                 if document.build_pathname != None:
-                    query = build_system.QueryForwardSync(filename, document.build_pathname, synctex_arguments)
+                    query_obj = query.QueryForwardSync(filename, document.build_pathname, synctex_arguments)
             elif mode == 'backward_sync':
                 if document.backward_sync_data != None:
-                    query = build_system.QueryBackwardSync(filename, document.build_pathname, document.backward_sync_data)
+                    query_obj = query.QueryBackwardSync(filename, document.build_pathname, document.backward_sync_data)
             else:
-                query = build_system.QueryBuildAndForwardSync(text, filename, interpreter, use_latexmk, additional_arguments, do_cleanup, synctex_arguments)
+                query_obj = query.QueryBuildAndForwardSync(text, filename, interpreter, use_latexmk, additional_arguments, do_cleanup, synctex_arguments)
 
-            self.build_system.add_query(query)
+            self.build_system.add_query(query_obj)
 
         if change_code == 'build_state_change' and parameter == 'building_to_stop':
             self.build_system.stop_building()
