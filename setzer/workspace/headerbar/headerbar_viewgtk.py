@@ -19,15 +19,9 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import Gdk
-from gi.repository import GObject
-from gi.repository import Pango
-
-import re
-import time
 
 import setzer.workspace.document_switcher.document_switcher_viewgtk as document_switcher_viewgtk
+import setzer.workspace.document_chooser.document_chooser_viewgtk as document_chooser_viewgtk
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -49,7 +43,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.pack_start(self.sidebar_toggle)
 
         # open documents button
-        self.document_chooser = DocumentChooser()
+        self.document_chooser = document_chooser_viewgtk.DocumentChooser()
         self.open_document_button_label = Gtk.HBox()
         self.open_document_button_label.pack_start(Gtk.Label(_('Open')), False, False, 0)
         self.open_document_button_label.pack_start(Gtk.Image.new_from_icon_name('pan-down-symbolic', Gtk.IconSize.MENU), False, False, 0)
@@ -185,139 +179,5 @@ class HeaderBar(Gtk.HeaderBar):
         self.menu_button.set_can_focus(False)
         self.menu_button.set_popover(popover)
         self.pack_end(self.menu_button)
-
-
-class DocumentChooser(Gtk.Popover):
-    ''' GEdit like document chooser widget '''
-    
-    def __init__(self):
-        Gtk.Popover.__init__(self)
-        
-        self.search_entry = Gtk.SearchEntry()
-        self.icon_name = self.search_entry.get_icon_name(Gtk.EntryIconPosition.PRIMARY)
-        
-        self.auto_suggest_entries = list()
-        self.auto_suggest_box = Gtk.ListBox()
-        self.auto_suggest_box.set_size_request(398, -1)
-        
-        self.scrolled_window = Gtk.ScrolledWindow()
-        self.scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        self.scrolled_window.add(self.auto_suggest_box)
-        self.scrolled_window.get_style_context().add_class('frame')
-        self.scrolled_window.set_min_content_height(295)
-        self.scrolled_window.set_min_content_width(398)
-        self.scrolled_window.set_max_content_height(295)
-        self.scrolled_window.set_max_content_width(398)
-        
-        self.not_found_slate = Gtk.HBox()
-        self.not_found_slate.get_style_context().add_class('not_found')
-        self.not_found_slate.get_style_context().add_class('frame')
-        box = Gtk.VBox()
-        pixbuf = Gtk.IconTheme.get_default().load_icon('system-search-symbolic', 64, 0)
-        box.pack_start(Gtk.Image.new_from_pixbuf(pixbuf), True, True, 0)
-        box.pack_start(Gtk.Label(_('No results')), False, False, 0)
-        outer_box = Gtk.VBox()
-        outer_box.set_center_widget(box)
-        self.not_found_slate.set_center_widget(outer_box)
-        
-        self.other_documents_button = Gtk.Button.new_with_label(_('Other Documents') + '...')
-
-        self.notebook = Gtk.Notebook()
-        self.notebook.set_show_tabs(False)
-        self.notebook.set_show_border(False)
-        self.notebook.insert_page(self.scrolled_window, None, 0)
-        self.notebook.insert_page(self.not_found_slate, None, 1)
-        self.notebook.set_current_page(0)
-        
-        self.box = Gtk.VBox()
-        self.box.pack_start(self.search_entry, False, False, 0)
-        self.box.pack_start(self.notebook, True, True, 0)
-        self.box.pack_start(self.other_documents_button, False, False, 0)
-        self.box.show_all()
-        self.add(self.box)
-        
-        self.get_style_context().add_class('documentchooser')
-        
-    def update_autosuggest(self, items):
-        for entry in self.auto_suggest_box.get_children():
-            self.auto_suggest_box.remove(entry)
-        for item in items:
-            entry = DocumentChooserEntry(item[0], item[1])
-            self.auto_suggest_box.add(entry)
-        return self.search_filter()
-
-    def search_filter(self):
-        query = self.search_entry.get_buffer().get_text()
-        count = 0
-        for entry in self.auto_suggest_box.get_children():
-            if query == '':
-                if count < 5:
-                    entry.highlight_search(query)
-                    entry.show_all()
-                    count += 1
-            elif query.lower() in entry.filename.lower() or query.lower() in entry.folder.lower():
-                entry.highlight_search(query)
-                entry.show_all()
-                count += 1
-            else:
-                entry.hide()
-        self.update_search_entry(count)
-        
-    def update_search_entry(self, results_count):
-        if results_count == 0:
-            self.search_entry.get_style_context().add_class('error')
-            self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'face-uncertain-symbolic')
-            self.notebook.set_current_page(1)
-        else:
-            self.search_entry.get_style_context().remove_class('error')
-            self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, self.icon_name)
-            self.notebook.set_current_page(0)
-
-
-class DocumentChooserEntry(Gtk.ListBoxRow):
-    ''' an item in the document chooser '''
-    
-    def __init__(self, folder, filename):
-        Gtk.ListBoxRow.__init__(self)
-        
-        self.filename = filename
-        self.filename_label = Gtk.Label()
-        self.filename_label.set_ellipsize(Pango.EllipsizeMode.END)
-        self.filename_label.set_use_markup(True)
-        self.filename_label.set_markup(self.filename)
-        self.filename_label.set_xalign(0)
-        self.folder = folder
-        self.folder_label = Gtk.Label()
-        self.folder_label.set_ellipsize(Pango.EllipsizeMode.END)
-        self.folder_label.set_use_markup(True)
-        self.folder_label.set_markup(self.folder)
-        self.folder_label.set_xalign(0)
-        self.folder_label.get_style_context().add_class('folder')
-        
-        self.box = Gtk.VBox()
-        self.add(self.box)
-        
-        self.box.pack_start(self.filename_label, False, False, 0)
-        self.box.pack_start(self.folder_label, False, False, 0)
-        
-    def highlight_search(self, query):
-        if query != '':
-            markup = self.filename
-            counter = 0
-            for pos in re.finditer(re.escape(query.lower()), self.filename.lower()):
-                markup = markup[:pos.start()+counter] + '<b>' + markup[pos.start()+counter:pos.end()+counter] + '</b>' + markup[pos.end()+counter:]
-                counter += 7
-        else: 
-            markup = self.filename
-        self.filename_label.set_markup(markup)
-        if query != '':
-            markup = self.folder
-            counter = 0
-            for pos in re.finditer(re.escape(query.lower()), self.folder.lower()):
-                markup = markup[:pos.start()+counter] + '<span alpha="100%"><b>' + markup[pos.start()+counter:pos.end()+counter] + '</b></span>' + markup[pos.end()+counter:]
-                counter += 33
-        else:
-            markup = self.folder
-        self.folder_label.set_markup(markup)
 
 

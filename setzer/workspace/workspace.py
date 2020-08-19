@@ -28,6 +28,7 @@ import setzer.workspace.help_panel.help_panel as help_panel
 import setzer.workspace.sidebar.sidebar as sidebar
 import setzer.workspace.build_log.build_log as build_log
 import setzer.workspace.headerbar.headerbar_presenter as headerbar_presenter
+import setzer.workspace.document_chooser.document_chooser_presenter as document_chooser_presenter
 import setzer.workspace.keyboard_shortcuts.shortcuts as shortcuts
 import setzer.workspace.document_switcher.document_switcher as document_switcher
 from setzer.app.service_locator import ServiceLocator
@@ -71,6 +72,7 @@ class Workspace(Observable):
     def init_workspace_controller(self):
         self.presenter = workspace_presenter.WorkspacePresenter(self)
         self.headerbar = headerbar_presenter.HeaderbarPresenter(self)
+        self.document_chooser = document_chooser_presenter.DocumentChooserPresenter(self)
         self.preview_panel = preview_panel_presenter.PreviewPanelPresenter(self)
         self.help_panel = help_panel.HelpPanel(self)
         self.document_switcher = document_switcher.DocumentSwitcher(self)
