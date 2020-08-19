@@ -22,7 +22,7 @@ from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 
 
-class DocumentBuilder(object):
+class BuildSystemController(object):
     ''' Mediator between document and build_system. '''
     
     def __init__(self, document):
