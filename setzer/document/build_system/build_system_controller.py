@@ -66,16 +66,37 @@ class BuildSystemController(object):
                     text = ''
                 do_cleanup = self.settings.get_value('preferences', 'cleanup_build_files')
 
+            query_obj = query.Query()
+            query_obj.tex_filename = filename
             if mode == 'build':
-                query_obj = query.QueryBuild(text, filename, interpreter, use_latexmk, additional_arguments, do_cleanup)
-            elif mode == 'forward_sync':
-                if document.build_pathname != None:
-                    query_obj = query.QueryForwardSync(filename, document.build_pathname, synctex_arguments)
-            elif mode == 'backward_sync':
-                if document.backward_sync_data != None:
-                    query_obj = query.QueryBackwardSync(filename, document.build_pathname, document.backward_sync_data)
+                query_obj.jobs = ['build']
+                query_obj.build_data['text'] = text
+                query_obj.build_data['latex_interpreter'] = interpreter
+                query_obj.build_data['use_latexmk'] = use_latexmk
+                query_obj.build_data['additional_arguments'] = additional_arguments
+                query_obj.build_data['do_cleanup'] = do_cleanup
+            elif mode == 'forward_sync' and document.build_pathname != None:
+                query_obj.jobs = ['forward_sync']
+                query_obj.forward_sync_data['build_pathname'] = document.build_pathname
+                query_obj.forward_sync_data['line'] = synctex_arguments['line']
+                query_obj.forward_sync_data['line_offset'] = synctex_arguments['line_offset']
+            elif mode == 'backward_sync' and document.backward_sync_data != None:
+                query_obj.jobs = ['backward_sync']
+                query_obj.backward_sync_data['build_pathname'] = document.build_pathname
+                query_obj.backward_sync_data['page'] = document.backward_sync_data['page']
+                query_obj.backward_sync_data['x'] = document.backward_sync_data['x']
+                query_obj.backward_sync_data['y'] = document.backward_sync_data['y']
+                query_obj.backward_sync_data['word'] = document.backward_sync_data['word']
+                query_obj.backward_sync_data['context'] = document.backward_sync_data['context']
             else:
-                query_obj = query.QueryBuildAndForwardSync(text, filename, interpreter, use_latexmk, additional_arguments, do_cleanup, synctex_arguments)
+                query_obj.jobs = ['build', 'forward_sync']
+                query_obj.build_data['text'] = text
+                query_obj.build_data['latex_interpreter'] = interpreter
+                query_obj.build_data['use_latexmk'] = use_latexmk
+                query_obj.build_data['additional_arguments'] = additional_arguments
+                query_obj.build_data['do_cleanup'] = do_cleanup
+                query_obj.forward_sync_data['line'] = synctex_arguments['line']
+                query_obj.forward_sync_data['line_offset'] = synctex_arguments['line_offset']
 
             self.build_system.add_query(query_obj)
 

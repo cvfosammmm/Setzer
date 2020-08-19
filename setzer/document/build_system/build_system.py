@@ -23,12 +23,21 @@ import _thread as thread, queue
 import setzer.document.build_system.build_system_controller as build_system_controller
 import setzer.document.build_system.build_system_presenter as build_system_presenter
 
+import setzer.document.build_system.builder.builder_build as builder_build
+import setzer.document.build_system.builder.builder_forward_sync as builder_forward_sync
+import setzer.document.build_system.builder.builder_backward_sync as builder_backward_sync
+
 
 class BuildSystem(object):
 
     def __init__(self, document):
         self.observers = set()
         self.active_query = None
+
+        self.builders = dict()
+        self.builders['build'] = builder_build.BuilderBuild()
+        self.builders['forward_sync'] = builder_forward_sync.BuilderForwardSync()
+        self.builders['backward_sync'] = builder_backward_sync.BuilderBackwardSync()
 
         self.controller = build_system_controller.BuildSystemController(document, self)
         self.presenter = build_system_presenter.BuildSystemPresenter(document, self)
@@ -78,7 +87,7 @@ class BuildSystem(object):
 
     def execute_query(self, query):
         while len(query.jobs) > 0:
-            query.jobs.pop(0)()
+            self.builders[query.jobs.pop(0)].run(query)
         query.mark_done()
 
     def stop_building(self):
