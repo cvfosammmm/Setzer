@@ -72,10 +72,15 @@ class BuildSystem(object):
         if self.active_query != None:
             self.active_query.stop_building()
         self.active_query = query
-        thread.start_new_thread(query.execute, ())
+        thread.start_new_thread(self.execute_query, (query,))
         self.add_change_code('reset_timer')
         self.add_change_code('building_started')
-        
+
+    def execute_query(self, query):
+        while len(query.jobs) > 0:
+            query.jobs.pop(0)()
+        query.mark_done()
+
     def stop_building(self):
         if self.active_query != None:
             self.active_query.stop_building()

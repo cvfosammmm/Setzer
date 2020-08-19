@@ -48,7 +48,7 @@ class Query(object):
             self.process.kill()
             self.process = None
             self.force_building_to_stop = True
-    
+
     def get_build_result(self):
         return_value = None
         with self.build_result_lock:
@@ -80,76 +80,37 @@ class Query(object):
     
     def build(self):
         with tempfile.TemporaryDirectory() as tmp_directory_name:
-            tex_file = tmp_directory_name + '/' + os.path.basename(self.tex_filename)
+            self.tmp_directory_name = tmp_directory_name
+            tex_file = self.tmp_directory_name + '/' + os.path.basename(self.tex_filename)
             self.build_pathname = tex_file
             with open(tex_file, 'w') as f: f.write(self.text)
-            pdf_filename = tmp_directory_name + '/' + os.path.basename(tex_file).rsplit('.tex', 1)[0] + '.pdf'
-            log_filename = tmp_directory_name + '/' + os.path.basename(tex_file).rsplit('.tex', 1)[0] + '.log'
+            pdf_filename = self.tmp_directory_name + '/' + os.path.basename(tex_file).rsplit('.tex', 1)[0] + '.pdf'
+            log_filename = self.tmp_directory_name + '/' + os.path.basename(tex_file).rsplit('.tex', 1)[0] + '.log'
 
             # build pdf
-            while (self.do_another_latex_build or self.do_a_bibtex_build or self.glossary_files_to_make) and not self.force_building_to_stop:
-                if self.do_another_latex_build:
-                    arguments = self.build_command.split()
-                    arguments.append('-output-directory=' + tmp_directory_name)
-                    arguments.append(tex_file)
-                    try:
-                        self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
-                    except FileNotFoundError:
-                        self.move_build_files(tex_file)
-                        self.throw_build_error('interpreter_missing', arguments[0])
-                        return
-                    self.process.communicate()
-                    try:
-                        self.process.wait()
-                    except AttributeError:
-                        pass
-
-                    # parse results
-                    try:
-                        self.parse_build_log(log_filename, tex_file)
-                    except FileNotFoundError as e:
-                        self.move_build_files(tex_file)
-                        self.throw_build_error('interpreter_not_working', 'log file missing')
-                        return
-
-                if self.do_a_bibtex_build:
-                    arguments = ['bibtex']
-                    arguments.append(tex_file.rsplit('/', 1)[1][:-3] + 'aux')
-                    custom_env = os.environ.copy()
-                    custom_env['BIBINPUTS'] = self.directory_name + ':' + tmp_directory_name
-                    try:
-                        self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=tmp_directory_name, env=custom_env)
-                    except FileNotFoundError:
-                        self.move_build_files(tex_file)
-                        self.throw_build_error('interpreter_not_working', 'bibtex missing')
-                        return
+            while self.do_another_latex_build and not self.force_building_to_stop:
+                arguments = self.build_command.split()
+                arguments.append('-output-directory=' + self.tmp_directory_name)
+                arguments.append(tex_file)
+                try:
+                    self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.directory_name)
+                except FileNotFoundError:
+                    self.move_build_files(tex_file)
+                    self.throw_build_error('interpreter_missing', arguments[0])
+                    return
+                self.process.communicate()
+                try:
                     self.process.wait()
+                except AttributeError:
+                    pass
 
-                    self.do_a_bibtex_build = False
-                    self.done_bibtex_build = True
-                    self.do_another_latex_build = True
-
-                elif self.glossary_files_to_make:
-                    filename = self.glossary_files_to_make.pop()
-                    basename = os.path.basename(filename).rsplit('.', 1)[0]
-                    arguments = ['makeglossaries']
-                    arguments.append(basename)
-                    try:
-                        self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=tmp_directory_name)
-                    except FileNotFoundError:
-                        self.move_build_files(tex_file)
-                        self.throw_build_error('interpreter_not_working', 'makeglossaries missing')
-                        return
-                    self.process.wait()
-                    for ending in ['.gls', '.acr']:
-                        move_from = os.path.join(tmp_directory_name, basename + ending)
-                        move_to = os.path.join(self.directory_name, basename + ending)
-                        try: shutil.move(move_from, move_to)
-                        except FileNotFoundError: pass
-                    self.cleanup_build_files(tex_file)
-
-                    self.glossaries_made = True
-                    self.do_another_latex_build = True
+                # parse results
+                try:
+                    self.parse_build_log(log_filename, tex_file)
+                except FileNotFoundError as e:
+                    self.move_build_files(tex_file)
+                    self.throw_build_error('interpreter_not_working', 'log file missing')
+                    return
 
             self.parse_bibtex_log(tex_file[:-3] + 'blg')
 
@@ -212,7 +173,6 @@ class Query(object):
 
             self.log_messages = list()
             self.do_another_latex_build = False
-            self.do_a_bibtex_build = False
             self.error_count = 0
 
             file_no = 0
@@ -233,11 +193,13 @@ class Query(object):
                         matchiter = iter(match.splitlines())
                         line = next(matchiter)
 
-                        if line.startswith('No file ') and line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and line.find('.bbl.') >= 0 and not self.done_bibtex_build:
-                            self.do_a_bibtex_build = True
+                        if line.startswith('No file ') and line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and line.find('.bbl.') >= 0:
+                            self.bibtex_build(tex_filename)
+                            return True
 
-                        elif line.startswith('No file ') and line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (line.find('.gls.') >= 0 or line.find('.acr.') >= 0) and not self.glossaries_made:
-                            self.glossary_files_to_make.append(tex_filename)
+                        elif line.startswith('No file ') and line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (line.find('.gls.') >= 0 or line.find('.acr.') >= 0):
+                            self.glossaries_build(tex_filename)
+                            return True
 
                         elif line.startswith('LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.'):
                             self.do_another_latex_build = True
@@ -245,7 +207,7 @@ class Query(object):
                         elif line.startswith('Package natbib Warning: Citation(s) may have changed.'):
                             self.do_another_latex_build = True
 
-                        elif line.startswith('No file ') and line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (line.find('.toc.') >= 0 or line.find('.aux.') >= 0) and not self.glossaries_made:
+                        elif line.startswith('No file ') and line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (line.find('.toc.') >= 0 or line.find('.aux.') >= 0):
                             self.do_another_latex_build = True
 
                         elif line.startswith('Overfull \hbox'):
@@ -320,6 +282,41 @@ class Query(object):
         with self.build_result_lock:
             self.build_result = {'error': error,
                                  'error_arg': error_arg}
+
+    def glossaries_build(self, tex_filename):
+        basename = os.path.basename(tex_filename).rsplit('.', 1)[0]
+        arguments = ['makeglossaries']
+        arguments.append(basename)
+        try:
+            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.tmp_directory_name)
+        except FileNotFoundError:
+            self.move_build_files(tex_filename)
+            self.throw_build_error('interpreter_not_working', 'makeglossaries missing')
+            return
+        self.process.wait()
+        for ending in ['.gls', '.acr']:
+            move_from = os.path.join(self.tmp_directory_name, basename + ending)
+            move_to = os.path.join(self.directory_name, basename + ending)
+            try: shutil.move(move_from, move_to)
+            except FileNotFoundError: pass
+        self.cleanup_build_files(tex_filename)
+
+        self.do_another_latex_build = True
+
+    def bibtex_build(self, tex_filename):
+        arguments = ['bibtex']
+        arguments.append(tex_filename.rsplit('/', 1)[1][:-3] + 'aux')
+        custom_env = os.environ.copy()
+        custom_env['BIBINPUTS'] = self.directory_name + ':' + self.tmp_directory_name
+        try:
+            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.tmp_directory_name, env=custom_env)
+        except FileNotFoundError:
+            self.move_build_files(tex_filename)
+            self.throw_build_error('interpreter_not_working', 'bibtex missing')
+            return
+        self.process.wait()
+
+        self.do_another_latex_build = True
 
     def parse_bibtex_log(self, log_filename):
         try: file = open(log_filename, 'rb')
@@ -468,6 +465,8 @@ class QueryBuild(Query):
     def __init__(self, text, tex_filename, latex_interpreter, use_latexmk, additional_arguments, do_cleanup):
         Query.__init__(self)
 
+        self.jobs = [self.build]
+
         self.text = text
         self.tex_filename = tex_filename
         self.build_pathname = None
@@ -500,15 +499,7 @@ class QueryBuild(Query):
             self.build_command = self.build_command_defaults[self.latex_interpreter] + self.additional_arguments
 
         self.do_another_latex_build = True
-        self.do_a_bibtex_build = False
-        self.done_bibtex_build = False
-        self.glossary_files_to_make = []
-        self.glossaries_made = False
         self.error_count = 0
-
-    def execute(self):
-        self.build()
-        self.mark_done()
 
 
 class QueryForwardSync(Query):
@@ -516,15 +507,13 @@ class QueryForwardSync(Query):
     def __init__(self, tex_filename, build_pathname, synctex_arguments):
         Query.__init__(self)
 
+        self.jobs = [self.forward_sync]
+
         self.tex_filename = tex_filename
         self.build_pathname = build_pathname
         self.synctex_args = synctex_arguments
 
         self.forward_synctex_regex = ServiceLocator.get_forward_synctex_regex()
-
-    def execute(self):
-        self.forward_sync()
-        self.mark_done()
 
 
 class QueryBackwardSync(Query):
@@ -532,21 +521,21 @@ class QueryBackwardSync(Query):
     def __init__(self, tex_filename, build_pathname, backward_sync_data):
         Query.__init__(self)
 
+        self.jobs = [self.backward_sync]
+
         self.tex_filename = tex_filename
         self.build_pathname = build_pathname
         self.backward_sync_data = backward_sync_data
 
         self.backward_synctex_regex = ServiceLocator.get_backward_synctex_regex()
 
-    def execute(self):
-        self.backward_sync()
-        self.mark_done()
-
 
 class QueryBuildAndForwardSync(Query):
 
     def __init__(self, text, tex_filename, latex_interpreter, use_latexmk, additional_arguments, do_cleanup, synctex_arguments):
         Query.__init__(self)
+
+        self.jobs = [self.build, self.forward_sync]
 
         self.text = text
         self.tex_filename = tex_filename
@@ -581,15 +570,6 @@ class QueryBuildAndForwardSync(Query):
             self.build_command = self.build_command_defaults[self.latex_interpreter] + self.additional_arguments
 
         self.do_another_latex_build = True
-        self.do_a_bibtex_build = False
-        self.done_bibtex_build = False
-        self.glossary_files_to_make = []
-        self.glossaries_made = False
         self.error_count = 0
-
-    def execute(self):
-        self.build()
-        self.forward_sync()
-        self.mark_done()
 
 
