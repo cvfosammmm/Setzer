@@ -53,6 +53,11 @@
     </provides>
 
     <releases>
+        <release version="0.3.0" date="2020-8-20">
+            <description>
+                <p translatable="no">Biber support, Glossaries support, ...</p>
+            </description>
+        </release>
         <release version="0.2.9" date="2020-8-12">
             <description>
                 <p translatable="no">Use Latexmk with any LaTeX interpreter, invert colors in .pdf preview, ...</p>
