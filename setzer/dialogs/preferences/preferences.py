@@ -83,6 +83,7 @@ class PreferencesDialog(Dialog):
         self.setup_latex_interpreters()
 
     def setup_latex_interpreters(self):
+        self.latex_interpreters = list()
         for interpreter in ['xelatex', 'pdflatex', 'lualatex']:
             self.view.option_latex_interpreter[interpreter].hide()
             arguments = [interpreter, '--version']
@@ -110,7 +111,6 @@ class PreferencesDialog(Dialog):
             self.view.no_interpreter_label.show_all()
         else:
             self.view.no_interpreter_label.hide()
-
             if self.settings.get_value('preferences', 'latex_interpreter') not in self.latex_interpreters:
                 self.settings.set_value('preferences', 'latex_interpreter', self.latex_interpreters[0])
 
@@ -125,6 +125,7 @@ class PreferencesDialog(Dialog):
             for interpreter in self.latex_interpreters:
                 self.view.option_latex_interpreter[interpreter].show_all()
                 self.view.option_latex_interpreter[interpreter].set_active(interpreter == self.settings.get_value('preferences', 'latex_interpreter'))
+            for interpreter in self.latex_interpreters:
                 self.view.option_latex_interpreter[interpreter].connect('toggled', self.on_interpreter_changed, 'latex_interpreter', interpreter)
 
     def on_check_button_toggle(self, button, preference_name):
