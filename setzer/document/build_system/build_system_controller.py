@@ -69,7 +69,7 @@ class BuildSystemController(object):
             query_obj = query.Query()
             query_obj.tex_filename = filename
             if mode == 'build':
-                query_obj.jobs = ['build']
+                query_obj.jobs = ['build_latex']
                 query_obj.build_data['text'] = text
                 query_obj.build_data['latex_interpreter'] = interpreter
                 query_obj.build_data['use_latexmk'] = use_latexmk
@@ -89,7 +89,7 @@ class BuildSystemController(object):
                 query_obj.backward_sync_data['word'] = document.backward_sync_data['word']
                 query_obj.backward_sync_data['context'] = document.backward_sync_data['context']
             else:
-                query_obj.jobs = ['build', 'forward_sync']
+                query_obj.jobs = ['build_latex', 'forward_sync']
                 query_obj.build_data['text'] = text
                 query_obj.build_data['latex_interpreter'] = interpreter
                 query_obj.build_data['use_latexmk'] = use_latexmk
