@@ -40,7 +40,8 @@ class BuilderBuild(object):
     def cleanup_build_files(self, query, tex_file_name):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' , '.ilg',
                         '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc',
-                        '.ist', '.glo', '.glg', '.acn', '.alg']
+                        '.ist', '.glo', '.glg', '.acn', '.alg',
+                        '.bcf', '.run.xml']
         for ending in file_endings:
             try: os.remove(os.path.splitext(tex_file_name)[0] + ending)
             except FileNotFoundError: pass
@@ -53,7 +54,7 @@ class BuilderBuild(object):
     def rename_build_files(self, query, tex_file_name):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,
                         '.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc',
-                        '.ist', '.glo', '.glg', '.acn', '.alg']
+                        '.ist', '.glo', '.glg', '.acn', '.alg', '.bcf', '.run.xml']
         for ending in file_endings:
             move_from = os.path.splitext(tex_file_name)[0] + ending
             move_to = os.path.splitext(query.tex_filename)[0] + ending

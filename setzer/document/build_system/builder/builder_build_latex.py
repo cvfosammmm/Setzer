@@ -165,6 +165,16 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
                             query.jobs.insert(0, 'build_bibtex')
                             return True
 
+                        elif line.startswith('Package biblatex Warning: Please (re)run Biber on the file:'):
+                            line = next(matchiter)
+                            if line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0:
+                                query.jobs.insert(0, 'build_biber')
+                                return True
+
+                        elif line.startswith('Package biblatex Warning: Please rerun LaTeX.'):
+                            query.jobs.insert(0, 'build_latex')
+                            return True
+
                         elif line.startswith('No file ') and line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (line.find('.gls.') >= 0 or line.find('.acr.') >= 0):
                             query.jobs.insert(0, 'build_glossaries')
                             return True
