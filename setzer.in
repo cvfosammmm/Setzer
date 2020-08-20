@@ -19,6 +19,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gio
+from gi.repository import GLib
 
 import sys
 import gettext
@@ -28,11 +29,19 @@ import setzer.workspace.workspace_viewgtk as view
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 
-
 class MainApplicationController(Gtk.Application):
 
-    def __init__(self):
-        Gtk.Application.__init__(self, application_id='org.cvfosammmm.Setzer', flags=Gio.ApplicationFlags.HANDLES_OPEN)
+    def __init__(self, **kwargs):
+        Gtk.Application.__init__(self, application_id='org.cvfosammmm.Setzer', flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE, **kwargs)
+        # Register a new commandline option
+        self.add_main_option(
+            "version",
+            ord("v"),
+            GLib.OptionFlags.NONE,
+            GLib.OptionArg.NONE,
+            "Output version information and exit",
+            None,
+        )
 
     def do_startup(self):
         ''' Everything starts here. '''
@@ -118,6 +127,18 @@ class MainApplicationController(Gtk.Application):
         # init controller
         self.workspace.init_workspace_controller()
         self.main_window.quit_action.connect('activate', self.on_quit_action)
+
+    def do_command_line(self, command_line):
+        options = command_line.get_options_dict()
+        # Convert GVariantDict -> GVariant -> dict
+        options = options.end().unpack()
+
+        if "version" in options:
+            print("Setzer version: %s" % ServiceLocator.get_setzer_version())
+            self.quit()
+        else:
+            self.activate()
+        return True
 
     def on_window_size_allocate(self, main_window, window_size):
         ''' signal handler, update window size variables '''
