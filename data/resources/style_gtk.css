@@ -284,7 +284,6 @@ box.shortcutsbar {
 box.shortcutsbar toolbar {
     padding: 0px;
     margin: 0px;
-    background-color: @sidebar_bg;
     background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
 }
 box.shortcutsbar toolbar toolbutton {
