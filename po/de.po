@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-14 20:11+0200\n"
-"PO-Revision-Date: 2020-08-14 20:14+0200\n"
+"PO-Revision-Date: 2020-08-23 10:06+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -2248,7 +2248,7 @@ msgstr "Andere Sprache"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:432
 msgid "Plain Text"
-msgstr "Nur-Text"
+msgstr "Einfacher Text"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:440
 msgid "Bulleted List"
