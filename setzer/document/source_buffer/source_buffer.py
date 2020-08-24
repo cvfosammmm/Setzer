@@ -26,6 +26,7 @@ from gi.repository import GtkSource
 import os.path
 import re
 import time
+import math
 import difflib
 
 from setzer.app.service_locator import ServiceLocator
@@ -45,6 +46,8 @@ class SourceBuffer(GtkSource.Buffer):
         self.settings = ServiceLocator.get_settings()
 
         resources_path = ServiceLocator.get_resources_path()
+
+        self.mover_mark = self.create_mark('mover', self.get_start_iter(), True)
 
         # set source language for syntax highlighting
         self.source_language_manager = GtkSource.LanguageManager()
@@ -334,10 +337,32 @@ class SourceBuffer(GtkSource.Buffer):
         self.scroll_mark_onscreen(self.get_insert())
 
     def scroll_mark_onscreen(self, text_mark):
-        self.view.scroll_to_mark(text_mark, 0.2, False, 0, 0)
+        self.scroll_iter_onscreen(self.get_iter_at_mark(text_mark))
 
     def scroll_iter_onscreen(self, text_iter):
-        self.view.scroll_to_iter(text_iter, 0.2, False, 0, 0)
+        visible_lines = self.get_number_of_visible_lines()
+        iter_position = self.view.get_iter_location(text_iter).y
+        end_yrange = self.view.get_line_yrange(self.get_end_iter())
+        buffer_height = end_yrange.y + end_yrange.height
+        line_height = self.get_line_height()
+        window_offset = self.view.get_visible_rect().y
+        window_height = self.view.get_visible_rect().height
+        gap = min(math.floor(max((visible_lines - 2), 0) / 2), 5)
+        if iter_position < window_offset + gap * line_height:
+            scroll_iter = self.view.get_iter_at_location(0, max(iter_position - gap * line_height, 0)).iter
+            self.move_mark(self.mover_mark, scroll_iter)
+            self.view.scroll_to_mark(self.mover_mark, 0, False, 0, 0)
+        elif iter_position > (window_offset + window_height - (gap + 1) * line_height):
+            scroll_iter = self.view.get_iter_at_location(0, min(iter_position + gap * line_height, buffer_height)).iter
+            self.move_mark(self.mover_mark, scroll_iter)
+            self.view.scroll_to_mark(self.mover_mark, 0, False, 0, 0)
+
+    def get_number_of_visible_lines(self):
+        line_height = self.get_line_height()
+        return math.floor(self.view.get_visible_rect().height / line_height)
+
+    def get_line_height(self):
+        return self.view.get_iter_location(self.get_end_iter()).height
 
     def set_use_dark_scheme(self, use_dark_scheme):
         if use_dark_scheme: self.set_style_scheme(self.source_style_scheme_dark)
