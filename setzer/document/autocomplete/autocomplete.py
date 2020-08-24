@@ -148,7 +148,39 @@ class Autocomplete(object):
             return False
 
     def on_tab_press(self):
-        return False
+        if self.autocomplete_visible == True:
+            if self.number_of_matches == 1:
+                self.autocomplete_insert()
+                return True
+            else:
+                items = list()
+                try: items = self.static_proposals[self.current_word[1:].lower()]
+                except KeyError: pass
+                try: items += self.dynamic_proposals[self.current_word[1:].lower()]
+                except KeyError: pass
+
+                i = 0
+                letter_ok = True
+                while letter_ok and i < 100:
+                    testletter = None
+                    for item in items:
+                        letter = item['command'][len(self.current_word) - 1 + i:len(self.current_word) + i].lower()
+                        if testletter == None:
+                            testletter = letter
+                        elif testletter != letter or letter == '':
+                            letter_ok = False
+                            i -= 1
+                            break
+                    i += 1
+                row = self.view.list.get_selected_row()
+                text = row.get_child().label.get_text()[len(self.current_word):len(self.current_word) + i]
+                if len(row.get_child().label.get_text()) == len(self.current_word) + i:
+                    self.autocomplete_insert()
+                else:
+                    self.document.insert_text_at_cursor(text, scroll=False, select_dot=False)
+                return True
+        else:
+            return False
 
     def focus_hide(self):
         self.view.hide()

@@ -123,7 +123,7 @@ class SourceBuffer(GtkSource.Buffer):
         self.place_cursor(insert_iter)
         self.insert_text_at_cursor(text, indent_lines)
 
-    def insert_text_at_cursor(self, text, indent_lines=True):
+    def insert_text_at_cursor(self, text, indent_lines=True, scroll=True, select_dot=True):
         self.begin_user_action()
 
         # replace tabs with spaces, if set in preferences
@@ -159,20 +159,23 @@ class SourceBuffer(GtkSource.Buffer):
         self.delete_selection(False, False)
         self.insert_at_cursor(final_text)
 
-        dotindex = final_text.find('•')
-        if dotcount > 0:
-            selection_len = len(selection) if dotcount == 1 else 0
-            start = self.get_iter_at_mark(self.get_insert())
-            start.backward_chars(abs(dotindex + selection_len - len(final_text)))
-            self.place_cursor(start)
-            end = start.copy()
-            end.forward_char()
-            self.select_range(start, end)
-        self.scroll_cursor_onscreen()
+        if select_dot:
+            dotindex = final_text.find('•')
+            if dotcount > 0:
+                selection_len = len(selection) if dotcount == 1 else 0
+                start = self.get_iter_at_mark(self.get_insert())
+                start.backward_chars(abs(dotindex + selection_len - len(final_text)))
+                self.place_cursor(start)
+                end = start.copy()
+                end.forward_char()
+                self.select_range(start, end)
+
+        if scroll:
+            self.scroll_cursor_onscreen()
 
         self.end_user_action()
 
-    def replace_range(self, start_iter, end_iter, text, indent_lines=True):
+    def replace_range(self, start_iter, end_iter, text, indent_lines=True, select_dot=True):
         self.begin_user_action()
 
         if indent_lines:
@@ -192,12 +195,14 @@ class SourceBuffer(GtkSource.Buffer):
         self.delete(start_iter, end_iter)
         self.insert(start_iter, final_text)
 
-        dotindex = final_text.find('•')
-        if dotindex > -1:
-            start_iter.backward_chars(abs(dotindex - len(final_text)))
-            bound = start_iter.copy()
-            bound.forward_chars(1)
-            self.select_range(start_iter, bound)
+        if select_dot:
+            dotindex = final_text.find('•')
+            if dotindex > -1:
+                start_iter.backward_chars(abs(dotindex - len(final_text)))
+                bound = start_iter.copy()
+                bound.forward_chars(1)
+                self.select_range(start_iter, bound)
+
         self.end_user_action()
 
     def insert_before_after(self, before, after):

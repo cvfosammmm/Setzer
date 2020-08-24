@@ -163,10 +163,10 @@ class Document(Observable):
     def insert_text_at_iter(self, insert_iter, text, indent_lines=True):
         self.get_buffer().insert_text_at_iter(insert_iter, text, indent_lines)
 
-    def insert_text_at_cursor(self, text, indent_lines=True):
-        self.get_buffer().insert_text_at_cursor(text, indent_lines)
+    def insert_text_at_cursor(self, text, indent_lines=True, scroll=True, select_dot=True):
+        self.get_buffer().insert_text_at_cursor(text, indent_lines, scroll, select_dot)
 
-    def replace_range(self, start_iter, end_iter, text, indent_lines=True):
+    def replace_range(self, start_iter, end_iter, text, indent_lines=True, select_dot=True):
         self.get_buffer().replace_range(start_iter, end_iter, text, indent_lines)
 
     def insert_before_after(self, before, after):
