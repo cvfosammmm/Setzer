@@ -185,18 +185,8 @@ class IncludeBibTeXFile(Dialog):
             return self.current_values['style']
 
     def insert_template(self):
-        buffer = self.document.get_buffer()
-        end_iter = buffer.get_end_iter()
-        result = end_iter.backward_search('\\end{document}', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
         self.settings.set_value('app_include_bibtex_file_dialog', 'presets', pickle.dumps(self.current_values))
-        if result != None:
-            self.document.insert_text_at_iter(result[0], '''
-\\bibliographystyle{''' + self.get_style() + '''}
-\\bibliography{''' + self.get_display_filename() + '''}
-
-''', False)
-        else:
-            self.document.insert_text_at_cursor('''\\bibliographystyle{''' + self.get_style() + '''}
+        self.document.insert_before_document_end('''\\bibliographystyle{''' + self.get_style() + '''}
 \\bibliography{''' + self.get_display_filename() + '''}''')
 
 
