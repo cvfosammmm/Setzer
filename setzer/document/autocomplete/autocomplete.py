@@ -183,13 +183,34 @@ class Autocomplete(object):
                         self.autocomplete_insert(text, select_dot=False)
                         return True
                     else:
-                        if len(row.get_child().label.get_text()) == len(self.current_word) + 1:
+                        current_word = row.get_child().label.get_text()[:len(self.current_word) + 1]
+                        items = list()
+                        try: items = self.static_proposals[current_word[1:].lower()]
+                        except KeyError: pass
+                        try: items += self.dynamic_proposals[current_word[1:].lower()]
+                        except KeyError: pass
+
+                        i = 1
+                        letter_ok = True
+                        while letter_ok and i < 100:
+                            testletter = None
+                            for item in items:
+                                letter = item['command'][len(current_word) - 2 + i:len(current_word) - 1 + i].lower()
+                                if testletter == None:
+                                    testletter = letter
+                                if testletter != letter or len(letter) == 0:
+                                    letter_ok = False
+                                    i -= 1
+                                    break
+                            i += 1
+
+                        if len(row.get_child().label.get_text()) == len(current_word) - 1 + i:
                             self.autocomplete_submit()
                             return True
                         else:
-                            text = row.get_child().label.get_text()[:len(self.current_word) + 1]
+                            text = row.get_child().label.get_text()[:len(current_word) - 1 + i]
                             self.autocomplete_insert(text, select_dot=False)
-                            return self.on_tab_press()
+                            return True
         else:
             return False
 
@@ -226,16 +247,16 @@ class Autocomplete(object):
     def autocomplete_submit(self):
         row = self.view.list.get_selected_row()
         text = row.get_child().label.get_text()
-        self.autocomplete_insert(text)
+        self.autocomplete_insert(text, is_submit=True)
         self.autocomplete_hide()
 
-    def autocomplete_insert(self, text, select_dot=True):
+    def autocomplete_insert(self, text, select_dot=True, is_submit=False):
         buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         current_word = self.get_current_word(insert_iter)
         start_iter = insert_iter.copy()
         start_iter.backward_chars(len(current_word))
-        if text.startswith('\\begin'):
+        if is_submit and text.startswith('\\begin'):
             text += '\n\t•\n' + text.replace('\\begin', '\\end')
         self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=select_dot)
 
