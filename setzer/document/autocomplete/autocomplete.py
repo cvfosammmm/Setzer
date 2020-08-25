@@ -167,24 +167,29 @@ class Autocomplete(object):
                         letter = item['command'][len(self.current_word) - 1 + i:len(self.current_word) + i].lower()
                         if testletter == None:
                             testletter = letter
-                        elif testletter != letter or letter == '':
+                        if testletter != letter or len(letter) == 0:
                             letter_ok = False
                             i -= 1
                             break
                     i += 1
 
                 row = self.view.list.get_selected_row()
-                text = row.get_child().label.get_text()[:len(self.current_word) + i]
                 if len(row.get_child().label.get_text()) == len(self.current_word) + i:
                     self.autocomplete_submit()
                     return True
                 else:
                     if i >= 1:
+                        text = row.get_child().label.get_text()[:len(self.current_word) + i]
                         self.autocomplete_insert(text, select_dot=False)
+                        return True
                     else:
-                        pass #TODO fall2b
-                
-                return True
+                        if len(row.get_child().label.get_text()) == len(self.current_word) + 1:
+                            self.autocomplete_submit()
+                            return True
+                        else:
+                            text = row.get_child().label.get_text()[:len(self.current_word) + 1]
+                            self.autocomplete_insert(text, select_dot=False)
+                            return self.on_tab_press()
         else:
             return False
 
