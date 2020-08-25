@@ -80,7 +80,7 @@ class Autocomplete(object):
 
     def on_autocomplete_row_activated(self, box, row, user_data=None):
         self.document_view.source_view.grab_focus()
-        self.autocomplete_insert()
+        self.autocomplete_submit()
 
     def on_autocomplete_row_selected(self, box, row, user_data=None):
         if row != None:
@@ -120,7 +120,7 @@ class Autocomplete(object):
 
     def on_return_press(self):
         if self.autocomplete_visible == True:
-            self.autocomplete_insert()
+            self.autocomplete_submit()
             return True
         else:
             return False
@@ -150,7 +150,7 @@ class Autocomplete(object):
     def on_tab_press(self):
         if self.autocomplete_visible == True:
             if self.number_of_matches == 1:
-                self.autocomplete_insert()
+                self.autocomplete_submit()
                 return True
             else:
                 items = list()
@@ -172,12 +172,18 @@ class Autocomplete(object):
                             i -= 1
                             break
                     i += 1
+
                 row = self.view.list.get_selected_row()
-                text = row.get_child().label.get_text()[len(self.current_word):len(self.current_word) + i]
+                text = row.get_child().label.get_text()[:len(self.current_word) + i]
                 if len(row.get_child().label.get_text()) == len(self.current_word) + i:
-                    self.autocomplete_insert()
+                    self.autocomplete_submit()
+                    return True
                 else:
-                    self.document.insert_text_at_cursor(text, scroll=False, select_dot=False)
+                    if i >= 1:
+                        self.autocomplete_insert(text, select_dot=False)
+                    else:
+                        pass #TODO fall2b
+                
                 return True
         else:
             return False
@@ -212,20 +218,25 @@ class Autocomplete(object):
         word = word_start_iter.get_slice(insert_iter)
         return word
 
-    def autocomplete_insert(self):
+    def autocomplete_submit(self):
+        row = self.view.list.get_selected_row()
+        text = row.get_child().label.get_text()
+        self.autocomplete_insert(text)
+        self.autocomplete_hide()
+
+    def autocomplete_insert(self, text, select_dot=True):
         buffer = self.document.get_buffer()
-        if buffer != None:
-            insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-            current_word = self.get_current_word(insert_iter)
-            start_iter = insert_iter.copy()
-            start_iter.backward_chars(len(current_word))
-            row = self.view.list.get_selected_row()
-            text = row.get_child().label.get_text()
-            if text.startswith('\\begin'):
-                text += '\n\t•\n' + text.replace('\\begin', '\\end')
-            self.document.replace_range(start_iter, insert_iter, text, indent_lines=True)
-            self.view.hide()
-            self.autocomplete_visible = False
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        current_word = self.get_current_word(insert_iter)
+        start_iter = insert_iter.copy()
+        start_iter.backward_chars(len(current_word))
+        if text.startswith('\\begin'):
+            text += '\n\t•\n' + text.replace('\\begin', '\\end')
+        self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=select_dot)
+
+    def autocomplete_hide(self):
+        self.view.hide()
+        self.autocomplete_visible = False
 
     def update_autocomplete_position(self, can_show=False):
         buffer = self.document.get_buffer()
