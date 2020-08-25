@@ -256,10 +256,9 @@ class Autocomplete(object):
         limit_iter = insert_iter.copy()
         limit_iter.backward_chars(50)
         word_start_iter = insert_iter.copy()
-        if not word_start_iter.get_char() == '\\':
-            result = word_start_iter.backward_search('\\', Gtk.TextSearchFlags.TEXT_ONLY, limit_iter)
-            if result != None:
-                word_start_iter = result[0]
+        result = word_start_iter.backward_search('\\', Gtk.TextSearchFlags.TEXT_ONLY, limit_iter)
+        if result != None:
+            word_start_iter = result[0]
         word = word_start_iter.get_slice(insert_iter)
         return word
 
@@ -267,11 +266,10 @@ class Autocomplete(object):
         limit_iter = insert_iter.copy()
         limit_iter.backward_chars(50)
         word_start_iter = insert_iter.copy()
-        if not word_start_iter.get_char() == '\\':
-            result = word_start_iter.backward_search('\\', Gtk.TextSearchFlags.TEXT_ONLY, limit_iter)
-            if result != None:
-                word_start_iter = result[0]
-                return word_start_iter.get_offset()
+        result = word_start_iter.backward_search('\\', Gtk.TextSearchFlags.TEXT_ONLY, limit_iter)
+        if result != None:
+            word_start_iter = result[0]
+            return word_start_iter.get_offset()
         return None
 
     def autocomplete_submit(self):
@@ -314,12 +312,24 @@ class Autocomplete(object):
                 self.insert_iter_matched = False
                 self.view.empty_list()
 
-                items = self.get_items(self.current_word, limited_number=True)
-                items.reverse()
+                items_all = self.get_items(self.current_word)
+                items_all.reverse()
 
-                if len(items) == 1 and self.current_word[1:].lower() == items[0]['command']:
+                if len(items_all) == 1 and self.current_word[1:].lower() == items_all[0]['command']:
                     self.number_of_matches = 0
                 else:
+                    count = 0
+                    items = list()
+                    items_rest = list()
+                    for item in items_all:
+                        if item['command'][:len(self.current_word) - 1] == self.current_word[1:] and count < 5:
+                            items.append(item)
+                            count += 1
+                        else:
+                            items_rest.append(item)
+                    items.reverse()
+                    items = items_rest[:5 - count] + items
+
                     self.number_of_matches = len(items)
                     for command in items:
                         item = view.DocumentAutocompleteItem(command)
@@ -373,16 +383,13 @@ class Autocomplete(object):
                 self.view.hide()
                 self.autocomplete_visible = False
 
-    def get_items(self, word, limited_number=False):
+    def get_items(self, word):
         items = list()
         try: items = self.static_proposals[word[1:].lower()]
         except KeyError: pass
         try: dynamic_items = self.dynamic_proposals[word[1:].lower()]
         except KeyError: dynamic_items = list()
-        if limited_number:
-            return items + dynamic_items[:5 - len(items)]
-        else:
-            return items + dynamic_items
+        return items + dynamic_items
 
     def save_data(self):
         pass
