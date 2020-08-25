@@ -153,11 +153,7 @@ class Autocomplete(object):
                 self.autocomplete_submit()
                 return True
             else:
-                items = list()
-                try: items = self.static_proposals[self.current_word[1:].lower()]
-                except KeyError: pass
-                try: items += self.dynamic_proposals[self.current_word[1:].lower()]
-                except KeyError: pass
+                items = self.get_items(self.current_word)
 
                 i = 0
                 letter_ok = True
@@ -184,11 +180,7 @@ class Autocomplete(object):
                         return True
                     else:
                         current_word = row.get_child().label.get_text()[:len(self.current_word) + 1]
-                        items = list()
-                        try: items = self.static_proposals[current_word[1:].lower()]
-                        except KeyError: pass
-                        try: items += self.dynamic_proposals[current_word[1:].lower()]
-                        except KeyError: pass
+                        items = self.get_items(current_word)
 
                         i = 1
                         letter_ok = True
@@ -212,6 +204,10 @@ class Autocomplete(object):
                             self.autocomplete_insert(text, select_dot=False)
                             return True
         else:
+            if self.cursor_inside_word_or_at_end():
+                self.move_cursor_to_word_end()
+                self.update_autocomplete_position(True)
+                return True
             return False
 
     def focus_hide(self):
@@ -232,6 +228,28 @@ class Autocomplete(object):
         layout.set_text(" ", -1)
         layout.set_font_description(context.get_font_description())
         self.char_width, self.line_height = layout.get_pixel_size()
+
+    def cursor_inside_word_or_at_end(self):
+        buffer = self.document.get_buffer()
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+
+        current_word = self.get_current_word(insert_iter)
+
+        items = self.get_items(current_word)
+
+        if len(items) > 0:
+            if not insert_iter.ends_word():
+                insert_iter.forward_word_end()
+            current_word = self.get_current_word(insert_iter)
+            items = self.get_items(current_word)
+            return len(items) > 0
+
+    def move_cursor_to_word_end(self):
+        buffer = self.document.get_buffer()
+        text_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        if not text_iter.ends_word():
+            text_iter.forward_word_end()
+            buffer.place_cursor(text_iter)
 
     def get_current_word(self, insert_iter):
         limit_iter = insert_iter.copy()
@@ -277,19 +295,18 @@ class Autocomplete(object):
                 self.insert_iter_matched = False
                 self.view.empty_list()
 
-                items = list()
-                try: items = self.static_proposals[self.current_word[1:].lower()]
-                except KeyError: pass
-                try: items += self.dynamic_proposals[self.current_word[1:].lower()][:5 - len(items)]
-                except KeyError: pass
+                items = self.get_items(self.current_word, limited_number=True)
                 items.reverse()
 
-                self.number_of_matches = len(items)
-                for command in items:
-                    item = view.DocumentAutocompleteItem(command)
-                    self.view.prepend(item)
-                    self.insert_iter_matched = True
-                    self.view.select_first()
+                if len(items) == 1 and self.current_word[1:].lower() == items[0]['command']:
+                    self.number_of_matches = 0
+                else:
+                    self.number_of_matches = len(items)
+                    for command in items:
+                        item = view.DocumentAutocompleteItem(command)
+                        self.view.prepend(item)
+                        self.insert_iter_matched = True
+                        self.view.select_first()
 
             if self.insert_iter_matched:
                 self.autocomplete_height = self.view.get_allocated_height()
@@ -336,6 +353,17 @@ class Autocomplete(object):
             else:
                 self.view.hide()
                 self.autocomplete_visible = False
+
+    def get_items(self, word, limited_number=False):
+        items = list()
+        try: items = self.static_proposals[word[1:].lower()]
+        except KeyError: pass
+        try: dynamic_items = self.dynamic_proposals[word[1:].lower()]
+        except KeyError: dynamic_items = list()
+        if limited_number:
+            return items + dynamic_items[:5 - len(items)]
+        else:
+            return items + dynamic_items
 
     def save_data(self):
         pass
