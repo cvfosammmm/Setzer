@@ -44,6 +44,7 @@ class Autocomplete(object):
         self.insert_iter_offset = None
         self.insert_iter_matched = False
         self.current_word = ""
+        self.current_word_offset = None
         self.autocomplete_height = None
         self.autocomplete_width = None
         self.autocomplete_visible = False
@@ -262,6 +263,17 @@ class Autocomplete(object):
         word = word_start_iter.get_slice(insert_iter)
         return word
 
+    def get_current_word_offset(self, insert_iter):
+        limit_iter = insert_iter.copy()
+        limit_iter.backward_chars(50)
+        word_start_iter = insert_iter.copy()
+        if not word_start_iter.get_char() == '\\':
+            result = word_start_iter.backward_search('\\', Gtk.TextSearchFlags.TEXT_ONLY, limit_iter)
+            if result != None:
+                word_start_iter = result[0]
+                return word_start_iter.get_offset()
+        return None
+
     def autocomplete_submit(self):
         row = self.view.list.get_selected_row()
         text = row.get_child().label.get_text()
@@ -288,6 +300,13 @@ class Autocomplete(object):
             self.number_of_matches = 0
             if self.autocomplete_visible == False and can_show == False: return
             insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+            current_word_offset = self.get_current_word_offset(insert_iter)
+            if current_word_offset != self.current_word_offset:
+                self.current_word_offset = current_word_offset
+                if current_word_offset == None or (self.autocomplete_visible == True and can_show == False):
+                    self.view.hide()
+                    self.autocomplete_visible = False
+                    return
             if self.insert_iter_offset == None: self.insert_iter_offset = insert_iter.get_offset()
             if self.insert_iter_offset != insert_iter.get_offset():
                 self.insert_iter_offset = insert_iter.get_offset()
