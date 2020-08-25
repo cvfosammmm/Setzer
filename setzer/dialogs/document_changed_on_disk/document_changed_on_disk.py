@@ -35,10 +35,10 @@ class DocumentChangedOnDiskDialog(Dialog):
         self.setup(document)
 
         response = self.view.run()
-        if response == Gtk.ResponseType.CANCEL:
-            value = False
-        elif response == Gtk.ResponseType.YES:
+        if response == Gtk.ResponseType.YES:
             value = True
+        else:
+            value = False
 
         self.close()
         return value

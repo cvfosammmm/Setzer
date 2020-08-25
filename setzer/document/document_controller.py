@@ -158,8 +158,9 @@ class DocumentController(object):
         if self.document.save_date <= os.path.getmtime(self.document.filename) - 0.001:
             if DialogLocator.get_dialog('document_changed_on_disk').run(self.document):
                 self.document.populate_from_filename()
-            else:
                 self.document.source_buffer.set_modified(False)
+            else:
+                self.document.source_buffer.set_modified(True)
             self.document.update_save_date()
         return True
 
