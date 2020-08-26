@@ -31,6 +31,7 @@ import math
 import difflib
 
 from setzer.app.service_locator import ServiceLocator
+import setzer.helpers.timer as timer
 
 
 class SourceBuffer(GtkSource.Buffer):
@@ -368,8 +369,7 @@ class SourceBuffer(GtkSource.Buffer):
         return math.floor(self.view.get_visible_rect().height / line_height)
 
     def get_line_height(self):
-        char_width, line_height = self.get_char_dimensions()
-        return line_height
+        return self.view.get_iter_location(self.get_end_iter()).height
 
     def get_char_width(self):
         char_width, line_height = ServiceLocator.get_char_dimensions()
