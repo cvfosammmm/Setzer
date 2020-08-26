@@ -23,6 +23,9 @@ from gi.repository import Gdk
 from gi.repository import Pango
 
 import setzer.document.autocomplete.autocomplete_viewgtk as view
+import setzer.document.autocomplete.autocomplete_state_inactive as state_inactive
+import setzer.document.autocomplete.autocomplete_state_active_invisible as state_active_invisible
+import setzer.document.autocomplete.autocomplete_state_active_visible as state_active_visible
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -34,6 +37,13 @@ class Autocomplete(object):
         self.main_window = ServiceLocator.get_main_window()
 
         self.view = view.DocumentAutocompleteView()
+
+        self.states = dict()
+        self.states['inactive'] = state_inactive.AutocompleteStateInactive(self)
+        self.states['active_invisible'] = state_active_invisible.AutocompleteStateActiveInvisible(self)
+        self.states['active_visible'] = state_active_visible.AutocompleteStateActiveVisible(self)
+        self.active_state = None
+        self.change_state('inactive')
 
         self.line_height = 0
         self.char_width = 0
@@ -47,8 +57,6 @@ class Autocomplete(object):
         self.current_word_offset = None
         self.autocomplete_height = None
         self.autocomplete_width = None
-        self.autocomplete_visible = False
-        self.autocomplete_focus_was_visible = False
 
         self.static_proposals = dict()
         self.dynamic_proposals = dict()
@@ -89,10 +97,10 @@ class Autocomplete(object):
             self.view.infobox.set_text(command['description'])
 
     def on_focus_out(self, widget, event, user_data=None):
-        self.focus_hide()
+        self.active_state.focus_hide()
 
     def on_focus_in(self, widget, event, user_data=None):
-        self.focus_show()
+        self.active_state.focus_show()
 
     def on_keypress(self, event):
         ''' returns whether the keypress has been handled. '''
@@ -100,128 +108,24 @@ class Autocomplete(object):
 
         if event.keyval == Gdk.keyval_from_name('Down'):
             if event.state & modifiers == 0:
-                return self.on_down_press()
+                return self.active_state.on_down_press()
 
         if event.keyval == Gdk.keyval_from_name('Up'):
             if event.state & modifiers == 0:
-                return self.on_up_press()
+                return self.active_state.on_up_press()
 
         if event.keyval == Gdk.keyval_from_name('Escape'):
             if event.state & modifiers == 0:
-                return self.on_escape_press()
+                return self.active_state.on_escape_press()
 
         if event.keyval == Gdk.keyval_from_name('Return'):
             if event.state & modifiers == 0:
-                return self.on_return_press()
+                return self.active_state.on_return_press()
 
         tab_keyvals = [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]
         if event.keyval in tab_keyvals:
             if event.state & modifiers == 0:
-                return self.on_tab_press()
-
-    def on_return_press(self):
-        if self.autocomplete_visible == True:
-            self.autocomplete_submit()
-            return True
-        else:
-            return False
-
-    def on_escape_press(self):
-        if self.autocomplete_visible == True:
-            self.view.hide()
-            self.autocomplete_visible = False
-            return True
-        else:
-            return False
-
-    def on_up_press(self):
-        if self.autocomplete_visible == True:
-            self.view.select_previous()
-            return True
-        else:
-            return False
-
-    def on_down_press(self):
-        if self.autocomplete_visible == True:
-            self.view.select_next()
-            return True
-        else:
-            return False
-
-    def on_tab_press(self):
-        if self.autocomplete_visible == True:
-            if self.number_of_matches == 1:
-                self.autocomplete_submit()
-                return True
-            else:
-                items = self.get_items(self.current_word)
-
-                i = 0
-                letter_ok = True
-                while letter_ok and i < 100:
-                    testletter = None
-                    for item in items:
-                        letter = item['command'][len(self.current_word) - 1 + i:len(self.current_word) + i].lower()
-                        if testletter == None:
-                            testletter = letter
-                        if testletter != letter or len(letter) == 0:
-                            letter_ok = False
-                            i -= 1
-                            break
-                    i += 1
-
-                row = self.view.list.get_selected_row()
-                if len(row.get_child().label.get_text()) == len(self.current_word) + i:
-                    self.autocomplete_submit()
-                    return True
-                else:
-                    if i >= 1:
-                        text = row.get_child().label.get_text()[:len(self.current_word) + i]
-                        self.autocomplete_insert(text, select_dot=False)
-                        return True
-                    else:
-                        current_word = row.get_child().label.get_text()[:len(self.current_word) + 1]
-                        items = self.get_items(current_word)
-
-                        i = 1
-                        letter_ok = True
-                        while letter_ok and i < 100:
-                            testletter = None
-                            for item in items:
-                                letter = item['command'][len(current_word) - 2 + i:len(current_word) - 1 + i].lower()
-                                if testletter == None:
-                                    testletter = letter
-                                if testletter != letter or len(letter) == 0:
-                                    letter_ok = False
-                                    i -= 1
-                                    break
-                            i += 1
-
-                        if len(row.get_child().label.get_text()) == len(current_word) - 1 + i:
-                            self.autocomplete_submit()
-                            return True
-                        else:
-                            text = row.get_child().label.get_text()[:len(current_word) - 1 + i]
-                            self.autocomplete_insert(text, select_dot=False)
-                            return True
-        else:
-            if self.cursor_inside_word_or_at_end():
-                self.move_cursor_to_word_end()
-                self.update_autocomplete_position(True)
-                return True
-            return False
-
-    def focus_hide(self):
-        self.view.hide()
-        if self.autocomplete_visible:
-            self.autocomplete_focus_was_visible = True
-        self.autocomplete_visible = False
-
-    def focus_show(self):
-        if self.autocomplete_focus_was_visible:
-            self.autocomplete_focus_was_visible = False
-            self.view.show_all()
-            self.autocomplete_visible = True
+                return self.active_state.on_tab_press()
 
     def update_char_size(self):
         context = self.document_view.source_view.get_pango_context()
@@ -276,7 +180,7 @@ class Autocomplete(object):
         row = self.view.list.get_selected_row()
         text = row.get_child().label.get_text()
         self.autocomplete_insert(text, is_submit=True)
-        self.autocomplete_hide()
+        self.active_state.hide()
 
     def autocomplete_insert(self, text, select_dot=True, is_submit=False):
         buffer = self.document.get_buffer()
@@ -288,22 +192,17 @@ class Autocomplete(object):
             text += '\n\t•\n' + text.replace('\\begin', '\\end')
         self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=select_dot)
 
-    def autocomplete_hide(self):
-        self.view.hide()
-        self.autocomplete_visible = False
-
     def update_autocomplete_position(self, can_show=False):
         buffer = self.document.get_buffer()
         if buffer != None:
             self.number_of_matches = 0
-            if self.autocomplete_visible == False and can_show == False: return
+            if self.active_state != self.states['active_visible'] and can_show == False: return
             insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
             current_word_offset = self.get_current_word_offset(insert_iter)
             if current_word_offset != self.current_word_offset:
                 self.current_word_offset = current_word_offset
-                if current_word_offset == None or (self.autocomplete_visible == True and can_show == False):
-                    self.view.hide()
-                    self.autocomplete_visible = False
+                if current_word_offset == None or (self.active_state == self.states['active_visible'] and can_show == False):
+                    self.active_state.hide()
                     return
             if self.insert_iter_offset == None: self.insert_iter_offset = insert_iter.get_offset()
             if self.insert_iter_offset != insert_iter.get_offset():
@@ -374,14 +273,11 @@ class Autocomplete(object):
                     show_x = False
 
                 if show_x and show_y:
-                    self.view.show_all()
-                    self.autocomplete_visible = True
+                    self.active_state.show()
                 else:
-                    self.view.hide()
-                    self.autocomplete_visible = False
+                    self.active_state.hide()
             else:
-                self.view.hide()
-                self.autocomplete_visible = False
+                self.active_state.hide()
 
     def get_items(self, word):
         items = list()
@@ -419,5 +315,9 @@ class Autocomplete(object):
                     except KeyError:
                         self.dynamic_proposals[command['command'][0:i].lower()] = [command]
         return True
+
+    def change_state(self, state):
+        self.active_state = self.states[state]
+        self.active_state.init()
 
 
