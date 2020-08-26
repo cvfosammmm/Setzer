@@ -63,11 +63,13 @@ class AutocompleteStateActiveVisible(object):
 
             row = self.autocomplete.view.list.get_selected_row()
             if len(row.get_child().label.get_text()) == len(self.autocomplete.current_word) + i:
+                self.autocomplete.last_tabbed_command = None
                 self.autocomplete.autocomplete_submit()
                 return True
             else:
                 if i >= 1:
                     text = row.get_child().label.get_text()[:len(self.autocomplete.current_word) + i]
+                    self.autocomplete.last_tabbed_command = row.get_child().label.get_text()[1:]
                     self.autocomplete.autocomplete_insert(text, select_dot=False)
                     return True
                 else:
@@ -89,10 +91,12 @@ class AutocompleteStateActiveVisible(object):
                         i += 1
 
                     if len(row.get_child().label.get_text()) == len(current_word) - 1 + i:
+                        self.autocomplete.last_tabbed_command = None
                         self.autocomplete.autocomplete_submit()
                         return True
                     else:
                         text = row.get_child().label.get_text()[:len(current_word) - 1 + i]
+                        self.autocomplete.last_tabbed_command = row.get_child().label.get_text()[1:]
                         self.autocomplete.autocomplete_insert(text, select_dot=False)
                         return True
 

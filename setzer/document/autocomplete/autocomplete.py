@@ -57,6 +57,7 @@ class Autocomplete(object):
 
         self.static_proposals = dict()
         self.dynamic_proposals = dict()
+        self.last_tabbed_command = None
         self.generate_proposals()
         GObject.timeout_add(500, self.generate_dynamic_proposals)
 
@@ -211,12 +212,17 @@ class Autocomplete(object):
                     items = list()
                     items_rest = list()
                     for item in items_all:
-                        if item['command'][:len(self.current_word) - 1] == self.current_word[1:] and count < 5:
+                        if self.last_tabbed_command != None and self.last_tabbed_command == item['command']:
+                            items.insert(0, item)
+                            count += 1
+                        elif item['command'][:len(self.current_word) - 1] == self.current_word[1:]:
                             items.append(item)
                             count += 1
                         else:
                             items_rest.append(item)
                     items.reverse()
+                    if count >= 5:
+                        items = items[:5]
                     items = items_rest[:5 - count] + items
 
                     self.number_of_matches = len(items)
