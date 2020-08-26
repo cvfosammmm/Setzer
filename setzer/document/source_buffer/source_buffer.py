@@ -22,6 +22,7 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
 from gi.repository import GtkSource
+from gi.repository import Pango
 
 import os.path
 import re
@@ -367,7 +368,19 @@ class SourceBuffer(GtkSource.Buffer):
         return math.floor(self.view.get_visible_rect().height / line_height)
 
     def get_line_height(self):
-        return self.view.get_iter_location(self.get_end_iter()).height
+        char_width, line_height = self.get_char_dimensions()
+        return line_height
+
+    def get_char_width(self):
+        char_width, line_height = ServiceLocator.get_char_dimensions()
+        return char_width
+
+    def get_char_dimensions(self):
+        context = self.view.get_pango_context()
+        layout = Pango.Layout.new(context)
+        layout.set_text(" ", -1)
+        layout.set_font_description(context.get_font_description())
+        return layout.get_pixel_size()
 
     def set_use_dark_scheme(self, use_dark_scheme):
         if use_dark_scheme: self.set_style_scheme(self.source_style_scheme_dark)

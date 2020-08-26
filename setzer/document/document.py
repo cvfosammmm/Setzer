@@ -176,6 +176,15 @@ class Document(Observable):
         if self.is_latex_document():
             self.get_buffer().comment_uncomment()
 
+    def get_line_height(self):
+        return self.get_buffer().get_line_height()
+
+    def get_char_width(self):
+        return self.get_buffer().get_char_width()
+
+    def get_char_dimensions(self):
+        return self.get_buffer().get_char_dimensions()
+
 
 class LaTeXDocument(Document):
 

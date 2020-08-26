@@ -20,7 +20,6 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
-from gi.repository import Pango
 
 import setzer.document.autocomplete.autocomplete_viewgtk as view
 import setzer.document.autocomplete.autocomplete_state_inactive as state_inactive
@@ -45,9 +44,7 @@ class Autocomplete(object):
         self.active_state = None
         self.change_state('inactive')
 
-        self.line_height = 0
-        self.char_width = 0
-        self.update_char_size()
+        self.char_width, self.line_height = self.document.get_char_dimensions()
         self.shortcuts_bar_height = 37
         self.number_of_matches = 0
 
@@ -126,13 +123,6 @@ class Autocomplete(object):
         if event.keyval in tab_keyvals:
             if event.state & modifiers == 0:
                 return self.active_state.on_tab_press()
-
-    def update_char_size(self):
-        context = self.document_view.source_view.get_pango_context()
-        layout = Pango.Layout.new(context)
-        layout.set_text(" ", -1)
-        layout.set_font_description(context.get_font_description())
-        self.char_width, self.line_height = layout.get_pixel_size()
 
     def cursor_inside_word_or_at_end(self):
         buffer = self.document.get_buffer()
