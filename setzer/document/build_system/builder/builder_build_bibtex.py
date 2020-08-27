@@ -29,7 +29,7 @@ class BuilderBuildBibTeX(builder_build.BuilderBuild):
     def __init__(self):
         builder_build.BuilderBuild.__init__(self)
 
-        self.bibtex_log_item_regex = ServiceLocator.get_regex('Warning--(.*)\n--line ([0-9]+) of file (.*)|I couldn\'t open style file (.*)\n---line ([0-9]+) of file (.*)')
+        self.bibtex_log_item_regex = ServiceLocator.get_regex(r'Warning--(.*)\n--line ([0-9]+) of file (.*)|I couldn' + "'" + r't open style file (.*)\n---line ([0-9]+) of file (.*)')
 
     def run(self, query):
         tex_filename = query.build_data['tmp_tex_filename']
