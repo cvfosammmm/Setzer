@@ -25,7 +25,7 @@ class StateActiveVisible(object):
         self.autocomplete.view.show_all()
 
     def on_return_press(self):
-        self.autocomplete.autocomplete_submit()
+        self.autocomplete.submit()
         return True
 
     def on_escape_press(self):
@@ -42,7 +42,7 @@ class StateActiveVisible(object):
 
     def on_tab_press(self):
         if self.autocomplete.number_of_matches == 1:
-            self.autocomplete.autocomplete_submit()
+            self.autocomplete.submit()
             return True
         else:
             items = self.autocomplete.get_items(self.autocomplete.current_word)
@@ -64,7 +64,7 @@ class StateActiveVisible(object):
             row = self.autocomplete.view.list.get_selected_row()
             if len(row.get_child().label.get_text()) == len(self.autocomplete.current_word) + i:
                 self.autocomplete.last_tabbed_command = None
-                self.autocomplete.autocomplete_submit()
+                self.autocomplete.submit()
                 return True
             else:
                 if i >= 1:
@@ -92,7 +92,7 @@ class StateActiveVisible(object):
 
                     if len(row.get_child().label.get_text()) == len(current_word) - 1 + i:
                         self.autocomplete.last_tabbed_command = None
-                        self.autocomplete.autocomplete_submit()
+                        self.autocomplete.submit()
                         return True
                     else:
                         text = row.get_child().label.get_text()[:len(current_word) - 1 + i]

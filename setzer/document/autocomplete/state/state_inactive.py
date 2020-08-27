@@ -39,9 +39,9 @@ class StateInactive(object):
     def on_tab_press(self):
         if self.autocomplete.cursor_inside_word_or_at_end():
             if self.autocomplete.cursor_at_word_end():
-                return self.autocomplete.update_autocomplete_position(can_show=True)
+                return self.autocomplete.update_position(can_show=True)
             else:
-                self.autocomplete.update_autocomplete_position(can_show=True)
+                self.autocomplete.update_position(can_show=True)
                 return True
         return False
 

@@ -52,8 +52,8 @@ class Autocomplete(object):
         self.insert_iter_matched = False
         self.current_word = ""
         self.current_word_offset = None
-        self.autocomplete_height = None
-        self.autocomplete_width = None
+        self.height = None
+        self.width = None
 
         self.static_proposals = dict()
         self.dynamic_proposals = dict()
@@ -61,8 +61,8 @@ class Autocomplete(object):
         self.generate_proposals()
         GObject.timeout_add(500, self.generate_dynamic_proposals)
 
-        self.view.list.connect('row-activated', self.on_autocomplete_row_activated)
-        self.view.list.connect('row-selected', self.on_autocomplete_row_selected)
+        self.view.list.connect('row-activated', self.on_row_activated)
+        self.view.list.connect('row-selected', self.on_row_selected)
 
         self.document_view.scrolled_window.get_vadjustment().connect('value-changed', self.on_adjustment_value_changed)
         self.document_view.scrolled_window.get_hadjustment().connect('value-changed', self.on_adjustment_value_changed)
@@ -73,23 +73,23 @@ class Autocomplete(object):
         self.document.get_buffer().connect('mark-deleted', self.on_mark_deleted)
 
     def on_adjustment_value_changed(self, adjustment, user_data=None):
-        self.update_autocomplete_position(False)
+        self.update_position(False)
         return False
 
     def on_mark_set(self, buffer, insert, mark, user_data=None):
-        self.update_autocomplete_position(False)
+        self.update_position(False)
     
     def on_buffer_changed(self, buffer, user_data=None):
-        self.update_autocomplete_position(True)
+        self.update_position(True)
     
     def on_mark_deleted(self, buffer, mark, user_data=None):
-        self.update_autocomplete_position(False)
+        self.update_position(False)
 
-    def on_autocomplete_row_activated(self, box, row, user_data=None):
+    def on_row_activated(self, box, row, user_data=None):
         self.document_view.source_view.grab_focus()
-        self.autocomplete_submit()
+        self.submit()
 
-    def on_autocomplete_row_selected(self, box, row, user_data=None):
+    def on_row_selected(self, box, row, user_data=None):
         if row != None:
             command = row.get_child().command
             self.view.infobox.set_text(command['description'])
@@ -161,7 +161,7 @@ class Autocomplete(object):
             return word_start_iter.get_offset()
         return None
 
-    def autocomplete_submit(self):
+    def submit(self):
         row = self.view.list.get_selected_row()
         text = row.get_child().label.get_text()
         self.insert_final(text)
@@ -292,7 +292,7 @@ class Autocomplete(object):
                     count -= 1
         return end_match_object
 
-    def update_autocomplete_position(self, can_show=False):
+    def update_position(self, can_show=False):
         buffer = self.document.get_buffer()
         if buffer != None:
             self.number_of_matches = 0
@@ -342,9 +342,9 @@ class Autocomplete(object):
                         self.view.select_first()
 
             if self.insert_iter_matched:
-                self.autocomplete_height = self.view.get_allocated_height()
-                full_autocomplete_height = 114
-                self.autocomplete_width = self.view.get_allocated_width()
+                self.height = self.view.get_allocated_height()
+                full_height = 114
+                self.width = self.view.get_allocated_width()
 
                 iter_location = self.document_view.source_view.get_iter_location(insert_iter)
                 gutter = self.document_view.source_view.get_window(Gtk.TextWindowType.LEFT)
@@ -359,20 +359,20 @@ class Autocomplete(object):
 
                 show_x = False
                 show_y = False
-                if y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_autocomplete_height:
+                if y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
                     self.view.set_margin_top(y_position)
                     show_y = True
                 elif y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
-                    self.view.set_margin_top(y_position - self.autocomplete_height - self.line_height)
+                    self.view.set_margin_top(y_position - self.height - self.line_height)
                     show_y = True
                 else:
                     show_y = False
 
-                if x_position >= 0 and x_position <= self.main_window.preview_paned.get_allocated_width() - self.autocomplete_width:
+                if x_position >= 0 and x_position <= self.main_window.preview_paned.get_allocated_width() - self.width:
                     self.view.set_margin_left(x_position)
                     show_x = True
                 elif x_position >= 0 and x_position <= self.main_window.preview_paned.get_allocated_width():
-                    self.view.set_margin_left(x_position - self.autocomplete_width)
+                    self.view.set_margin_left(x_position - self.width)
                     show_x = True
                 else:
                     show_x = False
