@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 
-class AutocompleteStateActiveVisible(object):
+class StateActiveVisible(object):
 
     def __init__(self, autocomplete):
         self.autocomplete = autocomplete

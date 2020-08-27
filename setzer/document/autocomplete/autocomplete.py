@@ -22,9 +22,9 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 
 import setzer.document.autocomplete.autocomplete_viewgtk as view
-import setzer.document.autocomplete.autocomplete_state_inactive as state_inactive
-import setzer.document.autocomplete.autocomplete_state_active_invisible as state_active_invisible
-import setzer.document.autocomplete.autocomplete_state_active_visible as state_active_visible
+import setzer.document.autocomplete.state.state_inactive as state_inactive
+import setzer.document.autocomplete.state.state_active_invisible as state_active_invisible
+import setzer.document.autocomplete.state.state_active_visible as state_active_visible
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -38,9 +38,9 @@ class Autocomplete(object):
         self.view = view.DocumentAutocompleteView()
 
         self.states = dict()
-        self.states['inactive'] = state_inactive.AutocompleteStateInactive(self)
-        self.states['active_invisible'] = state_active_invisible.AutocompleteStateActiveInvisible(self)
-        self.states['active_visible'] = state_active_visible.AutocompleteStateActiveVisible(self)
+        self.states['inactive'] = state_inactive.StateInactive(self)
+        self.states['active_invisible'] = state_active_invisible.StateActiveInvisible(self)
+        self.states['active_visible'] = state_active_visible.StateActiveVisible(self)
         self.active_state = None
         self.change_state('inactive')
 
