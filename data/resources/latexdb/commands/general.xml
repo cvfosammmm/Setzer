@@ -169,7 +169,7 @@
   <command name="geometry{•}" text="geometry{•}" description="" />
   <command name="geq" text="geq" description="" />
   <command name="geqslant" text="geqslant" description="" />
-  <command name="glqq •grqq" text="glqq •grqq" description="" />
+  <command name="glqq •\grqq" text="glqq •\grqq" description="" />
   <command name="grave{•}" text="grave{•}" description="" />
   <command name="hat{•}" text="hat{•}" description="" />
   <command name="hfill" text="hfill" description="" />
@@ -253,7 +253,7 @@
   <command name="nocite{*}" text="nocite{*}" description="Include all non-cited items from the bibliography" />
   <command name="nopagebreak" text="nopagebreak" description="" />
   <command name="nu" text="nu" description="Greek letter &quot;nu&quot;" />
-  <command name="og • fg{} " text="og • fg{} " description="" />
+  <command name="og • \fg{} " text="og • \fg{} " description="" />
   <command name="oint" text="oint" description="" />
   <command name="oint" text="oint" description="" />
   <command name="Omega" text="Omega" description="Greek letter &quot;Omega&quot;" />

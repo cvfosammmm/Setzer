@@ -130,24 +130,18 @@ class Autocomplete(object):
     def cursor_inside_word_or_at_end(self):
         buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-
         current_word = self.get_current_word(insert_iter)
+        if re.fullmatch('\\\\(\w*)', current_word):
+            return True
+        return False
 
-        items = self.get_items(current_word)
-
-        if len(items) > 0:
-            if not insert_iter.ends_word():
-                insert_iter.forward_word_end()
-            current_word = self.get_current_word(insert_iter)
-            items = self.get_items(current_word)
-            return len(items) > 0
-
-    def move_cursor_to_word_end(self):
+    def cursor_at_word_end(self):
         buffer = self.document.get_buffer()
         text_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        if not text_iter.ends_word():
-            text_iter.forward_word_end()
-            buffer.place_cursor(text_iter)
+        current_word = self.get_current_word(text_iter)
+        if re.fullmatch('\\\\(\w*)', current_word):
+            return text_iter.ends_word()
+        return False
 
     def get_current_word(self, insert_iter):
         limit_iter = insert_iter.copy()
@@ -246,7 +240,7 @@ class Autocomplete(object):
                 self.current_word_offset = current_word_offset
                 if current_word_offset == None or (self.active_state == self.states['active_visible'] and can_show == False):
                     self.active_state.hide()
-                    return
+                    return False
             if self.insert_iter_offset == None: self.insert_iter_offset = insert_iter.get_offset()
             if self.insert_iter_offset != insert_iter.get_offset():
                 self.insert_iter_offset = insert_iter.get_offset()
@@ -322,10 +316,13 @@ class Autocomplete(object):
 
                 if show_x and show_y:
                     self.active_state.show()
+                    return True
                 else:
                     self.active_state.hide()
+                    return False
             else:
                 self.active_state.hide()
+                return False
 
     def get_items(self, word):
         items = list()

@@ -37,10 +37,6 @@ class AutocompleteStateActiveInvisible(object):
         return False
 
     def on_tab_press(self):
-        if self.autocomplete.cursor_inside_word_or_at_end():
-            self.autocomplete.move_cursor_to_word_end()
-            self.autocomplete.update_autocomplete_position(True)
-            return True
         return False
 
     def show(self):
