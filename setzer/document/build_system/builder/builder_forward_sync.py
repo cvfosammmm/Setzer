@@ -26,7 +26,7 @@ class BuilderForwardSync(object):
 
     def __init__(self):
         self.config_folder = ServiceLocator.get_config_folder()
-        self.forward_synctex_regex = ServiceLocator.get_regex(r'\nOutput:.*\nPage:([0-9]+)\nx:.*\ny:.*\nh:((?:[0-9]|\.)+)\nv:((?:[0-9]|\.)+)\nW:((?:[0-9]|\.)+)\nH:((?:[0-9]|\.)+)\nbefore:.*\noffset:.*\nmiddle:.*\nafter:.*')
+        self.forward_synctex_regex = ServiceLocator.get_regex_object(r'\nOutput:.*\nPage:([0-9]+)\nx:.*\ny:.*\nh:((?:[0-9]|\.)+)\nv:((?:[0-9]|\.)+)\nW:((?:[0-9]|\.)+)\nH:((?:[0-9]|\.)+)\nbefore:.*\noffset:.*\nmiddle:.*\nafter:.*')
 
         self.process = None
 

@@ -129,7 +129,7 @@ class Autocomplete(object):
         buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         current_word = self.get_current_word(insert_iter)
-        if ServiceLocator.get_regex(r'\\(\w*)').fullmatch(current_word):
+        if ServiceLocator.get_regex_object(r'\\(\w*)').fullmatch(current_word):
             return True
         return False
 
@@ -137,7 +137,7 @@ class Autocomplete(object):
         buffer = self.document.get_buffer()
         text_iter = buffer.get_iter_at_mark(buffer.get_insert())
         current_word = self.get_current_word(text_iter)
-        if ServiceLocator.get_regex(r'\\(\w*)').fullmatch(current_word):
+        if ServiceLocator.get_regex_object(r'\\(\w*)').fullmatch(current_word):
             return text_iter.ends_word()
         return False
 
@@ -204,7 +204,7 @@ class Autocomplete(object):
     def insert_final_check_replace(self, start_iter, text):
         line_part = self.document.get_line(start_iter.get_line())[start_iter.get_line_offset():]
         matches_group = list()
-        command_regex = ServiceLocator.get_regex(r'\\(\w+)|\{([^\{\[]+)\}|\[([^\{\[]+)\]')
+        command_regex = ServiceLocator.get_regex_object(r'\\(\w+)|\{([^\{\[]+)\}|\[([^\{\[]+)\]')
         line_regex_pattern = ''
         for match in command_regex.finditer(text):
             if match.group(0).startswith('\\'):
@@ -216,12 +216,12 @@ class Autocomplete(object):
             if match.group(0).startswith('['):
                 line_regex_pattern += r'\[([^\{\[]+)\]'
                 matches_group.append((match.group(3), 3))
-        line_regex = ServiceLocator.get_regex(line_regex_pattern)
+        line_regex = ServiceLocator.get_regex_object(line_regex_pattern)
         return (line_regex.match(line_part), matches_group)
 
     def insert_final_check_replace_begin_end(self, start_iter, text):
         line_part = self.document.get_line(start_iter.get_line())[start_iter.get_line_offset():]
-        line_regex = ServiceLocator.get_regex(r'\\(\w+)\{([^\{\[]+)\}')
+        line_regex = ServiceLocator.get_regex_object(r'\\(\w+)\{([^\{\[]+)\}')
         line_match = line_regex.match(line_part)
         if line_match:
             document_text = self.document.get_text_after_offset(start_iter.get_offset() + 1)
@@ -261,7 +261,7 @@ class Autocomplete(object):
 
         end_iter_offset = start_iter_offset + len(text)
         document_text = self.document.get_text_after_offset(end_iter_offset)
-        environment_name = ServiceLocator.get_regex(r'\\(\w+)\{([^\{\[]+)\}').match(match_object.group(0)).group(2)
+        environment_name = ServiceLocator.get_regex_object(r'\\(\w+)\{([^\{\[]+)\}').match(match_object.group(0)).group(2)
         end_match_object = self.get_end_match_object(document_text, environment_name)
 
         if end_match_object != None:
@@ -281,7 +281,7 @@ class Autocomplete(object):
     def get_end_match_object(self, text, environment_name):
         count = 0
         end_match_object = None
-        for match in ServiceLocator.get_regex(r'\\(begin|end)\{' + environment_name + r'\}').finditer(text):
+        for match in ServiceLocator.get_regex_object(r'\\(begin|end)\{' + environment_name + r'\}').finditer(text):
             if match.group(1) == 'begin':
                 count += 1
             elif match.group(1) == 'end':

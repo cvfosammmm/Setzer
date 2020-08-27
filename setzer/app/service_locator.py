@@ -55,7 +55,7 @@ class ServiceLocator(object):
         bg_color = ServiceLocator.get_theme_bg_color()
         return (fg_color.red + fg_color.green + fg_color.blue) * fg_color.alpha > (bg_color.red + bg_color.green + bg_color.blue) * bg_color.alpha
 
-    def get_regex(pattern):
+    def get_regex_object(pattern):
         try:
             regex = ServiceLocator.regexes[pattern]
         except KeyError:

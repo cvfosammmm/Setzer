@@ -305,7 +305,7 @@ class SourceBuffer(GtkSource.Buffer):
 
         matches = list()
         top_score = 0.1
-        regex = ServiceLocator.get_regex(r'(\W{0,1})' + regex_pattern.replace('\x1b', r'(?:\w{2,3})').replace('\x1c', r'(?:\w{2})').replace('\x1d', r'(?:\w{2,3})').replace('\-', r'(?:-{0,1})') + r'(\W{0,1})')
+        regex = ServiceLocator.get_regex_object(r'(\W{0,1})' + regex_pattern.replace('\x1b', r'(?:\w{2,3})').replace('\x1c', r'(?:\w{2})').replace('\x1d', r'(?:\w{2,3})').replace('\-', r'(?:-{0,1})') + r'(\W{0,1})')
         for match in regex.finditer(text):
             offset1 = context.find(word)
             offset2 = len(context) - offset1 - len(word)
