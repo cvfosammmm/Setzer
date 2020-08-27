@@ -325,9 +325,9 @@ class Autocomplete(object):
                             count += 1
                         else:
                             items_rest.append(item)
-                    items.reverse()
                     if count >= 5:
                         items = items[:5]
+                    items.reverse()
                     items = items_rest[:5 - count] + items
 
                     self.number_of_matches = len(items)
