@@ -184,12 +184,16 @@ class Autocomplete(object):
         start_iter.backward_chars(len(current_word))
 
         if text.startswith('\\begin'):
-            end_command = text.replace('\\begin', '\\end')
-            end_command_bracket_position = end_command.find('}')
-            if end_command_bracket_position:
-                end_command = end_command[:end_command_bracket_position + 1]
-            text += '\n\t•\n' + end_command
-            self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=True)
+            replace_previous_command_data = self.insert_final_check_replace_begin_end(start_iter, text)
+            if replace_previous_command_data[0]:
+                self.insert_final_replace_begin_end(start_iter, replace_previous_command_data)
+            else:
+                end_command = text.replace('\\begin', '\\end')
+                end_command_bracket_position = end_command.find('}')
+                if end_command_bracket_position:
+                    end_command = end_command[:end_command_bracket_position + 1]
+                text += '\n\t•\n' + end_command
+                self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=True)
         else:
             replace_previous_command_data = self.insert_final_check_replace(start_iter, text)
             if replace_previous_command_data[0]:
@@ -215,6 +219,16 @@ class Autocomplete(object):
         line_regex = ServiceLocator.get_regex(line_regex_pattern)
         return (line_regex.match(line_part), matches_group)
 
+    def insert_final_check_replace_begin_end(self, start_iter, text):
+        line_part = self.document.get_line(start_iter.get_line())[start_iter.get_line_offset():]
+        line_regex = ServiceLocator.get_regex('\\\\(\w+)\\{([^\\{\\[]+)\\}')
+        line_match = line_regex.match(line_part)
+        if line_match:
+            document_text = self.document.get_text_after_offset(start_iter.get_offset() + 1)
+            if self.get_end_match_object(document_text, line_match.group(2)):
+                return (line_match, text)
+        return (None, text)
+
     def insert_final_replace(self, start_iter, replace_previous_command_data):
         text = ''
         count = 1
@@ -232,6 +246,51 @@ class Autocomplete(object):
         end_iter = start_iter.copy()
         end_iter.forward_chars(match_object.end())
         self.document.replace_range(start_iter, end_iter, text, indent_lines=True, select_dot=True)
+
+    def insert_final_replace_begin_end(self, start_iter_begin, replace_previous_command_data):
+        text = replace_previous_command_data[1]
+        match_object = replace_previous_command_data[0]
+        print(match_object)
+
+        self.document.get_buffer().begin_user_action()
+
+        end_iter_begin = start_iter_begin.copy()
+        end_iter_begin.forward_chars(match_object.end())
+        start_iter_offset = start_iter_begin.get_offset()
+        self.document.get_buffer().replace_range_no_user_action(start_iter_begin, end_iter_begin, text, indent_lines=False, select_dot=False)
+
+        end_iter_offset = start_iter_offset + len(text)
+        document_text = self.document.get_text_after_offset(end_iter_offset)
+        environment_name = ServiceLocator.get_regex('\\\\(\w+)\\{([^\\{\\[]+)\\}').match(match_object.group(0)).group(2)
+        end_match_object = self.get_end_match_object(document_text, environment_name)
+
+        if end_match_object != None:
+            start_iter_begin = self.document.get_buffer().get_iter_at_offset(end_iter_offset)
+            start_iter_end = start_iter_begin.copy()
+            start_iter_end.forward_chars(end_match_object.start())
+            end_iter_end = start_iter_begin.copy()
+            end_iter_end.forward_chars(end_match_object.end())
+            end_command = text.replace('\\begin', '\\end')
+            end_command_bracket_position = end_command.find('}')
+            if end_command_bracket_position:
+                end_command = end_command[:end_command_bracket_position + 1]
+            self.document.get_buffer().replace_range_no_user_action(start_iter_end, end_iter_end, end_command, indent_lines=False, select_dot=False)
+
+        self.document.get_buffer().end_user_action()
+
+    def get_end_match_object(self, text, environment_name):
+        count = 0
+        end_match_object = None
+        for match in ServiceLocator.get_regex('\\\\(begin|end)\\{' + environment_name + '\\}').finditer(text):
+            if match.group(1) == 'begin':
+                count += 1
+            elif match.group(1) == 'end':
+                if count == 0:
+                    end_match_object = match
+                    break
+                else:
+                    count -= 1
+        return end_match_object
 
     def update_autocomplete_position(self, can_show=False):
         buffer = self.document.get_buffer()

@@ -179,7 +179,10 @@ class SourceBuffer(GtkSource.Buffer):
 
     def replace_range(self, start_iter, end_iter, text, indent_lines=True, select_dot=True):
         self.begin_user_action()
+        self.replace_range_no_user_action(start_iter, end_iter, text, indent_lines, select_dot)
+        self.end_user_action()
 
+    def replace_range_no_user_action(self, start_iter, end_iter, text, indent_lines=True, select_dot=True):
         if indent_lines:
             line_iter = self.get_iter_at_line(start_iter.get_line())
             ws_line = self.get_text(line_iter, start_iter, False)
@@ -204,8 +207,6 @@ class SourceBuffer(GtkSource.Buffer):
                 bound = start_iter.copy()
                 bound.forward_chars(1)
                 self.select_range(start_iter, bound)
-
-        self.end_user_action()
 
     def insert_before_after(self, before, after):
         bounds = self.get_selection_bounds()
@@ -255,6 +256,9 @@ class SourceBuffer(GtkSource.Buffer):
 
     def get_all_text(self):
         return self.get_text(self.get_start_iter(), self.get_end_iter(), True)
+
+    def get_text_after_offset(self, offset):
+        return self.get_text(self.get_iter_at_offset(offset), self.get_end_iter(), True)
 
     def set_synctex_position(self, position):
         start = self.get_iter_at_line(position['line'])

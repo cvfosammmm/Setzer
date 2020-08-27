@@ -142,6 +142,9 @@ class Document(Observable):
     def get_text(self):
         return self.get_buffer().get_all_text()
 
+    def get_text_after_offset(self, offset):
+        return self.get_buffer().get_text_after_offset(offset)
+
     def get_line(self, line_number):
         return self.get_buffer().get_line(line_number)
 
