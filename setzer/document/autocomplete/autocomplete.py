@@ -186,7 +186,11 @@ class Autocomplete(object):
         start_iter.backward_chars(len(current_word))
 
         if text.startswith('\\begin'):
-            text += '\n\t•\n' + text.replace('\\begin', '\\end')
+            end_command = text.replace('\\begin', '\\end')
+            end_command_bracket_position = end_command.find('}')
+            if end_command_bracket_position:
+                end_command = end_command[:end_command_bracket_position + 1]
+            text += '\n\t•\n' + end_command
             self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=True)
         else:
             replace_previous_command_data = self.insert_final_check_replace(start_iter, text)
