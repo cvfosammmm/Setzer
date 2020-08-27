@@ -21,6 +21,8 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
 
+import re
+
 import setzer.document.autocomplete.autocomplete_viewgtk as view
 import setzer.document.autocomplete.autocomplete_state_inactive as state_inactive
 import setzer.document.autocomplete.autocomplete_state_active_invisible as state_active_invisible
@@ -170,18 +172,68 @@ class Autocomplete(object):
     def autocomplete_submit(self):
         row = self.view.list.get_selected_row()
         text = row.get_child().label.get_text()
-        self.autocomplete_insert(text, is_submit=True)
+        self.insert_final(text)
         self.active_state.hide()
 
-    def autocomplete_insert(self, text, select_dot=True, is_submit=False):
+    def insert_preliminary(self, text):
         buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         current_word = self.get_current_word(insert_iter)
         start_iter = insert_iter.copy()
         start_iter.backward_chars(len(current_word))
-        if is_submit and text.startswith('\\begin'):
+
+        self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=False)
+
+    def insert_final(self, text):
+        buffer = self.document.get_buffer()
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        current_word = self.get_current_word(insert_iter)
+        start_iter = insert_iter.copy()
+        start_iter.backward_chars(len(current_word))
+
+        if text.startswith('\\begin'):
             text += '\n\t•\n' + text.replace('\\begin', '\\end')
-        self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=select_dot)
+            self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=True)
+        else:
+            replace_previous_command_data = self.insert_final_check_replace(start_iter, text)
+            if replace_previous_command_data[0]:
+                self.insert_final_replace(start_iter, replace_previous_command_data)
+            else:
+                self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=True)
+
+    def insert_final_check_replace(self, start_iter, text):
+        line_part = self.document.get_line(start_iter.get_line())[start_iter.get_line_offset():]
+        regex = ''
+        matches_group = list()
+        for match in re.finditer('\\\\(\w+)|\\{([^\\{\\[]+)\\}|\\[([^\\{\\[]+)\\]', text):
+            if match.group(0).startswith('\\'):
+                regex += '\\\\(\w+)'
+                matches_group.append((match.group(1), 1))
+            if match.group(0).startswith('{'):
+                regex += '\\{([^\\{\\[]+)\\}'
+                matches_group.append((match.group(2), 2))
+            if match.group(0).startswith('['):
+                regex += '\\[([^\\{\\[]+)\\]'
+                matches_group.append((match.group(3), 3))
+        return (re.match(regex, line_part), matches_group)
+
+    def insert_final_replace(self, start_iter, replace_previous_command_data):
+        text = ''
+        count = 1
+        match_object = replace_previous_command_data[0]
+        for inner_text, group in replace_previous_command_data[1]:
+            if inner_text == '•':
+                inner_text = match_object.group(count)
+            if group == 1:
+                text += '\\' + inner_text
+            elif group == 2:
+                text += '{' + inner_text + '}'
+            elif group == 3:
+                text += '[' + inner_text + ']'
+            count += 1
+        end_iter = start_iter.copy()
+        end_iter.forward_chars(match_object.end())
+        self.document.replace_range(start_iter, end_iter, text, indent_lines=True, select_dot=True)
 
     def update_autocomplete_position(self, can_show=False):
         buffer = self.document.get_buffer()

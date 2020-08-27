@@ -70,7 +70,7 @@ class AutocompleteStateActiveVisible(object):
                 if i >= 1:
                     text = row.get_child().label.get_text()[:len(self.autocomplete.current_word) + i]
                     self.autocomplete.last_tabbed_command = row.get_child().label.get_text()[1:]
-                    self.autocomplete.autocomplete_insert(text, select_dot=False)
+                    self.autocomplete.insert_preliminary(text)
                     return True
                 else:
                     current_word = row.get_child().label.get_text()[:len(self.autocomplete.current_word) + 1]
@@ -97,7 +97,7 @@ class AutocompleteStateActiveVisible(object):
                     else:
                         text = row.get_child().label.get_text()[:len(current_word) - 1 + i]
                         self.autocomplete.last_tabbed_command = row.get_child().label.get_text()[1:]
-                        self.autocomplete.autocomplete_insert(text, select_dot=False)
+                        self.autocomplete.insert_preliminary(text)
                         return True
 
     def show(self):
