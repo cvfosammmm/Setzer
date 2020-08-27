@@ -49,17 +49,18 @@ class AutocompleteProvider(object):
 
     def generate_dynamic_proposals(self):
         for document in self.workspace.open_documents:
-            labels = document.parser.get_labels()
-            if labels != None:
-                self.dynamic_proposals = dict()
-                for label in iter(labels):
-                    command = {'command': 'ref{' + label + '}', 'description': _('Reference to \'{label}\'').format(label=label)}
-                    for i in range(1, len(command['command']) + 1):
-                        try:
-                            if len(self.dynamic_proposals[command['command'][0:i].lower()]) < 5:
-                                self.dynamic_proposals[command['command'][0:i].lower()].append(command)
-                        except KeyError:
-                            self.dynamic_proposals[command['command'][0:i].lower()] = [command]
+            if document.is_latex_document():
+                labels = document.parser.get_labels()
+                if labels != None:
+                    self.dynamic_proposals = dict()
+                    for label in iter(labels):
+                        command = {'command': 'ref{' + label + '}', 'description': _('Reference to \'{label}\'').format(label=label)}
+                        for i in range(1, len(command['command']) + 1):
+                            try:
+                                if len(self.dynamic_proposals[command['command'][0:i].lower()]) < 5:
+                                    self.dynamic_proposals[command['command'][0:i].lower()].append(command)
+                            except KeyError:
+                                self.dynamic_proposals[command['command'][0:i].lower()] = [command]
         return True
 
     def get_commands(self):
