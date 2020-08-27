@@ -395,9 +395,6 @@ class Autocomplete(object):
         except KeyError: dynamic_items = list()
         return items + dynamic_items
 
-    def save_data(self):
-        pass
-        
     def generate_proposals(self):
         self.commands = ServiceLocator.get_autocomplete_commands()
         
