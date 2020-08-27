@@ -17,7 +17,6 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
 
@@ -36,6 +35,7 @@ class Autocomplete(object):
         self.main_window = ServiceLocator.get_main_window()
 
         self.view = view.DocumentAutocompleteView()
+        self.provider = ServiceLocator.get_autocomplete_provider()
 
         self.states = dict()
         self.states['inactive'] = state_inactive.StateInactive(self)
@@ -46,7 +46,6 @@ class Autocomplete(object):
 
         self.char_width, self.line_height = self.document.get_char_dimensions()
         self.shortcuts_bar_height = 37
-        self.number_of_matches = 0
 
         self.insert_iter_offset = None
         self.insert_iter_matched = False
@@ -55,11 +54,8 @@ class Autocomplete(object):
         self.height = None
         self.width = None
 
-        self.static_proposals = dict()
-        self.dynamic_proposals = dict()
+        self.number_of_matches = 0
         self.last_tabbed_command = None
-        self.generate_proposals()
-        GObject.timeout_add(500, self.generate_dynamic_proposals)
 
         self.view.list.connect('row-activated', self.on_row_activated)
         self.view.list.connect('row-selected', self.on_row_selected)
@@ -389,37 +385,11 @@ class Autocomplete(object):
 
     def get_items(self, word):
         items = list()
-        try: items = self.static_proposals[word[1:].lower()]
+        try: items = self.provider.static_proposals[word[1:].lower()]
         except KeyError: pass
-        try: dynamic_items = self.dynamic_proposals[word[1:].lower()]
+        try: dynamic_items = self.provider.dynamic_proposals[word[1:].lower()]
         except KeyError: dynamic_items = list()
         return items + dynamic_items
-
-    def generate_proposals(self):
-        self.commands = ServiceLocator.get_autocomplete_commands()
-        
-        self.static_proposals = dict()
-        for command in self.commands.values():
-            for i in range(1, len(command['command']) + 1):
-                try:
-                    if len(self.static_proposals[command['command'][0:i].lower()]) < 5:
-                        self.static_proposals[command['command'][0:i].lower()].append(command)
-                except KeyError:
-                    self.static_proposals[command['command'][0:i].lower()] = [command]
-
-    def generate_dynamic_proposals(self):
-        labels = self.document.parser.get_labels()
-        if labels != None:
-            self.dynamic_proposals = dict()
-            for label in iter(labels):
-                command = {'command': 'ref{' + label + '}', 'description': _('Reference to \'{label}\'').format(label=label)}
-                for i in range(1, len(command['command']) + 1):
-                    try:
-                        if len(self.dynamic_proposals[command['command'][0:i].lower()]) < 5:
-                            self.dynamic_proposals[command['command'][0:i].lower()].append(command)
-                    except KeyError:
-                        self.dynamic_proposals[command['command'][0:i].lower()] = [command]
-        return True
 
     def change_state(self, state):
         self.active_state = self.states[state]
