@@ -21,8 +21,6 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
 
-import re
-
 import setzer.document.autocomplete.autocomplete_viewgtk as view
 import setzer.document.autocomplete.autocomplete_state_inactive as state_inactive
 import setzer.document.autocomplete.autocomplete_state_active_invisible as state_active_invisible
@@ -131,7 +129,7 @@ class Autocomplete(object):
         buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         current_word = self.get_current_word(insert_iter)
-        if re.fullmatch('\\\\(\w*)', current_word):
+        if ServiceLocator.get_regex('\\\\(\w*)').fullmatch(current_word):
             return True
         return False
 
@@ -139,7 +137,7 @@ class Autocomplete(object):
         buffer = self.document.get_buffer()
         text_iter = buffer.get_iter_at_mark(buffer.get_insert())
         current_word = self.get_current_word(text_iter)
-        if re.fullmatch('\\\\(\w*)', current_word):
+        if ServiceLocator.get_regex('\\\\(\w*)').fullmatch(current_word):
             return text_iter.ends_word()
         return False
 
@@ -201,19 +199,21 @@ class Autocomplete(object):
 
     def insert_final_check_replace(self, start_iter, text):
         line_part = self.document.get_line(start_iter.get_line())[start_iter.get_line_offset():]
-        regex = ''
         matches_group = list()
-        for match in re.finditer('\\\\(\w+)|\\{([^\\{\\[]+)\\}|\\[([^\\{\\[]+)\\]', text):
+        command_regex = ServiceLocator.get_regex('\\\\(\w+)|\\{([^\\{\\[]+)\\}|\\[([^\\{\\[]+)\\]')
+        line_regex_pattern = ''
+        for match in command_regex.finditer(text):
             if match.group(0).startswith('\\'):
-                regex += '\\\\(\w+)'
+                line_regex_pattern += '\\\\(\w+)'
                 matches_group.append((match.group(1), 1))
             if match.group(0).startswith('{'):
-                regex += '\\{([^\\{\\[]+)\\}'
+                line_regex_pattern += '\\{([^\\{\\[]+)\\}'
                 matches_group.append((match.group(2), 2))
             if match.group(0).startswith('['):
-                regex += '\\[([^\\{\\[]+)\\]'
+                line_regex_pattern += '\\[([^\\{\\[]+)\\]'
                 matches_group.append((match.group(3), 3))
-        return (re.match(regex, line_part), matches_group)
+        line_regex = ServiceLocator.get_regex(line_regex_pattern)
+        return (line_regex.match(line_part), matches_group)
 
     def insert_final_replace(self, start_iter, replace_previous_command_data):
         text = ''

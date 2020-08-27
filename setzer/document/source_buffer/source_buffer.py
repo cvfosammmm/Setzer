@@ -293,15 +293,16 @@ class SourceBuffer(GtkSource.Buffer):
         if len(word) > 2:
             word = word[:2]
         word = ' '.join(word)
-        regex = re.escape(word)
+        regex_pattern = re.escape(word)
 
-        for c in regex:
+        for c in regex_pattern:
             if ord(c) > 127:
-                regex = regex.replace(c, '(?:\w)')
+                regex_pattern = regex_pattern.replace(c, '(?:\w)')
 
         matches = list()
         top_score = 0.1
-        for match in re.finditer('(\W{0,1})' + regex.replace('\x1b', '(?:\w{2,3})').replace('\x1c', '(?:\w{2})').replace('\x1d', '(?:\w{2,3})').replace('\-', '(?:-{0,1})') + '(\W{0,1})', text):
+        regex = ServiceLocator.get_regex('(\W{0,1})' + regex_pattern.replace('\x1b', '(?:\w{2,3})').replace('\x1c', '(?:\w{2})').replace('\x1d', '(?:\w{2,3})').replace('\-', '(?:-{0,1})') + '(\W{0,1})')
+        for match in regex.finditer(text):
             offset1 = context.find(word)
             offset2 = len(context) - offset1 - len(word)
             match_text = text[max(match.start() - max(offset1, 0), 0):min(match.end() + max(offset2, 0), len(text))]
