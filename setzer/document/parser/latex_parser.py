@@ -111,7 +111,7 @@ class LaTeXParser(object):
         text_length = len(text)
 
         matches = {'begin_or_end': list(), 'others': list()}
-        for match in ServiceLocator.get_blocks_regex().finditer(text):
+        for match in ServiceLocator.get_regex('\n.*\\\\(begin|end)\{((?:\w)*(?:\*){0,1})\}|\n.*\\\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{').finditer(text):
             if match.group(1) != None:
                 matches['begin_or_end'].append(match)
             else:
@@ -181,7 +181,7 @@ class LaTeXParser(object):
         bibliographies = set()
         packages = set()
         packages_detailed = dict()
-        for match in ServiceLocator.get_symbols_regex().finditer(text):
+        for match in ServiceLocator.get_regex('\\\\(label|include|input|bibliography)\{((?:\s|\w|\:|,)*)\}|\\\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}').finditer(text):
             if match.group(1) == 'label':
                 labels = labels | {match.group(2).strip()}
             elif match.group(1) == 'include':

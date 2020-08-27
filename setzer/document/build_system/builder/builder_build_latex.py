@@ -32,10 +32,14 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
         builder_build.BuilderBuild.__init__(self)
 
         self.config_folder = ServiceLocator.get_config_folder()
-        self.doc_regex = ServiceLocator.get_build_log_doc_regex()
-        self.item_regex = ServiceLocator.get_build_log_item_regex()
-        self.badbox_line_number_regex = ServiceLocator.get_build_log_badbox_line_number_regex()
-        self.other_line_number_regex = ServiceLocator.get_build_log_other_line_number_regex()
+        self.doc_regex = ServiceLocator.get_regex('( *\((.*\.tex))')
+        self.item_regex = ServiceLocator.get_regex('((?<!.) *' + 
+    '(?:Overfull \\\\hbox|Underfull \\\\hbox|' + 
+    'No file .*\.|File .* does not exist\.|! I can\'t find file\.|! File .* not found\.|' +
+    '(?:LaTeX|pdfTeX|LuaTeX|Package|Class) .*Warning.*:|LaTeX Font Warning:|' +
+    '! Undefined control sequence\.|! Missing (?:.*) inserted.|! Package .* Error:|! (?:LaTeX|LuaTeX) Error:).*\\n)')
+        self.badbox_line_number_regex = ServiceLocator.get_regex('lines ([0-9]+)--([0-9]+)')
+        self.other_line_number_regex = ServiceLocator.get_regex('(l.| input line \n| input line )([0-9]+)( |.)')
 
     def run(self, query):
         try:

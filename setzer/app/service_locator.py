@@ -30,20 +30,8 @@ class ServiceLocator(object):
     setzer_version = None
     resources_path = None
     app_icons_path = None
+    regexes = dict()
     popover_menu_builder = None
-    build_log_doc_regex = re.compile('( *\((.*\.tex))')
-    build_log_item_regex = re.compile('((?<!.) *' + 
-    '(?:Overfull \\\\hbox|Underfull \\\\hbox|' + 
-    'No file .*\.|File .* does not exist\.|! I can\'t find file\.|! File .* not found\.|' +
-    '(?:LaTeX|pdfTeX|LuaTeX|Package|Class) .*Warning.*:|LaTeX Font Warning:|' +
-    '! Undefined control sequence\.|! Missing (?:.*) inserted.|! Package .* Error:|! (?:LaTeX|LuaTeX) Error:).*\\n)')
-    build_log_badbox_line_number_regex = re.compile('lines ([0-9]+)--([0-9]+)')
-    build_log_other_line_number_regex = re.compile('(l.| input line \n| input line )([0-9]+)( |.)')
-    bibtex_log_item_regex = re.compile('Warning--(.*)\n--line ([0-9]+) of file (.*)|I couldn\'t open style file (.*)\n---line ([0-9]+) of file (.*)')
-    symbols_regex = re.compile('\\\\(label|include|input|bibliography)\{((?:\s|\w|\:|,)*)\}|\\\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}')
-    blocks_regex = re.compile('\n.*\\\\(begin|end)\{((?:\w)*(?:\*){0,1})\}|\n.*\\\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{')
-    forward_synctex_regex = re.compile('\nOutput:.*\nPage:([0-9]+)\nx:.*\ny:.*\nh:((?:[0-9]|\\.)+)\nv:((?:[0-9]|\\.)+)\nW:((?:[0-9]|\\.)+)\nH:((?:[0-9]|\\.)+)\nbefore:.*\noffset:.*\nmiddle:.*\nafter:.*')
-    backward_synctex_regex = re.compile('\nOutput:.*\nInput:(.*\\.tex)\nLine:([0-9]+)\nColumn:(?:[0-9]|-)+\nOffset:(?:[0-9]|-)+\nContext:.*\n')
     autocomplete_commands = None
     packages_dict = None
 
@@ -67,32 +55,13 @@ class ServiceLocator(object):
         bg_color = ServiceLocator.get_theme_bg_color()
         return (fg_color.red + fg_color.green + fg_color.blue) * fg_color.alpha > (bg_color.red + bg_color.green + bg_color.blue) * bg_color.alpha
 
-    def get_build_log_doc_regex():
-        return ServiceLocator.build_log_doc_regex
-    
-    def get_build_log_item_regex():
-        return ServiceLocator.build_log_item_regex
-
-    def get_build_log_badbox_line_number_regex():
-        return ServiceLocator.build_log_badbox_line_number_regex
-    
-    def get_build_log_other_line_number_regex():
-        return ServiceLocator.build_log_other_line_number_regex
-
-    def get_bibtex_log_item_regex():
-        return ServiceLocator.bibtex_log_item_regex
-
-    def get_symbols_regex():
-        return ServiceLocator.symbols_regex
-
-    def get_blocks_regex():
-        return ServiceLocator.blocks_regex
-
-    def get_forward_synctex_regex():
-        return ServiceLocator.forward_synctex_regex
-
-    def get_backward_synctex_regex():
-        return ServiceLocator.backward_synctex_regex
+    def get_regex(pattern):
+        try:
+            regex = ServiceLocator.regexes[pattern]
+        except KeyError:
+            regex = re.compile(pattern)
+            ServiceLocator.regexes[pattern] = regex
+        return regex
 
     def get_settings():
         if ServiceLocator.settings == None:

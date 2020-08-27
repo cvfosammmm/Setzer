@@ -29,8 +29,6 @@ class BuilderBuildBiber(builder_build.BuilderBuild):
     def __init__(self):
         builder_build.BuilderBuild.__init__(self)
 
-        self.bibtex_log_item_regex = ServiceLocator.get_bibtex_log_item_regex()
-
     def run(self, query):
         tex_filename = query.build_data['tmp_tex_filename']
 

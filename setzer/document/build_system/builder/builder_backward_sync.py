@@ -25,7 +25,7 @@ class BuilderBackwardSync(object):
 
     def __init__(self):
         self.config_folder = ServiceLocator.get_config_folder()
-        self.backward_synctex_regex = ServiceLocator.get_backward_synctex_regex()
+        self.backward_synctex_regex = ServiceLocator.get_regex('\nOutput:.*\nInput:(.*\\.tex)\nLine:([0-9]+)\nColumn:(?:[0-9]|-)+\nOffset:(?:[0-9]|-)+\nContext:.*\n')
 
         self.process = None
 
