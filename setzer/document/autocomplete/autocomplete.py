@@ -327,36 +327,14 @@ class Autocomplete(object):
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         self.current_word = self.get_current_word(insert_iter)
         self.view.empty_list()
-        self.number_of_matches = 0
 
-        items_all = self.get_items(self.current_word)
-        items_all.reverse()
-
-        if len(items_all) == 1 and self.current_word[1:].lower() == items_all[0]['command']:
-            self.number_of_matches = 0
-        else:
-            count = 0
-            items = list()
-            items_rest = list()
-            for item in items_all:
-                if self.last_tabbed_command != None and self.last_tabbed_command == item['command']:
-                    items.insert(0, item)
-                    count += 1
-                elif item['command'][:len(self.current_word) - 1] == self.current_word[1:]:
-                    items.append(item)
-                    count += 1
-                else:
-                    items_rest.append(item)
-            if count >= 5:
-                items = items[:5]
-            items.reverse()
-            items = items_rest[:5 - count] + items
-
-            self.number_of_matches = len(items)
-            for command in items:
-                item = view.DocumentAutocompleteItem(command)
-                self.view.prepend(item)
-                self.view.select_first()
+        items = self.provider.get_items_for_completion_window(self.current_word, self.last_tabbed_command)
+        self.number_of_matches = len(items)
+        for command in items:
+            item = view.DocumentAutocompleteItem(command)
+            self.view.prepend(item)
+        if self.number_of_matches > 0:
+            self.view.select_first()
 
     def update_position(self):
         self.height = self.view.get_allocated_height()
@@ -398,14 +376,6 @@ class Autocomplete(object):
         else:
             show_x = False
         return (show_x and show_y)
-
-    def get_items(self, word):
-        items = list()
-        try: items = self.provider.static_proposals[word[1:].lower()]
-        except KeyError: pass
-        try: dynamic_items = self.provider.dynamic_proposals[word[1:].lower()]
-        except KeyError: dynamic_items = list()
-        return items + dynamic_items
 
     def change_state(self, state):
         self.active_state = self.states[state]

@@ -35,6 +35,39 @@ class AutocompleteProvider(object):
         self.generate_static_proposals()
         GObject.timeout_add(500, self.generate_dynamic_proposals)
 
+    def get_items_for_completion_window(self, current_word, last_tabbed_command):
+        items = list()
+
+        items_all = self.get_items(current_word)
+        items_all.reverse()
+
+        if len(items_all) != 1 or current_word[1:].lower() != items_all[0]['command']:
+            count = 0
+            items_rest = list()
+            for item in items_all:
+                if last_tabbed_command != None and last_tabbed_command == item['command']:
+                    items.insert(0, item)
+                    count += 1
+                elif item['command'][:len(current_word) - 1] == current_word[1:]:
+                    items.append(item)
+                    count += 1
+                else:
+                    items_rest.append(item)
+            if count >= 5:
+                items = items[:5]
+            items.reverse()
+            items = items_rest[:5 - count] + items
+
+        return items
+
+    def get_items(self, word):
+        items = list()
+        try: items = self.static_proposals[word[1:].lower()]
+        except KeyError: pass
+        try: dynamic_items = self.dynamic_proposals[word[1:].lower()]
+        except KeyError: dynamic_items = list()
+        return items + dynamic_items
+
     def generate_static_proposals(self):
         commands = self.get_commands()
 
