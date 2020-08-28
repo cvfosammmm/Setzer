@@ -46,20 +46,7 @@ class StateActiveVisible(object):
             return True
         else:
             items = self.autocomplete.get_items(self.autocomplete.current_word)
-
-            i = 0
-            letter_ok = True
-            while letter_ok and i < 100:
-                testletter = None
-                for item in items:
-                    letter = item['command'][len(self.autocomplete.current_word) - 1 + i:len(self.autocomplete.current_word) + i].lower()
-                    if testletter == None:
-                        testletter = letter
-                    if testletter != letter or len(letter) == 0:
-                        letter_ok = False
-                        i -= 1
-                        break
-                i += 1
+            i = self.get_number_matching_letters_on_tabpress(self.autocomplete.current_word, items, 0)
 
             row = self.autocomplete.view.list.get_selected_row()
             if len(row.get_child().label.get_text()) == len(self.autocomplete.current_word) + i:
@@ -75,30 +62,33 @@ class StateActiveVisible(object):
                 else:
                     current_word = row.get_child().label.get_text()[:len(self.autocomplete.current_word) + 1]
                     items = self.autocomplete.get_items(current_word)
+                    i = self.get_number_matching_letters_on_tabpress(current_word, items, 0)
 
-                    i = 1
-                    letter_ok = True
-                    while letter_ok and i < 100:
-                        testletter = None
-                        for item in items:
-                            letter = item['command'][len(current_word) - 2 + i:len(current_word) - 1 + i].lower()
-                            if testletter == None:
-                                testletter = letter
-                            if testletter != letter or len(letter) == 0:
-                                letter_ok = False
-                                i -= 1
-                                break
-                        i += 1
-
-                    if len(row.get_child().label.get_text()) == len(current_word) - 1 + i:
+                    if len(row.get_child().label.get_text()) == len(current_word) + i:
                         self.autocomplete.last_tabbed_command = None
                         self.autocomplete.submit()
                         return True
                     else:
-                        text = row.get_child().label.get_text()[:len(current_word) - 1 + i]
+                        text = row.get_child().label.get_text()[:len(current_word) + i]
                         self.autocomplete.last_tabbed_command = row.get_child().label.get_text()[1:]
                         self.autocomplete.insert_preliminary(text)
                         return True
+
+    def get_number_matching_letters_on_tabpress(self, current_word, items, offset):
+        i = offset
+        letter_ok = True
+        while letter_ok and i < 100:
+            testletter = None
+            for item in items:
+                letter = item['command'][len(current_word) - 1 + i:len(current_word) + i].lower()
+                if testletter == None:
+                    testletter = letter
+                if testletter != letter or len(letter) == 0:
+                    letter_ok = False
+                    i -= 1
+                    break
+            i += 1
+        return i
 
     def show(self):
         pass

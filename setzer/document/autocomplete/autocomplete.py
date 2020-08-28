@@ -48,7 +48,6 @@ class Autocomplete(object):
         self.shortcuts_bar_height = 37
 
         self.insert_iter_offset = None
-        self.insert_iter_matched = False
         self.current_word = ""
         self.current_word_offset = None
         self.height = None
@@ -69,17 +68,17 @@ class Autocomplete(object):
         self.document.get_buffer().connect('mark-deleted', self.on_mark_deleted)
 
     def on_adjustment_value_changed(self, adjustment, user_data=None):
-        self.update_position(False)
+        self.update(False)
         return False
 
     def on_mark_set(self, buffer, insert, mark, user_data=None):
-        self.update_position(False)
+        self.update(False)
     
     def on_buffer_changed(self, buffer, user_data=None):
-        self.update_position(True)
+        self.update(True)
     
     def on_mark_deleted(self, buffer, mark, user_data=None):
-        self.update_position(False)
+        self.update(False)
 
     def on_row_activated(self, box, row, user_data=None):
         self.document_view.source_view.grab_focus()
@@ -288,100 +287,117 @@ class Autocomplete(object):
                     count -= 1
         return end_match_object
 
-    def update_position(self, can_show=False):
-        buffer = self.document.get_buffer()
-        if buffer != None:
-            self.number_of_matches = 0
-            if self.active_state != self.states['active_visible'] and can_show == False: return
-            insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-            current_word_offset = self.get_current_word_offset(insert_iter)
-            if current_word_offset != self.current_word_offset:
-                self.current_word_offset = current_word_offset
-                if current_word_offset == None or (self.active_state == self.states['active_visible'] and can_show == False):
-                    self.active_state.hide()
-                    return False
-            if self.insert_iter_offset == None: self.insert_iter_offset = insert_iter.get_offset()
-            if self.insert_iter_offset != insert_iter.get_offset():
-                self.insert_iter_offset = insert_iter.get_offset()
-                self.current_word = self.get_current_word(insert_iter)
-                self.insert_iter_matched = False
-                self.view.empty_list()
+    def update(self, can_show=False):
+        if self.document.get_buffer() == None: return
+        if self.active_state != self.states['active_visible'] and can_show == False: return
 
-                items_all = self.get_items(self.current_word)
-                items_all.reverse()
-
-                if len(items_all) == 1 and self.current_word[1:].lower() == items_all[0]['command']:
-                    self.number_of_matches = 0
-                else:
-                    count = 0
-                    items = list()
-                    items_rest = list()
-                    for item in items_all:
-                        if self.last_tabbed_command != None and self.last_tabbed_command == item['command']:
-                            items.insert(0, item)
-                            count += 1
-                        elif item['command'][:len(self.current_word) - 1] == self.current_word[1:]:
-                            items.append(item)
-                            count += 1
-                        else:
-                            items_rest.append(item)
-                    if count >= 5:
-                        items = items[:5]
-                    items.reverse()
-                    items = items_rest[:5 - count] + items
-
-                    self.number_of_matches = len(items)
-                    for command in items:
-                        item = view.DocumentAutocompleteItem(command)
-                        self.view.prepend(item)
-                        self.insert_iter_matched = True
-                        self.view.select_first()
-
-            if self.insert_iter_matched:
-                self.height = self.view.get_allocated_height()
-                full_height = 114
-                self.width = self.view.get_allocated_width()
-
-                iter_location = self.document_view.source_view.get_iter_location(insert_iter)
-                gutter = self.document_view.source_view.get_window(Gtk.TextWindowType.LEFT)
-                if gutter != None:
-                    gutter_width = gutter.get_width()
-                else:
-                    gutter_width = 0
-                x_offset = - self.document_view.scrolled_window.get_hadjustment().get_value()
-                y_offset = - self.document_view.scrolled_window.get_vadjustment().get_value()
-                x_position = x_offset + iter_location.x - 4 + gutter_width - len(self.current_word) * self.char_width
-                y_position = y_offset + iter_location.y + self.line_height + self.shortcuts_bar_height
-
-                show_x = False
-                show_y = False
-                if y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
-                    self.view.set_margin_top(y_position)
-                    show_y = True
-                elif y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
-                    self.view.set_margin_top(y_position - self.height - self.line_height)
-                    show_y = True
-                else:
-                    show_y = False
-
-                if x_position >= 0 and x_position <= self.main_window.preview_paned.get_allocated_width() - self.width:
-                    self.view.set_margin_left(x_position)
-                    show_x = True
-                elif x_position >= 0 and x_position <= self.main_window.preview_paned.get_allocated_width():
-                    self.view.set_margin_left(x_position - self.width)
-                    show_x = True
-                else:
-                    show_x = False
-
-                if show_x and show_y:
+        if self.current_word_changed_or_is_none() and not can_show:
+            self.active_state.hide()
+        elif self.insert_iter_offset_changed() or self.active_state == self.states['inactive']:
+            self.populate()
+            if self.number_of_matches > 0:
+                self.update_position()
+                if self.position_is_visible():
                     self.active_state.show()
-                    return True
                 else:
                     self.active_state.hide()
-                    return False
             else:
                 self.active_state.hide()
-                return False
+
+    def current_word_changed_or_is_none(self):
+        buffer = self.document.get_buffer()
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        current_word_offset = self.get_current_word_offset(insert_iter)
+        if current_word_offset != self.current_word_offset:
+            self.current_word_offset = current_word_offset
+            return True
+        return (current_word_offset == None)
+
+    def insert_iter_offset_changed(self):
+        buffer = self.document.get_buffer()
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        if self.insert_iter_offset == None: self.insert_iter_offset = insert_iter.get_offset()
+        if self.insert_iter_offset != insert_iter.get_offset():
+            self.insert_iter_offset = insert_iter.get_offset()
+            return True
+        return False
+
+    def populate(self):
+        buffer = self.document.get_buffer()
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        self.current_word = self.get_current_word(insert_iter)
+        self.view.empty_list()
+        self.number_of_matches = 0
+
+        items_all = self.get_items(self.current_word)
+        items_all.reverse()
+
+        if len(items_all) == 1 and self.current_word[1:].lower() == items_all[0]['command']:
+            self.number_of_matches = 0
+        else:
+            count = 0
+            items = list()
+            items_rest = list()
+            for item in items_all:
+                if self.last_tabbed_command != None and self.last_tabbed_command == item['command']:
+                    items.insert(0, item)
+                    count += 1
+                elif item['command'][:len(self.current_word) - 1] == self.current_word[1:]:
+                    items.append(item)
+                    count += 1
+                else:
+                    items_rest.append(item)
+            if count >= 5:
+                items = items[:5]
+            items.reverse()
+            items = items_rest[:5 - count] + items
+
+            self.number_of_matches = len(items)
+            for command in items:
+                item = view.DocumentAutocompleteItem(command)
+                self.view.prepend(item)
+                self.view.select_first()
+
+    def update_position(self):
+        self.height = self.view.get_allocated_height()
+        self.width = self.view.get_allocated_width()
+
+        buffer = self.document.get_buffer()
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        iter_location = self.document_view.source_view.get_iter_location(insert_iter)
+        gutter = self.document_view.source_view.get_window(Gtk.TextWindowType.LEFT)
+        if gutter != None:
+            gutter_width = gutter.get_width()
+        else:
+            gutter_width = 0
+        x_offset = - self.document_view.scrolled_window.get_hadjustment().get_value()
+        y_offset = - self.document_view.scrolled_window.get_vadjustment().get_value()
+        self.x_position = x_offset + iter_location.x - 4 + gutter_width - len(self.current_word) * self.char_width
+        self.y_position = y_offset + iter_location.y + self.line_height + self.shortcuts_bar_height
+
+    def position_is_visible(self):
+        show_x = False
+        show_y = False
+
+        full_height = 114
+        if self.y_position >= self.line_height - 1 + self.shortcuts_bar_height and self.y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
+            self.view.set_margin_top(self.y_position)
+            show_y = True
+        elif self.y_position >= self.line_height - 1 + self.shortcuts_bar_height and self.y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
+            self.view.set_margin_top(self.y_position - self.height - self.line_height)
+            show_y = True
+        else:
+            show_y = False
+
+        if self.x_position >= 0 and self.x_position <= self.main_window.preview_paned.get_allocated_width() - self.width:
+            self.view.set_margin_left(self.x_position)
+            show_x = True
+        elif self.x_position >= 0 and self.x_position <= self.main_window.preview_paned.get_allocated_width():
+            self.view.set_margin_left(self.x_position - self.width)
+            show_x = True
+        else:
+            show_x = False
+        return (show_x and show_y)
 
     def get_items(self, word):
         items = list()
@@ -394,5 +410,8 @@ class Autocomplete(object):
     def change_state(self, state):
         self.active_state = self.states[state]
         self.active_state.init()
+
+    def is_active(self):
+        return self.active_state != self.states['inactive']
 
 

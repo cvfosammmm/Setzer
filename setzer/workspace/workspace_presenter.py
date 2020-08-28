@@ -79,7 +79,7 @@ class WorkspacePresenter(object):
                 document.view.source_view.grab_focus()
                 try:
                     self.main_window.preview_paned_overlay.add_overlay(document.autocomplete.view)
-                    document.autocomplete.update_position()
+                    document.autocomplete.update()
                 except AttributeError: pass
 
                 self.update_latex_shortcuts_bar()
