@@ -83,18 +83,26 @@ class AutocompleteProvider(object):
     def generate_dynamic_proposals(self):
         for document in self.workspace.open_documents:
             if document.is_latex_document():
-                labels = document.parser.get_labels()
-                if labels != None:
-                    self.dynamic_proposals = dict()
-                    for label in iter(labels):
-                        command = {'command': 'ref{' + label + '}', 'description': _('Reference to \'{label}\'').format(label=label)}
-                        for i in range(1, len(command['command']) + 1):
-                            try:
-                                if len(self.dynamic_proposals[command['command'][0:i].lower()]) < 5:
-                                    self.dynamic_proposals[command['command'][0:i].lower()].append(command)
-                            except KeyError:
-                                self.dynamic_proposals[command['command'][0:i].lower()] = [command]
+                self.add_dynamic_reference_commands(document)
         return True
+
+    def add_dynamic_reference_commands(self, document):
+        labels = document.parser.get_labels()
+        if labels != None:
+            self.dynamic_proposals = dict()
+            for label in iter(labels):
+                ref_types = list()
+                ref_types.append(('ref', _('Reference to \'{label}\'')))
+                ref_types.append(('pageref', _('Reference to page of \'{label}\'')))
+                ref_types.append(('eqref', _('Reference to \'{label}\', with parantheses')))
+                for ref_type in ref_types:
+                    command = {'command': ref_type[0] + '{' + label + '}', 'description': ref_type[1].format(label=label)}
+                    for i in range(1, len(command['command']) + 1):
+                        try:
+                            if len(self.dynamic_proposals[command['command'][0:i].lower()]) < 5:
+                                self.dynamic_proposals[command['command'][0:i].lower()].append(command)
+                        except KeyError:
+                            self.dynamic_proposals[command['command'][0:i].lower()] = [command]
 
     def get_commands(self):
         commands = dict()
