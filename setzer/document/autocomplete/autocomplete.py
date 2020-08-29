@@ -53,7 +53,7 @@ class Autocomplete(object):
         self.height = None
         self.width = None
 
-        self.number_of_matches = 0
+        self.items = list()
         self.last_tabbed_command = None
 
         self.view.list.connect('row-activated', self.on_row_activated)
@@ -156,13 +156,7 @@ class Autocomplete(object):
             return word_start_iter.get_offset()
         return None
 
-    def submit(self):
-        row = self.view.list.get_selected_row()
-        text = row.get_child().label.get_text()
-        self.insert_final(text)
-        self.active_state.hide()
-
-    def insert_preliminary(self, text):
+    def add_text_to_current_word(self, text):
         buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         current_word = self.get_current_word(insert_iter)
@@ -171,92 +165,52 @@ class Autocomplete(object):
 
         self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=False)
 
-    def insert_final(self, text):
+    def submit(self):
+        row = self.view.list.get_selected_row()
+        text = row.get_child().label.get_text()
+        if text.startswith('\\begin'):
+            self.insert_begin_end(text)
+        else:
+            self.insert_normal_command(text)
+        self.active_state.hide()
+
+    def insert_begin_end(self, text):
         buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         current_word = self.get_current_word(insert_iter)
         start_iter = insert_iter.copy()
         start_iter.backward_chars(len(current_word))
 
-        if text.startswith('\\begin'):
-            replace_previous_command_data = self.insert_final_check_replace_begin_end(start_iter, text)
-            if replace_previous_command_data[0]:
-                self.insert_final_replace_begin_end(start_iter, replace_previous_command_data)
-            else:
-                end_command = text.replace('\\begin', '\\end')
-                end_command_bracket_position = end_command.find('}')
-                if end_command_bracket_position:
-                    end_command = end_command[:end_command_bracket_position + 1]
-                text += '\n\t•\n' + end_command
-                self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=True)
+        replace_previous_command_data = self.insert_begin_end_check_replace(insert_iter, text)
+        if replace_previous_command_data[0]:
+            self.insert_begin_end_replace(start_iter, insert_iter, replace_previous_command_data)
         else:
-            replace_previous_command_data = self.insert_final_check_replace(start_iter, text)
-            if replace_previous_command_data[0]:
-                self.insert_final_replace(start_iter, replace_previous_command_data)
-            else:
-                self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=True)
+            self.insert_begin_end_no_replace(text)
 
-    def insert_final_check_replace(self, start_iter, text):
-        line_part = self.document.get_line(start_iter.get_line())[start_iter.get_line_offset():]
-        matches_group = list()
-        command_regex = ServiceLocator.get_regex_object(r'\\(\w+)|\{([^\{\[]+)\}|\[([^\{\[]+)\]')
-        line_regex_pattern = ''
-        for match in command_regex.finditer(text):
-            if match.group(0).startswith('\\'):
-                line_regex_pattern += r'\\(\w+)'
-                matches_group.append((match.group(1), 1))
-            if match.group(0).startswith('{'):
-                line_regex_pattern += r'\{([^\{\[]+)\}'
-                matches_group.append((match.group(2), 2))
-            if match.group(0).startswith('['):
-                line_regex_pattern += r'\[([^\{\[]+)\]'
-                matches_group.append((match.group(3), 3))
-        line_regex = ServiceLocator.get_regex_object(line_regex_pattern)
-        return (line_regex.match(line_part), matches_group)
-
-    def insert_final_check_replace_begin_end(self, start_iter, text):
-        line_part = self.document.get_line(start_iter.get_line())[start_iter.get_line_offset():]
-        line_regex = ServiceLocator.get_regex_object(r'\\(\w+)\{([^\{\[]+)\}')
+    def insert_begin_end_check_replace(self, insert_iter, text):
+        line_part = self.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
+        line_regex = ServiceLocator.get_regex_object(r'(\w*)\{([^\{\[]+)\}')
         line_match = line_regex.match(line_part)
         if line_match:
-            document_text = self.document.get_text_after_offset(start_iter.get_offset() + 1)
+            document_text = self.document.get_text_after_offset(insert_iter.get_offset() + 1)
             if self.get_end_match_object(document_text, line_match.group(2)):
                 return (line_match, text)
         return (None, text)
 
-    def insert_final_replace(self, start_iter, replace_previous_command_data):
-        text = ''
-        count = 1
-        match_object = replace_previous_command_data[0]
-        for inner_text, group in replace_previous_command_data[1]:
-            if inner_text == '•':
-                inner_text = match_object.group(count)
-            if group == 1:
-                text += '\\' + inner_text
-            elif group == 2:
-                text += '{' + inner_text + '}'
-            elif group == 3:
-                text += '[' + inner_text + ']'
-            count += 1
-        end_iter = start_iter.copy()
-        end_iter.forward_chars(match_object.end())
-        self.document.replace_range(start_iter, end_iter, text, indent_lines=True, select_dot=True)
-
-    def insert_final_replace_begin_end(self, start_iter_begin, replace_previous_command_data):
+    def insert_begin_end_replace(self, start_iter_begin, insert_iter, replace_previous_command_data):
         text = replace_previous_command_data[1]
         match_object = replace_previous_command_data[0]
-        print(match_object)
 
         self.document.get_buffer().begin_user_action()
 
-        end_iter_begin = start_iter_begin.copy()
+        end_iter_begin = insert_iter.copy()
         end_iter_begin.forward_chars(match_object.end())
         start_iter_offset = start_iter_begin.get_offset()
-        self.document.get_buffer().replace_range_no_user_action(start_iter_begin, end_iter_begin, text, indent_lines=False, select_dot=False)
+        self.document.get_buffer().replace_range_no_user_action(start_iter_begin, end_iter_begin, text, indent_lines=False, select_dot=True)
 
         end_iter_offset = start_iter_offset + len(text)
         document_text = self.document.get_text_after_offset(end_iter_offset)
-        environment_name = ServiceLocator.get_regex_object(r'\\(\w+)\{([^\{\[]+)\}').match(match_object.group(0)).group(2)
+        environment_name = ServiceLocator.get_regex_object(r'(\w*)\{([^\{\[]+)\}').match(match_object.group(0)).group(2)
         end_match_object = self.get_end_match_object(document_text, environment_name)
 
         if end_match_object != None:
@@ -287,17 +241,109 @@ class Autocomplete(object):
                     count -= 1
         return end_match_object
 
+    def insert_begin_end_no_replace(self, text):
+        end_command = text.replace('\\begin', '\\end')
+        end_command_bracket_position = end_command.find('}')
+        if end_command_bracket_position:
+            end_command = end_command[:end_command_bracket_position + 1]
+        text += '\n\t•\n' + end_command
+        self.replace_current_command(text)
+
+    def insert_normal_command(self, text):
+        buffer = self.document.get_buffer()
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+
+        replacement_pattern = self.get_replacement_pattern(insert_iter, text)
+        if replacement_pattern != None:
+            command_regex = ServiceLocator.get_regex_object(r'.*' + replacement_pattern[1])
+            if command_regex.match(text):
+                self.insert_final_replace(insert_iter, text, replacement_pattern)
+                return
+        self.replace_current_command(text)
+
+    def get_replacement_pattern(self, insert_iter, command):
+        line_part = self.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
+        command_bracket_count = self.get_command_bracket_count(command)
+
+        matches_group = list()
+        line_regex = ServiceLocator.get_regex_object(r'(\w*)(?:\{([^\{\[\\]+)\}|\[([^\{\[\\]+)\])*')
+        line_match = line_regex.match(line_part)
+        if line_match == None:
+            return None
+        else:
+            line_part = line_part[:line_match.end()]
+            line_regex = ServiceLocator.get_regex_object(r'(\w*)|\{([^\{\[\\]+)\}|\[([^\{\[\\]+)\]')
+            bracket_count = 0
+            command_regex_pattern = r'(\w*)'
+            for match in line_regex.finditer(line_part):
+                if match.group(0).startswith('{') and bracket_count < command_bracket_count:
+                    command_regex_pattern += r'\{([^\{\[]+)\}'
+                    bracket_count += 1
+                if match.group(0).startswith('[') and bracket_count < command_bracket_count:
+                    command_regex_pattern += r'\[([^\{\[]+)\]'
+                    bracket_count += 1
+            line_match = ServiceLocator.get_regex_object(command_regex_pattern).match(line_part)
+            return (line_match, command_regex_pattern)
+
+    def get_command_bracket_count(self, command):
+        count = 0
+        line_regex = ServiceLocator.get_regex_object(r'\{([^\{\[]+)\}|\[([^\{\[]+)\]')
+        for match in line_regex.finditer(command):
+            count += 1
+        return count
+
+    def insert_final_replace(self, insert_iter, command, replacement_pattern):
+        match_object = replacement_pattern[0]
+        text = ''
+        command_regex = ServiceLocator.get_regex_object(r'(?:^\\(\w+))|\{([^\{\[]+)\}|\[([^\{\[]+)\]')
+        count = 1
+        for match in command_regex.finditer(command):
+            if match.group(0).startswith('\\'):
+                text += '\\' + match.group(1)
+            else:
+                if match.group(0).startswith('{'):
+                    inner_text = match.group(2)
+                else:
+                    inner_text = match.group(3)
+                if inner_text == '•' and len(match_object.groups()) >= count:
+                    inner_text = match_object.group(count)
+                if match.group(0).startswith('{'):
+                    text += '{' + inner_text + '}'
+                if match.group(0).startswith('['):
+                    text += '[' + inner_text + ']'
+            count += 1
+
+        current_word = self.get_current_word(insert_iter)
+        start_iter = insert_iter.copy()
+        start_iter.backward_chars(len(current_word))
+        end_iter = insert_iter.copy()
+        end_iter.forward_chars(match_object.end())
+        self.document.replace_range(start_iter, end_iter, text, indent_lines=True, select_dot=True)
+
+    def replace_current_command(self, text):
+        buffer = self.document.get_buffer()
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        current_word = self.get_current_word(insert_iter)
+        start_iter = insert_iter.copy()
+        start_iter.backward_chars(len(current_word))
+        self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=True)
+
     def update(self, can_show=False):
         if self.document.get_buffer() == None: return
         if self.active_state != self.states['active_visible'] and can_show == False: return
 
         if self.current_word_changed_or_is_none() and not can_show:
             self.active_state.hide()
-        elif self.insert_iter_offset_changed() or self.active_state == self.states['inactive']:
-            self.populate()
-            if self.number_of_matches > 0:
+        else:
+            buffer = self.document.get_buffer()
+            insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+            self.current_word = self.get_current_word(insert_iter)
+            self.items = self.provider.get_items_for_completion_window(self.current_word, self.last_tabbed_command)
+            if len(self.items) > 0:
                 self.update_position()
                 if self.position_is_visible():
+                    if self.insert_iter_offset_changed() or self.active_state == self.states['inactive']:
+                        self.populate()
                     self.active_state.show()
                 else:
                     self.active_state.hide()
@@ -323,21 +369,15 @@ class Autocomplete(object):
         return False
 
     def populate(self):
-        buffer = self.document.get_buffer()
-        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        self.current_word = self.get_current_word(insert_iter)
         self.view.empty_list()
-
-        items = self.provider.get_items_for_completion_window(self.current_word, self.last_tabbed_command)
-        self.number_of_matches = len(items)
-        for command in items:
+        for command in self.items:
             item = view.DocumentAutocompleteItem(command)
             self.view.prepend(item)
-        if self.number_of_matches > 0:
+        if len(self.items) > 0:
             self.view.select_first()
 
     def update_position(self):
-        self.height = self.view.get_allocated_height()
+        self.height = len(self.items) * self.line_height + 24
         self.width = self.view.get_allocated_width()
 
         buffer = self.document.get_buffer()
@@ -353,25 +393,31 @@ class Autocomplete(object):
         self.x_position = x_offset + iter_location.x - 4 + gutter_width - len(self.current_word) * self.char_width
         self.y_position = y_offset + iter_location.y + self.line_height + self.shortcuts_bar_height
 
+        full_height = 114
+        if self.y_position >= self.line_height - 1 + self.shortcuts_bar_height and self.y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
+            self.view.set_margin_top(self.y_position)
+        else:
+            self.view.set_margin_top(self.y_position - self.height - self.line_height)
+        if self.x_position >= 0 and self.x_position <= self.main_window.preview_paned.get_allocated_width() - self.width:
+            self.view.set_margin_left(self.x_position)
+        else:
+            self.view.set_margin_left(self.x_position - self.width)
+
     def position_is_visible(self):
         show_x = False
         show_y = False
 
         full_height = 114
         if self.y_position >= self.line_height - 1 + self.shortcuts_bar_height and self.y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
-            self.view.set_margin_top(self.y_position)
             show_y = True
         elif self.y_position >= self.line_height - 1 + self.shortcuts_bar_height and self.y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
-            self.view.set_margin_top(self.y_position - self.height - self.line_height)
             show_y = True
         else:
             show_y = False
 
         if self.x_position >= 0 and self.x_position <= self.main_window.preview_paned.get_allocated_width() - self.width:
-            self.view.set_margin_left(self.x_position)
             show_x = True
         elif self.x_position >= 0 and self.x_position <= self.main_window.preview_paned.get_allocated_width():
-            self.view.set_margin_left(self.x_position - self.width)
             show_x = True
         else:
             show_x = False

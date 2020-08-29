@@ -41,12 +41,11 @@ class StateActiveVisible(object):
         return True
 
     def on_tab_press(self):
-        if self.autocomplete.number_of_matches == 1:
+        if len(self.autocomplete.items) == 1:
             self.autocomplete.submit()
             return True
         else:
-            items = self.autocomplete.get_items(self.autocomplete.current_word)
-            i = self.get_number_matching_letters_on_tabpress(self.autocomplete.current_word, items, 0)
+            i = self.get_number_of_matching_letters_on_tabpress(self.autocomplete.current_word, 0)
 
             row = self.autocomplete.view.list.get_selected_row()
             if len(row.get_child().label.get_text()) == len(self.autocomplete.current_word) + i:
@@ -57,12 +56,11 @@ class StateActiveVisible(object):
                 if i >= 1:
                     text = row.get_child().label.get_text()[:len(self.autocomplete.current_word) + i]
                     self.autocomplete.last_tabbed_command = row.get_child().label.get_text()[1:]
-                    self.autocomplete.insert_preliminary(text)
+                    self.autocomplete.add_text_to_current_word(text)
                     return True
                 else:
                     current_word = row.get_child().label.get_text()[:len(self.autocomplete.current_word) + 1]
-                    items = self.autocomplete.get_items(current_word)
-                    i = self.get_number_matching_letters_on_tabpress(current_word, items, 0)
+                    i = self.get_number_of_matching_letters_on_tabpress(current_word, 0)
 
                     if len(row.get_child().label.get_text()) == len(current_word) + i:
                         self.autocomplete.last_tabbed_command = None
@@ -71,10 +69,11 @@ class StateActiveVisible(object):
                     else:
                         text = row.get_child().label.get_text()[:len(current_word) + i]
                         self.autocomplete.last_tabbed_command = row.get_child().label.get_text()[1:]
-                        self.autocomplete.insert_preliminary(text)
+                        self.autocomplete.add_text_to_current_word(text)
                         return True
 
-    def get_number_matching_letters_on_tabpress(self, current_word, items, offset):
+    def get_number_of_matching_letters_on_tabpress(self, current_word, offset):
+        items = self.autocomplete.provider.get_items(current_word)
         i = offset
         letter_ok = True
         while letter_ok and i < 100:

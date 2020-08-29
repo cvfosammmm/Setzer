@@ -173,14 +173,10 @@ class Document(Observable):
         self.get_buffer().insert_text_at_cursor(text, indent_lines, scroll, select_dot)
 
     def replace_range(self, start_iter, end_iter, text, indent_lines=True, select_dot=True):
-        self.get_buffer().replace_range(start_iter, end_iter, text, indent_lines)
+        self.get_buffer().replace_range(start_iter, end_iter, text, indent_lines, select_dot)
 
     def insert_before_after(self, before, after):
         self.get_buffer().insert_before_after(before, after)
-
-    def comment_uncomment(self):
-        if self.is_latex_document():
-            self.get_buffer().comment_uncomment()
 
     def get_line_height(self):
         return self.get_buffer().get_line_height()
@@ -327,6 +323,9 @@ class LaTeXDocument(Document):
             self.has_visible_build_system = has_visible_build_system
             self.add_change_code('build_system_visibility_change', has_visible_build_system)
 
+    def comment_uncomment(self):
+        self.get_buffer().comment_uncomment()
+
     def set_invert_pdf(self, invert_pdf):
         self.preview.set_invert_pdf(invert_pdf)
 
@@ -368,6 +367,9 @@ class BibTeXDocument(Document):
 
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = bibtex_parser.BibTeXParser()
+
+    def comment_uncomment(self):
+        pass
 
     def get_folded_regions(self):
         return []
