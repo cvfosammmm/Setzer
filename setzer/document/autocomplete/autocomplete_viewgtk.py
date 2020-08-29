@@ -94,8 +94,8 @@ class DocumentAutocompleteItem(Gtk.HBox):
         self.command = command
         self.label = Gtk.Label()
         if offset != 0:
-            text = '<b>' + GLib.markup_escape_text(command['command'][:offset]) + '</b>' + GLib.markup_escape_text(command['command'][offset:])
-            self.label.set_markup('\\' + text)
+            text = '<b>\\' + GLib.markup_escape_text(command['command'][:offset]) + '</b>' + GLib.markup_escape_text(command['command'][offset:])
+            self.label.set_markup(text)
         else:
             self.label.set_text('\\' + command['command'])
         self.label.get_style_context().add_class('monospace')
