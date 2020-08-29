@@ -17,7 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gio
+from gi.repository import Gtk, Gio, GLib
 
 
 class DocumentAutocompleteView(Gtk.VBox):
@@ -85,14 +85,19 @@ class DocumentAutocompleteView(Gtk.VBox):
 
 class DocumentAutocompleteItem(Gtk.HBox):
 
-    def __init__(self, command):
+    def __init__(self, command, offset=0):
         Gtk.HBox.__init__(self)
 
         self.set_halign(Gtk.Align.START)
         self.set_valign(Gtk.Align.START)
 
         self.command = command
-        self.label = Gtk.Label('\\' + command['command'])
+        self.label = Gtk.Label()
+        if offset != 0:
+            text = '<b>' + GLib.markup_escape_text(command['command'][:offset]) + '</b>' + GLib.markup_escape_text(command['command'][offset:])
+            self.label.set_markup('\\' + text)
+        else:
+            self.label.set_text('\\' + command['command'])
         self.label.get_style_context().add_class('monospace')
         self.pack_start(self.label, True, True, 0)
         self.show_all()
