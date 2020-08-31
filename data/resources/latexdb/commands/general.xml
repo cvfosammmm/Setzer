@@ -84,6 +84,17 @@
   <command name="check{•}" text="check{•}" description="" />
   <command name="chi" text="chi" description="Greek letter &quot;chi&quot;" />
   <command name="cite{•}" text="cite{•}" description="" />
+  <command name="cite[•]{•}" text="cite[•]{•}" description="" />
+  <command name="citet{•}" text="citet{•}" description="" />
+  <command name="citep{•}" text="citep{•}" description="" />
+  <command name="citet*{•}" text="citet*{•}" description="" />
+  <command name="citep*{•}" text="citep*{•}" description="" />
+  <command name="citealt{•}" text="citealt{•}" description="" />
+  <command name="citealp{•}" text="citealp{•}" description="" />
+  <command name="citeauthor{•}" text="citeauthor{•}" description="" />
+  <command name="citeauthor*{•}" text="citeauthor*{•}" description="" />
+  <command name="citeyear{•}" text="citeyear{•}" description="" />
+  <command name="citeyearpar{•}" text="citeyearpar{•}" description="" />
   <command name="cline{-}" text="cline{-}" description="" />
   <command name="columnbreak" text="columnbreak" description="" />
   <command name="coprod" text="coprod" description="" />
