@@ -151,6 +151,9 @@ class AutocompleteProvider(object):
         if self.workspace.active_document != None:
             documents.append(self.workspace.active_document)
             for document in self.workspace.open_documents:
+                if self.workspace.active_document.is_latex_document() and document not in documents and document.filename in self.workspace.active_document.get_included_files():
+                    documents.append(document)
+            for document in self.workspace.open_documents:
                 if document not in documents:
                     documents.append(document)
         return documents

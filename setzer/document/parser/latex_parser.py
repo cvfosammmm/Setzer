@@ -33,8 +33,7 @@ class LaTeXParser(object):
 
         self.symbols = dict()
         self.symbols['labels'] = set()
-        self.symbols['includes'] = set()
-        self.symbols['inputs'] = set()
+        self.symbols['included_latex_files'] = set()
         self.symbols['bibliographies'] = set()
         self.symbols['bibitems'] = set()
         self.symbols['packages'] = set()
@@ -96,6 +95,8 @@ class LaTeXParser(object):
                 result = dict()
                 result['labels'] = self.symbols['labels'].copy()
                 result['bibitems'] = self.symbols['bibitems'].copy()
+                result['included_latex_files'] = self.symbols['included_latex_files'].copy()
+                result['bibliographies'] = self.symbols['bibliographies'].copy()
                 self.last_result = result
             else:
                 result = self.last_result
@@ -185,8 +186,7 @@ class LaTeXParser(object):
         with self.parse_jobs_lock:
             self.parse_symbols_job_running = True
         labels = set()
-        includes = set()
-        inputs = set()
+        included_latex_files = set()
         bibliographies = set()
         bibitems = set()
         packages = set()
@@ -194,10 +194,11 @@ class LaTeXParser(object):
         for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource)\{((?:\s|\w|\:|\.|,)*)\}|\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text):
             if match.group(1) == 'label':
                 labels = labels | {match.group(2).strip()}
-            elif match.group(1) == 'include':
-                includes = includes | {match.group(2).strip()}
-            elif match.group(1) == 'input':
-                inputs = inputs | {match.group(2).strip()}
+            elif match.group(1) == 'include' or match.group(1) == 'input':
+                filename = os.path.normpath(os.path.join(self.dirname, match.group(2).strip()))
+                if not filename.endswith('.tex'):
+                    filename += '.tex'
+                included_latex_files = included_latex_files | {filename}
             elif match.group(1) == 'bibliography':
                 bibfiles = match.group(2).strip().split(',')
                 for entry in bibfiles:
@@ -214,8 +215,7 @@ class LaTeXParser(object):
 
         with self.symbols_lock:
             self.symbols['labels'] = labels
-            self.symbols['includes'] = includes
-            self.symbols['inputs'] = inputs
+            self.symbols['included_latex_files'] = included_latex_files
             self.symbols['bibliographies'] = bibliographies
             self.symbols['bibitems'] = bibitems
             self.symbols['packages'] = packages

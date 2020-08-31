@@ -341,6 +341,10 @@ class LaTeXDocument(Document):
     def get_folded_regions(self):
         return self.code_folding.get_folded_regions()
 
+    def get_included_files(self):
+        labels_dict = self.parser.get_labels()
+        return labels_dict['included_latex_files'] | labels_dict['bibliographies']
+
     def get_file_ending(self):
         return 'tex'
 
