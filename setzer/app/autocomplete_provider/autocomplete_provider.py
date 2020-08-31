@@ -22,6 +22,8 @@ from gi.repository import GObject
 import os.path
 import xml.etree.ElementTree as ET
 
+import setzer.helpers.timer as timer
+
 
 class AutocompleteProvider(object):
 
@@ -80,6 +82,7 @@ class AutocompleteProvider(object):
                 except KeyError:
                     self.static_proposals[command['command'][0:i].lower()] = [command]
 
+    #@timer.timer
     def generate_dynamic_proposals(self):
         self.dynamic_proposals = dict()
         for document in self.workspace.open_documents:
@@ -89,13 +92,14 @@ class AutocompleteProvider(object):
                 self.add_dynamic_bibliography_commands(labels_dict['bibitems'])
         return True
 
+    #@timer.timer
     def add_dynamic_reference_commands(self, labels):
         if labels != None:
+            ref_types = list()
+            ref_types.append(('ref', _('Reference to \'{label}\'')))
+            ref_types.append(('pageref', _('Reference to page of \'{label}\'')))
+            ref_types.append(('eqref', _('Reference to \'{label}\', with parantheses')))
             for label in iter(labels):
-                ref_types = list()
-                ref_types.append(('ref', _('Reference to \'{label}\'')))
-                ref_types.append(('pageref', _('Reference to page of \'{label}\'')))
-                ref_types.append(('eqref', _('Reference to \'{label}\', with parantheses')))
                 for ref_type in ref_types:
                     command = {'command': ref_type[0] + '{' + label + '}', 'description': ref_type[1].format(label=label)}
                     for i in range(1, len(command['command']) + 1):
@@ -105,12 +109,23 @@ class AutocompleteProvider(object):
                         except KeyError:
                             self.dynamic_proposals[command['command'][0:i].lower()] = [command]
 
+    #@timer.timer
     def add_dynamic_bibliography_commands(self, bibitems):
         if bibitems != None:
-            for bibitem in iter(bibitems):
-                ref_types = list()
-                ref_types.append(('cite', _('Cite \'{bibitem}\'')))
-                for ref_type in ref_types:
+            ref_types = list()
+            ref_types.append(('cite', _('Cite \'{bibitem}\'')))
+            ref_types.append(('citet', _('Cite \'{bibitem}\' (abbreviated)')))
+            ref_types.append(('citep', _('Cite \'{bibitem}\' (abbreviated with brackets)')))
+            ref_types.append(('citet*', _('Cite \'{bibitem}\' (detailed)')))
+            ref_types.append(('citep*', _('Cite \'{bibitem}\' (detailed with brackets)')))
+            ref_types.append(('citealt', _('Cite \'{bibitem}\' (alternative style 1)')))
+            ref_types.append(('citealp', _('Cite \'{bibitem}\' (alternative style 2)')))
+            ref_types.append(('citeauthor', _('Cite \'{bibitem}\' (author)')))
+            ref_types.append(('citeauthor*', _('Cite \'{bibitem}\' (author detailed)')))
+            ref_types.append(('citeyear', _('Cite \'{bibitem}\' (year)')))
+            ref_types.append(('citeyearpar', _('Cite \'{bibitem}\' (year with brackets)')))
+            for ref_type in ref_types:
+                for bibitem in iter(bibitems):
                     command = {'command': ref_type[0] + '{' + bibitem + '}', 'description': ref_type[1].format(bibitem=bibitem)}
                     for i in range(1, len(command['command']) + 1):
                         try:
