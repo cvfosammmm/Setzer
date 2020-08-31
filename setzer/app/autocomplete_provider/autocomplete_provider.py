@@ -77,8 +77,9 @@ class AutocompleteProvider(object):
             word_beginning = word[:offset + 1]
         else:
             word_beginning = word
-        if word_beginning in self.dynamic_word_beginnings:
+        if word_beginning in self.dynamic_word_beginnings['references']:
             dynamic_items += self.get_dynamic_reference_commands(word)
+        elif word_beginning in self.dynamic_word_beginnings['citations']:
             dynamic_items += self.get_dynamic_bibliography_commands(word)
         return dynamic_items
 
@@ -164,10 +165,14 @@ class AutocompleteProvider(object):
                     self.static_proposals[command['command'][0:i].lower()] = [command]
 
     def generate_dynamic_word_beginnings(self):
-        commands = ('ref{', 'pageref{', 'eqref{', 'cite{', 'citet{', 'citep{', 'citet*{', 'citep*{', 'citealt{', 'citealp{', 'citeauthor{', 'citeauthor*{', 'citeyear{', 'citeyearpar{')
-
-        self.dynamic_word_beginnings = list()
-        for command in commands:
+        self.dynamic_word_beginnings = dict()
+        self.dynamic_word_beginnings['references'] = list()
+        self.dynamic_word_beginnings['citations'] = list()
+        for command in ('ref{', 'pageref{', 'eqref{'):
             for i in range(1, len(command) + 1):
-                self.dynamic_word_beginnings.append('\\' + command[:i])
+                self.dynamic_word_beginnings['references'].append('\\' + command[:i])
+        for command in ('cite{', 'citet{', 'citep{', 'citet*{', 'citep*{', 'citealt{', 'citealp{', 'citeauthor{', 'citeauthor*{', 'citeyear{', 'citeyearpar{'):
+            for i in range(1, len(command) + 1):
+                self.dynamic_word_beginnings['citations'].append('\\' + command[:i])
+
 
