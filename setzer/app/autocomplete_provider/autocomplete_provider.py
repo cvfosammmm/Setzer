@@ -64,9 +64,9 @@ class AutocompleteProvider(object):
 
     def get_items(self, word):
         items = list()
-        try: items = self.static_proposals[word[1:].lower()]
+        try: items = self.static_proposals[word[1:].lower()][::-1]
         except KeyError: pass
-        try: dynamic_items = self.dynamic_proposals[word[1:].lower()]
+        try: dynamic_items = self.dynamic_proposals[word[1:].lower()][::-1]
         except KeyError: dynamic_items = list()
         return items + dynamic_items
 
@@ -86,10 +86,11 @@ class AutocompleteProvider(object):
     def generate_dynamic_proposals(self):
         self.dynamic_proposals = dict()
         for document in self.workspace.open_documents:
-            if document.is_latex_document():
-                labels_dict = document.parser.get_labels()
+            labels_dict = document.parser.get_labels()
+            try:
                 self.add_dynamic_reference_commands(labels_dict['labels'])
-                self.add_dynamic_bibliography_commands(labels_dict['bibitems'])
+            except KeyError: pass
+            self.add_dynamic_bibliography_commands(labels_dict['bibitems'])
         return True
 
     #@timer.timer

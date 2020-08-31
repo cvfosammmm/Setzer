@@ -18,9 +18,10 @@
 import gi
 from gi.repository import GObject
 
-from setzer.app.service_locator import ServiceLocator
 import _thread as thread, queue
 import time
+
+from setzer.app.service_locator import ServiceLocator
 
 
 class LaTeXParser(object):

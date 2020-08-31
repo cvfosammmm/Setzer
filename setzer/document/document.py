@@ -366,7 +366,7 @@ class BibTeXDocument(Document):
         self.controller = document_controller.DocumentController(self, self.view)
 
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
-        self.parser = bibtex_parser.BibTeXParser()
+        self.parser = bibtex_parser.BibTeXParser(self)
 
     def comment_uncomment(self):
         pass
