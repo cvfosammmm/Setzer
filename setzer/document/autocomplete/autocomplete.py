@@ -370,7 +370,7 @@ class Autocomplete(object):
 
     def populate(self):
         self.view.empty_list()
-        for command in self.items:
+        for command in reversed(self.items):
             item = view.DocumentAutocompleteItem(command, len(self.current_word) - 1)
             self.view.prepend(item)
         if len(self.items) > 0:

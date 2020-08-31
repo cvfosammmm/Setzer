@@ -44,7 +44,6 @@ class AutocompleteProvider(object):
         items = list()
 
         items_all = self.get_items(current_word)
-        items_all.reverse()
 
         if len(items_all) != 1 or current_word[1:].lower() != items_all[0]['command']:
             count = 0
@@ -60,17 +59,16 @@ class AutocompleteProvider(object):
                     items_rest.append(item)
             if count >= 5:
                 items = items[:5]
-            items.reverse()
             items = items_rest[:5 - count] + items
 
         return items
 
     def get_items(self, word):
         items = list()
-        try: items = self.static_proposals[word[1:].lower()][::-1]
+        try: items = self.static_proposals[word[1:].lower()]
         except KeyError: pass
-        dynamic_items = self.get_dynamic_items(word)[::-1]
-        return items + dynamic_items
+        dynamic_items = self.get_dynamic_items(word)
+        return dynamic_items + items
 
     def get_dynamic_items(self, word):
         if word == self.last_command:
@@ -93,63 +91,69 @@ class AutocompleteProvider(object):
 
     #@timer.timer
     def get_dynamic_reference_commands(self, word):
-        dynamic_items = list()
-        for document in self.workspace.open_documents:
-            if len(dynamic_items) >= 5: break
+        ref_types = list()
+        ref_types.append(('ref', _('Reference to \'{label}\'')))
+        ref_types.append(('pageref', _('Reference to page of \'{label}\'')))
+        ref_types.append(('eqref', _('Reference to \'{label}\', with parantheses')))
 
+        dynamic_items = list()
+        documents = self.get_documents_for_dynamic_items()
+
+        for document in documents:
+            if len(dynamic_items) >= 5: break
             labels_dict = document.parser.get_labels()
             if 'labels' in labels_dict:
                 labels = labels_dict['labels']
                 if labels != None:
-                    ref_types = list()
-                    ref_types.append(('ref', _('Reference to \'{label}\'')))
-                    ref_types.append(('pageref', _('Reference to page of \'{label}\'')))
-                    ref_types.append(('eqref', _('Reference to \'{label}\', with parantheses')))
-                    for label in iter(labels):
-                        if len(dynamic_items) >= 5: break
-
-                        for ref_type in ref_types:
-                            if len(dynamic_items) >= 5: break
-
-                            command = {'command': ref_type[0] + '{' + label + '}', 'description': ref_type[1].format(label=label)}
-                            if command['command'][:len(word) - 1] == word[1:].lower():
-                                if command['command'] not in [item['command'] for item in dynamic_items]:
-                                    dynamic_items.append(command)
+                    self.append_to_dynamic_items(word, dynamic_items, ref_types, labels, document)
         return dynamic_items
 
-    @timer.timer
     def get_dynamic_bibliography_commands(self, word):
-        dynamic_items = list()
-        for document in self.workspace.open_documents:
-            if len(dynamic_items) >= 5: break
+        ref_types = list()
+        ref_types.append(('cite', _('Cite \'{label}\'')))
+        ref_types.append(('citet', _('Cite \'{label}\' (abbreviated)')))
+        ref_types.append(('citep', _('Cite \'{label}\' (abbreviated with brackets)')))
+        ref_types.append(('citet*', _('Cite \'{label}\' (detailed)')))
+        ref_types.append(('citep*', _('Cite \'{label}\' (detailed with brackets)')))
+        ref_types.append(('citealt', _('Cite \'{label}\' (alternative style 1)')))
+        ref_types.append(('citealp', _('Cite \'{label}\' (alternative style 2)')))
+        ref_types.append(('citeauthor', _('Cite \'{label}\' (author)')))
+        ref_types.append(('citeauthor*', _('Cite \'{label}\' (author detailed)')))
+        ref_types.append(('citeyear', _('Cite \'{label}\' (year)')))
+        ref_types.append(('citeyearpar', _('Cite \'{label}\' (year with brackets)')))
 
+        dynamic_items = list()
+        documents = self.get_documents_for_dynamic_items()
+
+        for document in documents:
+            if len(dynamic_items) >= 5: break
             labels_dict = document.parser.get_labels()
             if 'bibitems' in labels_dict:
-                bibitems = labels_dict['bibitems']
-                if bibitems != None:
-                    ref_types = list()
-                    ref_types.append(('cite', _('Cite \'{bibitem}\'')))
-                    ref_types.append(('citet', _('Cite \'{bibitem}\' (abbreviated)')))
-                    ref_types.append(('citep', _('Cite \'{bibitem}\' (abbreviated with brackets)')))
-                    ref_types.append(('citet*', _('Cite \'{bibitem}\' (detailed)')))
-                    ref_types.append(('citep*', _('Cite \'{bibitem}\' (detailed with brackets)')))
-                    ref_types.append(('citealt', _('Cite \'{bibitem}\' (alternative style 1)')))
-                    ref_types.append(('citealp', _('Cite \'{bibitem}\' (alternative style 2)')))
-                    ref_types.append(('citeauthor', _('Cite \'{bibitem}\' (author)')))
-                    ref_types.append(('citeauthor*', _('Cite \'{bibitem}\' (author detailed)')))
-                    ref_types.append(('citeyear', _('Cite \'{bibitem}\' (year)')))
-                    ref_types.append(('citeyearpar', _('Cite \'{bibitem}\' (year with brackets)')))
-                    for bibitem in iter(bibitems):
-                        if len(dynamic_items) >= 5: break
-
-                        for ref_type in ref_types:
-                            if len(dynamic_items) >= 5: break
-
-                            command = {'command': ref_type[0] + '{' + bibitem + '}', 'description': ref_type[1].format(bibitem=bibitem)}
-                            if command['command'][:len(word) - 1] == word[1:].lower():
-                                if command['command'] not in [item['command'] for item in dynamic_items]:
-                                    dynamic_items.append(command)
+                labels = labels_dict['bibitems']
+                if labels != None:
+                    self.append_to_dynamic_items(word, dynamic_items, ref_types, labels, document)
         return dynamic_items
+
+    def append_to_dynamic_items(self, word, items, ref_types, labels, document):
+        for label in iter(labels):
+            if len(items) >= 5: break
+
+            for ref_type in ref_types:
+                if len(items) >= 5: break
+
+                command = {'command': ref_type[0] + '{' + label + '}', 'description': ref_type[1].format(label=label)}
+                if command['command'][:len(word) - 1] == word[1:].lower():
+                    if command['command'] not in [item['command'] for item in items]:
+                        items.append(command)
+
+    def get_documents_for_dynamic_items(self):
+        documents = list()
+        if self.workspace.active_document != None:
+            documents.append(self.workspace.active_document)
+            for document in self.workspace.open_documents:
+                if document not in documents:
+                    documents.append(document)
+        return documents
 
     def get_commands(self):
         commands = dict()
