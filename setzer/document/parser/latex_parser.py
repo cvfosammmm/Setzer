@@ -33,9 +33,11 @@ class LaTeXParser(object):
         self.symbols['includes'] = set()
         self.symbols['inputs'] = set()
         self.symbols['bibliographies'] = set()
+        self.symbols['bibitems'] = set()
         self.symbols['packages'] = set()
         self.symbols['packages_detailed'] = dict()
         self.labels_changed = True
+        self.last_result = None
         self.symbols_lock = thread.allocate_lock()
 
         self.last_buffer_change = time.time()
@@ -86,10 +88,13 @@ class LaTeXParser(object):
 
     def get_labels(self):
         with self.symbols_lock:
-            if self.labels_changed:
-                result = self.symbols['labels'].copy()
+            if self.labels_changed or self.last_result == None:
+                result = dict()
+                result['labels'] = self.symbols['labels'].copy()
+                result['bibitems'] = self.symbols['bibitems'].copy()
+                self.last_result = result
             else:
-                result = None
+                result = self.last_result
             self.labels_changed = False
         return result
 
@@ -179,9 +184,10 @@ class LaTeXParser(object):
         includes = set()
         inputs = set()
         bibliographies = set()
+        bibitems = set()
         packages = set()
         packages_detailed = dict()
-        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography)\{((?:\s|\w|\:|,)*)\}|\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}').finditer(text):
+        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography)\{((?:\s|\w|\:|,)*)\}|\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text):
             if match.group(1) == 'label':
                 labels = labels | {match.group(2).strip()}
             elif match.group(1) == 'include':
@@ -195,12 +201,15 @@ class LaTeXParser(object):
             elif match.group(3) == 'usepackage':
                 packages = packages | {match.group(4).strip()}
                 packages_detailed[match.group(4).strip()] = match
+            elif match.group(5) == 'bibitem':
+                bibitems = bibitems | {match.group(6).strip()}
 
         with self.symbols_lock:
             self.symbols['labels'] = labels
             self.symbols['includes'] = includes
             self.symbols['inputs'] = inputs
             self.symbols['bibliographies'] = bibliographies
+            self.symbols['bibitems'] = bibitems
             self.symbols['packages'] = packages
             self.symbols['packages_detailed'] = packages_detailed
             self.labels_changed = True

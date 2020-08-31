@@ -81,15 +81,16 @@ class AutocompleteProvider(object):
                     self.static_proposals[command['command'][0:i].lower()] = [command]
 
     def generate_dynamic_proposals(self):
+        self.dynamic_proposals = dict()
         for document in self.workspace.open_documents:
             if document.is_latex_document():
-                self.add_dynamic_reference_commands(document)
+                labels_dict = document.parser.get_labels()
+                self.add_dynamic_reference_commands(labels_dict['labels'])
+                self.add_dynamic_bibliography_commands(labels_dict['bibitems'])
         return True
 
-    def add_dynamic_reference_commands(self, document):
-        labels = document.parser.get_labels()
+    def add_dynamic_reference_commands(self, labels):
         if labels != None:
-            self.dynamic_proposals = dict()
             for label in iter(labels):
                 ref_types = list()
                 ref_types.append(('ref', _('Reference to \'{label}\'')))
@@ -97,6 +98,20 @@ class AutocompleteProvider(object):
                 ref_types.append(('eqref', _('Reference to \'{label}\', with parantheses')))
                 for ref_type in ref_types:
                     command = {'command': ref_type[0] + '{' + label + '}', 'description': ref_type[1].format(label=label)}
+                    for i in range(1, len(command['command']) + 1):
+                        try:
+                            if len(self.dynamic_proposals[command['command'][0:i].lower()]) < 5:
+                                self.dynamic_proposals[command['command'][0:i].lower()].append(command)
+                        except KeyError:
+                            self.dynamic_proposals[command['command'][0:i].lower()] = [command]
+
+    def add_dynamic_bibliography_commands(self, bibitems):
+        if bibitems != None:
+            for bibitem in iter(bibitems):
+                ref_types = list()
+                ref_types.append(('cite', _('Cite \'{bibitem}\'')))
+                for ref_type in ref_types:
+                    command = {'command': ref_type[0] + '{' + bibitem + '}', 'description': ref_type[1].format(bibitem=bibitem)}
                     for i in range(1, len(command['command']) + 1):
                         try:
                             if len(self.dynamic_proposals[command['command'][0:i].lower()]) < 5:
