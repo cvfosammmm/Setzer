@@ -88,6 +88,12 @@ class Document(Observable):
     def get_filename(self):
         return self.filename
         
+    def get_dirname(self):
+        if self.filename != None:
+            return os.path.dirname(self.filename)
+        else:
+            return ''
+
     def get_displayname(self):
         if self.filename != None:
             return self.get_filename()

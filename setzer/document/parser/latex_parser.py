@@ -20,6 +20,7 @@ from gi.repository import GObject
 
 import _thread as thread, queue
 import time
+import os.path
 
 from setzer.app.service_locator import ServiceLocator
 
@@ -28,6 +29,7 @@ class LaTeXParser(object):
 
     def __init__(self, document):
         self.document = document
+        self.dirname = self.document.get_dirname()
 
         self.symbols = dict()
         self.symbols['labels'] = set()
@@ -61,6 +63,7 @@ class LaTeXParser(object):
         self.last_buffer_change = time.time()
         text = self.document.get_text()
         with self.parse_jobs_lock:
+            self.dirname = self.document.get_dirname()
             self.parse_jobs['symbols'] = ParseJob(time.time() + 0.1, text)
             self.parse_jobs['blocks'] = ParseJob(time.time(), text)
 
@@ -188,7 +191,7 @@ class LaTeXParser(object):
         bibitems = set()
         packages = set()
         packages_detailed = dict()
-        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography)\{((?:\s|\w|\:|,)*)\}|\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text):
+        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource)\{((?:\s|\w|\:|\.|,)*)\}|\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text):
             if match.group(1) == 'label':
                 labels = labels | {match.group(2).strip()}
             elif match.group(1) == 'include':
@@ -198,7 +201,11 @@ class LaTeXParser(object):
             elif match.group(1) == 'bibliography':
                 bibfiles = match.group(2).strip().split(',')
                 for entry in bibfiles:
-                    bibliographies = bibliographies | {entry.strip()}
+                    bibliographies = bibliographies | {os.path.normpath(os.path.join(self.dirname, entry.strip() + '.bib'))}
+            elif match.group(1) == 'addbibresource':
+                bibfiles = match.group(2).strip().split(',')
+                for entry in bibfiles:
+                    bibliographies = bibliographies | {os.path.normpath(os.path.join(self.dirname, entry.strip()))}
             elif match.group(3) == 'usepackage':
                 packages = packages | {match.group(4).strip()}
                 packages_detailed[match.group(4).strip()] = match
