@@ -33,7 +33,9 @@ class AutocompleteProvider(object):
 
         self.static_proposals = dict()
         self.dynamic_word_beginnings = list()
-        self.dynamic_proposals = dict()
+
+        self.last_command = None
+        self.last_dynamic_proposals = list()
 
         self.generate_static_proposals()
         self.generate_dynamic_word_beginnings()
@@ -71,19 +73,25 @@ class AutocompleteProvider(object):
         return items + dynamic_items
 
     def get_dynamic_items(self, word):
-        dynamic_items = list()
-        offset = word.find('{')
-        if offset > 1:
-            word_beginning = word[:offset + 1]
+        if word == self.last_command:
+            return self.last_dynamic_proposals
         else:
-            word_beginning = word
-        if word_beginning in self.dynamic_word_beginnings['references']:
-            dynamic_items += self.get_dynamic_reference_commands(word)
-        elif word_beginning in self.dynamic_word_beginnings['citations']:
-            dynamic_items += self.get_dynamic_bibliography_commands(word)
+            dynamic_items = list()
+            offset = word.find('{')
+            if offset > 1:
+                word_beginning = word[:offset + 1]
+            else:
+                word_beginning = word
+            if word_beginning in self.dynamic_word_beginnings['references']:
+                dynamic_items += self.get_dynamic_reference_commands(word)
+            elif word_beginning in self.dynamic_word_beginnings['citations']:
+                dynamic_items += self.get_dynamic_bibliography_commands(word)
+
+            self.last_command = word
+            self.last_dynamic_proposals = dynamic_items
         return dynamic_items
 
-    @timer.timer
+    #@timer.timer
     def get_dynamic_reference_commands(self, word):
         dynamic_items = list()
         for document in self.workspace.open_documents:
