@@ -53,6 +53,11 @@
     </provides>
 
     <releases>
+        <release version="0.3.1" date="2020-8-31">
+            <description>
+                <p translatable="no">Tab autocomplete, dynamic citations autocomplete, more autocomplete improvements, ...</p>
+            </description>
+        </release>
         <release version="0.3.0" date="2020-8-20">
             <description>
                 <p translatable="no">Biber support, Glossaries support, ...</p>
