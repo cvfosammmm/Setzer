@@ -62,7 +62,7 @@ class AutocompleteProvider(object):
         self.generate_dynamic_word_beginnings()
         self.generate_static_proposals()
         self.parse_included_files()
-        GObject.timeout_add(5000, self.parse_included_files)
+        GObject.timeout_add(2000, self.parse_included_files)
 
     def get_items_for_completion_window(self, current_word, last_tabbed_command):
         items = list()
