@@ -34,11 +34,29 @@ class AutocompleteProvider(object):
         self.static_proposals = dict()
         self.dynamic_word_beginnings = list()
 
+        self.ref_types = dict()
+        self.ref_types['references'] = list()
+        self.ref_types['references'].append(('ref', _('Reference to \'{label}\'')))
+        self.ref_types['references'].append(('pageref', _('Reference to page of \'{label}\'')))
+        self.ref_types['references'].append(('eqref', _('Reference to \'{label}\', with parantheses')))
+        self.ref_types['citations'] = list()
+        self.ref_types['citations'].append(('cite', _('Cite \'{label}\'')))
+        self.ref_types['citations'].append(('citet', _('Cite \'{label}\' (abbreviated)')))
+        self.ref_types['citations'].append(('citep', _('Cite \'{label}\' (abbreviated with brackets)')))
+        self.ref_types['citations'].append(('citet*', _('Cite \'{label}\' (detailed)')))
+        self.ref_types['citations'].append(('citep*', _('Cite \'{label}\' (detailed with brackets)')))
+        self.ref_types['citations'].append(('citealt', _('Cite \'{label}\' (alternative style 1)')))
+        self.ref_types['citations'].append(('citealp', _('Cite \'{label}\' (alternative style 2)')))
+        self.ref_types['citations'].append(('citeauthor', _('Cite \'{label}\' (author)')))
+        self.ref_types['citations'].append(('citeauthor*', _('Cite \'{label}\' (author detailed)')))
+        self.ref_types['citations'].append(('citeyear', _('Cite \'{label}\' (year)')))
+        self.ref_types['citations'].append(('citeyearpar', _('Cite \'{label}\' (year with brackets)')))
+
         self.last_command = None
         self.last_dynamic_proposals = list()
 
-        self.generate_static_proposals()
         self.generate_dynamic_word_beginnings()
+        self.generate_static_proposals()
 
     def get_items_for_completion_window(self, current_word, last_tabbed_command):
         items = list()
@@ -91,60 +109,51 @@ class AutocompleteProvider(object):
 
     #@timer.timer
     def get_dynamic_reference_commands(self, word):
-        ref_types = list()
-        ref_types.append(('ref', _('Reference to \'{label}\'')))
-        ref_types.append(('pageref', _('Reference to page of \'{label}\'')))
-        ref_types.append(('eqref', _('Reference to \'{label}\', with parantheses')))
+        ref_types = self.ref_types['references']
 
         dynamic_items = list()
         documents = self.get_documents_for_dynamic_items()
 
-        for document in documents:
+        for ref_type in ref_types:
             if len(dynamic_items) >= 5: break
-            labels_dict = document.parser.get_labels()
-            if 'labels' in labels_dict:
-                labels = labels_dict['labels']
-                if labels != None:
-                    self.append_to_dynamic_items(word, dynamic_items, ref_types, labels, document)
+
+            for document in documents:
+                if len(dynamic_items) >= 5: break
+                labels_dict = document.parser.get_labels()
+                if 'labels' in labels_dict:
+                    labels = ['•'] + list(labels_dict['labels'])
+                else:
+                    labels = ['•']
+                self.append_to_dynamic_items(word, dynamic_items, ref_type, labels, document)
         return dynamic_items
 
     def get_dynamic_bibliography_commands(self, word):
-        ref_types = list()
-        ref_types.append(('cite', _('Cite \'{label}\'')))
-        ref_types.append(('citet', _('Cite \'{label}\' (abbreviated)')))
-        ref_types.append(('citep', _('Cite \'{label}\' (abbreviated with brackets)')))
-        ref_types.append(('citet*', _('Cite \'{label}\' (detailed)')))
-        ref_types.append(('citep*', _('Cite \'{label}\' (detailed with brackets)')))
-        ref_types.append(('citealt', _('Cite \'{label}\' (alternative style 1)')))
-        ref_types.append(('citealp', _('Cite \'{label}\' (alternative style 2)')))
-        ref_types.append(('citeauthor', _('Cite \'{label}\' (author)')))
-        ref_types.append(('citeauthor*', _('Cite \'{label}\' (author detailed)')))
-        ref_types.append(('citeyear', _('Cite \'{label}\' (year)')))
-        ref_types.append(('citeyearpar', _('Cite \'{label}\' (year with brackets)')))
+        ref_types = self.ref_types['citations']
 
         dynamic_items = list()
         documents = self.get_documents_for_dynamic_items()
 
-        for document in documents:
+        for ref_type in ref_types:
             if len(dynamic_items) >= 5: break
-            labels_dict = document.parser.get_labels()
-            if 'bibitems' in labels_dict:
-                labels = labels_dict['bibitems']
-                if labels != None:
-                    self.append_to_dynamic_items(word, dynamic_items, ref_types, labels, document)
+
+            for document in documents:
+                if len(dynamic_items) >= 5: break
+                labels_dict = document.parser.get_labels()
+                if 'bibitems' in labels_dict:
+                    labels = ['•'] + list(labels_dict['bibitems'])
+                else:
+                    labels = ['•']
+                self.append_to_dynamic_items(word, dynamic_items, ref_type, labels, document)
         return dynamic_items
 
-    def append_to_dynamic_items(self, word, items, ref_types, labels, document):
+    def append_to_dynamic_items(self, word, items, ref_type, labels, document):
         for label in iter(labels):
             if len(items) >= 5: break
 
-            for ref_type in ref_types:
-                if len(items) >= 5: break
-
-                command = {'command': ref_type[0] + '{' + label + '}', 'description': ref_type[1].format(label=label)}
-                if command['command'][:len(word) - 1] == word[1:].lower():
-                    if command['command'] not in [item['command'] for item in items]:
-                        items.append(command)
+            command = {'command': ref_type[0] + '{' + label + '}', 'description': ref_type[1].format(label=label)}
+            if command['command'][:len(word) - 1] == word[1:].lower():
+                if command['command'] not in [item['command'] for item in items]:
+                    items.append(command)
 
     def get_documents_for_dynamic_items(self):
         documents = list()
@@ -169,7 +178,6 @@ class AutocompleteProvider(object):
 
     def generate_static_proposals(self):
         commands = self.get_commands()
-
         self.static_proposals = dict()
         for command in commands.values():
             for i in range(1, len(command['command']) + 1):
@@ -181,13 +189,11 @@ class AutocompleteProvider(object):
 
     def generate_dynamic_word_beginnings(self):
         self.dynamic_word_beginnings = dict()
-        self.dynamic_word_beginnings['references'] = list()
-        self.dynamic_word_beginnings['citations'] = list()
-        for command in ('ref{', 'pageref{', 'eqref{'):
-            for i in range(1, len(command) + 1):
-                self.dynamic_word_beginnings['references'].append('\\' + command[:i])
-        for command in ('cite{', 'citet{', 'citep{', 'citet*{', 'citep*{', 'citealt{', 'citealp{', 'citeauthor{', 'citeauthor*{', 'citeyear{', 'citeyearpar{'):
-            for i in range(1, len(command) + 1):
-                self.dynamic_word_beginnings['citations'].append('\\' + command[:i])
+        for ref_types_type in self.ref_types:
+            self.dynamic_word_beginnings[ref_types_type] = list()
+            for command in self.ref_types[ref_types_type]:
+                command = command[0] + '{'
+                for i in range(1, len(command) + 1):
+                    self.dynamic_word_beginnings[ref_types_type].append('\\' + command[:i])
 
 

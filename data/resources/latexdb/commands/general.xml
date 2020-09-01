@@ -83,18 +83,7 @@
   <command name="chapter*{•}" text="chapter*{•}" description="" />
   <command name="check{•}" text="check{•}" description="" />
   <command name="chi" text="chi" description="Greek letter &quot;chi&quot;" />
-  <command name="cite{•}" text="cite{•}" description="Citation" />
   <command name="cite[•]{•}" text="cite[•]{•}" description="Citation with page number" />
-  <command name="citet{•}" text="citet{•}" description="Citation (abbreviated)" />
-  <command name="citep{•}" text="citep{•}" description="Citation (abbreviated with brackets)" />
-  <command name="citet*{•}" text="citet*{•}" description="Citation (detailed)" />
-  <command name="citep*{•}" text="citep*{•}" description="Citation (detailed with brackets)" />
-  <command name="citealt{•}" text="citealt{•}" description="Citation (alternative style 1)" />
-  <command name="citealp{•}" text="citealp{•}" description="Citation (alternative style 2)" />
-  <command name="citeauthor{•}" text="citeauthor{•}" description="Citation (author)" />
-  <command name="citeauthor*{•}" text="citeauthor*{•}" description="Citation (author detailed)" />
-  <command name="citeyear{•}" text="citeyear{•}" description="Citation (year)" />
-  <command name="citeyearpar{•}" text="citeyearpar{•}" description="Citation (year with brackets)" />
   <command name="cline{-}" text="cline{-}" description="" />
   <command name="columnbreak" text="columnbreak" description="" />
   <command name="coprod" text="coprod" description="" />
@@ -277,7 +266,6 @@
   <command name="pagebreak" text="pagebreak" description="" />
   <command name="pagename" text="pagename" description="" />
   <command name="pagenumbering{•}" text="pagenumbering{•}" description="" />
-  <command name="pageref{•}" text="pageref{•}" description="" />
   <command name="pagestyle" text="pagestyle" description="" />
   <command name="paragraph{•}" text="paragraph{•}" description="" />
   <command name="paragraph*{•}" text="paragraph*{•}" description="" />
@@ -298,7 +286,6 @@
   <command name="quad" text="quad" description="" />
   <command name="rangle" text="rangle" description="" />
   <command name="rbrace" text="rbrace" description="" />
-  <command name="ref{•}" text="ref{•}" description="" />
   <command name="renewcommand{•}{•}" text="renewcommand{•}{•}" description="" />
   <command name="renewenvironment{•}{•}{•}" text="renewenvironment{•}{•}{•}" description="" />
   <command name="rho" text="rho" description="Greek letter &quot;rho&quot;" />
