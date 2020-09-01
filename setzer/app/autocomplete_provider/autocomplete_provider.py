@@ -20,6 +20,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import GObject
 
 import os.path
+import time
 import xml.etree.ElementTree as ET
 
 import setzer.helpers.timer as timer
@@ -27,12 +28,15 @@ import setzer.helpers.timer as timer
 
 class AutocompleteProvider(object):
 
-    def __init__(self, resources_path, workspace):
+    def __init__(self, resources_path, workspace, latex_parser_regex, bibtex_parser_regex):
         self.workspace = workspace
         self.resources_path = resources_path
+        self.latex_parser_regex = latex_parser_regex
+        self.bibtex_parser_regex = bibtex_parser_regex
 
         self.static_proposals = dict()
         self.dynamic_word_beginnings = list()
+        self.included_files_labels = dict()
 
         self.ref_types = dict()
         self.ref_types['references'] = list()
@@ -57,6 +61,8 @@ class AutocompleteProvider(object):
 
         self.generate_dynamic_word_beginnings()
         self.generate_static_proposals()
+        self.parse_included_files()
+        GObject.timeout_add(5000, self.parse_included_files)
 
     def get_items_for_completion_window(self, current_word, last_tabbed_command):
         items = list()
@@ -107,46 +113,76 @@ class AutocompleteProvider(object):
             self.last_dynamic_proposals = dynamic_items
         return dynamic_items
 
-    #@timer.timer
     def get_dynamic_reference_commands(self, word):
         ref_types = self.ref_types['references']
 
         dynamic_items = list()
-        documents = self.get_documents_for_dynamic_items()
+        labels = self.get_labels_for_dynamic_items('labels')
 
         for ref_type in ref_types:
             if len(dynamic_items) >= 5: break
-
-            for document in documents:
-                if len(dynamic_items) >= 5: break
-                labels_dict = document.parser.get_labels()
-                if 'labels' in labels_dict:
-                    labels = ['•'] + list(labels_dict['labels'])
-                else:
-                    labels = ['•']
-                self.append_to_dynamic_items(word, dynamic_items, ref_type, labels, document)
+            self.append_to_dynamic_items(word, dynamic_items, ref_type, labels)
         return dynamic_items
 
     def get_dynamic_bibliography_commands(self, word):
         ref_types = self.ref_types['citations']
 
         dynamic_items = list()
-        documents = self.get_documents_for_dynamic_items()
+        labels = self.get_labels_for_dynamic_items('bibitems')
 
         for ref_type in ref_types:
             if len(dynamic_items) >= 5: break
-
-            for document in documents:
-                if len(dynamic_items) >= 5: break
-                labels_dict = document.parser.get_labels()
-                if 'bibitems' in labels_dict:
-                    labels = ['•'] + list(labels_dict['bibitems'])
-                else:
-                    labels = ['•']
-                self.append_to_dynamic_items(word, dynamic_items, ref_type, labels, document)
+            self.append_to_dynamic_items(word, dynamic_items, ref_type, labels)
         return dynamic_items
 
-    def append_to_dynamic_items(self, word, items, ref_type, labels, document):
+    #@timer.timer
+    def get_labels_for_dynamic_items(self, label_type):
+        labels_first = set()
+        labels_second = set()
+        labels_rest = set()
+
+        pathnames_done = set()
+        if self.workspace.active_document != None:
+            pathnames_done = pathnames_done | {self.workspace.active_document.get_filename()}
+            labels_dict = self.workspace.active_document.parser.get_labels()
+            if label_type in labels_dict:
+                labels_first = labels_first | labels_dict[label_type]
+
+            included_files = self.workspace.active_document.get_included_files()
+            for pathname in included_files:
+                if pathname not in pathnames_done:
+                    pathnames_done = pathnames_done | {pathname}
+                    if pathname in self.included_files_labels:
+                        labels_dict = self.included_files_labels[pathname]['labels']
+                        if label_type in labels_dict:
+                            labels_second = labels_second | labels_dict[label_type]
+                    else:
+                        document_object = self.workspace.get_document_by_filename(pathname)
+                        if document_object:
+                            labels_dict = document_object.parser.get_labels()
+                            if label_type in labels_dict:
+                                labels_second = labels_second | labels_dict[label_type]
+
+        for document in self.workspace.open_documents:
+            pathnames = {document.get_filename()} | document.get_included_files()
+            for pathname in pathnames:
+                if pathname not in pathnames_done:
+                    pathnames_done = pathnames_done | {pathname}
+                    if pathname in self.included_files_labels:
+                        labels_dict = self.included_files_labels[pathname]['labels']
+                        if label_type in labels_dict:
+                            labels_rest = labels_rest | labels_dict[label_type]
+                    else:
+                        document_object = self.workspace.get_document_by_filename(pathname)
+                        if document_object:
+                            labels_dict = document_object.parser.get_labels()
+                            if label_type in labels_dict:
+                                labels_rest = labels_rest | labels_dict[label_type]
+
+        labels = ['•'] + list(labels_first) + list(labels_second) + list(labels_rest)
+        return labels
+
+    def append_to_dynamic_items(self, word, items, ref_type, labels):
         for label in iter(labels):
             if len(items) >= 5: break
 
@@ -155,26 +191,64 @@ class AutocompleteProvider(object):
                 if command['command'] not in [item['command'] for item in items]:
                     items.append(command)
 
-    def get_documents_for_dynamic_items(self):
-        documents = list()
-        if self.workspace.active_document != None:
-            documents.append(self.workspace.active_document)
-            for document in self.workspace.open_documents:
-                if self.workspace.active_document.is_latex_document() and document not in documents and document.filename in self.workspace.active_document.get_included_files():
-                    documents.append(document)
-            for document in self.workspace.open_documents:
-                if document not in documents:
-                    documents.append(document)
-        return documents
+    #@timer.timer
+    def parse_included_files(self):
+        current_includes = set()
+        open_docs_pathnames = self.workspace.get_open_documents_filenames()
+        for document in self.workspace.open_latex_documents:
+            labels_dict = document.parser.get_labels()
+            current_includes = current_includes | labels_dict['bibliographies'] | labels_dict['included_latex_files']
+            for pathname in labels_dict['bibliographies']:
+                if pathname not in open_docs_pathnames:
+                    if os.path.isfile(pathname):
+                        if pathname not in self.included_files_labels:
+                            self.included_files_labels[pathname] = self.parse_bibtex_file(pathname)
+                        else:
+                            last_parse_time = self.included_files_labels[pathname]['last_parse_time']
+                            if last_parse_time < os.path.getmtime(pathname):
+                                self.included_files_labels[pathname] = self.parse_bibtex_file(pathname)
+            for pathname in labels_dict['included_latex_files']:
+                if pathname not in open_docs_pathnames:
+                    if os.path.isfile(pathname):
+                        if pathname not in self.included_files_labels:
+                            self.included_files_labels[pathname] = self.parse_latex_file(pathname)
+                        else:
+                            last_parse_time = self.included_files_labels[pathname]['last_parse_time']
+                            if last_parse_time < os.path.getmtime(pathname):
+                                self.included_files_labels[pathname] = self.parse_latex_file(pathname)
+        for pathname in list(self.included_files_labels):
+            if pathname not in current_includes or pathname in open_docs_pathnames:
+                del(self.included_files_labels[pathname])
+        return True
 
-    def get_commands(self):
-        commands = dict()
-        tree = ET.parse(os.path.join(self.resources_path, 'latexdb', 'commands', 'general.xml'))
-        root = tree.getroot()
-        for child in root:
-            attrib = child.attrib
-            commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description']}
-        return commands
+    def parse_latex_file(self, pathname):
+        with open(pathname, 'r') as f:
+            text = f.read()
+        labels = set()
+        bibitems = set()
+        for match in self.latex_parser_regex.finditer(text):
+            if match.group(1) == 'label':
+                labels = labels | {match.group(2).strip()}
+            elif match.group(5) == 'bibitem':
+                bibitems = bibitems | {match.group(6).strip()}
+        return {'last_parse_time': time.time(), 'labels': {'labels': labels, 'bibitems': bibitems}}
+
+    def parse_bibtex_file(self, pathname):
+        with open(pathname, 'r') as f:
+            text = f.read()
+        bibitems = set()
+        for match in self.bibtex_parser_regex.finditer(text):
+            bibitems = bibitems | {match.group(2).strip()}
+        return {'last_parse_time': time.time(), 'labels': {'bibitems': bibitems}}
+
+    def generate_dynamic_word_beginnings(self):
+        self.dynamic_word_beginnings = dict()
+        for ref_types_type in self.ref_types:
+            self.dynamic_word_beginnings[ref_types_type] = list()
+            for command in self.ref_types[ref_types_type]:
+                command = command[0] + '{'
+                for i in range(1, len(command) + 1):
+                    self.dynamic_word_beginnings[ref_types_type].append('\\' + command[:i])
 
     def generate_static_proposals(self):
         commands = self.get_commands()
@@ -187,13 +261,13 @@ class AutocompleteProvider(object):
                 except KeyError:
                     self.static_proposals[command['command'][0:i].lower()] = [command]
 
-    def generate_dynamic_word_beginnings(self):
-        self.dynamic_word_beginnings = dict()
-        for ref_types_type in self.ref_types:
-            self.dynamic_word_beginnings[ref_types_type] = list()
-            for command in self.ref_types[ref_types_type]:
-                command = command[0] + '{'
-                for i in range(1, len(command) + 1):
-                    self.dynamic_word_beginnings[ref_types_type].append('\\' + command[:i])
+    def get_commands(self):
+        commands = dict()
+        tree = ET.parse(os.path.join(self.resources_path, 'latexdb', 'commands', 'general.xml'))
+        root = tree.getroot()
+        for child in root:
+            attrib = child.attrib
+            commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description']}
+        return commands
 
 

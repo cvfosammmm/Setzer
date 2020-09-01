@@ -384,6 +384,9 @@ class BibTeXDocument(Document):
     def get_folded_regions(self):
         return []
 
+    def get_included_files(self):
+        return set()
+
     def get_file_ending(self):
         return 'bib'
 

@@ -76,7 +76,9 @@ class ServiceLocator(object):
 
     def init_autocomplete_provider(workspace):
         path = ServiceLocator.get_resources_path()
-        ServiceLocator.autocomplete_provider = autocomplete_provider.AutocompleteProvider(path, workspace)
+        latex_parser_regex = ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource)\{((?:\s|\w|\:|\.|,)*)\}|\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}')
+        bibtex_parser_regex = ServiceLocator.get_regex_object(r'@(\w+)\{(\w+)')
+        ServiceLocator.autocomplete_provider = autocomplete_provider.AutocompleteProvider(path, workspace, latex_parser_regex, bibtex_parser_regex)
 
     def get_autocomplete_provider():
         return ServiceLocator.autocomplete_provider
