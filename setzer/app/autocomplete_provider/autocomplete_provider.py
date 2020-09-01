@@ -40,21 +40,21 @@ class AutocompleteProvider(object):
 
         self.ref_types = dict()
         self.ref_types['references'] = list()
-        self.ref_types['references'].append(('ref', _('Reference to \'{label}\'')))
-        self.ref_types['references'].append(('pageref', _('Reference to page of \'{label}\'')))
-        self.ref_types['references'].append(('eqref', _('Reference to \'{label}\', with parantheses')))
+        self.ref_types['references'].append(('ref', _('Reference to \'{label}\''), _('Reference')))
+        self.ref_types['references'].append(('pageref', _('Reference to page of \'{label}\''), _('Page reference')))
+        self.ref_types['references'].append(('eqref', _('Reference to \'{label}\', with parantheses'), _('Reference with parantheses')))
         self.ref_types['citations'] = list()
-        self.ref_types['citations'].append(('cite', _('Cite \'{label}\'')))
-        self.ref_types['citations'].append(('citet', _('Cite \'{label}\' (abbreviated)')))
-        self.ref_types['citations'].append(('citep', _('Cite \'{label}\' (abbreviated with brackets)')))
-        self.ref_types['citations'].append(('citet*', _('Cite \'{label}\' (detailed)')))
-        self.ref_types['citations'].append(('citep*', _('Cite \'{label}\' (detailed with brackets)')))
-        self.ref_types['citations'].append(('citealt', _('Cite \'{label}\' (alternative style 1)')))
-        self.ref_types['citations'].append(('citealp', _('Cite \'{label}\' (alternative style 2)')))
-        self.ref_types['citations'].append(('citeauthor', _('Cite \'{label}\' (author)')))
-        self.ref_types['citations'].append(('citeauthor*', _('Cite \'{label}\' (author detailed)')))
-        self.ref_types['citations'].append(('citeyear', _('Cite \'{label}\' (year)')))
-        self.ref_types['citations'].append(('citeyearpar', _('Cite \'{label}\' (year with brackets)')))
+        self.ref_types['citations'].append(('cite', _('Cite \'{label}\''), _('Citation')))
+        self.ref_types['citations'].append(('citet', _('Cite \'{label}\' (abbreviated)'), _('Citation (abbreviated)')))
+        self.ref_types['citations'].append(('citep', _('Cite \'{label}\' (abbreviated with brackets)'), _('Citation (abbreviated with brackets)')))
+        self.ref_types['citations'].append(('citet*', _('Cite \'{label}\' (detailed)'), _('Citation (detailed)')))
+        self.ref_types['citations'].append(('citep*', _('Cite \'{label}\' (detailed with brackets)'), _('Citation (detailed with brackets)')))
+        self.ref_types['citations'].append(('citealt', _('Cite \'{label}\' (alternative style 1)'), _('Citation (alternative style 1)')))
+        self.ref_types['citations'].append(('citealp', _('Cite \'{label}\' (alternative style 2)'), _('Citation (alternative style 2)')))
+        self.ref_types['citations'].append(('citeauthor', _('Cite \'{label}\' (author)'), _('Citation (author)')))
+        self.ref_types['citations'].append(('citeauthor*', _('Cite \'{label}\' (author detailed)'), _('Citation (author detailed)')))
+        self.ref_types['citations'].append(('citeyear', _('Cite \'{label}\' (year)'), _('Citation (year)')))
+        self.ref_types['citations'].append(('citeyearpar', _('Cite \'{label}\' (year with brackets)'), _('Citation (year with brackets)')))
 
         self.last_command = None
         self.last_dynamic_proposals = list()
@@ -186,7 +186,11 @@ class AutocompleteProvider(object):
         for label in iter(labels):
             if len(items) >= 5: break
 
-            command = {'command': ref_type[0] + '{' + label + '}', 'description': ref_type[1].format(label=label)}
+            if label == '•':
+                description = ref_type[2]
+            else:
+                description = ref_type[1].format(label=label)
+            command = {'command': ref_type[0] + '{' + label + '}', 'description': description}
             if command['command'][:len(word) - 1] == word[1:].lower():
                 if command['command'] not in [item['command'] for item in items]:
                     items.append(command)
