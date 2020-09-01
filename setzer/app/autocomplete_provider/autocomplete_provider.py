@@ -89,10 +89,18 @@ class AutocompleteProvider(object):
 
     def get_items(self, word):
         items = list()
-        try: items = self.static_proposals[word[1:].lower()]
-        except KeyError: pass
+        try: static_items = self.static_proposals[word[1:].lower()]
+        except KeyError: static_items = list()
         dynamic_items = self.get_dynamic_items(word)
-        return dynamic_items + items
+        add_dynamic = True
+        for item in sorted(static_items, key=lambda command: command['command'].lower()):
+            if add_dynamic and len(dynamic_items) > 0 and dynamic_items[0]['command'].lower() < item['command'].lower():
+                add_dynamic = False
+                items += dynamic_items
+            items.append(item)
+        if add_dynamic:
+            items += dynamic_items
+        return items
 
     def get_dynamic_items(self, word):
         if word == self.last_command:
