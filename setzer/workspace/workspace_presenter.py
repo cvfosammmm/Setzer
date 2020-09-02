@@ -319,7 +319,7 @@ class WorkspacePresenter(object):
             else:
                 if show_preview or show_help:
                     if self.workspace.show_sidebar == False and self.main_window.sidebar.get_allocated_width() > 1:
-                        end -= self.main_window.sidebar.get_allocated_width()
+                        end -= self.main_window.sidebar.get_allocated_width() + 1
                     self.main_window.preview_paned.child_set_property(self.main_window.preview_help_stack, 'shrink', False)
                     self.main_window.preview_visible = True
                 else:
