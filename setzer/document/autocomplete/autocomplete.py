@@ -377,7 +377,7 @@ class Autocomplete(object):
             self.view.select_first()
 
     def update_position(self):
-        self.height = len(self.items) * self.line_height + 24
+        self.height = len(self.items) * self.line_height + 22
         self.width = self.view.get_allocated_width()
 
         buffer = self.document.get_buffer()
@@ -390,10 +390,10 @@ class Autocomplete(object):
             gutter_width = 0
         x_offset = - self.document_view.scrolled_window.get_hadjustment().get_value()
         y_offset = - self.document_view.scrolled_window.get_vadjustment().get_value()
-        self.x_position = x_offset + iter_location.x - 4 + gutter_width - len(self.current_word) * self.char_width
+        self.x_position = x_offset + iter_location.x - 2 + gutter_width - len(self.current_word) * self.char_width
         self.y_position = y_offset + iter_location.y + self.line_height + self.shortcuts_bar_height
 
-        full_height = 114
+        full_height = 112
         if self.y_position >= self.line_height - 1 + self.shortcuts_bar_height and self.y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
             self.view.set_margin_top(self.y_position)
         else:
@@ -407,7 +407,7 @@ class Autocomplete(object):
         show_x = False
         show_y = False
 
-        full_height = 114
+        full_height = 112
         if self.y_position >= self.line_height - 1 + self.shortcuts_bar_height and self.y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
             show_y = True
         elif self.y_position >= self.line_height - 1 + self.shortcuts_bar_height and self.y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
