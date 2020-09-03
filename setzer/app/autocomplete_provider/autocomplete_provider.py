@@ -83,7 +83,7 @@ class AutocompleteProvider(object):
                     items_rest.append(item)
             if count >= 5:
                 items = items[:5]
-            items = items_rest[:5 - count] + items
+            items = items + items_rest[:5 - count]
 
         return items
 
