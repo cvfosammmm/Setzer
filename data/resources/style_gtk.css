@@ -14,7 +14,7 @@ box.autocomplete {
     padding: 0px;
 }
 box.autocomplete list {
-    background-color: #f9f06b;
+    background-color: #fff895;
     border-radius: 1px;
 }
 box.autocomplete list row {
@@ -30,7 +30,7 @@ box.autocomplete list row:selected {
 }
 box.autocomplete list row:not(:selected) {
     background-color: @theme_bg_color;
-    background-color: #f9f4af;
+    background-color: #fff895;
 }
 box.autocomplete list label {
     color: #000;
