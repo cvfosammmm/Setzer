@@ -133,11 +133,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
 
   <style name="latex:usepackage"            foreground="#c03e28" bold="true"/>
   <style name="latex:pkg-name"              foreground="black" bold="false"/>
+  <style name="latex:special-char"          foreground="plum3"/>
 
   <style name="latex:display-math"          foreground="green2"/>
   <style name="latex:math-boundary"         foreground="green2" bold="true"/>
   <style name="latex:math-super-sub-script" foreground="green2" bold="true"/>
   <style name="latex:math-command"          foreground="green2" bold="true"/>
+  <style name="latex:math-special-char"     foreground="green2"/>
 
   <style name="latex:begin-end-command"     foreground="blue" bold="true"/>
   <style name="latex:env-name"              foreground="black" bold="false"/>
@@ -157,7 +159,5 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <style name="latex:subsubsection"         scale="1.2"/>-->
 
   <style name="latex:verbatim"              foreground="green2" bold="false"/>
-
-  <style name="latex:special-char"          use-style="def:constant"/>
 
 </style-scheme>

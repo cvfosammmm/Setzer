@@ -39,6 +39,7 @@
     <style id="math-boundary"           name="Math Boundary"            map-to="latex:display-math"/>
     <style id="math-super-sub-script"   name="Math Super Sub"           map-to="def:keyword"/>
     <style id="math-command"            name="Command"                  map-to="latex:command"/>
+    <style id="math-special-char"       name="Math Special Character"   map-to="def:special-char"/>
 
     <style id="begin-end-command"       name="Command"                  map-to="def:keyword"/>
     <style id="usepackage"              name="Usepackage"               map-to="def:keyword"/>
@@ -447,8 +448,35 @@
       </match>
     </context>
 
-    <context id="math-spacing" style-ref="special-char">
+    <context id="math-spacing" style-ref="math-special-char">
       <match>\\[;:!]</match>
+    </context>
+
+    <context id="math-special-char">
+      <include>
+        <!-- Include accents here before the escaped command symbols because for
+             example the hat (^) can be used as an accent and will be placed over
+             the following letter (e.g. \^o will NOT produce ^o) -->
+        <context id="math-accents" style-ref="math-special-char" class="no-spell-check">
+          <match>\%{accents}</match>
+        </context>
+
+        <context id="math-special-symbols" style-ref="math-special-char" class="no-spell-check">
+          <prefix>\\</prefix>
+          <suffix></suffix>
+
+          <keyword>\$</keyword>
+          <keyword>&amp;</keyword>
+          <keyword>%</keyword>
+          <keyword>#</keyword>
+          <keyword>_</keyword>
+          <keyword>\{</keyword>
+          <keyword>\}</keyword>
+          <keyword>~</keyword>
+          <keyword>\^</keyword>
+          <keyword>\\</keyword>
+        </context>
+      </include>
     </context>
 
     <context id="math-brackets" style-ref="math-command">
@@ -473,7 +501,7 @@
         <context ref="comment"/>
         <context ref="math-spacing"/>
         <context ref="math-brackets"/>
-        <context ref="special-char"/>
+        <context ref="math-special-char"/>
         <context ref="math-super-sub-script"/>
         <context ref="math-command"/>
         <context ref="generic-command-in-math"/>
