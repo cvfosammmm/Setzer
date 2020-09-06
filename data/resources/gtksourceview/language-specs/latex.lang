@@ -529,7 +529,7 @@
     </context>
 
     <context id="math-env" style-ref="math" style-inside="true" class="no-spell-check">
-      <start>(\\begin)\{(math|displaymath|equation\*?|align\*?|flalign\*?|eqnarray\*?|multline\*?|gather\*?)\}</start>
+      <start>(\\begin)\{(math|displaymath|equation\*?|align\*?|alignat\*?|flalign\*?|eqnarray\*?|multline\*?|gather\*?)\}</start>
       <end>(\\end)\{(\%{2@start})\}</end>
       <include>
         <context sub-pattern="1" where="start" style-ref="begin-end-command"/>
