@@ -49,9 +49,9 @@ class LaTeXParser(object):
         self.last_blocks_change = time.time()
         self.blocks_lock = thread.allocate_lock()
 
-        self.parse_jobs = dict()
-        self.parse_jobs['symbols'] = None
-        self.parse_jobs['blocks'] = None
+        self.parse_times = dict()
+        self.parse_times['symbols'] = None
+        self.parse_times['blocks'] = None
         self.parse_symbols_job_running = False
         self.parse_blocks_job_running = False
         self.parse_jobs_lock = thread.allocate_lock()
@@ -60,32 +60,35 @@ class LaTeXParser(object):
 
     def on_buffer_changed(self):
         self.last_buffer_change = time.time()
-        text = self.document.get_text()
         with self.parse_jobs_lock:
             self.dirname = self.document.get_dirname()
-            self.parse_jobs['symbols'] = ParseJob(time.time() + 0.1, text)
-            self.parse_jobs['blocks'] = ParseJob(time.time(), text)
+            self.parse_times['symbols'] = time.time() + 0.01
+            self.parse_times['blocks'] = time.time() + 0.01
 
     def compute_loop(self):
+        text = None
         with self.parse_jobs_lock:
-            job = self.parse_jobs['symbols']
-        if job != None:
+            starting_time = self.parse_times['symbols']
+        if starting_time != None:
             with self.parse_jobs_lock:
                 parse_symbols_job_running = self.parse_symbols_job_running
-            if not parse_symbols_job_running and job.starting_time < time.time():
+            if not parse_symbols_job_running and starting_time < time.time():
+                text = self.document.get_text()
                 with self.parse_jobs_lock:
-                    self.parse_jobs['symbols'] = None
-                thread.start_new_thread(self.parse_symbols, (job.text, ))
+                    self.parse_times['symbols'] = None
+                thread.start_new_thread(self.parse_symbols, (text, ))
 
         with self.parse_jobs_lock:
-            job = self.parse_jobs['blocks']
-        if job != None:
+            starting_time = self.parse_times['blocks']
+        if starting_time != None:
             with self.parse_jobs_lock:
                 parse_blocks_job_running = self.parse_blocks_job_running
-            if not parse_blocks_job_running and job.starting_time < time.time():
+            if not parse_blocks_job_running and starting_time < time.time():
+                if text == None:
+                    text = self.document.get_text()
                 with self.parse_jobs_lock:
-                    self.parse_jobs['blocks'] = None
-                thread.start_new_thread(self.parse_blocks, (job.text, ))
+                    self.parse_times['blocks'] = None
+                thread.start_new_thread(self.parse_blocks, (text, ))
 
         return True
 
@@ -223,12 +226,5 @@ class LaTeXParser(object):
             self.labels_changed = True
         with self.parse_jobs_lock:
             self.parse_symbols_job_running = False
-
-
-class ParseJob():
-
-    def __init__(self, starting_time, text):
-        self.starting_time = starting_time
-        self.text = text
 
 

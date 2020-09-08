@@ -111,12 +111,12 @@ class SourceBuffer(GtkSource.Buffer):
             start_iter.set_line_offset(0)
             text = self.get_text(start_iter, end_iter, True)
             for count, line in enumerate(text.splitlines()):
+                for tag in start_iter.get_tags():
+                    self.remove_tag(tag, start_iter, end_iter)
                 number_of_characters = len(line.replace('\t', ' ' * self.tab_width)) - len(line.lstrip())
                 if number_of_characters > 0:
                     end_iter = start_iter.copy()
                     end_iter.forward_chars(1)
-                    for tag in start_iter.get_tags():
-                        self.remove_tag(tag, start_iter, end_iter)
                     self.apply_tag(self.get_indentation_tag(number_of_characters), start_iter, end_iter)
                 start_iter.forward_line()
 
