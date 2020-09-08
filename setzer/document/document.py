@@ -57,8 +57,10 @@ class Document(Observable):
 
     def set_search_text(self, search_text):
         self.source_buffer.search_settings.set_search_text(search_text)
-        
+
     def on_buffer_changed(self, buffer):
+        buffer.update_indentation_tags()
+
         try: self.code_folding.on_buffer_changed(buffer)
         except AttributeError: pass
 

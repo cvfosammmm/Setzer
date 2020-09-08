@@ -69,8 +69,59 @@ class SourceBuffer(GtkSource.Buffer):
         self.synctex_tag_count = 0
         self.synctex_highlight_tags = dict()
 
+        self.indentation_update = None
+        self.indentation_tags = dict()
+        self.tab_width = self.settings.get_value('preferences', 'tab_width')
+        self.settings.register_observer(self)
+
+        self.connect('insert-text', self.on_insert_text)
+        self.connect('delete-range', self.on_delete_range)
+
         self.document.add_change_code('buffer_ready')
+
+    def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'settings_changed':
+            section, item, value = parameter
+            if (section, item) == ('preferences', 'tab_width'):
+                self.tab_width = self.settings.get_value('preferences', 'tab_width')
         
+    def on_insert_text(self, buffer, location_iter, text, text_length):
+        self.indentation_update = {'line_start': location_iter.get_line(), 'text_length': text_length}
+
+    def on_delete_range(self, buffer, start_iter, end_iter):
+        self.indentation_update = {'line_start': start_iter.get_line(), 'text_length': 0}
+
+    def get_indentation_tag(self, number_of_characters):
+        try:
+            tag = self.indentation_tags[number_of_characters]
+        except KeyError:
+            tag = self.create_tag('indentation-' + str(number_of_characters))
+            tag.set_property('indent', -1 * number_of_characters * self.get_char_width())
+            self.indentation_tags[number_of_characters] = tag
+        return tag
+
+    #@timer.timer
+    def update_indentation_tags(self):
+        if self.indentation_update != None:
+            start_iter = self.get_iter_at_line(self.indentation_update['line_start'])
+            end_iter = start_iter.copy()
+            end_iter.forward_chars(self.indentation_update['text_length'])
+            end_iter.forward_to_line_end()
+            start_iter.set_line_offset(0)
+            text = self.get_text(start_iter, end_iter, True)
+            for count, line in enumerate(text.splitlines()):
+                number_of_characters = len(line.replace('\t', ' ' * self.tab_width)) - len(line.lstrip())
+                if number_of_characters > 0:
+                    end_iter = start_iter.copy()
+                    end_iter.forward_chars(1)
+                    for tag in start_iter.get_tags():
+                        self.remove_tag(tag, start_iter, end_iter)
+                    self.apply_tag(self.get_indentation_tag(number_of_characters), start_iter, end_iter)
+                start_iter.forward_line()
+
+            self.indentation_update = None
+
     def insert_before_document_end(self, text):
         end_iter = self.get_end_iter()
         result = end_iter.backward_search('\\end{document}', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
@@ -378,7 +429,7 @@ class SourceBuffer(GtkSource.Buffer):
         return self.view.get_iter_location(self.get_end_iter()).height
 
     def get_char_width(self):
-        char_width, line_height = ServiceLocator.get_char_dimensions()
+        char_width, line_height = self.get_char_dimensions()
         return char_width
 
     def get_char_dimensions(self):
