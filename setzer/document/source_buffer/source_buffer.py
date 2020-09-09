@@ -98,6 +98,21 @@ class SourceBuffer(GtkSource.Buffer):
                 insert_iter.backward_char()
                 self.place_cursor(insert_iter)
                 return True
+            return False
+
+        bracket_vals = [Gdk.keyval_from_name('parenleft'), Gdk.keyval_from_name('bracketleft'), Gdk.keyval_from_name('braceleft')]
+        if event.keyval in bracket_vals:
+            if event.keyval == Gdk.keyval_from_name('bracketleft'):
+                self.insert_at_cursor('[]')
+            if event.keyval == Gdk.keyval_from_name('braceleft'):
+                self.insert_at_cursor('{}')
+            if event.keyval == Gdk.keyval_from_name('parenleft'):
+                self.insert_at_cursor('()')
+            insert_iter = self.get_iter_at_mark(self.get_insert())
+            insert_iter.backward_char()
+            self.place_cursor(insert_iter)
+            return True
+
         return False
 
     def on_insert_text(self, buffer, location_iter, text, text_length):
