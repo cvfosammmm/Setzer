@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-24 17:58+0200\n"
-"PO-Revision-Date: 2020-08-23 10:06+0200\n"
+"POT-Creation-Date: 2020-09-09 21:58+0200\n"
+"PO-Revision-Date: 2020-09-09 22:48+0200\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -16,6 +16,135 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-Generator: Gtranslator 3.30.1\n"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:43
+#, python-brace-format
+msgid "Reference to '{label}'"
+msgstr "Verweis auf '{label}'"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:43
+#: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:63
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:263
+msgid "Reference"
+msgstr "Verweis"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:44
+#, python-brace-format
+msgid "Reference to page of '{label}'"
+msgstr "Verweis auf Seite von '{label}'"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:44
+msgid "Page reference"
+msgstr "Verweis auf Seite"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:45
+#, python-brace-format
+msgid "Reference to '{label}', with parantheses"
+msgstr "Verweis auf '{label}', mit Klammern"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:45
+msgid "Reference with parantheses"
+msgstr "Verweis mit Klammern"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:47
+#, python-brace-format
+msgid "Cite '{label}'"
+msgstr "Zitiere '{label}'"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:47
+#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:137
+msgid "Citation"
+msgstr "Zitat"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:48
+#, python-brace-format
+msgid "Cite '{label}' (abbreviated)"
+msgstr "Zitiere '{label}' (Kurzform)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:48
+msgid "Citation (abbreviated)"
+msgstr "Zitat (Kurzform)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:49
+#, python-brace-format
+msgid "Cite '{label}' (abbreviated with brackets)"
+msgstr "Zitiere '{label}' (Kurzform mit Klammern)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:49
+msgid "Citation (abbreviated with brackets)"
+msgstr "Zitat (Kurzform mit Klammern)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:50
+#, python-brace-format
+msgid "Cite '{label}' (detailed)"
+msgstr "Zitiere '{label}' (ausführlich)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:50
+msgid "Citation (detailed)"
+msgstr "Zitat (ausführlich)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:51
+#, python-brace-format
+msgid "Cite '{label}' (detailed with brackets)"
+msgstr "Zitiere '{label}' (ausführlich mit Klammern)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:51
+msgid "Citation (detailed with brackets)"
+msgstr "Zitat (ausführlich mit Klammern)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:52
+#, python-brace-format
+msgid "Cite '{label}' (alternative style 1)"
+msgstr "Zitiere '{label}' (Stilalternative 1)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:52
+msgid "Citation (alternative style 1)"
+msgstr "Zitat (Stilalternative 1)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:53
+#, python-brace-format
+msgid "Cite '{label}' (alternative style 2)"
+msgstr "Zitiere '{label}' (Stilalternative 2)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:53
+msgid "Citation (alternative style 2)"
+msgstr "Zitat (Stilalternative 2)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:54
+#, python-brace-format
+msgid "Cite '{label}' (author)"
+msgstr "Zitiere '{label}' (Autor)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:54
+msgid "Citation (author)"
+msgstr "Zitat (Autor)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:55
+#, python-brace-format
+msgid "Cite '{label}' (author detailed)"
+msgstr "Zitiere '{label}' (Autor, ausführlich)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:55
+msgid "Citation (author detailed)"
+msgstr "Zitat (Autor, ausführlich)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:56
+#, python-brace-format
+msgid "Cite '{label}' (year)"
+msgstr "Zitiere '{label}' (Jahr)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:56
+msgid "Citation (year)"
+msgstr "Zitat (Jahr)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:57
+#, python-brace-format
+msgid "Cite '{label}' (year with brackets)"
+msgstr "Zitiere '{label}' (Jahr mit Klammern)"
+
+#: setzer/app/autocomplete_provider/autocomplete_provider.py:57
+msgid "Citation (year with brackets)"
+msgstr "Zitat (Jahr mit Klammern)"
 
 #: setzer/dialogs/about/about.py:44
 msgid "Setzer is a LaTeX editor."
@@ -69,6 +198,37 @@ msgstr "Felder ausfüllen"
 #: setzer/dialogs/bibtex_wizard/pages/page_fields_entry.py:123
 msgid "Insert empty optional fields"
 msgstr "Leere optionale Felder einfügen"
+
+#: setzer/dialogs/bibtex_wizard/bibtex_wizard_viewgtk.py:59
+#: setzer/dialogs/build_save/build_save.py:50
+#: setzer/dialogs/building_failed/building_failed.py:49
+#: setzer/dialogs/close_confirmation/close_confirmation.py:119
+#: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:60
+#: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:109
+#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:94
+#: setzer/dialogs/interpreter_missing/interpreter_missing.py:53
+#: setzer/dialogs/open_document/open_document.py:46
+#: setzer/dialogs/open_session/open_session.py:46
+#: setzer/dialogs/replace_confirmation/replace_confirmation.py:49
+#: setzer/dialogs/save_document/save_document.py:58
+#: setzer/dialogs/save_session/save_session.py:66
+msgid "_Cancel"
+msgstr "_Abbrechen"
+
+#: setzer/dialogs/bibtex_wizard/bibtex_wizard_viewgtk.py:61
+#: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:62
+msgid "_Back"
+msgstr "_Zurück"
+
+#: setzer/dialogs/bibtex_wizard/bibtex_wizard_viewgtk.py:64
+#: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:65
+msgid "_Next"
+msgstr "_Weiter"
+
+#: setzer/dialogs/bibtex_wizard/bibtex_wizard_viewgtk.py:67
+#: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:68
+msgid "_Create"
+msgstr "_Erstellen"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:42
 msgid "Article in Journal"
@@ -347,11 +507,6 @@ msgid ""
 msgstr ""
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:63
-#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:263
-msgid "Reference"
-msgstr "Referenz"
-
-#: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:63
 msgid ""
 "A single-volume work of reference such as an encyclopedia or a dictionary. "
 "This is a more specific variant of the generic @collection entry type. The "
@@ -446,21 +601,6 @@ msgstr ""
 "Bitte speichern Sie das Dokument in einer Datei, damit Setzer weißt wo die "
 "erstellte .pdf-Datei gespeichert werden soll (sie wird im gleichen Ordner "
 "wie das Dokument gespeichert)."
-
-#: setzer/dialogs/build_save/build_save.py:50
-#: setzer/dialogs/building_failed/building_failed.py:49
-#: setzer/dialogs/close_confirmation/close_confirmation.py:119
-#: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:60
-#: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:109
-#: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:94
-#: setzer/dialogs/interpreter_missing/interpreter_missing.py:53
-#: setzer/dialogs/open_document/open_document.py:46
-#: setzer/dialogs/open_session/open_session.py:46
-#: setzer/dialogs/replace_confirmation/replace_confirmation.py:49
-#: setzer/dialogs/save_document/save_document.py:58
-#: setzer/dialogs/save_session/save_session.py:66
-msgid "_Cancel"
-msgstr "_Abbrechen"
 
 #: setzer/dialogs/build_save/build_save.py:50
 msgid "_Save document now"
@@ -761,18 +901,6 @@ msgstr "Schriftgröße"
 msgid "Create a template document"
 msgstr "Dokumentenvorlage erstellen"
 
-#: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:62
-msgid "_Back"
-msgstr "_Zurück"
-
-#: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:65
-msgid "_Next"
-msgstr "_Weiter"
-
-#: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:68
-msgid "_Create"
-msgstr "_Erstellen"
-
 #: setzer/dialogs/document_wizard/document_wizard.py:246
 msgid ""
 "% NOTE: The content of your document has been commented out\n"
@@ -967,6 +1095,7 @@ msgid "Find and Replace"
 msgstr "Suchen und Ersetzen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:60
+#: setzer/workspace/help_panel/help_panel_viewgtk.py:60
 msgid "Find"
 msgstr "Suchen"
 
@@ -1303,10 +1432,44 @@ msgstr "Sitzung speichern"
 msgid "Spellchecking Language"
 msgstr "Sprache"
 
-#: setzer/document/autocomplete/autocomplete.py:291
+#: setzer/document/document_controller.py:50
+msgid "Cut"
+msgstr "Ausschneiden"
+
+#: setzer/document/document_controller.py:51
+msgid "Copy"
+msgstr "Kopieren"
+
+#: setzer/document/document_controller.py:52
+msgid "Paste"
+msgstr "Einfügen"
+
+#: setzer/document/document_controller.py:53
+msgid "Delete"
+msgstr "Löschen"
+
+#: setzer/document/document_controller.py:54
+msgid "Select All"
+msgstr "Alles auswählen"
+
+#: setzer/document/document_controller.py:75
+msgid "Toggle Comment"
+msgstr "Aus- / Entkommentieren"
+
+#: setzer/document/document_controller.py:77
+msgid "Show in Preview"
+msgstr "In Vorschau anzeigen"
+
+#: setzer/document/build_system/build_system_presenter.py:95
 #, python-brace-format
-msgid "Reference to '{label}'"
-msgstr "Verweis auf '{label}'"
+msgid "<span color=\"{color}\">Failed</span> ({amount} error)!"
+msgid_plural "<span color=\"{color}\">Failed</span> ({amount} errors)!"
+msgstr[0] "<span color=\"{color}\">Fehler</span> ({amount})!"
+msgstr[1] "<span color=\"{color}\">Fehler</span> ({amount})!"
+
+#: setzer/document/build_system/build_system_presenter.py:99
+msgid "Success!"
+msgstr "Erfolg!"
 
 #: setzer/document/build_widget/build_widget_viewgtk.py:41
 msgid "Stop building"
@@ -1469,6 +1632,14 @@ msgstr "Warnung"
 #, python-brace-format
 msgid "Line {number}"
 msgstr "Zeile {number}"
+
+#: setzer/workspace/document_chooser/document_chooser_viewgtk.py:54
+msgid "No results"
+msgstr "Keine Ergebnisse"
+
+#: setzer/workspace/document_chooser/document_chooser_viewgtk.py:59
+msgid "Other Documents"
+msgstr "Weitere Dokumente"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:58
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:52
@@ -1643,6 +1814,22 @@ msgstr "Rechtschreibfehler hervorheben"
 msgid "Set Spellchecking Language"
 msgstr "Sprache festlegen"
 
+#: setzer/workspace/help_panel/help_panel_viewgtk.py:35
+msgid "Home"
+msgstr "Startseite"
+
+#: setzer/workspace/help_panel/help_panel_viewgtk.py:41
+msgid "Top"
+msgstr "Seitenanfang"
+
+#: setzer/workspace/help_panel/help_panel_viewgtk.py:47
+msgid "Back"
+msgstr "Zurück"
+
+#: setzer/workspace/help_panel/help_panel_viewgtk.py:53
+msgid "Forward"
+msgstr "Vorwärts"
+
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:58
 msgid "Build log"
 msgstr "Fehler und Warnungen"
@@ -1695,10 +1882,6 @@ msgstr "BibTeX-Dokument einbinden"
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:135
 msgid "Include 'natbib' Package"
 msgstr "'natbib'-Paket einbinden"
-
-#: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:137
-msgid "Citation"
-msgstr "Zitat"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:137
 msgid "Citation with Page Number"
@@ -2143,36 +2326,48 @@ msgid "Document creation wizard"
 msgstr "Komfortabler Assistent zum Erstellen von Dokumenten"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:58
-msgid "Biber support, Glossaries support, ..."
-msgstr ""
+msgid "New syntax highlighting theme, full line indentation, ..."
+msgstr "New syntax highlighting theme, full line indentation, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:63
 msgid ""
-"Use Latexmk with any LaTeX interpreter, invert colors in .pdf preview, ..."
+"Tab autocomplete, dynamic citations autocomplete, more autocomplete "
+"improvements, ..."
 msgstr ""
-"Use Latexmk with any LaTeX interpreter, invert colors in .pdf preview, ..."
+"Tab autocomplete, dynamic citations autocomplete, more autocomplete "
+"improvements, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:68
-msgid "Redesigned help panel homepage, LaTeX package documentation links, ..."
-msgstr "Redesigned help panel homepage, LaTeX package documentation links, ..."
+msgid "Biber support, Glossaries support, ..."
+msgstr "Biber support, Glossaries support, ..."
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:73
 msgid ""
+"Use Latexmk with any LaTeX interpreter, invert colors in .pdf preview, ..."
+msgstr ""
+"Use Latexmk with any LaTeX interpreter, invert colors in .pdf preview, ..."
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:78
+msgid "Redesigned help panel homepage, LaTeX package documentation links, ..."
+msgstr "Redesigned help panel homepage, LaTeX package documentation links, ..."
+
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:83
+msgid ""
 "Italian translation, help panel with LaTeX documentation, open files from "
 "the file manager and command line, ..."
 msgstr ""
 "Italian translation, help panel with LaTeX documentation, open files from "
 "the file manager and command line, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:78
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:88
 msgid "German translation, external .pdf viewer button, ..."
 msgstr "German translation, external .pdf viewer button, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:83
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:93
 msgid "Bug fix"
 msgstr "Bug fix"
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:88
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:98
 msgid ""
 "Initial backward synctex support, improved synctex highlighting, search UI "
 "improvements, ..."
@@ -2180,11 +2375,11 @@ msgstr ""
 "Initial backward synctex support, improved synctex highlighting, search UI "
 "improvements, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:93
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:103
 msgid "Session management, highlight passages on build, ..."
 msgstr "Session management, highlight passages on build, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:98
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:108
 msgid ""
 "Zoom level popover for the .pdf preview, preview should use far less memory "
 "now, ..."
@@ -2192,11 +2387,11 @@ msgstr ""
 "Zoom level popover for the .pdf preview, preview should use far less memory "
 "now, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:103
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:113
 msgid "Bug fixes"
 msgstr "Bug fixes"
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:108
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:118
 msgid ""
 "Enable embedded system commands, document modified on disk dialog, option to "
 "highlight current line, option to highlight matching brackets, ..."
@@ -2204,27 +2399,27 @@ msgstr ""
 "Enable embedded system commands, document modified on disk dialog, option to "
 "highlight current line, option to highlight matching brackets, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:113
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:123
 msgid "Add/remove packages dialog, improved HiDPI support, ..."
 msgstr "Add/remove packages dialog, improved HiDPI support, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:118
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:128
 msgid "Keyboard shortcuts in popovers, more commands in shortcuts bar, ..."
 msgstr "Keyboard shortcuts in popovers, more commands in shortcuts bar, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:123
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:133
 msgid "More commands in shortcuts bar, autocomplete now case insensitive, ..."
 msgstr "More commands in shortcuts bar, autocomplete now case insensitive, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:128
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:138
 msgid "HiDPI support in .pdf preview, presistent code folding, ..."
 msgstr "HiDPI support in .pdf preview, presistent code folding, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:133
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:143
 msgid "Initial code folding support, ..."
 msgstr "Initial code folding support, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:138
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:148
 msgid ""
 "References to existing labels in autocomplete, persistent master document "
 "state, ..."
@@ -2232,23 +2427,23 @@ msgstr ""
 "References to existing labels in autocomplete, persistent master document "
 "state, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:143
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:153
 msgid "Initial spellchecking support, ..."
 msgstr "Initial spellchecking support, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:148
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:158
 msgid "Simple BibTeX wizard, more bibliography features in LaTeX editor, ..."
 msgstr "Simple BibTeX wizard, more bibliography features in LaTeX editor, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:153
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:163
 msgid "BibTeX support in the build system, edit BibTeX files, ..."
 msgstr "BibTeX support in the build system, edit BibTeX files, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:158
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:168
 msgid "Editor settings in preferences dialog, ..."
 msgstr "Editor settings in preferences dialog, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:163
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:173
 msgid ""
 "Build multiple times to resolve undefined references, show warnings in build "
 "log, ..."
@@ -2256,27 +2451,27 @@ msgstr ""
 "Build multiple times to resolve undefined references, show warnings in build "
 "log, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:168
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:178
 msgid "Indent multi-line inserts, ..."
 msgstr "Indent multi-line inserts, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:173
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:183
 msgid "Multiple documents in build log, build in temporary folder, ..."
 msgstr "Multiple documents in build log, build in temporary folder, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:178
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:188
 msgid "Master document function, ..."
 msgstr "Master document function, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:183
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:193
 msgid "New app layout, animated wizard button, big code refactor, ..."
 msgstr "New app layout, animated wizard button, big code refactor, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:188
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:198
 msgid "Set margins in wizard, improved icon, ..."
 msgstr "Set margins in wizard, improved icon, ..."
 
-#: data/org.cvfosammmm.Setzer.appdata.xml.in:193
+#: data/org.cvfosammmm.Setzer.appdata.xml.in:203
 msgid "Initial release"
 msgstr "Initial release"
 
@@ -2382,43 +2577,11 @@ msgstr "Initial release"
 #~ msgid "Make text 'Huge' within current scope"
 #~ msgstr "Schriftgröße 'Huge'"
 
-#~ msgid "<span color=\"{color}\">Failed</span> ({amount} error)!"
-#~ msgid_plural "<span color=\"{color}\">Failed</span> ({amount} errors)!"
-#~ msgstr[0] "<span color=\"{color}\">Fehler</span> ({amount})!"
-#~ msgstr[1] "<span color=\"{color}\">Fehler</span> ({amount})!"
-
-#~ msgid "Success!"
-#~ msgstr "Erfolg!"
-
-#~ msgid "No results"
-#~ msgstr "Keine Ergebnisse"
-
-#~ msgid "Other Documents"
-#~ msgstr "Weitere Dokumente"
-
 #~ msgid "Undo"
 #~ msgstr "Rückgängig"
 
 #~ msgid "Redo"
 #~ msgstr "Wiederherstellen"
-
-#~ msgid "Cut"
-#~ msgstr "Ausschneiden"
-
-#~ msgid "Copy"
-#~ msgstr "Kopieren"
-
-#~ msgid "Paste"
-#~ msgstr "Einfügen"
-
-#~ msgid "Delete"
-#~ msgstr "Löschen"
-
-#~ msgid "Select All"
-#~ msgstr "Alles auswählen"
-
-#~ msgid "Show in Preview"
-#~ msgstr "In Vorschau anzeigen"
 
 #~ msgid "error"
 #~ msgid_plural "errors"
