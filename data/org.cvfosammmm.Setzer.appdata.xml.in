@@ -53,7 +53,12 @@
     </provides>
 
     <releases>
-        <release version="0.3.1" date="2020-8-31">
+        <release version="0.3.2" date="2020-9-9">
+            <description>
+                <p translatable="no">New syntax highlighting theme, full line indentation, ...</p>
+            </description>
+        </release>
+        <release version="0.3.1" date="2020-9-1">
             <description>
                 <p translatable="no">Tab autocomplete, dynamic citations autocomplete, more autocomplete improvements, ...</p>
             </description>
