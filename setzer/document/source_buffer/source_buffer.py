@@ -76,6 +76,7 @@ class SourceBuffer(GtkSource.Buffer):
 
         self.connect('insert-text', self.on_insert_text)
         self.connect('delete-range', self.on_delete_range)
+        self.view.connect('key-press-event', self.on_keypress)
 
         self.document.add_change_code('buffer_ready')
 
@@ -86,6 +87,19 @@ class SourceBuffer(GtkSource.Buffer):
             if (section, item) == ('preferences', 'tab_width'):
                 self.tab_width = self.settings.get_value('preferences', 'tab_width')
         
+    def on_keypress(self, widget, event, data=None):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if event.keyval == Gdk.keyval_from_name('backslash') and event.state & modifiers == 0:
+            char = self.get_char_at_cursor()
+            if char.isalpha():
+                self.insert_at_cursor('\\ ')
+                insert_iter = self.get_iter_at_mark(self.get_insert())
+                insert_iter.backward_char()
+                self.place_cursor(insert_iter)
+                return True
+        return False
+
     def on_insert_text(self, buffer, location_iter, text, text_length):
         self.indentation_update = {'line_start': location_iter.get_line(), 'text_length': text_length}
 
@@ -298,6 +312,12 @@ class SourceBuffer(GtkSource.Buffer):
                 self.delete(start, end)
 
         self.end_user_action()
+
+    def get_char_at_cursor(self):
+        start_iter = self.get_iter_at_mark(self.get_insert())
+        end_iter = start_iter.copy()
+        end_iter.forward_char()
+        return self.get_text(start_iter, end_iter, False)
 
     def get_line(self, line_number):
         start = self.get_iter_at_line(line_number)
