@@ -203,7 +203,6 @@ class AutocompleteProvider(object):
                 if command['command'] not in [item['command'] for item in items]:
                     items.append(command)
 
-    #@timer.timer
     def parse_included_files(self):
         current_includes = set()
         open_docs_pathnames = self.workspace.get_open_documents_filenames()
@@ -262,6 +261,7 @@ class AutocompleteProvider(object):
                 for i in range(1, len(command) + 1):
                     self.dynamic_word_beginnings[ref_types_type].append('\\' + command[:i])
 
+    #@timer.timer
     def generate_static_proposals(self):
         commands = self.get_commands()
         self.static_proposals = dict()
@@ -273,13 +273,15 @@ class AutocompleteProvider(object):
                 except KeyError:
                     self.static_proposals[command['command'][0:i].lower()] = [command]
 
+    #@timer.timer
     def get_commands(self):
         commands = dict()
-        tree = ET.parse(os.path.join(self.resources_path, 'latexdb', 'commands', 'general.xml'))
-        root = tree.getroot()
-        for child in root:
-            attrib = child.attrib
-            commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description']}
+        for filename in ['latex-document.xml', 'tex.xml', 'textcomp.xml', 'latex-dev.xml']:
+            tree = ET.parse(os.path.join(self.resources_path, 'latexdb', 'commands', filename))
+            root = tree.getroot()
+            for child in root:
+                attrib = child.attrib
+                commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description']}
         return commands
 
 
