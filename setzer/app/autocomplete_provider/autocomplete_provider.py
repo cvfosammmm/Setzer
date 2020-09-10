@@ -93,7 +93,7 @@ class AutocompleteProvider(object):
         except KeyError: static_items = list()
         dynamic_items = self.get_dynamic_items(word)
         add_dynamic = True
-        for item in sorted(static_items, key=lambda command: command['command'].lower()):
+        for item in static_items:
             if add_dynamic and len(dynamic_items) > 0 and dynamic_items[0]['command'].lower() < item['command'].lower():
                 add_dynamic = False
                 items += dynamic_items

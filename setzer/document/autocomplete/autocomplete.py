@@ -189,7 +189,7 @@ class Autocomplete(object):
 
     def insert_begin_end_check_replace(self, insert_iter, text):
         line_part = self.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
-        line_regex = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})\{([^\{\[]+)\}')
+        line_regex = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})\{([^\{\[\|\(]+)\}')
         line_match = line_regex.match(line_part)
         if line_match:
             document_text = self.document.get_text_after_offset(insert_iter.get_offset() + 1)
@@ -210,7 +210,7 @@ class Autocomplete(object):
 
         end_iter_offset = start_iter_offset + len(text)
         document_text = self.document.get_text_after_offset(end_iter_offset)
-        environment_name = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})\{([^\{\[]+)\}').match(match_object.group(0)).group(2)
+        environment_name = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})\{([^\{\[\|\(]+)\}').match(match_object.group(0)).group(2)
         end_match_object = self.get_end_match_object(document_text, environment_name)
 
         if end_match_object != None:
@@ -266,28 +266,37 @@ class Autocomplete(object):
         command_bracket_count = self.get_command_bracket_count(command)
 
         matches_group = list()
-        line_regex = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})(?:\{([^\{\[\\]+)\}|\[([^\{\[\\]+)\])*')
+        line_regex = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})(?:\{([^\{\[\|\(\\]+)\}|\[([^\{\[\|\(\\]+)\]|\|([^\{\[\|\(\\]+)\||\(([^\{\[\|\(\\]+)\))*')
         line_match = line_regex.match(line_part)
         if line_match == None:
             return None
         else:
             line_part = line_part[:line_match.end()]
-            line_regex = ServiceLocator.get_regex_object(r'(\w*)|\{([^\{\[\\]+)\}|\[([^\{\[\\]+)\]')
+            line_regex = ServiceLocator.get_regex_object(r'(\w*)|\{([^\{\[\|\(\\]+)\}|\[([^\{\[\|\(\\]+)\]|\|([^\{\[\|\(\\]+)\||\(([^\{\[\|\(\\]+)\)')
             bracket_count = 0
             command_regex_pattern = r'(\w*(?:\*){0,1})'
             for match in line_regex.finditer(line_part):
                 if match.group(0).startswith('{') and bracket_count < command_bracket_count:
-                    command_regex_pattern += r'\{([^\{\[]+)\}'
+                    command_regex_pattern += r'\{([^\{\[\|\(]+)\}'
                     bracket_count += 1
                 if match.group(0).startswith('[') and bracket_count < command_bracket_count:
-                    command_regex_pattern += r'\[([^\{\[]+)\]'
+                    command_regex_pattern += r'\[([^\{\[\|\(]+)\]'
+                    bracket_count += 1
+                if match.group(0).startswith('|') and bracket_count < command_bracket_count:
+                    command_regex_pattern += r'\|([^\{\[\|\(]+)\|'
+                    bracket_count += 1
+                if match.group(0).startswith('(') and bracket_count < command_bracket_count:
+                    command_regex_pattern += r'\(([^\{\[\|\(]+)\)'
                     bracket_count += 1
             line_match = ServiceLocator.get_regex_object(command_regex_pattern).match(line_part)
-            return (line_match, command_regex_pattern)
+            if bracket_count > 0:
+                return (line_match, command_regex_pattern)
+            else:
+                return None
 
     def get_command_bracket_count(self, command):
         count = 0
-        line_regex = ServiceLocator.get_regex_object(r'\{([^\{\[]+)\}|\[([^\{\[]+)\]')
+        line_regex = ServiceLocator.get_regex_object(r'\{([^\{\[\|\(]+)\}|\[([^\{\[\|\(]+)\]|\|([^\{\[\|\(]+)\||\(([^\{\[\|\(]+)\)')
         for match in line_regex.finditer(command):
             count += 1
         return count
@@ -295,7 +304,8 @@ class Autocomplete(object):
     def insert_final_replace(self, insert_iter, command, replacement_pattern):
         match_object = replacement_pattern[0]
         text = ''
-        command_regex = ServiceLocator.get_regex_object(r'(?:^\\(\w+(?:\*){0,1}))|\{([^\{\[]+)\}|\[([^\{\[]+)\]')
+        command_regex = ServiceLocator.get_regex_object(r'(?:^\\(\w+(?:\*){0,1}))|\{([^\{\[\|\(]+)\}|\[([^\{\[\|\(]+)\]|\|([^\{\[\|\(]+)\||\(([^\{\[\|\(]+)\)')
+        comma_regex = ServiceLocator.get_regex_object(r'•(\,•)*')
         count = 1
         for match in command_regex.finditer(command):
             if match.group(0).startswith('\\'):
@@ -303,14 +313,23 @@ class Autocomplete(object):
             else:
                 if match.group(0).startswith('{'):
                     inner_text = match.group(2)
-                else:
+                elif match.group(0).startswith('['):
                     inner_text = match.group(3)
-                if inner_text == '•' and len(match_object.groups()) >= count:
-                    inner_text = match_object.group(count)
+                elif match.group(0).startswith('|'):
+                    inner_text = match.group(4)
+                elif match.group(0).startswith('('):
+                    inner_text = match.group(5)
+                if comma_regex.fullmatch(inner_text) and len(match_object.groups()) >= count:
+                    for prev_text in match_object.group(count).split(','):
+                        inner_text = inner_text.replace('•', prev_text, 1)
                 if match.group(0).startswith('{'):
                     text += '{' + inner_text + '}'
                 if match.group(0).startswith('['):
                     text += '[' + inner_text + ']'
+                if match.group(0).startswith('|'):
+                    text += '|' + inner_text + '|'
+                if match.group(0).startswith('('):
+                    text += '(' + inner_text + ')'
             count += 1
 
         current_word = self.get_current_word(insert_iter)
