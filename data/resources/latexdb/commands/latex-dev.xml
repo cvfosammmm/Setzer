@@ -1,227 +1,227 @@
 <commands>
-  <command name="abovecaptionskip" text="abovecaptionskip" description="" dotlabels="" />
-  <command name="addpenalty" text="addpenalty" description="" dotlabels="" />
-  <command name="addto" text="addto" description="" dotlabels="" />
-  <command name="addtocontents{•}{•}" text="addtocontents{•}{•}" description="" dotlabels="file###text###" />
-  <command name="addtocounter{•}{•}" text="addtocounter{•}{•}" description="" dotlabels="counter###value###" />
-  <command name="addtolength{•}{•}" text="addtolength{•}{•}" description="" dotlabels="\gnat###length###" />
-  <command name="addtoversion" text="addtoversion" description="" dotlabels="" />
-  <command name="addvspace{•}" text="addvspace{•}" description="" dotlabels="length###" />
-  <command name="allocationnumber" text="allocationnumber" description="" dotlabels="" />
-  <command name="arraycolsep" text="arraycolsep" description="" dotlabels="" />
-  <command name="arrayrulewidth" text="arrayrulewidth" description="" dotlabels="" />
-  <command name="arraystretch" text="arraystretch" description="" dotlabels="" />
-  <command name="AtBeginDocument{•}" text="AtBeginDocument{•}" description="" dotlabels="code###" />
-  <command name="AtEndDocument{•}" text="AtEndDocument{•}" description="" dotlabels="code###" />
-  <command name="AtEndOfClass{•}" text="AtEndOfClass{•}" description="" dotlabels="code###" />
-  <command name="AtEndOfPackage{•}" text="AtEndOfPackage{•}" description="" dotlabels="code###" />
-  <command name="badness" text="badness" description="" dotlabels="" />
-  <command name="baselinestretch" text="baselinestretch" description="" dotlabels="" />
-  <command name="belowcaptionskip" text="belowcaptionskip" description="" dotlabels="" />
-  <command name="binoppenalty" text="binoppenalty" description="" dotlabels="" />
-  <command name="bottomfraction" text="bottomfraction" description="" dotlabels="" />
-  <command name="bottomnumber" text="bottomnumber" description="" dotlabels="" />
-  <command name="CheckCommand*{•}[•][•]{•}" text="CheckCommand*{•}[•][•]{•}" description="" dotlabels="cmd###args###default###def###" />
-  <command name="CheckCommand*{•}[•]{•}" text="CheckCommand*{•}[•]{•}" description="" dotlabels="cmd###args###def###" />
-  <command name="CheckCommand*{•}{•}" text="CheckCommand*{•}{•}" description="" dotlabels="cmd###def###" />
-  <command name="CheckCommand{•}[•][•]{•}" text="CheckCommand{•}[•][•]{•}" description="" dotlabels="cmd###args###default###def###" />
-  <command name="CheckCommand{•}[•]{•}" text="CheckCommand{•}[•]{•}" description="" dotlabels="cmd###args###def###" />
-  <command name="CheckCommand{•}{•}" text="CheckCommand{•}{•}" description="" dotlabels="cmd###def###" />
-  <command name="ClassError{•}{•}{•}" text="ClassError{•}{•}{•}" description="" dotlabels="class name###error text###help text###" />
-  <command name="ClassInfoNoLine{•}{•}" text="ClassInfoNoLine{•}{•}" description="" dotlabels="class name###info text###" />
-  <command name="ClassInfo{•}{•}" text="ClassInfo{•}{•}" description="" dotlabels="class name###info text###" />
-  <command name="ClassWarningNoLine{•}{•}" text="ClassWarningNoLine{•}{•}" description="" dotlabels="class name###warning text###" />
-  <command name="ClassWarning{•}{•}" text="ClassWarning{•}{•}" description="" dotlabels="class name###warning text###" />
-  <command name="columnsep" text="columnsep" description="" dotlabels="" />
-  <command name="columnseprule" text="columnseprule" description="" dotlabels="" />
-  <command name="columnwidth" text="columnwidth" description="" dotlabels="" />
-  <command name="CurrentOption" text="CurrentOption" description="" dotlabels="" />
-  <command name="dblfigrule" text="dblfigrule" description="" dotlabels="" />
-  <command name="dblfloatpagefraction" text="dblfloatpagefraction" description="" dotlabels="" />
-  <command name="dblfloatsep" text="dblfloatsep" description="" dotlabels="" />
-  <command name="dbltextfloatsep" text="dbltextfloatsep" description="" dotlabels="" />
-  <command name="dbltopfraction" text="dbltopfraction" description="" dotlabels="" />
-  <command name="dbltopnumber" text="dbltopnumber" description="" dotlabels="" />
-  <command name="DeclareFixedFont{•}{•}{•}{•}{•}{•}" text="DeclareFixedFont{•}{•}{•}{•}{•}{•}" description="" dotlabels="cmd###encoding###family###series###shape###size###" />
-  <command name="DeclareFontEncodingDefaults{•}{•}" text="DeclareFontEncodingDefaults{•}{•}" description="" dotlabels="text-settings###math-settings###" />
-  <command name="DeclareFontEncoding{•}{•}{•}" text="DeclareFontEncoding{•}{•}{•}" description="" dotlabels="encoding###text-settings###math-settings###" />
-  <command name="DeclareFontFamily{•}{•}{•}" text="DeclareFontFamily{•}{•}{•}" description="" dotlabels="encoding###family###loading-settings###" />
-  <command name="DeclareFontShape{•}{•}{•}{•}{•}{•}" text="DeclareFontShape{•}{•}{•}{•}{•}{•}" description="" dotlabels="encoding###family###series###shape###loading-info###loading-settings###" />
-  <command name="DeclareMathAccent{•}{•}{•}{•}" text="DeclareMathAccent{•}{•}{•}{•}" description="" dotlabels="cmd###type###sym-font###slot###" />
-  <command name="DeclareMathAlphabet{•}{•}{•}{•}{•}" text="DeclareMathAlphabet{•}{•}{•}{•}{•}" description="" dotlabels="math-alph###encoding###family###series###shape###" />
-  <command name="DeclareMathDelimiter{•}{•}{•}{•}{•}{•}" text="DeclareMathDelimiter{•}{•}{•}{•}{•}{•}" description="" dotlabels="cmd###type###sym-font-1###slot-1###sym-font-2###slot-2###" />
-  <command name="DeclareMathRadical{•}{•}{•}{•}{•}" text="DeclareMathRadical{•}{•}{•}{•}{•}" description="" dotlabels="cmd###sym-font-1###slot-1###sym-font-2###slot-2###" />
-  <command name="DeclareMathSizes{•}{•}{•}{•}" text="DeclareMathSizes{•}{•}{•}{•}" description="" dotlabels="t-size###mt-size###s-size###ss-size###" />
-  <command name="DeclareMathSymbol{•}{•}{•}{•}" text="DeclareMathSymbol{•}{•}{•}{•}" description="" dotlabels="symbol###type###sym-font###slot###" />
-  <command name="DeclareMathVersion{•}" text="DeclareMathVersion{•}" description="" dotlabels="version###" />
-  <command name="DeclareOldFontCommand{•}{•}{•}" text="DeclareOldFontCommand{•}{•}{•}" description="" dotlabels="cmd###text-switch###math-switch###" />
-  <command name="DeclareOption*{•}" text="DeclareOption*{•}" description="" dotlabels="code###" />
-  <command name="DeclareOption{•}{•}" text="DeclareOption{•}{•}" description="" dotlabels="option###code###" />
-  <command name="DeclareRobustCommand*{•}[•][•]{•}" text="DeclareRobustCommand*{•}[•][•]{•}" description="" dotlabels="cmd###args###default###def###" />
-  <command name="DeclareRobustCommand*{•}[•]{•}" text="DeclareRobustCommand*{•}[•]{•}" description="" dotlabels="cmd###args###def###" />
-  <command name="DeclareRobustCommand*{•}{•}" text="DeclareRobustCommand*{•}{•}" description="" dotlabels="cmd###def###" />
-  <command name="DeclareRobustCommand{•}[•][•]{•}" text="DeclareRobustCommand{•}[•][•]{•}" description="" dotlabels="cmd###args###default###def###" />
-  <command name="DeclareRobustCommand{•}[•]{•}" text="DeclareRobustCommand{•}[•]{•}" description="" dotlabels="cmd###args###def###" />
-  <command name="DeclareRobustCommand{•}{•}" text="DeclareRobustCommand{•}{•}" description="" dotlabels="cmd###def###" />
-  <command name="DeclareSizeFunction{•}{•}" text="DeclareSizeFunction{•}{•}" description="" dotlabels="name###code###" />
-  <command name="DeclareSymbolFontAlphabet{•}{•}" text="DeclareSymbolFontAlphabet{•}{•}" description="" dotlabels="math-alph###sym-font###" />
-  <command name="DeclareSymbolFont{•}{•}{•}{•}{•}" text="DeclareSymbolFont{•}{•}{•}{•}{•}" description="" dotlabels="sym-font###encoding###family###series###shape###" />
-  <command name="DeclareTextAccent{•}{•}{•}" text="DeclareTextAccent{•}{•}{•}" description="" dotlabels="def###encoding###character###" />
-  <command name="DeclareTextCommand{•}{•}[•][•]{•}" text="DeclareTextCommand{•}{•}[•][•]{•}" description="" dotlabels="cmd###encoding###num###default###definition###" />
-  <command name="DeclareTextCompositeCommand{•}{•}{•}{•}" text="DeclareTextCompositeCommand{•}{•}{•}{•}" description="" dotlabels="cmd###encoding###letter###definition###" />
-  <command name="DeclareTextComposite{•}{•}{•}{•}" text="DeclareTextComposite{•}{•}{•}{•}" description="" dotlabels="def###encoding###character###character###" />
-  <command name="DeclareTextFontCommand{•}{•}" text="DeclareTextFontCommand{•}{•}" description="" dotlabels="cmd###font-switches###" />
-  <command name="DeclareTextSymbol{•}{•}{•}" text="DeclareTextSymbol{•}{•}{•}" description="" dotlabels="def###encoding###code###" />
-  <command name="defaultscriptratio" text="defaultscriptratio" description="" dotlabels="" />
-  <command name="defaultscriptscriptratio" text="defaultscriptscriptratio" description="" dotlabels="" />
-  <command name="deffootnote[width}{•}{•}{•}" text="deffootnote[width}{•}{•}{•}" description="" dotlabels="indention###par indention###definition###" />
-  <command name="doublerulesep" text="doublerulesep" description="" dotlabels="" />
-  <command name="evensidemargin" text="evensidemargin" description="" dotlabels="" />
-  <command name="ExecuteOptions{•}" text="ExecuteOptions{•}" description="" dotlabels="optionlist###" />
-  <command name="extracolsep" text="extracolsep" description="" dotlabels="" />
-  <command name="fboxrule" text="fboxrule" description="" dotlabels="" />
-  <command name="fboxsep" text="fboxsep" description="" dotlabels="" />
-  <command name="fill" text="fill" description="" dotlabels="" />
-  <command name="floatpagefraction" text="floatpagefraction" description="" dotlabels="" />
-  <command name="floatsep" text="floatsep" description="" dotlabels="" />
-  <command name="footheight" text="footheight" description="" dotlabels="" />
-  <command name="footnotesep" text="footnotesep" description="" dotlabels="" />
-  <command name="footskip" text="footskip" description="" dotlabels="" />
-  <command name="headheight" text="headheight" description="" dotlabels="" />
-  <command name="headsep" text="headsep" description="" dotlabels="" />
-  <command name="height" text="height" description="" dotlabels="" />
-  <command name="IfFileExists{•}{•}{•}" text="IfFileExists{•}{•}{•}" description="" dotlabels="file###then###else###" />
-  <command name="InputIfFileExists{•}{•}{•}" text="InputIfFileExists{•}{•}{•}" description="" dotlabels="file###then###else###" />
-  <command name="intextsep" text="intextsep" description="" dotlabels="" />
-  <command name="itemindent" text="itemindent" description="" dotlabels="" />
-  <command name="itemsep" text="itemsep" description="" dotlabels="" />
-  <command name="labelenumi" text="labelenumi" description="" dotlabels="" />
-  <command name="labelitemi" text="labelitemi" description="" dotlabels="" />
-  <command name="labelitemii" text="labelitemii" description="" dotlabels="" />
-  <command name="labelitemiii" text="labelitemiii" description="" dotlabels="" />
-  <command name="labelitemiv" text="labelitemiv" description="" dotlabels="" />
-  <command name="labelsep" text="labelsep" description="" dotlabels="" />
-  <command name="labelwidth" text="labelwidth" description="" dotlabels="" />
-  <command name="LastDeclaredEncoding" text="LastDeclaredEncoding" description="" dotlabels="" />
-  <command name="leftmargin" text="leftmargin" description="" dotlabels="" />
-  <command name="leftmargini" text="leftmargini" description="" dotlabels="" />
-  <command name="leftmarginii" text="leftmarginii" description="" dotlabels="" />
-  <command name="leftmarginiii" text="leftmarginiii" description="" dotlabels="" />
-  <command name="leftmarginiv" text="leftmarginiv" description="" dotlabels="" />
-  <command name="leftmarginv" text="leftmarginv" description="" dotlabels="" />
-  <command name="leftmarginvi" text="leftmarginvi" description="" dotlabels="" />
-  <command name="leftmark" text="leftmark" description="" dotlabels="" />
-  <command name="LoadClass[•]{•}" text="LoadClass[•]{•}" description="" dotlabels="optionlist###class###" />
-  <command name="LoadClass[•]{•}[•]" text="LoadClass[•]{•}[•]" description="" dotlabels="optionlist###class###release###" />
-  <command name="LoadClassWithOptions{•}" text="LoadClassWithOptions{•}" description="" dotlabels="class###" />
-  <command name="LoadClassWithOptions{•}[•]" text="LoadClassWithOptions{•}[•]" description="" dotlabels="class###release###" />
-  <command name="LoadClass{•}" text="LoadClass{•}" description="" dotlabels="class###" />
-  <command name="LoadClass{•}[•]" text="LoadClass{•}[•]" description="" dotlabels="class###release###" />
-  <command name="makebox[•][•]{•}" text="makebox[•][•]{•}" description="" dotlabels="width###position###text###" />
-  <command name="makebox[•]{•}" text="makebox[•]{•}" description="" dotlabels="width###text###" />
-  <command name="marginparpush" text="marginparpush" description="" dotlabels="" />
-  <command name="marginparsep" text="marginparsep" description="" dotlabels="" />
-  <command name="marginparwidth" text="marginparwidth" description="" dotlabels="" />
-  <command name="NeedsTeXFormat{•}" text="NeedsTeXFormat{•}" description="" dotlabels="format###" />
-  <command name="NeedsTeXFormat{•}[•]" text="NeedsTeXFormat{•}[•]" description="" dotlabels="format###release###" />
-  <command name="newcounter{•}" text="newcounter{•}" description="" dotlabels="foo###" />
-  <command name="newcounter{•}[•]" text="newcounter{•}[•]" description="" dotlabels="foo###counter###" />
-  <command name="newfont{•}{•}" text="newfont{•}{•}" description="" dotlabels="cmd###fontname###" />
-  <command name="newsavebox{•}" text="newsavebox{•}" description="" dotlabels="box###" />
-  <command name="numberline" text="numberline" description="" dotlabels="" />
-  <command name="OptionNotUsed" text="OptionNotUsed" description="" dotlabels="" />
-  <command name="PackageError{•}{•}{•}" text="PackageError{•}{•}{•}" description="" dotlabels="package name###error text###help text###" />
-  <command name="PackageInfoNoLine{•}{•}" text="PackageInfoNoLine{•}{•}" description="" dotlabels="package name###info text###" />
-  <command name="PackageInfo{•}{•}" text="PackageInfo{•}{•}" description="" dotlabels="package name###info text###" />
-  <command name="PackageWarningNoLine{•}{•}" text="PackageWarningNoLine{•}{•}" description="" dotlabels="package name###warning text###" />
-  <command name="PackageWarning{•}{•}" text="PackageWarning{•}{•}" description="" dotlabels="package name###warning text###" />
-  <command name="paperheight" text="paperheight" description="" dotlabels="" />
-  <command name="paperwidth" text="paperwidth" description="" dotlabels="" />
-  <command name="parsep" text="parsep" description="" dotlabels="" />
-  <command name="partopsep" text="partopsep" description="" dotlabels="" />
-  <command name="PassOptionsToClass{•}{•}" text="PassOptionsToClass{•}{•}" description="" dotlabels="optionlist###class###" />
-  <command name="PassOptionsToPackage{•}{•}" text="PassOptionsToPackage{•}{•}" description="" dotlabels="optionlist###package###" />
-  <command name="pdfadjustspacing" text="pdfadjustspacing" description="" dotlabels="" />
-  <command name="pdfcompresslevel" text="pdfcompresslevel" description="" dotlabels="" />
-  <command name="pdfdecimaldigits" text="pdfdecimaldigits" description="" dotlabels="" />
-  <command name="pdfhorigin" text="pdfhorigin" description="" dotlabels="" />
-  <command name="pdfimageresolution" text="pdfimageresolution" description="" dotlabels="" />
-  <command name="pdflinkmargin" text="pdflinkmargin" description="" dotlabels="" />
-  <command name="pdfminorversion" text="pdfminorversion" description="" dotlabels="" />
-  <command name="pdfmovechars" text="pdfmovechars" description="" dotlabels="" />
-  <command name="pdfoutput" text="pdfoutput" description="" dotlabels="" />
-  <command name="pdfpageheight" text="pdfpageheight" description="" dotlabels="" />
-  <command name="pdfpagewidth" text="pdfpagewidth" description="" dotlabels="" />
-  <command name="pdfpkresolution" text="pdfpkresolution" description="" dotlabels="" />
-  <command name="pdfthreadmargin" text="pdfthreadmargin" description="" dotlabels="" />
-  <command name="pdfvorigin" text="pdfvorigin" description="" dotlabels="" />
-  <command name="ProcessOptions" text="ProcessOptions" description="" dotlabels="" />
-  <command name="ProcessOptions*" text="ProcessOptions*" description="" dotlabels="" />
-  <command name="ProvidesClass{•}" text="ProvidesClass{•}" description="" dotlabels="name###" />
-  <command name="ProvidesClass{•}[•]" text="ProvidesClass{•}[•]" description="" dotlabels="name###release info###" />
-  <command name="ProvidesFile{•}" text="ProvidesFile{•}" description="" dotlabels="name###" />
-  <command name="ProvidesFile{•}[•]" text="ProvidesFile{•}[•]" description="" dotlabels="name###release info###" />
-  <command name="ProvidesPackage{•}" text="ProvidesPackage{•}" description="" dotlabels="name###" />
-  <command name="ProvidesPackage{•}[•]" text="ProvidesPackage{•}[•]" description="" dotlabels="name###release info###" />
-  <command name="ProvideTextCommand{•}{•}[•][•]{•}" text="ProvideTextCommand{•}{•}[•][•]{•}" description="" dotlabels="cmd###encoding###num###default###definition###" />
-  <command name="raisebox{•}[•][•]{•}" text="raisebox{•}[•][•]{•}" description="" dotlabels="raise###height###depth###text###" />
-  <command name="raisebox{•}[•]{•}" text="raisebox{•}[•]{•}" description="" dotlabels="raise###height###text###" />
-  <command name="raisebox{•}{•}" text="raisebox{•}{•}" description="" dotlabels="raise###text###" />
-  <command name="refstepcounter{•}" text="refstepcounter{•}" description="" dotlabels="counter###" />
-  <command name="RequirePackage[•]{•}" text="RequirePackage[•]{•}" description="" dotlabels="optionlist###package###" />
-  <command name="RequirePackage[•]{•}[•]" text="RequirePackage[•]{•}[•]" description="" dotlabels="optionlist###package###release###" />
-  <command name="RequirePackageWithOptions{•}" text="RequirePackageWithOptions{•}" description="" dotlabels="package###" />
-  <command name="RequirePackageWithOptions{•}[•]" text="RequirePackageWithOptions{•}[•]" description="" dotlabels="package###release###" />
-  <command name="RequirePackage{•}" text="RequirePackage{•}" description="" dotlabels="package###" />
-  <command name="RequirePackage{•}[•]" text="RequirePackage{•}[•]" description="" dotlabels="package###release###" />
-  <command name="restorecr" text="restorecr" description="" dotlabels="" />
-  <command name="reversemarginpar" text="reversemarginpar" description="" dotlabels="" />
-  <command name="savebox{•}[•][•]{•}" text="savebox{•}[•][•]{•}" description="" dotlabels="box###width###position###text###" />
-  <command name="savebox{•}[•]{•}" text="savebox{•}[•]{•}" description="" dotlabels="box###width###text###" />
-  <command name="savebox{•}{•}" text="savebox{•}{•}" description="" dotlabels="box###text###" />
-  <command name="setcounter{•}{•}" text="setcounter{•}{•}" description="" dotlabels="counter###value###" />
-  <command name="setlanguage{•}" text="setlanguage{•}" description="" dotlabels="language###" />
-  <command name="setlength{•}{•}" text="setlength{•}{•}" description="" dotlabels="\gnat###length###" />
-  <command name="setpapersize{•}" text="setpapersize{•}" description="" dotlabels="layout###" />
-  <command name="settodepth{•}{•}" text="settodepth{•}{•}" description="" dotlabels="\gnat###text###" />
-  <command name="settoheight{•}{•}" text="settoheight{•}{•}" description="" dotlabels="\gnat###text###" />
-  <command name="settowidth{•}{•}" text="settowidth{•}{•}" description="" dotlabels="\gnat###text###" />
-  <command name="stepcounter{•}" text="stepcounter{•}" description="" dotlabels="counter###" />
-  <command name="stretch{•}" text="stretch{•}" description="" dotlabels="number###" />
-  <command name="tabbingsep" text="tabbingsep" description="" dotlabels="" />
-  <command name="tabcolsep" text="tabcolsep" description="" dotlabels="" />
-  <command name="textfloatsep" text="textfloatsep" description="" dotlabels="" />
-  <command name="textfraction" text="textfraction" description="" dotlabels="" />
-  <command name="thechapter" text="thechapter" description="" dotlabels="" />
-  <command name="theenumi" text="theenumi" description="" dotlabels="" />
-  <command name="theenumiv" text="theenumiv" description="" dotlabels="" />
-  <command name="theequation" text="theequation" description="" dotlabels="" />
-  <command name="thefigure" text="thefigure" description="" dotlabels="" />
-  <command name="thefootnote" text="thefootnote" description="" dotlabels="" />
-  <command name="thefootnotemark" text="thefootnotemark" description="" dotlabels="" />
-  <command name="thehours" text="thehours" description="" dotlabels="" />
-  <command name="theminutes" text="theminutes" description="" dotlabels="" />
-  <command name="thempfn" text="thempfn" description="" dotlabels="" />
-  <command name="thempfootnote" text="thempfootnote" description="" dotlabels="" />
-  <command name="thepage" text="thepage" description="" dotlabels="" />
-  <command name="theparagraph" text="theparagraph" description="" dotlabels="" />
-  <command name="thepart" text="thepart" description="" dotlabels="" />
-  <command name="thesection" text="thesection" description="" dotlabels="" />
-  <command name="thesubparagraph" text="thesubparagraph" description="" dotlabels="" />
-  <command name="thesubsection" text="thesubsection" description="" dotlabels="" />
-  <command name="thesubsubsection" text="thesubsubsection" description="" dotlabels="" />
-  <command name="thetable" text="thetable" description="" dotlabels="" />
-  <command name="topfigrule" text="topfigrule" description="" dotlabels="" />
-  <command name="topfraction" text="topfraction" description="" dotlabels="" />
-  <command name="topmargin" text="topmargin" description="" dotlabels="" />
-  <command name="topnumber" text="topnumber" description="" dotlabels="" />
-  <command name="topsep" text="topsep" description="" dotlabels="" />
-  <command name="totalheight" text="totalheight" description="" dotlabels="" />
-  <command name="totalnumber" text="totalnumber" description="" dotlabels="" />
-  <command name="tracingfonts" text="tracingfonts" description="" dotlabels="" />
-  <command name="unitlength" text="unitlength" description="" dotlabels="" />
-  <command name="usebox{•}" text="usebox{•}" description="" dotlabels="box###" />
-  <command name="usecounter{•}" text="usecounter{•}" description="" dotlabels="counter###" />
-  <command name="usefont{•}{•}{•}{•}" text="usefont{•}{•}{•}{•}" description="" dotlabels="enc###family###series###shape###" />
-  <command name="value{•}" text="value{•}" description="" dotlabels="counter###" />
+  <command name="abovecaptionskip" text="abovecaptionskip" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="addpenalty" text="addpenalty" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="addto" text="addto" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="addtocontents{•}{•}" text="addtocontents{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="file###text###" />
+  <command name="addtocounter{•}{•}" text="addtocounter{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="counter###value###" />
+  <command name="addtolength{•}{•}" text="addtolength{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="\gnat###length###" />
+  <command name="addtoversion" text="addtoversion" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="addvspace{•}" text="addvspace{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="length###" />
+  <command name="allocationnumber" text="allocationnumber" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="arraycolsep" text="arraycolsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="arrayrulewidth" text="arrayrulewidth" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="arraystretch" text="arraystretch" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="AtBeginDocument{•}" text="AtBeginDocument{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="code###" />
+  <command name="AtEndDocument{•}" text="AtEndDocument{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="code###" />
+  <command name="AtEndOfClass{•}" text="AtEndOfClass{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="code###" />
+  <command name="AtEndOfPackage{•}" text="AtEndOfPackage{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="code###" />
+  <command name="badness" text="badness" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="baselinestretch" text="baselinestretch" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="belowcaptionskip" text="belowcaptionskip" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="binoppenalty" text="binoppenalty" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="bottomfraction" text="bottomfraction" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="bottomnumber" text="bottomnumber" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="CheckCommand*{•}[•][•]{•}" text="CheckCommand*{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###default###def###" />
+  <command name="CheckCommand*{•}[•]{•}" text="CheckCommand*{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###def###" />
+  <command name="CheckCommand*{•}{•}" text="CheckCommand*{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###def###" />
+  <command name="CheckCommand{•}[•][•]{•}" text="CheckCommand{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###default###def###" />
+  <command name="CheckCommand{•}[•]{•}" text="CheckCommand{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###def###" />
+  <command name="CheckCommand{•}{•}" text="CheckCommand{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###def###" />
+  <command name="ClassError{•}{•}{•}" text="ClassError{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="class name###error text###help text###" />
+  <command name="ClassInfoNoLine{•}{•}" text="ClassInfoNoLine{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="class name###info text###" />
+  <command name="ClassInfo{•}{•}" text="ClassInfo{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="class name###info text###" />
+  <command name="ClassWarningNoLine{•}{•}" text="ClassWarningNoLine{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="class name###warning text###" />
+  <command name="ClassWarning{•}{•}" text="ClassWarning{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="class name###warning text###" />
+  <command name="columnsep" text="columnsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="columnseprule" text="columnseprule" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="columnwidth" text="columnwidth" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="CurrentOption" text="CurrentOption" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="dblfigrule" text="dblfigrule" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="dblfloatpagefraction" text="dblfloatpagefraction" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="dblfloatsep" text="dblfloatsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="dbltextfloatsep" text="dbltextfloatsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="dbltopfraction" text="dbltopfraction" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="dbltopnumber" text="dbltopnumber" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="DeclareFixedFont{•}{•}{•}{•}{•}{•}" text="DeclareFixedFont{•}{•}{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###encoding###family###series###shape###size###" />
+  <command name="DeclareFontEncodingDefaults{•}{•}" text="DeclareFontEncodingDefaults{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="text-settings###math-settings###" />
+  <command name="DeclareFontEncoding{•}{•}{•}" text="DeclareFontEncoding{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="encoding###text-settings###math-settings###" />
+  <command name="DeclareFontFamily{•}{•}{•}" text="DeclareFontFamily{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="encoding###family###loading-settings###" />
+  <command name="DeclareFontShape{•}{•}{•}{•}{•}{•}" text="DeclareFontShape{•}{•}{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="encoding###family###series###shape###loading-info###loading-settings###" />
+  <command name="DeclareMathAccent{•}{•}{•}{•}" text="DeclareMathAccent{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###type###sym-font###slot###" />
+  <command name="DeclareMathAlphabet{•}{•}{•}{•}{•}" text="DeclareMathAlphabet{•}{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="math-alph###encoding###family###series###shape###" />
+  <command name="DeclareMathDelimiter{•}{•}{•}{•}{•}{•}" text="DeclareMathDelimiter{•}{•}{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###type###sym-font-1###slot-1###sym-font-2###slot-2###" />
+  <command name="DeclareMathRadical{•}{•}{•}{•}{•}" text="DeclareMathRadical{•}{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###sym-font-1###slot-1###sym-font-2###slot-2###" />
+  <command name="DeclareMathSizes{•}{•}{•}{•}" text="DeclareMathSizes{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="t-size###mt-size###s-size###ss-size###" />
+  <command name="DeclareMathSymbol{•}{•}{•}{•}" text="DeclareMathSymbol{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="symbol###type###sym-font###slot###" />
+  <command name="DeclareMathVersion{•}" text="DeclareMathVersion{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="version###" />
+  <command name="DeclareOldFontCommand{•}{•}{•}" text="DeclareOldFontCommand{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###text-switch###math-switch###" />
+  <command name="DeclareOption*{•}" text="DeclareOption*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="code###" />
+  <command name="DeclareOption{•}{•}" text="DeclareOption{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="option###code###" />
+  <command name="DeclareRobustCommand*{•}[•][•]{•}" text="DeclareRobustCommand*{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###default###def###" />
+  <command name="DeclareRobustCommand*{•}[•]{•}" text="DeclareRobustCommand*{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###def###" />
+  <command name="DeclareRobustCommand*{•}{•}" text="DeclareRobustCommand*{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###def###" />
+  <command name="DeclareRobustCommand{•}[•][•]{•}" text="DeclareRobustCommand{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###default###def###" />
+  <command name="DeclareRobustCommand{•}[•]{•}" text="DeclareRobustCommand{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###def###" />
+  <command name="DeclareRobustCommand{•}{•}" text="DeclareRobustCommand{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###def###" />
+  <command name="DeclareSizeFunction{•}{•}" text="DeclareSizeFunction{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="name###code###" />
+  <command name="DeclareSymbolFontAlphabet{•}{•}" text="DeclareSymbolFontAlphabet{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="math-alph###sym-font###" />
+  <command name="DeclareSymbolFont{•}{•}{•}{•}{•}" text="DeclareSymbolFont{•}{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="sym-font###encoding###family###series###shape###" />
+  <command name="DeclareTextAccent{•}{•}{•}" text="DeclareTextAccent{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="def###encoding###character###" />
+  <command name="DeclareTextCommand{•}{•}[•][•]{•}" text="DeclareTextCommand{•}{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###encoding###num###default###definition###" />
+  <command name="DeclareTextCompositeCommand{•}{•}{•}{•}" text="DeclareTextCompositeCommand{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###encoding###letter###definition###" />
+  <command name="DeclareTextComposite{•}{•}{•}{•}" text="DeclareTextComposite{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="def###encoding###character###character###" />
+  <command name="DeclareTextFontCommand{•}{•}" text="DeclareTextFontCommand{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###font-switches###" />
+  <command name="DeclareTextSymbol{•}{•}{•}" text="DeclareTextSymbol{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="def###encoding###code###" />
+  <command name="defaultscriptratio" text="defaultscriptratio" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="defaultscriptscriptratio" text="defaultscriptscriptratio" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="deffootnote[width}{•}{•}{•}" text="deffootnote[width}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="indention###par indention###definition###" />
+  <command name="doublerulesep" text="doublerulesep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="evensidemargin" text="evensidemargin" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="ExecuteOptions{•}" text="ExecuteOptions{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="optionlist###" />
+  <command name="extracolsep" text="extracolsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="fboxrule" text="fboxrule" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="fboxsep" text="fboxsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="fill" text="fill" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="floatpagefraction" text="floatpagefraction" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="floatsep" text="floatsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="footheight" text="footheight" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="footnotesep" text="footnotesep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="footskip" text="footskip" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="headheight" text="headheight" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="headsep" text="headsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="height" text="height" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="IfFileExists{•}{•}{•}" text="IfFileExists{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="file###then###else###" />
+  <command name="InputIfFileExists{•}{•}{•}" text="InputIfFileExists{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="file###then###else###" />
+  <command name="intextsep" text="intextsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="itemindent" text="itemindent" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="itemsep" text="itemsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="labelenumi" text="labelenumi" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="labelitemi" text="labelitemi" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="labelitemii" text="labelitemii" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="labelitemiii" text="labelitemiii" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="labelitemiv" text="labelitemiv" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="labelsep" text="labelsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="labelwidth" text="labelwidth" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="LastDeclaredEncoding" text="LastDeclaredEncoding" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="leftmargin" text="leftmargin" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="leftmargini" text="leftmargini" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="leftmarginii" text="leftmarginii" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="leftmarginiii" text="leftmarginiii" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="leftmarginiv" text="leftmarginiv" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="leftmarginv" text="leftmarginv" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="leftmarginvi" text="leftmarginvi" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="leftmark" text="leftmark" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="LoadClass[•]{•}" text="LoadClass[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="optionlist###class###" />
+  <command name="LoadClass[•]{•}[•]" text="LoadClass[•]{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="optionlist###class###release###" />
+  <command name="LoadClassWithOptions{•}" text="LoadClassWithOptions{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="class###" />
+  <command name="LoadClassWithOptions{•}[•]" text="LoadClassWithOptions{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="class###release###" />
+  <command name="LoadClass{•}" text="LoadClass{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="class###" />
+  <command name="LoadClass{•}[•]" text="LoadClass{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="class###release###" />
+  <command name="makebox[•][•]{•}" text="makebox[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="width###position###text###" />
+  <command name="makebox[•]{•}" text="makebox[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="width###text###" />
+  <command name="marginparpush" text="marginparpush" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="marginparsep" text="marginparsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="marginparwidth" text="marginparwidth" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="NeedsTeXFormat{•}" text="NeedsTeXFormat{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="format###" />
+  <command name="NeedsTeXFormat{•}[•]" text="NeedsTeXFormat{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="format###release###" />
+  <command name="newcounter{•}" text="newcounter{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="foo###" />
+  <command name="newcounter{•}[•]" text="newcounter{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="foo###counter###" />
+  <command name="newfont{•}{•}" text="newfont{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###fontname###" />
+  <command name="newsavebox{•}" text="newsavebox{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="box###" />
+  <command name="numberline" text="numberline" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="OptionNotUsed" text="OptionNotUsed" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="PackageError{•}{•}{•}" text="PackageError{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="package name###error text###help text###" />
+  <command name="PackageInfoNoLine{•}{•}" text="PackageInfoNoLine{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="package name###info text###" />
+  <command name="PackageInfo{•}{•}" text="PackageInfo{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="package name###info text###" />
+  <command name="PackageWarningNoLine{•}{•}" text="PackageWarningNoLine{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="package name###warning text###" />
+  <command name="PackageWarning{•}{•}" text="PackageWarning{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="package name###warning text###" />
+  <command name="paperheight" text="paperheight" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="paperwidth" text="paperwidth" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="parsep" text="parsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="partopsep" text="partopsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="PassOptionsToClass{•}{•}" text="PassOptionsToClass{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="optionlist###class###" />
+  <command name="PassOptionsToPackage{•}{•}" text="PassOptionsToPackage{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="optionlist###package###" />
+  <command name="pdfadjustspacing" text="pdfadjustspacing" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdfcompresslevel" text="pdfcompresslevel" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdfdecimaldigits" text="pdfdecimaldigits" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdfhorigin" text="pdfhorigin" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdfimageresolution" text="pdfimageresolution" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdflinkmargin" text="pdflinkmargin" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdfminorversion" text="pdfminorversion" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdfmovechars" text="pdfmovechars" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdfoutput" text="pdfoutput" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdfpageheight" text="pdfpageheight" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdfpagewidth" text="pdfpagewidth" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdfpkresolution" text="pdfpkresolution" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdfthreadmargin" text="pdfthreadmargin" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="pdfvorigin" text="pdfvorigin" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="ProcessOptions" text="ProcessOptions" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="ProcessOptions*" text="ProcessOptions*" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="ProvidesClass{•}" text="ProvidesClass{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="name###" />
+  <command name="ProvidesClass{•}[•]" text="ProvidesClass{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="name###release info###" />
+  <command name="ProvidesFile{•}" text="ProvidesFile{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="name###" />
+  <command name="ProvidesFile{•}[•]" text="ProvidesFile{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="name###release info###" />
+  <command name="ProvidesPackage{•}" text="ProvidesPackage{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="name###" />
+  <command name="ProvidesPackage{•}[•]" text="ProvidesPackage{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="name###release info###" />
+  <command name="ProvideTextCommand{•}{•}[•][•]{•}" text="ProvideTextCommand{•}{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###encoding###num###default###definition###" />
+  <command name="raisebox{•}[•][•]{•}" text="raisebox{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="raise###height###depth###text###" />
+  <command name="raisebox{•}[•]{•}" text="raisebox{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="raise###height###text###" />
+  <command name="raisebox{•}{•}" text="raisebox{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="raise###text###" />
+  <command name="refstepcounter{•}" text="refstepcounter{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="counter###" />
+  <command name="RequirePackage[•]{•}" text="RequirePackage[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="optionlist###package###" />
+  <command name="RequirePackage[•]{•}[•]" text="RequirePackage[•]{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="optionlist###package###release###" />
+  <command name="RequirePackageWithOptions{•}" text="RequirePackageWithOptions{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="package###" />
+  <command name="RequirePackageWithOptions{•}[•]" text="RequirePackageWithOptions{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="package###release###" />
+  <command name="RequirePackage{•}" text="RequirePackage{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="package###" />
+  <command name="RequirePackage{•}[•]" text="RequirePackage{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="package###release###" />
+  <command name="restorecr" text="restorecr" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="reversemarginpar" text="reversemarginpar" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="savebox{•}[•][•]{•}" text="savebox{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="box###width###position###text###" />
+  <command name="savebox{•}[•]{•}" text="savebox{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="box###width###text###" />
+  <command name="savebox{•}{•}" text="savebox{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="box###text###" />
+  <command name="setcounter{•}{•}" text="setcounter{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="counter###value###" />
+  <command name="setlanguage{•}" text="setlanguage{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="language###" />
+  <command name="setlength{•}{•}" text="setlength{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="\gnat###length###" />
+  <command name="setpapersize{•}" text="setpapersize{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="layout###" />
+  <command name="settodepth{•}{•}" text="settodepth{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="\gnat###text###" />
+  <command name="settoheight{•}{•}" text="settoheight{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="\gnat###text###" />
+  <command name="settowidth{•}{•}" text="settowidth{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="\gnat###text###" />
+  <command name="stepcounter{•}" text="stepcounter{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="counter###" />
+  <command name="stretch{•}" text="stretch{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="number###" />
+  <command name="tabbingsep" text="tabbingsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="tabcolsep" text="tabcolsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="textfloatsep" text="textfloatsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="textfraction" text="textfraction" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thechapter" text="thechapter" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="theenumi" text="theenumi" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="theenumiv" text="theenumiv" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="theequation" text="theequation" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thefigure" text="thefigure" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thefootnote" text="thefootnote" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thefootnotemark" text="thefootnotemark" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thehours" text="thehours" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="theminutes" text="theminutes" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thempfn" text="thempfn" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thempfootnote" text="thempfootnote" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thepage" text="thepage" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="theparagraph" text="theparagraph" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thepart" text="thepart" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thesection" text="thesection" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thesubparagraph" text="thesubparagraph" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thesubsection" text="thesubsection" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thesubsubsection" text="thesubsubsection" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="thetable" text="thetable" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="topfigrule" text="topfigrule" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="topfraction" text="topfraction" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="topmargin" text="topmargin" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="topnumber" text="topnumber" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="topsep" text="topsep" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="totalheight" text="totalheight" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="totalnumber" text="totalnumber" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="tracingfonts" text="tracingfonts" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="unitlength" text="unitlength" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="usebox{•}" text="usebox{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="box###" />
+  <command name="usecounter{•}" text="usecounter{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="counter###" />
+  <command name="usefont{•}{•}{•}{•}" text="usefont{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="enc###family###series###shape###" />
+  <command name="value{•}" text="value{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="counter###" />
 </commands>

@@ -1,138 +1,138 @@
 <commands>
-  <command name="capitalacute{•}" text="capitalacute{•}" description="" dotlabels="A###" />
-  <command name="capitalbreve{•}" text="capitalbreve{•}" description="" dotlabels="A###" />
-  <command name="capitalcaron{•}" text="capitalcaron{•}" description="" dotlabels="A###" />
-  <command name="capitalcedilla{•}" text="capitalcedilla{•}" description="" dotlabels="A###" />
-  <command name="capitalcircumflex{•}" text="capitalcircumflex{•}" description="" dotlabels="A###" />
-  <command name="capitaldieresis{•}" text="capitaldieresis{•}" description="" dotlabels="A###" />
-  <command name="capitaldotaccent{•}" text="capitaldotaccent{•}" description="" dotlabels="A###" />
-  <command name="capitalgrave{•}" text="capitalgrave{•}" description="" dotlabels="A###" />
-  <command name="capitalhungarumlaut{•}" text="capitalhungarumlaut{•}" description="" dotlabels="A###" />
-  <command name="capitalmacron{•}" text="capitalmacron{•}" description="" dotlabels="A###" />
-  <command name="capitalnewtie{•}" text="capitalnewtie{•}" description="" dotlabels="A###" />
-  <command name="capitalogonek{•}" text="capitalogonek{•}" description="" dotlabels="A###" />
-  <command name="capitalring{•}" text="capitalring{•}" description="" dotlabels="A###" />
-  <command name="capitaltie{•}" text="capitaltie{•}" description="" dotlabels="A###" />
-  <command name="capitaltilde{•}" text="capitaltilde{•}" description="" dotlabels="A###" />
-  <command name="newtie{•}" text="newtie{•}" description="" dotlabels="A###" />
-  <command name="oldstylenums{•}" text="oldstylenums{•}" description="" dotlabels="number###" />
-  <command name="textacutedbl" text="textacutedbl" description="" dotlabels="" />
-  <command name="textascendercompwordmark" text="textascendercompwordmark" description="" dotlabels="" />
-  <command name="textasciiacute" text="textasciiacute" description="" dotlabels="" />
-  <command name="textasciibreve" text="textasciibreve" description="" dotlabels="" />
-  <command name="textasciicaron" text="textasciicaron" description="" dotlabels="" />
-  <command name="textasciidieresis" text="textasciidieresis" description="" dotlabels="" />
-  <command name="textasciigrave" text="textasciigrave" description="" dotlabels="" />
-  <command name="textasciimacron" text="textasciimacron" description="" dotlabels="" />
-  <command name="textasteriskcentered" text="textasteriskcentered" description="" dotlabels="" />
-  <command name="textbaht" text="textbaht" description="" dotlabels="" />
-  <command name="textbardbl" text="textbardbl" description="" dotlabels="" />
-  <command name="textbigcircle" text="textbigcircle" description="" dotlabels="" />
-  <command name="textblank" text="textblank" description="" dotlabels="" />
-  <command name="textborn" text="textborn" description="" dotlabels="" />
-  <command name="textbrokenbar" text="textbrokenbar" description="" dotlabels="" />
-  <command name="textbullet" text="textbullet" description="" dotlabels="" />
-  <command name="textcapitalcompwordmark" text="textcapitalcompwordmark" description="" dotlabels="" />
-  <command name="textcelsius" text="textcelsius" description="" dotlabels="" />
-  <command name="textcent" text="textcent" description="" dotlabels="" />
-  <command name="textcentoldstyle" text="textcentoldstyle" description="" dotlabels="" />
-  <command name="textcircled" text="textcircled" description="" dotlabels="" />
-  <command name="textcircledP" text="textcircledP" description="" dotlabels="" />
-  <command name="textcolonmonetary" text="textcolonmonetary" description="" dotlabels="" />
-  <command name="textcopyleft" text="textcopyleft" description="" dotlabels="" />
-  <command name="textcopyright" text="textcopyright" description="" dotlabels="" />
-  <command name="textcurrency" text="textcurrency" description="" dotlabels="" />
-  <command name="textdagger" text="textdagger" description="" dotlabels="" />
-  <command name="textdaggerdbl" text="textdaggerdbl" description="" dotlabels="" />
-  <command name="textdblhyphen" text="textdblhyphen" description="" dotlabels="" />
-  <command name="textdblhyphenchar" text="textdblhyphenchar" description="" dotlabels="" />
-  <command name="textdegree" text="textdegree" description="" dotlabels="" />
-  <command name="textdied" text="textdied" description="" dotlabels="" />
-  <command name="textdiscount" text="textdiscount" description="" dotlabels="" />
-  <command name="textdiv" text="textdiv" description="" dotlabels="" />
-  <command name="textdivorced" text="textdivorced" description="" dotlabels="" />
-  <command name="textdollar" text="textdollar" description="" dotlabels="" />
-  <command name="textdollaroldstyle" text="textdollaroldstyle" description="" dotlabels="" />
-  <command name="textdong" text="textdong" description="" dotlabels="" />
-  <command name="textdownarrow" text="textdownarrow" description="" dotlabels="" />
-  <command name="texteightoldstyle" text="texteightoldstyle" description="" dotlabels="" />
-  <command name="textestimated" text="textestimated" description="" dotlabels="" />
-  <command name="texteuro" text="texteuro" description="" dotlabels="" />
-  <command name="textfiveoldstyle" text="textfiveoldstyle" description="" dotlabels="" />
-  <command name="textflorin" text="textflorin" description="" dotlabels="" />
-  <command name="textfouroldstyle" text="textfouroldstyle" description="" dotlabels="" />
-  <command name="textfractionsolidus" text="textfractionsolidus" description="" dotlabels="" />
-  <command name="textgravedbl" text="textgravedbl" description="" dotlabels="" />
-  <command name="textguarani" text="textguarani" description="" dotlabels="" />
-  <command name="textinterrobang" text="textinterrobang" description="" dotlabels="" />
-  <command name="textinterrobangdown" text="textinterrobangdown" description="" dotlabels="" />
-  <command name="textlangle" text="textlangle" description="" dotlabels="" />
-  <command name="textlbrackdbl" text="textlbrackdbl" description="" dotlabels="" />
-  <command name="textleaf" text="textleaf" description="" dotlabels="" />
-  <command name="textleftarrow" text="textleftarrow" description="" dotlabels="" />
-  <command name="textlegacyasteriskcentered" text="textlegacyasteriskcentered" description="" dotlabels="" />
-  <command name="textlegacybardbl" text="textlegacybardbl" description="" dotlabels="" />
-  <command name="textlegacybullet" text="textlegacybullet" description="" dotlabels="" />
-  <command name="textlegacydagger" text="textlegacydagger" description="" dotlabels="" />
-  <command name="textlegacydaggerdbl" text="textlegacydaggerdbl" description="" dotlabels="" />
-  <command name="textlegacyparagraph" text="textlegacyparagraph" description="" dotlabels="" />
-  <command name="textlegacyperiodcentered" text="textlegacyperiodcentered" description="" dotlabels="" />
-  <command name="textlegacysection" text="textlegacysection" description="" dotlabels="" />
-  <command name="textlira" text="textlira" description="" dotlabels="" />
-  <command name="textlnot" text="textlnot" description="" dotlabels="" />
-  <command name="textlquill" text="textlquill" description="" dotlabels="" />
-  <command name="textmarried" text="textmarried" description="" dotlabels="" />
-  <command name="textmho" text="textmho" description="" dotlabels="" />
-  <command name="textminus" text="textminus" description="" dotlabels="" />
-  <command name="textmu" text="textmu" description="" dotlabels="" />
-  <command name="textmusicalnote" text="textmusicalnote" description="" dotlabels="" />
-  <command name="textnaira" text="textnaira" description="" dotlabels="" />
-  <command name="textnineoldstyle" text="textnineoldstyle" description="" dotlabels="" />
-  <command name="textnumero" text="textnumero" description="" dotlabels="" />
-  <command name="textohm" text="textohm" description="" dotlabels="" />
-  <command name="textonehalf" text="textonehalf" description="" dotlabels="" />
-  <command name="textoneoldstyle" text="textoneoldstyle" description="" dotlabels="" />
-  <command name="textonequarter" text="textonequarter" description="" dotlabels="" />
-  <command name="textonesuperior" text="textonesuperior" description="" dotlabels="" />
-  <command name="textopenbullet" text="textopenbullet" description="" dotlabels="" />
-  <command name="textordfeminine" text="textordfeminine" description="" dotlabels="" />
-  <command name="textordmasculine" text="textordmasculine" description="" dotlabels="" />
-  <command name="textparagraph" text="textparagraph" description="" dotlabels="" />
-  <command name="textperiodcentered" text="textperiodcentered" description="" dotlabels="" />
-  <command name="textpertenthousand" text="textpertenthousand" description="" dotlabels="" />
-  <command name="textperthousand" text="textperthousand" description="" dotlabels="" />
-  <command name="textpeso" text="textpeso" description="" dotlabels="" />
-  <command name="textpilcrow" text="textpilcrow" description="" dotlabels="" />
-  <command name="textpm" text="textpm" description="" dotlabels="" />
-  <command name="textquotesingle" text="textquotesingle" description="" dotlabels="" />
-  <command name="textquotestraightbase" text="textquotestraightbase" description="" dotlabels="" />
-  <command name="textquotestraightdblbase" text="textquotestraightdblbase" description="" dotlabels="" />
-  <command name="textrangle" text="textrangle" description="" dotlabels="" />
-  <command name="textrbrackdbl" text="textrbrackdbl" description="" dotlabels="" />
-  <command name="textrecipe" text="textrecipe" description="" dotlabels="" />
-  <command name="textreferencemark" text="textreferencemark" description="" dotlabels="" />
-  <command name="textregistered" text="textregistered" description="" dotlabels="" />
-  <command name="textrightarrow" text="textrightarrow" description="" dotlabels="" />
-  <command name="textrquill" text="textrquill" description="" dotlabels="" />
-  <command name="textsection" text="textsection" description="" dotlabels="" />
-  <command name="textservicemark" text="textservicemark" description="" dotlabels="" />
-  <command name="textsevenoldstyle" text="textsevenoldstyle" description="" dotlabels="" />
-  <command name="textsixoldstyle" text="textsixoldstyle" description="" dotlabels="" />
-  <command name="textsterling" text="textsterling" description="" dotlabels="" />
-  <command name="textsurd" text="textsurd" description="" dotlabels="" />
-  <command name="textthreeoldstyle" text="textthreeoldstyle" description="" dotlabels="" />
-  <command name="textthreequarters" text="textthreequarters" description="" dotlabels="" />
-  <command name="textthreequartersemdash" text="textthreequartersemdash" description="" dotlabels="" />
-  <command name="textthreesuperior" text="textthreesuperior" description="" dotlabels="" />
-  <command name="texttildelow" text="texttildelow" description="" dotlabels="" />
-  <command name="texttimes" text="texttimes" description="" dotlabels="" />
-  <command name="texttrademark" text="texttrademark" description="" dotlabels="" />
-  <command name="texttwelveudash" text="texttwelveudash" description="" dotlabels="" />
-  <command name="texttwooldstyle" text="texttwooldstyle" description="" dotlabels="" />
-  <command name="texttwosuperior" text="texttwosuperior" description="" dotlabels="" />
-  <command name="textuparrow" text="textuparrow" description="" dotlabels="" />
-  <command name="textwon" text="textwon" description="" dotlabels="" />
-  <command name="textyen" text="textyen" description="" dotlabels="" />
-  <command name="textzerooldstyle" text="textzerooldstyle" description="" dotlabels="" />
-  <command name="t{•}" text="t{•}" description="" dotlabels="A###" />
+  <command name="capitalacute{•}" text="capitalacute{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitalbreve{•}" text="capitalbreve{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitalcaron{•}" text="capitalcaron{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitalcedilla{•}" text="capitalcedilla{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitalcircumflex{•}" text="capitalcircumflex{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitaldieresis{•}" text="capitaldieresis{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitaldotaccent{•}" text="capitaldotaccent{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitalgrave{•}" text="capitalgrave{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitalhungarumlaut{•}" text="capitalhungarumlaut{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitalmacron{•}" text="capitalmacron{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitalnewtie{•}" text="capitalnewtie{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitalogonek{•}" text="capitalogonek{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitalring{•}" text="capitalring{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitaltie{•}" text="capitaltie{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="capitaltilde{•}" text="capitaltilde{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="newtie{•}" text="newtie{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
+  <command name="oldstylenums{•}" text="oldstylenums{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="number###" />
+  <command name="textacutedbl" text="textacutedbl" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textascendercompwordmark" text="textascendercompwordmark" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textasciiacute" text="textasciiacute" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textasciibreve" text="textasciibreve" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textasciicaron" text="textasciicaron" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textasciidieresis" text="textasciidieresis" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textasciigrave" text="textasciigrave" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textasciimacron" text="textasciimacron" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textasteriskcentered" text="textasteriskcentered" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textbaht" text="textbaht" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textbardbl" text="textbardbl" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textbigcircle" text="textbigcircle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textblank" text="textblank" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textborn" text="textborn" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textbrokenbar" text="textbrokenbar" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textbullet" text="textbullet" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textcapitalcompwordmark" text="textcapitalcompwordmark" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textcelsius" text="textcelsius" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textcent" text="textcent" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textcentoldstyle" text="textcentoldstyle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textcircled" text="textcircled" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textcircledP" text="textcircledP" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textcolonmonetary" text="textcolonmonetary" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textcopyleft" text="textcopyleft" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textcopyright" text="textcopyright" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textcurrency" text="textcurrency" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdagger" text="textdagger" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdaggerdbl" text="textdaggerdbl" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdblhyphen" text="textdblhyphen" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdblhyphenchar" text="textdblhyphenchar" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdegree" text="textdegree" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdied" text="textdied" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdiscount" text="textdiscount" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdiv" text="textdiv" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdivorced" text="textdivorced" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdollar" text="textdollar" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdollaroldstyle" text="textdollaroldstyle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdong" text="textdong" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textdownarrow" text="textdownarrow" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="texteightoldstyle" text="texteightoldstyle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textestimated" text="textestimated" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="texteuro" text="texteuro" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textfiveoldstyle" text="textfiveoldstyle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textflorin" text="textflorin" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textfouroldstyle" text="textfouroldstyle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textfractionsolidus" text="textfractionsolidus" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textgravedbl" text="textgravedbl" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textguarani" text="textguarani" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textinterrobang" text="textinterrobang" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textinterrobangdown" text="textinterrobangdown" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlangle" text="textlangle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlbrackdbl" text="textlbrackdbl" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textleaf" text="textleaf" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textleftarrow" text="textleftarrow" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlegacyasteriskcentered" text="textlegacyasteriskcentered" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlegacybardbl" text="textlegacybardbl" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlegacybullet" text="textlegacybullet" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlegacydagger" text="textlegacydagger" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlegacydaggerdbl" text="textlegacydaggerdbl" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlegacyparagraph" text="textlegacyparagraph" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlegacyperiodcentered" text="textlegacyperiodcentered" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlegacysection" text="textlegacysection" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlira" text="textlira" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlnot" text="textlnot" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textlquill" text="textlquill" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textmarried" text="textmarried" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textmho" text="textmho" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textminus" text="textminus" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textmu" text="textmu" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textmusicalnote" text="textmusicalnote" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textnaira" text="textnaira" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textnineoldstyle" text="textnineoldstyle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textnumero" text="textnumero" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textohm" text="textohm" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textonehalf" text="textonehalf" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textoneoldstyle" text="textoneoldstyle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textonequarter" text="textonequarter" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textonesuperior" text="textonesuperior" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textopenbullet" text="textopenbullet" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textordfeminine" text="textordfeminine" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textordmasculine" text="textordmasculine" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textparagraph" text="textparagraph" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textperiodcentered" text="textperiodcentered" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textpertenthousand" text="textpertenthousand" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textperthousand" text="textperthousand" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textpeso" text="textpeso" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textpilcrow" text="textpilcrow" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textpm" text="textpm" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textquotesingle" text="textquotesingle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textquotestraightbase" text="textquotestraightbase" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textquotestraightdblbase" text="textquotestraightdblbase" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textrangle" text="textrangle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textrbrackdbl" text="textrbrackdbl" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textrecipe" text="textrecipe" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textreferencemark" text="textreferencemark" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textregistered" text="textregistered" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textrightarrow" text="textrightarrow" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textrquill" text="textrquill" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textsection" text="textsection" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textservicemark" text="textservicemark" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textsevenoldstyle" text="textsevenoldstyle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textsixoldstyle" text="textsixoldstyle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textsterling" text="textsterling" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textsurd" text="textsurd" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textthreeoldstyle" text="textthreeoldstyle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textthreequarters" text="textthreequarters" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textthreequartersemdash" text="textthreequartersemdash" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textthreesuperior" text="textthreesuperior" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="texttildelow" text="texttildelow" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="texttimes" text="texttimes" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="texttrademark" text="texttrademark" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="texttwelveudash" text="texttwelveudash" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="texttwooldstyle" text="texttwooldstyle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="texttwosuperior" text="texttwosuperior" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textuparrow" text="textuparrow" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textwon" text="textwon" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textyen" text="textyen" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="textzerooldstyle" text="textzerooldstyle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="t{•}" text="t{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="A###" />
 </commands>
