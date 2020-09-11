@@ -266,12 +266,21 @@ class AutocompleteProvider(object):
         commands = self.get_commands()
         self.static_proposals = dict()
         for command in commands.values():
-            for i in range(1, len(command['command']) + 1):
-                try:
-                    if len(self.static_proposals[command['command'][0:i].lower()]) < 5:
-                        self.static_proposals[command['command'][0:i].lower()].append(command)
-                except KeyError:
-                    self.static_proposals[command['command'][0:i].lower()] = [command]
+            if not command['lowpriority']:
+                for i in range(1, len(command['command']) + 1):
+                    try:
+                        if len(self.static_proposals[command['command'][0:i].lower()]) < 5:
+                            self.static_proposals[command['command'][0:i].lower()].append(command)
+                    except KeyError:
+                        self.static_proposals[command['command'][0:i].lower()] = [command]
+        for command in commands.values():
+            if command['lowpriority']:
+                for i in range(1, len(command['command']) + 1):
+                    try:
+                        if len(self.static_proposals[command['command'][0:i].lower()]) < 5:
+                            self.static_proposals[command['command'][0:i].lower()].append(command)
+                    except KeyError:
+                        self.static_proposals[command['command'][0:i].lower()] = [command]
 
     #@timer.timer
     def get_commands(self):
@@ -281,7 +290,7 @@ class AutocompleteProvider(object):
             root = tree.getroot()
             for child in root:
                 attrib = child.attrib
-                commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description']}
+                commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description'], 'lowpriority': True if attrib['lowpriority'] == "True" else False}
         return commands
 
 
