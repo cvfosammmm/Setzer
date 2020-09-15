@@ -81,9 +81,9 @@ class AutocompleteProvider(object):
                     count += 1
                 else:
                     items_rest.append(item)
-            if count >= 5:
-                items = items[:5]
-            items = items + items_rest[:5 - count]
+            if count >= 20:
+                items = items[:20]
+            items = items + items_rest[:20 - count]
 
         return items
 
@@ -128,7 +128,7 @@ class AutocompleteProvider(object):
         labels = self.get_labels_for_dynamic_items('labels')
 
         for ref_type in ref_types:
-            if len(dynamic_items) >= 5: break
+            if len(dynamic_items) >= 20: break
             self.append_to_dynamic_items(word, dynamic_items, ref_type, labels)
         return dynamic_items
 
@@ -139,7 +139,7 @@ class AutocompleteProvider(object):
         labels = self.get_labels_for_dynamic_items('bibitems')
 
         for ref_type in ref_types:
-            if len(dynamic_items) >= 5: break
+            if len(dynamic_items) >= 20: break
             self.append_to_dynamic_items(word, dynamic_items, ref_type, labels)
         return dynamic_items
 
@@ -192,7 +192,7 @@ class AutocompleteProvider(object):
 
     def append_to_dynamic_items(self, word, items, ref_type, labels):
         for label in iter(labels):
-            if len(items) >= 5: break
+            if len(items) >= 20: break
 
             if label == '•':
                 description = ref_type[2]
@@ -269,7 +269,7 @@ class AutocompleteProvider(object):
             if not command['lowpriority']:
                 for i in range(1, len(command['command']) + 1):
                     try:
-                        if len(self.static_proposals[command['command'][0:i].lower()]) < 5:
+                        if len(self.static_proposals[command['command'][0:i].lower()]) < 20:
                             self.static_proposals[command['command'][0:i].lower()].append(command)
                     except KeyError:
                         self.static_proposals[command['command'][0:i].lower()] = [command]
@@ -277,7 +277,7 @@ class AutocompleteProvider(object):
             if command['lowpriority']:
                 for i in range(1, len(command['command']) + 1):
                     try:
-                        if len(self.static_proposals[command['command'][0:i].lower()]) < 5:
+                        if len(self.static_proposals[command['command'][0:i].lower()]) < 20:
                             self.static_proposals[command['command'][0:i].lower()].append(command)
                     except KeyError:
                         self.static_proposals[command['command'][0:i].lower()] = [command]

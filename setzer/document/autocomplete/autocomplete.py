@@ -87,6 +87,13 @@ class Autocomplete(object):
     def on_row_selected(self, box, row, user_data=None):
         if row != None:
             command = row.get_child().command
+            scroll_min = row.get_index() * self.line_height
+            scroll_max = scroll_min - 4 * self.line_height
+            current_offset = self.view.scrolled_window.get_vadjustment().get_value()
+            if scroll_min < current_offset:
+                self.view.scrolled_window.get_vadjustment().set_value(scroll_min)
+            elif scroll_max > current_offset:
+                self.view.scrolled_window.get_vadjustment().set_value(scroll_max)
             self.view.infobox.set_text(command['description'])
 
     def on_focus_out(self, widget, event, user_data=None):
@@ -392,11 +399,12 @@ class Autocomplete(object):
         for command in reversed(self.items):
             item = view.DocumentAutocompleteItem(command, len(self.current_word) - 1)
             self.view.prepend(item)
+        self.view.scrolled_window.set_size_request(-1, min(len(self.items), 5) * self.line_height)
         if len(self.items) > 0:
             self.view.select_first()
 
     def update_position(self):
-        self.height = len(self.items) * self.line_height + 20
+        self.height = min(len(self.items), 5) * self.line_height + 20
         self.width = self.view.get_allocated_width()
 
         buffer = self.document.get_buffer()

@@ -29,18 +29,21 @@ class DocumentAutocompleteView(Gtk.VBox):
         self.set_halign(Gtk.Align.START)
         self.set_valign(Gtk.Align.START)
         self.set_size_request(297, -1)
-        
+
         self.list = Gtk.ListBox()
         self.list.set_selection_mode(Gtk.SelectionMode.SINGLE)
         self.list.set_can_focus(False)
         self.items = list()
         self.selected_index = 0
 
+        self.scrolled_window = Gtk.ScrolledWindow()
+        self.scrolled_window.add(self.list)
+
         self.infobox = Gtk.Label('')
         self.infobox.set_xalign(0)
         self.infobox.get_style_context().add_class('infobox')
 
-        self.pack_start(self.list, True, True, 0)
+        self.pack_start(self.scrolled_window, True, True, 0)
         self.pack_start(self.infobox, False, False, 0)
         self.list.show_all()
         self.infobox.show_all()
