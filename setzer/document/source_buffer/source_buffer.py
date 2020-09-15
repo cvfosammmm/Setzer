@@ -313,7 +313,7 @@ class SourceBuffer(GtkSource.Buffer):
         do_comment = False
         for line_number in line_numbers:
             line = self.get_line(line_number)
-            if not line.startswith('%'):
+            if not line.lstrip().startswith('%'):
                 do_comment = True
 
         if do_comment:
@@ -321,7 +321,10 @@ class SourceBuffer(GtkSource.Buffer):
                 self.insert(self.get_iter_at_line(line_number), '%')
         else:
             for line_number in line_numbers:
+                line = self.get_line(line_number)
+                offset = len(line) - len(line.lstrip())
                 start = self.get_iter_at_line(line_number)
+                start.forward_chars(offset)
                 end = start.copy()
                 end.forward_char()
                 self.delete(start, end)
