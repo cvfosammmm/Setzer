@@ -37,6 +37,7 @@ class DocumentAutocompleteView(Gtk.VBox):
         self.selected_index = 0
 
         self.scrolled_window = Gtk.ScrolledWindow()
+        self.scrolled_window.set_propagate_natural_height(True)
         self.scrolled_window.add(self.list)
 
         self.infobox = Gtk.Label('')

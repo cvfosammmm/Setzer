@@ -35,6 +35,7 @@ class Autocomplete(object):
         self.main_window = ServiceLocator.get_main_window()
 
         self.view = view.DocumentAutocompleteView()
+
         self.provider = ServiceLocator.get_autocomplete_provider()
 
         self.states = dict()
@@ -46,6 +47,8 @@ class Autocomplete(object):
 
         self.char_width, self.line_height = self.document.get_char_dimensions()
         self.shortcuts_bar_height = 37
+
+        self.view.scrolled_window.set_max_content_height(5 * self.line_height)
 
         self.insert_iter_offset = None
         self.current_word = ""
@@ -399,7 +402,6 @@ class Autocomplete(object):
         for command in reversed(self.items):
             item = view.DocumentAutocompleteItem(command, len(self.current_word) - 1)
             self.view.prepend(item)
-        self.view.scrolled_window.set_size_request(-1, min(len(self.items), 5) * self.line_height)
         if len(self.items) > 0:
             self.view.select_first()
 
