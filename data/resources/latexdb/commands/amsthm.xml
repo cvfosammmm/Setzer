@@ -2,8 +2,8 @@
   <command name="begin{proof}" text="begin{proof}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{proof}[•]" text="begin{proof}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="heading###" />
   <command name="end{proof}" text="end{proof}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="newtheorem*{•}{•}" text="newtheorem*{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###caption###" />
   <command name="newtheoremstyle{•}{•}{•}{•}{•}{•}{•}{•}{•}" text="newtheoremstyle{•}{•}{•}{•}{•}{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="style name###space above###space below###body font###indent amount###head font###head punct###after head space###head spec###" />
+  <command name="newtheorem*{•}{•}" text="newtheorem*{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###caption###" />
   <command name="proofname" text="proofname" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="qed" text="qed" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="qedhere" text="qedhere" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />

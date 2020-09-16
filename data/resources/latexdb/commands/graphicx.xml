@@ -2,15 +2,15 @@
   <command name="DeclareGraphicsExtensions{•}" text="DeclareGraphicsExtensions{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="ext-list###" />
   <command name="DeclareGraphicsRule{•}{•}{•}{•}" text="DeclareGraphicsRule{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="ext###type###read-file###command%plain###" />
   <command name="graphicspath{•}" text="graphicspath{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="dir-list###" />
-  <command name="includegraphics*[•]{•}" text="includegraphics*[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keyvals###imagefile###" />
-  <command name="includegraphics*{•}" text="includegraphics*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="imagefile###" />
-  <command name="includegraphics[•]{•}" text="includegraphics[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keyvals###imagefile###" />
   <command name="includegraphics{•}" text="includegraphics{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="imagefile###" />
+  <command name="includegraphics[•]{•}" text="includegraphics[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keyvals###imagefile###" />
+  <command name="includegraphics*{•}" text="includegraphics*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="imagefile###" />
+  <command name="includegraphics*[•]{•}" text="includegraphics*[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keyvals###imagefile###" />
   <command name="reflectbox{•}" text="reflectbox{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
-  <command name="resizebox*{•}{•}{•}" text="resizebox*{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="h-length###v-length###text###" />
   <command name="resizebox{•}{•}{•}" text="resizebox{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="h-length###v-length###text###" />
-  <command name="rotatebox[•]{•}{•}" text="rotatebox[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keyvals###angle###text###" />
+  <command name="resizebox*{•}{•}{•}" text="resizebox*{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="h-length###v-length###text###" />
   <command name="rotatebox{•}{•}" text="rotatebox{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="angle###text###" />
-  <command name="scalebox{•}[•]{•}" text="scalebox{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="h-scale###v-scale###text###" />
+  <command name="rotatebox[•]{•}{•}" text="rotatebox[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keyvals###angle###text###" />
   <command name="scalebox{•}{•}" text="scalebox{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="h-scale###text###" />
+  <command name="scalebox{•}[•]{•}" text="scalebox{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="h-scale###v-scale###text###" />
 </commands>

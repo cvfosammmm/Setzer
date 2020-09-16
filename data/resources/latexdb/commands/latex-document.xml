@@ -8,10 +8,9 @@
   <command name="appendixname" text="appendixname" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="arabic{•}" text="arabic{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="counter###" />
   <command name="author{•}" text="author{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="names###" />
-  <command name="begin{•}" text="begin{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="environment###" />
   <command name="begin{abstract}" text="begin{abstract}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="begin{array}[•]{•}" text="begin{array}[•]{•}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="pos###cols###" />
   <command name="begin{array}{•}" text="begin{array}{•}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cols###" />
+  <command name="begin{array}[•]{•}" text="begin{array}[•]{•}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="pos###cols###" />
   <command name="begin{bmatrix}" text="begin{bmatrix}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{Bmatrix}" text="begin{Bmatrix}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{center}" text="begin{center}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -22,14 +21,14 @@
   <command name="begin{enumerate}\item" text="begin{enumerate}\item" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{eqnarray}" text="begin{eqnarray}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{equation}" text="begin{equation}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="begin{figure*}" text="begin{figure*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="begin{figure*}[•]" text="begin{figure*}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="placement###" />
   <command name="begin{figure}" text="begin{figure}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{figure}[•]" text="begin{figure}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="placement###" />
-  <command name="begin{filecontents*}" text="begin{filecontents*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="begin{filecontents*}[•]" text="begin{filecontents*}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="options###" />
+  <command name="begin{figure*}" text="begin{figure*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="begin{figure*}[•]" text="begin{figure*}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="placement###" />
   <command name="begin{filecontents}" text="begin{filecontents}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{filecontents}[•]" text="begin{filecontents}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="options###" />
+  <command name="begin{filecontents*}" text="begin{filecontents*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="begin{filecontents*}[•]" text="begin{filecontents*}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="options###" />
   <command name="begin{flushleft}" text="begin{flushleft}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{flushright}" text="begin{flushright}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{footnotesize}" text="begin{footnotesize}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -44,10 +43,10 @@
   <command name="begin{lrbox}" text="begin{lrbox}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{math}" text="begin{math}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{matrix}" text="begin{matrix}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="begin{minipage}[•][•][•]{•}" text="begin{minipage}[•][•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###height###inner pos###width###" />
-  <command name="begin{minipage}[•][•]{•}" text="begin{minipage}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###height###width###" />
-  <command name="begin{minipage}[•]{•}" text="begin{minipage}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###width###" />
   <command name="begin{minipage}{•}" text="begin{minipage}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###" />
+  <command name="begin{minipage}[•]{•}" text="begin{minipage}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###width###" />
+  <command name="begin{minipage}[•][•]{•}" text="begin{minipage}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###height###width###" />
+  <command name="begin{minipage}[•][•][•]{•}" text="begin{minipage}[•][•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###height###inner pos###width###" />
   <command name="begin{normalsize}" text="begin{normalsize}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{picture}(•,•)" text="begin{picture}(•,•)" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###height###" />
   <command name="begin{picture}(•,•)(•,•)" text="begin{picture}(•,•)(•,•)" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###height###xoffset###yoffset###" />
@@ -57,28 +56,28 @@
   <command name="begin{scriptsize}" text="begin{scriptsize}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{small}" text="begin{small}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{tabbing}" text="begin{tabbing}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="begin{table*}" text="begin{table*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="begin{table*}[•]" text="begin{table*}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="placement###" />
   <command name="begin{table}" text="begin{table}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{table}[•]" text="begin{table}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="placement###" />
-  <command name="begin{tabular*}{•}[•]{•}" text="begin{tabular*}{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###pos###cols###" />
-  <command name="begin{tabular*}{•}{•}" text="begin{tabular*}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###cols###" />
-  <command name="begin{tabular}[•]{•}" text="begin{tabular}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="pos###cols###" />
+  <command name="begin{table*}" text="begin{table*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="begin{table*}[•]" text="begin{table*}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="placement###" />
   <command name="begin{tabular}{•}" text="begin{tabular}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cols###" />
+  <command name="begin{tabular}[•]{•}" text="begin{tabular}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="pos###cols###" />
+  <command name="begin{tabular*}{•}{•}" text="begin{tabular*}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###cols###" />
+  <command name="begin{tabular*}{•}[•]{•}" text="begin{tabular*}{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###pos###cols###" />
   <command name="begin{thebibliography}{•}" text="begin{thebibliography}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="widestlabel###" />
   <command name="begin{theindex}" text="begin{theindex}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{tiny}" text="begin{tiny}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{titlepage}" text="begin{titlepage}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{trivlist}" text="begin{trivlist}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="begin{verbatim*}" text="begin{verbatim*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{verbatim}" text="begin{verbatim}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="begin{verbatim*}" text="begin{verbatim*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="begin{verse}" text="begin{verse}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="bezier{•}(•,•)(•,•)(•,•)" text="bezier{•}(•,•)(•,•)(•,•)" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="n###x1###y1###x2###y2###x3###y3###" />
   <command name="bfseries" text="bfseries" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="bibitem[•]{•}" text="bibitem[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###citekey###" />
   <command name="bibitem{•}" text="bibitem{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="citekey###" />
-  <command name="bibliographystyle{•}" text="bibliographystyle{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="style###" />
+  <command name="bibitem[•]{•}" text="bibitem[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###citekey###" />
   <command name="bibliography{•}" text="bibliography{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="bib file###" />
+  <command name="bibliographystyle{•}" text="bibliographystyle{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="style###" />
   <command name="Bigg" text="Bigg" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="bigg" text="bigg" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="Bigg(•\Bigg)" text="Bigg(•\Bigg)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -89,15 +88,15 @@
   <command name="bigg|•\bigg|" text="bigg|•\bigg|" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="boldmath" text="boldmath" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="botfigrule" text="botfigrule" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
-  <command name="caption[•]{•}" text="caption[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="short text###text###" />
   <command name="caption{•}" text="caption{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
-  <command name="chapter*{•}" text="chapter*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
+  <command name="caption[•]{•}" text="caption[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="short text###text###" />
+  <command name="chapter{•}" text="chapter{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="chapter[•]{•}" text="chapter[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="short title###title###" />
   <command name="chaptermark{•}" text="chaptermark{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="code###" />
   <command name="chaptername" text="chaptername" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
-  <command name="chapter{•}" text="chapter{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
-  <command name="circle*{•}" text="circle*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="diameter###" />
+  <command name="chapter*{•}" text="chapter*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="circle{•}" text="circle{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="diameter###" />
+  <command name="circle*{•}" text="circle*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="diameter###" />
   <command name="cite[•]{•}" text="cite[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="add. text###keylist###" />
   <command name="cleardoublepage" text="cleardoublepage" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="clearpage" text="clearpage" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -105,16 +104,15 @@
   <command name="columnwidth" text="columnwidth" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="contentsline{•}{•}{•}" text="contentsline{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="type###text###page###" />
   <command name="contentsname" text="contentsname" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="dashbox{•}(•,•)[•]{•}" text="dashbox{•}(•,•)[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="dashlength###width###height###position###text###" />
   <command name="dashbox{•}(•,•){•}" text="dashbox{•}(•,•){•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="dashlength###width###height###text###" />
+  <command name="dashbox{•}(•,•)[•]{•}" text="dashbox{•}(•,•)[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="dashlength###width###height###position###text###" />
   <command name="date{•}" text="date{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
   <command name="depth" text="depth" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="descriptionlabel{•}" text="descriptionlabel{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="code###" />
-  <command name="documentclass[•]{•}" text="documentclass[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keyvals###class###" />
   <command name="documentclass{•}" text="documentclass{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="class###" />
+  <command name="documentclass[•]{•}" text="documentclass[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keyvals###class###" />
   <command name="em" text="em" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="emph{•}" text="emph{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
-  <command name="end{•}" text="end{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="environment###" />
   <command name="end{abstract}" text="end{abstract}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{array}" text="end{array}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{bmatrix}" text="end{bmatrix}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -126,10 +124,10 @@
   <command name="end{enumerate}" text="end{enumerate}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{eqnarray}" text="end{eqnarray}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{equation}" text="end{equation}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="end{figure*}" text="end{figure*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{figure}" text="end{figure}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="end{filecontents*}" text="end{filecontents*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="end{figure*}" text="end{figure*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{filecontents}" text="end{filecontents}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="end{filecontents*}" text="end{filecontents*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{flushleft}" text="end{flushleft}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{flushright}" text="end{flushright}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{footnotesize}" text="end{footnotesize}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -152,20 +150,20 @@
   <command name="end{scriptsize}" text="end{scriptsize}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{small}" text="end{small}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{tabbing}" text="end{tabbing}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="end{table*}" text="end{table*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{table}" text="end{table}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="end{tabular*}" text="end{tabular*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="end{table*}" text="end{table*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{tabular}" text="end{tabular}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="end{tabular*}" text="end{tabular*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{thebibliography}" text="end{thebibliography}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{theindex}" text="end{theindex}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{tiny}" text="end{tiny}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{titlepage}" text="end{titlepage}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{trivlist}" text="end{trivlist}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="end{verbatim*}" text="end{verbatim*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{verbatim}" text="end{verbatim}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="end{verbatim*}" text="end{verbatim*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="end{verse}" text="end{verse}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="enlargethispage*{•}" text="enlargethispage*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="size###" />
   <command name="enlargethispage{•}" text="enlargethispage{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="size###" />
+  <command name="enlargethispage*{•}" text="enlargethispage*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="size###" />
   <command name="ensuremath{•}" text="ensuremath{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="formula###" />
   <command name="fbox{•}" text="fbox{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
   <command name="figurename" text="figurename" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -179,23 +177,23 @@
   <command name="fontshape{•}" text="fontshape{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="shape###" />
   <command name="fontsize{•}{•}" text="fontsize{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="size###skip###" />
   <command name="fontsubfuzz" text="fontsubfuzz" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="footnote{•}" text="footnote{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
   <command name="footnote[•]{•}" text="footnote[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="number###text###" />
   <command name="footnotemark" text="footnotemark" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="footnotemark[•]" text="footnotemark[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="number###" />
   <command name="footnotesize" text="footnotesize" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="footnotetext[•]{•}" text="footnotetext[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="number###text###" />
   <command name="footnotetext{•}" text="footnotetext{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
-  <command name="footnote{•}" text="footnote{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
+  <command name="footnotetext[•]{•}" text="footnotetext[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="number###text###" />
   <command name="frac{•}{•}" text="frac{•}{•}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="num###den###" />
-  <command name="framebox(•,•)[•]{•}" text="framebox(•,•)[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="xdimen###ydimen###position###text###" />
-  <command name="framebox(•,•){•}" text="framebox(•,•){•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="xdimen###ydimen###text###" />
-  <command name="framebox[•][•]{•}" text="framebox[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###position###text###" />
-  <command name="framebox[•]{•}" text="framebox[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###text###" />
   <command name="frame{•}" text="frame{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
+  <command name="framebox(•,•){•}" text="framebox(•,•){•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="xdimen###ydimen###text###" />
+  <command name="framebox(•,•)[•]{•}" text="framebox(•,•)[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="xdimen###ydimen###position###text###" />
+  <command name="framebox[•]{•}" text="framebox[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###text###" />
+  <command name="framebox[•][•]{•}" text="framebox[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###position###text###" />
   <command name="frq" text="frq" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="frqq" text="frqq" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="glossaryentry{•}{•}" text="glossaryentry{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###pagenum###" />
   <command name="glossary{•}" text="glossary{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
+  <command name="glossaryentry{•}{•}" text="glossaryentry{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###pagenum###" />
   <command name="glq" text="glq" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="glqq" text="glqq" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="grq" text="grq" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -203,16 +201,16 @@
   <command name="hline" text="hline" onlymath="False" onlytext="False" onlytabular="True" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="hlinefill" text="hlinefill" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="hrule" text="hrule" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="hspace*{•}" text="hspace*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="length###" />
   <command name="hspace{•}" text="hspace{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="length###" />
+  <command name="hspace*{•}" text="hspace*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="length###" />
   <command name="huge" text="huge" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="Huge" text="Huge" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="i" text="i" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="includeonly{•}" text="includeonly{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="filelist###" />
   <command name="include{•}" text="include{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="file###" />
+  <command name="includeonly{•}" text="includeonly{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="filelist###" />
+  <command name="index{•}" text="index{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="entry###" />
   <command name="indexname" text="indexname" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="indexspace" text="indexspace" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="index{•}" text="index{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="entry###" />
   <command name="input{•}" text="input{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="file###" />
   <command name="it" text="it" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="item •" text="item •" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -264,8 +262,8 @@
   <command name="listtablename" text="listtablename" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="makeatletter" text="makeatletter" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="makeatother" text="makeatother" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
-  <command name="makebox(•,•)[•]{•}" text="makebox(•,•)[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="width###height###position###text###" />
   <command name="makebox(•,•){•}" text="makebox(•,•){•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="width###height###text###" />
+  <command name="makebox(•,•)[•]{•}" text="makebox(•,•)[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="width###height###position###text###" />
   <command name="makeglossary" text="makeglossary" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="makeindex" text="makeindex" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="makelabel" text="makelabel" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
@@ -273,8 +271,8 @@
   <command name="MakeLowercase{•}" text="MakeLowercase{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="text###" />
   <command name="maketitle" text="maketitle" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="MakeUppercase{•}" text="MakeUppercase{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="text###" />
-  <command name="marginpar[•]{•}" text="marginpar[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="left###right###" />
   <command name="marginpar{•}" text="marginpar{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="right###" />
+  <command name="marginpar[•]{•}" text="marginpar[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="left###right###" />
   <command name="markboth{•}{•}" text="markboth{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="lefthead###righthead###" />
   <command name="markright{•}" text="markright{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="righthead###" />
   <command name="mathbf{•}" text="mathbf{•}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
@@ -299,25 +297,25 @@
   <command name="negmedspace" text="negmedspace" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="negthickspace" text="negthickspace" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="newblock" text="newblock" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
-  <command name="newcommand*{•}[•][•]{•}" text="newcommand*{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###default###def###" />
-  <command name="newcommand*{•}[•]{•}" text="newcommand*{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###def###" />
-  <command name="newcommand*{•}{•}" text="newcommand*{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###def###" />
-  <command name="newcommand{•}[•][•]{•}" text="newcommand{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###default###def###" />
-  <command name="newcommand{•}[•]{•}" text="newcommand{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###def###" />
   <command name="newcommand{•}{•}" text="newcommand{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###def###" />
-  <command name="newenvironment*{•}[•][•]{•}{•}" text="newenvironment*{•}[•][•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###default###begdef###enddef###" />
-  <command name="newenvironment*{•}[•]{•}{•}" text="newenvironment*{•}[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###begdef###enddef###" />
-  <command name="newenvironment*{•}{•}{•}" text="newenvironment*{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###begdef###enddef###" />
-  <command name="newenvironment{•}[•][•]{•}{•}" text="newenvironment{•}[•][•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###default###begdef###enddef###" />
-  <command name="newenvironment{•}[•]{•}{•}" text="newenvironment{•}[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###begdef###enddef###" />
+  <command name="newcommand{•}[•]{•}" text="newcommand{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###def###" />
+  <command name="newcommand{•}[•][•]{•}" text="newcommand{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###default###def###" />
+  <command name="newcommand*{•}{•}" text="newcommand*{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###def###" />
+  <command name="newcommand*{•}[•]{•}" text="newcommand*{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###def###" />
+  <command name="newcommand*{•}[•][•]{•}" text="newcommand*{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###default###def###" />
   <command name="newenvironment{•}{•}{•}" text="newenvironment{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###begdef###enddef###" />
+  <command name="newenvironment{•}[•]{•}{•}" text="newenvironment{•}[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###begdef###enddef###" />
+  <command name="newenvironment{•}[•][•]{•}{•}" text="newenvironment{•}[•][•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###default###begdef###enddef###" />
+  <command name="newenvironment*{•}{•}{•}" text="newenvironment*{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###begdef###enddef###" />
+  <command name="newenvironment*{•}[•]{•}{•}" text="newenvironment*{•}[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###begdef###enddef###" />
+  <command name="newenvironment*{•}[•][•]{•}{•}" text="newenvironment*{•}[•][•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###default###begdef###enddef###" />
   <command name="newlabel" text="newlabel" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="newlength{•}" text="newlength{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="newlength###" />
   <command name="newline" text="newline" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="newpage" text="newpage" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="newtheorem{•}[•]{•}" text="newtheorem{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###numbered like###caption###" />
   <command name="newtheorem{•}{•}" text="newtheorem{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###caption###" />
   <command name="newtheorem{•}{•}[•]" text="newtheorem{•}{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###caption###within###" />
+  <command name="newtheorem{•}[•]{•}" text="newtheorem{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###numbered like###caption###" />
   <command name="nocite{•}" text="nocite{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keylist###" />
   <command name="nocorr" text="nocorr" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="nocorrlist{•}" text="nocorrlist{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="charlist###" />
@@ -345,46 +343,47 @@
   <command name="pagename" text="pagename" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="pagenumbering{•}" text="pagenumbering{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="numstyle###" />
   <command name="pagestyle{•}" text="pagestyle{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="option###" />
-  <command name="paragraph*{•}" text="paragraph*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
+  <command name="paragraph{•}" text="paragraph{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="paragraph[•]{•}" text="paragraph[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="short title###title###" />
   <command name="paragraphmark" text="paragraphmark" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="paragraph{•}" text="paragraph{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
-  <command name="parbox[•][•][•]{•}{•}" text="parbox[•][•][•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###height###inner-pos###width###contents###" />
-  <command name="parbox[•][•]{•}{•}" text="parbox[•][•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###height###width###contents###" />
-  <command name="parbox[•]{•}{•}" text="parbox[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###width###text###" />
+  <command name="paragraph*{•}" text="paragraph*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="parbox{•}{•}" text="parbox{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###text###" />
-  <command name="part*{•}" text="part*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
+  <command name="parbox[•]{•}{•}" text="parbox[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###width###text###" />
+  <command name="parbox[•][•]{•}{•}" text="parbox[•][•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###height###width###contents###" />
+  <command name="parbox[•][•][•]{•}{•}" text="parbox[•][•][•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###height###inner-pos###width###contents###" />
+  <command name="part{•}" text="part{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="part[•]{•}" text="part[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="short title###title###" />
   <command name="partname" text="partname" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="part{•}" text="part{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
+  <command name="part*{•}" text="part*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="pdfinfo{•}" text="pdfinfo{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="info###" />
   <command name="plus" text="plus" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="poptabs" text="poptabs" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="True" lowpriority="False" description="" dotlabels="" />
   <command name="pounds" text="pounds" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="printindex" text="printindex" onlymath="False" onlytext="True" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="protect" text="protect" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="providecommand*{•}[•][•]{•}" text="providecommand*{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###default###def###" />
-  <command name="providecommand*{•}[•]{•}" text="providecommand*{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###def###" />
-  <command name="providecommand*{•}{•}" text="providecommand*{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###def###" />
-  <command name="providecommand{•}[•][•]{•}" text="providecommand{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###default###def###" />
-  <command name="providecommand{•}[•]{•}" text="providecommand{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###def###" />
   <command name="providecommand{•}{•}" text="providecommand{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###def###" />
+  <command name="providecommand{•}[•]{•}" text="providecommand{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###def###" />
+  <command name="providecommand{•}[•][•]{•}" text="providecommand{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###default###def###" />
+  <command name="providecommand*{•}{•}" text="providecommand*{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###def###" />
+  <command name="providecommand*{•}[•]{•}" text="providecommand*{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###def###" />
+  <command name="providecommand*{•}[•][•]{•}" text="providecommand*{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###args###default###def###" />
   <command name="pushtabs" text="pushtabs" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="True" lowpriority="False" description="" dotlabels="" />
   <command name="put(•,•){•}" text="put(•,•){•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="xcoord###ycoord###text###" />
+  <command name="r{•}" text="r{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="letter###" />
   <command name="raggedleft" text="raggedleft" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="refname" text="refname" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="renewcommand*{•}[•][•]{•}" text="renewcommand*{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###default###def###" />
-  <command name="renewcommand*{•}[•]{•}" text="renewcommand*{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###def###" />
-  <command name="renewcommand*{•}{•}" text="renewcommand*{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###def###" />
-  <command name="renewcommand{•}[•][•]{•}" text="renewcommand{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###default###def###" />
-  <command name="renewcommand{•}[•]{•}" text="renewcommand{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###def###" />
   <command name="renewcommand{•}{•}" text="renewcommand{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###def###" />
-  <command name="renewenvironment*{•}[•][•]{•}{•}" text="renewenvironment*{•}[•][•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###default###begdef###enddef###" />
-  <command name="renewenvironment*{•}[•]{•}{•}" text="renewenvironment*{•}[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###begdef###enddef###" />
-  <command name="renewenvironment*{•}{•}{•}" text="renewenvironment*{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###begdef###enddef###" />
-  <command name="renewenvironment{•}[•][•]{•}{•}" text="renewenvironment{•}[•][•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###default###begdef###enddef###" />
-  <command name="renewenvironment{•}[•]{•}{•}" text="renewenvironment{•}[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###begdef###enddef###" />
+  <command name="renewcommand{•}[•]{•}" text="renewcommand{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###def###" />
+  <command name="renewcommand{•}[•][•]{•}" text="renewcommand{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###default###def###" />
+  <command name="renewcommand*{•}{•}" text="renewcommand*{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###def###" />
+  <command name="renewcommand*{•}[•]{•}" text="renewcommand*{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###def###" />
+  <command name="renewcommand*{•}[•][•]{•}" text="renewcommand*{•}[•][•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###default###def###" />
   <command name="renewenvironment{•}{•}{•}" text="renewenvironment{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###begdef###enddef###" />
+  <command name="renewenvironment{•}[•]{•}{•}" text="renewenvironment{•}[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###begdef###enddef###" />
+  <command name="renewenvironment{•}[•][•]{•}{•}" text="renewenvironment{•}[•][•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###default###begdef###enddef###" />
+  <command name="renewenvironment*{•}{•}{•}" text="renewenvironment*{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###begdef###enddef###" />
+  <command name="renewenvironment*{•}[•]{•}{•}" text="renewenvironment*{•}[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###begdef###enddef###" />
+  <command name="renewenvironment*{•}[•][•]{•}{•}" text="renewenvironment*{•}[•][•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="envname###args###default###begdef###enddef###" />
   <command name="right" text="right" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="right(" text="right(" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="right)" text="right)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -413,24 +412,23 @@
   <command name="rmfamily" text="rmfamily" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="Roman{•}" text="Roman{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="counter###" />
   <command name="roman{•}" text="roman{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="counter###" />
-  <command name="rule[•]{•}{•}" text="rule[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="raise###width###thickness###" />
   <command name="rule{•}{•}" text="rule{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="width###thickness###" />
-  <command name="r{•}" text="r{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="letter###" />
+  <command name="rule[•]{•}{•}" text="rule[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="raise###width###thickness###" />
   <command name="samepage" text="samepage" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="sbox{•}[•]" text="sbox{•}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###text###" />
   <command name="sc" text="sc" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="scriptsize" text="scriptsize" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="scshape" text="scshape" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="section*{•}" text="section*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
+  <command name="section{•}" text="section{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="section[•]{•}" text="section[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="short title###title###" />
   <command name="sectionmark{•}" text="sectionmark{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="code###" />
-  <command name="section{•}" text="section{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
+  <command name="section*{•}" text="section*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="selectfont" text="selectfont" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="setlength{•}{•}" text="setlength{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###length###" />
   <command name="sf" text="sf" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="sffamily" text="sffamily" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="shortstack[•]{•}" text="shortstack[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###text\\text###" />
   <command name="shortstack{•}" text="shortstack{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text\\text###" />
+  <command name="shortstack[•]{•}" text="shortstack[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="position###text\\text###" />
   <command name="sl" text="sl" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="slshape" text="slshape" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="small" text="small" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -439,19 +437,19 @@
   <command name="stepcounter{•}" text="stepcounter{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="counter###" />
   <command name="stop" text="stop" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="subitem" text="subitem" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="subparagraph*{•}" text="subparagraph*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
+  <command name="subparagraph{•}" text="subparagraph{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="subparagraph[•]{•}" text="subparagraph[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="short title###title###" />
   <command name="subparagraphmark{•}" text="subparagraphmark{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="code###" />
-  <command name="subparagraph{•}" text="subparagraph{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
-  <command name="subsection*{•}" text="subsection*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
+  <command name="subparagraph*{•}" text="subparagraph*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
+  <command name="subsection{•}" text="subsection{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="subsection[•]{•}" text="subsection[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="short title###title###" />
   <command name="subsectionmark{•}" text="subsectionmark{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="code###" />
-  <command name="subsection{•}" text="subsection{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
+  <command name="subsection*{•}" text="subsection*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="subsubitem" text="subsubitem" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="subsubsection*{•}" text="subsubsection*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
+  <command name="subsubsection{•}" text="subsubsection{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="subsubsection[•]{•}" text="subsubsection[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="short title###title###" />
   <command name="subsubsectionmark{•}" text="subsubsectionmark{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="code###" />
-  <command name="subsubsection{•}" text="subsubsection{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
+  <command name="subsubsection*{•}" text="subsubsection*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="suppressfloats" text="suppressfloats" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="suppressfloats[•]" text="suppressfloats[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="placement###" />
   <command name="symbol{•}" text="symbol{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="n###" />
@@ -517,19 +515,19 @@
   <command name="tt" text="tt" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="ttfamily" text="ttfamily" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="twocolumn[•]" text="twocolumn[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
-  <command name="typein[•]{•}" text="typein[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###msg###" />
   <command name="typein{•}" text="typein{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="msg###" />
+  <command name="typein[•]{•}" text="typein[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###msg###" />
   <command name="typeout{•}" text="typeout{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="msg###" />
   <command name="unboldmath" text="unboldmath" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="upshape" text="upshape" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="usepackage[•]{•}" text="usepackage[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="options###package###" />
   <command name="usepackage{•}" text="usepackage{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="package###" />
+  <command name="usepackage[•]{•}" text="usepackage[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="options###package###" />
   <command name="vdots" text="vdots" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="vector(•,•){•}" text="vector(•,•){•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="xslope###yslope###length###" />
   <command name="verb*|•|" text="verb*|•|" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
   <command name="verb|•|" text="verb|•|" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
   <command name="vline" text="vline" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="vspace*{•}" text="vspace*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="length###" />
   <command name="vspace{•}" text="vspace{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="length###" />
+  <command name="vspace*{•}" text="vspace*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="length###" />
   <command name="width" text="width" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
 </commands>
