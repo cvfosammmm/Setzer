@@ -5,6 +5,9 @@
 paned.sidebar_paned {
     background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
 }
+scrollbar slider {
+    min-height: 10px;
+}
 
 /*
 ** document view
