@@ -87,8 +87,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
 
   <!-- Global Settings -->
   <style name="current-line"                background="aluminium1"/>
-  <style name="line-numbers"                background="#white" foreground="#222222"/>
-  <style name="current-line-number"         background="#f7f6f6" foreground="black"/>
+  <style name="line-numbers"                />
+  <style name="current-line-number"         background="aluminium1"/>
   <style name="draw-spaces"                 foreground="aluminium3"/>
   <style name="background-pattern"          background="#f3f3f3"/>
   <style name="text"                        foreground="black" background="white"/>
@@ -104,7 +104,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <style name="search-match"                background="butter1"/>
 
   <!-- Comments -->
-  <style name="def:comment"                 foreground="aluminium4"/>
+  <style name="def:comment"                 foreground="aluminium5"/>
   <style name="def:shebang"                 foreground="aluminium4" bold="true"/>
   <style name="def:doc-comment-element"     italic="true"/>
 
@@ -129,9 +129,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <style name="def:underlined"              italic="true" underline="single"/>
 
   <!-- Language specific -->
-  <style name="latex:command"               foreground="#c03e28" bold="true"/>
+  <style name="latex:command"               foreground="blue" bold="true"/>
 
-  <style name="latex:usepackage"            foreground="#c03e28" bold="true"/>
+  <style name="latex:usepackage"            foreground="blue" bold="true"/>
   <style name="latex:pkg-name"              foreground="black" bold="false"/>
   <style name="latex:special-char"          foreground="plum3"/>
 
@@ -142,16 +142,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <style name="latex:math-special-char"     foreground="green2"/>
 
   <style name="latex:begin-end-command"     foreground="blue" bold="true"/>
-  <style name="latex:env-name"              foreground="black" bold="false"/>
+  <style name="latex:env-name"              foreground="orange3" bold="false"/>
 
   <style name="latex:include"               foreground="blue" bold="true"/>
-  <style name="latex:included-file"         foreground="blue" scale="1.0" bold="true"/>
+  <style name="latex:included-file"         foreground="orange3" scale="1.0" bold="false"/>
   <style name="latex:section-command"       foreground="blue" bold="true"/>
-  <style name="latex:part"                  foreground="blue" scale="1.0" bold="true"/>
-  <style name="latex:chapter"               foreground="blue" scale="1.0" bold="true"/>
-  <style name="latex:section"               foreground="blue" scale="1.0" bold="true"/>
-  <style name="latex:subsection"            foreground="blue" scale="1.0" bold="true"/>
-  <style name="latex:subsubsection"         foreground="blue" scale="1.0" bold="true"/>
+  <style name="latex:part"                  foreground="orange3" scale="1.0" bold="false"/>
+  <style name="latex:chapter"               foreground="orange3" scale="1.0" bold="false"/>
+  <style name="latex:section"               foreground="orange3" scale="1.0" bold="false"/>
+  <style name="latex:subsection"            foreground="orange3" scale="1.0" bold="false"/>
+  <style name="latex:subsubsection"         foreground="orange3" scale="1.0" bold="false"/>
   <!--<style name="latex:part"                  scale="2.0"/>
   <style name="latex:chapter"               scale="1.7"/>
   <style name="latex:section"               scale="1.5"/>
