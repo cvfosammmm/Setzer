@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-16 17:41+0100\n"
-"PO-Revision-Date: 2020-09-16 18:07+0100\n"
+"PO-Revision-Date: 2020-09-16 19:06+0100\n"
 "Last-Translator: Lyes Saadi <mail@lyes.eu>\n"
 "Language-Team: French <>\n"
 "Language: fr\n"
@@ -31,28 +31,27 @@ msgid "Reference"
 msgstr "Référence"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:45
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Reference to page of '{label}'"
-msgstr "Référence à \"{label}\""
+msgstr "Référence à la page de \"{label}\""
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:45
-#, fuzzy
 msgid "Page reference"
-msgstr "Référence de la page"
+msgstr "Référence de page"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:46
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Reference to '{label}', with parantheses"
-msgstr "Référence à \"{label}\""
+msgstr "Référence à \"{label}\", avec parenthèses"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:46
 msgid "Reference with parantheses"
-msgstr ""
+msgstr "Référence avec parenthèses"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:48
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Cite '{label}'"
-msgstr "Référence à \"{label}\""
+msgstr "Citer \"{label}\""
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:48
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:137
@@ -62,100 +61,92 @@ msgstr "Citation"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:49
 #, python-brace-format
 msgid "Cite '{label}' (abbreviated)"
-msgstr ""
+msgstr "Citer \"{label}\" (abrégée)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:49
-#, fuzzy
 msgid "Citation (abbreviated)"
-msgstr "Abrégé"
+msgstr "Citation (abrégée)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:50
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Cite '{label}' (abbreviated with brackets)"
-msgstr "Abrégé avec des crochets"
+msgstr "Citer \"{label}\" (abrégée avec crochets)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:50
-#, fuzzy
 msgid "Citation (abbreviated with brackets)"
-msgstr "Abrégé avec des crochets"
+msgstr "Citation (abrégée avec crochets)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:51
 #, python-brace-format
 msgid "Cite '{label}' (detailed)"
-msgstr ""
+msgstr "Citer \"{label}\" (détaillée)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:51
-#, fuzzy
 msgid "Citation (detailed)"
-msgstr "Citer l'auteur (détaillé)"
+msgstr "Citation (détaillée)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:52
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Cite '{label}' (detailed with brackets)"
-msgstr "Détaillé (avec des crochets)"
+msgstr "Citer \"{label}\" (détaillée avec crochets)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:52
-#, fuzzy
 msgid "Citation (detailed with brackets)"
-msgstr "Détaillé (avec des crochets)"
+msgstr "Citation (détaillée avec crochets)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:53
 #, python-brace-format
 msgid "Cite '{label}' (alternative style 1)"
-msgstr ""
+msgstr "Citer \"{label}\" (1er style alternatif)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:53
 msgid "Citation (alternative style 1)"
-msgstr ""
+msgstr "Citation (1er style alternatif)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:54
 #, python-brace-format
 msgid "Cite '{label}' (alternative style 2)"
-msgstr ""
+msgstr "Citer \"{label}\" (2ème style alternatif)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:54
 msgid "Citation (alternative style 2)"
-msgstr ""
+msgstr "Citation (2ème style alternatif)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:55
 #, python-brace-format
 msgid "Cite '{label}' (author)"
-msgstr ""
+msgstr "Citer \"{label}\" (auteur)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:55
-#, fuzzy
 msgid "Citation (author)"
-msgstr "Citer l'auteur"
+msgstr "Citation (auteur)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:56
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Cite '{label}' (author detailed)"
-msgstr "Citer l'auteur (détaillé)"
+msgstr "Citer \"{label}\" (auteur en détail)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:56
-#, fuzzy
 msgid "Citation (author detailed)"
-msgstr "Citer l'auteur (détaillé)"
+msgstr "Citation (auteur en détail)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:57
 #, python-brace-format
 msgid "Cite '{label}' (year)"
-msgstr ""
+msgstr "Citer \"{label}\" (année)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:57
-#, fuzzy
 msgid "Citation (year)"
-msgstr "Citation"
+msgstr "Citation (année)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:58
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Cite '{label}' (year with brackets)"
-msgstr "Citer l'année (avec des crochets)"
+msgstr "Citer \"{label}\" (année avec crochets)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:58
-#, fuzzy
 msgid "Citation (year with brackets)"
-msgstr "Citer l'année (avec des crochets)"
+msgstr "Citation (année avec crochets)"
 
 #: setzer/dialogs/about/about.py:44
 msgid "Setzer is a LaTeX editor."
@@ -831,7 +822,6 @@ msgid "Choose a document class"
 msgstr "Choisir le type de document"
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:81
-#, fuzzy
 msgid ""
 "<b>Article:</b>  For articles in scientific journals, term papers, handouts, "
 "short reports, ...\n"
@@ -839,42 +829,37 @@ msgid ""
 "This class on its own is pretty simplistic and is often used as a starting "
 "point for more custom layouts."
 msgstr ""
-"<b>Article :</b> Pour des articles dans des journaux\n"
-"scientifiques, prospectus, de courts rapports...\n"
+"<b>Article :</b> Pour des articles dans des journaux scientifiques, "
+"prospectus, de courts rapports...\n"
 "\n"
-"Cette classe est en soi plutôt simpliste et est\n"
-"généralement utilisé comme un point de départ pour des\n"
-"dispositions personnalisées."
+"Cette classe est en soi plutôt simpliste et est généralement utilisé comme "
+"un point de départ pour des dispositions personnalisées."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:82
-#, fuzzy
 msgid "<b>Book:</b>  For actual books containing many chapters and sections."
 msgstr ""
-"<b>Livre :</b> Pour de vrais livres contenant plusieurs\n"
-"chapitres et sections."
+"<b>Book :</b> Pour de vrais livres contenant plusieurs chapitres et sections."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:83
-#, fuzzy
 msgid ""
 "<b>Report:</b>  For longer reports and articles containing more than one "
 "chapter, small books, thesis."
 msgstr ""
-"<b>Rapport :</b> Pour les rapports et articles plus longs\n"
-"contenant plus d'un chapitre, un petit livre, une thèse."
+"<b>Report :</b> Pour les rapports et articles plus longs contenant plus d'un "
+"chapitre, un petit livre, une thèse."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:84
 msgid "<b>Letter:</b>  For writing letters."
-msgstr "<b>Lettre :</b> Pour écrire des lettres."
+msgstr "<b>Letter :</b> Pour écrire des lettres."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:85
-#, fuzzy
 msgid ""
 "<b>Beamer:</b>  A class for making presentation slides with LaTeX.\n"
 "\n"
 "There are many predefined presentation styles."
 msgstr ""
-"<b>Présentation :</b> Une classe pour créer des\n"
-"diapositive de présentation avec LaTeX.\n"
+"<b>Beamer :</b> Une classe pour créer des diapositive de présentation avec "
+"LaTeX.\n"
 "\n"
 "Il y a plusieurs styles prédéfinis de présentation."
 
@@ -1064,25 +1049,22 @@ msgid "Type of path to included file"
 msgstr "Type de chemin pour le fichier à inclure"
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:80
-#, fuzzy
 msgid ""
 "<b>Relative Path:</b> Set the path relative to the main document. This is "
 "useful when the included file is in the same folder as the main document and "
 "you want to move around both of them together."
 msgstr ""
-"<b>Chemin Relatif :</b> Définir le chemin relativement au document\n"
-"principal. Ceci est pratique quand le fichier inclus est dans le\n"
-"même dossier que le document et que vous voulez alterner entre\n"
-"les deux."
+"<b>Chemin Relatif :</b> Définir le chemin relativement au document "
+"principal. C'est pratique lorsque le fichier inclus est dans le même dossier "
+"que le document et que vous voulez alterner entre les deux."
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:80
-#, fuzzy
 msgid ""
 "<b>Absolute Path:</b> Specify the absolute location of the included file in "
 "your filesystem."
 msgstr ""
-"<b>Chemin Absolut :</b> Spécifier l'endroit où le fichier se trouve\n"
-"dans votre ordinateur."
+"<b>Chemin Absolut :</b> Spécifier l'endroit où le fichier se trouve dans "
+"votre ordinateur."
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:92
 msgid "Include LaTeX file"
@@ -1283,7 +1265,7 @@ msgstr "Décrémenter le nombre pointé avec le curseur"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:89
 msgid "Comment / Uncomment current line(s)"
-msgstr ""
+msgstr "Commenter / Décommenter la ligne"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:92
 msgid "LaTeX Shortcuts"
@@ -1454,19 +1436,14 @@ msgid "LaTeX Interpreter"
 msgstr "Interpréteur LaTeX"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:140
-#, fuzzy
 msgid ""
 "No LaTeX interpreter found. For instructions on installing LaTeX see <a href="
 "\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en.wikibooks."
 "org/wiki/LaTeX/Installation</a>"
 msgstr ""
-"Setzer est configurer pour utiliser »{interpreter}« qui semble manquant.\n"
-"\n"
-"Pour choisir un interpréteur différent modifiez-le dans les paramètres.\n"
-"\n"
-"Pour des instructions sur la manière d'installer LaTeX : <a href=\"https://"
-"fr.wikibooks.org/wiki/LaTeX/Installer_LaTeX\">https://fr.wikibooks.org/wiki/"
-"LaTeX/Installer_LaTeX</a>"
+"Interpréteur LaTeX manquant. Pour plus d'instructions sur l'installation de "
+"LaTeX : <a href=\"https://fr.wikibooks.org/wiki/LaTeX/Installer_LaTeX"
+"\">https://fr.wikibooks.org/wiki/LaTeX/Installer_LaTeX</a>"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:165
 msgid ""
@@ -1477,7 +1454,7 @@ msgstr ""
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:167
 msgid "Use Latexmk"
-msgstr ""
+msgstr "Utiliser Latexmk"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:171
 msgid "Automatically show build log .."
@@ -1500,14 +1477,12 @@ msgid "Embedded system commands"
 msgstr "Commandes système intégrées"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:191
-#, fuzzy
 msgid ""
 "Warning: enable this only if you have to. It can cause security problems "
 "when building files from untrusted sources."
 msgstr ""
-"Attention : Activez ceci seulement si vous êtes contraint de le faire.\n"
-"Cela peut causer des problèmes de sécurité lors de la construction de\n"
-"fichiers de sources qui ne sont pas fiables."
+"Attention : N'activez ceci qu'en dernier recours. Cette option est "
+"dangereuse lors de la compilation de fichiers de sources non fiables."
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:196
 msgid "Disable"
@@ -1570,9 +1545,8 @@ msgid "Select All"
 msgstr "Tout sélectionner"
 
 #: setzer/document/document_controller.py:75
-#, fuzzy
 msgid "Toggle Comment"
-msgstr "Afficher l'aide"
+msgstr "Afficher le commentaire"
 
 #: setzer/document/document_controller.py:77
 msgid "Show in Preview"
@@ -1902,7 +1876,7 @@ msgstr "Mode sombre"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:144
 msgid "Invert Colors in .pdf-Preview"
-msgstr ""
+msgstr "Intervertir les couleurs du visionneur PDF"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:152
 msgid ""
@@ -1937,20 +1911,19 @@ msgstr "Choisir la langue de vérification orthographique"
 
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:35
 msgid "Home"
-msgstr ""
+msgstr "Index"
 
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:41
 msgid "Top"
-msgstr ""
+msgstr "Début"
 
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:47
-#, fuzzy
 msgid "Back"
-msgstr "_Précédent"
+msgstr "Précédent"
 
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:53
 msgid "Forward"
-msgstr ""
+msgstr "Suivant"
 
 #: setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py:58
 msgid "Build log"
