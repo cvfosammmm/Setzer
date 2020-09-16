@@ -42,7 +42,7 @@ class CreateNewEntryPage(Page):
         self.view.list.connect('row-selected', row_selected)
 
     def load_presets(self, presets):
-        if presets != None and document_type in presets:
+        if presets != None and 'document_type' in presets:
             document_type = presets['document_type']
         else:
             document_type = self.current_values['document_type']

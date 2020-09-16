@@ -82,13 +82,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <color name="dark1"                       value="#1c1f20"/>
   <color name="dark2"                       value="#212527"/>
   <color name="dark3"                       value="#4d5558"/>
+  <color name="dark4"                       value="#3e3e3e"/>
 
   <!-- Global Settings -->
-  <style name="current-line"                background="aluminium1"/>
+  <style name="current-line"                background="dark4"/>
   <style name="draw-spaces"                 foreground="aluminium3"/>
   <style name="background-pattern"          background="#f3f3f3"/>
   <!--<style name="line-numbers"                foreground="#999999"/>-->
-  <style name="current-line-number"         background="aluminium1"/>
+  <style name="current-line-number"         background="dark4"/>
 
   <!-- Bracket Matching -->
   <style name="bracket-match"               foreground="aluminium1" background="aluminium3"/>

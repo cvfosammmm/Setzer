@@ -66,6 +66,9 @@ class PreviewPresenter(object):
         if change_code == 'rendered_pages_changed':
             self.view.drawing_area.queue_draw()
 
+        if change_code == 'invert_pdf_changed':
+            self.view.drawing_area.queue_draw()
+
         if change_code == 'position_changed':
             self.update_current_page()
 
@@ -164,6 +167,12 @@ class PreviewPresenter(object):
                             ctx.set_source_surface(surface, 0, 0)
                             ctx.paint()
                             ctx.set_matrix(matrix)
+                        if self.preview.invert_pdf:
+                            ctx.set_operator(cairo.Operator.DIFFERENCE)
+                            ctx.set_source_rgb(1, 1, 1)
+                            ctx.rectangle(0, 0, self.layouter.page_width, self.layouter.page_height)
+                            ctx.fill()
+                            ctx.set_operator(cairo.Operator.OVER)
 
                 try:
                     rectangles = self.layouter.visible_synctex_rectangles[page_number]

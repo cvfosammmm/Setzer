@@ -56,6 +56,9 @@ into another language, under the above conditions for modified versions. -->
 <!--
 body {margin: 1em; margin-top: 0px; padding-top: 1px}
 a.anchor {float: right}
+a:visited {color: #00e}
+a:active {color: #000}
+a.external {background: url('./images/external-link.png') no-repeat; background-position: right center; padding-right: 18px}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -88,7 +91,7 @@ ul.no-bullet {list-style: none}
 <body id="top" lang="en">
 <a name="Layout" class="anchor"></a>
 <a name="Layout-1" class="anchor"></a>
-<h2 class="chapter">5 Layout</h2>
+<h2 class="chapter">Layout</h2>
 
 <a name="index-layout-commands" class="anchor"></a>
 
@@ -99,7 +102,7 @@ ul.no-bullet {list-style: none}
 <hr>
 <a name="g_t_005conecolumn" class="anchor"></a>
 <a name="g_t_005conecolumn-1" class="anchor"></a>
-<h3 class="section">5.1 <code>\onecolumn</code></h3>
+<h3 class="section"><code>\onecolumn</code></h3>
 
 <a name="index-_005conecolumn" class="anchor"></a>
 <a name="index-one_002dcolumn-output" class="anchor"></a>
@@ -119,7 +122,7 @@ behavior (see <a href="latex2e_3.html#Document-class-options">Document class opt
 <hr>
 <a name="g_t_005ctwocolumn" class="anchor"></a>
 <a name="g_t_005ctwocolumn-1" class="anchor"></a>
-<h3 class="section">5.2 <code>\twocolumn</code></h3>
+<h3 class="section"><code>\twocolumn</code></h3>
 
 <a name="index-_005ctwocolumn" class="anchor"></a>
 <a name="index-multicolumn-text" class="anchor"></a>
@@ -270,7 +273,7 @@ Two column text here.
 <hr>
 <a name="g_t_005cflushbottom" class="anchor"></a>
 <a name="g_t_005cflushbottom-1" class="anchor"></a>
-<h3 class="section">5.3 <code>\flushbottom</code></h3>
+<h3 class="section"><code>\flushbottom</code></h3>
 
 <a name="index-_005cflushbottom" class="anchor"></a>
 
@@ -296,7 +299,7 @@ is to, in a final editing stage, adjust the height of individual pages
 <hr>
 <a name="g_t_005craggedbottom" class="anchor"></a>
 <a name="g_t_005craggedbottom-1" class="anchor"></a>
-<h3 class="section">5.4 <code>\raggedbottom</code></h3>
+<h3 class="section"><code>\raggedbottom</code></h3>
 
 <a name="index-_005craggedbottom" class="anchor"></a>
 <a name="index-stretch_002c-omitting-vertical" class="anchor"></a>
@@ -313,7 +316,7 @@ option (see <a href="latex2e_3.html#Document-class-options">Document class optio
 <hr>
 <a name="Page-layout-parameters" class="anchor"></a>
 <a name="Page-layout-parameters-1" class="anchor"></a>
-<h3 class="section">5.5 Page layout parameters</h3>
+<h3 class="section">Page layout parameters</h3>
 
 <a name="index-page-layout-parameters" class="anchor"></a>
 <a name="index-parameters_002c-page-layout" class="anchor"></a>
@@ -529,7 +532,7 @@ same as the font size, e.g., &lsquo;<samp>10pt</samp>&rsquo; at a type size of 1
 <hr>
 <a name="Floats" class="anchor"></a>
 <a name="Floats-1" class="anchor"></a>
-<h3 class="section">5.6 Floats</h3>
+<h3 class="section">Floats</h3>
 
 <p>Some typographic elements, such as figures and tables, cannot be broken
 across pages.  They must be typeset outside of the normal flow of text,
@@ -574,7 +577,7 @@ both <code>article</code> and <code>book</code> classes, is <code>tbp</code>.
 allowed for full-width floats (<code>figure*</code>) with double-column
 output.  To ameliorate this, use the <samp>stfloats</samp> or
 <samp>dblfloatfix</samp> package, but see the discussion at caveats in the
-FAQ: <a href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=2colfloat">http://www.tex.ac.uk/cgi-bin/texfaq2html?label=2colfloat</a>.
+FAQ: <a class="external" href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=2colfloat">http://www.tex.ac.uk/cgi-bin/texfaq2html?label=2colfloat</a>.
 </p>
 </dd>
 <dt><code>h</code></dt>
@@ -589,7 +592,7 @@ automatically added.
 <p>To absolutely force a float to appear &ldquo;here&rdquo;, you can
 <code>\usepackage{float}</code> and use the <code>H</code> specifier which it
 defines.  For further discussion, see the FAQ entry at
-<a href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=figurehere">http://www.tex.ac.uk/cgi-bin/texfaq2html?label=figurehere</a>.
+<a class="external" href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=figurehere">http://www.tex.ac.uk/cgi-bin/texfaq2html?label=figurehere</a>.
 </p>
 </dd>
 <dt><code>p</code></dt>
@@ -744,13 +747,13 @@ default 2.
 </dl>
 
 <p>The principal TeX&nbsp;FAQ entry relating to floats
-<a href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=floats">http://www.tex.ac.uk/cgi-bin/texfaq2html?label=floats</a> contains
+<a class="external" href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=floats">http://www.tex.ac.uk/cgi-bin/texfaq2html?label=floats</a> contains
 suggestions for relaxing LaTeX&rsquo;s default parameters to reduce the
 problem of floats being pushed to the end.  A full explanation of the
 float placement algorithm is in Frank Mittelbach&rsquo;s article &ldquo;How to
 influence the position of float environments like figure and table in
 LaTeX?&rdquo;
-(<a href="http://latex-project.org/papers/tb111mitt-float.pdf">http://latex-project.org/papers/tb111mitt-float.pdf</a>).
+(<a class="external" href="http://latex-project.org/papers/tb111mitt-float.pdf">http://latex-project.org/papers/tb111mitt-float.pdf</a>).
 </p>
 
 

@@ -71,7 +71,7 @@ class Search(object):
     def on_replace_button_click(self, button_object=None):
         if self.document.get_buffer() != None:
             buffer = self.document.get_buffer()
-            search_context = self.document.search_context
+            search_context = self.document.get_search_context()
             replacement = self.search_bar.replace_entry.get_text()
             
             bounds = buffer.get_selection_bounds()
@@ -81,7 +81,7 @@ class Search(object):
 
     def on_replace_all_button_click(self, button_object=None):
         if self.document.get_buffer() != None:
-            search_context = self.document.search_context
+            search_context = self.document.get_search_context()
             original = self.search_bar.entry.get_text()
             replacement = self.search_bar.replace_entry.get_text()
             number_of_occurrences = search_context.get_occurrences_count()
@@ -98,7 +98,7 @@ class Search(object):
     def on_search_next_match(self, entry=None, include_current_highlight=False):
         if self.document.get_buffer() != None:
             buffer = self.document.get_buffer()
-            search_context = self.document.search_context
+            search_context = self.document.get_search_context()
             insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
             bound_iter = buffer.get_iter_at_mark(buffer.get_selection_bound())
 
@@ -113,7 +113,7 @@ class Search(object):
 
             if result[0] == True:
                 buffer.select_range(result[2], result[1])
-                self.document_view.source_view.scroll_to_iter(result[1], 0, False, 0, 0)
+                self.document.source_buffer.scroll_iter_onscreen(result[1])
                 self.set_match_counter(search_context.get_occurrence_position(result[1], result[2]), search_context.get_occurrences_count())
             else:
                 search_iter = buffer.get_start_iter()
@@ -121,13 +121,13 @@ class Search(object):
 
                 if result[0] == True:
                     buffer.select_range(result[2], result[1])
-                    self.document_view.source_view.scroll_to_iter(result[1], 0, False, 0, 0)
+                    self.document.source_buffer.scroll_iter_onscreen(result[1])
                     self.set_match_counter(search_context.get_occurrence_position(result[1], result[2]), search_context.get_occurrences_count())
     
     def on_search_previous_match(self, entry=None):
         if self.document.get_buffer() != None:
             buffer = self.document.get_buffer()
-            search_context = self.document.search_context
+            search_context = self.document.get_search_context()
             insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
             bound_iter = buffer.get_iter_at_mark(buffer.get_selection_bound())
             
@@ -137,7 +137,7 @@ class Search(object):
 
             if result[0] == True:
                 buffer.select_range(result[1], result[2])
-                self.document_view.source_view.scroll_to_iter(result[2], 0, False, 0, 0)
+                self.document.source_buffer.scroll_iter_onscreen(result[2])
                 self.set_match_counter(search_context.get_occurrence_position(result[1], result[2]), search_context.get_occurrences_count())
             else:
                 search_iter = buffer.get_end_iter()
@@ -145,12 +145,12 @@ class Search(object):
 
                 if result[0] == True:
                     buffer.select_range(result[1], result[2])
-                    self.document_view.source_view.scroll_to_iter(result[2], 0, False, 0, 0)
+                    self.document.source_buffer.scroll_iter_onscreen(result[2])
                     self.set_match_counter(search_context.get_occurrence_position(result[1], result[2]), search_context.get_occurrences_count())
     
     def on_search_entry_changed(self, entry):
         if self.document.get_buffer() != None:
-            search_context = self.document.search_context
+            search_context = self.document.get_search_context()
             search_view = self.document_view.search_bar
             self.document.set_search_text(entry.get_text())
             search_view.replace_entry.set_text(entry.get_text())

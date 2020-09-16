@@ -1,0 +1,16 @@
+<commands>
+  <command name="DeclareUrlCommand{•}{•}" text="DeclareUrlCommand{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="cmd###settings###" />
+  <command name="path{•}" text="path{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="URL###" />
+  <command name="url{•}" text="url{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="URL###" />
+  <command name="UrlBigBreaks" text="UrlBigBreaks" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="UrlBreaks" text="UrlBreaks" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="urldef{•}\url{•}" text="urldef{•}\url{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="\newurlcmd###URL###" />
+  <command name="UrlFont" text="UrlFont" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="UrlLeft" text="UrlLeft" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="UrlNoBreaks" text="UrlNoBreaks" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="UrlOrds" text="UrlOrds" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="UrlRight" text="UrlRight" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="UrlSpecials" text="UrlSpecials" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="urlstyle{•}" text="urlstyle{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="style###" />
+  <command name="UrlTildeSpecial" text="UrlTildeSpecial" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+</commands>

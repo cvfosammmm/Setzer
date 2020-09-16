@@ -76,7 +76,8 @@ class IncludeLaTeXFileView(object):
 
         self.description_revealer = Gtk.Revealer()
         description = Gtk.Label()
-        description.set_markup(_('<b>Relative Path:</b> Set the path relative to the main document.\nThis is useful when the included file is in the same folder as\nthe main document and you want to move around both of\nthem together.') + ' (' + _('recommended') + ')\n\n' + _('<b>Absolute Path:</b> Specify the absolute location of the included\nfile in your filesystem.'))
+        description.set_line_wrap(True)
+        description.set_markup(_('<b>Relative Path:</b> Set the path relative to the main document. This is useful when the included file is in the same folder as the main document and you want to move around both of them together.') + ' (' + _('recommended') + ')\n\n' + _('<b>Absolute Path:</b> Specify the absolute location of the included file in your filesystem.'))
         description.set_xalign(0)
         description.set_margin_bottom(18)
         self.description_revealer.add(description)

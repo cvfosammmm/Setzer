@@ -1,0 +1,7 @@
+<commands>
+  <command name="geometry{•}" text="geometry{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="options###" />
+  <command name="loadgeometry{•}" text="loadgeometry{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="name###" />
+  <command name="newgeometry{•}" text="newgeometry{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="options###" />
+  <command name="restoregeometry" text="restoregeometry" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="savegeometry{•}" text="savegeometry{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="name###" />
+</commands>

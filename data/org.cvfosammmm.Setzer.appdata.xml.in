@@ -53,6 +53,36 @@
     </provides>
 
     <releases>
+        <release version="0.3.2" date="2020-9-9">
+            <description>
+                <p translatable="no">New syntax highlighting theme, full line indentation, ...</p>
+            </description>
+        </release>
+        <release version="0.3.1" date="2020-9-1">
+            <description>
+                <p translatable="no">Tab autocomplete, dynamic citations autocomplete, more autocomplete improvements, ...</p>
+            </description>
+        </release>
+        <release version="0.3.0" date="2020-8-20">
+            <description>
+                <p translatable="no">Biber support, Glossaries support, ...</p>
+            </description>
+        </release>
+        <release version="0.2.9" date="2020-8-12">
+            <description>
+                <p translatable="no">Use Latexmk with any LaTeX interpreter, invert colors in .pdf preview, ...</p>
+            </description>
+        </release>
+        <release version="0.2.8" date="2020-5-27">
+            <description>
+                <p translatable="no">Redesigned help panel homepage, LaTeX package documentation links, ...</p>
+            </description>
+        </release>
+        <release version="0.2.7" date="2020-5-24">
+            <description>
+                <p translatable="no">Italian translation, help panel with LaTeX documentation, open files from the file manager and command line, ...</p>
+            </description>
+        </release>
         <release version="0.2.6" date="2020-5-11">
             <description>
                 <p translatable="no">German translation, external .pdf viewer button, ...</p>

@@ -20,12 +20,17 @@ from setzer.dialogs.dialog import Dialog
 import setzer.dialogs.preferences.preferences_viewgtk as view
 from setzer.app.service_locator import ServiceLocator
 
+import subprocess
+
 
 class PreferencesDialog(Dialog):
 
     def __init__(self, main_window):
         self.main_window = main_window
         self.settings = ServiceLocator.get_settings()
+
+        self.latex_interpreters = list()
+        self.latexmk_available = False
 
     def run(self):
         self.setup()
@@ -54,15 +59,6 @@ class PreferencesDialog(Dialog):
         self.view.option_system_commands_restricted.connect('toggled', self.on_radio_button_toggle, 'build_option_system_commands', 'restricted')
         self.view.option_system_commands_full.connect('toggled', self.on_radio_button_toggle, 'build_option_system_commands', 'enable')
 
-        self.view.option_latex_interpreter_latexmk.set_active(self.settings.get_value('preferences', 'latex_interpreter') == 'latexmk')
-        self.view.option_latex_interpreter_pdflatex.set_active(self.settings.get_value('preferences', 'latex_interpreter') == 'pdflatex')
-        self.view.option_latex_interpreter_xelatex.set_active(self.settings.get_value('preferences', 'latex_interpreter') == 'xelatex')
-        self.view.option_latex_interpreter_lualatex.set_active(self.settings.get_value('preferences', 'latex_interpreter') == 'lualatex')
-        self.view.option_latex_interpreter_latexmk.connect('toggled', self.on_interpreter_changed, 'latex_interpreter', 'latexmk')
-        self.view.option_latex_interpreter_pdflatex.connect('toggled', self.on_interpreter_changed, 'latex_interpreter', 'pdflatex')
-        self.view.option_latex_interpreter_xelatex.connect('toggled', self.on_interpreter_changed, 'latex_interpreter', 'xelatex')
-        self.view.option_latex_interpreter_lualatex.connect('toggled', self.on_interpreter_changed, 'latex_interpreter', 'lualatex')
-
         self.view.option_spaces_instead_of_tabs.set_active(self.settings.get_value('preferences', 'spaces_instead_of_tabs'))
         self.view.option_spaces_instead_of_tabs.connect('toggled', self.on_check_button_toggle, 'spaces_instead_of_tabs')
 
@@ -83,6 +79,54 @@ class PreferencesDialog(Dialog):
 
         self.view.option_highlight_matching_brackets.set_active(self.settings.get_value('preferences', 'highlight_matching_brackets'))
         self.view.option_highlight_matching_brackets.connect('toggled', self.on_check_button_toggle, 'highlight_matching_brackets')
+
+        self.setup_latex_interpreters()
+
+    def setup_latex_interpreters(self):
+        self.latex_interpreters = list()
+        for interpreter in ['xelatex', 'pdflatex', 'lualatex']:
+            self.view.option_latex_interpreter[interpreter].hide()
+            arguments = [interpreter, '--version']
+            try:
+                process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            except FileNotFoundError:
+                pass
+            else:
+                process.wait()
+                if process.returncode == 0:
+                    self.latex_interpreters.append(interpreter)
+
+        self.latexmk_available = False
+        arguments = ['latexmk', '--version']
+        try:
+            process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except FileNotFoundError:
+            pass
+        else:
+            process.wait()
+            if process.returncode == 0:
+                self.latexmk_available = True
+
+        if len(self.latex_interpreters) == 0:
+            self.view.no_interpreter_label.show_all()
+        else:
+            self.view.no_interpreter_label.hide()
+            if self.settings.get_value('preferences', 'latex_interpreter') not in self.latex_interpreters:
+                self.settings.set_value('preferences', 'latex_interpreter', self.latex_interpreters[0])
+
+            if self.latexmk_available:
+                self.view.option_use_latexmk.show_all()
+            else:
+                self.view.option_use_latexmk.hide()
+                self.settings.set_value('preferences', 'use_latexmk', False)
+            self.view.option_use_latexmk.set_active(self.settings.get_value('preferences', 'use_latexmk'))
+            self.view.option_use_latexmk.connect('toggled', self.on_check_button_toggle, 'use_latexmk')
+
+            for interpreter in self.latex_interpreters:
+                self.view.option_latex_interpreter[interpreter].show_all()
+                self.view.option_latex_interpreter[interpreter].set_active(interpreter == self.settings.get_value('preferences', 'latex_interpreter'))
+            for interpreter in self.latex_interpreters:
+                self.view.option_latex_interpreter[interpreter].connect('toggled', self.on_interpreter_changed, 'latex_interpreter', interpreter)
 
     def on_check_button_toggle(self, button, preference_name):
         self.settings.set_value('preferences', preference_name, button.get_active())

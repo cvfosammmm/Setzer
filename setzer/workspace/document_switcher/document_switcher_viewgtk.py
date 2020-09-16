@@ -107,22 +107,18 @@ class OpenDocsPopover(Gtk.PopoverMenu):
         self.scrolled_window.set_propagate_natural_width(True)
         self.scrolled_window.set_shadow_type(Gtk.ShadowType.NONE)
 
-        self.mbox = Gtk.HBox()
         self.set_master_document_button = Gtk.Button()
         self.set_master_document_button.set_label(_('Set one Document as Master'))
-        self.set_master_document_button.set_halign(Gtk.Align.START)
         self.set_master_document_button.get_style_context().add_class('flat')
         self.set_master_document_button.get_style_context().add_class('like-model')
         self.set_master_document_button.set_can_focus(False)
+        self.set_master_document_button.get_child().set_xalign(0)
         self.unset_master_document_button = Gtk.Button()
-        self.unset_master_document_button.set_margin_left(18)
         self.unset_master_document_button.set_label(_('Unset Master Document'))
-        self.unset_master_document_button.set_halign(Gtk.Align.START)
         self.unset_master_document_button.get_style_context().add_class('flat')
         self.unset_master_document_button.get_style_context().add_class('like-model')
         self.unset_master_document_button.set_can_focus(False)
-        self.mbox.pack_start(self.set_master_document_button, True, True, 0)
-        self.mbox.pack_end(self.unset_master_document_button, True, True, 0)
+        self.unset_master_document_button.get_child().set_xalign(0)
 
         self.master_explaination1 = Gtk.Label(_('Click on a document in the list below to set it as master.'))
         self.master_explaination1.set_margin_top(6)
@@ -144,7 +140,8 @@ class OpenDocsPopover(Gtk.PopoverMenu):
 
         self.pmb.add_separator(self.vbox)
 
-        self.vbox.pack_start(self.mbox, False, False, 0)
+        self.vbox.pack_start(self.set_master_document_button, False, False, 0)
+        self.vbox.pack_start(self.unset_master_document_button, False, False, 0)
 
         self.vbox.show_all()
         self.stack.add_named(self.vbox, 'main')

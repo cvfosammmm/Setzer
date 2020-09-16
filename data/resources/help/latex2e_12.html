@@ -56,6 +56,9 @@ into another language, under the above conditions for modified versions. -->
 <!--
 body {margin: 1em; margin-top: 0px; padding-top: 1px}
 a.anchor {float: right}
+a:visited {color: #00e}
+a:active {color: #000}
+a.external {background: url('./images/external-link.png') no-repeat; background-position: right center; padding-right: 18px}
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
 blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
@@ -88,7 +91,7 @@ ul.no-bullet {list-style: none}
 <body id="top" lang="en">
 <a name="Definitions" class="anchor"></a>
 <a name="Definitions-1" class="anchor"></a>
-<h2 class="chapter">12 Definitions</h2>
+<h2 class="chapter">Definitions</h2>
 
 <a name="index-definitions" class="anchor"></a>
 
@@ -99,7 +102,7 @@ ul.no-bullet {list-style: none}
 <hr>
 <a name="g_t_005cnewcommand-_0026-_005crenewcommand" class="anchor"></a>
 <a name="g_t_005cnewcommand-_0026-_005crenewcommand-1" class="anchor"></a>
-<h3 class="section">12.1 <code>\newcommand</code> &amp; <code>\renewcommand</code></h3>
+<h3 class="section"><code>\newcommand</code> &amp; <code>\renewcommand</code></h3>
 
 <a name="index-_005cnewcommand" class="anchor"></a>
 <a name="index-commands_002c-defining-new-ones" class="anchor"></a>
@@ -260,7 +263,7 @@ is to put another pair of braces inside the definition:
 <hr>
 <a name="g_t_005cprovidecommand" class="anchor"></a>
 <a name="g_t_005cprovidecommand-1" class="anchor"></a>
-<h3 class="section">12.2 <code>\providecommand</code></h3>
+<h3 class="section"><code>\providecommand</code></h3>
 
 <a name="index-_005cprovidecommand" class="anchor"></a>
 <a name="index-commands_002c-defining-new-ones-1" class="anchor"></a>
@@ -300,7 +303,7 @@ the repeated use of <code>\providecommand</code> does not give an error.
 <hr>
 <a name="g_t_005cmakeatletter-_0026-_005cmakeatother" class="anchor"></a>
 <a name="g_t_005cmakeatletter-_0026-_005cmakeatother-1" class="anchor"></a>
-<h3 class="section">12.3 <code>\makeatletter</code> &amp; <code>\makeatother</code></h3>
+<h3 class="section"><code>\makeatletter</code> &amp; <code>\makeatother</code></h3>
 
 <p>Synopsis:
 </p>
@@ -345,7 +348,7 @@ that the at-sign has the character code of a letter, catcode&nbsp;11.
 <a name="index-macros2e-package" class="anchor"></a>
 
 <p>For a comprehensive list of macros with an at-sign in their names see
-<a href="http://ctan.org/pkg/macros2e">http://ctan.org/pkg/macros2e</a>.
+<a class="external" href="http://ctan.org/pkg/macros2e">http://ctan.org/pkg/macros2e</a>.
 </p>
 <p>In this example the class file has a command
 <code>\thesis@universityname</code> that the user wants to change.  These
@@ -362,7 +365,7 @@ three lines should go in the preamble, before the
 <hr>
 <a name="g_t_005c_0040ifstar" class="anchor"></a>
 <a name="g_t_005c_0040ifstar-1" class="anchor"></a>
-<h3 class="section">12.4 <code>\@ifstar</code></h3>
+<h3 class="section"><code>\@ifstar</code></h3>
 
 <a name="index-_005c_0040ifstar" class="anchor"></a>
 <a name="index-commands_002c-star_002dvariants" class="anchor"></a>
@@ -437,7 +440,7 @@ LaTeX3 has the <samp>xparse</samp> package that allows this code.
 <hr>
 <a name="g_t_005cnewcounter" class="anchor"></a>
 <a name="g_t_005cnewcounter_003a-Allocating-a-counter" class="anchor"></a>
-<h3 class="section">12.5 <code>\newcounter</code>: Allocating a counter</h3>
+<h3 class="section"><code>\newcounter</code>: Allocating a counter</h3>
 
 <a name="index-_005cnewcounter" class="anchor"></a>
 <a name="index-counters_002c-defining-new" class="anchor"></a>
@@ -491,7 +494,7 @@ defined.</samp>&rsquo;
 <hr>
 <a name="g_t_005cnewlength" class="anchor"></a>
 <a name="g_t_005cnewlength-1" class="anchor"></a>
-<h3 class="section">12.6 <code>\newlength</code></h3>
+<h3 class="section"><code>\newlength</code></h3>
 
 <a name="index-_005cnewlength" class="anchor"></a>
 <a name="index-lengths_002c-allocating-new" class="anchor"></a>
@@ -527,7 +530,7 @@ Or name \end... illegal, see p.192 of the manual</samp>&rsquo;.
 <hr>
 <a name="g_t_005cnewsavebox" class="anchor"></a>
 <a name="g_t_005cnewsavebox-1" class="anchor"></a>
-<h3 class="section">12.7 <code>\newsavebox</code></h3>
+<h3 class="section"><code>\newsavebox</code></h3>
 
 <a name="index-_005cnewsavebox" class="anchor"></a>
 <a name="index-box_002c-allocating-new" class="anchor"></a>
@@ -565,7 +568,7 @@ Our logo is \usebox{\logobox}.
 <hr>
 <a name="g_t_005cnewenvironment-_0026-_005crenewenvironment" class="anchor"></a>
 <a name="g_t_005cnewenvironment-_0026-_005crenewenvironment-1" class="anchor"></a>
-<h3 class="section">12.8 <code>\newenvironment</code> &amp; <code>\renewenvironment</code></h3>
+<h3 class="section"><code>\newenvironment</code> &amp; <code>\renewenvironment</code></h3>
 
 <a name="index-_005cnewenvironment" class="anchor"></a>
 <a name="index-_005crenewenvironment" class="anchor"></a>
@@ -733,7 +736,7 @@ the document, use the environment like this.
 <hr>
 <a name="g_t_005cnewtheorem" class="anchor"></a>
 <a name="g_t_005cnewtheorem-1" class="anchor"></a>
-<h3 class="section">12.9 <code>\newtheorem</code></h3>
+<h3 class="section"><code>\newtheorem</code></h3>
 
 <a name="index-_005cnewtheorem" class="anchor"></a>
 <a name="index-theorems_002c-defining" class="anchor"></a>
@@ -873,7 +876,7 @@ by &lsquo;<samp>Theorem&nbsp;2.1</samp>&rsquo; and &lsquo;<samp>Definition&nbsp;
 <hr>
 <a name="g_t_005cnewfont" class="anchor"></a>
 <a name="g_t_005cnewfont-1" class="anchor"></a>
-<h3 class="section">12.10 <code>\newfont</code></h3>
+<h3 class="section"><code>\newfont</code></h3>
 
 <a name="index-_005cnewfont" class="anchor"></a>
 <a name="index-fonts_002c-new-commands-for" class="anchor"></a>
@@ -918,7 +921,7 @@ relative to the font&rsquo;s design size, which is a value defined in the
 <hr>
 <a name="g_t_005cprotect" class="anchor"></a>
 <a name="g_t_005cprotect-1" class="anchor"></a>
-<h3 class="section">12.11 <code>\protect</code></h3>
+<h3 class="section"><code>\protect</code></h3>
 
 <a name="index-_005cprotect" class="anchor"></a>
 <a name="index-fragile-commands" class="anchor"></a>
@@ -985,7 +988,7 @@ to <code>\protect\(..\protect\)</code>.
 <hr>
 <a name="g_t_005cignorespaces-_0026-_005cignorespacesafterend" class="anchor"></a>
 <a name="g_t_005cignorespaces-_0026-_005cignorespacesafterend-1" class="anchor"></a>
-<h3 class="section">12.12 <code>\ignorespaces &amp; \ignorespacesafterend</code></h3>
+<h3 class="section"><code>\ignorespaces &amp; \ignorespacesafterend</code></h3>
 
 <a name="index-_005cignorespaces" class="anchor"></a>
 <a name="index-_005cignorespacesafterend" class="anchor"></a>

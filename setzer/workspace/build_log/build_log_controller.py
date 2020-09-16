@@ -28,12 +28,9 @@ class BuildLogController(object):
 
         item = row.get_child()
         if item.filename == self.build_log.document.get_filename():
-            buff = self.build_log.document.get_buffer()
-            if buff != None:
-                line_number = item.line_number - 1
-                if line_number >= 0:
-                    buff.place_cursor(buff.get_iter_at_line(line_number))
-                self.build_log.document.view.source_view.scroll_mark_onscreen(buff.get_insert())
+            line_number = item.line_number - 1
+            if line_number >= 0:
+                self.build_log.document.place_cursor(line_number)
                 self.build_log.document.view.source_view.grab_focus()
         else:
             if item.filename != None:
@@ -42,12 +39,9 @@ class BuildLogController(object):
                     self.build_log.workspace.set_active_document(document_candidate)
                 else:
                     self.build_log.workspace.create_document_from_filename(item.filename, True)
-                buff = self.build_log.workspace.active_document.get_buffer()
-                if buff != None:
-                    line_number = item.line_number - 1
-                    if line_number >= 0:
-                        buff.place_cursor(buff.get_iter_at_line(line_number))
-                    self.build_log.workspace.active_document.view.source_view.scroll_mark_onscreen(buff.get_insert())
+                line_number = item.line_number - 1
+                if line_number >= 0:
+                    self.build_log.workspace.active_document.place_cursor(item.line_number - 1)
                     self.build_log.workspace.active_document.view.source_view.grab_focus()
 
 

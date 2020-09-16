@@ -62,6 +62,7 @@ class WorkspaceController(object):
         self.main_window.include_latex_file_action.connect('activate', self.start_include_latex_file_dialog)
         self.main_window.add_remove_packages_dialog_action.connect('activate', self.start_add_remove_packages_dialog)
         self.main_window.add_packages_action.connect('activate', self.add_packages)
+        self.main_window.comment_uncomment_action.connect('activate', self.comment_uncomment)
         self.main_window.create_new_bibtex_entry_action.connect('activate', self.start_create_new_bibtex_entry_dialog)
         self.main_window.show_previous_bibtex_entries_action.connect('activate', self.start_show_previous_bibtex_entries_dialog)
         self.main_window.search_online_for_bibtex_entries_action.connect('activate', self.start_search_online_for_bibtex_entries_dialog)
@@ -73,6 +74,7 @@ class WorkspaceController(object):
         self.main_window.set_spellchecking_language_action.connect('activate', self.start_spellchecking_language_dialog)
         self.main_window.spellchecking_action.connect('activate', self.start_spellchecking_dialog)
         self.main_window.toggle_dark_mode_action.connect('activate', self.on_dark_mode_toggle_toggled)
+        self.main_window.toggle_invert_pdf_action.connect('activate', self.on_invert_pdf_toggle_toggled)
 
         # populate workspace
         self.workspace.populate_from_disk()
@@ -284,6 +286,11 @@ class WorkspaceController(object):
         action.set_state(GLib.Variant.new_boolean(new_state))
         self.workspace.set_dark_mode(new_state)
 
+    def on_invert_pdf_toggle_toggled(self, action, parameter=None):
+        new_state = not action.get_state().get_boolean()
+        action.set_state(GLib.Variant.new_boolean(new_state))
+        self.workspace.set_invert_pdf(new_state)
+
     def on_sidebar_size_allocate(self, sidebar, allocation):
         if not self.workspace.presenter.sidebars_initialized: return
         if allocation.width != self.s_allocation:
@@ -340,6 +347,11 @@ class WorkspaceController(object):
         if parameter == None: return
         document = self.workspace.get_active_document()
         document.remove_packages(parameter)
+
+    @_assert_has_active_document
+    def comment_uncomment(self, action, parameter=None):
+        document = self.workspace.get_active_document()
+        document.comment_uncomment()
 
     @_assert_has_active_document
     def start_wizard(self, action, parameter=None):

@@ -28,6 +28,7 @@ import setzer.workspace.help_panel.help_panel as help_panel
 import setzer.workspace.sidebar.sidebar as sidebar
 import setzer.workspace.build_log.build_log as build_log
 import setzer.workspace.headerbar.headerbar_presenter as headerbar_presenter
+import setzer.workspace.document_chooser.document_chooser_presenter as document_chooser_presenter
 import setzer.workspace.keyboard_shortcuts.shortcuts as shortcuts
 import setzer.workspace.document_switcher.document_switcher as document_switcher
 from setzer.app.service_locator import ServiceLocator
@@ -55,6 +56,7 @@ class Workspace(Observable):
         self.inline_spellchecking = self.settings.get_value('preferences', 'inline_spellchecking')
         self.spellchecking_language_code = self.settings.get_value('preferences', 'spellchecking_language_code')
         self.dark_mode = self.settings.get_value('preferences', 'prefer_dark_mode')
+        self.invert_pdf = self.settings.get_value('preferences', 'invert_pdf')
 
         self.sidebar = sidebar.Sidebar()
         self.show_sidebar = self.settings.get_value('window_state', 'show_sidebar')
@@ -70,6 +72,7 @@ class Workspace(Observable):
     def init_workspace_controller(self):
         self.presenter = workspace_presenter.WorkspacePresenter(self)
         self.headerbar = headerbar_presenter.HeaderbarPresenter(self)
+        self.document_chooser = document_chooser_presenter.DocumentChooserPresenter(self)
         self.preview_panel = preview_panel_presenter.PreviewPanelPresenter(self)
         self.help_panel = help_panel.HelpPanel(self)
         self.document_switcher = document_switcher.DocumentSwitcher(self)
@@ -96,8 +99,9 @@ class Workspace(Observable):
         self.open_documents.append(document)
         if document.is_latex_document():
             self.open_latex_documents.append(document)
-            document.spellchecker.set_enabled(self.inline_spellchecking)
-            document.spellchecker.set_language(self.spellchecking_language_code)
+            document.set_invert_pdf(self.invert_pdf)
+        document.spellchecker.set_enabled(self.inline_spellchecking)
+        document.spellchecker.set_language(self.spellchecking_language_code)
         document.state_manager.load_document_state()
         self.add_change_code('new_document', document)
         self.update_recently_opened_document(document.get_filename(), notify=True)
@@ -144,9 +148,11 @@ class Workspace(Observable):
             self.add_document(document)
             if activate:
                 self.set_active_document(document)
-        if document.is_latex_document():
-            document.preview.set_pdf_filename_from_tex_filename(filename)
-        return document
+            if document.is_latex_document():
+                document.preview.set_pdf_filename_from_tex_filename(filename)
+            return document
+        else:
+            return None
 
     def get_document_by_filename(self, filename):
         for document in self.open_documents:
@@ -194,6 +200,12 @@ class Workspace(Observable):
         for document in sorted(self.open_documents, key=lambda val: val.last_activated):
             return document
         return None
+
+    def get_open_documents_filenames(self):
+        pathnames = list()
+        for document in self.open_documents:
+            pathnames.append(document.get_filename())
+        return pathnames
 
     def update_recently_opened_document(self, filename, date=None, notify=True):
         if not isinstance(filename, str) or not os.path.isfile(filename):
@@ -403,18 +415,25 @@ class Workspace(Observable):
             self.settings.set_value('preferences', 'prefer_dark_mode', self.dark_mode)
             self.add_change_code('set_dark_mode', value)
 
+    def set_invert_pdf(self, value):
+        if self.invert_pdf != value:
+            self.invert_pdf = value
+            self.settings.set_value('preferences', 'invert_pdf', self.invert_pdf)
+            for document in self.open_latex_documents:
+                document.set_invert_pdf(self.invert_pdf)
+
     def set_inline_spellchecking(self, value):
         if self.inline_spellchecking != value:
             self.inline_spellchecking = value
             self.settings.set_value('preferences', 'inline_spellchecking', self.inline_spellchecking)
-            for document in self.open_latex_documents:
+            for document in self.open_documents:
                 document.spellchecker.set_enabled(value)
 
     def set_spellchecking_language(self, language_code):
         if self.spellchecking_language_code != language_code:
             self.spellchecking_language_code = language_code
             self.settings.set_value('preferences', 'spellchecking_language_code', self.spellchecking_language_code)
-            for document in self.open_latex_documents:
+            for document in self.open_documents:
                 document.spellchecker.set_language(language_code)
 
 

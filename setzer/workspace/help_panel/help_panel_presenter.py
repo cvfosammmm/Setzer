@@ -41,7 +41,7 @@ class HelpPanelPresenter(object):
             if results_list:
                 self.view.search_entry.get_style_context().remove_class('error')
                 self.view.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'edit-find-symbolic')
-                for item in results_list:
+                for item in reversed(results_list):
                     list_item = help_panel_view.SearchResultView(item)
                     self.view.search_results.prepend(list_item)
                     self.view.search_result_items.append(list_item)

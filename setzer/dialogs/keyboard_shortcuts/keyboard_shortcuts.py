@@ -86,6 +86,7 @@ class KeyboardShortcutsDialog(Dialog):
         section['items'].append({'title': _('Move current word right'), 'shortcut': '&lt;Alt&gt;Right'})
         section['items'].append({'title': _('Increment number at cursor'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;A'})
         section['items'].append({'title': _('Decrement number at cursor'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;X'})
+        section['items'].append({'title': _('Comment / Uncomment current line(s)'), 'shortcut': '&lt;ctrl&gt;K'})
         data.append(section)
 
         section = {'title': _('LaTeX Shortcuts'), 'items': list()}

@@ -197,6 +197,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.add_packages_action = Gio.SimpleAction.new('add-packages', GLib.VariantType('as'))
         self.add_action(self.add_packages_action)
 
+        self.comment_uncomment_action = Gio.SimpleAction.new('comment-uncomment', None)
+        self.add_action(self.comment_uncomment_action)
+
         self.shortcuts_window_action = Gio.SimpleAction.new('show-shortcuts-window', None)
         self.add_action(self.shortcuts_window_action)
 
@@ -226,6 +229,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.toggle_dark_mode_action = Gio.SimpleAction.new_stateful('toggle-dark-mode', None, dm_default)
         self.add_action(self.toggle_dark_mode_action)
         settings.gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', dm_default)
+
+        ip_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'invert_pdf'))
+        self.toggle_invert_pdf_action = Gio.SimpleAction.new_stateful('toggle-invert-pdf', None, ip_default)
+        self.add_action(self.toggle_invert_pdf_action)
 
 
 class DocumentViewWrapper(Gtk.Notebook):

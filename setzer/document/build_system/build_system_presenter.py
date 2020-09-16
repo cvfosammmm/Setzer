@@ -17,73 +17,23 @@
 
 import time
 
-import setzer.document.build_system.build_system as build_system
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 
 
-class DocumentBuilder(object):
+class BuildSystemPresenter(object):
     ''' Mediator between document and build_system. '''
     
-    def __init__(self, document):
+    def __init__(self, document, build_system):
         self.document = document
-        self.build_system = build_system.BuildSystem()
-        self.settings = ServiceLocator.get_settings()
-        self.document.register_observer(self)
-        self.build_system.register_observer(self)
+        build_system.register_observer(self)
 
     '''
-    *** notification handlers, get called by observed document
+    *** notification handlers, get called by observed build system
     '''
 
     def change_notification(self, change_code, notifying_object, parameter):
 
-        if change_code == 'build_state_change' and parameter == 'ready_for_building':
-            document = self.document
-            mode = document.get_build_mode()
-            filename = self.document.get_filename()[:]
-
-            if mode in ['forward_sync', 'build_and_forward_sync']:
-                insert = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
-                synctex_arguments = dict()
-                synctex_arguments['line'] = insert.get_line() + 1
-                synctex_arguments['line_offset'] = insert.get_line_offset() + 1
-
-            if mode in ['build', 'build_and_forward_sync']:
-                interpreter = self.settings.get_value('preferences', 'latex_interpreter')
-                build_option_system_commands = self.settings.get_value('preferences', 'build_option_system_commands')
-                additional_arguments = ''
-                lualatex_prefix = ' -' if interpreter == 'lualatex' else ' '
-                latexmk_prefix = ' -latexoption=' if interpreter == 'latexmk' else ' '
-                if build_option_system_commands == 'disable':
-                    additional_arguments += lualatex_prefix + '-no-shell-escape'
-                elif build_option_system_commands == 'restricted':
-                    additional_arguments += lualatex_prefix + '-shell-restricted'
-                elif build_option_system_commands == 'enable':
-                    additional_arguments += lualatex_prefix + '-shell-escape'
-                buffer = document.get_buffer()
-                if buffer != None:
-                    text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True)
-                else:
-                    text = ''
-                do_cleanup = self.settings.get_value('preferences', 'cleanup_build_files')
-
-            if mode == 'build':
-                query = build_system.QueryBuild(text, filename, interpreter, additional_arguments, do_cleanup)
-            elif mode == 'forward_sync':
-                if document.build_pathname != None:
-                    query = build_system.QueryForwardSync(filename, document.build_pathname, synctex_arguments)
-            elif mode == 'backward_sync':
-                if document.backward_sync_data != None:
-                    query = build_system.QueryBackwardSync(filename, document.build_pathname, document.backward_sync_data)
-            else:
-                query = build_system.QueryBuildAndForwardSync(text, filename, interpreter, additional_arguments, do_cleanup, synctex_arguments)
-
-            self.build_system.add_query(query)
-
-        if change_code == 'build_state_change' and parameter == 'building_to_stop':
-            self.build_system.stop_building()
-        
         if change_code == 'building_started':
             self.document.change_build_state('building_in_progress')
                 
@@ -155,5 +105,8 @@ class DocumentBuilder(object):
                 self.document.set_synctex_position(result_blob['backward_sync'])
 
             self.document.change_build_state('idle')
+
+            if result_blob['build'] != None:
+                self.document.invalidate_build_log()
 
 

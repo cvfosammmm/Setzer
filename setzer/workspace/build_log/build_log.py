@@ -38,7 +38,7 @@ class BuildLog(Observable):
 
     def change_notification(self, change_code, notifying_object, parameter):
 
-        if change_code == 'build_state_change' and parameter == 'idle':
+        if change_code == 'build_log_update':
             if notifying_object == self.document:
                 self.update_items(True)
 

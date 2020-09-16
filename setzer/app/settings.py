@@ -71,17 +71,25 @@ class Settings(Observable):
         self.defaults['preferences']['cleanup_build_files'] = True
         self.defaults['preferences']['autoshow_build_log'] = 'errors_warnings'
         self.defaults['preferences']['latex_interpreter'] = 'xelatex'
+        self.defaults['preferences']['use_latexmk'] = False
         self.defaults['preferences']['prefer_dark_mode'] = False
+        self.defaults['preferences']['invert_pdf'] = False
         self.defaults['preferences']['spaces_instead_of_tabs'] = True
         self.defaults['preferences']['tab_width'] = 4
         self.defaults['preferences']['show_line_numbers'] = True
         self.defaults['preferences']['enable_code_folding'] = True
         self.defaults['preferences']['enable_line_wrapping'] = True
         self.defaults['preferences']['highlight_current_line'] = False
-        self.defaults['preferences']['highlight_matching_brackets'] = False
-        self.defaults['preferences']['inline_spellchecking'] = False
-        self.defaults['preferences']['spellchecking_language_code'] = Gspell.Language.get_default().get_code()
+        self.defaults['preferences']['highlight_matching_brackets'] = True
         self.defaults['preferences']['build_option_system_commands'] = 'disable'
+
+        default_language = Gspell.Language.get_default()
+        if default_language != None:
+            self.defaults['preferences']['inline_spellchecking'] = False
+            self.defaults['preferences']['spellchecking_language_code'] = Gspell.Language.get_default().get_code()
+        else:
+            self.defaults['preferences']['inline_spellchecking'] = False
+            self.defaults['preferences']['spellchecking_language_code'] = None
 
     def get_value(self, section, item):
         try: value = self.data[section][item]

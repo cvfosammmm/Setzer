@@ -1,0 +1,13 @@
+<commands>
+  <command name="color{•}" text="color{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="color###" />
+  <command name="color[•]{•}" text="color[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="model###color###" />
+  <command name="colorbox{•}{•}" text="colorbox{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="color###text###" />
+  <command name="colorbox[•]{•}{•}" text="colorbox[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="model###color###text###" />
+  <command name="definecolor{•}{•}{•}" text="definecolor{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="name###model###color-spec###" />
+  <command name="fcolorbox{•}{•}{•}" text="fcolorbox{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="border-color###fill-color###text###" />
+  <command name="fcolorbox[•]{•}{•}{•}" text="fcolorbox[•]{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="model###border-color###fill-color###text###" />
+  <command name="normalcolor" text="normalcolor" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="pagecolor{•}" text="pagecolor{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="color###" />
+  <command name="textcolor{•}{•}" text="textcolor{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="color###text###" />
+  <command name="textcolor[•]{•}{•}" text="textcolor[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="model###color###text###" />
+</commands>

@@ -27,7 +27,7 @@ import setzer.document.search.search_viewgtk as search_view
 
 class DocumentView(Gtk.HBox):
     
-    def __init__(self, document):
+    def __init__(self, document, source_view):
         Gtk.HBox.__init__(self)
         
         self.vbox = Gtk.VBox()        
@@ -37,35 +37,8 @@ class DocumentView(Gtk.HBox):
         self.shortcuts_bar_bottom = shortcutsbar_view.ShortcutsBarBottom()
         self.wizard_button = shortcutsbar_view.WizardButton()
 
-        self.source_view = GtkSource.View.new_with_buffer(document.get_buffer())
-        self.source_view.set_monospace(True)
-        self.source_view.set_smart_home_end(True)
-        self.source_view.set_auto_indent(True)
-        self.source_view.set_left_margin(6)
+        self.source_view = source_view
         self.scrolled_window.add(self.source_view)
-
-        self.menu_item_undo = Gtk.MenuItem.new_with_label(_('Undo'))
-        self.menu_item_redo = Gtk.MenuItem.new_with_label(_('Redo'))
-        self.menu_item_cut = Gtk.MenuItem.new_with_label(_('Cut'))
-        self.menu_item_copy = Gtk.MenuItem.new_with_label(_('Copy'))
-        self.menu_item_paste = Gtk.MenuItem.new_with_label(_('Paste'))
-        self.menu_item_delete = Gtk.MenuItem.new_with_label(_('Delete'))
-        self.menu_item_select_all = Gtk.MenuItem.new_with_label(_('Select All'))
-        self.context_menu = Gtk.Menu()
-        self.context_menu.append(self.menu_item_undo)
-        self.context_menu.append(self.menu_item_redo)
-        self.context_menu.append(Gtk.SeparatorMenuItem())
-        self.context_menu.append(self.menu_item_cut)
-        self.context_menu.append(self.menu_item_copy)
-        self.context_menu.append(self.menu_item_paste)
-        self.context_menu.append(self.menu_item_delete)
-        self.context_menu.append(Gtk.SeparatorMenuItem())
-        self.context_menu.append(self.menu_item_select_all)
-
-        if document.is_latex_document():
-            self.context_menu.append(Gtk.SeparatorMenuItem())
-            self.menu_item_show_in_preview = Gtk.MenuItem.new_with_label(_('Show in Preview'))
-            self.context_menu.append(self.menu_item_show_in_preview)
 
         self.vbox.pack_start(self.scrolled_window, True, True, 0)
         self.vbox.pack_start(self.search_bar, False, False, 0)

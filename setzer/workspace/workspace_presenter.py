@@ -17,7 +17,9 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
+gi.require_version('Gspell', '1')
 from gi.repository import GLib, Gio
+from gi.repository import Gspell
 
 from setzer.app.service_locator import ServiceLocator
 
@@ -77,7 +79,7 @@ class WorkspacePresenter(object):
                 document.view.source_view.grab_focus()
                 try:
                     self.main_window.preview_paned_overlay.add_overlay(document.autocomplete.view)
-                    document.autocomplete.update_autocomplete_position()
+                    document.autocomplete.update()
                 except AttributeError: pass
 
                 self.update_latex_shortcuts_bar()
@@ -136,7 +138,7 @@ class WorkspacePresenter(object):
         self.main_window.mode_stack.set_visible_child_name('latex_documents')
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(True)
         self.set_document_actions_active(True)
-        self.main_window.spellchecking_action.set_enabled(True)
+        self.enable_spellchecking_action()
         self.main_window.add_remove_packages_dialog_action.set_enabled(True)
 
     def activate_bibtex_documents_mode(self):
@@ -145,6 +147,11 @@ class WorkspacePresenter(object):
         self.set_document_actions_active(True)
         self.main_window.spellchecking_action.set_enabled(False)
         self.main_window.add_remove_packages_dialog_action.set_enabled(False)
+
+    def enable_spellchecking_action(self):
+        default_language = Gspell.Language.get_default()
+        if default_language != None:
+            self.main_window.spellchecking_action.set_enabled(True)
 
     def update_latex_shortcuts_bar(self):
         document = self.workspace.active_document
@@ -180,6 +187,7 @@ class WorkspacePresenter(object):
         self.main_window.include_bibtex_file_action.set_enabled(value)
         self.main_window.include_latex_file_action.set_enabled(value)
         self.main_window.add_packages_action.set_enabled(value)
+        self.main_window.comment_uncomment_action.set_enabled(value)
         self.main_window.document_wizard_action.set_enabled(value)
 
     def focus_active_document(self):
@@ -311,7 +319,7 @@ class WorkspacePresenter(object):
             else:
                 if show_preview or show_help:
                     if self.workspace.show_sidebar == False and self.main_window.sidebar.get_allocated_width() > 1:
-                        end -= self.main_window.sidebar.get_allocated_width()
+                        end -= self.main_window.sidebar.get_allocated_width() + 1
                     self.main_window.preview_paned.child_set_property(self.main_window.preview_help_stack, 'shrink', False)
                     self.main_window.preview_visible = True
                 else:
