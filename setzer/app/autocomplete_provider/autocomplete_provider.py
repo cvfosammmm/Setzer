@@ -28,11 +28,12 @@ import setzer.helpers.timer as timer
 
 class AutocompleteProvider(object):
 
-    def __init__(self, resources_path, workspace, latex_parser_regex, bibtex_parser_regex):
+    def __init__(self, resources_path, workspace, latex_parser_regex, bibtex_parser_regex, packages_dict):
         self.workspace = workspace
         self.resources_path = resources_path
         self.latex_parser_regex = latex_parser_regex
         self.bibtex_parser_regex = bibtex_parser_regex
+        self.packages_dict = packages_dict
 
         self.static_proposals = dict()
         self.dynamic_word_beginnings = list()
@@ -55,6 +56,8 @@ class AutocompleteProvider(object):
         self.ref_types['citations'].append(('citeauthor*', _('Cite \'{label}\' (author detailed)'), _('Citation (author detailed)')))
         self.ref_types['citations'].append(('citeyear', _('Cite \'{label}\' (year)'), _('Citation (year)')))
         self.ref_types['citations'].append(('citeyearpar', _('Cite \'{label}\' (year with brackets)'), _('Citation (year with brackets)')))
+        self.ref_types['usepackage'] = list()
+        self.ref_types['usepackage'].append(('usepackage',))
 
         self.last_command = None
         self.last_dynamic_proposals = list()
@@ -116,6 +119,8 @@ class AutocompleteProvider(object):
                 dynamic_items += self.get_dynamic_reference_commands(word)
             elif word_beginning in self.dynamic_word_beginnings['citations']:
                 dynamic_items += self.get_dynamic_bibliography_commands(word)
+            elif word_beginning in self.dynamic_word_beginnings['usepackage']:
+                dynamic_items += self.get_dynamic_usepackage_commands(word)
 
             self.last_command = word
             self.last_dynamic_proposals = dynamic_items
@@ -141,6 +146,18 @@ class AutocompleteProvider(object):
         for ref_type in ref_types:
             if len(dynamic_items) >= 20: break
             self.append_to_dynamic_items(word, dynamic_items, ref_type, labels)
+        return dynamic_items
+
+    def get_dynamic_usepackage_commands(self, word):
+        dynamic_items = list()
+        for package in self.packages_dict.values():
+            if len(dynamic_items) >= 20: break
+
+            description = ''
+            command = {'command': 'usepackage' + '{' + package['command'] + '}', 'description': package['description']}
+            if command['command'][:len(word) - 1] == word[1:].lower():
+                if command['command'] not in [item['command'] for item in dynamic_items]:
+                    dynamic_items.append(command)
         return dynamic_items
 
     #@timer.timer
