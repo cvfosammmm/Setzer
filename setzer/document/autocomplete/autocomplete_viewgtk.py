@@ -17,7 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gio, GLib
+from gi.repository import Gtk, Gio, GLib, Pango
 
 
 class DocumentAutocompleteView(Gtk.VBox):
@@ -42,6 +42,8 @@ class DocumentAutocompleteView(Gtk.VBox):
 
         self.infobox = Gtk.Label('')
         self.infobox.set_xalign(0)
+        self.infobox.set_ellipsize(Pango.EllipsizeMode.END)
+        self.infobox.set_max_width_chars(30)
         self.infobox.get_style_context().add_class('infobox')
 
         self.pack_start(self.scrolled_window, True, True, 0)
