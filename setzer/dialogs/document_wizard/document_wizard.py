@@ -90,6 +90,7 @@ class DocumentWizard(Dialog):
         self.current_values['packages'] = dict()
         self.current_values['packages']['ams'] = True
         self.current_values['packages']['graphicx'] = True
+        self.current_values['packages']['color'] = True
         self.current_values['packages']['xcolor'] = True
         self.current_values['packages']['url'] = True
         self.current_values['packages']['theorem'] = False
