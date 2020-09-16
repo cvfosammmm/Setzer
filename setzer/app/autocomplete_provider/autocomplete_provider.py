@@ -302,7 +302,7 @@ class AutocompleteProvider(object):
     #@timer.timer
     def get_commands(self):
         commands = dict()
-        for filename in ['latex-document.xml', 'tex.xml', 'textcomp.xml', 'graphicx.xml', 'latex-dev.xml', 'amsmath.xml', 'amsopn.xml', 'amsbsy.xml', 'amsfonts.xml', 'amssymb.xml', 'amsthm.xml', 'color.xml', 'url.xml', 'geometry.xml']:
+        for filename in ['additional.xml', 'latex-document.xml', 'tex.xml', 'textcomp.xml', 'graphicx.xml', 'latex-dev.xml', 'amsmath.xml', 'amsopn.xml', 'amsbsy.xml', 'amsfonts.xml', 'amssymb.xml', 'amsthm.xml', 'color.xml', 'url.xml', 'geometry.xml']:
             tree = ET.parse(os.path.join(self.resources_path, 'latexdb', 'commands', filename))
             root = tree.getroot()
             for child in root:
