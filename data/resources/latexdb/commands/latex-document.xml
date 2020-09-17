@@ -97,7 +97,6 @@
   <command name="\chapter*{•}" text="\chapter*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="\circle{•}" text="\circle{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="diameter###" />
   <command name="\circle*{•}" text="\circle*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="diameter###" />
-  <command name="\cite{•}" text="\cite{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keylist###" />
   <command name="\cite[•]{•}" text="\cite[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="add. text###keylist###" />
   <command name="\cleardoublepage" text="\cleardoublepage" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\clearpage" text="\clearpage" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -343,7 +342,6 @@
   <command name="\pagebreak[•]" text="\pagebreak[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="number###" />
   <command name="\pagename" text="\pagename" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\pagenumbering{•}" text="\pagenumbering{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="numstyle###" />
-  <command name="\pageref{•}" text="\pageref{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###" />
   <command name="\pagestyle{•}" text="\pagestyle{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="option###" />
   <command name="\paragraph{•}" text="\paragraph{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="title###" />
   <command name="\paragraph[•]{•}" text="\paragraph[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="short title###title###" />
@@ -373,7 +371,6 @@
   <command name="\put(•,•){•}" text="\put(•,•){•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="xcoord###ycoord###text###" />
   <command name="\r{•}" text="\r{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="letter###" />
   <command name="\raggedleft" text="\raggedleft" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\ref{•}" text="\ref{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###" />
   <command name="\refname" text="\refname" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\renewcommand{•}{•}" text="\renewcommand{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###def###" />
   <command name="\renewcommand{•}[•]{•}" text="\renewcommand{•}[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="cmd###args###def###" />

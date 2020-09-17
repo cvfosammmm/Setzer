@@ -81,7 +81,6 @@
   <command name="\end{xalignat}" text="\end{xalignat}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\end{xalignat*}" text="\end{xalignat*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\end{xxalignat}" text="\end{xxalignat}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\eqref{•}" text="\eqref{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###" />
   <command name="\hdotsfor{•}" text="\hdotsfor{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="columns###" />
   <command name="\hdotsfor[•]{•}" text="\hdotsfor[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="multiplier###columns###" />
   <command name="\idotsint" text="\idotsint" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
