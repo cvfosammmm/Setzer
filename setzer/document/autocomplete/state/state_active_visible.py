@@ -48,27 +48,27 @@ class StateActiveVisible(object):
             i = self.get_number_of_matching_letters_on_tabpress(self.autocomplete.current_word, 0)
 
             row = self.autocomplete.view.list.get_selected_row()
-            if len(row.get_child().label.get_text()) == len(self.autocomplete.current_word) + i:
+            if len('\\' + row.get_child().command['command']) == len(self.autocomplete.current_word) + i:
                 self.autocomplete.last_tabbed_command = None
                 self.autocomplete.submit()
                 return True
             else:
                 if i >= 1:
-                    text = row.get_child().label.get_text()[:len(self.autocomplete.current_word) + i]
-                    self.autocomplete.last_tabbed_command = row.get_child().label.get_text()[1:]
+                    text = ('\\' + row.get_child().command['command'])[:len(self.autocomplete.current_word) + i]
+                    self.autocomplete.last_tabbed_command = row.get_child().command['command']
                     self.autocomplete.add_text_to_current_word(text)
                     return True
                 else:
-                    current_word = row.get_child().label.get_text()[:len(self.autocomplete.current_word) + 1]
+                    current_word = ('\\' + row.get_child().command['command'])[:len(self.autocomplete.current_word) + 1]
                     i = self.get_number_of_matching_letters_on_tabpress(current_word, 0)
 
-                    if len(row.get_child().label.get_text()) == len(current_word) + i:
+                    if len('\\' + row.get_child().command['command']) == len(current_word) + i:
                         self.autocomplete.last_tabbed_command = None
                         self.autocomplete.submit()
                         return True
                     else:
-                        text = row.get_child().label.get_text()[:len(current_word) + i]
-                        self.autocomplete.last_tabbed_command = row.get_child().label.get_text()[1:]
+                        text = ('\\' + row.get_child().command['command'])[:len(current_word) + i]
+                        self.autocomplete.last_tabbed_command = row.get_child().command['command']
                         self.autocomplete.add_text_to_current_word(text)
                         return True
 

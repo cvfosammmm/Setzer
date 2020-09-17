@@ -134,7 +134,7 @@ class AutocompleteProvider(object):
 
         for ref_type in ref_types:
             if len(dynamic_items) >= 20: break
-            self.append_to_dynamic_items(word, dynamic_items, ref_type, labels)
+            self.append_to_dynamic_items(word, dynamic_items, ref_type, labels, 'label')
         return dynamic_items
 
     def get_dynamic_bibliography_commands(self, word):
@@ -145,7 +145,7 @@ class AutocompleteProvider(object):
 
         for ref_type in ref_types:
             if len(dynamic_items) >= 20: break
-            self.append_to_dynamic_items(word, dynamic_items, ref_type, labels)
+            self.append_to_dynamic_items(word, dynamic_items, ref_type, labels, 'keylist')
         return dynamic_items
 
     def get_dynamic_usepackage_commands(self, word):
@@ -154,7 +154,7 @@ class AutocompleteProvider(object):
             if len(dynamic_items) >= 20: break
 
             description = ''
-            command = {'command': 'usepackage' + '{' + package['command'] + '}', 'description': package['description']}
+            command = {'command': 'usepackage' + '{' + package['command'] + '}', 'description': package['description'], 'dotlabels': ''}
             if command['command'][:len(word) - 1] == word[1:].lower():
                 if command['command'] not in [item['command'] for item in dynamic_items]:
                     dynamic_items.append(command)
@@ -207,15 +207,17 @@ class AutocompleteProvider(object):
         labels = ['•'] + list(labels_first) + list(labels_second) + list(labels_rest)
         return labels
 
-    def append_to_dynamic_items(self, word, items, ref_type, labels):
+    def append_to_dynamic_items(self, word, items, ref_type, labels, parlabel):
         for label in iter(labels):
             if len(items) >= 20: break
 
             if label == '•':
                 description = ref_type[2]
+                dotlabels = parlabel
             else:
                 description = ref_type[1].format(label=label)
-            command = {'command': ref_type[0] + '{' + label + '}', 'description': description}
+                dotlabels = ''
+            command = {'command': ref_type[0] + '{' + label + '}', 'description': description, 'dotlabels': dotlabels}
             if command['command'][:len(word) - 1] == word[1:].lower():
                 if command['command'] not in [item['command'] for item in items]:
                     items.append(command)
@@ -307,7 +309,7 @@ class AutocompleteProvider(object):
             root = tree.getroot()
             for child in root:
                 attrib = child.attrib
-                commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description'], 'lowpriority': True if attrib['lowpriority'] == "True" else False}
+                commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description'], 'lowpriority': True if attrib['lowpriority'] == "True" else False, 'dotlabels': attrib['dotlabels']}
         return commands
 
 

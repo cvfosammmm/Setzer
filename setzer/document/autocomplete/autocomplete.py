@@ -177,7 +177,7 @@ class Autocomplete(object):
 
     def submit(self):
         row = self.view.list.get_selected_row()
-        text = row.get_child().label.get_text()
+        text = '\\' + row.get_child().command['command']
         if text.startswith('\\begin'):
             self.insert_begin_end(text)
         else:
