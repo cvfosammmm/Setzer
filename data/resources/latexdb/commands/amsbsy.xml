@@ -1,4 +1,4 @@
 <commands>
-  <command name="boldsymbol{•}" text="boldsymbol{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="symbol###" />
-  <command name="pmb{•}" text="pmb{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="symbol###" />
+  <command name="\boldsymbol{•}" text="\boldsymbol{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="symbol###" />
+  <command name="\pmb{•}" text="\pmb{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="symbol###" />
 </commands>
