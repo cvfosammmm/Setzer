@@ -74,6 +74,9 @@ class SourceBuffer(GtkSource.Buffer):
         self.tab_width = self.settings.get_value('preferences', 'tab_width')
         self.settings.register_observer(self)
 
+        self.placeholder_tag = self.create_tag('placeholder')
+        self.placeholder_tag.set_property('editable', False)
+
         self.connect('insert-text', self.on_insert_text)
         self.connect('delete-range', self.on_delete_range)
         self.view.connect('key-press-event', self.on_keypress)
@@ -335,6 +338,12 @@ class SourceBuffer(GtkSource.Buffer):
         start_iter = self.get_iter_at_mark(self.get_insert())
         end_iter = start_iter.copy()
         end_iter.forward_char()
+        return self.get_text(start_iter, end_iter, False)
+
+    def get_char_before_cursor(self):
+        start_iter = self.get_iter_at_mark(self.get_insert())
+        end_iter = start_iter.copy()
+        end_iter.backward_char()
         return self.get_text(start_iter, end_iter, False)
 
     def get_line(self, line_number):

@@ -52,6 +52,8 @@ class Document(Observable):
         self.last_activated = 0
 
         self.parser = None
+        self.autocomplete = None
+        self.build_system = None
         self.source_buffer = source_buffer.SourceBuffer(self)
         self.source_buffer.connect('changed', self.on_buffer_changed)
 
@@ -70,6 +72,11 @@ class Document(Observable):
             self.add_change_code('document_not_empty')
         else:
             self.add_change_code('document_empty')
+
+        if self.autocomplete != None:
+            self.autocomplete.on_buffer_changed(buffer)
+
+        self.update_placeholders()
 
     def set_dark_mode(self, dark_mode):
         self.set_use_dark_scheme(dark_mode)
@@ -227,6 +234,14 @@ class LaTeXDocument(Document):
         self.build_widget = build_widget.BuildWidget(self)
 
         self.autocomplete = autocomplete.Autocomplete(self, self.view)
+        self.view.scrolled_window.get_vadjustment().connect('value-changed', self.autocomplete.on_adjustment_value_changed)
+        self.view.scrolled_window.get_hadjustment().connect('value-changed', self.autocomplete.on_adjustment_value_changed)
+        self.view.source_view.connect('focus-out-event', self.autocomplete.on_focus_out)
+        self.view.source_view.connect('focus-in-event', self.autocomplete.on_focus_in)
+        self.get_buffer().connect('mark-set', self.on_mark_set)
+        self.get_buffer().connect('mark-deleted', self.on_mark_deleted)
+        self.insert_position = 0
+
         self.build_system = build_system.BuildSystem(self)
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
@@ -238,6 +253,32 @@ class LaTeXDocument(Document):
 
         self.update_can_forward_sync()
         self.update_can_backward_sync()
+
+    def on_mark_set(self, buffer, insert, mark, user_data=None):
+        if mark.get_name() == 'insert':
+            self.update_placeholders()
+            self.autocomplete.update(False)
+    
+    def on_mark_deleted(self, buffer, mark, user_data=None):
+        if mark.get_name() == 'insert':
+            self.autocomplete.update(False)
+
+    def update_placeholders(self):
+        mark = self.source_buffer.get_insert()
+        if self.source_buffer.get_iter_at_mark(mark).get_offset() != self.insert_position:
+            moved_forward_by_one = (self.insert_position == self.source_buffer.get_iter_at_mark(mark).get_offset() - 1)
+            moved_backward_by_one = (self.insert_position == self.source_buffer.get_iter_at_mark(mark).get_offset() + 1)
+            self.insert_position = self.source_buffer.get_iter_at_mark(mark).get_offset()
+
+            if not self.source_buffer.get_selection_bounds():
+                if not moved_backward_by_one and self.source_buffer.get_char_at_cursor() == '•':
+                    text_iter = self.source_buffer.get_iter_at_mark(mark)
+                    text_iter.forward_char()
+                    self.source_buffer.move_mark_by_name('selection_bound', text_iter)
+                elif not moved_forward_by_one and self.source_buffer.get_char_before_cursor() == '•':
+                    text_iter = self.source_buffer.get_iter_at_mark(mark)
+                    text_iter.backward_char()
+                    self.source_buffer.move_mark_by_name('selection_bound', text_iter)
 
     def change_build_state(self, state):
         self.build_state = state
@@ -371,14 +412,15 @@ class BibTeXDocument(Document):
         self.document_switcher_item = document_switcher_item.DocumentSwitcherItemBibTeX(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
 
-        self.autocomplete = None
-        self.build_system = None
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
 
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = bibtex_parser.BibTeXParser(self)
+
+    def update_placeholders(self):
+        pass
 
     def comment_uncomment(self):
         pass

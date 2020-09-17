@@ -62,27 +62,13 @@ class Autocomplete(object):
         self.view.list.connect('row-activated', self.on_row_activated)
         self.view.list.connect('row-selected', self.on_row_selected)
 
-        self.document_view.scrolled_window.get_vadjustment().connect('value-changed', self.on_adjustment_value_changed)
-        self.document_view.scrolled_window.get_hadjustment().connect('value-changed', self.on_adjustment_value_changed)
-        self.document_view.source_view.connect('focus-out-event', self.on_focus_out)
-        self.document_view.source_view.connect('focus-in-event', self.on_focus_in)
-        self.document.get_buffer().connect('changed', self.on_buffer_changed)
-        self.document.get_buffer().connect('mark-set', self.on_mark_set)
-        self.document.get_buffer().connect('mark-deleted', self.on_mark_deleted)
-
     def on_adjustment_value_changed(self, adjustment, user_data=None):
         self.update(False)
         return False
 
-    def on_mark_set(self, buffer, insert, mark, user_data=None):
-        self.update(False)
-    
     def on_buffer_changed(self, buffer, user_data=None):
         self.update(True)
     
-    def on_mark_deleted(self, buffer, mark, user_data=None):
-        self.update(False)
-
     def on_row_activated(self, box, row, user_data=None):
         self.document_view.source_view.grab_focus()
         self.submit()
