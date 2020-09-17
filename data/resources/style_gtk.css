@@ -13,7 +13,7 @@ paned.sidebar_paned {
 box.autocomplete {
     padding: 0px;
 }
-box.autocomplete scrollbar slider {
+box.autocomplete scrollbar.right slider {
     min-height: 12px;
 }
 box.autocomplete list {
