@@ -37,9 +37,9 @@ class StateInactive(object):
         return False
 
     def on_tab_press(self):
-        if self.autocomplete.cursor_inside_word_or_at_end():
+        if self.autocomplete.document.cursor_inside_latex_command_or_at_end():
             self.autocomplete.update(can_show=True)
-            if self.autocomplete.cursor_at_word_end():
+            if self.autocomplete.document.cursor_at_latex_command_end():
                 return self.autocomplete.is_active()
             else:
                 return True

@@ -68,7 +68,7 @@ class Document(Observable):
 
         if self.parser != None:
             self.parser.on_buffer_changed()
-        if self.source_buffer.get_end_iter().get_offset() > 0:
+        if self.is_empty():
             self.add_change_code('document_not_empty')
         else:
             self.add_change_code('document_empty')
@@ -76,7 +76,7 @@ class Document(Observable):
         if self.autocomplete != None:
             self.autocomplete.on_buffer_changed(buffer)
 
-        self.update_placeholders()
+        self.source_buffer.update_placeholder_selection()
 
     def set_dark_mode(self, dark_mode):
         self.set_use_dark_scheme(dark_mode)
@@ -131,12 +131,8 @@ class Document(Observable):
 
         with open(self.filename) as f:
             text = f.read()
-        source_buffer = self.get_buffer()
-        source_buffer.begin_not_undoable_action()
-        source_buffer.set_text(text)
-        source_buffer.end_not_undoable_action()
-        source_buffer.set_modified(False)
-        source_buffer.place_cursor(source_buffer.get_start_iter())
+        self.initially_set_text(text)
+        self.place_cursor(0, 0)
         self.update_save_date()
         return True
                 
@@ -154,6 +150,9 @@ class Document(Observable):
     def update_save_date(self):
         self.save_date = os.path.getmtime(self.filename)
 
+    def initially_set_text(self, text):
+        self.get_buffer().initially_set_text(text)
+
     def get_text(self):
         return self.get_buffer().get_all_text()
 
@@ -163,11 +162,29 @@ class Document(Observable):
     def get_line(self, line_number):
         return self.get_buffer().get_line(line_number)
 
+    def is_empty(self):
+        return self.source_buffer.is_empty()
+
     def set_initial_folded_regions(self, folded_regions):
         self.code_folding.set_initial_folded_regions(folded_regions)
         
     def place_cursor(self, line_number, offset=0):
         self.get_buffer().place_cursor_and_scroll(line_number, offset)
+
+    def get_cursor_offset(self):
+        return self.get_buffer().get_cursor_offset()
+
+    def cursor_inside_latex_command_or_at_end(self):
+        current_word = self.get_latex_command_at_cursor()
+        if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
+            return True
+        return False
+
+    def cursor_at_latex_command_end(self):
+        current_word = self.get_latex_command_at_cursor()
+        if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
+            return self.get_buffer().cursor_ends_word()
+        return False
 
     def insert_before_document_end(self, text):
         self.get_buffer().insert_before_document_end(text)
@@ -181,14 +198,11 @@ class Document(Observable):
     def insert_text(self, line_number, offset, text, indent_lines=True):
         self.get_buffer().insert_text(line_number, offset, text, indent_lines)
 
-    def insert_text_at_iter(self, insert_iter, text, indent_lines=True):
-        self.get_buffer().insert_text_at_iter(insert_iter, text, indent_lines)
-
     def insert_text_at_cursor(self, text, indent_lines=True, scroll=True, select_dot=True):
         self.get_buffer().insert_text_at_cursor(text, indent_lines, scroll, select_dot)
 
-    def replace_range(self, start_iter, end_iter, text, indent_lines=True, select_dot=True):
-        self.get_buffer().replace_range(start_iter, end_iter, text, indent_lines, select_dot)
+    def replace_range(self, offset, length, text, indent_lines=True, select_dot=True):
+        self.get_buffer().replace_range_by_offset_and_length(offset, length, text, indent_lines, select_dot)
 
     def insert_before_after(self, before, after):
         self.get_buffer().insert_before_after(before, after)
@@ -238,9 +252,6 @@ class LaTeXDocument(Document):
         self.view.scrolled_window.get_hadjustment().connect('value-changed', self.autocomplete.on_adjustment_value_changed)
         self.view.source_view.connect('focus-out-event', self.autocomplete.on_focus_out)
         self.view.source_view.connect('focus-in-event', self.autocomplete.on_focus_in)
-        self.get_buffer().connect('mark-set', self.on_mark_set)
-        self.get_buffer().connect('mark-deleted', self.on_mark_deleted)
-        self.insert_position = 0
 
         self.build_system = build_system.BuildSystem(self)
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
@@ -254,31 +265,14 @@ class LaTeXDocument(Document):
         self.update_can_forward_sync()
         self.update_can_backward_sync()
 
-    def on_mark_set(self, buffer, insert, mark, user_data=None):
-        if mark.get_name() == 'insert':
-            self.update_placeholders()
-            self.autocomplete.update(False)
-    
-    def on_mark_deleted(self, buffer, mark, user_data=None):
-        if mark.get_name() == 'insert':
-            self.autocomplete.update(False)
+    def get_latex_command_at_cursor(self):
+        return self.source_buffer.get_latex_command_at_cursor()
 
-    def update_placeholders(self):
-        mark = self.source_buffer.get_insert()
-        if self.source_buffer.get_iter_at_mark(mark).get_offset() != self.insert_position:
-            moved_forward_by_one = (self.insert_position == self.source_buffer.get_iter_at_mark(mark).get_offset() - 1)
-            moved_backward_by_one = (self.insert_position == self.source_buffer.get_iter_at_mark(mark).get_offset() + 1)
-            self.insert_position = self.source_buffer.get_iter_at_mark(mark).get_offset()
+    def get_latex_command_at_cursor_offset(self):
+        return self.source_buffer.get_latex_command_at_cursor_offset()
 
-            if not self.source_buffer.get_selection_bounds():
-                if not moved_backward_by_one and self.source_buffer.get_char_at_cursor() == '•':
-                    text_iter = self.source_buffer.get_iter_at_mark(mark)
-                    text_iter.forward_char()
-                    self.source_buffer.move_mark_by_name('selection_bound', text_iter)
-                elif not moved_forward_by_one and self.source_buffer.get_char_before_cursor() == '•':
-                    text_iter = self.source_buffer.get_iter_at_mark(mark)
-                    text_iter.backward_char()
-                    self.source_buffer.move_mark_by_name('selection_bound', text_iter)
+    def replace_latex_command_at_cursor(self, command, dotlabels, is_full_command=False):
+        self.source_buffer.replace_latex_command_at_cursor(command, dotlabels, is_full_command)
 
     def change_build_state(self, state):
         self.build_state = state
@@ -418,9 +412,6 @@ class BibTeXDocument(Document):
 
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = bibtex_parser.BibTeXParser(self)
-
-    def update_placeholders(self):
-        pass
 
     def comment_uncomment(self):
         pass

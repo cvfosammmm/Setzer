@@ -50,7 +50,7 @@ class Autocomplete(object):
 
         self.view.scrolled_window.set_max_content_height(5 * self.line_height)
 
-        self.insert_iter_offset = None
+        self.cursor_offset = None
         self.current_word = ""
         self.current_word_offset = None
         self.height = None
@@ -116,64 +116,20 @@ class Autocomplete(object):
             if event.state & modifiers == 0:
                 return self.active_state.on_tab_press()
 
-    def cursor_inside_word_or_at_end(self):
-        buffer = self.document.get_buffer()
-        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        current_word = self.get_current_word(insert_iter)
-        if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
-            return True
-        return False
-
-    def cursor_at_word_end(self):
-        buffer = self.document.get_buffer()
-        text_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        current_word = self.get_current_word(text_iter)
-        if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
-            return text_iter.ends_word()
-        return False
-
-    def get_current_word(self, insert_iter):
-        limit_iter = insert_iter.copy()
-        limit_iter.backward_chars(50)
-        word_start_iter = insert_iter.copy()
-        result = word_start_iter.backward_search('\\', Gtk.TextSearchFlags.TEXT_ONLY, limit_iter)
-        if result != None:
-            word_start_iter = result[0]
-        word = word_start_iter.get_slice(insert_iter)
-        return word
-
-    def get_current_word_offset(self, insert_iter):
-        limit_iter = insert_iter.copy()
-        limit_iter.backward_chars(50)
-        word_start_iter = insert_iter.copy()
-        result = word_start_iter.backward_search('\\', Gtk.TextSearchFlags.TEXT_ONLY, limit_iter)
-        if result != None:
-            word_start_iter = result[0]
-            return word_start_iter.get_offset()
-        return None
-
-    def add_text_to_current_word(self, text):
-        buffer = self.document.get_buffer()
-        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        current_word = self.get_current_word(insert_iter)
-        start_iter = insert_iter.copy()
-        start_iter.backward_chars(len(current_word))
-
-        self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=False)
-
     def submit(self):
         row = self.view.list.get_selected_row()
-        text = '\\' + row.get_child().command['command']
-        if text.startswith('\\begin'):
-            self.insert_begin_end(text)
+        command = row.get_child().command
+        if command['command'].startswith('begin'):
+            self.insert_begin_end(command)
         else:
-            self.insert_normal_command(text)
+            self.insert_normal_command(command)
         self.active_state.hide()
 
-    def insert_begin_end(self, text):
+    def insert_begin_end(self, command):
+        text = '\\' + command['command']
         buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        current_word = self.get_current_word(insert_iter)
+        current_word = self.document.get_latex_command_at_cursor()
         start_iter = insert_iter.copy()
         start_iter.backward_chars(len(current_word))
 
@@ -181,7 +137,7 @@ class Autocomplete(object):
         if replace_previous_command_data[0]:
             self.insert_begin_end_replace(start_iter, insert_iter, replace_previous_command_data)
         else:
-            self.insert_begin_end_no_replace(text)
+            self.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
 
     def insert_begin_end_check_replace(self, insert_iter, text):
         line_part = self.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
@@ -237,27 +193,20 @@ class Autocomplete(object):
                     count -= 1
         return end_match_object
 
-    def insert_begin_end_no_replace(self, text):
-        end_command = text.replace('\\begin', '\\end')
-        end_command_bracket_position = end_command.find('}')
-        if end_command_bracket_position:
-            end_command = end_command[:end_command_bracket_position + 1]
-        text += '\n\t•\n' + end_command
-        self.replace_current_command(text)
+    def insert_normal_command(self, command):
+        text = '\\' + command['command']
 
-    def insert_normal_command(self, text):
-        buffer = self.document.get_buffer()
-        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-
-        replacement_pattern = self.get_replacement_pattern(insert_iter, text)
+        replacement_pattern = self.get_replacement_pattern(text)
         if replacement_pattern != None:
             command_regex = ServiceLocator.get_regex_object(r'.*' + replacement_pattern[1])
             if command_regex.match(text):
-                self.insert_final_replace(insert_iter, text, replacement_pattern)
+                self.insert_final_replace(text, replacement_pattern)
                 return
-        self.replace_current_command(text)
+        self.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
 
-    def get_replacement_pattern(self, insert_iter, command):
+    def get_replacement_pattern(self, command):
+        buffer = self.document.get_buffer()
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         line_part = self.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
         command_bracket_count = self.get_command_bracket_count(command)
 
@@ -297,7 +246,7 @@ class Autocomplete(object):
             count += 1
         return count
 
-    def insert_final_replace(self, insert_iter, command, replacement_pattern):
+    def insert_final_replace(self, command, replacement_pattern):
         match_object = replacement_pattern[0]
         text = ''
         command_regex = ServiceLocator.get_regex_object(r'(?:^\\(\w+(?:\*){0,1}))|\{([^\{\[\|\(]+)\}|\[([^\{\[\|\(]+)\]|\|([^\{\[\|\(]+)\||\(([^\{\[\|\(]+)\)')
@@ -328,36 +277,23 @@ class Autocomplete(object):
                     text += '(' + inner_text + ')'
             count += 1
 
-        current_word = self.get_current_word(insert_iter)
-        start_iter = insert_iter.copy()
-        start_iter.backward_chars(len(current_word))
-        end_iter = insert_iter.copy()
-        end_iter.forward_chars(match_object.end())
-        self.document.replace_range(start_iter, end_iter, text, indent_lines=True, select_dot=True)
-
-    def replace_current_command(self, text):
-        buffer = self.document.get_buffer()
-        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        current_word = self.get_current_word(insert_iter)
-        start_iter = insert_iter.copy()
-        start_iter.backward_chars(len(current_word))
-        self.document.replace_range(start_iter, insert_iter, text, indent_lines=True, select_dot=True)
+        current_word = self.document.get_latex_command_at_cursor()
+        offset = self.document.get_cursor_offset() - len(current_word)
+        length = len(current_word) + match_object.end()
+        self.document.replace_range(offset, length, text, indent_lines=True, select_dot=True)
 
     def update(self, can_show=False):
-        if self.document.get_buffer() == None: return
-        if self.active_state != self.states['active_visible'] and can_show == False: return
+        if not self.is_visible() and can_show == False: return
 
         if self.current_word_changed_or_is_none() and not can_show:
             self.active_state.hide()
         else:
-            buffer = self.document.get_buffer()
-            insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-            self.current_word = self.get_current_word(insert_iter)
+            self.current_word = self.document.get_latex_command_at_cursor()
             self.items = self.provider.get_items_for_completion_window(self.current_word, self.last_tabbed_command)
             if len(self.items) > 0:
                 self.update_position()
                 if self.position_is_visible():
-                    if self.insert_iter_offset_changed() or self.active_state == self.states['inactive']:
+                    if self.cursor_moved() or self.active_state == self.states['inactive']:
                         self.populate()
                     self.active_state.show()
                 else:
@@ -366,20 +302,19 @@ class Autocomplete(object):
                 self.active_state.hide()
 
     def current_word_changed_or_is_none(self):
-        buffer = self.document.get_buffer()
-        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        current_word_offset = self.get_current_word_offset(insert_iter)
+        current_word_offset = self.document.get_latex_command_at_cursor_offset()
         if current_word_offset != self.current_word_offset:
             self.current_word_offset = current_word_offset
             return True
         return (current_word_offset == None)
 
-    def insert_iter_offset_changed(self):
-        buffer = self.document.get_buffer()
-        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        if self.insert_iter_offset == None: self.insert_iter_offset = insert_iter.get_offset()
-        if self.insert_iter_offset != insert_iter.get_offset():
-            self.insert_iter_offset = insert_iter.get_offset()
+    def cursor_moved(self):
+        cursor_offset = self.document.get_cursor_offset()
+        if self.cursor_offset == None:
+            self.cursor_offset = cursor_offset
+            return False
+        if self.cursor_offset != cursor_offset:
+            self.cursor_offset = cursor_offset
             return True
         return False
 
@@ -444,5 +379,8 @@ class Autocomplete(object):
 
     def is_active(self):
         return self.active_state != self.states['inactive']
+
+    def is_visible(self):
+        return self.active_state == self.states['active_visible']
 
 

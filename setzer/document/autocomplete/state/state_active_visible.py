@@ -47,29 +47,29 @@ class StateActiveVisible(object):
         else:
             i = self.get_number_of_matching_letters_on_tabpress(self.autocomplete.current_word, 0)
 
-            row = self.autocomplete.view.list.get_selected_row()
-            if len('\\' + row.get_child().command['command']) == len(self.autocomplete.current_word) + i:
+            command = self.autocomplete.view.list.get_selected_row().get_child().command
+            if len('\\' + command['command']) == len(self.autocomplete.current_word) + i:
                 self.autocomplete.last_tabbed_command = None
                 self.autocomplete.submit()
                 return True
             else:
                 if i >= 1:
-                    text = ('\\' + row.get_child().command['command'])[:len(self.autocomplete.current_word) + i]
-                    self.autocomplete.last_tabbed_command = row.get_child().command['command']
-                    self.autocomplete.add_text_to_current_word(text)
+                    text = ('\\' + command['command'])[:len(self.autocomplete.current_word) + i]
+                    self.autocomplete.last_tabbed_command = command['command']
+                    self.autocomplete.document.replace_latex_command_at_cursor(text, command['dotlabels'])
                     return True
                 else:
-                    current_word = ('\\' + row.get_child().command['command'])[:len(self.autocomplete.current_word) + 1]
+                    current_word = ('\\' + command['command'])[:len(self.autocomplete.current_word) + 1]
                     i = self.get_number_of_matching_letters_on_tabpress(current_word, 0)
 
-                    if len('\\' + row.get_child().command['command']) == len(current_word) + i:
+                    if len('\\' + command['command']) == len(current_word) + i:
                         self.autocomplete.last_tabbed_command = None
                         self.autocomplete.submit()
                         return True
                     else:
-                        text = ('\\' + row.get_child().command['command'])[:len(current_word) + i]
-                        self.autocomplete.last_tabbed_command = row.get_child().command['command']
-                        self.autocomplete.add_text_to_current_word(text)
+                        text = ('\\' + command['command'])[:len(current_word) + i]
+                        self.autocomplete.last_tabbed_command = command['command']
+                        self.autocomplete.document.replace_latex_command_at_cursor(text, command['dotlabels'])
                         return True
 
     def get_number_of_matching_letters_on_tabpress(self, current_word, offset):
