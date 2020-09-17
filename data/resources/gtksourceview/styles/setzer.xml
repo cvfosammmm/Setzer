@@ -113,7 +113,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <style name="def:special-char"            foreground="plum3"/>
 
   <!-- Identifiers -->
-  <style name="def:identifier"              foreground="skyblue2"/>
+  <style name="def:identifier"              foreground="blue"/>
 
   <!-- Statements -->
   <style name="def:statement"               foreground="scarletred3" bold="true"/>
