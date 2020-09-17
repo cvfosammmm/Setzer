@@ -48,10 +48,10 @@
   <command name="\bgroup•\egroup" text="\bgroup•\egroup" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="..###" />
   <command name="\big" text="\big" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\Big" text="\Big" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\big(•\big)" text="\big(•\big)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\Big(•\Big)" text="\Big(•\Big)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\big[•\big]" text="\big[•\big]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\Big[•\Big]" text="\Big[•\Big]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\big(•\big)" text="\big(•\big)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\Big(•\Big)" text="\Big(•\Big)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\big[•\big]" text="\big[•\big]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\Big[•\Big]" text="\Big[•\Big]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
   <command name="\bigbreak" text="\bigbreak" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="\bigcap" text="\bigcap" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\bigcirc" text="\bigcirc" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -60,23 +60,23 @@
   <command name="\Bigg" text="\Bigg" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\biggl" text="\biggl" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\Biggl" text="\Biggl" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\biggl(•\biggr)" text="\biggl(•\biggr)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\Biggl(•\Biggr)" text="\Biggl(•\Biggr)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\biggl[•\biggr]" text="\biggl[•\biggr]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\Biggl[•\Biggr]" text="\Biggl[•\Biggr]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\biggl\{•\biggr\}" text="\biggl\{•\biggr\}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\Biggl\{•\Biggr\}" text="\Biggl\{•\Biggr\}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\biggl(•\biggr)" text="\biggl(•\biggr)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\Biggl(•\Biggr)" text="\Biggl(•\Biggr)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\biggl[•\biggr]" text="\biggl[•\biggr]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\Biggl[•\Biggr]" text="\Biggl[•\Biggr]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\biggl\{•\biggr\}" text="\biggl\{•\biggr\}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\Biggl\{•\Biggr\}" text="\Biggl\{•\Biggr\}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
   <command name="\biggm" text="\biggm" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\biggr" text="\biggr" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\Biggr" text="\Biggr" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\bigl" text="\bigl" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\Bigl" text="\Bigl" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\bigl(•\bigr)" text="\bigl(•\bigr)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\Bigl(•\Bigr)" text="\Bigl(•\Bigr)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\bigl[•\bigr]" text="\bigl[•\bigr]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\Bigl[•\Bigr]" text="\Bigl[•\Bigr]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\bigl\{•\bigr\}" text="\bigl\{•\bigr\}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\Bigl\{•\Bigr\}" text="\Bigl\{•\Bigr\}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\bigl(•\bigr)" text="\bigl(•\bigr)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\Bigl(•\Bigr)" text="\Bigl(•\Bigr)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\bigl[•\bigr]" text="\bigl[•\bigr]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\Bigl[•\Bigr]" text="\Bigl[•\Bigr]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\bigl\{•\bigr\}" text="\bigl\{•\bigr\}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\Bigl\{•\Bigr\}" text="\Bigl\{•\Bigr\}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
   <command name="\bigm" text="\bigm" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\Bigm" text="\Bigm" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\bigodot" text="\bigodot" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
@@ -92,8 +92,8 @@
   <command name="\biguplus" text="\biguplus" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\bigvee" text="\bigvee" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\bigwedge" text="\bigwedge" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\big|•\big|" text="\big|•\big|" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\Big|•\Big|" text="\Big|•\Big|" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\big|•\big|" text="\big|•\big|" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\Big|•\Big|" text="\Big|•\Big|" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
   <command name="\binoppenalty" text="\binoppenalty" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="\bmod" text="\bmod" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\bordermatrix{• \cr • \cr}" text="\bordermatrix{• \cr • \cr}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="line###line###" />
@@ -428,10 +428,10 @@
   <command name="\leaders" text="\leaders" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="\leavevmode" text="\leavevmode" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="\left" text="\left" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\left(•\right)" text="\left(•\right)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\left(•\right)" text="\left(•\right)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
   <command name="\left•\right" text="\left•\right" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="..###" />
-  <command name="\left[•\right]" text="\left[•\right]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\left\{•\right\}" text="\left\{•\right\}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\left[•\right]" text="\left[•\right]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\left\{•\right\}" text="\left\{•\right\}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
   <command name="\leftarrow" text="\leftarrow" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\Leftarrow" text="\Leftarrow" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\leftarrowfill" text="\leftarrowfill" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
@@ -442,7 +442,7 @@
   <command name="\leftrightarrow" text="\leftrightarrow" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\Leftrightarrow" text="\Leftrightarrow" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\leftskip" text="\leftskip" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
-  <command name="\left|•\right|" text="\left|•\right|" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\left|•\right|" text="\left|•\right|" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
   <command name="\leq" text="\leq" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\leqno{•}" text="\leqno{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="eqn num###" />
   <command name="\let" text="\let" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />

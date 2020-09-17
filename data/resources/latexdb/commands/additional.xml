@@ -2,7 +2,7 @@
   <command name="\begin{•}" text="\begin{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="environment###" />
   <command name="\end{•}" text="\end{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="environment###" />
   <command name="\date{\today}" text="\date{\today}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\glqq •\grqq" text="\glqq •\grqq" onlymath="False" onlytext="True" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="environment###" />
-  <command name="\nocite{*}" text="\nocite{*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="environment###" />
-  <command name="\og • \fg{}" text="\og • \fg{}" onlymath="False" onlytext="True" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="environment###" />
+  <command name="\glqq •\grqq" text="\glqq •\grqq" onlymath="False" onlytext="True" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
+  <command name="\nocite{*}" text="\nocite{*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\og • \fg{}" text="\og • \fg{}" onlymath="False" onlytext="True" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
 </commands>

@@ -80,12 +80,12 @@
   <command name="\bibliographystyle{•}" text="\bibliographystyle{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="style###" />
   <command name="\Bigg" text="\Bigg" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\bigg" text="\bigg" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\Bigg(•\Bigg)" text="\Bigg(•\Bigg)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\bigg(•\bigg)" text="\bigg(•\bigg)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\Bigg[•\Bigg]" text="\Bigg[•\Bigg]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\bigg[•\bigg]" text="\bigg[•\bigg]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\Bigg|•\Bigg|" text="\Bigg|•\Bigg|" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
-  <command name="\bigg|•\bigg|" text="\bigg|•\bigg|" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\Bigg(•\Bigg)" text="\Bigg(•\Bigg)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\bigg(•\bigg)" text="\bigg(•\bigg)" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\Bigg[•\Bigg]" text="\Bigg[•\Bigg]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\bigg[•\bigg]" text="\bigg[•\bigg]" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\Bigg|•\Bigg|" text="\Bigg|•\Bigg|" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
+  <command name="\bigg|•\bigg|" text="\bigg|•\bigg|" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
   <command name="\boldmath" text="\boldmath" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\botfigrule" text="\botfigrule" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="\caption{•}" text="\caption{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
@@ -214,7 +214,7 @@
   <command name="\indexspace" text="\indexspace" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\input{•}" text="\input{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="file###" />
   <command name="\it" text="\it" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
-  <command name="\item •" text="\item •" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\item •" text="\item •" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="•###" />
   <command name="\item[•] •" text="\item[•] •" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###description###" />
   <command name="\iterate" text="\iterate" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
   <command name="\itshape" text="\itshape" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
