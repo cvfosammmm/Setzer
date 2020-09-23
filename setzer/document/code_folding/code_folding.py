@@ -142,7 +142,8 @@ class CodeFolding(object):
                 start_iter = self.document.source_buffer.get_iter_at_offset(block[0])
                 start_iter.forward_to_line_end()
                 end_iter = self.document.source_buffer.get_iter_at_offset(block[1])
-                end_iter.forward_to_line_end()
+                if not end_iter.ends_line():
+                    end_iter.forward_to_line_end()
                 marks = start_iter.get_marks()
                 block_in_buffer = False
                 for mark in marks:
@@ -153,6 +154,7 @@ class CodeFolding(object):
                     region_dict = self.get_folding_region_by_region_id(region_id)
                     region_dict['starting_line'] = start_iter.get_line()
                     region_dict['ending_line'] = end_iter.get_line()
+                    self.document.source_buffer.move_mark_by_name('folding_region_end_' + str(region_id), end_iter)
                     folding_regions_by_region_id[region_id] = region_dict
                 else:
                     mark_start = Gtk.TextMark.new('folding_region_start_' + str(self.maximum_region_id), False)

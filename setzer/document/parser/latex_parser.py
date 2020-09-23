@@ -63,7 +63,7 @@ class LaTeXParser(object):
         with self.parse_jobs_lock:
             self.dirname = self.document.get_dirname()
             self.parse_times['symbols'] = time.time() + 0.01
-            self.parse_times['blocks'] = time.time() + 0.01
+            self.parse_times['blocks'] = time.time() + 0.00001
 
     def compute_loop(self):
         text = None
@@ -124,7 +124,7 @@ class LaTeXParser(object):
         text_length = len(text)
 
         matches = {'begin_or_end': list(), 'others': list()}
-        for match in ServiceLocator.get_regex_object(r'\n.*\\(begin|end)\{((?:\w)*(?:\*){0,1})\}|\n.*\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{').finditer(text):
+        for match in ServiceLocator.get_regex_object(r'\\(begin|end)\{((?:\w)*(?:\*){0,1})\}|\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{').finditer(text):
             if match.group(1) != None:
                 matches['begin_or_end'].append(match)
             else:
@@ -161,7 +161,7 @@ class LaTeXParser(object):
 
             if len(relevant_following_blocks[level]) >= 1:
                 # - 1 to go one line up
-                block[1] = relevant_following_blocks[level][len(relevant_following_blocks[level]) - 1][0] - 1
+                block[1] = relevant_following_blocks[level][-1][0] - 1
             else:
                 if end_document_offset != None and block[0] < end_document_offset:
                     # - 1 to go one line up
