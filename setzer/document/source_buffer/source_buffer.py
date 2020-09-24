@@ -95,13 +95,13 @@ class SourceBuffer(GtkSource.Buffer):
             section, item, value = parameter
             if (section, item) == ('preferences', 'tab_width'):
                 self.tab_width = self.settings.get_value('preferences', 'tab_width')
-        
+
     def on_mark_set(self, buffer, insert, mark, user_data=None):
         if mark.get_name() == 'insert':
             self.update_placeholder_selection()
             if self.document.is_latex_document():
                 self.document.autocomplete.update(False)
-    
+
     def on_mark_deleted(self, buffer, mark, user_data=None):
         if mark.get_name() == 'insert':
             if self.document.is_latex_document():
@@ -121,13 +121,22 @@ class SourceBuffer(GtkSource.Buffer):
             return False
 
         bracket_vals = [Gdk.keyval_from_name('parenleft'), Gdk.keyval_from_name('bracketleft'), Gdk.keyval_from_name('braceleft')]
-        if event.keyval in bracket_vals:
+        if event.keyval in bracket_vals and not self.document.autocomplete.is_active():
             if event.keyval == Gdk.keyval_from_name('bracketleft'):
+                self.begin_user_action()
+                self.delete_selection(True, True)
                 self.insert_at_cursor('[]')
+                self.end_user_action()
             if event.keyval == Gdk.keyval_from_name('braceleft'):
+                self.begin_user_action()
+                self.delete_selection(True, True)
                 self.insert_at_cursor('{}')
+                self.end_user_action()
             if event.keyval == Gdk.keyval_from_name('parenleft'):
+                self.begin_user_action()
+                self.delete_selection(True, True)
                 self.insert_at_cursor('()')
+                self.end_user_action()
             insert_iter = self.get_iter_at_mark(self.get_insert())
             insert_iter.backward_char()
             self.place_cursor(insert_iter)
