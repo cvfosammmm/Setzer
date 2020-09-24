@@ -25,9 +25,10 @@ class CodeFoldingPresenter(object):
     def __init__(self, model, view):
         self.model = model
         self.view = view
+        self.source_buffer = self.model.document.source_buffer
         self.source_gutter = self.model.document.view.source_view.get_gutter(Gtk.TextWindowType.LEFT)
+        self.tag = self.source_buffer.create_tag('invisible_region', invisible=1)
 
-        self.tag_table = self.model.document.source_buffer.get_tag_table()
         self.line_invisible = dict()
 
         self.source_gutter.insert(self.view, 3)
@@ -57,35 +58,26 @@ class CodeFoldingPresenter(object):
                 self.show_region(parameter)
 
     def show_region(self, region):
-        tag = self.get_invisible_region_tag(region['id'])
-        source_buffer = self.model.document.source_buffer
-        start_iter = source_buffer.get_start_iter()
-        end_iter = source_buffer.get_end_iter()
-        source_buffer.remove_tag(tag, start_iter, end_iter)
-        self.delete_invisible_region_tag(region['id'])
+        mark_start = region['mark_start']
+        start_iter = self.source_buffer.get_iter_at_mark(mark_start)
+        mark_end = region['mark_end']
+        end_iter = self.source_buffer.get_iter_at_mark(mark_end)
+        end_iter.forward_char()
+        self.source_buffer.remove_tag(self.tag, start_iter, end_iter)
+        for some_region in self.model.folding_regions.values():
+            if some_region['is_folded']:
+                if some_region['starting_line'] >= region['starting_line'] and some_region['ending_line'] <= region['ending_line']:
+                    self.hide_region(some_region)
         self.update_line_visibility()
 
     def hide_region(self, region):
-        tag = self.get_invisible_region_tag(region['id'])
-        source_buffer = self.model.document.source_buffer
         mark_start = region['mark_start']
-        start_iter = source_buffer.get_iter_at_mark(mark_start)
+        start_iter = self.source_buffer.get_iter_at_mark(mark_start)
         mark_end = region['mark_end']
-        end_iter = source_buffer.get_iter_at_mark(mark_end)
+        end_iter = self.source_buffer.get_iter_at_mark(mark_end)
         end_iter.forward_char()
-        source_buffer.apply_tag(tag, start_iter, end_iter)
+        self.source_buffer.apply_tag(self.tag, start_iter, end_iter)
         self.update_line_visibility()
-
-    def get_invisible_region_tag(self, region_id):
-        tag = self.tag_table.lookup('invisible_region_' + str(region_id))
-        if tag == None:
-            tag = self.model.document.source_buffer.create_tag('invisible_region_' + str(region_id), invisible=1)
-        return tag
-
-    def delete_invisible_region_tag(self, region_id):
-        tag = self.tag_table.lookup('invisible_region_' + str(region_id))
-        if tag != None:
-            self.tag_table.remove(tag)
 
     def update_line_visibility(self):
         for i in range(len(self.line_invisible)):

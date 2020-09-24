@@ -50,13 +50,13 @@ class CodeFolding(Observable):
     def enable_code_folding(self):
         self.is_enabled = True
         GObject.timeout_add(1, self.update_folding_regions)
-        self.presenter.show_folding_bar()
+        self.add_change_code('is_enabled_changed')
 
     def disable_code_folding(self):
         self.is_enabled = False
         for region in self.folding_regions.values():
             self.toggle_folding_region(region, show_region_regardless_of_state=True)
-        self.presenter.hide_folding_bar()
+        self.add_change_code('is_enabled_changed')
 
     def toggle_folding_region(self, region, show_region_regardless_of_state=False, hide_region_regardless_of_state=False):
         if show_region_regardless_of_state:
@@ -69,8 +69,7 @@ class CodeFolding(Observable):
         self.add_change_code('folding_state_changed', region)
 
     def on_buffer_changed(self, buffer):
-        for i in range(len(self.presenter.line_invisible), buffer.get_end_iter().get_line() + 1):
-            self.presenter.line_invisible[i] = False
+        self.add_change_code('buffer_changed', buffer)
 
     def get_folding_region_by_region_id(self, region_id):
         return self.folding_regions_by_region_id[region_id]
@@ -123,7 +122,7 @@ class CodeFolding(Observable):
         if not self.initial_folding_done:
             self.initial_folding()
         else:
-            self.presenter.update_line_visibility()
+            self.add_change_code('folding_regions_updated')
 
         return self.is_enabled
 
