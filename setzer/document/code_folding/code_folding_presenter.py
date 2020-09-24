@@ -29,7 +29,7 @@ class CodeFoldingPresenter(object):
         self.source_gutter = self.model.document.view.source_view.get_gutter(Gtk.TextWindowType.LEFT)
         self.tag = self.source_buffer.create_tag('invisible_region', invisible=1)
 
-        self.line_invisible = dict()
+        self.lines_skip_query_data = dict()
 
         self.source_gutter.insert(self.view, 3)
         self.view.connect('query-data', self.query_data)
@@ -45,8 +45,8 @@ class CodeFoldingPresenter(object):
 
         if change_code == 'buffer_changed':
             buffer = parameter
-            for i in range(len(self.line_invisible), buffer.get_end_iter().get_line() + 1):
-                self.line_invisible[i] = False
+            for i in range(len(self.lines_skip_query_data), buffer.get_end_iter().get_line() + 1):
+                self.lines_skip_query_data[i] = False
 
         if change_code == 'folding_regions_updated':
             self.update_line_visibility()
@@ -80,16 +80,16 @@ class CodeFoldingPresenter(object):
         self.update_line_visibility()
 
     def update_line_visibility(self):
-        for i in range(len(self.line_invisible)):
-            self.line_invisible[i] = False
+        for i in range(len(self.lines_skip_query_data)):
+            self.lines_skip_query_data[i] = False
         for region in self.model.folding_regions.values():
             if region['is_folded']:
-                for line in range(region['starting_line'] + 1, region['ending_line'] + 1):
-                    self.line_invisible[line] = True
+                for line in range(region['starting_line'] + 1, region['ending_line']):
+                    self.lines_skip_query_data[line] = True
         self.source_gutter.queue_draw()
 
     def query_data(self, renderer, start_iter, end_iter, state):
-        if self.line_invisible[start_iter.get_line()]: return
+        if self.lines_skip_query_data[start_iter.get_line()]: return
         if start_iter.get_line() in self.model.folding_regions.keys():
             if self.model.folding_regions[start_iter.get_line()]['is_folded']:
                 renderer.set_icon_name('own-folded-symbolic')
