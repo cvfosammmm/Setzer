@@ -99,7 +99,7 @@ class DocumentAutocompleteItem(Gtk.HBox):
 
         self.command = command
         if offset != 0:
-            command_text = '<b>\\' + GLib.markup_escape_text(command['command'])[:offset] + '</b>'
+            command_text = '<b>' + GLib.markup_escape_text(command['command'])[:offset] + '</b>'
             command_text += GLib.markup_escape_text(command['command'])[offset:]
         else:
             command_text = GLib.markup_escape_text(command['command'])

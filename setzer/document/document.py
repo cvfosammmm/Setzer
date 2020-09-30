@@ -159,6 +159,9 @@ class Document(Observable):
     def get_text_after_offset(self, offset):
         return self.get_buffer().get_text_after_offset(offset)
 
+    def get_line_at_cursor(self):
+        return self.get_buffer().get_line_at_cursor()
+
     def get_line(self, line_number):
         return self.get_buffer().get_line(line_number)
 
@@ -173,6 +176,9 @@ class Document(Observable):
 
     def get_cursor_offset(self):
         return self.get_buffer().get_cursor_offset()
+
+    def get_cursor_line_offset(self):
+        return self.get_buffer().get_cursor_line_offset()
 
     def cursor_inside_latex_command_or_at_end(self):
         current_word = self.get_latex_command_at_cursor()

@@ -21,9 +21,9 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 
 import setzer.document.autocomplete.autocomplete_viewgtk as view
-import setzer.document.autocomplete.state.state_inactive as state_inactive
-import setzer.document.autocomplete.state.state_active_invisible as state_active_invisible
-import setzer.document.autocomplete.state.state_active_visible as state_active_visible
+import setzer.document.autocomplete.session.session_blank as session_blank
+import setzer.document.autocomplete.session.session_default as session_default
+import setzer.document.autocomplete.session.session_begin_end as session_begin_end
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -35,40 +35,34 @@ class Autocomplete(object):
         self.main_window = ServiceLocator.get_main_window()
 
         self.view = view.DocumentAutocompleteView()
+        self.mark_start = Gtk.TextMark.new('ac_session_start', True)
+        self.mark_end = Gtk.TextMark.new('ac_session_end', False)
 
         self.provider = ServiceLocator.get_autocomplete_provider()
 
-        self.states = dict()
-        self.states['inactive'] = state_inactive.StateInactive(self)
-        self.states['active_invisible'] = state_active_invisible.StateActiveInvisible(self)
-        self.states['active_visible'] = state_active_visible.StateActiveVisible(self)
-        self.active_state = None
-        self.change_state('inactive')
+        self.blank_session = session_blank.SessionBlank(self)
+        self.session = self.blank_session
 
         self.char_width, self.line_height = self.document.get_char_dimensions()
         self.shortcuts_bar_height = 37
+        self.cursor_offset = None
 
         self.view.scrolled_window.set_max_content_height(5 * self.line_height)
 
-        self.cursor_offset = None
-        self.current_word = ""
-        self.current_word_offset = None
-        self.height = None
-        self.width = None
+        self.focus_hide = False
 
         self.items = list()
-        self.last_tabbed_command = None
 
         self.view.list.connect('row-activated', self.on_row_activated)
         self.view.list.connect('row-selected', self.on_row_selected)
 
     def on_adjustment_value_changed(self, adjustment, user_data=None):
-        self.update(False)
+        self.update_visibility()
         return False
 
     def on_buffer_changed(self, buffer, user_data=None):
         self.update(True)
-    
+
     def on_row_activated(self, box, row, user_data=None):
         self.document_view.source_view.grab_focus()
         self.submit()
@@ -86,249 +80,87 @@ class Autocomplete(object):
             self.view.infobox.set_text(command['description'])
 
     def on_focus_out(self, widget, event, user_data=None):
-        self.active_state.focus_hide()
+        self.focus_hide = True
+        self.update_visibility()
 
     def on_focus_in(self, widget, event, user_data=None):
-        self.active_state.focus_show()
+        self.focus_hide = False
+        self.update_visibility()
 
     def on_keypress(self, event):
         ''' returns whether the keypress has been handled. '''
+
         modifiers = Gtk.accelerator_get_default_mod_mask()
-
-        if event.keyval == Gdk.keyval_from_name('Down'):
-            if event.state & modifiers == 0:
-                return self.active_state.on_down_press()
-
-        if event.keyval == Gdk.keyval_from_name('Up'):
-            if event.state & modifiers == 0:
-                return self.active_state.on_up_press()
-
-        if event.keyval == Gdk.keyval_from_name('Escape'):
-            if event.state & modifiers == 0:
-                return self.active_state.on_escape_press()
-
-        if event.keyval == Gdk.keyval_from_name('Return'):
-            if event.state & modifiers == 0:
-                return self.active_state.on_return_press()
 
         tab_keyvals = [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]
         if event.keyval in tab_keyvals:
             if event.state & modifiers == 0:
-                return self.active_state.on_tab_press()
+                return self.session.on_tab_press()
+
+        if not self.is_visible():
+            return False
+
+        if event.keyval == Gdk.keyval_from_name('Down'):
+            if event.state & modifiers == 0:
+                self.view.select_next()
+                return True
+
+        if event.keyval == Gdk.keyval_from_name('Up'):
+            if event.state & modifiers == 0:
+                self.view.select_previous()
+                return True
+
+        if event.keyval == Gdk.keyval_from_name('Escape'):
+            if event.state & modifiers == 0:
+                self.session.cancel()
+                return True
+
+        if event.keyval == Gdk.keyval_from_name('Return'):
+            if event.state & modifiers == 0:
+                self.submit()
+                return True
 
     def submit(self):
-        row = self.view.list.get_selected_row()
-        command = row.get_child().command
-        if command['command'].startswith('begin'):
-            self.insert_begin_end(command)
+        self.session.submit()
+
+    def update(self, can_activate=False):
+        if not self.is_active() and not can_activate:
+            return
+
+        if self.is_active():
+            self.session.update()
+        if not self.is_active() and can_activate:
+            current_word = self.document.get_latex_command_at_cursor()
+            if current_word.startswith('\\begin') or current_word.startswith('\\end'):
+                line = self.document.get_line_at_cursor()
+                offset = self.document.get_cursor_line_offset()
+                line = line[:offset] + '•' + line[offset:]
+                match = ServiceLocator.get_regex_object(r'\\(begin|end)\{((?:\w)*(?:\*){0,1})•((?:\w)*(?:\*){0,1})\}.*').match(line)
+                if match:
+                    word_offset = self.document.get_cursor_offset() - len(match.group(2))
+                    word_len = len(match.group(2)) + len(match.group(3))
+                    self.start_session(session_begin_end.SessionBeginEnd(self, word_offset, word_len))
+                    return
+            if self.provider.get_items(current_word):
+                self.start_session(session_default.SessionDefault(self))
+
+    def update_visibility(self):
+        if self.session.will_show and self.position_is_visible() and not self.focus_hide:
+            self.view.show_all()
         else:
-            self.insert_normal_command(command)
-        self.active_state.hide()
+            self.view.hide()
 
-    def insert_begin_end(self, command):
-        text = '\\' + command['command']
-        buffer = self.document.get_buffer()
-        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        current_word = self.document.get_latex_command_at_cursor()
-        start_iter = insert_iter.copy()
-        start_iter.backward_chars(len(current_word))
-
-        replace_previous_command_data = self.insert_begin_end_check_replace(insert_iter, text)
-        if replace_previous_command_data[0]:
-            self.insert_begin_end_replace(start_iter, insert_iter, replace_previous_command_data)
-        else:
-            self.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
-
-    def insert_begin_end_check_replace(self, insert_iter, text):
-        line_part = self.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
-        line_regex = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})\{([^\{\[\|\(]+)\}')
-        line_match = line_regex.match(line_part)
-        if line_match:
-            document_text = self.document.get_text_after_offset(insert_iter.get_offset() + 1)
-            if self.get_end_match_object(document_text, line_match.group(2)):
-                return (line_match, text)
-        return (None, text)
-
-    def insert_begin_end_replace(self, start_iter_begin, insert_iter, replace_previous_command_data):
-        text = replace_previous_command_data[1]
-        match_object = replace_previous_command_data[0]
-
-        self.document.get_buffer().begin_user_action()
-
-        end_iter_begin = insert_iter.copy()
-        end_iter_begin.forward_chars(match_object.end())
-        start_iter_offset = start_iter_begin.get_offset()
-        self.document.get_buffer().replace_range_no_user_action(start_iter_begin, end_iter_begin, text, indent_lines=False, select_dot=True)
-
-        end_iter_offset = start_iter_offset + len(text)
-        document_text = self.document.get_text_after_offset(end_iter_offset)
-        environment_name = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})\{([^\{\[\|\(]+)\}').match(match_object.group(0)).group(2)
-        end_match_object = self.get_end_match_object(document_text, environment_name)
-
-        if end_match_object != None:
-            start_iter_begin = self.document.get_buffer().get_iter_at_offset(end_iter_offset)
-            start_iter_end = start_iter_begin.copy()
-            start_iter_end.forward_chars(end_match_object.start())
-            end_iter_end = start_iter_begin.copy()
-            end_iter_end.forward_chars(end_match_object.end())
-            end_command = text.replace('\\begin', '\\end')
-            end_command_bracket_position = end_command.find('}')
-            if end_command_bracket_position:
-                end_command = end_command[:end_command_bracket_position + 1]
-            self.document.get_buffer().replace_range_no_user_action(start_iter_end, end_iter_end, end_command, indent_lines=False, select_dot=False)
-
-        self.document.get_buffer().end_user_action()
-
-    def get_end_match_object(self, text, environment_name):
-        count = 0
-        end_match_object = None
-        for match in ServiceLocator.get_regex_object(r'\\(begin|end)\{' + environment_name + r'\}').finditer(text):
-            if match.group(1) == 'begin':
-                count += 1
-            elif match.group(1) == 'end':
-                if count == 0:
-                    end_match_object = match
-                    break
-                else:
-                    count -= 1
-        return end_match_object
-
-    def insert_normal_command(self, command):
-        text = '\\' + command['command']
-
-        replacement_pattern = self.get_replacement_pattern(text)
-        if replacement_pattern != None:
-            command_regex = ServiceLocator.get_regex_object(r'.*' + replacement_pattern[1])
-            if command_regex.match(text):
-                self.insert_final_replace(text, replacement_pattern)
-                return
-        self.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
-
-    def get_replacement_pattern(self, command):
-        buffer = self.document.get_buffer()
-        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        line_part = self.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
-        command_bracket_count = self.get_command_bracket_count(command)
-
-        matches_group = list()
-        line_regex = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})(?:\{([^\{\[\|\(\\]+)\}|\[([^\{\[\|\(\\]+)\]|\|([^\{\[\|\(\\]+)\||\(([^\{\[\|\(\\]+)\))*')
-        line_match = line_regex.match(line_part)
-        if line_match == None:
-            return None
-        else:
-            line_part = line_part[:line_match.end()]
-            line_regex = ServiceLocator.get_regex_object(r'(\w*)|\{([^\{\[\|\(\\]+)\}|\[([^\{\[\|\(\\]+)\]|\|([^\{\[\|\(\\]+)\||\(([^\{\[\|\(\\]+)\)')
-            bracket_count = 0
-            command_regex_pattern = r'(\w*(?:\*){0,1})'
-            for match in line_regex.finditer(line_part):
-                if match.group(0).startswith('{') and bracket_count < command_bracket_count:
-                    command_regex_pattern += r'\{([^\{\[\|\(]+)\}'
-                    bracket_count += 1
-                if match.group(0).startswith('[') and bracket_count < command_bracket_count:
-                    command_regex_pattern += r'\[([^\{\[\|\(]+)\]'
-                    bracket_count += 1
-                if match.group(0).startswith('|') and bracket_count < command_bracket_count:
-                    command_regex_pattern += r'\|([^\{\[\|\(]+)\|'
-                    bracket_count += 1
-                if match.group(0).startswith('(') and bracket_count < command_bracket_count:
-                    command_regex_pattern += r'\(([^\{\[\|\(]+)\)'
-                    bracket_count += 1
-            line_match = ServiceLocator.get_regex_object(command_regex_pattern).match(line_part)
-            if bracket_count > 0:
-                return (line_match, command_regex_pattern)
-            else:
-                return None
-
-    def get_command_bracket_count(self, command):
-        count = 0
-        line_regex = ServiceLocator.get_regex_object(r'\{([^\{\[\|\(]+)\}|\[([^\{\[\|\(]+)\]|\|([^\{\[\|\(]+)\||\(([^\{\[\|\(]+)\)')
-        for match in line_regex.finditer(command):
-            count += 1
-        return count
-
-    def insert_final_replace(self, command, replacement_pattern):
-        match_object = replacement_pattern[0]
-        text = ''
-        command_regex = ServiceLocator.get_regex_object(r'(?:^\\(\w+(?:\*){0,1}))|\{([^\{\[\|\(]+)\}|\[([^\{\[\|\(]+)\]|\|([^\{\[\|\(]+)\||\(([^\{\[\|\(]+)\)')
-        comma_regex = ServiceLocator.get_regex_object(r'•(\,•)*')
-        count = 1
-        for match in command_regex.finditer(command):
-            if match.group(0).startswith('\\'):
-                text += '\\' + match.group(1)
-            else:
-                if match.group(0).startswith('{'):
-                    inner_text = match.group(2)
-                elif match.group(0).startswith('['):
-                    inner_text = match.group(3)
-                elif match.group(0).startswith('|'):
-                    inner_text = match.group(4)
-                elif match.group(0).startswith('('):
-                    inner_text = match.group(5)
-                if comma_regex.fullmatch(inner_text) and len(match_object.groups()) >= count:
-                    for prev_text in match_object.group(count).split(','):
-                        inner_text = inner_text.replace('•', prev_text, 1)
-                if match.group(0).startswith('{'):
-                    text += '{' + inner_text + '}'
-                if match.group(0).startswith('['):
-                    text += '[' + inner_text + ']'
-                if match.group(0).startswith('|'):
-                    text += '|' + inner_text + '|'
-                if match.group(0).startswith('('):
-                    text += '(' + inner_text + ')'
-            count += 1
-
-        current_word = self.document.get_latex_command_at_cursor()
-        offset = self.document.get_cursor_offset() - len(current_word)
-        length = len(current_word) + match_object.end()
-        self.document.replace_range(offset, length, text, indent_lines=True, select_dot=True)
-
-    def update(self, can_show=False):
-        if not self.is_visible() and can_show == False: return
-
-        if self.current_word_changed_or_is_none() and not can_show:
-            self.active_state.hide()
-        else:
-            self.current_word = self.document.get_latex_command_at_cursor()
-            self.items = self.provider.get_items_for_completion_window(self.current_word, self.last_tabbed_command)
-            if len(self.items) > 0:
-                self.update_position()
-                if self.position_is_visible():
-                    if self.cursor_moved() or self.active_state == self.states['inactive']:
-                        self.populate()
-                    self.active_state.show()
-                else:
-                    self.active_state.hide()
-            else:
-                self.active_state.hide()
-
-    def current_word_changed_or_is_none(self):
-        current_word_offset = self.document.get_latex_command_at_cursor_offset()
-        if current_word_offset != self.current_word_offset:
-            self.current_word_offset = current_word_offset
-            return True
-        return (current_word_offset == None)
-
-    def cursor_moved(self):
-        cursor_offset = self.document.get_cursor_offset()
-        if self.cursor_offset == None:
-            self.cursor_offset = cursor_offset
-            return False
-        if self.cursor_offset != cursor_offset:
-            self.cursor_offset = cursor_offset
-            return True
-        return False
-
-    def populate(self):
+    def populate(self, offset):
         self.view.empty_list()
         for command in reversed(self.items):
-            item = view.DocumentAutocompleteItem(command, len(self.current_word) - 1)
+            item = view.DocumentAutocompleteItem(command, offset)
             self.view.prepend(item)
         if len(self.items) > 0:
             self.view.select_first()
 
-    def update_position(self):
-        self.height = min(len(self.items), 5) * self.line_height + 20
-        self.width = self.view.get_allocated_width()
+    def position_is_visible(self):
+        height = min(len(self.items), 5) * self.line_height + 20
+        width = self.view.get_allocated_width()
 
         buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
@@ -340,47 +172,57 @@ class Autocomplete(object):
             gutter_width = 0
         x_offset = - self.document_view.scrolled_window.get_hadjustment().get_value()
         y_offset = - self.document_view.scrolled_window.get_vadjustment().get_value()
-        self.x_position = x_offset + iter_location.x - 2 + gutter_width - len(self.current_word) * self.char_width
-        self.y_position = y_offset + iter_location.y + self.line_height + self.shortcuts_bar_height
+        x_position = x_offset + iter_location.x - 2 + gutter_width - self.session.get_offset() * self.char_width
+        y_position = y_offset + iter_location.y + self.line_height + self.shortcuts_bar_height
 
         full_height = 110
-        if self.y_position >= self.line_height - 1 + self.shortcuts_bar_height and self.y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
-            self.view.set_margin_top(self.y_position)
+        if y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
+            self.view.set_margin_top(y_position)
         else:
-            self.view.set_margin_top(self.y_position - self.height - self.line_height)
-        if self.x_position >= 0 and self.x_position <= self.main_window.preview_paned.get_allocated_width() - self.width:
-            self.view.set_margin_left(self.x_position)
+            self.view.set_margin_top(y_position - height - self.line_height)
+        if x_position >= 0 and x_position <= self.main_window.preview_paned.get_allocated_width() - width:
+            self.view.set_margin_left(x_position)
         else:
-            self.view.set_margin_left(self.x_position - self.width)
+            self.view.set_margin_left(x_position - width)
 
-    def position_is_visible(self):
         show_x = False
         show_y = False
 
         full_height = 110
-        if self.y_position >= self.line_height - 1 + self.shortcuts_bar_height and self.y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
+        if y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
             show_y = True
-        elif self.y_position >= self.line_height - 1 + self.shortcuts_bar_height and self.y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
+        elif y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
             show_y = True
         else:
             show_y = False
 
-        if self.x_position >= 0 and self.x_position <= self.main_window.preview_paned.get_allocated_width() - self.width:
+        if x_position >= 0 and x_position <= self.main_window.preview_paned.get_allocated_width() - width:
             show_x = True
-        elif self.x_position >= 0 and self.x_position <= self.main_window.preview_paned.get_allocated_width():
+        elif x_position >= 0 and x_position <= self.main_window.preview_paned.get_allocated_width():
             show_x = True
         else:
             show_x = False
         return (show_x and show_y)
 
-    def change_state(self, state):
-        self.active_state = self.states[state]
-        self.active_state.init()
+    def cursor_moved(self):
+        cursor_offset = self.document.get_cursor_offset()
+        if self.cursor_offset != cursor_offset:
+            self.cursor_offset = cursor_offset
+            return True
+        return False
+
+    def start_session(self, session):
+        self.session = session
+        self.session.update()
+
+    def end_session(self):
+        self.session = self.blank_session
+        self.session.update()
 
     def is_active(self):
-        return self.active_state != self.states['inactive']
+        return self.session.is_active()
 
     def is_visible(self):
-        return self.active_state == self.states['active_visible']
+        return self.session.will_show and self.position_is_visible() and not self.focus_hide
 
 

@@ -63,7 +63,7 @@ class LaTeXParser(object):
         with self.parse_jobs_lock:
             self.dirname = self.document.get_dirname()
             self.parse_times['symbols'] = time.time() + 0.01
-            self.parse_times['blocks'] = time.time() + 0.00001
+            self.parse_times['blocks'] = time.time()
 
     def compute_loop(self):
         text = None

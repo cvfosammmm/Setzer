@@ -438,7 +438,11 @@ class SourceBuffer(GtkSource.Buffer):
 
         parts = list(filter(None, text.split('•')))
         if len(parts) == 1:
-            self.replace_range(start_iter, insert_iter, parts[0], indent_lines=True, select_dot=True)
+            orig_text = self.get_text(start_iter, insert_iter, False)
+            if parts[0].startswith(orig_text):
+                self.insert_at_cursor(parts[0][len(orig_text):])
+            else:
+                self.replace_range(start_iter, insert_iter, parts[0], indent_lines=True, select_dot=True)
         else:
             self.begin_user_action()
 
@@ -463,6 +467,9 @@ class SourceBuffer(GtkSource.Buffer):
             self.select_range(select_dot_iter, bound)
 
             self.end_user_action()
+
+    def get_line_at_cursor(self):
+        return self.get_line(self.get_iter_at_mark(self.get_insert()).get_line())
 
     def get_line(self, line_number):
         start = self.get_iter_at_line(line_number)
@@ -606,6 +613,9 @@ class SourceBuffer(GtkSource.Buffer):
 
     def get_cursor_offset(self):
         return self.get_iter_at_mark(self.get_insert()).get_offset()
+
+    def get_cursor_line_offset(self):
+        return self.get_iter_at_mark(self.get_insert()).get_line_offset()
 
     def cursor_ends_word(self):
         return self.get_iter_at_mark(self.get_insert()).ends_word()
