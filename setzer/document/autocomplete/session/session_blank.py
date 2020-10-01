@@ -22,6 +22,12 @@ class SessionBlank(object):
         self.autocomplete = autocomplete
         self.will_show = False
 
+    def on_insert_text(self, buffer, location_iter, text, text_length):
+        pass
+
+    def on_delete_range(self, buffer, start_iter, end_iter):
+        pass
+
     def on_tab_press(self):
         if self.autocomplete.document.cursor_inside_latex_command_or_at_end():
             self.autocomplete.update(True)
@@ -31,7 +37,7 @@ class SessionBlank(object):
                 return True
         return False
 
-    def update(self):
+    def update(self, can_show=False):
         self.autocomplete.update_visibility()
 
     def get_offset(self):

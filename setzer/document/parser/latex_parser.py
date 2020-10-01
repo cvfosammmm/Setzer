@@ -117,6 +117,12 @@ class LaTeXParser(object):
             self.blocks_changed = False
         return result
 
+    def get_blocks_now(self):
+        text = self.document.get_text()
+        self.parse_blocks(text)
+        with self.blocks_lock:
+            return self.blocks.copy()
+
     def parse_blocks(self, text):
         with self.parse_jobs_lock:
             self.parse_blocks_job_running = True
@@ -124,7 +130,7 @@ class LaTeXParser(object):
         text_length = len(text)
 
         matches = {'begin_or_end': list(), 'others': list()}
-        for match in ServiceLocator.get_regex_object(r'\\(begin|end)\{((?:\w)*(?:\*){0,1})\}|\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{').finditer(text):
+        for match in ServiceLocator.get_regex_object(r'\\(begin|end)\{((?:\w|•)*(?:\*){0,1})\}|\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{').finditer(text):
             if match.group(1) != None:
                 matches['begin_or_end'].append(match)
             else:

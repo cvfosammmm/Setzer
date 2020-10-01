@@ -80,12 +80,12 @@ class SourceBuffer(GtkSource.Buffer):
         self.placeholder_tag.set_property('background', '#fce94f')
         self.placeholder_tag.set_property('foreground', '#000')
 
-        self.connect('insert-text', self.on_insert_text)
-        self.connect('delete-range', self.on_delete_range)
         self.view.connect('key-press-event', self.on_keypress)
 
         self.connect('mark-set', self.on_mark_set)
         self.connect('mark-deleted', self.on_mark_deleted)
+        self.connect('insert-text', self.on_insert_text)
+        self.connect('delete-range', self.on_delete_range)
 
         self.document.add_change_code('buffer_ready')
 
@@ -95,6 +95,14 @@ class SourceBuffer(GtkSource.Buffer):
             section, item, value = parameter
             if (section, item) == ('preferences', 'tab_width'):
                 self.tab_width = self.settings.get_value('preferences', 'tab_width')
+
+    def on_insert_text(self, buffer, location_iter, text, text_length):
+        self.document.autocomplete.on_insert_text(buffer, location_iter, text, text_length)
+        self.indentation_update = {'line_start': location_iter.get_line(), 'text_length': text_length}
+
+    def on_delete_range(self, buffer, start_iter, end_iter):
+        self.document.autocomplete.on_delete_range(buffer, start_iter, end_iter)
+        self.indentation_update = {'line_start': start_iter.get_line(), 'text_length': 0}
 
     def on_mark_set(self, buffer, insert, mark, user_data=None):
         if mark.get_name() == 'insert':
@@ -143,12 +151,6 @@ class SourceBuffer(GtkSource.Buffer):
             return True
 
         return False
-
-    def on_insert_text(self, buffer, location_iter, text, text_length):
-        self.indentation_update = {'line_start': location_iter.get_line(), 'text_length': text_length}
-
-    def on_delete_range(self, buffer, start_iter, end_iter):
-        self.indentation_update = {'line_start': start_iter.get_line(), 'text_length': 0}
 
     def initially_set_text(self, text):
         self.begin_not_undoable_action()
@@ -295,8 +297,7 @@ class SourceBuffer(GtkSource.Buffer):
 
     def replace_range_by_offset_and_length(self, offset, length, text, indent_lines=True, select_dot=True):
         start_iter = self.get_iter_at_offset(offset)
-        end_iter = start_iter.copy()
-        end_iter.forward_chars(length)
+        end_iter = self.get_iter_at_offset(offset + length)
         self.replace_range(start_iter, end_iter, text, indent_lines, select_dot)
 
     def replace_range(self, start_iter, end_iter, text, indent_lines=True, select_dot=True):

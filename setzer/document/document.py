@@ -280,6 +280,15 @@ class LaTeXDocument(Document):
     def replace_latex_command_at_cursor(self, command, dotlabels, is_full_command=False):
         self.source_buffer.replace_latex_command_at_cursor(command, dotlabels, is_full_command)
 
+    def get_matching_begin_end_offset(self, orig_offset):
+        blocks = self.parser.get_blocks_now()
+        for block in blocks:
+            if block[0] == orig_offset - 7:
+                return None if block[1] == None else block[1] + 5
+            elif block[1] == orig_offset - 5:
+                return None if block[0] == None else block[0] + 7
+        return None
+
     def change_build_state(self, state):
         self.build_state = state
 

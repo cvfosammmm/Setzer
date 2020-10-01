@@ -37,6 +37,8 @@ class Autocomplete(object):
         self.view = view.DocumentAutocompleteView()
         self.mark_start = Gtk.TextMark.new('ac_session_start', True)
         self.mark_end = Gtk.TextMark.new('ac_session_end', False)
+        self.matching_mark_start = Gtk.TextMark.new('ac_session_second_start', True)
+        self.matching_mark_end = Gtk.TextMark.new('ac_session_second_end', False)
 
         self.provider = ServiceLocator.get_autocomplete_provider()
 
@@ -59,6 +61,12 @@ class Autocomplete(object):
     def on_adjustment_value_changed(self, adjustment, user_data=None):
         self.update_visibility()
         return False
+
+    def on_insert_text(self, buffer, location_iter, text, text_length):
+        self.session.on_insert_text(buffer, location_iter, text, text_length)
+
+    def on_delete_range(self, buffer, start_iter, end_iter):
+        self.session.on_delete_range(buffer, start_iter, end_iter)
 
     def on_buffer_changed(self, buffer, user_data=None):
         self.update(True)
@@ -120,32 +128,31 @@ class Autocomplete(object):
                 self.submit()
                 return True
 
+        return False
+
     def submit(self):
         self.session.submit()
 
     def update(self, can_activate=False):
-        if not self.is_active() and not can_activate:
-            return
-
         if self.is_active():
-            self.session.update()
-        if not self.is_active() and can_activate:
+            self.session.update(can_activate)
+        if not self.is_active():
+            line = self.document.get_line_at_cursor()
+            offset = self.document.get_cursor_line_offset()
+            line = line[:offset] + '%•%' + line[offset:]
+            match = ServiceLocator.get_regex_object(r'.*\\(begin|end)\{((?:[^\{\[\(])*)%•%((?:[^\{\[\(])*)\}.*').match(line)
+            if match:
+                word_offset = self.document.get_cursor_offset() - len(match.group(2))
+                word_len = len(match.group(2)) + len(match.group(3))
+                self.start_session(session_begin_end.SessionBeginEnd(self, word_offset, word_len))
+                self.session.update(can_activate)
+                return
             current_word = self.document.get_latex_command_at_cursor()
-            if current_word.startswith('\\begin') or current_word.startswith('\\end'):
-                line = self.document.get_line_at_cursor()
-                offset = self.document.get_cursor_line_offset()
-                line = line[:offset] + '•' + line[offset:]
-                match = ServiceLocator.get_regex_object(r'\\(begin|end)\{((?:\w)*(?:\*){0,1})•((?:\w)*(?:\*){0,1})\}.*').match(line)
-                if match:
-                    word_offset = self.document.get_cursor_offset() - len(match.group(2))
-                    word_len = len(match.group(2)) + len(match.group(3))
-                    self.start_session(session_begin_end.SessionBeginEnd(self, word_offset, word_len))
-                    return
-            if self.provider.get_items(current_word):
+            if can_activate and self.provider.get_items(current_word):
                 self.start_session(session_default.SessionDefault(self))
 
     def update_visibility(self):
-        if self.session.will_show and self.position_is_visible() and not self.focus_hide:
+        if self.session.will_show and self.position_is_visible() and not self.focus_hide and len(self.items) > 0:
             self.view.show_all()
         else:
             self.view.hide()

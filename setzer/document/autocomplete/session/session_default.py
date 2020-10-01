@@ -32,6 +32,12 @@ class SessionDefault(object):
         self.current_word = ""
         self.current_word_offset = self.autocomplete.document.get_latex_command_at_cursor_offset()
 
+    def on_insert_text(self, buffer, location_iter, text, text_length):
+        pass
+
+    def on_delete_range(self, buffer, start_iter, end_iter):
+        pass
+
     def on_tab_press(self):
         if not self.autocomplete.is_visible():
             return False
@@ -57,7 +63,6 @@ class SessionDefault(object):
                 else:
                     current_word = (command['command'])[:len(self.current_word) + 1]
                     i = self.get_number_of_matching_letters_on_tabpress(current_word, 0)
-                    print(i)
 
                     if len(command['command']) == len(current_word) + i:
                         self.last_tabbed_command = None
@@ -87,7 +92,7 @@ class SessionDefault(object):
             i += 1
         return i
 
-    def update(self):
+    def update(self, can_show=False):
         if not self.current_word_changed_or_is_none():
             self.current_word = self.autocomplete.document.get_latex_command_at_cursor()
             self.autocomplete.items = self.autocomplete.provider.get_items_for_completion_window(self.current_word, self.last_tabbed_command)
@@ -113,13 +118,14 @@ class SessionDefault(object):
         return (current_word_offset == None)
 
     def submit(self):
+        self.autocomplete.end_session()
+
         row = self.autocomplete.view.list.get_selected_row()
         command = row.get_child().command
         if command['command'].startswith('\\begin'):
             self.insert_begin_end(command)
         else:
             self.insert_normal_command(command)
-        self.autocomplete.end_session()
 
     def insert_begin_end(self, command):
         text = command['command']

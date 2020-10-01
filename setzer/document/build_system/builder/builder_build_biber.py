@@ -38,8 +38,7 @@ class BuilderBuildBiber(builder_build.BuilderBuild):
         custom_env['BIBINPUTS'] = os.path.dirname(query.tex_filename) + ':' + os.path.dirname(tex_filename)
         try:
             self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(tex_filename), env=custom_env)
-        except FileNotFoundError as e:
-            print(e)
+        except FileNotFoundError:
             self.move_build_files(query, tex_filename)
             self.throw_build_error(query, 'interpreter_not_working', 'biber missing')
             return
