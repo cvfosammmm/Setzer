@@ -50,6 +50,9 @@ class PageFontColor(object):
         self.view.source_buffer.set_language(source_language)
         self.update_font_color_preview()
 
+        if ServiceLocator.get_is_dark_mode():
+            self.view.style_switcher_label_dark.clicked()
+
     def set_style_switcher_page(self, button, pagename):
         self.view.style_switcher_label_light.get_style_context().remove_class('active')
         self.view.style_switcher_label_dark.get_style_context().remove_class('active')
