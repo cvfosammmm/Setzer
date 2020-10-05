@@ -452,6 +452,34 @@ box.preferences-page .description {
     color: mix(@theme_fg_color, @theme_bg_color, 0.3);
     font-size: 13px;
 }
+box.preferences-page .preview {
+    border: 1px solid @borders;
+}
+box.preferences-page .preview.light-bg textview text {
+    background: #fff;
+}
+box.preferences-page .preview.dark-bg textview text {
+    background: #2d2d2d;
+}
+box.preferences-page button.style-switcher-label {
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    box-shadow: none;
+    background: none;
+    outline: none;
+}
+box.preferences-page button.style-switcher-label label {
+    padding: 0px;
+    margin: 0px;
+    color: @theme_selected_bg_color;
+    text-decoration: underline;
+}
+box.preferences-page button.style-switcher-label.active label {
+    font-weight: bold;
+    color: @theme_fg_color;
+    text-decoration: none;
+}
 
 /*
 ** document wizard

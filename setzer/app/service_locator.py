@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('GtkSource', '4')
+from gi.repository import GtkSource
+
 import re
 import os.path
 from xdg.BaseDirectory import xdg_config_home
@@ -35,6 +39,8 @@ class ServiceLocator(object):
     popover_menu_builder = None
     autocomplete_provider = None
     packages_dict = None
+    source_language_manager = None
+    source_style_scheme_manager = None
 
     def init_main_window(main_window):
         ServiceLocator.main_window = main_window
@@ -68,6 +74,20 @@ class ServiceLocator(object):
         if ServiceLocator.settings == None:
             ServiceLocator.settings = settingscontroller.Settings(ServiceLocator.get_config_folder())
         return ServiceLocator.settings
+
+    def get_source_language_manager():
+        if ServiceLocator.source_language_manager == None:
+            ServiceLocator.source_language_manager = GtkSource.LanguageManager()
+            path = os.path.join(ServiceLocator.get_resources_path(), 'gtksourceview', 'language-specs')
+            ServiceLocator.source_language_manager.set_search_path((path,))
+        return ServiceLocator.source_language_manager
+
+    def get_source_style_scheme_manager():
+        if ServiceLocator.source_style_scheme_manager == None:
+            ServiceLocator.source_style_scheme_manager = GtkSource.StyleSchemeManager()
+            path = os.path.join(ServiceLocator.get_resources_path(), 'gtksourceview', 'styles')
+            ServiceLocator.source_style_scheme_manager.set_search_path((path,))
+        return ServiceLocator.source_style_scheme_manager
 
     def get_popover_menu_builder():
         if ServiceLocator.popover_menu_builder == None:

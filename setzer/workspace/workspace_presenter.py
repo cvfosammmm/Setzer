@@ -50,7 +50,7 @@ class WorkspacePresenter(object):
 
         if change_code == 'new_document':
             document = parameter
-            document.set_use_dark_scheme(ServiceLocator.get_is_dark_mode())
+            document.set_dark_mode(ServiceLocator.get_is_dark_mode())
 
             if document.is_latex_document():
                 self.main_window.notebook.append_page(document.view)

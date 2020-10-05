@@ -15,12 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 from setzer.dialogs.dialog import Dialog
 import setzer.dialogs.preferences.preferences_viewgtk as view
+import setzer.dialogs.preferences.pages.page_build_system as page_build_system
+import setzer.dialogs.preferences.pages.page_editor as page_editor
+import setzer.dialogs.preferences.pages.page_font_color as page_font_color
 from setzer.app.service_locator import ServiceLocator
-
-import subprocess
 
 
 class PreferencesDialog(Dialog):
@@ -29,110 +33,38 @@ class PreferencesDialog(Dialog):
         self.main_window = main_window
         self.settings = ServiceLocator.get_settings()
 
-        self.latex_interpreters = list()
-        self.latexmk_available = False
-
     def run(self):
         self.setup()
         self.view.run()
         del(self.view)
+        del(self.page_build_system)
+        del(self.page_editor)
+        del(self.page_font_color)
 
     def setup(self):
         self.view = view.Preferences(self.main_window)
 
-        self.view.option_cleanup_build_files.set_active(self.settings.get_value('preferences', 'cleanup_build_files'))
-        self.view.option_cleanup_build_files.connect('toggled', self.on_check_button_toggle, 'cleanup_build_files')
+        self.page_build_system = page_build_system.PageBuildSystem(self, self.settings)
+        self.page_editor = page_editor.PageEditor(self, self.settings)
+        self.page_font_color = page_font_color.PageFontColor(self, self.settings)
 
-        self.view.option_autoshow_build_log_errors.set_active(self.settings.get_value('preferences', 'autoshow_build_log') == 'errors')
-        self.view.option_autoshow_build_log_errors_warnings.set_active(self.settings.get_value('preferences', 'autoshow_build_log') == 'errors_warnings')
-        self.view.option_autoshow_build_log_all.set_active(self.settings.get_value('preferences', 'autoshow_build_log') == 'all')
+        self.view.notebook.append_page(self.page_build_system.view, Gtk.Label(_('Build System')))
+        self.view.notebook.append_page(self.page_editor.view, Gtk.Label(_('Editor')))
+        self.view.notebook.append_page(self.page_font_color.view, Gtk.Label(_('Font & Colors')))
 
-        self.view.option_autoshow_build_log_errors.connect('toggled', self.on_radio_button_toggle, 'autoshow_build_log', 'errors')
-        self.view.option_autoshow_build_log_errors_warnings.connect('toggled', self.on_radio_button_toggle, 'autoshow_build_log', 'errors_warnings')
-        self.view.option_autoshow_build_log_all.connect('toggled', self.on_radio_button_toggle, 'autoshow_build_log', 'all')
+        self.view.dialog.show_all()
 
-        self.view.option_system_commands_disable.set_active(self.settings.get_value('preferences', 'build_option_system_commands') == 'disable')
-        self.view.option_system_commands_restricted.set_active(self.settings.get_value('preferences', 'build_option_system_commands') == 'restricted')
-        self.view.option_system_commands_full.set_active(self.settings.get_value('preferences', 'build_option_system_commands') == 'enable')
-
-        self.view.option_system_commands_disable.connect('toggled', self.on_radio_button_toggle, 'build_option_system_commands', 'disable')
-        self.view.option_system_commands_restricted.connect('toggled', self.on_radio_button_toggle, 'build_option_system_commands', 'restricted')
-        self.view.option_system_commands_full.connect('toggled', self.on_radio_button_toggle, 'build_option_system_commands', 'enable')
-
-        self.view.option_spaces_instead_of_tabs.set_active(self.settings.get_value('preferences', 'spaces_instead_of_tabs'))
-        self.view.option_spaces_instead_of_tabs.connect('toggled', self.on_check_button_toggle, 'spaces_instead_of_tabs')
-
-        self.view.tab_width_spinbutton.set_value(self.settings.get_value('preferences', 'tab_width'))
-        self.view.tab_width_spinbutton.connect('value-changed', self.spin_button_changed, 'tab_width')
-
-        self.view.option_show_line_numbers.set_active(self.settings.get_value('preferences', 'show_line_numbers'))
-        self.view.option_show_line_numbers.connect('toggled', self.on_check_button_toggle, 'show_line_numbers')
-
-        self.view.option_line_wrapping.set_active(self.settings.get_value('preferences', 'enable_line_wrapping'))
-        self.view.option_line_wrapping.connect('toggled', self.on_check_button_toggle, 'enable_line_wrapping')
-
-        self.view.option_code_folding.set_active(self.settings.get_value('preferences', 'enable_code_folding'))
-        self.view.option_code_folding.connect('toggled', self.on_check_button_toggle, 'enable_code_folding')
-
-        self.view.option_highlight_current_line.set_active(self.settings.get_value('preferences', 'highlight_current_line'))
-        self.view.option_highlight_current_line.connect('toggled', self.on_check_button_toggle, 'highlight_current_line')
-
-        self.view.option_highlight_matching_brackets.set_active(self.settings.get_value('preferences', 'highlight_matching_brackets'))
-        self.view.option_highlight_matching_brackets.connect('toggled', self.on_check_button_toggle, 'highlight_matching_brackets')
-
-        self.setup_latex_interpreters()
-
-    def setup_latex_interpreters(self):
-        self.latex_interpreters = list()
-        for interpreter in ['xelatex', 'pdflatex', 'lualatex']:
-            self.view.option_latex_interpreter[interpreter].hide()
-            arguments = [interpreter, '--version']
-            try:
-                process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            except FileNotFoundError:
-                pass
-            else:
-                process.wait()
-                if process.returncode == 0:
-                    self.latex_interpreters.append(interpreter)
-
-        self.latexmk_available = False
-        arguments = ['latexmk', '--version']
-        try:
-            process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        except FileNotFoundError:
-            pass
-        else:
-            process.wait()
-            if process.returncode == 0:
-                self.latexmk_available = True
-
-        if len(self.latex_interpreters) == 0:
-            self.view.no_interpreter_label.show_all()
-        else:
-            self.view.no_interpreter_label.hide()
-            if self.settings.get_value('preferences', 'latex_interpreter') not in self.latex_interpreters:
-                self.settings.set_value('preferences', 'latex_interpreter', self.latex_interpreters[0])
-
-            if self.latexmk_available:
-                self.view.option_use_latexmk.show_all()
-            else:
-                self.view.option_use_latexmk.hide()
-                self.settings.set_value('preferences', 'use_latexmk', False)
-            self.view.option_use_latexmk.set_active(self.settings.get_value('preferences', 'use_latexmk'))
-            self.view.option_use_latexmk.connect('toggled', self.on_check_button_toggle, 'use_latexmk')
-
-            for interpreter in self.latex_interpreters:
-                self.view.option_latex_interpreter[interpreter].show_all()
-                self.view.option_latex_interpreter[interpreter].set_active(interpreter == self.settings.get_value('preferences', 'latex_interpreter'))
-            for interpreter in self.latex_interpreters:
-                self.view.option_latex_interpreter[interpreter].connect('toggled', self.on_interpreter_changed, 'latex_interpreter', interpreter)
+        self.page_build_system.init()
+        self.page_editor.init()
+        self.page_font_color.init()
 
     def on_check_button_toggle(self, button, preference_name):
         self.settings.set_value('preferences', preference_name, button.get_active())
         
     def on_radio_button_toggle(self, button, preference_name, value):
         self.settings.set_value('preferences', preference_name, value)
+        if preference_name in ['syntax_scheme', 'syntax_scheme_dark_mode']:
+            self.page_font_color.update_font_color_preview()
 
     def spin_button_changed(self, button, preference_name):
         self.settings.set_value('preferences', preference_name, button.get_value_as_int())

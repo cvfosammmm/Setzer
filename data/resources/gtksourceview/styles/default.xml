@@ -28,7 +28,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>
 
 -->
-<style-scheme id="setzer" _name="setzer" version="1.0">
+<style-scheme id="default" _name="default" version="1.0">
   <author>Robert Griesel</author>
   <_description>Color scheme using Tango color palette</_description>
 
@@ -54,10 +54,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <color name="red1"                        value="#ff0000"/>
 
   <color name="butter1"                     value="#fce94f"/>
-  <color name="butter2"                     value="#edd400"/>
-  <color name="butter3"                     value="#c4a000"/>
-  <color name="chameleon1"                  value="#8ae234"/>
-  <color name="chameleon2"                  value="#73d216"/>
   <color name="chameleon3"                  value="#4e9a06"/>
   <color name="orange1"                     value="#fcaf3e"/>
   <color name="orange2"                     value="#f57900"/>
@@ -91,7 +87,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <style name="current-line-number"         background="aluminium1"/>
   <style name="draw-spaces"                 foreground="aluminium3"/>
   <style name="background-pattern"          background="#f3f3f3"/>
-  <style name="text"                        foreground="black" background="white"/>
+  <style name="text"                        foreground="black"/>
 
   <!-- Bracket Matching -->
   <style name="bracket-match"               foreground="aluminium1" background="aluminium3"/>

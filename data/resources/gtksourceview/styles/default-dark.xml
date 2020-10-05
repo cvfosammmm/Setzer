@@ -28,7 +28,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>
 
 -->
-<style-scheme id="setzer-dark" _name="setzer-dark" version="1.0">
+<style-scheme id="default-dark" _name="default-dark" version="1.0">
   <author>Robert Griesel</author>
   <_description>Color scheme using Tango color palette</_description>
 
@@ -90,6 +90,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <style name="background-pattern"          background="#f3f3f3"/>
   <!--<style name="line-numbers"                foreground="#999999"/>-->
   <style name="current-line-number"         background="dark4"/>
+  <style name="text"                        foreground="white"/>
 
   <!-- Bracket Matching -->
   <style name="bracket-match"               foreground="aluminium1" background="aluminium3"/>

@@ -82,6 +82,8 @@ class Settings(Observable):
         self.defaults['preferences']['highlight_current_line'] = False
         self.defaults['preferences']['highlight_matching_brackets'] = True
         self.defaults['preferences']['build_option_system_commands'] = 'disable'
+        self.defaults['preferences']['syntax_scheme'] = 'default'
+        self.defaults['preferences']['syntax_scheme_dark_mode'] = 'default-dark'
 
         default_language = Gspell.Language.get_default()
         if default_language != None:

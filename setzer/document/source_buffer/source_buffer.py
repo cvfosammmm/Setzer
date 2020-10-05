@@ -46,21 +46,15 @@ class SourceBuffer(GtkSource.Buffer):
         self.view.set_auto_indent(True)
         self.view.set_left_margin(6)
         self.settings = ServiceLocator.get_settings()
-
-        resources_path = ServiceLocator.get_resources_path()
+        self.source_language_manager = ServiceLocator.get_source_language_manager()
+        self.source_style_scheme_manager = ServiceLocator.get_source_style_scheme_manager()
 
         self.mover_mark = self.create_mark('mover', self.get_start_iter(), True)
 
         # set source language for syntax highlighting
-        self.source_language_manager = GtkSource.LanguageManager()
-        self.source_language_manager.set_search_path((os.path.join(resources_path, 'gtksourceview', 'language-specs'),))
         self.source_language = self.source_language_manager.get_language(self.document.get_gsv_language_name())
         self.set_language(self.source_language)
-
-        self.source_style_scheme_manager = GtkSource.StyleSchemeManager()
-        self.source_style_scheme_manager.set_search_path((os.path.join(resources_path, 'gtksourceview', 'styles'),))
-        self.source_style_scheme_light = self.source_style_scheme_manager.get_scheme('setzer')
-        self.source_style_scheme_dark = self.source_style_scheme_manager.get_scheme('setzer-dark')
+        self.update_syntax_scheme()
 
         self.search_settings = GtkSource.SearchSettings()
         self.search_context = GtkSource.SearchContext.new(self, self.search_settings)
@@ -95,6 +89,16 @@ class SourceBuffer(GtkSource.Buffer):
             section, item, value = parameter
             if (section, item) == ('preferences', 'tab_width'):
                 self.tab_width = self.settings.get_value('preferences', 'tab_width')
+
+            if (section, item) in [('preferences', 'syntax_scheme'), ('preferences', 'syntax_scheme_dark_mode')]:
+                self.update_syntax_scheme()
+
+    def update_syntax_scheme(self):
+        name = self.settings.get_value('preferences', 'syntax_scheme')
+        self.source_style_scheme_light = self.source_style_scheme_manager.get_scheme(name)
+        name = self.settings.get_value('preferences', 'syntax_scheme_dark_mode')
+        self.source_style_scheme_dark = self.source_style_scheme_manager.get_scheme(name)
+        self.set_use_dark_scheme(self.document.dark_mode)
 
     def on_insert_text(self, buffer, location_iter, text, text_length):
         self.document.autocomplete.on_insert_text(buffer, location_iter, text, text_length)

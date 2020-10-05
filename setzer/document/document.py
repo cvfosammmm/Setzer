@@ -50,6 +50,7 @@ class Document(Observable):
         self.filename = None
         self.save_date = None
         self.last_activated = 0
+        self.dark_mode = False
 
         self.parser = None
         self.autocomplete = None
@@ -79,10 +80,8 @@ class Document(Observable):
         self.source_buffer.update_placeholder_selection()
 
     def set_dark_mode(self, dark_mode):
-        self.set_use_dark_scheme(dark_mode)
-
-    def set_use_dark_scheme(self, use_dark_scheme):
-        self.get_buffer().set_use_dark_scheme(use_dark_scheme)
+        self.dark_mode = dark_mode
+        self.get_buffer().set_use_dark_scheme(dark_mode)
 
     def get_buffer(self):
         return self.source_buffer
