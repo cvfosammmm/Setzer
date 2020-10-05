@@ -347,7 +347,7 @@
 
     <context id="headings">
       <include>
-        <context id="part" style-inside="true" style-ref="part" end-at-line-end="true" class-disabled="no-spell-check">
+        <context id="part" style-inside="true" style-ref="section" end-at-line-end="true" class-disabled="no-spell-check">
           <start>(\\part\*?)\{</start>
           <end>\}</end>
           <include>
@@ -357,7 +357,7 @@
           </include>
         </context>
 
-        <context id="chapter" style-inside="true" style-ref="chapter" end-at-line-end="true" class-disabled="no-spell-check">
+        <context id="chapter" style-inside="true" style-ref="section" end-at-line-end="true" class-disabled="no-spell-check">
           <start>(\\chapter\*?)\{</start>
           <end>\}</end>
           <include>
@@ -377,7 +377,7 @@
           </include>
         </context>
 
-        <context id="subsection" style-inside="true" style-ref="subsection" end-at-line-end="true" class-disabled="no-spell-check">
+        <context id="subsection" style-inside="true" style-ref="section" end-at-line-end="true" class-disabled="no-spell-check">
           <start>(\\subsection\*?)\{</start>
           <end>\}</end>
           <include>
@@ -387,7 +387,7 @@
           </include>
         </context>
 
-        <context id="subsubsection" style-inside="true" style-ref="subsubsection" end-at-line-end="true" class-disabled="no-spell-check">
+        <context id="subsubsection" style-inside="true" style-ref="section" end-at-line-end="true" class-disabled="no-spell-check">
           <start>(\\subsubsection\*?)\{</start>
           <end>\}</end>
           <include>
