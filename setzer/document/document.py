@@ -20,6 +20,7 @@ import time
 
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
+import setzer.document.context_menu.context_menu as context_menu
 import setzer.document.build_system.build_system as build_system
 import setzer.document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
 import setzer.document.document_viewgtk as document_view
@@ -263,6 +264,7 @@ class LaTeXDocument(Document):
         self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
         self.code_folding = code_folding.CodeFolding(self)
         self.controller = document_controller.DocumentController(self, self.view)
+        self.context_menu = context_menu.ContextMenu(self, self.view)
 
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = latex_parser.LaTeXParser(self)
@@ -423,6 +425,7 @@ class BibTeXDocument(Document):
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
+        self.context_menu = context_menu.ContextMenu(self, self.view)
 
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = bibtex_parser.BibTeXParser(self)
