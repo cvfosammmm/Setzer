@@ -20,7 +20,7 @@ gi.require_version('GtkSource', '4')
 from gi.repository import GtkSource
 
 import re
-import os.path
+import os, os.path
 from xdg.BaseDirectory import xdg_config_home
 import xml.etree.ElementTree as ET
 
@@ -85,8 +85,11 @@ class ServiceLocator(object):
     def get_source_style_scheme_manager():
         if ServiceLocator.source_style_scheme_manager == None:
             ServiceLocator.source_style_scheme_manager = GtkSource.StyleSchemeManager()
-            path = os.path.join(ServiceLocator.get_resources_path(), 'gtksourceview', 'styles')
-            ServiceLocator.source_style_scheme_manager.set_search_path((path,))
+            path1 = os.path.join(ServiceLocator.get_resources_path(), 'gtksourceview', 'styles')
+            if not os.path.isdir(os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes')):
+                os.mkdir(os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes'))
+            path2 = os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes')
+            ServiceLocator.source_style_scheme_manager.set_search_path((path1, path2))
         return ServiceLocator.source_style_scheme_manager
 
     def get_popover_menu_builder():

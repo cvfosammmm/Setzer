@@ -21,26 +21,27 @@ gi.require_version('GtkSource', '4')
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
+import os, os.path
+import shutil
+import xml.etree.ElementTree as ET
+
 from setzer.app.service_locator import ServiceLocator
 
 
 class PageFontColor(object):
 
-    def __init__(self, preferences, settings):
+    def __init__(self, preferences, settings, main_window):
         self.view = PageFontColorView()
         self.preferences = preferences
         self.settings = settings
+        self.main_window = main_window
 
     def init(self):
-        for button in self.view.style_switcher.get_children():
-            name = button.get_child().get_children()[0].get_text()
-            button.connect('toggled', self.preferences.on_radio_button_toggle, 'syntax_scheme', name)
-            button.set_active(self.settings.get_value('preferences', 'syntax_scheme') == name)
-
-        for button in self.view.style_switcher_dark_mode.get_children():
-            name = button.get_child().get_children()[0].get_text()
-            button.connect('toggled', self.preferences.on_radio_button_toggle, 'syntax_scheme_dark_mode', name)
-            button.set_active(self.settings.get_value('preferences', 'syntax_scheme_dark_mode') == name)
+        self.update_switchers()
+        self.view.style_switcher.set_active_id(self.settings.get_value('preferences', 'syntax_scheme'))
+        self.view.style_switcher.connect('changed', self.on_style_switcher_changed, False)
+        self.view.style_switcher_dark_mode.set_active_id(self.settings.get_value('preferences', 'syntax_scheme_dark_mode'))
+        self.view.style_switcher_dark_mode.connect('changed', self.on_style_switcher_changed, True)
 
         self.view.style_switcher_label_light.connect('clicked', self.set_style_switcher_page, 'light')
         self.view.style_switcher_label_dark.connect('clicked', self.set_style_switcher_page, 'dark')
@@ -53,12 +54,92 @@ class PageFontColor(object):
         if ServiceLocator.get_is_dark_mode():
             self.view.style_switcher_label_dark.clicked()
 
+        self.view.add_scheme_button.connect('clicked', self.on_add_scheme_button_clicked)
+        self.view.remove_scheme_button.connect('clicked', self.on_remove_scheme_button_clicked)
+
+    def on_style_switcher_changed(self, switcher, is_dark_mode):
+        if is_dark_mode:
+            field = 'syntax_scheme_dark_mode'
+        else:
+            field = 'syntax_scheme'
+        value = switcher.get_active_id()
+        if value != None:
+            self.settings.set_value('preferences', field, value)
+            self.update_font_color_preview()
+
+    def on_add_scheme_button_clicked(self, button):
+        dialog = AddSchemeDialog(self.main_window)
+        pathname = dialog.run()
+        if pathname != None:
+            destination = os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes', os.path.basename(pathname))
+            shutil.copyfile(pathname, destination)
+            ServiceLocator.get_source_style_scheme_manager().force_rescan()
+            self.update_switchers()
+            scheme_id = self.get_scheme_id_from_file(destination)
+            if ServiceLocator.get_is_dark_mode():
+                self.view.style_switcher_dark_mode.set_active_id(scheme_id)
+            else:
+                self.view.style_switcher.set_active_id(scheme_id)
+
+    def on_remove_scheme_button_clicked(self, button):
+        if ServiceLocator.get_is_dark_mode():
+            scheme_id = self.view.style_switcher_dark_mode.get_active_id()
+        else:
+            scheme_id = self.view.style_switcher.get_active_id()
+        if not scheme_id in ['default', 'default-dark']:
+            dialog = ReplaceConfirmationDialog(self.main_window)
+            filename = self.get_scheme_filename_from_id(scheme_id)
+            if dialog.run(scheme_id):
+                os.remove(filename)
+                self.update_switchers()
+
     def set_style_switcher_page(self, button, pagename):
         self.view.style_switcher_label_light.get_style_context().remove_class('active')
         self.view.style_switcher_label_dark.get_style_context().remove_class('active')
         button.get_style_context().add_class('active')
         self.view.style_switcher_stack.set_visible_child_name(pagename)
         self.update_font_color_preview()
+
+    def get_scheme_id_from_file(self, pathname):
+        tree = ET.parse(pathname)
+        root = tree.getroot()
+        return root.attrib['id']
+
+    def get_scheme_filename_from_id(self, scheme_id):
+        directory_pathname = os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes')
+        for filename in os.listdir(directory_pathname):
+            tree = ET.parse(os.path.join(directory_pathname, filename))
+            root = tree.getroot()
+            if root.attrib['id'] == scheme_id:
+                return os.path.join(directory_pathname, filename)
+
+    def update_switchers(self):
+        active_id = self.settings.get_value('preferences', 'syntax_scheme')
+        active_id_dark_mode = self.settings.get_value('preferences', 'syntax_scheme_dark_mode')
+        set_active_id = False
+        set_active_id_dark_mode = False
+        self.view.style_switcher.remove_all()
+        for name in ['default']:
+            self.view.style_switcher.append(name, name)
+        self.view.style_switcher_dark_mode.remove_all()
+        for name in ['default-dark']:
+            self.view.style_switcher_dark_mode.append(name, name)
+        directory_pathname = os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes')
+        if os.path.isdir(directory_pathname):
+            for filename in os.listdir(directory_pathname):
+                name = self.get_scheme_id_from_file(os.path.join(directory_pathname, filename))
+                if name == active_id: set_active_id = True
+                if name == active_id_dark_mode: set_active_id_dark_mode = True
+                self.view.style_switcher.append(name, name)
+                self.view.style_switcher_dark_mode.append(name, name)
+        if set_active_id:
+            self.view.style_switcher.set_active_id(active_id)
+        else:
+            self.view.style_switcher.set_active_id('default')
+        if set_active_id_dark_mode:
+            self.view.style_switcher_dark_mode.set_active_id(active_id_dark_mode)
+        else:
+            self.view.style_switcher_dark_mode.set_active_id('default-dark')
 
     def update_font_color_preview(self):
         source_style_scheme_manager = ServiceLocator.get_source_style_scheme_manager()
@@ -112,42 +193,32 @@ class PageFontColorView(Gtk.VBox):
         self.style_switcher_label_box.pack_start(self.style_switcher_label_dark, False, False, 0)
         self.pack_start(self.style_switcher_label_box, False, False, 0)
 
-        self.style_switcher = Gtk.HBox()
-        self.style_switcher.get_style_context().add_class('linked')
-        self.style_switcher.set_margin_bottom(18)
-        first_button = None
-        for name in ['default']:
-            button = Gtk.RadioButton()
-            if first_button == None: first_button = button
-            box = Gtk.HBox()
-            box.pack_start(Gtk.Label(name), False, False, 0)
-            box.set_margin_right(6)
-            box.set_margin_left(4)
-            button.add(box)
-            button.set_mode(False)
-            button.join_group(first_button)
-            self.style_switcher.pack_start(button, False, False, 0)
-
-        self.style_switcher_dark_mode = Gtk.HBox()
-        self.style_switcher_dark_mode.get_style_context().add_class('linked')
-        self.style_switcher_dark_mode.set_margin_bottom(18)
-        first_button = None
-        for name in ['default-dark']:
-            button = Gtk.RadioButton()
-            if first_button == None: first_button = button
-            box = Gtk.HBox()
-            box.pack_start(Gtk.Label(name), False, False, 0)
-            box.set_margin_right(6)
-            box.set_margin_left(4)
-            button.add(box)
-            button.set_mode(False)
-            button.join_group(first_button)
-            self.style_switcher_dark_mode.pack_start(button, False, False, 0)
+        self.style_switcher = Gtk.ComboBoxText()
+        self.style_switcher_dark_mode = Gtk.ComboBoxText()
 
         self.style_switcher_stack = Gtk.Stack()
         self.style_switcher_stack.add_named(self.style_switcher, 'light')
         self.style_switcher_stack.add_named(self.style_switcher_dark_mode, 'dark')
-        self.pack_start(self.style_switcher_stack, False, False, 0)
+        box = Gtk.HBox()
+        box.set_margin_bottom(18)
+        box.pack_start(self.style_switcher_stack, False, False, 0)
+        self.pack_start(box, False, False, 0)
+
+        label = Gtk.Label()
+        label.set_markup('<b>' + _('Manage Color Schemes') + '</b>')
+        label.set_xalign(0)
+        label.set_margin_bottom(6)
+        self.pack_start(label, False, False, 0)
+
+        box = Gtk.HBox()
+        box.set_margin_bottom(18)
+        self.remove_scheme_button = Gtk.Button()
+        self.remove_scheme_button.set_label('Remove active scheme')
+        box.pack_end(self.remove_scheme_button, False, False, 0)
+        self.add_scheme_button = Gtk.Button()
+        self.add_scheme_button.set_label('Add from file...')
+        box.pack_start(self.add_scheme_button, False, False, 0)
+        self.pack_start(box, False, False, 0)
 
         label = Gtk.Label()
         label.set_markup('<b>' + _('Preview') + '</b>')
@@ -177,5 +248,73 @@ This is a \\textit{preview}, for $x, y \in \mathbb{R}: x \leq y$ or $x > y$.
         self.source_buffer.place_cursor(self.source_buffer.get_start_iter())
         self.preview_wrapper.pack_start(self.source_view, True, True, 0)
         self.pack_start(self.preview_wrapper, True, True, 0)
+
+
+class AddSchemeDialog(object):
+    ''' File chooser for adding syntax schemes '''
+
+    def __init__(self, main_window):
+        self.main_window = main_window
+
+    def run(self):
+        self.setup()
+        response = self.view.run()
+        if response == Gtk.ResponseType.OK:
+            return_value = self.view.get_filename()
+        else:
+            return_value = None
+        self.view.hide()
+        del(self.view)
+        return return_value
+
+    def setup(self):
+        self.action = Gtk.FileChooserAction.OPEN
+        self.buttons = (_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Add Scheme'), Gtk.ResponseType.OK)
+        self.view = Gtk.FileChooserDialog(_('Add Scheme'), self.main_window, self.action, self.buttons)
+
+        headerbar = self.view.get_header_bar()
+        if headerbar != None:
+            for widget in headerbar.get_children():
+                if isinstance(widget, Gtk.Button) and widget.get_label() == _('_Add Scheme'):
+                    widget.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
+                    widget.set_can_default(True)
+                    widget.grab_default()
+
+        file_filter1 = Gtk.FileFilter()
+        file_filter1.add_pattern('*.xml')
+        file_filter1.set_name(_('Color Scheme Files'))
+        self.view.add_filter(file_filter1)
+
+        self.view.set_select_multiple(False)
+
+        self.main_window.headerbar.document_chooser.popdown()
+
+
+class ReplaceConfirmationDialog(object):
+    ''' This dialog shows a warning when users want to delete a syntax scheme. '''
+
+    def __init__(self, main_window):
+        self.main_window = main_window
+
+    def run(self, name):
+        self.setup(name)
+        response = self.view.run()
+        if response == Gtk.ResponseType.YES:
+            return_value = True
+        else:
+            return_value = False
+        self.view.hide()
+        del(self.view)
+        return return_value
+
+    def setup(self, name):
+        self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
+
+        question = _('Removing syntax scheme »{name}«.')
+        self.view.set_property('text', question.format(name=name))
+        self.view.format_secondary_markup(_('Do you really want to do this?'))
+
+        self.view.add_buttons(_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Yes, remove it'), Gtk.ResponseType.YES)
+        self.view.set_default_response(Gtk.ResponseType.YES)
 
 

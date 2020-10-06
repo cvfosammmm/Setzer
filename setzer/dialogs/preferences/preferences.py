@@ -46,7 +46,7 @@ class PreferencesDialog(Dialog):
 
         self.page_build_system = page_build_system.PageBuildSystem(self, self.settings)
         self.page_editor = page_editor.PageEditor(self, self.settings)
-        self.page_font_color = page_font_color.PageFontColor(self, self.settings)
+        self.page_font_color = page_font_color.PageFontColor(self, self.settings, self.main_window)
 
         self.view.notebook.append_page(self.page_build_system.view, Gtk.Label(_('Build System')))
         self.view.notebook.append_page(self.page_editor.view, Gtk.Label(_('Editor')))
@@ -63,8 +63,6 @@ class PreferencesDialog(Dialog):
         
     def on_radio_button_toggle(self, button, preference_name, value):
         self.settings.set_value('preferences', preference_name, value)
-        if preference_name in ['syntax_scheme', 'syntax_scheme_dark_mode']:
-            self.page_font_color.update_font_color_preview()
 
     def spin_button_changed(self, button, preference_name):
         self.settings.set_value('preferences', preference_name, button.get_value_as_int())
