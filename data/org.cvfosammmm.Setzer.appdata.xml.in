@@ -53,6 +53,11 @@
     </provides>
 
     <releases>
+        <release version="0.3.3" date="2020-10-6">
+            <description>
+                <p translatable="no">Add syntax themes from files, edit begin and end commands simultaneously, autocomplete improvements, ...</p>
+            </description>
+        </release>
         <release version="0.3.2" date="2020-9-9">
             <description>
                 <p translatable="no">New syntax highlighting theme, full line indentation, ...</p>
