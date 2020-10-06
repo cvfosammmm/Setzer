@@ -55,7 +55,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <style name="line-numbers"                use-style="text"/>
 
   <!-- Bracket Matching -->
-  <style name="bracket-match"               foreground="aluminium1" background="aluminium3"/>
+  <style name="bracket-match"               foreground="white" background="aluminium4" bold="true"/>
   <style name="bracket-mismatch"            foreground="aluminium1" background="scarletred3"/>
 
   <!-- Right Margin -->
