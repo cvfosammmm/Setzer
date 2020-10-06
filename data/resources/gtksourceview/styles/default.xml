@@ -46,6 +46,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <color name="scarletred2"                 value="#cc0000"/>
   <color name="scarletred3"                 value="#a40000"/>
   <color name="aluminium1"                  value="#eeeeec"/>
+  <color name="aluminium2"                  value="#d3d7cf"/>
   <color name="aluminium3"                  value="#babdb6"/>
   <color name="aluminium4"                  value="#888a85"/>
   <color name="aluminium5"                  value="#555753"/>
@@ -60,7 +61,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <style name="text"                        foreground="black"/>
 
   <!-- Bracket Matching -->
-  <style name="bracket-match"               foreground="aluminium1" background="aluminium3"/>
+  <style name="bracket-match"               foreground="black" background="aluminium1" bold="true"/>
   <style name="bracket-mismatch"            foreground="aluminium1" background="scarletred3"/>
 
   <!-- Right Margin -->
