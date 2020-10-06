@@ -66,6 +66,17 @@ class PageFontColor(object):
         if value != None:
             self.settings.set_value('preferences', field, value)
             self.update_font_color_preview()
+        self.update_remove_button()
+
+    def update_remove_button(self):
+        if self.view.style_switcher_stack.get_visible_child_name() == 'dark':
+            scheme_id = self.view.style_switcher_dark_mode.get_active_id()
+        else:
+            scheme_id = self.view.style_switcher.get_active_id()
+        if scheme_id in ['default', 'default-dark']:
+            self.view.remove_scheme_button.set_sensitive(False)
+        else:
+            self.view.remove_scheme_button.set_sensitive(True)
 
     def on_add_scheme_button_clicked(self, button):
         dialog = AddSchemeDialog(self.main_window)
@@ -82,7 +93,7 @@ class PageFontColor(object):
                 self.view.style_switcher.set_active_id(scheme_id)
 
     def on_remove_scheme_button_clicked(self, button):
-        if ServiceLocator.get_is_dark_mode():
+        if self.view.style_switcher_stack.get_visible_child_name() == 'dark':
             scheme_id = self.view.style_switcher_dark_mode.get_active_id()
         else:
             scheme_id = self.view.style_switcher.get_active_id()
@@ -99,6 +110,7 @@ class PageFontColor(object):
         button.get_style_context().add_class('active')
         self.view.style_switcher_stack.set_visible_child_name(pagename)
         self.update_font_color_preview()
+        self.update_remove_button()
 
     def get_scheme_id_from_file(self, pathname):
         tree = ET.parse(pathname)
@@ -140,6 +152,7 @@ class PageFontColor(object):
             self.view.style_switcher_dark_mode.set_active_id(active_id_dark_mode)
         else:
             self.view.style_switcher_dark_mode.set_active_id('default-dark')
+        self.update_remove_button()
 
     def update_font_color_preview(self):
         source_style_scheme_manager = ServiceLocator.get_source_style_scheme_manager()
