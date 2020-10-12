@@ -34,7 +34,7 @@ class BuilderForwardSync(builder_build.BuilderBuild):
         self.process = None
 
     def run(self, query):
-        tex_filename = query.build_data['tmp_tex_filename']
+        tex_filename = query.forward_sync_data['build_pathname']
 
         try: build_pathname = query.forward_sync_data['build_pathname']
         except KeyError: build_pathname = None

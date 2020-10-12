@@ -33,7 +33,7 @@ class BuilderBackwardSync(builder_build.BuilderBuild):
         self.process = None
 
     def run(self, query):
-        tex_filename = query.build_data['tmp_tex_filename']
+        tex_filename = query.backward_sync_data['build_pathname']
 
         if query.backward_sync_data['build_pathname'] == None:
             query.backward_sync_result = None
