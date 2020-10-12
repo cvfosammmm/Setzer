@@ -101,11 +101,13 @@ class SourceBuffer(GtkSource.Buffer):
         self.set_use_dark_scheme(self.document.dark_mode)
 
     def on_insert_text(self, buffer, location_iter, text, text_length):
-        self.document.autocomplete.on_insert_text(buffer, location_iter, text, text_length)
+        if self.document.is_latex_document():
+            self.document.autocomplete.on_insert_text(buffer, location_iter, text, text_length)
         self.indentation_update = {'line_start': location_iter.get_line(), 'text_length': text_length}
 
     def on_delete_range(self, buffer, start_iter, end_iter):
-        self.document.autocomplete.on_delete_range(buffer, start_iter, end_iter)
+        if self.document.is_latex_document():
+            self.document.autocomplete.on_delete_range(buffer, start_iter, end_iter)
         self.indentation_update = {'line_start': start_iter.get_line(), 'text_length': 0}
 
     def on_mark_set(self, buffer, insert, mark, user_data=None):
@@ -132,27 +134,28 @@ class SourceBuffer(GtkSource.Buffer):
                 return True
             return False
 
-        bracket_vals = [Gdk.keyval_from_name('parenleft'), Gdk.keyval_from_name('bracketleft'), Gdk.keyval_from_name('braceleft')]
-        if event.keyval in bracket_vals and not self.document.autocomplete.is_active():
-            if event.keyval == Gdk.keyval_from_name('bracketleft'):
-                self.begin_user_action()
-                self.delete_selection(True, True)
-                self.insert_at_cursor('[]')
-                self.end_user_action()
-            if event.keyval == Gdk.keyval_from_name('braceleft'):
-                self.begin_user_action()
-                self.delete_selection(True, True)
-                self.insert_at_cursor('{}')
-                self.end_user_action()
-            if event.keyval == Gdk.keyval_from_name('parenleft'):
-                self.begin_user_action()
-                self.delete_selection(True, True)
-                self.insert_at_cursor('()')
-                self.end_user_action()
-            insert_iter = self.get_iter_at_mark(self.get_insert())
-            insert_iter.backward_char()
-            self.place_cursor(insert_iter)
-            return True
+        if self.document.is_latex_document():
+            bracket_vals = [Gdk.keyval_from_name('parenleft'), Gdk.keyval_from_name('bracketleft'), Gdk.keyval_from_name('braceleft')]
+            if event.keyval in bracket_vals and not self.document.autocomplete.is_active():
+                if event.keyval == Gdk.keyval_from_name('bracketleft'):
+                    self.begin_user_action()
+                    self.delete_selection(True, True)
+                    self.insert_at_cursor('[]')
+                    self.end_user_action()
+                if event.keyval == Gdk.keyval_from_name('braceleft'):
+                    self.begin_user_action()
+                    self.delete_selection(True, True)
+                    self.insert_at_cursor('{}')
+                    self.end_user_action()
+                if event.keyval == Gdk.keyval_from_name('parenleft'):
+                    self.begin_user_action()
+                    self.delete_selection(True, True)
+                    self.insert_at_cursor('()')
+                    self.end_user_action()
+                insert_iter = self.get_iter_at_mark(self.get_insert())
+                insert_iter.backward_char()
+                self.place_cursor(insert_iter)
+                return True
 
         return False
 

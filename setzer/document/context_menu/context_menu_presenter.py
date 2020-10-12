@@ -35,7 +35,9 @@ class ContextMenuPresenter(object):
 
         self.on_can_undo_changed(undo_manager)
         self.on_can_redo_changed(undo_manager)
-        self.on_can_forward_sync_changed(self.context_menu.document.can_forward_sync)
+
+        if self.context_menu.document.is_latex_document():
+            self.on_can_forward_sync_changed(self.context_menu.document.can_forward_sync)
 
     def on_can_forward_sync_changed(self, can_sync):
         if self.context_menu.document.is_latex_document():

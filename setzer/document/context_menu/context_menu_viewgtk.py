@@ -47,14 +47,12 @@ class ContextMenuView(Gtk.VBox):
         self.pack_start(self.model_button_delete, False, False, 0)
         self.pack_start(Gtk.SeparatorMenuItem(), False, False, 0)
         self.pack_start(self.model_button_select_all, False, False, 0)
-        self.pack_start(Gtk.SeparatorMenuItem(), False, False, 0)
 
         if document.is_latex_document():
             self.model_button_toggle_comment = self.get_button(_('Toggle Comment'), keyboard_shortcut=_('Ctrl') + '+K')
-            self.model_button_show_in_preview = self.get_button(_('Toggle Comment'), keyboard_shortcut=_('Ctrl') + '+K')
-            self.model_button_show_in_preview = Gtk.ModelButton()
-            self.model_button_show_in_preview.set_label(_('Show in Preview'))
-            self.model_button_show_in_preview.get_child().set_halign(Gtk.Align.START)
+            self.model_button_show_in_preview = self.get_button(_('Show in Preview'), keyboard_shortcut=None)
+
+            self.pack_start(Gtk.SeparatorMenuItem(), False, False, 0)
             self.pack_start(self.model_button_toggle_comment, False, False, 0)
             self.pack_start(self.model_button_show_in_preview, False, False, 0)
 
