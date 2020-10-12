@@ -30,33 +30,13 @@ class ContextMenuView(Gtk.VBox):
         self.set_margin_left(10)
         self.set_margin_right(10)
 
-        self.model_button_undo = Gtk.ModelButton()
-        self.model_button_undo.set_label(_('Undo'))
-        self.model_button_undo.get_child().set_halign(Gtk.Align.START)
-
-        self.model_button_redo = Gtk.ModelButton()
-        self.model_button_redo.set_label(_('Redo'))
-        self.model_button_redo.get_child().set_halign(Gtk.Align.START)
-
-        self.model_button_cut = Gtk.ModelButton()
-        self.model_button_cut.set_label(_('Cut'))
-        self.model_button_cut.get_child().set_halign(Gtk.Align.START)
-
-        self.model_button_copy = Gtk.ModelButton()
-        self.model_button_copy.set_label(_('Copy'))
-        self.model_button_copy.get_child().set_halign(Gtk.Align.START)
-
-        self.model_button_paste = Gtk.ModelButton()
-        self.model_button_paste.set_label(_('Paste'))
-        self.model_button_paste.get_child().set_halign(Gtk.Align.START)
-
-        self.model_button_delete = Gtk.ModelButton()
-        self.model_button_delete.set_label(_('Delete'))
-        self.model_button_delete.get_child().set_halign(Gtk.Align.START)
-
-        self.model_button_select_all = Gtk.ModelButton()
-        self.model_button_select_all.set_label(_('Select All'))
-        self.model_button_select_all.get_child().set_halign(Gtk.Align.START)
+        self.model_button_undo = self.get_button(_('Undo'), keyboard_shortcut=_('Ctrl') + '+Z')
+        self.model_button_redo = self.get_button(_('Redo'), keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+Z')
+        self.model_button_cut = self.get_button(_('Cut'), keyboard_shortcut=_('Ctrl') + '+X')
+        self.model_button_copy = self.get_button(_('Copy'), keyboard_shortcut=_('Ctrl') + '+C')
+        self.model_button_paste = self.get_button(_('Paste'), keyboard_shortcut=_('Ctrl') + '+V')
+        self.model_button_delete = self.get_button(_('Delete'), keyboard_shortcut=None)
+        self.model_button_select_all = self.get_button(_('Select All'), keyboard_shortcut=_('Ctrl') + '+A')
 
         self.pack_start(self.model_button_undo, False, False, 0)
         self.pack_start(self.model_button_redo, False, False, 0)
@@ -70,9 +50,8 @@ class ContextMenuView(Gtk.VBox):
         self.pack_start(Gtk.SeparatorMenuItem(), False, False, 0)
 
         if document.is_latex_document():
-            self.model_button_toggle_comment = Gtk.ModelButton()
-            self.model_button_toggle_comment.set_label(_('Toggle Comment'))
-            self.model_button_toggle_comment.get_child().set_halign(Gtk.Align.START)
+            self.model_button_toggle_comment = self.get_button(_('Toggle Comment'), keyboard_shortcut=_('Ctrl') + '+K')
+            self.model_button_show_in_preview = self.get_button(_('Toggle Comment'), keyboard_shortcut=_('Ctrl') + '+K')
             self.model_button_show_in_preview = Gtk.ModelButton()
             self.model_button_show_in_preview.set_label(_('Show in Preview'))
             self.model_button_show_in_preview.get_child().set_halign(Gtk.Align.START)
@@ -80,5 +59,22 @@ class ContextMenuView(Gtk.VBox):
             self.pack_start(self.model_button_show_in_preview, False, False, 0)
 
         self.show_all()
+
+    def get_button(self, label, keyboard_shortcut=None):
+        model_button = Gtk.ModelButton()
+        button_box = Gtk.HBox()
+        if keyboard_shortcut != None:
+            shortcut = Gtk.Label(keyboard_shortcut)
+            shortcut.get_style_context().add_class('keyboard-shortcut')
+            button_box.pack_end(shortcut, False, False, 0)
+            description = Gtk.Label(label)
+            description.set_halign(Gtk.Align.START)
+            button_box.pack_start(description, True, True, 0)
+            model_button.remove(model_button.get_child())
+            model_button.add(button_box)
+        else:
+            model_button.set_label(label)
+            model_button.get_child().set_halign(Gtk.Align.START)
+        return model_button
 
 
