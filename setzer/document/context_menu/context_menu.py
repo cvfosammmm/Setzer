@@ -15,80 +15,55 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import os.path
-
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+
+import setzer.document.context_menu.context_menu_controller as context_menu_controller
+import setzer.document.context_menu.context_menu_presenter as context_menu_presenter
+import setzer.document.context_menu.context_menu_viewgtk as context_menu_view
 
 
 class ContextMenu(object):
     
     def __init__(self, document, document_view):
         self.document = document
-        self.view = document_view
+        self.document_view = document_view
+        self.scbar_view = context_menu_view.ContextMenuView(document)
+        stack = document_view.shortcuts_bar_bottom.more_actions_popover.get_child()
+        stack.add_named(self.scbar_view, 'main')
+        self.controller = context_menu_controller.ContextMenuController(self, self.scbar_view)
+        self.presenter = context_menu_presenter.ContextMenuPresenter(self, self.scbar_view)
 
-        self.view.source_view.connect('populate-popup', self.on_populate_popup)
+        document.register_observer(self)
 
-    '''
-    *** signal handlers: changes in documents
-    '''
+    def change_notification(self, change_code, notifying_object, parameter):
 
-    def on_populate_popup(self, view, menu):
-        for item in menu.get_children():
-            menu.remove(item)
+        if change_code == 'can_forward_sync_changed':
+            self.presenter.on_can_forward_sync_changed(parameter)
+            
+    def on_undo(self, widget=None):
+        self.document_view.source_view.emit('undo')
 
-        menu_item_cut = Gtk.MenuItem.new_with_label(_('Cut'))
-        menu_item_copy = Gtk.MenuItem.new_with_label(_('Copy'))
-        menu_item_paste = Gtk.MenuItem.new_with_label(_('Paste'))
-        menu_item_delete = Gtk.MenuItem.new_with_label(_('Delete'))
-        menu_item_select_all = Gtk.MenuItem.new_with_label(_('Select All'))
+    def on_redo(self, widget=None):
+        self.document_view.source_view.emit('redo')
 
-        menu.append(menu_item_cut)
-        menu.append(menu_item_copy)
-        menu.append(menu_item_paste)
-        menu.append(menu_item_delete)
-        menu.append(Gtk.SeparatorMenuItem())
-        menu.append(menu_item_select_all)
+    def on_cut(self, widget=None):
+        self.document_view.source_view.emit('cut-clipboard')
 
-        menu_item_cut.connect('activate', self.on_cut)
-        menu_item_copy.connect('activate', self.on_copy)
-        menu_item_paste.connect('activate', self.on_paste)
-        menu_item_delete.connect('activate', self.on_delete)
-        menu_item_select_all.connect('activate', self.on_select_all)
+    def on_copy(self, widget=None):
+        self.document_view.source_view.emit('copy-clipboard')
 
-        has_selection = self.document.source_buffer.get_has_selection()
-        menu_item_cut.set_sensitive(has_selection)
-        menu_item_copy.set_sensitive(has_selection)
-        menu_item_delete.set_sensitive(has_selection)
+    def on_paste(self, widget=None):
+        self.document_view.source_view.emit('paste-clipboard')
 
-        if self.document.is_latex_document():
-            menu_item_comment = Gtk.MenuItem.new_with_label(_('Toggle Comment'))
-            menu_item_comment.connect('activate', self.on_toggle_comment)
-            menu_item_show_in_preview = Gtk.MenuItem.new_with_label(_('Show in Preview'))
-            menu_item_show_in_preview.set_sensitive(self.document.can_forward_sync)
-            menu_item_show_in_preview.connect('activate', self.on_show_in_preview)
-            menu.append(Gtk.SeparatorMenuItem())
-            menu.append(menu_item_comment)
-            menu.append(menu_item_show_in_preview)
-        menu.show_all()
+    def on_delete(self, widget=None):
+        self.document_view.source_view.emit('delete-from-cursor', Gtk.DeleteType.CHARS, 0)
 
-    def on_cut(menu_item):
-        self.view.source_view.emit('cut-clipboard')
+    def on_select_all(self, widget=None):
+        self.document_view.source_view.emit('select-all', True)
 
-    def on_copy(menu_item):
-        self.view.source_view.emit('copy-clipboard')
-
-    def on_paste(menu_item):
-        self.view.source_view.emit('paste-clipboard')
-
-    def on_delete(menu_item):
-        self.view.source_view.emit('delete-from-cursor', Gtk.DeleteType.CHARS, 0)
-
-    def on_select_all(menu_item):
-        self.view.source_view.emit('select-all', True)
-
-    def on_show_in_preview(self, menu_item):
+    def on_show_in_preview(self, widget=None):
         self.document.forward_sync()
 
     def on_toggle_comment(self, menu_item):
