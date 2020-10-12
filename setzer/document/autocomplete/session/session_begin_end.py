@@ -84,7 +84,9 @@ class SessionBeginEnd(object):
         if not self.autocomplete.is_visible():
             return False
 
-        if len(self.autocomplete.items) == 1:
+        if len(self.autocomplete.items) == 0:
+            return False
+        elif len(self.autocomplete.items) == 1:
             self.submit()
             return True
         else:
