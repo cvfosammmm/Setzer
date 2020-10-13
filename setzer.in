@@ -36,8 +36,6 @@ class MainApplicationController(Gtk.Application):
         Gtk.Application.__init__(self, application_id='org.cvfosammmm.Setzer', flags=Gio.ApplicationFlags.HANDLES_OPEN)
 
     def do_startup(self):
-        ''' Everything starts here. '''
-
         Gtk.Application.do_startup(self)
         self.is_active = False
 
