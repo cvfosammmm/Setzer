@@ -251,7 +251,7 @@ class DocumentViewWrapper(Gtk.Notebook):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
                      
     def do_get_preferred_width(self):
-        return 440, 440
+        return 550, 550
 
 
 class BlankSlate(Gtk.HBox):
