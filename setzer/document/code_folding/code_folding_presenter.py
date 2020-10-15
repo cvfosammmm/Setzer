@@ -19,6 +19,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from setzer.app.service_locator import ServiceLocator
+
 
 class CodeFoldingPresenter(object):
 
@@ -34,6 +36,11 @@ class CodeFoldingPresenter(object):
         self.source_gutter.insert(self.view, 3)
         self.view.connect('query-data', self.query_data)
         self.model.register_observer(self)
+
+        font_manager = ServiceLocator.get_font_manager()
+        font_manager.register_observer(self)
+        char_width = font_manager.get_char_width(self.source_buffer.view)
+        self.view.set_size(2 * char_width)
 
     def change_notification(self, change_code, notifying_object, parameter):
 
@@ -56,6 +63,10 @@ class CodeFoldingPresenter(object):
                 self.hide_region(parameter)
             else:
                 self.show_region(parameter)
+
+        if change_code == 'font_string_changed':
+            char_width = notifying_object.get_char_width(self.source_buffer.view)
+            self.view.set_size(2 * char_width)
 
     def show_region(self, region):
         mark_start = region['mark_start']

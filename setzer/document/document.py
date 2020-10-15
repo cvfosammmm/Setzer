@@ -112,7 +112,7 @@ class Document(Observable):
     def set_displayname(self, displayname):
         self.displayname = displayname
         self.add_change_code('displayname_change')
-        
+
     def get_last_activated(self):
         return self.last_activated
         
@@ -212,15 +212,6 @@ class Document(Observable):
 
     def insert_before_after(self, before, after):
         self.get_buffer().insert_before_after(before, after)
-
-    def get_line_height(self):
-        return self.get_buffer().get_line_height()
-
-    def get_char_width(self):
-        return self.get_buffer().get_char_width()
-
-    def get_char_dimensions(self):
-        return self.get_buffer().get_char_dimensions()
 
 
 class LaTeXDocument(Document):

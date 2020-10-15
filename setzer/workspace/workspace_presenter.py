@@ -26,7 +26,7 @@ from setzer.app.service_locator import ServiceLocator
 
 class WorkspacePresenter(object):
     ''' Mediator between workspace and view. '''
-    
+
     def __init__(self, workspace):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()

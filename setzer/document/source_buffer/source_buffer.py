@@ -44,10 +44,11 @@ class SourceBuffer(GtkSource.Buffer):
         self.view.set_monospace(True)
         self.view.set_smart_home_end(True)
         self.view.set_auto_indent(True)
-        self.view.set_left_margin(6)
         self.settings = ServiceLocator.get_settings()
         self.source_language_manager = ServiceLocator.get_source_language_manager()
         self.source_style_scheme_manager = ServiceLocator.get_source_style_scheme_manager()
+        self.font_manager = ServiceLocator.get_font_manager()
+        self.font_manager.register_observer(self)
 
         self.mover_mark = self.create_mark('mover', self.get_start_iter(), True)
 
@@ -83,6 +84,8 @@ class SourceBuffer(GtkSource.Buffer):
 
         self.document.add_change_code('buffer_ready')
 
+        self.view.set_left_margin(self.font_manager.get_char_width(self.view) - 3)
+
     def change_notification(self, change_code, notifying_object, parameter):
 
         if change_code == 'settings_changed':
@@ -92,6 +95,9 @@ class SourceBuffer(GtkSource.Buffer):
 
             if (section, item) in [('preferences', 'syntax_scheme'), ('preferences', 'syntax_scheme_dark_mode')]:
                 self.update_syntax_scheme()
+
+        if change_code == 'font_string_changed':
+            self.view.set_left_margin(self.font_manager.get_char_width(self.view) - 3)
 
     def update_syntax_scheme(self):
         name = self.settings.get_value('preferences', 'syntax_scheme')
@@ -170,7 +176,7 @@ class SourceBuffer(GtkSource.Buffer):
             tag = self.indentation_tags[number_of_characters]
         except KeyError:
             tag = self.create_tag('indentation-' + str(number_of_characters))
-            tag.set_property('indent', -1 * number_of_characters * self.get_char_width())
+            tag.set_property('indent', -1 * number_of_characters * self.font_manager.get_char_width(self.view))
             self.indentation_tags[number_of_characters] = tag
         return tag
 
@@ -639,7 +645,7 @@ class SourceBuffer(GtkSource.Buffer):
         iter_position = self.view.get_iter_location(text_iter).y
         end_yrange = self.view.get_line_yrange(self.get_end_iter())
         buffer_height = end_yrange.y + end_yrange.height
-        line_height = self.get_line_height()
+        line_height = self.font_manager.get_line_height(self.view)
         window_offset = self.view.get_visible_rect().y
         window_height = self.view.get_visible_rect().height
         gap = min(math.floor(max((visible_lines - 2), 0) / 2), 5)
@@ -653,22 +659,8 @@ class SourceBuffer(GtkSource.Buffer):
             self.view.scroll_to_mark(self.mover_mark, 0, False, 0, 0)
 
     def get_number_of_visible_lines(self):
-        line_height = self.get_line_height()
+        line_height = self.font_manager.get_line_height(self.view)
         return math.floor(self.view.get_visible_rect().height / line_height)
-
-    def get_line_height(self):
-        return self.view.get_iter_location(self.get_end_iter()).height
-
-    def get_char_width(self):
-        char_width, line_height = self.get_char_dimensions()
-        return char_width
-
-    def get_char_dimensions(self):
-        context = self.view.get_pango_context()
-        layout = Pango.Layout.new(context)
-        layout.set_text(" ", -1)
-        layout.set_font_description(context.get_font_description())
-        return layout.get_pixel_size()
 
     def set_use_dark_scheme(self, use_dark_scheme):
         if use_dark_scheme: self.set_style_scheme(self.source_style_scheme_dark)

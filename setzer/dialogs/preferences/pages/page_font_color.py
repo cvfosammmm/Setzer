@@ -19,6 +19,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('GtkSource', '4')
 from gi.repository import Gtk
+from gi.repository import Pango
 from gi.repository import GtkSource
 
 import os, os.path
@@ -56,6 +57,28 @@ class PageFontColor(object):
 
         self.view.add_scheme_button.connect('clicked', self.on_add_scheme_button_clicked)
         self.view.remove_scheme_button.connect('clicked', self.on_remove_scheme_button_clicked)
+
+        self.view.font_chooser_button.set_font(self.settings.get_value('preferences', 'font'))
+        self.view.font_chooser_button.connect('font-set', self.on_font_set)
+        self.view.option_use_system_font.set_active(self.settings.get_value('preferences', 'use_system_font'))
+        self.view.font_chooser_revealer.set_reveal_child(not self.view.option_use_system_font.get_active())
+        self.view.option_use_system_font.connect('toggled', self.on_use_system_font_toggled)
+
+    def on_use_system_font_toggled(self, button):
+        self.view.font_chooser_revealer.set_reveal_child(not button.get_active())
+        self.settings.set_value('preferences', 'use_system_font', button.get_active())
+
+    def on_font_set(self, button):
+        if button.get_font_size() < 6 * Pango.SCALE:
+            font_desc = button.get_font_desc()
+            font_desc.set_size(6 * Pango.SCALE)
+            button.set_font_desc(font_desc)
+        elif button.get_font_size() > 24 * Pango.SCALE:
+            font_desc = button.get_font_desc()
+            font_desc.set_size(24 * Pango.SCALE)
+            button.set_font_desc(font_desc)
+            
+        self.settings.set_value('preferences', 'font', button.get_font())
 
     def on_style_switcher_changed(self, switcher, is_dark_mode):
         if is_dark_mode:
@@ -185,6 +208,34 @@ class PageFontColorView(Gtk.VBox):
         self.set_margin_bottom(18)
         self.get_style_context().add_class('preferences-page')
 
+        label = Gtk.Label()
+        label.set_markup('<b>' + _('Font') + '</b>')
+        label.set_xalign(0)
+        label.set_margin_bottom(6)
+        self.pack_start(label, False, False, 0)
+
+        font_manager = ServiceLocator.get_font_manager()
+        font_string = font_manager.get_system_font()
+        self.option_use_system_font = Gtk.CheckButton(_('Use the system fixed width font (' + font_string + ')'))
+        self.option_use_system_font.set_margin_bottom(18)
+        self.pack_start(self.option_use_system_font, False, False, 0)
+
+        self.font_chooser_revealer = Gtk.Revealer()
+        vbox = Gtk.VBox()
+        label = Gtk.Label()
+        label.set_markup(_('Set Editor Font:'))
+        label.set_xalign(0)
+        label.set_margin_bottom(6)
+        vbox.pack_start(label, False, False, 0)
+
+        self.font_chooser_button = Gtk.FontButton()
+        self.font_chooser_button.set_margin_bottom(18)
+        hbox = Gtk.HBox()
+        hbox.pack_start(self.font_chooser_button, False, False, 0)
+        vbox.pack_start(hbox, False, False, 0)
+        self.font_chooser_revealer.add(vbox)
+        self.pack_start(self.font_chooser_revealer, False, False, 0)
+
         self.style_switcher_label_light = Gtk.Button()
         self.style_switcher_label_light.set_label(_('Light Color Scheme'))
         self.style_switcher_label_light.get_child().set_xalign(0)
@@ -241,6 +292,8 @@ class PageFontColorView(Gtk.VBox):
 
         self.preview_wrapper = Gtk.VBox()
         self.preview_wrapper.get_style_context().add_class('preview')
+        scrolled_window = Gtk.ScrolledWindow()
+        scrolled_window.set_min_content_height(162)
         self.source_view = GtkSource.View()
         self.source_view.set_editable(False)
         self.source_view.set_cursor_visible(False)
@@ -248,6 +301,7 @@ class PageFontColorView(Gtk.VBox):
         self.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
         self.source_view.set_show_line_numbers(False)
         self.source_view.set_highlight_current_line(False)
+        scrolled_window.add(self.source_view)
         self.source_buffer = self.source_view.get_buffer()
         self.source_buffer.set_highlight_matching_brackets(False)
         self.source_buffer.set_text('''% Syntax highlighting preview
@@ -259,7 +313,7 @@ class PageFontColorView(Gtk.VBox):
 This is a \\textit{preview}, for $x, y \in \mathbb{R}: x \leq y$ or $x > y$.
 \\end{document}''')
         self.source_buffer.place_cursor(self.source_buffer.get_start_iter())
-        self.preview_wrapper.pack_start(self.source_view, True, True, 0)
+        self.preview_wrapper.pack_start(scrolled_window, True, True, 0)
         self.pack_start(self.preview_wrapper, True, True, 0)
 
 

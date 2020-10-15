@@ -33,6 +33,8 @@ class Autocomplete(object):
         self.document = document
         self.document_view = document_view
         self.main_window = ServiceLocator.get_main_window()
+        self.font_manager = ServiceLocator.get_font_manager()
+        self.font_manager.register_observer(self)
 
         self.view = view.DocumentAutocompleteView()
         self.mark_start = Gtk.TextMark.new('ac_session_start', True)
@@ -45,11 +47,12 @@ class Autocomplete(object):
         self.blank_session = session_blank.SessionBlank(self)
         self.session = self.blank_session
 
-        self.char_width, self.line_height = self.document.get_char_dimensions()
         self.shortcuts_bar_height = 37
         self.cursor_offset = None
 
-        self.view.scrolled_window.set_max_content_height(5 * self.line_height)
+        char_width, line_height = self.font_manager.get_char_dimensions(self.document_view.source_view)
+        self.view.scrolled_window.set_max_content_height(5 * line_height)
+        self.view.scrolled_window.set_min_content_width(35 * char_width)
 
         self.focus_hide = False
 
@@ -57,6 +60,13 @@ class Autocomplete(object):
 
         self.view.list.connect('row-activated', self.on_row_activated)
         self.view.list.connect('row-selected', self.on_row_selected)
+
+    def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'font_string_changed':
+            char_width, line_height = self.font_manager.get_char_dimensions(self.document_view.source_view)
+            self.view.scrolled_window.set_max_content_height(5 * line_height)
+            self.view.scrolled_window.set_min_content_width(35 * char_width)
 
     def on_adjustment_value_changed(self, adjustment, user_data=None):
         self.update_visibility()
@@ -76,10 +86,12 @@ class Autocomplete(object):
         self.submit()
 
     def on_row_selected(self, box, row, user_data=None):
+        char_width, line_height = self.font_manager.get_char_dimensions(self.document_view.source_view)
+
         if row != None:
             command = row.get_child().command
-            scroll_min = row.get_index() * self.line_height
-            scroll_max = scroll_min - 4 * self.line_height
+            scroll_min = row.get_index() * line_height
+            scroll_max = scroll_min - 4 * line_height
             current_offset = self.view.scrolled_window.get_vadjustment().get_value()
             if scroll_min < current_offset:
                 self.view.scrolled_window.get_vadjustment().set_value(scroll_min)
@@ -166,8 +178,9 @@ class Autocomplete(object):
             self.view.select_first()
 
     def position_is_visible(self):
-        height = min(len(self.items), 5) * self.line_height + 20
-        width = self.view.get_allocated_width()
+        char_width, line_height = self.font_manager.get_char_dimensions(self.document_view.source_view)
+
+        height = min(len(self.items), 5) * line_height + 20
 
         buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
@@ -179,26 +192,35 @@ class Autocomplete(object):
             gutter_width = 0
         x_offset = - self.document_view.scrolled_window.get_hadjustment().get_value()
         y_offset = - self.document_view.scrolled_window.get_vadjustment().get_value()
-        x_position = x_offset + iter_location.x - 2 + gutter_width - self.session.get_offset() * self.char_width
-        y_position = y_offset + iter_location.y + self.line_height + self.shortcuts_bar_height
+        x_position = x_offset + iter_location.x - 2 + gutter_width - self.session.get_offset() * char_width
+        y_position = y_offset + iter_location.y + line_height + self.shortcuts_bar_height
 
-        full_height = 110
-        if y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
+        full_height = 5 * line_height + 20
+
+        if y_position >= line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
             self.view.set_margin_top(y_position)
         else:
-            self.view.set_margin_top(y_position - height - self.line_height)
+            self.view.set_margin_top(y_position - height - line_height)
+
+        char_width, line_height = self.font_manager.get_char_dimensions(self.document_view.source_view)
+        width = 25 * char_width
+        max_width = 35 * char_width
+        while x_position <= self.main_window.preview_paned.get_allocated_width() - width - char_width:
+            width += char_width
+            if width == max_width:
+                break
         if x_position >= 0 and x_position <= self.main_window.preview_paned.get_allocated_width() - width:
             self.view.set_margin_left(x_position)
         else:
-            self.view.set_margin_left(x_position - width)
+            self.view.set_margin_left(self.main_window.preview_paned.get_allocated_width() - width)
+        self.view.scrolled_window.set_min_content_width(width)
 
         show_x = False
         show_y = False
 
-        full_height = 110
-        if y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
+        if y_position >= line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
             show_y = True
-        elif y_position >= self.line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
+        elif y_position >= line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
             show_y = True
         else:
             show_y = False

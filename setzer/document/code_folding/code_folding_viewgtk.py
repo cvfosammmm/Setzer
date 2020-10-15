@@ -25,6 +25,5 @@ class CodeFoldingView(GtkSource.GutterRendererPixbuf):
 
     def __init__(self):
         GtkSource.GutterRendererPixbuf.__init__(self)
-        self.set_size(18)
 
 

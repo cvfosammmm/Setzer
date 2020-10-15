@@ -26,6 +26,7 @@ import xml.etree.ElementTree as ET
 
 import setzer.app.settings as settingscontroller
 import setzer.app.autocomplete_provider.autocomplete_provider as autocomplete_provider
+import setzer.app.font_manager as font_manager
 import setzer.helpers.popover_menu_builder as popover_menu_builder
 
 
@@ -41,6 +42,7 @@ class ServiceLocator(object):
     packages_dict = None
     source_language_manager = None
     source_style_scheme_manager = None
+    font_manager = None
 
     def init_main_window(main_window):
         ServiceLocator.main_window = main_window
@@ -91,6 +93,11 @@ class ServiceLocator(object):
             path2 = os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes')
             ServiceLocator.source_style_scheme_manager.set_search_path((path1, path2))
         return ServiceLocator.source_style_scheme_manager
+
+    def get_font_manager():
+        if ServiceLocator.font_manager == None:
+            ServiceLocator.font_manager = font_manager.FontManager(ServiceLocator.get_main_window(), ServiceLocator.get_settings())
+        return ServiceLocator.font_manager
 
     def get_popover_menu_builder():
         if ServiceLocator.popover_menu_builder == None:

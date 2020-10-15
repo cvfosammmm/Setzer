@@ -28,7 +28,6 @@ class DocumentAutocompleteView(Gtk.VBox):
 
         self.set_halign(Gtk.Align.START)
         self.set_valign(Gtk.Align.START)
-        self.set_size_request(318, -1)
 
         self.list = Gtk.ListBox()
         self.list.set_selection_mode(Gtk.SelectionMode.SINGLE)

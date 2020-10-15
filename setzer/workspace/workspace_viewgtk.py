@@ -127,6 +127,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.style_context = Gtk.StyleContext()
         self.style_context.add_provider_for_screen(self.get_screen(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
+        self.css_provider_font_size = Gtk.CssProvider()
+        self.style_context.add_provider_for_screen(self.get_screen(), self.css_provider_font_size, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+
         # actions
         self.new_latex_document_action = Gio.SimpleAction.new('new-latex-document', None)
         self.add_action(self.new_latex_document_action)

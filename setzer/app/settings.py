@@ -19,6 +19,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gspell', '1')
 from gi.repository import Gtk
+from gi.repository import Pango
 from gi.repository import Gspell
 import os.path
 import pickle
@@ -84,6 +85,12 @@ class Settings(Observable):
         self.defaults['preferences']['build_option_system_commands'] = 'disable'
         self.defaults['preferences']['syntax_scheme'] = 'default'
         self.defaults['preferences']['syntax_scheme_dark_mode'] = 'default-dark'
+
+        self.defaults['preferences']['use_system_font'] = True
+        textview = Gtk.TextView()
+        textview.set_monospace(True)
+        font_string = textview.get_pango_context().get_font_description().to_string()
+        self.defaults['preferences']['font_string'] = font_string
 
         default_language = Gspell.Language.get_default()
         if default_language != None:
