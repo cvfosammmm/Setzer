@@ -53,6 +53,11 @@
     </provides>
 
     <releases>
+        <release version="0.3.4" date="2020-10-15">
+            <description>
+                <p translatable="no">Set editor font, context menu in shortcuts bar, ...</p>
+            </description>
+        </release>
         <release version="0.3.3" date="2020-10-6">
             <description>
                 <p translatable="no">Add syntax themes from files, edit begin and end commands simultaneously, autocomplete improvements, ...</p>
