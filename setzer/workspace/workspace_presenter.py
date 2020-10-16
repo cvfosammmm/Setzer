@@ -162,8 +162,8 @@ class WorkspacePresenter(object):
     def update_zoom_actions(self):
         normal_font_size = self.font_manager.get_normal_font_size_in_points()
         current_font_size = self.font_manager.get_font_size_in_points()
-        self.main_window.zoom_out_action.set_enabled(current_font_size >= 7)
-        self.main_window.zoom_in_action.set_enabled(current_font_size <= 23)
+        self.main_window.zoom_out_action.set_enabled(current_font_size / 1.1 > 6)
+        self.main_window.zoom_in_action.set_enabled(current_font_size * 1.1 < 24)
         self.main_window.reset_zoom_action.set_enabled(current_font_size != normal_font_size)
 
     def update_latex_shortcuts_bar(self):
