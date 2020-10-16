@@ -63,6 +63,12 @@ class KeyboardShortcutsDialog(Dialog):
         section['items'].append({'title': _('Find and Replace'), 'shortcut': '&lt;ctrl&gt;H'})
         data.append(section)
 
+        section = {'title': _('Zoom'), 'items': list()}
+        section['items'].append({'title': _('Zoom in'), 'shortcut': '&lt;ctrl&gt;plus'})
+        section['items'].append({'title': _('Zoom out'), 'shortcut': '&lt;ctrl&gt;minus'})
+        section['items'].append({'title': _('Reset zoom'), 'shortcut': '&lt;ctrl&gt;0'})
+        data.append(section)
+
         section = {'title': 'Copy and Paste', 'items': list()}
         section['items'].append({'title': _('Copy selected text to clipboard'), 'shortcut': '&lt;ctrl&gt;C'})
         section['items'].append({'title': _('Cut selected text to clipboard'), 'shortcut': '&lt;ctrl&gt;X'})

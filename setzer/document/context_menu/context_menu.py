@@ -22,6 +22,7 @@ from gi.repository import Gtk
 import setzer.document.context_menu.context_menu_controller as context_menu_controller
 import setzer.document.context_menu.context_menu_presenter as context_menu_presenter
 import setzer.document.context_menu.context_menu_viewgtk as context_menu_view
+from setzer.app.service_locator import ServiceLocator
 
 
 class ContextMenu(object):
@@ -35,6 +36,9 @@ class ContextMenu(object):
         self.controller = context_menu_controller.ContextMenuController(self, self.scbar_view)
         self.presenter = context_menu_presenter.ContextMenuPresenter(self, self.scbar_view)
 
+        self.font_manager = ServiceLocator.get_font_manager()
+        self.font_manager.register_observer(self)
+
         document.register_observer(self)
 
     def change_notification(self, change_code, notifying_object, parameter):
@@ -42,6 +46,10 @@ class ContextMenu(object):
         if change_code == 'can_forward_sync_changed':
             self.presenter.on_can_forward_sync_changed(parameter)
             
+        if change_code == 'font_string_changed':
+            zoom_level = self.font_manager.get_zoom_level()
+            self.presenter.set_zoom_level(zoom_level)
+
     def on_undo(self, widget=None):
         self.document_view.source_view.emit('undo')
 
@@ -62,6 +70,18 @@ class ContextMenu(object):
 
     def on_select_all(self, widget=None):
         self.document_view.source_view.emit('select-all', True)
+
+    def on_zoom_out(self, widget=None, event=None):
+        ServiceLocator.get_main_window().zoom_out_action.activate()
+        return True
+
+    def on_zoom_in(self, widget=None, event=None):
+        ServiceLocator.get_main_window().zoom_in_action.activate()
+        return True
+
+    def on_reset_zoom(self, widget=None, event=None):
+        ServiceLocator.get_main_window().reset_zoom_action.activate()
+        return True
 
     def on_show_in_preview(self, widget=None):
         self.document.forward_sync()

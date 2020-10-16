@@ -38,6 +38,9 @@ class WorkspacePresenter(object):
         self.preview_animating = False
         self.build_log_animating = False
         self.activate_blank_slate_mode()
+        self.font_manager = ServiceLocator.get_font_manager()
+        self.update_zoom_actions()
+        self.font_manager.register_observer(self)
 
         def on_window_state(widget, event): self.on_realize()
         self.main_window.connect('draw', on_window_state)
@@ -126,6 +129,9 @@ class WorkspacePresenter(object):
         if change_code == 'set_dark_mode':
             ServiceLocator.get_settings().gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', parameter)
 
+        if change_code == 'font_string_changed':
+            self.update_zoom_actions()
+
     def activate_blank_slate_mode(self):
         self.main_window.mode_stack.set_visible_child_name('blank_slate')
         self.main_window.save_all_action.set_enabled(False)
@@ -152,6 +158,13 @@ class WorkspacePresenter(object):
         default_language = Gspell.Language.get_default()
         if default_language != None:
             self.main_window.spellchecking_action.set_enabled(True)
+
+    def update_zoom_actions(self):
+        normal_font_size = self.font_manager.get_normal_font_size_in_points()
+        current_font_size = self.font_manager.get_font_size_in_points()
+        self.main_window.zoom_out_action.set_enabled(current_font_size >= 7)
+        self.main_window.zoom_in_action.set_enabled(current_font_size <= 23)
+        self.main_window.reset_zoom_action.set_enabled(current_font_size != normal_font_size)
 
     def update_latex_shortcuts_bar(self):
         document = self.workspace.active_document

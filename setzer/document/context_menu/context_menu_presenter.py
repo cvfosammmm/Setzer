@@ -39,6 +39,9 @@ class ContextMenuPresenter(object):
         if self.context_menu.document.is_latex_document():
             self.on_can_forward_sync_changed(self.context_menu.document.can_forward_sync)
 
+    def set_zoom_level(self, zoom_level):
+        self.scbar_view.model_button_reset_zoom.set_label("{:.0%}".format(zoom_level))
+
     def on_can_forward_sync_changed(self, can_sync):
         if self.context_menu.document.is_latex_document():
             self.scbar_view.model_button_show_in_preview.set_sensitive(can_sync)

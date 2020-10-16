@@ -46,11 +46,7 @@ class FontManager(Observable):
                 self.update_font_string()
 
     def update_font_string(self):
-        if self.settings.get_value('preferences', 'use_system_font'):
-            font_string = self.system_font
-        else:
-            font_string = self.settings.get_value('preferences', 'font')
-        self.set_font_string(font_string)
+        self.set_font_string(self.get_normal_font_string())
 
     def get_system_font(self):
         return self.system_font
@@ -71,15 +67,30 @@ class FontManager(Observable):
         layout.set_font_description(font_desc)
         return layout.get_pixel_size()
 
-    def set_font_string(self, font_string):
-        if font_string == self.font_string: return
+    def get_zoom_level(self):
+        return self.get_font_size() / self.get_normal_font_size()
 
+    def set_font_string(self, font_string):
         font_desc = Pango.FontDescription.from_string(font_string)
         font_size = font_desc.get_size() / Pango.SCALE
 
         self.font_string = font_string
         self.propagate_font_setting()
         self.add_change_code('font_string_changed')
+
+    def zoom_in(self):
+        font_desc = Pango.FontDescription.from_string(self.font_string)
+        font_desc.set_size(min(self.get_font_size() + 1 * Pango.SCALE, 24 * Pango.SCALE))
+        self.set_font_string(font_desc.to_string())
+
+    def zoom_out(self):
+        font_desc = Pango.FontDescription.from_string(self.font_string)
+        font_desc.set_size(max(self.get_font_size() - 1 * Pango.SCALE, 6 * Pango.SCALE))
+        self.set_font_string(font_desc.to_string())
+
+    def reset_zoom(self):
+        font_desc = Pango.FontDescription.from_string(self.get_normal_font_string())
+        self.set_font_string(font_desc.to_string())
 
     def propagate_font_setting(self):
         font_size = self.get_font_size() / Pango.SCALE
@@ -91,5 +102,21 @@ box.autocomplete list row { font-size: ''' + str(font_size) + '''pt; }
     def get_font_size(self):
         font_desc = Pango.FontDescription.from_string(self.font_string)
         return font_desc.get_size()
+
+    def get_font_size_in_points(self):
+        return self.get_font_size() / Pango.SCALE
+
+    def get_normal_font_string(self):
+        if self.settings.get_value('preferences', 'use_system_font'):
+            return self.system_font
+        else:
+            return self.settings.get_value('preferences', 'font')
+
+    def get_normal_font_size(self):
+        font_desc = Pango.FontDescription.from_string(self.get_normal_font_string())
+        return font_desc.get_size()
+
+    def get_normal_font_size_in_points(self):
+        return self.get_normal_font_size() / Pango.SCALE
 
 

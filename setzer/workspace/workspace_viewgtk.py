@@ -237,6 +237,15 @@ class MainWindow(Gtk.ApplicationWindow):
         self.toggle_invert_pdf_action = Gio.SimpleAction.new_stateful('toggle-invert-pdf', None, ip_default)
         self.add_action(self.toggle_invert_pdf_action)
 
+        self.zoom_out_action = Gio.SimpleAction.new('zoom-out', None)
+        self.add_action(self.zoom_out_action)
+
+        self.zoom_in_action = Gio.SimpleAction.new('zoom-in', None)
+        self.add_action(self.zoom_in_action)
+
+        self.reset_zoom_action = Gio.SimpleAction.new('reset-zoom', None)
+        self.add_action(self.reset_zoom_action)
+
 
 class DocumentViewWrapper(Gtk.Notebook):
 

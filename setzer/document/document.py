@@ -121,7 +121,7 @@ class Document(Observable):
         
     def get_modified(self):
         return self.get_buffer().get_modified()
-        
+
     def populate_from_filename(self):
         if self.filename == None: return False
         if not os.path.isfile(self.filename):

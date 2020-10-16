@@ -26,6 +26,9 @@ class ContextMenuController(object):
         scbar_view.model_button_paste.connect('clicked', context_menu.on_paste)
         scbar_view.model_button_delete.connect('clicked', context_menu.on_delete)
         scbar_view.model_button_select_all.connect('clicked', context_menu.on_select_all)
+        scbar_view.model_button_zoom_out.connect('button-press-event', context_menu.on_zoom_out)
+        scbar_view.model_button_zoom_in.connect('button-press-event', context_menu.on_zoom_in)
+        scbar_view.model_button_reset_zoom.connect('button-press-event', context_menu.on_reset_zoom)
 
         if context_menu.document.is_latex_document():
             scbar_view.model_button_toggle_comment.connect('clicked', context_menu.on_toggle_comment)
