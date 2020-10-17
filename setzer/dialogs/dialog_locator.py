@@ -23,6 +23,7 @@ import setzer.dialogs.building_failed.building_failed as building_failed_dialog
 import setzer.dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
 import setzer.dialogs.document_wizard.document_wizard as document_wizard
 import setzer.dialogs.document_changed_on_disk.document_changed_on_disk as document_changed_on_disk_dialog
+import setzer.dialogs.document_deleted_on_disk.document_deleted_on_disk as document_deleted_on_disk_dialog
 import setzer.dialogs.include_bibtex_file.include_bibtex_file as include_bibtex_file_dialog
 import setzer.dialogs.include_latex_file.include_latex_file as include_latex_file_dialog
 import setzer.dialogs.interpreter_missing.interpreter_missing as interpreter_missing_dialog
@@ -50,6 +51,7 @@ class DialogLocator(object):
         dialogs['build_save'] = build_save_dialog.BuildSaveDialog(main_window)
         dialogs['document_wizard'] = document_wizard.DocumentWizard(main_window, workspace)
         dialogs['document_changed_on_disk'] = document_changed_on_disk_dialog.DocumentChangedOnDiskDialog(main_window)
+        dialogs['document_deleted_on_disk'] = document_deleted_on_disk_dialog.DocumentDeletedOnDiskDialog(main_window)
         dialogs['include_bibtex_file'] = include_bibtex_file_dialog.IncludeBibTeXFile(main_window)
         dialogs['include_latex_file'] = include_latex_file_dialog.IncludeLaTeXFile(main_window)
         dialogs['interpreter_missing'] = interpreter_missing_dialog.InterpreterMissingDialog(main_window)

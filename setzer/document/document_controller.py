@@ -155,7 +155,13 @@ class DocumentController(object):
 
     def save_date_loop(self):
         if self.document.filename == None: return True
-        if self.document.save_date <= os.path.getmtime(self.document.filename) - 0.001:
+        if self.document.deleted: return True
+        if self.document.get_deleted_on_disk():
+            DialogLocator.get_dialog('document_deleted_on_disk').run(self.document)
+            self.document.deleted = True
+            self.document.source_buffer.set_modified(True)
+            return True
+        if self.document.get_changed_on_disk():
             if DialogLocator.get_dialog('document_changed_on_disk').run(self.document):
                 self.document.populate_from_filename()
                 self.document.source_buffer.set_modified(False)
