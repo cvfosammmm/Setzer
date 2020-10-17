@@ -50,6 +50,7 @@ class Document(Observable):
         self.displayname = ''
         self.filename = None
         self.save_date = None
+        self.deleted_on_disk_dialog_shown_after_last_save = False
         self.last_activated = 0
         self.dark_mode = False
 
@@ -144,11 +145,18 @@ class Document(Observable):
             if text != None:
                 with open(self.filename, 'w') as f:
                     f.write(text)
+                self.deleted_on_disk_dialog_shown_after_last_save = False
                 self.update_save_date()
                 self.get_buffer().set_modified(False)
 
     def update_save_date(self):
         self.save_date = os.path.getmtime(self.filename)
+
+    def get_changed_on_disk(self):
+        return self.save_date <= os.path.getmtime(self.filename) - 0.001
+
+    def get_deleted_on_disk(self):
+        return not os.path.isfile(self.filename)
 
     def initially_set_text(self, text):
         self.get_buffer().initially_set_text(text)
