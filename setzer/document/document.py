@@ -50,7 +50,7 @@ class Document(Observable):
         self.displayname = ''
         self.filename = None
         self.save_date = None
-        self.deleted = False
+        self.deleted_on_disk_dialog_shown = False
         self.last_activated = 0
         self.dark_mode = False
 
@@ -145,7 +145,7 @@ class Document(Observable):
             if text != None:
                 with open(self.filename, 'w') as f:
                     f.write(text)
-                self.deleted = False
+                self.deleted_on_disk_dialog_shown = False
                 self.update_save_date()
                 self.get_buffer().set_modified(False)
 

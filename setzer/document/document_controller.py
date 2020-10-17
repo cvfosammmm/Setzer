@@ -93,10 +93,10 @@ class DocumentController(object):
 
     def save_date_loop(self):
         if self.document.filename == None: return True
-        if self.document.deleted: return True
+        if self.document.deleted_on_disk_dialog_shown: return True
         if self.document.get_deleted_on_disk():
             DialogLocator.get_dialog('document_deleted_on_disk').run(self.document)
-            self.document.deleted = True
+            self.document.deleted_on_disk_dialog_shown = True
             self.document.source_buffer.set_modified(True)
             return True
         if self.document.get_changed_on_disk():

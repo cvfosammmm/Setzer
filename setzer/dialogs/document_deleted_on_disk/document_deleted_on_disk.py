@@ -26,7 +26,7 @@ import os.path
 
 
 class DocumentDeletedOnDiskDialog(Dialog):
-    ''' This dialog is warning the user that a file that was deleted. '''
+    ''' This dialog is warning the user that a file was deleted. '''
 
     def __init__(self, main_window):
         self.main_window = main_window
@@ -40,8 +40,8 @@ class DocumentDeletedOnDiskDialog(Dialog):
     def setup(self, document):
         self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.WARNING)
 
-        self.view.set_property('text', _('Document »{document}« was deleted or moved.').format(document=document.get_displayname()))
-        self.view.format_secondary_markup(_('If you close without saving, this document will be lost.'))
+        self.view.set_property('text', _('Document »{document}« was deleted from disk or moved.').format(document=document.get_displayname()))
+        self.view.format_secondary_markup(_('If you close it or close Setzer without saving, this document will be lost.'))
 
         self.view.add_buttons(_('Ok'), Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)
