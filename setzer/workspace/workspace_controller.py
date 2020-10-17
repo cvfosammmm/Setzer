@@ -75,6 +75,9 @@ class WorkspaceController(object):
         self.main_window.spellchecking_action.connect('activate', self.start_spellchecking_dialog)
         self.main_window.toggle_dark_mode_action.connect('activate', self.on_dark_mode_toggle_toggled)
         self.main_window.toggle_invert_pdf_action.connect('activate', self.on_invert_pdf_toggle_toggled)
+        self.main_window.zoom_out_action.connect('activate', self.on_zoom_out)
+        self.main_window.zoom_in_action.connect('activate', self.on_zoom_in)
+        self.main_window.reset_zoom_action.connect('activate', self.on_reset_zoom)
 
         # populate workspace
         self.workspace.populate_from_disk()
@@ -290,6 +293,15 @@ class WorkspaceController(object):
         new_state = not action.get_state().get_boolean()
         action.set_state(GLib.Variant.new_boolean(new_state))
         self.workspace.set_invert_pdf(new_state)
+
+    def on_zoom_out(self, widget=None, event=None):
+        ServiceLocator.get_font_manager().zoom_out()
+
+    def on_zoom_in(self, widget=None, event=None):
+        ServiceLocator.get_font_manager().zoom_in()
+
+    def on_reset_zoom(self, widget=None, event=None):
+        ServiceLocator.get_font_manager().reset_zoom()
 
     def on_sidebar_size_allocate(self, sidebar, allocation):
         if not self.workspace.presenter.sidebars_initialized: return

@@ -16,39 +16,40 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 
-class StateActiveInvisible(object):
+class SessionBlank(object):
 
     def __init__(self, autocomplete):
         self.autocomplete = autocomplete
+        self.will_show = False
 
-    def init(self):
-        self.autocomplete.view.hide()
+    def on_insert_text(self, buffer, location_iter, text, text_length):
+        pass
 
-    def on_return_press(self):
-        return False
-
-    def on_escape_press(self):
-        return False
-
-    def on_up_press(self):
-        return False
-
-    def on_down_press(self):
-        return False
+    def on_delete_range(self, buffer, start_iter, end_iter):
+        pass
 
     def on_tab_press(self):
+        if self.autocomplete.document.cursor_inside_latex_command_or_at_end():
+            self.autocomplete.update(True)
+            if self.autocomplete.document.cursor_at_latex_command_end():
+                return self.autocomplete.is_active()
+            else:
+                return True
         return False
 
-    def show(self):
-        self.autocomplete.change_state('active_visible')
+    def update(self, can_show=False):
+        self.autocomplete.update_visibility()
 
-    def hide(self):
-        self.autocomplete.change_state('inactive')
+    def get_offset(self):
+        return 0
 
-    def focus_show(self):
-        self.autocomplete.change_state('active_visible')
-
-    def focus_hide(self):
+    def submit(self):
         pass
+
+    def cancel(self):
+        pass
+
+    def is_active(self):
+        return False
 
 

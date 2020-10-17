@@ -22,8 +22,6 @@
    version="1.0"
    style="display:inline;enable-background:new"
    viewBox="0 0 128 128">
-  <title
-     id="title4162">Adwaita Icon Template</title>
   <defs
      id="defs3">
     <clipPath
@@ -70,8 +68,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="6.4744465"
-     inkscape:cx="45.45228"
-     inkscape:cy="44.703531"
+     inkscape:cx="-17.10133"
+     inkscape:cy="40.996651"
      inkscape:current-layer="layer2"
      showgrid="true"
      inkscape:grid-bbox="true"
@@ -265,13 +263,13 @@
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <dc:creator>
           <cc:Agent>
-            <dc:title>GNOME Design Team</dc:title>
+            <dc:title />
           </cc:Agent>
         </dc:creator>
         <dc:source />
         <cc:license
            rdf:resource="http://creativecommons.org/licenses/by-sa/4.0/" />
-        <dc:title>Adwaita Icon Template</dc:title>
+        <dc:title></dc:title>
         <dc:subject>
           <rdf:Bag />
         </dc:subject>

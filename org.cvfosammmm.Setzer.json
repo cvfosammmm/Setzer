@@ -37,8 +37,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://download.gnome.org/sources/gspell/1.8/gspell-1.8.2.tar.xz",
-                    "sha256": "bb9195c3a95bacf556d0203e9691f7489e0d3bc5ae1e5a440c89b2f2435d3ed6"
+                    "url": "https://download.gnome.org/sources/gspell/1.8/gspell-1.8.4.tar.xz",
+                    "sha256": "cf4d16a716e813449bd631405dc1001ea89537b8cdae2b8abfb3999212bd43b4"
                 }
             ]
         },
@@ -53,8 +53,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://poppler.freedesktop.org/poppler-0.71.0.tar.xz",
-                    "sha256": "badbecd2dddf63352fd85ec08a9c2ed122fdadacf2a34fcb4cc227c4d01f2cf9"
+                    "url": "https://poppler.freedesktop.org/poppler-20.10.0.tar.xz",
+                    "sha256": "434ecbbb539c1a75955030a1c9b24c7b58200b7f68d2e4269e29acf2f8f13336"
                 }
             ]
         },
@@ -67,8 +67,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "http://www.cpan.org/src/5.0/perl-5.30.0.tar.gz",
-                    "sha256": "851213c754d98ccff042caa40ba7a796b2cee88c5325f121be5cbb61bbf975f2"
+                    "url": "https://www.cpan.org/src/5.0/perl-5.33.2.tar.gz",
+                    "sha256": "228840ded30045c18bece42dfce1c209e71b459a4ed5168bff2f2b424e1b2b7f"
                 },
                 {
                     "type": "script",

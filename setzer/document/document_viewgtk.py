@@ -29,7 +29,7 @@ class DocumentView(Gtk.HBox):
     
     def __init__(self, document, source_view):
         Gtk.HBox.__init__(self)
-        
+
         self.vbox = Gtk.VBox()        
         self.scrolled_window = Gtk.ScrolledWindow()
         

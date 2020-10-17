@@ -18,18 +18,23 @@
 import base64
 import subprocess
 
+import setzer.document.build_system.builder.builder_build as builder_build
 from setzer.app.service_locator import ServiceLocator
 
 
-class BuilderBackwardSync(object):
+class BuilderBackwardSync(builder_build.BuilderBuild):
 
     def __init__(self):
+        builder_build.BuilderBuild.__init__(self)
+
         self.config_folder = ServiceLocator.get_config_folder()
         self.backward_synctex_regex = ServiceLocator.get_regex_object(r'\nOutput:.*\nInput:(.*\.tex)\nLine:([0-9]+)\nColumn:(?:[0-9]|-)+\nOffset:(?:[0-9]|-)+\nContext:.*\n')
 
         self.process = None
 
     def run(self, query):
+        tex_filename = query.backward_sync_data['build_pathname']
+
         if query.backward_sync_data['build_pathname'] == None:
             query.backward_sync_result = None
             return
@@ -39,7 +44,12 @@ class BuilderBackwardSync(object):
         arguments.append(str(query.backward_sync_data['page']) + ':' + str(query.backward_sync_data['x']) + ':' + str(query.backward_sync_data['y']) + ':' + query.tex_filename[:-3] + 'pdf')
         arguments.append('-d')
         arguments.append(synctex_folder)
-        self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        try:
+            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except FileNotFoundError:
+            self.move_build_files(query, tex_filename)
+            self.throw_build_error(query, 'interpreter_not_working', 'synctex missing')
+            return
         self.process.wait()
         raw = self.process.communicate()[0].decode('utf-8')
         self.process = None

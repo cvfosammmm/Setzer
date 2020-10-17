@@ -63,6 +63,12 @@ class KeyboardShortcutsDialog(Dialog):
         section['items'].append({'title': _('Find and Replace'), 'shortcut': '&lt;ctrl&gt;H'})
         data.append(section)
 
+        section = {'title': _('Zoom'), 'items': list()}
+        section['items'].append({'title': _('Zoom in'), 'shortcut': '&lt;ctrl&gt;plus'})
+        section['items'].append({'title': _('Zoom out'), 'shortcut': '&lt;ctrl&gt;minus'})
+        section['items'].append({'title': _('Reset zoom'), 'shortcut': '&lt;ctrl&gt;0'})
+        data.append(section)
+
         section = {'title': 'Copy and Paste', 'items': list()}
         section['items'].append({'title': _('Copy selected text to clipboard'), 'shortcut': '&lt;ctrl&gt;C'})
         section['items'].append({'title': _('Cut selected text to clipboard'), 'shortcut': '&lt;ctrl&gt;X'})
@@ -86,10 +92,10 @@ class KeyboardShortcutsDialog(Dialog):
         section['items'].append({'title': _('Move current word right'), 'shortcut': '&lt;Alt&gt;Right'})
         section['items'].append({'title': _('Increment number at cursor'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;A'})
         section['items'].append({'title': _('Decrement number at cursor'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;X'})
-        section['items'].append({'title': _('Comment / Uncomment current line(s)'), 'shortcut': '&lt;ctrl&gt;K'})
         data.append(section)
 
         section = {'title': _('LaTeX Shortcuts'), 'items': list()}
+        section['items'].append({'title': _('Comment / Uncomment current line(s)'), 'shortcut': '&lt;ctrl&gt;K'})
         section['items'].append({'title': _('New Line') + ' (\\\\)', 'shortcut': '&lt;ctrl&gt;Return'})
         section['items'].append({'title': _('Bold Text'), 'shortcut': '&lt;ctrl&gt;B'})
         section['items'].append({'title': _('Italic Text'), 'shortcut': '&lt;ctrl&gt;I'})

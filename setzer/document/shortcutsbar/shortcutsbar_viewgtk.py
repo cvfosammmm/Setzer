@@ -30,6 +30,18 @@ class ShortcutsBarBottom(Gtk.Toolbar):
         self.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
         self.get_style_context().add_class('bottom')
 
+        self.more_actions_popover = Gtk.PopoverMenu()
+        button_wrapper = Gtk.ToolItem()
+        self.button_more = Gtk.MenuButton()
+        self.button_more.set_direction(Gtk.ArrowType.DOWN)
+        self.button_more.set_image(Gtk.Image.new_from_icon_name('view-more-symbolic', Gtk.IconSize.MENU))
+        self.button_more.set_tooltip_text(_('More Actions'))
+        self.button_more.set_can_focus(False)
+        self.button_more.set_popover(self.more_actions_popover)
+        self.button_more.get_style_context().add_class('flat')
+        button_wrapper.add(self.button_more)
+        self.insert(button_wrapper, 0)
+
         self.button_find_and_replace = Gtk.ToggleToolButton()
         self.button_find_and_replace.set_icon_name('edit-find-replace-symbolic')
         self.button_find_and_replace.set_tooltip_text(_('Find and Replace (Ctrl+H)'))
@@ -41,6 +53,7 @@ class ShortcutsBarBottom(Gtk.Toolbar):
         self.button_find.set_tooltip_text(_('Find (Ctrl+F)'))
         self.button_find.get_child().set_can_focus(False)
         self.insert(self.button_find, 0)
+
         self.show_all()
 
 

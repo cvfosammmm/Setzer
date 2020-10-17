@@ -127,6 +127,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.style_context = Gtk.StyleContext()
         self.style_context.add_provider_for_screen(self.get_screen(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
+        self.css_provider_font_size = Gtk.CssProvider()
+        self.style_context.add_provider_for_screen(self.get_screen(), self.css_provider_font_size, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+
         # actions
         self.new_latex_document_action = Gio.SimpleAction.new('new-latex-document', None)
         self.add_action(self.new_latex_document_action)
@@ -234,6 +237,15 @@ class MainWindow(Gtk.ApplicationWindow):
         self.toggle_invert_pdf_action = Gio.SimpleAction.new_stateful('toggle-invert-pdf', None, ip_default)
         self.add_action(self.toggle_invert_pdf_action)
 
+        self.zoom_out_action = Gio.SimpleAction.new('zoom-out', None)
+        self.add_action(self.zoom_out_action)
+
+        self.zoom_in_action = Gio.SimpleAction.new('zoom-in', None)
+        self.add_action(self.zoom_in_action)
+
+        self.reset_zoom_action = Gio.SimpleAction.new('reset-zoom', None)
+        self.add_action(self.reset_zoom_action)
+
 
 class DocumentViewWrapper(Gtk.Notebook):
 
@@ -248,7 +260,7 @@ class DocumentViewWrapper(Gtk.Notebook):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
                      
     def do_get_preferred_width(self):
-        return 440, 440
+        return 550, 550
 
 
 class BlankSlate(Gtk.HBox):

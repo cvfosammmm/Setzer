@@ -71,7 +71,7 @@ class GeneralSettingsPage(Page):
         for name, option in self.view.option_packages.items():
             try:
                 is_active = presets['packages'][name]
-            except TypeError:
+            except (TypeError, KeyError):
                 is_active = self.current_values['packages'][name]
             option.set_active(is_active)
 
@@ -131,6 +131,7 @@ class GeneralSettingsPageView(PageView):
         self.option_packages['ams'] = Gtk.CheckButton.new_with_label(_('AMS math packages'))
         self.option_packages['textcomp'] = Gtk.CheckButton.new_with_label('textcomp')
         self.option_packages['graphicx'] = Gtk.CheckButton.new_with_label('graphicx')
+        self.option_packages['color'] = Gtk.CheckButton.new_with_label('color')
         self.option_packages['xcolor'] = Gtk.CheckButton.new_with_label('xcolor')
         self.option_packages['url'] = Gtk.CheckButton.new_with_label('url')
         self.option_packages['hyperref'] = Gtk.CheckButton.new_with_label('hyperref')
@@ -141,6 +142,7 @@ class GeneralSettingsPageView(PageView):
         self.packages_leftbox.pack_start(self.option_packages['ams'], False, False, 0)
         self.packages_leftbox.pack_start(self.option_packages['textcomp'], False, False, 0)
         self.packages_leftbox.pack_start(self.option_packages['graphicx'], False, False, 0)
+        self.packages_leftbox.pack_start(self.option_packages['color'], False, False, 0)
         self.packages_leftbox.pack_start(self.option_packages['xcolor'], False, False, 0)
         self.packages_leftbox.pack_start(self.option_packages['url'], False, False, 0)
         self.packages_rightbox.pack_start(self.option_packages['hyperref'], False, False, 0)
@@ -156,6 +158,7 @@ class GeneralSettingsPageView(PageView):
         self.packages_tooltip_data['ams'] = _('<b>AMS packages:</b> provide mathematical symbols, math-related environments, ...') + ' (' + _('recommended') + ')'
         self.packages_tooltip_data['textcomp'] = '<b>textcomp:</b> ' + _('contains symbols to be used in textmode.') + ' (' + _('recommended') + ')'
         self.packages_tooltip_data['graphicx'] = '<b>graphicx:</b> ' + _('include graphics in your document.') + ' (' + _('recommended') + ')'
+        self.packages_tooltip_data['color'] = '<b>color:</b> ' + _('foreground and background color.') + ' (' + _('recommended') + ')'
         self.packages_tooltip_data['xcolor'] = '<b>xcolor:</b> ' + _('enables colored text.') + ' (' + _('recommended') + ')'
         self.packages_tooltip_data['url'] = '<b>url:</b> ' + _('type urls with the \\url{..} command without escaping them.') + ' (' + _('recommended') + ')'
         self.packages_tooltip_data['hyperref'] = '<b>hyperref:</b> ' + _('create hyperlinks within your document.')

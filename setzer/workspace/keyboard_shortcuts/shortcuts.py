@@ -102,6 +102,11 @@ class Shortcuts(object):
         self.accel_group.connect(Gdk.keyval_from_name('s'), c_mask, flags, self.shortcut_save)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask | s_mask, flags, self.shortcut_switch_document)
 
+        # zoom
+        self.main_window.app.set_accels_for_action('win.zoom-in', ['<Control>plus'])
+        self.main_window.app.set_accels_for_action('win.zoom-out', ['<Control>minus'])
+        self.main_window.app.set_accels_for_action('win.reset-zoom', ['<Control>0'])
+
         # text search
         self.main_window.app.set_accels_for_action('win.find', ['<Control>f'])
         self.main_window.app.set_accels_for_action('win.find-next', ['<Control>g'])

@@ -277,7 +277,6 @@
           <match>(\\(input|include|includeonly))\b(\[.*\])?(\{(.*)\})?</match>
           <include>
             <context sub-pattern="1" style-ref="include"/>
-            <context sub-pattern="4" style-ref="included-file"/>
             <context sub-pattern="5" style-ref="included-file"/>
           </include>
         </context>
@@ -348,61 +347,51 @@
 
     <context id="headings">
       <include>
-        <context id="part" style-inside="true" style-ref="part" end-at-line-end="true" class-disabled="no-spell-check">
-          <start>(\\part\*?)(\{)</start>
-          <end>(\})</end>
+        <context id="part" style-inside="true" style-ref="section" end-at-line-end="true" class-disabled="no-spell-check">
+          <start>(\\part\*?)\{</start>
+          <end>\}</end>
           <include>
             <context sub-pattern="1" where="start" style-ref="section-command" class="no-spell-check"/>
-            <context sub-pattern="2" where="start" style-ref="section-command" class="no-spell-check"/>
-            <context sub-pattern="1" where="end" style-ref="section-command" class="no-spell-check"/>
             <context ref="curly-braces-pair"/>
             <context ref="latex"/>
           </include>
         </context>
 
-        <context id="chapter" style-inside="true" style-ref="chapter" end-at-line-end="true" class-disabled="no-spell-check">
-          <start>(\\chapter\*?)(\{)</start>
-          <end>(\})</end>
+        <context id="chapter" style-inside="true" style-ref="section" end-at-line-end="true" class-disabled="no-spell-check">
+          <start>(\\chapter\*?)\{</start>
+          <end>\}</end>
           <include>
             <context sub-pattern="1" where="start" style-ref="section-command" class="no-spell-check"/>
-            <context sub-pattern="2" where="start" style-ref="section-command" class="no-spell-check"/>
-            <context sub-pattern="1" where="end" style-ref="section-command" class="no-spell-check"/>
             <context ref="curly-braces-pair"/>
             <context ref="latex"/>
           </include>
         </context>
 
         <context id="section" style-inside="true" style-ref="section" end-at-line-end="true" class-disabled="no-spell-check">
-          <start>(\\section\*?)(\{)</start>
-          <end>(\})</end>
+          <start>(\\section\*?)\{</start>
+          <end>\}</end>
           <include>
             <context sub-pattern="1" where="start" style-ref="section-command" class="no-spell-check"/>
-            <context sub-pattern="2" where="start" style-ref="section-command" class="no-spell-check"/>
-            <context sub-pattern="1" where="end" style-ref="section-command" class="no-spell-check"/>
             <context ref="curly-braces-pair"/>
             <context ref="latex"/>
           </include>
         </context>
 
-        <context id="subsection" style-inside="true" style-ref="subsection" end-at-line-end="true" class-disabled="no-spell-check">
-          <start>(\\subsection\*?)(\{)</start>
-          <end>(\})</end>
+        <context id="subsection" style-inside="true" style-ref="section" end-at-line-end="true" class-disabled="no-spell-check">
+          <start>(\\subsection\*?)\{</start>
+          <end>\}</end>
           <include>
             <context sub-pattern="1" where="start" style-ref="section-command" class="no-spell-check"/>
-            <context sub-pattern="2" where="start" style-ref="section-command" class="no-spell-check"/>
-            <context sub-pattern="1" where="end" style-ref="section-command" class="no-spell-check"/>
             <context ref="curly-braces-pair"/>
             <context ref="latex"/>
           </include>
         </context>
 
-        <context id="subsubsection" style-inside="true" style-ref="subsubsection" end-at-line-end="true" class-disabled="no-spell-check">
-          <start>(\\subsubsection\*?)(\{)</start>
-          <end>(\})</end>
+        <context id="subsubsection" style-inside="true" style-ref="section" end-at-line-end="true" class-disabled="no-spell-check">
+          <start>(\\subsubsection\*?)\{</start>
+          <end>\}</end>
           <include>
             <context sub-pattern="1" where="start" style-ref="section-command" class="no-spell-check"/>
-            <context sub-pattern="2" where="start" style-ref="section-command" class="no-spell-check"/>
-            <context sub-pattern="1" where="end" style-ref="section-command" class="no-spell-check"/>
             <context ref="curly-braces-pair"/>
             <context ref="latex"/>
           </include>

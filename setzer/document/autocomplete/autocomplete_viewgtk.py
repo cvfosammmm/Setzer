@@ -28,7 +28,6 @@ class DocumentAutocompleteView(Gtk.VBox):
 
         self.set_halign(Gtk.Align.START)
         self.set_valign(Gtk.Align.START)
-        self.set_size_request(297, -1)
 
         self.list = Gtk.ListBox()
         self.list.set_selection_mode(Gtk.SelectionMode.SINGLE)
@@ -98,12 +97,18 @@ class DocumentAutocompleteItem(Gtk.HBox):
         self.set_valign(Gtk.Align.START)
 
         self.command = command
-        self.label = Gtk.Label()
         if offset != 0:
-            text = '<b>\\' + GLib.markup_escape_text(command['command'][:offset]) + '</b>' + GLib.markup_escape_text(command['command'][offset:])
-            self.label.set_markup(text)
+            command_text = '<b>' + GLib.markup_escape_text(command['command'])[:offset] + '</b>'
+            command_text += GLib.markup_escape_text(command['command'])[offset:]
         else:
-            self.label.set_text('\\' + command['command'])
+            command_text = GLib.markup_escape_text(command['command'])
+
+        self.dotlabels = filter(None, command['dotlabels'].split('###'))
+        for dotlabel in self.dotlabels:
+            command_text = command_text.replace('•', '<span alpha="60%">' + GLib.markup_escape_text(dotlabel) + '</span>', 1)
+
+        self.label = Gtk.Label()
+        self.label.set_markup(command_text)
         self.label.get_style_context().add_class('monospace')
         self.pack_start(self.label, True, True, 0)
         self.show_all()

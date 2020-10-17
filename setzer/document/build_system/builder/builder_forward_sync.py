@@ -19,18 +19,23 @@ import _thread as thread
 import base64
 import subprocess
 
+import setzer.document.build_system.builder.builder_build as builder_build
 from setzer.app.service_locator import ServiceLocator
 
 
-class BuilderForwardSync(object):
+class BuilderForwardSync(builder_build.BuilderBuild):
 
     def __init__(self):
+        builder_build.BuilderBuild.__init__(self)
+
         self.config_folder = ServiceLocator.get_config_folder()
         self.forward_synctex_regex = ServiceLocator.get_regex_object(r'\nOutput:.*\nPage:([0-9]+)\nx:.*\ny:.*\nh:((?:[0-9]|\.)+)\nv:((?:[0-9]|\.)+)\nW:((?:[0-9]|\.)+)\nH:((?:[0-9]|\.)+)\nbefore:.*\noffset:.*\nmiddle:.*\nafter:.*')
 
         self.process = None
 
     def run(self, query):
+        tex_filename = query.forward_sync_data['build_pathname']
+
         try: build_pathname = query.forward_sync_data['build_pathname']
         except KeyError: build_pathname = None
 
@@ -45,7 +50,12 @@ class BuilderForwardSync(object):
         arguments.append(query.tex_filename[:-3] + 'pdf')
         arguments.append('-d')
         arguments.append(synctex_folder)
-        self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        try:
+            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except FileNotFoundError:
+            self.move_build_files(query, tex_filename)
+            self.throw_build_error(query, 'interpreter_not_working', 'synctex missing')
+            return
         self.process.wait()
         raw = self.process.communicate()[0].decode('utf-8')
         self.process = None

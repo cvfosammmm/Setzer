@@ -20,6 +20,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import GObject
 
 import os.path
+import re
 import time
 import xml.etree.ElementTree as ET
 
@@ -36,34 +37,37 @@ class AutocompleteProvider(object):
         self.packages_dict = packages_dict
 
         self.static_proposals = dict()
+        self.static_begin_end_proposals = dict()
         self.dynamic_word_beginnings = list()
+        self.begin_end_commands = dict()
         self.included_files_labels = dict()
 
         self.ref_types = dict()
         self.ref_types['references'] = list()
-        self.ref_types['references'].append(('ref', _('Reference to \'{label}\''), _('Reference')))
-        self.ref_types['references'].append(('pageref', _('Reference to page of \'{label}\''), _('Page reference')))
-        self.ref_types['references'].append(('eqref', _('Reference to \'{label}\', with parantheses'), _('Reference with parantheses')))
+        self.ref_types['references'].append(('\\ref', _('Reference to \'{label}\''), _('Reference')))
+        self.ref_types['references'].append(('\\pageref', _('Reference to page of \'{label}\''), _('Page reference')))
+        self.ref_types['references'].append(('\\eqref', _('Reference to \'{label}\', with parantheses'), _('Reference with parantheses')))
         self.ref_types['citations'] = list()
-        self.ref_types['citations'].append(('cite', _('Cite \'{label}\''), _('Citation')))
-        self.ref_types['citations'].append(('citet', _('Cite \'{label}\' (abbreviated)'), _('Citation (abbreviated)')))
-        self.ref_types['citations'].append(('citep', _('Cite \'{label}\' (abbreviated with brackets)'), _('Citation (abbreviated with brackets)')))
-        self.ref_types['citations'].append(('citet*', _('Cite \'{label}\' (detailed)'), _('Citation (detailed)')))
-        self.ref_types['citations'].append(('citep*', _('Cite \'{label}\' (detailed with brackets)'), _('Citation (detailed with brackets)')))
-        self.ref_types['citations'].append(('citealt', _('Cite \'{label}\' (alternative style 1)'), _('Citation (alternative style 1)')))
-        self.ref_types['citations'].append(('citealp', _('Cite \'{label}\' (alternative style 2)'), _('Citation (alternative style 2)')))
-        self.ref_types['citations'].append(('citeauthor', _('Cite \'{label}\' (author)'), _('Citation (author)')))
-        self.ref_types['citations'].append(('citeauthor*', _('Cite \'{label}\' (author detailed)'), _('Citation (author detailed)')))
-        self.ref_types['citations'].append(('citeyear', _('Cite \'{label}\' (year)'), _('Citation (year)')))
-        self.ref_types['citations'].append(('citeyearpar', _('Cite \'{label}\' (year with brackets)'), _('Citation (year with brackets)')))
+        self.ref_types['citations'].append(('\\cite', _('Cite \'{label}\''), _('Citation')))
+        self.ref_types['citations'].append(('\\citet', _('Cite \'{label}\' (abbreviated)'), _('Citation (abbreviated)')))
+        self.ref_types['citations'].append(('\\citep', _('Cite \'{label}\' (abbreviated with brackets)'), _('Citation (abbreviated with brackets)')))
+        self.ref_types['citations'].append(('\\citet*', _('Cite \'{label}\' (detailed)'), _('Citation (detailed)')))
+        self.ref_types['citations'].append(('\\citep*', _('Cite \'{label}\' (detailed with brackets)'), _('Citation (detailed with brackets)')))
+        self.ref_types['citations'].append(('\\citealt', _('Cite \'{label}\' (alternative style 1)'), _('Citation (alternative style 1)')))
+        self.ref_types['citations'].append(('\\citealp', _('Cite \'{label}\' (alternative style 2)'), _('Citation (alternative style 2)')))
+        self.ref_types['citations'].append(('\\citeauthor', _('Cite \'{label}\' (author)'), _('Citation (author)')))
+        self.ref_types['citations'].append(('\\citeauthor*', _('Cite \'{label}\' (author detailed)'), _('Citation (author detailed)')))
+        self.ref_types['citations'].append(('\\citeyear', _('Cite \'{label}\' (year)'), _('Citation (year)')))
+        self.ref_types['citations'].append(('\\citeyearpar', _('Cite \'{label}\' (year with brackets)'), _('Citation (year with brackets)')))
         self.ref_types['usepackage'] = list()
-        self.ref_types['usepackage'].append(('usepackage',))
+        self.ref_types['usepackage'].append(('\\usepackage',))
 
         self.last_command = None
         self.last_dynamic_proposals = list()
 
         self.generate_dynamic_word_beginnings()
         self.generate_static_proposals()
+        self.generate_static_begin_end_proposals()
         self.parse_included_files()
         GObject.timeout_add(2000, self.parse_included_files)
 
@@ -72,14 +76,14 @@ class AutocompleteProvider(object):
 
         items_all = self.get_items(current_word)
 
-        if len(items_all) != 1 or current_word[1:].lower() != items_all[0]['command']:
+        if len(items_all) != 1 or current_word.lower() != items_all[0]['command']:
             count = 0
             items_rest = list()
             for item in items_all:
                 if last_tabbed_command != None and last_tabbed_command == item['command']:
                     items.insert(0, item)
                     count += 1
-                elif item['command'][:len(current_word) - 1] == current_word[1:]:
+                elif item['command'][:len(current_word)] == current_word:
                     items.append(item)
                     count += 1
                 else:
@@ -90,9 +94,21 @@ class AutocompleteProvider(object):
 
         return items
 
+    def get_begin_end_items(self, word, last_tabbed_command):
+        try: items_all = self.static_begin_end_proposals[word.lower()]
+        except KeyError: items = list()
+        else:
+            items = list()
+            for item in items_all:
+                if last_tabbed_command != None and last_tabbed_command == item['command']:
+                    items.insert(0, item)
+                else:
+                    items.append(item)
+        return items
+
     def get_items(self, word):
         items = list()
-        try: static_items = self.static_proposals[word[1:].lower()]
+        try: static_items = self.static_proposals[word.lower()]
         except KeyError: static_items = list()
         dynamic_items = self.get_dynamic_items(word)
         add_dynamic = True
@@ -134,7 +150,7 @@ class AutocompleteProvider(object):
 
         for ref_type in ref_types:
             if len(dynamic_items) >= 20: break
-            self.append_to_dynamic_items(word, dynamic_items, ref_type, labels)
+            self.append_to_dynamic_items(word, dynamic_items, ref_type, labels, 'label')
         return dynamic_items
 
     def get_dynamic_bibliography_commands(self, word):
@@ -145,7 +161,7 @@ class AutocompleteProvider(object):
 
         for ref_type in ref_types:
             if len(dynamic_items) >= 20: break
-            self.append_to_dynamic_items(word, dynamic_items, ref_type, labels)
+            self.append_to_dynamic_items(word, dynamic_items, ref_type, labels, 'keylist')
         return dynamic_items
 
     def get_dynamic_usepackage_commands(self, word):
@@ -154,8 +170,8 @@ class AutocompleteProvider(object):
             if len(dynamic_items) >= 20: break
 
             description = ''
-            command = {'command': 'usepackage' + '{' + package['command'] + '}', 'description': package['description']}
-            if command['command'][:len(word) - 1] == word[1:].lower():
+            command = {'command': '\\usepackage' + '{' + package['command'] + '}', 'description': package['description'], 'dotlabels': ''}
+            if command['command'][:len(word)] == word.lower():
                 if command['command'] not in [item['command'] for item in dynamic_items]:
                     dynamic_items.append(command)
         return dynamic_items
@@ -207,16 +223,18 @@ class AutocompleteProvider(object):
         labels = ['•'] + list(labels_first) + list(labels_second) + list(labels_rest)
         return labels
 
-    def append_to_dynamic_items(self, word, items, ref_type, labels):
+    def append_to_dynamic_items(self, word, items, ref_type, labels, parlabel):
         for label in iter(labels):
             if len(items) >= 20: break
 
             if label == '•':
                 description = ref_type[2]
+                dotlabels = parlabel
             else:
                 description = ref_type[1].format(label=label)
-            command = {'command': ref_type[0] + '{' + label + '}', 'description': description}
-            if command['command'][:len(word) - 1] == word[1:].lower():
+                dotlabels = ''
+            command = {'command': ref_type[0] + '{' + label + '}', 'description': description, 'dotlabels': dotlabels}
+            if command['command'][:len(word)] == word.lower():
                 if command['command'] not in [item['command'] for item in items]:
                     items.append(command)
 
@@ -275,8 +293,19 @@ class AutocompleteProvider(object):
             self.dynamic_word_beginnings[ref_types_type] = list()
             for command in self.ref_types[ref_types_type]:
                 command = command[0] + '{'
-                for i in range(1, len(command) + 1):
-                    self.dynamic_word_beginnings[ref_types_type].append('\\' + command[:i])
+                for i in range(2, len(command) + 1):
+                    self.dynamic_word_beginnings[ref_types_type].append(command[:i])
+
+    def generate_static_begin_end_proposals(self):
+        commands = self.begin_end_commands
+        self.static_begin_end_proposals = dict()
+        for command in commands.values():
+            for i in range(1, len(command['command']) + 1):
+                try:
+                    if len(self.static_begin_end_proposals[command['command'][0:i].lower()]) < 20:
+                        self.static_begin_end_proposals[command['command'][0:i].lower()].append(command)
+                except KeyError:
+                    self.static_begin_end_proposals[command['command'][0:i].lower()] = [command]
 
     #@timer.timer
     def generate_static_proposals(self):
@@ -284,7 +313,7 @@ class AutocompleteProvider(object):
         self.static_proposals = dict()
         for command in commands.values():
             if not command['lowpriority']:
-                for i in range(1, len(command['command']) + 1):
+                for i in range(2, len(command['command']) + 1):
                     try:
                         if len(self.static_proposals[command['command'][0:i].lower()]) < 20:
                             self.static_proposals[command['command'][0:i].lower()].append(command)
@@ -292,7 +321,7 @@ class AutocompleteProvider(object):
                         self.static_proposals[command['command'][0:i].lower()] = [command]
         for command in commands.values():
             if command['lowpriority']:
-                for i in range(1, len(command['command']) + 1):
+                for i in range(2, len(command['command']) + 1):
                     try:
                         if len(self.static_proposals[command['command'][0:i].lower()]) < 20:
                             self.static_proposals[command['command'][0:i].lower()].append(command)
@@ -307,7 +336,11 @@ class AutocompleteProvider(object):
             root = tree.getroot()
             for child in root:
                 attrib = child.attrib
-                commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description'], 'lowpriority': True if attrib['lowpriority'] == "True" else False}
+                commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description'], 'lowpriority': True if attrib['lowpriority'] == "True" else False, 'dotlabels': attrib['dotlabels']}
+                match = re.match(r'\\begin\{([^\}]+)\}', attrib['name'])
+                if match:
+                    name = match.group(1)
+                    self.begin_end_commands[name] = {'command': name, 'description': '', 'lowpriority': False, 'dotlabels': ''}
         return commands
 
 

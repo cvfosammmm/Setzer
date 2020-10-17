@@ -20,6 +20,7 @@ import time
 
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
+import setzer.document.context_menu.context_menu as context_menu
 import setzer.document.build_system.build_system as build_system
 import setzer.document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
 import setzer.document.document_viewgtk as document_view
@@ -51,8 +52,11 @@ class Document(Observable):
         self.save_date = None
         self.deleted = False
         self.last_activated = 0
+        self.dark_mode = False
 
         self.parser = None
+        self.autocomplete = None
+        self.build_system = None
         self.source_buffer = source_buffer.SourceBuffer(self)
         self.source_buffer.connect('changed', self.on_buffer_changed)
 
@@ -67,16 +71,19 @@ class Document(Observable):
 
         if self.parser != None:
             self.parser.on_buffer_changed()
-        if self.source_buffer.get_end_iter().get_offset() > 0:
+        if self.is_empty():
             self.add_change_code('document_not_empty')
         else:
             self.add_change_code('document_empty')
 
-    def set_dark_mode(self, dark_mode):
-        self.set_use_dark_scheme(dark_mode)
+        if self.autocomplete != None:
+            self.autocomplete.on_buffer_changed(buffer)
 
-    def set_use_dark_scheme(self, use_dark_scheme):
-        self.get_buffer().set_use_dark_scheme(use_dark_scheme)
+        self.source_buffer.update_placeholder_selection()
+
+    def set_dark_mode(self, dark_mode):
+        self.dark_mode = dark_mode
+        self.get_buffer().set_use_dark_scheme(dark_mode)
 
     def get_buffer(self):
         return self.source_buffer
@@ -106,7 +113,7 @@ class Document(Observable):
     def set_displayname(self, displayname):
         self.displayname = displayname
         self.add_change_code('displayname_change')
-        
+
     def get_last_activated(self):
         return self.last_activated
         
@@ -115,7 +122,7 @@ class Document(Observable):
         
     def get_modified(self):
         return self.get_buffer().get_modified()
-        
+
     def populate_from_filename(self):
         if self.filename == None: return False
         if not os.path.isfile(self.filename):
@@ -125,12 +132,8 @@ class Document(Observable):
 
         with open(self.filename) as f:
             text = f.read()
-        source_buffer = self.get_buffer()
-        source_buffer.begin_not_undoable_action()
-        source_buffer.set_text(text)
-        source_buffer.end_not_undoable_action()
-        source_buffer.set_modified(False)
-        source_buffer.place_cursor(source_buffer.get_start_iter())
+        self.initially_set_text(text)
+        self.place_cursor(0, 0)
         self.update_save_date()
         return True
                 
@@ -155,20 +158,47 @@ class Document(Observable):
     def get_deleted_on_disk(self):
         return not os.path.isfile(self.filename)
 
+    def initially_set_text(self, text):
+        self.get_buffer().initially_set_text(text)
+
     def get_text(self):
         return self.get_buffer().get_all_text()
 
     def get_text_after_offset(self, offset):
         return self.get_buffer().get_text_after_offset(offset)
 
+    def get_line_at_cursor(self):
+        return self.get_buffer().get_line_at_cursor()
+
     def get_line(self, line_number):
         return self.get_buffer().get_line(line_number)
+
+    def is_empty(self):
+        return self.source_buffer.is_empty()
 
     def set_initial_folded_regions(self, folded_regions):
         self.code_folding.set_initial_folded_regions(folded_regions)
         
     def place_cursor(self, line_number, offset=0):
         self.get_buffer().place_cursor_and_scroll(line_number, offset)
+
+    def get_cursor_offset(self):
+        return self.get_buffer().get_cursor_offset()
+
+    def get_cursor_line_offset(self):
+        return self.get_buffer().get_cursor_line_offset()
+
+    def cursor_inside_latex_command_or_at_end(self):
+        current_word = self.get_latex_command_at_cursor()
+        if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
+            return True
+        return False
+
+    def cursor_at_latex_command_end(self):
+        current_word = self.get_latex_command_at_cursor()
+        if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
+            return self.get_buffer().cursor_ends_word()
+        return False
 
     def insert_before_document_end(self, text):
         self.get_buffer().insert_before_document_end(text)
@@ -182,26 +212,14 @@ class Document(Observable):
     def insert_text(self, line_number, offset, text, indent_lines=True):
         self.get_buffer().insert_text(line_number, offset, text, indent_lines)
 
-    def insert_text_at_iter(self, insert_iter, text, indent_lines=True):
-        self.get_buffer().insert_text_at_iter(insert_iter, text, indent_lines)
-
     def insert_text_at_cursor(self, text, indent_lines=True, scroll=True, select_dot=True):
         self.get_buffer().insert_text_at_cursor(text, indent_lines, scroll, select_dot)
 
-    def replace_range(self, start_iter, end_iter, text, indent_lines=True, select_dot=True):
-        self.get_buffer().replace_range(start_iter, end_iter, text, indent_lines, select_dot)
+    def replace_range(self, offset, length, text, indent_lines=True, select_dot=True):
+        self.get_buffer().replace_range_by_offset_and_length(offset, length, text, indent_lines, select_dot)
 
     def insert_before_after(self, before, after):
         self.get_buffer().insert_before_after(before, after)
-
-    def get_line_height(self):
-        return self.get_buffer().get_line_height()
-
-    def get_char_width(self):
-        return self.get_buffer().get_char_width()
-
-    def get_char_dimensions(self):
-        return self.get_buffer().get_char_dimensions()
 
 
 class LaTeXDocument(Document):
@@ -235,17 +253,41 @@ class LaTeXDocument(Document):
         self.build_widget = build_widget.BuildWidget(self)
 
         self.autocomplete = autocomplete.Autocomplete(self, self.view)
+        self.view.scrolled_window.get_vadjustment().connect('value-changed', self.autocomplete.on_adjustment_value_changed)
+        self.view.scrolled_window.get_hadjustment().connect('value-changed', self.autocomplete.on_adjustment_value_changed)
+        self.view.source_view.connect('focus-out-event', self.autocomplete.on_focus_out)
+        self.view.source_view.connect('focus-in-event', self.autocomplete.on_focus_in)
+
         self.build_system = build_system.BuildSystem(self)
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
         self.code_folding = code_folding.CodeFolding(self)
         self.controller = document_controller.DocumentController(self, self.view)
+        self.context_menu = context_menu.ContextMenu(self, self.view)
 
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = latex_parser.LaTeXParser(self)
 
         self.update_can_forward_sync()
         self.update_can_backward_sync()
+
+    def get_latex_command_at_cursor(self):
+        return self.source_buffer.get_latex_command_at_cursor()
+
+    def get_latex_command_at_cursor_offset(self):
+        return self.source_buffer.get_latex_command_at_cursor_offset()
+
+    def replace_latex_command_at_cursor(self, command, dotlabels, is_full_command=False):
+        self.source_buffer.replace_latex_command_at_cursor(command, dotlabels, is_full_command)
+
+    def get_matching_begin_end_offset(self, orig_offset):
+        blocks = self.parser.get_blocks_now()
+        for block in blocks:
+            if block[0] == orig_offset - 7:
+                return None if block[1] == None else block[1] + 5
+            elif block[1] == orig_offset - 5:
+                return None if block[0] == None else block[0] + 7
+        return None
 
     def change_build_state(self, state):
         self.build_state = state
@@ -379,11 +421,10 @@ class BibTeXDocument(Document):
         self.document_switcher_item = document_switcher_item.DocumentSwitcherItemBibTeX(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
 
-        self.autocomplete = None
-        self.build_system = None
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
+        self.context_menu = context_menu.ContextMenu(self, self.view)
 
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = bibtex_parser.BibTeXParser(self)

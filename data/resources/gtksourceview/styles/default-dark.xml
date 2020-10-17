@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+This file is part of Setzer and licensed under GPL version 3 or later (see below).
+Copyright (C) 2018 Robert Griesel
+
+It is based on the Tango Scheme in GtkSourceView (LGPL license)
+and the Gnome Builder Scheme (license: GPL version 3 or later):
+
+Copyright (C) 2006-2007 GtkSourceView team
+Author: Michael Monreal <michael.monreal@gmail.com>
+
+and
+
+Copyright (C) 2014 Christian Hergert <christian@hergert.me>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>
+
+-->
+<style-scheme id="default-dark" _name="default-dark" version="1.0">
+  <author>Robert Griesel</author>
+  <_description>Color scheme using Tango color palette</_description>
+
+  <color name="white"                       value="#ffffff"/>
+  <color name="chameleon2"                  value="#73d216"/>
+  <color name="chameleon3"                  value="#4e9a06"/>
+  <color name="orange1"                     value="#fcaf3e"/>
+  <color name="skyblue1"                    value="#729fcf"/>
+  <color name="plum1"                       value="#ad7fa8"/>
+  <color name="plum3"                       value="#5c3566"/>
+  <color name="scarletred3"                 value="#a40000"/>
+  <color name="aluminium1"                  value="#eeeeec"/>
+  <color name="aluminium3"                  value="#babdb6"/>
+  <color name="aluminium4"                  value="#888a85"/>
+  <color name="aluminium6"                  value="#2e3436"/>
+  <color name="dark4"                       value="#3e3e3e"/>
+
+  <!-- Global Settings -->
+  <style name="current-line"                background="dark4"/>
+  <style name="draw-spaces"                 foreground="aluminium3"/>
+  <style name="background-pattern"          background="#f3f3f3"/>
+  <style name="current-line-number"         background="dark4"/>
+  <style name="text"                        foreground="white"/>
+  <style name="line-numbers"                use-style="text"/>
+
+  <!-- Bracket Matching -->
+  <style name="bracket-match"               foreground="white" background="aluminium4" bold="true"/>
+  <style name="bracket-mismatch"            foreground="aluminium1" background="scarletred3"/>
+
+  <!-- Right Margin -->
+  <style name="right-margin"                foreground="aluminium6" background="aluminium6"/>
+
+  <!-- Search Matching -->
+  <style name="search-match"                background="chameleon3" foreground="aluminium1"/>
+
+  <!-- Comments -->
+  <style name="def:comment"                 foreground="aluminium4"/>
+  <style name="def:shebang"                 foreground="aluminium4" bold="true"/>
+  <style name="def:doc-comment-element"     italic="true"/>
+
+  <!-- Constants -->
+  <style name="def:constant"                foreground="plum1"/>
+  <style name="def:special-char"            foreground="plum3"/>
+
+  <!-- Identifiers -->
+  <style name="def:identifier"              foreground="skyblue1"/>
+
+  <!-- Statements -->
+  <style name="def:statement"               foreground="orange1" bold="true"/>
+
+  <!-- Types -->
+  <style name="def:type"                    foreground="orange1" bold="true"/>
+
+  <!-- Others -->
+  <style name="def:preprocessor"            foreground="orange1"/>
+  <style name="def:error"                   background="chameleon3" bold="true"/>
+  <style name="def:warning"                 background="plum1"/>
+  <style name="def:note"                    background="orange1" bold="true"/>
+  <style name="def:underlined"              italic="true" underline="single"/>
+
+  <!-- Language specific -->
+  <style name="latex:command"               foreground="skyblue1" bold="true"/>
+
+  <style name="latex:usepackage"            foreground="skyblue1" bold="true"/>
+  <style name="latex:pkg-name"              use-style="text"/>
+  <style name="latex:special-char"          foreground="plum3"/>
+
+  <style name="latex:display-math"          foreground="chameleon2"/>
+  <style name="latex:math-boundary"         foreground="chameleon2" bold="true"/>
+  <style name="latex:math-super-sub-script" foreground="chameleon2" bold="true"/>
+  <style name="latex:math-command"          foreground="chameleon2" bold="true"/>
+  <style name="latex:math-special-char"     foreground="chameleon2"/>
+
+  <style name="latex:begin-end-command"     foreground="skyblue1" bold="true"/>
+  <style name="latex:env-name"              foreground="orange1" bold="false"/>
+
+  <style name="latex:include"               foreground="skyblue1" bold="true"/>
+  <style name="latex:included-file"         foreground="orange1" bold="false"/>
+  <style name="latex:section-command"       foreground="skyblue1" bold="true"/>
+  <style name="latex:section"               foreground="orange1" bold="false"/>
+
+  <style name="latex:verbatim"              foreground="chameleon2" bold="false"/>
+
+</style-scheme>
