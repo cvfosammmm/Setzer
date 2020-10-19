@@ -215,13 +215,13 @@ class SessionDefault(object):
         command_bracket_count = self.get_command_bracket_count(command)
 
         matches_group = list()
-        line_regex = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})(?:\{([^\{\[\|\(\\]+)\}|\[([^\{\[\|\(\\]+)\]|\|([^\{\[\|\(\\]+)\||\(([^\{\[\|\(\\]+)\))*')
+        line_regex = ServiceLocator.get_regex_object(r'((?:\\){0,1}\w*(?:\*){0,1})(?:\{([^\{\[\|\(]+)\}|\[([^\{\[\|\(\\]+)\]|\|([^\{\[\|\(\\]+)\||\(([^\{\[\|\(\\]+)\))*')
         line_match = line_regex.match(line_part)
         if line_match == None: return None
         if not line_regex.fullmatch(command): return None
 
         line_part = line_part[:line_match.end()]
-        line_regex = ServiceLocator.get_regex_object(r'(\w*)|\{([^\{\[\|\(\\]+)\}|\[([^\{\[\|\(\\]+)\]|\|([^\{\[\|\(\\]+)\||\(([^\{\[\|\(\\]+)\)')
+        line_regex = ServiceLocator.get_regex_object(r'(\w*)|\{([^\{\[\|\(]+)\}|\[([^\{\[\|\(\\]+)\]|\|([^\{\[\|\(\\]+)\||\(([^\{\[\|\(\\]+)\)')
         bracket_count = 0
         command_regex_pattern = r'(\w*(?:\*){0,1})'
         for match in line_regex.finditer(line_part):
