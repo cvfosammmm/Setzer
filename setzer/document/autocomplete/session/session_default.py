@@ -199,12 +199,14 @@ class SessionDefault(object):
         text = command['command']
 
         replacement_pattern = self.get_replacement_pattern(text)
-        if replacement_pattern != None:
+        if replacement_pattern == None:
+            self.autocomplete.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
+        else:
             command_regex = ServiceLocator.get_regex_object(r'.*' + replacement_pattern[1])
             if command_regex.match(text):
                 self.insert_final_replace(text, replacement_pattern)
-                return
-        self.autocomplete.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
+            else:
+                self.autocomplete.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
 
     def get_replacement_pattern(self, command):
         buffer = self.autocomplete.document.get_buffer()
@@ -215,28 +217,28 @@ class SessionDefault(object):
         matches_group = list()
         line_regex = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})(?:\{([^\{\[\|\(\\]+)\}|\[([^\{\[\|\(\\]+)\]|\|([^\{\[\|\(\\]+)\||\(([^\{\[\|\(\\]+)\))*')
         line_match = line_regex.match(line_part)
-        if line_match == None:
-            return None
-        else:
-            line_part = line_part[:line_match.end()]
-            line_regex = ServiceLocator.get_regex_object(r'(\w*)|\{([^\{\[\|\(\\]+)\}|\[([^\{\[\|\(\\]+)\]|\|([^\{\[\|\(\\]+)\||\(([^\{\[\|\(\\]+)\)')
-            bracket_count = 0
-            command_regex_pattern = r'(\w*(?:\*){0,1})'
-            for match in line_regex.finditer(line_part):
-                if match.group(0).startswith('{') and bracket_count < command_bracket_count:
-                    command_regex_pattern += r'\{([^\{\[\|\(]+)\}'
-                    bracket_count += 1
-                if match.group(0).startswith('[') and bracket_count < command_bracket_count:
-                    command_regex_pattern += r'\[([^\{\[\|\(]+)\]'
-                    bracket_count += 1
-                if match.group(0).startswith('|') and bracket_count < command_bracket_count:
-                    command_regex_pattern += r'\|([^\{\[\|\(]+)\|'
-                    bracket_count += 1
-                if match.group(0).startswith('(') and bracket_count < command_bracket_count:
-                    command_regex_pattern += r'\(([^\{\[\|\(]+)\)'
-                    bracket_count += 1
-            line_match = ServiceLocator.get_regex_object(command_regex_pattern).match(line_part)
-            return (line_match, command_regex_pattern)
+        if line_match == None: return None
+        if not line_regex.fullmatch(command): return None
+
+        line_part = line_part[:line_match.end()]
+        line_regex = ServiceLocator.get_regex_object(r'(\w*)|\{([^\{\[\|\(\\]+)\}|\[([^\{\[\|\(\\]+)\]|\|([^\{\[\|\(\\]+)\||\(([^\{\[\|\(\\]+)\)')
+        bracket_count = 0
+        command_regex_pattern = r'(\w*(?:\*){0,1})'
+        for match in line_regex.finditer(line_part):
+            if match.group(0).startswith('{') and bracket_count < command_bracket_count:
+                command_regex_pattern += r'\{([^\{\[\|\(]+)\}'
+                bracket_count += 1
+            if match.group(0).startswith('[') and bracket_count < command_bracket_count:
+                command_regex_pattern += r'\[([^\{\[\|\(]+)\]'
+                bracket_count += 1
+            if match.group(0).startswith('|') and bracket_count < command_bracket_count:
+                command_regex_pattern += r'\|([^\{\[\|\(]+)\|'
+                bracket_count += 1
+            if match.group(0).startswith('(') and bracket_count < command_bracket_count:
+                command_regex_pattern += r'\(([^\{\[\|\(]+)\)'
+                bracket_count += 1
+        line_match = ServiceLocator.get_regex_object(command_regex_pattern).match(line_part)
+        return (line_match, command_regex_pattern)
 
     def get_command_bracket_count(self, command):
         count = 0

@@ -450,7 +450,7 @@ class SourceBuffer(GtkSource.Buffer):
                     text += '\n' + whitespace
                 text += line
 
-        parts = list(filter(None, text.split('•')))
+        parts = text.split('•')
         if len(parts) == 1:
             orig_text = self.get_text(start_iter, insert_iter, False)
             if parts[0].startswith(orig_text):
