@@ -180,6 +180,7 @@ class ShortcutsBar(Gtk.HBox):
         self.pmb.add_separator(box)
         self.pmb.add_action_button(box, _('Environment'), 'win.insert-before-after', ['\\begin{•}\n\t', '\n\\end{•}'], keyboard_shortcut=_('Ctrl') + '+E')
         self.pmb.add_action_button(box, _('Verbatim Environment'), 'win.insert-before-after', ['\\begin{verbatim}\n\t', '\n\\end{verbatim}'])
+        self.pmb.add_menu_button(box, _('List Environments'), 'list_environments')
         self.pmb.add_menu_button(box, _('Quotations'), 'quotations')
         self.pmb.add_separator(box)
         self.pmb.add_menu_button(box, _('Cross References'), 'cross_references')
@@ -225,6 +226,7 @@ class ShortcutsBar(Gtk.HBox):
         self.pmb.add_action_button(box, _('New Line')+ ' (\\\\)', 'win.insert-symbol', ['\\\\\n'], keyboard_shortcut=_('Ctrl') + '+Return')
         stack.add_named(box, 'vertical_spacing')
         box.show_all()
+
         # international accents submenu
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
@@ -244,6 +246,17 @@ class ShortcutsBar(Gtk.HBox):
         for citation_style in [(_('Part') + '*', '\\part*{•}'), (_('Chapter')+'*', '\\chapter*{•}'), (_('Section')+'*', '\\section*{•}'), (_('Subsection')+'*', '\\subsection*{•}'), (_('Subsubsection')+'*', '\\subsubsection*{•}'), (_('Paragraph')+'*', '\\paragraph*{•}'), (_('Subparagraph')+'*', '\\subparagraph*{•}')]:
             self.pmb.add_action_button(box, citation_style[0], 'win.insert-symbol', [citation_style[1]])
         stack.add_named(box, 'sectioning')
+        box.show_all()
+
+        # list environments submenu
+        box = Gtk.VBox()
+        self.pmb.set_box_margin(box)
+        self.pmb.add_header_button(box, _('List Environments'))
+        for list_type in [[_('Bulleted List') + ' (itemize)', 'itemize'], [_('Numbered List') + ' (enumerate)', 'enumerate'], [_('List with Bold Labels') + ' (description)', 'description']]:
+            self.pmb.add_action_button(box, list_type[0], 'win.insert-before-after', ['\\begin{' + list_type[1] + '}\n\t', '\n\\end{' + list_type[1] + '}'])
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, _('List Item'), 'win.insert-symbol', ['\\item •'], keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+I')
+        stack.add_named(box, 'list_environments')
         box.show_all()
 
         # quotations submenu
@@ -415,7 +428,6 @@ class ShortcutsBar(Gtk.HBox):
         self.pmb.add_action_button(box, _('Figure (image inside freestanding block)'), 'win.insert-symbol', ['\\begin{figure}\n\t\\begin{center}\n\t\t\\includegraphics[scale=1]{•}\n\t\t\\caption{•}\n\t\\end{center}\n\\end{figure}'])
         self.pmb.add_action_button(box, _('Inline Image'), 'win.insert-symbol', ['\\includegraphics[scale=1]{•}'])
         self.pmb.add_menu_button(box, _('Code Listing'), 'code_listing')
-        self.pmb.add_menu_button(box, _('List Environments'), 'list_environments')
         stack.add_named(box, 'main')
         box.show_all()
 
@@ -431,17 +443,6 @@ class ShortcutsBar(Gtk.HBox):
         self.pmb.add_action_button(box, _('Other Language'), 'win.insert-before-after', ['\\lstset{language=•}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
         self.pmb.add_action_button(box, _('Plain Text'), 'win.insert-before-after', ['\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
         stack.add_named(box, 'code_listing')
-        box.show_all()
-
-        # list environments submenu
-        box = Gtk.VBox()
-        self.pmb.set_box_margin(box)
-        self.pmb.add_header_button(box, _('List Environments'))
-        for list_type in [[_('Bulleted List') + ' (itemize)', 'itemize'], [_('Numbered List') + ' (enumerate)', 'enumerate'], [_('List with Bold Labels') + ' (description)', 'description']]:
-            self.pmb.add_action_button(box, list_type[0], 'win.insert-before-after', ['\\begin{' + list_type[1] + '}\n\t', '\n\\end{' + list_type[1] + '}'])
-        self.pmb.add_separator(box)
-        self.pmb.add_action_button(box, _('List Item'), 'win.insert-symbol', ['\\item •'], keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+I')
-        stack.add_named(box, 'list_environments')
         box.show_all()
 
         button_wrapper = Gtk.ToolItem()
