@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import os.path
+
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -128,7 +130,8 @@ class DocumentSwitcherPresenter(object):
             self.folder_transform_func(self.button.folder_binding, doclist_item.folder)
 
     def folder_transform_func(self, binding, from_value, to_value=None):
-        self.button.document_folder_label.set_text(from_value)
+        folder_text = from_value.replace(os.path.expanduser('~'), '~')
+        self.button.document_folder_label.set_text(folder_text)
         if from_value == '':
             self.button.document_folder_label.hide()
         else:
