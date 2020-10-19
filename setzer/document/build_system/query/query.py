@@ -33,6 +33,7 @@ class Query(object):
         self.synctex_file_lock = thread.allocate_lock()
 
         self.build_data = dict()
+        self.biber_data = {'ran_on_files': []}
         self.forward_sync_data = dict()
         self.backward_sync_data = dict()
         self.tex_filename = None

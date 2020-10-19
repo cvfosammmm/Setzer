@@ -31,9 +31,13 @@ class BuilderBuildBiber(builder_build.BuilderBuild):
 
     def run(self, query):
         tex_filename = query.build_data['tmp_tex_filename']
+        filename = tex_filename.rsplit('/', 1)[1][:-4]
 
         arguments = ['biber']
-        arguments.append(tex_filename.rsplit('/', 1)[1][:-4])
+        arguments.append(filename)
+
+        query.biber_data['ran_on_files'].append(filename)
+
         custom_env = os.environ.copy()
         custom_env['BIBINPUTS'] = os.path.dirname(query.tex_filename) + ':' + os.path.dirname(tex_filename)
         try:

@@ -166,14 +166,16 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
                         line = next(matchiter)
 
                         if line.startswith('No file ') and line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and line.find('.bbl.') >= 0:
-                            query.jobs.insert(0, 'build_bibtex')
-                            return True
+                            if text.find('run Biber') < 0:
+                                query.jobs.insert(0, 'build_bibtex')
+                                return True
 
                         elif line.startswith('Package biblatex Warning: Please (re)run Biber on the file:'):
                             line = next(matchiter)
                             if line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0:
-                                query.jobs.insert(0, 'build_biber')
-                                return True
+                                if not tex_filename.rsplit('/', 1)[1][:-4] in query.biber_data['ran_on_files']:
+                                    query.jobs.insert(0, 'build_biber')
+                                    return True
 
                         elif line.startswith('Package biblatex Warning: Please rerun LaTeX.'):
                             query.jobs.insert(0, 'build_latex')
