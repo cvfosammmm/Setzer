@@ -32,7 +32,7 @@ class DocumentSwitcherPresenter(object):
         self.workspace.register_observer(self)
         self.document_switcher.register_observer(self)
 
-        self.show_document_name(None)
+        self.show_welcome_title()
 
     '''
     *** notification handlers
@@ -50,12 +50,29 @@ class DocumentSwitcherPresenter(object):
             self.view.document_list.remove(document.document_switcher_item.view)
             self.activate_mode(self.document_switcher.mode)
             if self.workspace.active_document == None:
-                self.show_document_name(None)
+                self.show_welcome_title()
+
+        if change_code == 'new_inactive_document':
+            document = parameter
+            document.unregister_observer(self)
 
         if change_code == 'new_active_document':
             document = parameter
             self.show_document_name(document)
             self.view.document_list.invalidate_sort()
+            document.register_observer(self)
+
+        if change_code == 'modified_changed':
+            document = notifying_object
+            self.show_document_name(document)
+
+        if change_code == 'filename_change':
+            document = notifying_object
+            self.show_document_name(document)
+
+        if change_code == 'displayname_change':
+            document = notifying_object
+            self.show_document_name(document)
 
         if change_code == 'docswitcher_mode_change':
             self.activate_mode(parameter)
@@ -106,35 +123,21 @@ class DocumentSwitcherPresenter(object):
         else:
             self.view.set_master_document_button.set_sensitive(False)
 
+    def show_welcome_title(self):
+        self.button.center_button.set_sensitive(False)
+        self.button.set_visible_child_name('welcome')
+
     def show_document_name(self, document):
-        if document == None:
-            self.button.center_button.set_sensitive(False)
-            self.button.set_visible_child_name('welcome')
-        else:
-            doclist_item = document.document_switcher_item.view
-            
-            if self.button.name_binding != None: self.button.name_binding.unbind()
-            self.button.document_name_label.set_text(doclist_item.label.get_text())
-            self.button.name_binding = doclist_item.label.bind_property('label', self.button.document_name_label, 'label', 0)
-            
-            if self.button.folder_binding != None: self.button.folder_binding.unbind()
-            self.button.folder_binding = doclist_item.flabel.bind_property('label', self.button.document_folder_label, 'label', 0, self.folder_transform_func)
-
-            if self.button.mod_binding != None: self.button.mod_binding.unbind()
-            self.button.document_mod_label.set_text(doclist_item.mlabel.get_text())
-            self.button.mod_binding = doclist_item.mlabel.bind_property('label', self.button.document_mod_label, 'label', 0)
-
-            self.button.center_button.set_sensitive(True)
-            self.button.set_visible_child_name('button')
-
-            self.folder_transform_func(self.button.folder_binding, doclist_item.folder)
-
-    def folder_transform_func(self, binding, from_value, to_value=None):
-        folder_text = from_value.replace(os.path.expanduser('~'), '~')
-        self.button.document_folder_label.set_text(folder_text)
-        if from_value == '':
-            self.button.document_folder_label.hide()
-        else:
+        mod_text = '*' if document.get_modified() else ''
+        self.button.document_name_label.set_text(document.get_basename() + mod_text)
+        dirname = document.get_dirname()
+        if dirname != '':
+            folder_text = dirname.replace(os.path.expanduser('~'), '~')
+            self.button.document_folder_label.set_text(folder_text)
             self.button.document_folder_label.show_all()
+        else:
+            self.button.document_folder_label.hide()
+        self.button.center_button.set_sensitive(True)
+        self.button.set_visible_child_name('button')
 
 

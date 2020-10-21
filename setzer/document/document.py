@@ -118,6 +118,12 @@ class Document(Observable):
         self.displayname = displayname
         self.add_change_code('displayname_change')
 
+    def get_basename(self):
+        if self.filename != None:
+            return os.path.basename(self.filename)
+        else:
+            return self.displayname
+
     def get_last_activated(self):
         return self.last_activated
         

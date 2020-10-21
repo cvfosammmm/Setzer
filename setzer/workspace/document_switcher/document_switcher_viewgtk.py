@@ -32,13 +32,9 @@ class OpenDocsButton(Gtk.Stack):
     def __init__(self):
         Gtk.Stack.__init__(self)
 
-        self.mod_binding = None
-        self.document_mod_label = Gtk.Label()
-        self.name_binding = None
         self.document_name_label = Gtk.Label()
         self.document_name_label.get_style_context().add_class('title')
         self.document_name_label.set_ellipsize(Pango.EllipsizeMode.END)
-        self.folder_binding = None
         self.document_folder_label = Gtk.Label()
         self.document_folder_label.get_style_context().add_class('subtitle')
         self.document_folder_label.set_ellipsize(Pango.EllipsizeMode.END)
