@@ -45,23 +45,26 @@ class HeaderbarPresenter(object):
             document = parameter
             if self.workspace.active_document == None:
                 self.activate_blank_slate_mode()
+                self.update_modified_state(None)
+
+        if change_code == 'new_inactive_document':
+            document = parameter
+            document.unregister_observer(self)
 
         if change_code == 'new_active_document':
             document = parameter
-
-            if document.get_modified():
-                self.main_window.headerbar.save_document_button.set_sensitive(True)
-            elif document.get_filename() == None:
-                self.main_window.headerbar.save_document_button.set_sensitive(True)
-            else:
-                self.main_window.headerbar.save_document_button.set_sensitive(False)
 
             if document.is_latex_document():
                 self.activate_latex_documents_mode()
             elif document.is_bibtex_document():
                 self.activate_bibtex_documents_mode()
 
-            self.setup_modified_transform()
+            self.update_modified_state(document)
+            document.register_observer(self)
+
+        if change_code == 'modified_changed':
+            document = notifying_object
+            self.update_modified_state(document)
 
         if change_code == 'update_recently_opened_documents':
             data = parameter.values()
@@ -145,25 +148,20 @@ class HeaderbarPresenter(object):
             if document.build_widget.view.has_result():
                 document.build_widget.view.hide_timer(1600)
 
-    def setup_modified_transform(self):
+    def update_modified_state(self, document):
         headerbar = self.main_window.headerbar
 
-        document = self.workspace.get_active_document()
         if document == None:
             headerbar.save_document_button.set_sensitive(False)
             self.main_window.save_all_action.set_enabled(False)
         else:
-            doclist_item = document.document_switcher_item.view
-            if headerbar.center_widget.mod_binding != None: headerbar.center_widget.mod_binding.unbind()
-            headerbar.center_widget.mod_binding = doclist_item.mlabel.bind_property('label', headerbar.center_widget.document_mod_label, 'label', 0, self.modified_transform_func)
+            if document.get_modified():
+                headerbar.save_document_button.set_sensitive(True)
+            elif document.get_filename() == None:
+                headerbar.save_document_button.set_sensitive(True)
+            else:
+                headerbar.save_document_button.set_sensitive(False)
 
-    def modified_transform_func(self, binding, from_value, to_value=None):
-        headerbar = self.main_window.headerbar
-
-        if from_value == 'False' and headerbar.center_widget.document_folder_label.get_text() != '':
-            headerbar.save_document_button.set_sensitive(False)
-        else:
-            headerbar.save_document_button.set_sensitive(True)
         if self.workspace.get_unsaved_documents() != None:
             self.main_window.save_all_action.set_enabled(True)
         else:

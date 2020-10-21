@@ -59,6 +59,7 @@ class Document(Observable):
         self.build_system = None
         self.source_buffer = source_buffer.SourceBuffer(self)
         self.source_buffer.connect('changed', self.on_buffer_changed)
+        self.source_buffer.connect('modified-changed', self.on_modified_changed)
 
     def set_search_text(self, search_text):
         self.source_buffer.search_settings.set_search_text(search_text)
@@ -80,6 +81,9 @@ class Document(Observable):
             self.autocomplete.on_buffer_changed(buffer)
 
         self.source_buffer.update_placeholder_selection()
+
+    def on_modified_changed(self, buffer):
+        self.add_change_code('modified_changed')
 
     def set_dark_mode(self, dark_mode):
         self.dark_mode = dark_mode
@@ -119,7 +123,7 @@ class Document(Observable):
         
     def set_last_activated(self, date):
         self.last_activated = date
-        
+
     def get_modified(self):
         return self.get_buffer().get_modified()
 
