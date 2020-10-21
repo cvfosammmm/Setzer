@@ -100,7 +100,7 @@ class IncludeLaTeXFile(Dialog):
 
     def get_display_filename(self):
         if self.current_values['pathtype'] == 'rel':
-            document_dir = os.path.dirname(self.document.get_filename())
+            document_dir = self.document.get_dirname()
             return os.path.relpath(self.current_values['filename'], document_dir)
         else:
             return self.current_values['filename']

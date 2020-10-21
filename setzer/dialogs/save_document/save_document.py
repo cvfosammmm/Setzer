@@ -37,7 +37,7 @@ class SaveDocumentDialog(Dialog):
         pathname = document.get_filename()
         if pathname != None:
             self.view.set_current_name(os.path.basename(pathname))
-            self.view.set_current_folder(os.path.dirname(pathname))
+            self.view.set_current_folder(document.get_dirname())
         else:
             self.view.set_current_name('.' + document.get_file_ending())
         response = self.view.run()
