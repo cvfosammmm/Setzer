@@ -142,7 +142,7 @@ class Workspace(Observable):
             document = BibTeXDocument()
         else:
             return None
-        document.set_filename(filename)
+        document.set_filename(os.path.realpath(filename))
         response = document.populate_from_filename()
         if response != False:
             self.add_document(document)
