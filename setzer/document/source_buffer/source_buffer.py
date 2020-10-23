@@ -220,11 +220,16 @@ class SourceBuffer(GtkSource.Buffer):
             text += '\\usepackage{' + packagename + '}'
             first_package = False
         
-        end_iter = self.get_end_iter()
-        result = end_iter.backward_search('\\usepackage', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
-        if result != None:
-            result[0].forward_to_line_end()
-            self.insert_text_at_iter(result[0], '\n' + text)
+        package_data = self.document.parser.symbols['packages_detailed'].items()
+        if package_data:
+            max_end = 0
+            for package in package_data:
+                if package[1].end() > max_end:
+                    max_end = package[1].end()
+            insert_iter = self.get_iter_at_offset(max_end)
+            if not insert_iter.ends_line():
+                insert_iter.forward_to_line_end()
+            self.insert_text_at_iter(insert_iter, '\n' + text)
         else:
             end_iter = self.get_end_iter()
             result = end_iter.backward_search('\\documentclass', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
