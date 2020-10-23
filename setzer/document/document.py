@@ -155,8 +155,8 @@ class Document(Observable):
             if text != None:
                 with open(self.filename, 'w') as f:
                     f.write(text)
-                self.deleted_on_disk_dialog_shown_after_last_save = False
                 self.update_save_date()
+                self.deleted_on_disk_dialog_shown_after_last_save = False
                 self.get_buffer().set_modified(False)
 
     def update_save_date(self):

@@ -15,12 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import gi
-gi.require_version('Gtk', '3.0')
-gi.require_version('Gspell', '1')
-from gi.repository import GLib, Gio
-from gi.repository import Gspell
-
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -38,9 +32,6 @@ class WorkspacePresenter(object):
         self.preview_animating = False
         self.build_log_animating = False
         self.activate_blank_slate_mode()
-        self.font_manager = ServiceLocator.get_font_manager()
-        self.update_zoom_actions()
-        self.font_manager.register_observer(self)
 
         def on_window_state(widget, event): self.on_realize()
         self.main_window.connect('draw', on_window_state)
@@ -129,42 +120,17 @@ class WorkspacePresenter(object):
         if change_code == 'set_dark_mode':
             ServiceLocator.get_settings().gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', parameter)
 
-        if change_code == 'font_string_changed':
-            self.update_zoom_actions()
-
     def activate_blank_slate_mode(self):
         self.main_window.mode_stack.set_visible_child_name('blank_slate')
-        self.main_window.save_all_action.set_enabled(False)
-        self.main_window.spellchecking_action.set_enabled(False)
-        self.main_window.add_remove_packages_dialog_action.set_enabled(False)
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(False)
-        self.set_document_actions_active(False)
 
     def activate_latex_documents_mode(self):
         self.main_window.mode_stack.set_visible_child_name('latex_documents')
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(True)
-        self.set_document_actions_active(True)
-        self.enable_spellchecking_action()
-        self.main_window.add_remove_packages_dialog_action.set_enabled(True)
 
     def activate_bibtex_documents_mode(self):
         self.main_window.mode_stack.set_visible_child_name('bibtex_documents')
         self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(False)
-        self.set_document_actions_active(True)
-        self.main_window.spellchecking_action.set_enabled(False)
-        self.main_window.add_remove_packages_dialog_action.set_enabled(False)
-
-    def enable_spellchecking_action(self):
-        default_language = Gspell.Language.get_default()
-        if default_language != None:
-            self.main_window.spellchecking_action.set_enabled(True)
-
-    def update_zoom_actions(self):
-        normal_font_size = self.font_manager.get_normal_font_size_in_points()
-        current_font_size = self.font_manager.get_font_size_in_points()
-        self.main_window.zoom_out_action.set_enabled(current_font_size / 1.1 > 6)
-        self.main_window.zoom_in_action.set_enabled(current_font_size * 1.1 < 24)
-        self.main_window.reset_zoom_action.set_enabled(current_font_size != normal_font_size)
 
     def update_latex_shortcuts_bar(self):
         document = self.workspace.active_document
@@ -184,24 +150,6 @@ class WorkspacePresenter(object):
             shortcuts_bar.remove(shortcuts_bar.current_bottom)
         shortcuts_bar.current_bottom = document.view.shortcuts_bar_bottom
         shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
-
-    def set_document_actions_active(self, value):
-        self.main_window.save_as_action.set_enabled(value)
-        self.main_window.find_action.set_enabled(value)
-        self.main_window.find_next_action.set_enabled(value)
-        self.main_window.find_prev_action.set_enabled(value)
-        self.main_window.find_replace_action.set_enabled(value)
-        self.main_window.close_document_action.set_enabled(value)
-        self.main_window.close_all_action.set_enabled(value)
-        self.main_window.save_session_action.set_enabled(value)
-        self.main_window.insert_before_after_action.set_enabled(value)
-        self.main_window.insert_symbol_action.set_enabled(value)
-        self.main_window.insert_before_document_end_action.set_enabled(value)
-        self.main_window.include_bibtex_file_action.set_enabled(value)
-        self.main_window.include_latex_file_action.set_enabled(value)
-        self.main_window.add_packages_action.set_enabled(value)
-        self.main_window.comment_uncomment_action.set_enabled(value)
-        self.main_window.document_wizard_action.set_enabled(value)
 
     def focus_active_document(self):
         active_document = self.workspace.get_active_document()

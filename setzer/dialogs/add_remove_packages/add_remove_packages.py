@@ -82,7 +82,7 @@ class AddRemovePackagesDialog(Dialog):
                 self.view.remove_button.hide()
 
         def add_button_clicked(button):
-            self.workspace.controller.add_packages(None, [self.add_package_selection])
+            self.document.add_packages([self.add_package_selection])
             selected_row = self.view.add_list.get_selected_row()
             selected_row_index = selected_row.get_index()
             new_row = self.view.add_list.get_row_at_index(selected_row_index + 1)
@@ -99,7 +99,7 @@ class AddRemovePackagesDialog(Dialog):
                 self.view.add_list.select_row(new_row)
 
         def remove_button_clicked(button):
-            self.workspace.controller.remove_packages(None, [self.remove_package_selection])
+            self.document.remove_packages([self.remove_package_selection])
             selected_row = self.view.remove_list.get_selected_row()
             selected_row_index = selected_row.get_index()
             new_row = self.view.remove_list.get_row_at_index(selected_row_index + 1)

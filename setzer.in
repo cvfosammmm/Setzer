@@ -51,7 +51,7 @@ class MainApplicationController(Gtk.Application):
         ServiceLocator.init_app_icons_path('@app_icons_path@')
 
         # init main window, model, dialogs
-        self.main_window = view.MainWindow(self, self.settings)
+        self.main_window = view.MainWindow(self)
         ServiceLocator.init_main_window(self.main_window)
 
     def do_open(self, files, number_of_files, hint=""):
@@ -117,7 +117,7 @@ class MainApplicationController(Gtk.Application):
 
         # init controller
         self.workspace.init_workspace_controller()
-        self.main_window.quit_action.connect('activate', self.on_quit_action)
+        self.workspace.actions.quit_action.connect('activate', self.on_quit_action)
 
     def on_window_size_allocate(self, main_window, window_size):
         ''' signal handler, update window size variables '''

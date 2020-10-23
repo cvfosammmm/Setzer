@@ -99,7 +99,6 @@ class Shortcuts(object):
         self.accel_group.connect(Gdk.keyval_from_name('F8'), 0, flags, self.shortcut_build_log)
         self.accel_group.connect(Gdk.keyval_from_name('F9'), 0, flags, self.shortcut_sidebar)
         self.accel_group.connect(Gdk.keyval_from_name('F10'), 0, flags, self.shortcut_preview)
-        self.accel_group.connect(Gdk.keyval_from_name('s'), c_mask, flags, self.shortcut_save)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask | s_mask, flags, self.shortcut_switch_document)
 
         # zoom
@@ -112,6 +111,7 @@ class Shortcuts(object):
         self.main_window.app.set_accels_for_action('win.find-next', ['<Control>g'])
         self.main_window.app.set_accels_for_action('win.find-prev', ['<Control><Shift>g'])
         self.main_window.app.set_accels_for_action('win.find-replace', ['<Control>h'])
+        self.main_window.app.set_accels_for_action('win.save', ['<Control>s'])
         self.main_window.app.set_accels_for_action('win.save-as', ['<Control><Shift>s'])
         self.main_window.app.set_accels_for_action('win.close-active-document', ['<Control>w'])
         self.main_window.app.set_accels_for_action('win.spellchecking', ['F7'])
@@ -173,9 +173,6 @@ class Shortcuts(object):
 
     def shortcut_switch_document(self, accel_group=None, window=None, key=None, mask=None):
         self.workspace.switch_to_earliest_open_document()
-
-    def shortcut_save(self, accel_group=None, window=None, key=None, mask=None):
-        self.main_window.headerbar.save_document_button.clicked()
 
     def shortcut_quotes(self, accel_group=None, window=None, key=None, mask=None):
         active_document = self.workspace.get_active_document()

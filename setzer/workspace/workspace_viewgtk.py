@@ -36,7 +36,7 @@ import os
 
 class MainWindow(Gtk.ApplicationWindow):
 
-    def __init__(self, app, settings):
+    def __init__(self, app):
         Gtk.Window.__init__(self, application=app)
         self.app = app
         self.set_size_request(-1, 550)
@@ -129,122 +129,6 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.css_provider_font_size = Gtk.CssProvider()
         self.style_context.add_provider_for_screen(self.get_screen(), self.css_provider_font_size, Gtk.STYLE_PROVIDER_PRIORITY_USER)
-
-        # actions
-        self.new_latex_document_action = Gio.SimpleAction.new('new-latex-document', None)
-        self.add_action(self.new_latex_document_action)
-
-        self.new_bibtex_document_action = Gio.SimpleAction.new('new-bibtex-document', None)
-        self.add_action(self.new_bibtex_document_action)
-
-        self.save_as_action = Gio.SimpleAction.new('save-as', None)
-        self.add_action(self.save_as_action)
-
-        self.save_all_action = Gio.SimpleAction.new('save-all', None)
-        self.add_action(self.save_all_action)
-
-        self.save_session_action = Gio.SimpleAction.new('save-session', None)
-        self.add_action(self.save_session_action)
-
-        self.restore_session_action = Gio.SimpleAction.new('restore-session', GLib.VariantType('as'))
-        self.add_action(self.restore_session_action)
-
-        self.find_action = Gio.SimpleAction.new('find', None)
-        self.add_action(self.find_action)
-
-        self.find_next_action = Gio.SimpleAction.new('find-next', None)
-        self.add_action(self.find_next_action)
-
-        self.find_prev_action = Gio.SimpleAction.new('find-prev', None)
-        self.add_action(self.find_prev_action)
-
-        self.find_replace_action = Gio.SimpleAction.new('find-replace', None)
-        self.add_action(self.find_replace_action)
-
-        self.close_all_action = Gio.SimpleAction.new('close-all-documents', None)
-        self.add_action(self.close_all_action)
-
-        self.close_document_action = Gio.SimpleAction.new('close-active-document', None)
-        self.add_action(self.close_document_action)
-
-        self.insert_before_after_action = Gio.SimpleAction.new('insert-before-after', GLib.VariantType('as'))
-        self.add_action(self.insert_before_after_action)
-
-        self.insert_symbol_action = Gio.SimpleAction.new('insert-symbol', GLib.VariantType('as'))
-        self.add_action(self.insert_symbol_action)
-
-        self.insert_before_document_end_action = Gio.SimpleAction.new('insert-before-document-end', GLib.VariantType('as'))
-        self.add_action(self.insert_before_document_end_action)
-
-        self.document_wizard_action = Gio.SimpleAction.new('show-document-wizard', None)
-        self.add_action(self.document_wizard_action)
-
-        self.create_new_bibtex_entry_action = Gio.SimpleAction.new('create-new-bibtex-entry', None)
-        self.add_action(self.create_new_bibtex_entry_action)
-
-        self.show_previous_bibtex_entries_action = Gio.SimpleAction.new('show-previous-bibtex-entries', None)
-        self.add_action(self.show_previous_bibtex_entries_action)
-
-        self.search_online_for_bibtex_entries_action = Gio.SimpleAction.new('search-online-for-bibtex-entries', None)
-        self.add_action(self.search_online_for_bibtex_entries_action)
-
-        self.include_bibtex_file_action = Gio.SimpleAction.new('include-bibtex-file', None)
-        self.add_action(self.include_bibtex_file_action)
-
-        self.include_latex_file_action = Gio.SimpleAction.new('include-latex-file', None)
-        self.add_action(self.include_latex_file_action)
-
-        self.add_remove_packages_dialog_action = Gio.SimpleAction.new('add-remove-packages-dialog', None)
-        self.add_action(self.add_remove_packages_dialog_action)
-
-        self.add_packages_action = Gio.SimpleAction.new('add-packages', GLib.VariantType('as'))
-        self.add_action(self.add_packages_action)
-
-        self.comment_uncomment_action = Gio.SimpleAction.new('comment-uncomment', None)
-        self.add_action(self.comment_uncomment_action)
-
-        self.shortcuts_window_action = Gio.SimpleAction.new('show-shortcuts-window', None)
-        self.add_action(self.shortcuts_window_action)
-
-        self.show_preferences_action = Gio.SimpleAction.new('show-preferences-dialog', None)
-        self.add_action(self.show_preferences_action)
-
-        self.show_about_action = Gio.SimpleAction.new('show-about-dialog', None)
-        self.add_action(self.show_about_action)
-
-        self.quit_action = Gio.SimpleAction.new('quit', None)
-        self.add_action(self.quit_action)
-
-        self.close_build_log_action = Gio.SimpleAction.new('close-build-log', None)
-        self.add_action(self.close_build_log_action)
-
-        sc_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'inline_spellchecking'))
-        self.toggle_spellchecking_action = Gio.SimpleAction.new_stateful('toggle-spellchecking', None, sc_default)
-        self.add_action(self.toggle_spellchecking_action)
-
-        self.set_spellchecking_language_action = Gio.SimpleAction.new('set-spellchecking-language', None)
-        self.add_action(self.set_spellchecking_language_action)
-
-        self.spellchecking_action = Gio.SimpleAction.new('spellchecking', None)
-        self.add_action(self.spellchecking_action)
-
-        dm_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'prefer_dark_mode'))
-        self.toggle_dark_mode_action = Gio.SimpleAction.new_stateful('toggle-dark-mode', None, dm_default)
-        self.add_action(self.toggle_dark_mode_action)
-        settings.gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', dm_default)
-
-        ip_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'invert_pdf'))
-        self.toggle_invert_pdf_action = Gio.SimpleAction.new_stateful('toggle-invert-pdf', None, ip_default)
-        self.add_action(self.toggle_invert_pdf_action)
-
-        self.zoom_out_action = Gio.SimpleAction.new('zoom-out', None)
-        self.add_action(self.zoom_out_action)
-
-        self.zoom_in_action = Gio.SimpleAction.new('zoom-in', None)
-        self.add_action(self.zoom_in_action)
-
-        self.reset_zoom_action = Gio.SimpleAction.new('reset-zoom', None)
-        self.add_action(self.reset_zoom_action)
 
 
 class DocumentViewWrapper(Gtk.Notebook):

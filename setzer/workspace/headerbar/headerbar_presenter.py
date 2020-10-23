@@ -45,11 +45,6 @@ class HeaderbarPresenter(object):
             document = parameter
             if self.workspace.active_document == None:
                 self.activate_blank_slate_mode()
-                self.update_modified_state(None)
-
-        if change_code == 'new_inactive_document':
-            document = parameter
-            document.unregister_observer(self)
 
         if change_code == 'new_active_document':
             document = parameter
@@ -58,13 +53,6 @@ class HeaderbarPresenter(object):
                 self.activate_latex_documents_mode()
             elif document.is_bibtex_document():
                 self.activate_bibtex_documents_mode()
-
-            self.update_modified_state(document)
-            document.register_observer(self)
-
-        if change_code == 'modified_changed':
-            document = notifying_object
-            self.update_modified_state(document)
 
         if change_code == 'update_recently_opened_documents':
             data = parameter.values()
@@ -147,24 +135,5 @@ class HeaderbarPresenter(object):
             headerbar.build_wrapper.set_center_widget(document.build_widget.view)
             if document.build_widget.view.has_result():
                 document.build_widget.view.hide_timer(1600)
-
-    def update_modified_state(self, document):
-        headerbar = self.main_window.headerbar
-
-        if document == None:
-            headerbar.save_document_button.set_sensitive(False)
-            self.main_window.save_all_action.set_enabled(False)
-        else:
-            if document.get_modified():
-                headerbar.save_document_button.set_sensitive(True)
-            elif document.get_filename() == None:
-                headerbar.save_document_button.set_sensitive(True)
-            else:
-                headerbar.save_document_button.set_sensitive(False)
-
-        if self.workspace.get_unsaved_documents() != None:
-            self.main_window.save_all_action.set_enabled(True)
-        else:
-            self.main_window.save_all_action.set_enabled(False)
 
 

@@ -31,6 +31,7 @@ import setzer.workspace.headerbar.headerbar_presenter as headerbar_presenter
 import setzer.workspace.document_chooser.document_chooser_presenter as document_chooser_presenter
 import setzer.workspace.keyboard_shortcuts.shortcuts as shortcuts
 import setzer.workspace.document_switcher.document_switcher as document_switcher
+import setzer.workspace.actions.actions as actions
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -70,6 +71,7 @@ class Workspace(Observable):
         self.shortcuts = shortcuts.Shortcuts(self)
 
     def init_workspace_controller(self):
+        self.actions = actions.Actions(self)
         self.presenter = workspace_presenter.WorkspacePresenter(self)
         self.headerbar = headerbar_presenter.HeaderbarPresenter(self)
         self.document_chooser = document_chooser_presenter.DocumentChooserPresenter(self)
