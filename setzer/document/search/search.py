@@ -303,7 +303,7 @@ class Search(object):
             search_bar.match_counter.set_text('')
         else:
             search_bar.match_counter.set_text(str(match_no) + ' of ' + str(total))
-            
+
     def on_match_counter_size_allocate(self, widget=None, allocation=None):
         search_bar = self.document_view.search_bar
         allocated_width = search_bar.match_counter.get_allocated_width()

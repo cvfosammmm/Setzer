@@ -21,6 +21,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk
+from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import GObject
 
@@ -35,11 +36,19 @@ class DocumentController(object):
         self.view = document_view
 
         self.view.source_view.connect('key-press-event', self.on_keypress)
+        self.view.source_view.connect('button-press-event', self.on_buttonpress)
         GObject.timeout_add(500, self.save_date_loop)
         
     '''
     *** signal handlers: changes in documents
     '''
+
+    def on_buttonpress(self, widget, event, data=None):
+        if event.type == Gdk.EventType.BUTTON_PRESS:
+            if event.state == Gdk.ModifierType.CONTROL_MASK:
+                GLib.idle_add(self.document.forward_sync)
+                return False
+        return False
 
     def on_keypress(self, widget, event, data=None):
         modifiers = Gtk.accelerator_get_default_mod_mask()
