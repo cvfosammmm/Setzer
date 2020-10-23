@@ -5,6 +5,7 @@
   <package name="amsthm" text="amsthm" description="math theorems setting package from AMS." />
   <package name="babel" text="babel" description="multilingual documents." />
   <package name="braket" text="braket" description="dirac braket and set notations." />
+  <package name="biblatex" text="biblatex" description="bibliographies in LaTeX." />
   <package name="calc" text="calc" description="simple arithmetic in LaTeX commands." />
   <package name="color" text="color" description="foreground and background colors." />
   <package name="colortbl" text="colortbl" description="colored tables." />
