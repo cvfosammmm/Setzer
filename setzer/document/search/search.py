@@ -39,6 +39,8 @@ class Search(object):
         self.search_bar.connect('size-allocate', self.on_search_bar_size_allocate)
         self.search_bar.match_counter.connect('size-allocate', self.on_match_counter_size_allocate)
 
+        self.document.register_observer(self)
+
     def observe_shortcuts_bar(self):
         self.document_view.shortcuts_bar_bottom.button_find.connect('toggled', self.on_find_button_clicked)
         self.document_view.shortcuts_bar_bottom.button_find_and_replace.connect('toggled', self.on_find_replace_button_clicked)
@@ -54,7 +56,12 @@ class Search(object):
         self.search_bar.prev_button.connect('clicked', self.on_search_prev_button_click)
         self.search_bar.replace_button.connect('clicked', self.on_replace_button_click)
         self.search_bar.replace_all_button.connect('clicked', self.on_replace_all_button_click)
-    
+
+    def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'selection_might_have_changed':
+            self.update_replace_button()
+
     '''
     *** signal handlers: search bar
     '''
@@ -73,7 +80,7 @@ class Search(object):
             buffer = self.document.get_buffer()
             search_context = self.document.get_search_context()
             replacement = self.search_bar.replace_entry.get_text()
-            
+
             bounds = buffer.get_selection_bounds()
             if len(bounds) == 2:
                 search_context.replace(*bounds, replacement, -1)
@@ -163,7 +170,6 @@ class Search(object):
                     self.set_match_counter(-1, -1)
                     search_view.entry.get_style_context().add_class('error')
                     search_view.entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'face-uncertain-symbolic')
-                    search_view.replace_button.set_sensitive(False)
                     search_view.replace_all_button.set_sensitive(False)
                 else:
                     search_view.entry.get_style_context().remove_class('error')
@@ -171,15 +177,26 @@ class Search(object):
                     while search_context.get_occurrences_count() == -1 and result[0] == True:
                         result = search_context.forward(result[2])
                     self.on_search_next_match(entry, include_current_highlight=True)
-                    search_view.replace_button.set_sensitive(True)
                     search_view.replace_all_button.set_sensitive(True)
             else:
                 self.set_match_counter(-1, -1)
                 search_view.entry.get_style_context().remove_class('error')
                 search_view.entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, search_view.icon_name)
-                search_view.replace_button.set_sensitive(False)
                 search_view.replace_all_button.set_sensitive(False)
-    
+
+    def update_replace_button(self):
+        if self.result_selected():
+            self.search_bar.replace_button.set_sensitive(True)
+        else:
+            self.search_bar.replace_button.set_sensitive(False)
+
+    def result_selected(self):
+        selected_text = self.document.get_selected_text()
+        if selected_text != None:
+            if selected_text == self.search_bar.entry.get_text():
+                return True
+        return False
+
     def on_search_stop(self, entry=None):
         self.document_view.shortcuts_bar_bottom.button_find_and_replace.set_active(False)
         self.document_view.shortcuts_bar_bottom.button_find.set_active(False)

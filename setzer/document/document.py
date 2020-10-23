@@ -177,6 +177,9 @@ class Document(Observable):
     def get_text_after_offset(self, offset):
         return self.get_buffer().get_text_after_offset(offset)
 
+    def get_selected_text(self):
+        return self.get_buffer().get_selected_text()
+
     def get_line_at_cursor(self):
         return self.get_buffer().get_line_at_cursor()
 

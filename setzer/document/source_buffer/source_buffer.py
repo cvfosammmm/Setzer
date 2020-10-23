@@ -121,11 +121,13 @@ class SourceBuffer(GtkSource.Buffer):
             self.update_placeholder_selection()
             if self.document.is_latex_document():
                 self.document.autocomplete.update(False)
+        self.update_selection_state()
 
     def on_mark_deleted(self, buffer, mark, user_data=None):
         if mark.get_name() == 'insert':
             if self.document.is_latex_document():
                 self.document.autocomplete.update(False)
+        self.update_selection_state()
 
     def on_keypress(self, widget, event, data=None):
         modifiers = Gtk.accelerator_get_default_mod_mask()
@@ -179,6 +181,9 @@ class SourceBuffer(GtkSource.Buffer):
             tag.set_property('indent', -1 * number_of_characters * self.font_manager.get_char_width(self.view))
             self.indentation_tags[number_of_characters] = tag
         return tag
+
+    def update_selection_state(self):
+        self.document.add_change_code('selection_might_have_changed')
 
     #@timer.timer
     def update_indentation_tags(self):
@@ -502,6 +507,13 @@ class SourceBuffer(GtkSource.Buffer):
 
     def get_text_after_offset(self, offset):
         return self.get_text(self.get_iter_at_offset(offset), self.get_end_iter(), True)
+
+    def get_selected_text(self):
+        bounds = self.get_selection_bounds()
+        if len(bounds) == 2:
+            return self.get_text(bounds[0], bounds[1], True)
+        else:
+            return None
 
     def is_empty(self):
         return self.get_end_iter().get_offset() > 0
