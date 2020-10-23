@@ -21,9 +21,6 @@ gi.require_version('Gspell', '1')
 from gi.repository import Gspell
 from gi.repository import GLib, Gio
 
-import setzer.workspace.actions.actions_presenter as actions_presenter
-import setzer.workspace.actions.actions_controller as actions_controller
-import setzer.workspace.actions.actions_viewgtk as actions_view
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 
