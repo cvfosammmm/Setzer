@@ -23,6 +23,7 @@ from gi.repository import Gio
 import sys
 import gettext
 import argparse
+import os.path
 
 from setzer.workspace.workspace import Workspace
 import setzer.workspace.workspace_viewgtk as view
@@ -49,6 +50,13 @@ class MainApplicationController(Gtk.Application):
         ServiceLocator.init_setzer_version('@setzer_version@')
         ServiceLocator.init_resources_path('@resources_path@')
         ServiceLocator.init_app_icons_path('@app_icons_path@')
+        resources_path = ServiceLocator.get_resources_path()
+        app_icons_path = ServiceLocator.get_app_icons_path()
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'icons'))
+        for folder in ['arrows', 'greek_letters', 'misc_math', 'misc_text', 'operators', 'relations']:
+            path = os.path.join(resources_path, 'symbols', folder)
+            Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), path)
+        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), app_icons_path)
 
         # init main window, model, dialogs
         self.main_window = view.MainWindow(self)

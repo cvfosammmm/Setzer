@@ -31,7 +31,7 @@ import setzer.workspace.help_panel.help_panel_viewgtk as help_panel_view
 import setzer.workspace.sidebar.sidebar_viewgtk as sidebar_view
 from setzer.app.service_locator import ServiceLocator
 
-import os
+import os.path
 
 
 class MainWindow(Gtk.ApplicationWindow):
@@ -41,16 +41,6 @@ class MainWindow(Gtk.ApplicationWindow):
         self.app = app
         self.set_size_request(-1, 550)
         self.add_events(Gdk.EventMask.KEY_PRESS_MASK)
-        resources_path = ServiceLocator.get_resources_path()
-        app_icons_path = ServiceLocator.get_app_icons_path()
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'icons'))
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'symbols', 'arrows'))
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'symbols', 'greek_letters'))
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'symbols', 'misc_math'))
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'symbols', 'misc_text'))
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'symbols', 'operators'))
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'symbols', 'relations'))
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), app_icons_path)
 
         # window state variables
         self.current_width = 0
@@ -123,6 +113,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.add(self.mode_stack)
 
         self.css_provider = Gtk.CssProvider()
+        resources_path = ServiceLocator.get_resources_path()
         self.css_provider.load_from_path(os.path.join(resources_path, 'style_gtk.css'))
         self.style_context = Gtk.StyleContext()
         self.style_context.add_provider_for_screen(self.get_screen(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
