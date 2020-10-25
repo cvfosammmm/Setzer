@@ -18,6 +18,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import GLib
+from gi.repository import Gdk
 from gi.repository import Gtk
 
 from setzer.dialogs.dialog_locator import DialogLocator
@@ -51,6 +52,7 @@ class Search(object):
         self.search_bar.entry.connect('next-match', self.on_search_next_match)
         self.search_bar.entry.connect('previous-match', self.on_search_previous_match)
         self.search_bar.entry.connect('activate', self.on_search_entry_activate)
+        self.search_bar.replace_entry.connect('key-press-event', self.on_replace_entry_keypress)
         self.search_bar.close_button.connect('clicked', self.on_search_close_button_click)
         self.search_bar.next_button.connect('clicked', self.on_search_next_button_click)
         self.search_bar.prev_button.connect('clicked', self.on_search_prev_button_click)
@@ -68,7 +70,14 @@ class Search(object):
     
     def on_search_close_button_click(self, button_object=None):
         self.on_search_stop()
-    
+
+    def on_replace_entry_keypress(self, entry, event):
+        if event.keyval == Gdk.keyval_from_name('Escape'):
+            if event.state & Gtk.accelerator_get_default_mod_mask() == 0:
+                self.on_search_stop()
+                return True
+        return False
+
     def on_search_next_button_click(self, button_object=None):
         self.on_search_next_match()
         
