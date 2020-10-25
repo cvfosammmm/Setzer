@@ -144,14 +144,12 @@ class Workspace(Observable):
             document = BibTeXDocument()
         else:
             return None
-        document.set_filename(os.path.realpath(filename))
+        document.set_filename(filename)
         response = document.populate_from_filename()
         if response != False:
             self.add_document(document)
             if activate:
                 self.set_active_document(document)
-            if document.is_latex_document():
-                document.preview.set_pdf_filename_from_tex_filename(filename)
             return document
         else:
             return None

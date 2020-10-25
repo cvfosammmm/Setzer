@@ -96,7 +96,12 @@ class Document(Observable):
         return self.source_buffer.search_context
 
     def set_filename(self, filename):
-        self.filename = filename
+        if filename == None:
+            self.filename = filename
+        else:
+            self.filename = os.path.realpath(filename)
+            if self.is_latex_document():
+                self.preview.set_pdf_filename_from_tex_filename(self.filename)
         self.add_change_code('filename_change', filename)
 
     def get_filename(self):
@@ -136,7 +141,7 @@ class Document(Observable):
     def populate_from_filename(self):
         if self.filename == None: return False
         if not os.path.isfile(self.filename):
-            self.filename = None
+            self.set_filename(None)
             return False
         if self.get_buffer() == None: return False
 
