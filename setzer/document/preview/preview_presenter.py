@@ -45,8 +45,6 @@ class PreviewPresenter(object):
         self.page_renderer.register_observer(self)
 
         self.show_blank_slate()
-        self.update_number_of_pages()
-        self.update_current_page()
 
     def change_notification(self, change_code, notifying_object, parameter):
 
@@ -55,22 +53,15 @@ class PreviewPresenter(object):
                 self.show_pdf()
             else:
                 self.show_blank_slate()
-            self.update_number_of_pages()
-            self.update_current_page()
 
         if change_code == 'layout_changed':
             self.set_canvas_size()
-            if self.scrolling_queue.empty():
-                self.update_current_page()
 
         if change_code == 'rendered_pages_changed':
             self.view.drawing_area.queue_draw()
 
         if change_code == 'invert_pdf_changed':
             self.view.drawing_area.queue_draw()
-
-        if change_code == 'position_changed':
-            self.update_current_page()
 
         if change_code == 'can_backward_sync_changed':
             self.view.menu_item_backward_sync.set_sensitive(parameter)
@@ -86,18 +77,6 @@ class PreviewPresenter(object):
         self.view.scrolled_window.show_all()
         self.view.external_viewer_button.set_sensitive(True)
         self.view.external_viewer_button.show_all()
-
-    def update_number_of_pages(self):
-        if self.preview.pdf_filename != None:
-            self.view.paging_widget.label_number_of_pages.set_text(str(self.preview.number_of_pages))
-        else:
-            self.view.paging_widget.label_number_of_pages.set_text("0")
-
-    def update_current_page(self):
-        if self.preview.pdf_loaded and self.layouter.has_layout:
-            self.view.paging_widget.label_current_page.set_text(str(self.layouter.get_current_page()))
-        else:
-            self.view.paging_widget.label_current_page.set_text("0")
 
     def set_canvas_size(self):
         if self.layouter.has_layout:

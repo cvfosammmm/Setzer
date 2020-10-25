@@ -28,11 +28,8 @@ class PreviewView(Gtk.VBox):
         Gtk.VBox.__init__(self)
         self.get_style_context().add_class('preview')
 
-        self.paging_widget = PreviewPagingWidget()
-
         self.action_bar = Gtk.HBox()
         self.action_bar.set_size_request(-1, 37)
-        self.action_bar.pack_start(self.paging_widget, False, False, 0)
 
         self.external_viewer_button = Gtk.Button.new_from_icon_name('external-viewer-symbolic', Gtk.IconSize.MENU)
         self.external_viewer_button.set_tooltip_text(_('External Viewer'))
@@ -95,20 +92,5 @@ class BlankSlateView(Gtk.VBox):
         body.set_line_wrap(True)
         self.pack_start(body, False, False, 0)
         self.pack_start(Gtk.DrawingArea(), True, True, 0)
-
-
-class PreviewPagingWidget(Gtk.HBox):
-
-    def __init__(self):
-        Gtk.HBox.__init__(self)
-        self.set_margin_left(9)
-
-        self.pack_start(Gtk.Label(_('Page ')), False, False, 0)
-        self.label_current_page = Gtk.Label('')
-        self.pack_start(self.label_current_page, False, False, 0)
-        self.pack_start(Gtk.Label(_(' of ')), False, False, 0)
-        self.label_number_of_pages = Gtk.Label('')
-        self.pack_start(self.label_number_of_pages, False, False, 0)
-        self.show_all()
 
 
