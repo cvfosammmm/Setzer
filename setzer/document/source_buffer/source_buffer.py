@@ -145,23 +145,29 @@ class SourceBuffer(GtkSource.Buffer):
         if self.document.is_latex_document():
             bracket_vals = [Gdk.keyval_from_name('parenleft'), Gdk.keyval_from_name('bracketleft'), Gdk.keyval_from_name('braceleft')]
             if event.keyval in bracket_vals and not self.document.autocomplete.is_active():
+                if self.get_char_before_cursor() == '\\':
+                    add_char = '\\'
+                else:
+                    add_char = ''
                 if event.keyval == Gdk.keyval_from_name('bracketleft'):
                     self.begin_user_action()
                     self.delete_selection(True, True)
-                    self.insert_at_cursor('[]')
+                    self.insert_at_cursor('[' + add_char + ']')
                     self.end_user_action()
                 if event.keyval == Gdk.keyval_from_name('braceleft'):
                     self.begin_user_action()
                     self.delete_selection(True, True)
-                    self.insert_at_cursor('{}')
+                    self.insert_at_cursor('{' + add_char + '}')
                     self.end_user_action()
                 if event.keyval == Gdk.keyval_from_name('parenleft'):
                     self.begin_user_action()
                     self.delete_selection(True, True)
-                    self.insert_at_cursor('()')
+                    self.insert_at_cursor('(' + add_char + ')')
                     self.end_user_action()
                 insert_iter = self.get_iter_at_mark(self.get_insert())
                 insert_iter.backward_char()
+                if add_char == '\\':
+                    insert_iter.backward_char()
                 self.place_cursor(insert_iter)
                 return True
 
