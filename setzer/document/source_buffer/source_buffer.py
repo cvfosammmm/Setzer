@@ -676,7 +676,9 @@ class SourceBuffer(GtkSource.Buffer):
             scroll_iter = self.view.get_iter_at_location(0, max(iter_position - gap * line_height, 0)).iter
             self.move_mark(self.mover_mark, scroll_iter)
             self.view.scroll_to_mark(self.mover_mark, 0, False, 0, 0)
-        elif iter_position > (window_offset + window_height - (gap + 1) * line_height):
+            return
+        gap = min(math.floor(max((visible_lines - 2), 0) / 2), 8)
+        if iter_position > (window_offset + window_height - (gap + 1) * line_height):
             scroll_iter = self.view.get_iter_at_location(0, min(iter_position + gap * line_height, buffer_height)).iter
             self.move_mark(self.mover_mark, scroll_iter)
             self.view.scroll_to_mark(self.mover_mark, 0, False, 0, 0)

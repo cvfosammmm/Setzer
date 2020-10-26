@@ -193,14 +193,14 @@ class Autocomplete(object):
         x_offset = - self.document_view.scrolled_window.get_hadjustment().get_value()
         y_offset = - self.document_view.scrolled_window.get_vadjustment().get_value()
         x_position = x_offset + iter_location.x - 2 + gutter_width - self.session.get_offset() * char_width
-        y_position = y_offset + iter_location.y + line_height + self.shortcuts_bar_height
+        y_position = y_offset + iter_location.y + line_height
 
         full_height = 5 * line_height + 20
 
-        if y_position >= line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
-            self.view.set_margin_top(y_position)
+        if y_position >= line_height - 1 and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height - line_height:
+            self.view.set_margin_top(y_position + self.shortcuts_bar_height)
         else:
-            self.view.set_margin_top(y_position - height - line_height)
+            self.view.set_margin_top(y_position + self.shortcuts_bar_height - height - line_height)
 
         char_width, line_height = self.font_manager.get_char_dimensions(self.document_view.source_view)
         width = 25 * char_width
@@ -218,9 +218,9 @@ class Autocomplete(object):
         show_x = False
         show_y = False
 
-        if y_position >= line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height:
+        if y_position >= line_height - 1 and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height - line_height:
             show_y = True
-        elif y_position >= line_height - 1 + self.shortcuts_bar_height and y_position <= self.document_view.scrolled_window.get_allocated_height() + self.shortcuts_bar_height:
+        elif y_position >= line_height - 1 and y_position <= self.document_view.scrolled_window.get_allocated_height():
             show_y = True
         else:
             show_y = False
