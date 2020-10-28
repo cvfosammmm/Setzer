@@ -692,9 +692,6 @@ class SourceBuffer(GtkSource.Buffer):
     def paste(self):
         self.view.emit('paste-clipboard')
 
-    def delete(self):
-        self.view.emit('delete-from-cursor', Gtk.DeleteType.CHARS, 0)
-
     def select_all(self, widget=None):
         self.select_range(self.get_start_iter(), self.get_end_iter())
 

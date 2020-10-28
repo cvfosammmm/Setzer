@@ -39,8 +39,8 @@ class CodeFoldingPresenter(object):
 
         font_manager = ServiceLocator.get_font_manager()
         font_manager.register_observer(self)
-        char_width = font_manager.get_char_width(self.source_buffer.view)
-        self.view.set_size(2 * char_width)
+        line_height = font_manager.get_line_height(self.source_buffer.view)
+        self.view.set_size(line_height)
 
     def change_notification(self, change_code, notifying_object, parameter):
 
@@ -65,8 +65,8 @@ class CodeFoldingPresenter(object):
                 self.show_region(parameter)
 
         if change_code == 'font_string_changed':
-            char_width = notifying_object.get_char_width(self.source_buffer.view)
-            self.view.set_size(2 * char_width)
+            line_height = notifying_object.get_line_height(self.source_buffer.view)
+            self.view.set_size(line_height)
 
     def show_region(self, region):
         mark_start = region['mark_start']

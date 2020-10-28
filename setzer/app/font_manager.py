@@ -59,11 +59,22 @@ class FontManager(Observable):
         char_width, line_height = self.get_char_dimensions(text_view)
         return char_width
 
+    def get_text_width(self, text_view, text):
+        context = text_view.get_pango_context()
+        font_desc = Pango.FontDescription.from_string(self.font_string)
+        font_desc.set_weight(Pango.Weight.BOLD)
+        font_desc.set_style(Pango.Style.NORMAL)
+        layout = Pango.Layout.new(context)
+        layout.set_text(text, -1)
+        layout.set_font_description(font_desc)
+        text_width, line_height = layout.get_pixel_size()
+        return text_width
+
     def get_char_dimensions(self, text_view):
         context = text_view.get_pango_context()
         font_desc = Pango.FontDescription.from_string(self.font_string)
         layout = Pango.Layout.new(context)
-        layout.set_text(" ", -1)
+        layout.set_text("A", -1)
         layout.set_font_description(font_desc)
         return layout.get_pixel_size()
 
@@ -94,14 +105,20 @@ class FontManager(Observable):
 
     def propagate_font_setting(self):
         font_size = self.get_font_size() / Pango.SCALE
+        font_family = self.get_font_family()
         self.main_window.css_provider_font_size.load_from_data(('''
-textview { font-size: ''' + str(font_size) + '''pt; }
+textview { font-size: ''' + str(font_size) + '''pt; font-family: ''' + font_family + '''; }
 box.autocomplete list row { font-size: ''' + str(font_size) + '''pt; }
+box.autocomplete list row label { font-family: ''' + font_family + '''; }
 ''').encode('utf-8'))
 
     def get_font_size(self):
         font_desc = Pango.FontDescription.from_string(self.font_string)
         return font_desc.get_size()
+
+    def get_font_family(self):
+        font_desc = Pango.FontDescription.from_string(self.font_string)
+        return font_desc.get_family()
 
     def get_font_size_in_points(self):
         return self.get_font_size() / Pango.SCALE

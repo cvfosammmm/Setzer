@@ -180,13 +180,16 @@ class Autocomplete(object):
             self.view.select_first()
 
     def position_is_visible(self):
-        char_width, line_height = self.font_manager.get_char_dimensions(self.document_view.source_view)
+        line_height = self.font_manager.get_line_height(self.document_view.source_view)
 
         height = min(len(self.items), 5) * line_height + 20
 
         buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         iter_location = self.document_view.source_view.get_iter_location(insert_iter)
+        start_iter = insert_iter.copy()
+        start_iter.backward_chars(self.session.get_offset())
+        start_iter_location = self.document_view.source_view.get_iter_location(start_iter)
         gutter = self.document_view.source_view.get_window(Gtk.TextWindowType.LEFT)
         if gutter != None:
             gutter_width = gutter.get_width()
@@ -194,7 +197,7 @@ class Autocomplete(object):
             gutter_width = 0
         x_offset = - self.document_view.scrolled_window.get_hadjustment().get_value()
         y_offset = - self.document_view.scrolled_window.get_vadjustment().get_value()
-        x_position = x_offset + iter_location.x - 2 + gutter_width - self.session.get_offset() * char_width
+        x_position = x_offset + start_iter_location.x - 2 + gutter_width
         y_position = y_offset + iter_location.y + line_height
 
         full_height = 5 * line_height + 20
