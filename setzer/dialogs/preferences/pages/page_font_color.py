@@ -58,7 +58,7 @@ class PageFontColor(object):
         self.view.add_scheme_button.connect('clicked', self.on_add_scheme_button_clicked)
         self.view.remove_scheme_button.connect('clicked', self.on_remove_scheme_button_clicked)
 
-        self.view.font_chooser_button.set_font(self.settings.get_value('preferences', 'font'))
+        self.view.font_chooser_button.set_font(self.settings.get_value('preferences', 'font_string'))
         self.view.font_chooser_button.connect('font-set', self.on_font_set)
         self.view.option_use_system_font.set_active(self.settings.get_value('preferences', 'use_system_font'))
         self.view.font_chooser_revealer.set_reveal_child(not self.view.option_use_system_font.get_active())
@@ -78,7 +78,7 @@ class PageFontColor(object):
             font_desc.set_size(24 * Pango.SCALE)
             button.set_font_desc(font_desc)
             
-        self.settings.set_value('preferences', 'font', button.get_font())
+        self.settings.set_value('preferences', 'font_string', button.get_font())
 
     def on_style_switcher_changed(self, switcher, is_dark_mode):
         if is_dark_mode:

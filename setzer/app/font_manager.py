@@ -42,7 +42,7 @@ class FontManager(Observable):
 
         if change_code == 'settings_changed':
             section, item, value = parameter
-            if (section, item) in [('preferences', 'font'), ('preferences', 'use_system_font')]:
+            if (section, item) in [('preferences', 'font_string'), ('preferences', 'use_system_font')]:
                 self.update_font_string()
 
     def update_font_string(self):
@@ -110,7 +110,7 @@ box.autocomplete list row { font-size: ''' + str(font_size) + '''pt; }
         if self.settings.get_value('preferences', 'use_system_font'):
             return self.system_font
         else:
-            return self.settings.get_value('preferences', 'font')
+            return self.settings.get_value('preferences', 'font_string')
 
     def get_normal_font_size(self):
         font_desc = Pango.FontDescription.from_string(self.get_normal_font_string())
