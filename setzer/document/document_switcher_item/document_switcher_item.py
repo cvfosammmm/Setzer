@@ -15,33 +15,50 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import setzer.document.document_switcher_item.document_switcher_item_presenter as document_switcher_item_presenter
 import setzer.document.document_switcher_item.document_switcher_item_viewgtk as document_switcher_item_view
-from setzer.helpers.observable import Observable
 
 
-class DocumentSwitcherItem(Observable):
+class DocumentSwitcherItem():
 
     def __init__(self, document):
-        Observable.__init__(self)
         self.document = document
-
-
-class DocumentSwitcherItemLaTeX(DocumentSwitcherItem):
-
-    def __init__(self, document):
-        DocumentSwitcherItem.__init__(self, document)
-
         self.view = document_switcher_item_view.OpenDocsPopoverItem(document)
-        self.presenter = document_switcher_item_presenter.DocumentSwitcherItemPresenterLaTeX(self.document, self.view)
 
+        self.modified_state = document.get_modified()
 
-class DocumentSwitcherItemBibTeX(DocumentSwitcherItem):
+        if self.document.is_latex_document():
+            self.set_is_master()
+        else:
+            self.view.icon.show_all()
+            self.view.master_icon.hide()
+            self.view.master_label.hide()
 
-    def __init__(self, document):
-        DocumentSwitcherItem.__init__(self, document)
+        self.document.register_observer(self)
 
-        self.view = document_switcher_item_view.OpenDocsPopoverItem(document)
-        self.presenter = document_switcher_item_presenter.DocumentSwitcherItemPresenterBibTeX(self.document, self.view)
+    def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'filename_change':
+            self.view.set_name(self.document.get_displayname(), self.modified_state)
+
+        if change_code == 'modified_changed':
+            if self.document.get_modified() != self.modified_state:
+                self.modified_state = self.document.get_modified()
+                self.view.set_name(self.document.get_displayname(), self.modified_state)
+
+        if change_code == 'displayname_change':
+            self.view.set_name(self.document.get_displayname(), self.modified_state)
+
+        if change_code == 'master_state_change':
+            self.set_is_master()
+
+    def set_is_master(self):
+        if self.document.is_master == True:
+            self.view.icon.hide()
+            self.view.master_icon.show_all()
+            self.view.master_label.show_all()
+        else:
+            self.view.icon.show_all()
+            self.view.master_icon.hide()
+            self.view.master_label.hide()
 
 

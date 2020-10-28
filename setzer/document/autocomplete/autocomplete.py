@@ -25,6 +25,7 @@ import setzer.document.autocomplete.session.session_blank as session_blank
 import setzer.document.autocomplete.session.session_default as session_default
 import setzer.document.autocomplete.session.session_begin_end as session_begin_end
 from setzer.app.service_locator import ServiceLocator
+import setzer.helpers.timer as timer
 
 
 class Autocomplete(object):
@@ -169,6 +170,7 @@ class Autocomplete(object):
         else:
             self.view.hide()
 
+    #@timer.timer
     def populate(self, offset):
         self.view.empty_list()
         for command in reversed(self.items):

@@ -239,6 +239,27 @@ class Document(Observable):
     def insert_before_after(self, before, after):
         self.get_buffer().insert_before_after(before, after)
 
+    def undo(self):
+        self.get_buffer().undo()
+
+    def redo(self):
+        self.get_buffer().redo()
+
+    def cut(self):
+        self.get_buffer().cut()
+
+    def copy(self):
+        self.get_buffer().copy()
+
+    def paste(self):
+        self.get_buffer().paste()
+
+    def delete_selection(self):
+        self.get_buffer().delete_selection(True, True)
+
+    def select_all(self):
+        self.get_buffer().select_all()
+
 
 class LaTeXDocument(Document):
 
@@ -261,7 +282,7 @@ class LaTeXDocument(Document):
         self.preview = preview.Preview(self)
         self.state_manager = state_manager_latex.StateManagerLaTeX(self)
         self.view = document_view.DocumentView(self, self.source_buffer.view)
-        self.document_switcher_item = document_switcher_item.DocumentSwitcherItemLaTeX(self)
+        self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
 
         self.build_log_items = list()
@@ -436,7 +457,7 @@ class BibTeXDocument(Document):
 
         self.state_manager = state_manager_bibtex.StateManagerBibTeX(self)
         self.view = document_view.DocumentView(self, self.source_buffer.view)
-        self.document_switcher_item = document_switcher_item.DocumentSwitcherItemBibTeX(self)
+        self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
         self.search = search.Search(self, self.view, self.view.search_bar)
 
         self.presenter = document_presenter.DocumentPresenter(self, self.view)

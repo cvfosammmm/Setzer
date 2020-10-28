@@ -59,11 +59,7 @@ class BuildSystemController(object):
                 elif build_option_system_commands == 'enable':
                     additional_arguments += lualatex_prefix + '-shell-escape'
 
-                buffer = document.get_buffer()
-                if buffer != None:
-                    text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), True)
-                else:
-                    text = ''
+                text = document.get_text()
                 do_cleanup = self.settings.get_value('preferences', 'cleanup_build_files')
 
             query_obj = query.Query()

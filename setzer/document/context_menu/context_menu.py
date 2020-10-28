@@ -15,10 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-
 import setzer.document.context_menu.context_menu_controller as context_menu_controller
 import setzer.document.context_menu.context_menu_presenter as context_menu_presenter
 import setzer.document.context_menu.context_menu_viewgtk as context_menu_view
@@ -51,25 +47,25 @@ class ContextMenu(object):
             self.presenter.set_zoom_level(zoom_level)
 
     def on_undo(self, widget=None):
-        self.document_view.source_view.emit('undo')
+        self.document.undo()
 
     def on_redo(self, widget=None):
-        self.document_view.source_view.emit('redo')
+        self.document.redo()
 
     def on_cut(self, widget=None):
-        self.document_view.source_view.emit('cut-clipboard')
+        self.document.cut()
 
     def on_copy(self, widget=None):
-        self.document_view.source_view.emit('copy-clipboard')
+        self.document.copy()
 
     def on_paste(self, widget=None):
-        self.document_view.source_view.emit('paste-clipboard')
+        self.document.paste()
 
     def on_delete(self, widget=None):
-        self.document_view.source_view.emit('delete-from-cursor', Gtk.DeleteType.CHARS, 0)
+        self.document.delete_selection()
 
     def on_select_all(self, widget=None):
-        self.document_view.source_view.emit('select-all', True)
+        self.document.select_all()
 
     def on_zoom_out(self, widget=None, event=None):
         ServiceLocator.get_main_window().zoom_out_action.activate()

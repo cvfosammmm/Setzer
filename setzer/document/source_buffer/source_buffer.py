@@ -683,6 +683,21 @@ class SourceBuffer(GtkSource.Buffer):
             self.move_mark(self.mover_mark, scroll_iter)
             self.view.scroll_to_mark(self.mover_mark, 0, False, 0, 0)
 
+    def cut(self):
+        self.view.emit('cut-clipboard')
+
+    def copy(self):
+        self.view.emit('copy-clipboard')
+
+    def paste(self):
+        self.view.emit('paste-clipboard')
+
+    def delete(self):
+        self.view.emit('delete-from-cursor', Gtk.DeleteType.CHARS, 0)
+
+    def select_all(self, widget=None):
+        self.select_range(self.get_start_iter(), self.get_end_iter())
+
     def get_number_of_visible_lines(self):
         line_height = self.font_manager.get_line_height(self.view)
         return math.floor(self.view.get_visible_rect().height / line_height)
