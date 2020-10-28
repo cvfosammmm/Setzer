@@ -130,7 +130,7 @@ class LaTeXParser(object):
         text_length = len(text)
 
         matches = {'begin_or_end': list(), 'others': list()}
-        for match in ServiceLocator.get_regex_object(r'\\(begin|end)\{((?:\w|•)*(?:\*){0,1})\}|\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{').finditer(text):
+        for match in ServiceLocator.get_regex_object(r'\\(begin|end)\{((?:\w|•)+(?:\*){0,1})\}|\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{').finditer(text):
             if match.group(1) != None:
                 matches['begin_or_end'].append(match)
             else:
