@@ -44,7 +44,40 @@ class LaTeXLogParser():
         log_items = dict()
         for filename, text in doc_texts.items():
             log_items[filename] = self.parse_log_text(filename, text)
+
         return log_items
+
+    def get_additional_jobs(self, log_items, tex_filename, biber_ran_on_files):
+        for filename, items in log_items.items():
+            for item in items['error'] + items['warning']:
+                if item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and item[2].find('.bbl.') >= 0:
+                    if item[2].find('run Biber') < 0:
+                        return ['build_bibtex']
+
+                elif item[2].startswith('Package biblatex Warning: Please (re)run Biber on the file:'):
+                    line = item[3]
+                    if line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0:
+                        if not tex_filename.rsplit('/', 1)[1][:-4] in biber_ran_on_files:
+                            return ['build_biber']
+
+                elif item[2] == 'Please rerun LaTeX.':
+                    return ['build_latex']
+
+                elif item[2] == 'Label(s) may have changed. Rerun to get cross-references right.':
+                    return ['build_latex']
+
+                elif item[2] == 'Citation(s) may have changed.':
+                    return ['build_latex']
+
+                elif item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (item[2].find('.toc.') >= 0 or item[2].find('.aux.') >= 0):
+                    return ['build_latex']
+
+                elif item[2] == 'Rerun to get transparencies right.':
+                    return ['build_latex']
+
+                elif item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (item[2].find('.gls.') >= 0 or item[2].find('.acr.') >= 0):
+                    return ['build_glossaries']
+        return []
 
     def parse_log_text(self, filename, text):
         log_messages = {'error': list(), 'warning': list(), 'badbox': list()}

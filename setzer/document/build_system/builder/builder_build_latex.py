@@ -106,50 +106,19 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
         query.error_count = 0
 
         log_items = self.latex_log_parser.parse_build_log(tex_filename, query.tex_filename)
+        additional_jobs = self.latex_log_parser.get_additional_jobs(log_items, tex_filename, query.biber_data['ran_on_files'])
         file_no = 0
+
+        for job in additional_jobs:
+            query.jobs.insert(0, job)
+            return True
+
         for filename, items in log_items.items():
             query.error_count += len(items['error'])
             if filename == query.tex_filename:
                 file_no = 0
             else:
                 file_no += 1
-
-            for item in items['error'] + items['warning']:
-                if item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and item[2].find('.bbl.') >= 0:
-                    if item[2].find('run Biber') < 0:
-                        query.jobs.insert(0, 'build_bibtex')
-                        return True
-
-                elif item[2].startswith('Package biblatex Warning: Please (re)run Biber on the file:'):
-                    line = item[3]
-                    if line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0:
-                        if not tex_filename.rsplit('/', 1)[1][:-4] in query.biber_data['ran_on_files']:
-                            query.jobs.insert(0, 'build_biber')
-                            return True
-
-                elif item[2] == 'Please rerun LaTeX.':
-                    query.jobs.insert(0, 'build_latex')
-                    return True
-
-                elif item[2] == 'Label(s) may have changed. Rerun to get cross-references right.':
-                    query.jobs.insert(0, 'build_latex')
-                    return True
-
-                elif item[2] == 'Citation(s) may have changed.':
-                    query.jobs.insert(0, 'build_latex')
-                    return True
-
-                elif item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (item[2].find('.toc.') >= 0 or item[2].find('.aux.') >= 0):
-                    query.jobs.insert(0, 'build_latex')
-                    return True
-
-                elif item[2] == 'Rerun to get transparencies right.':
-                    query.jobs.insert(0, 'build_latex')
-                    return True
-
-                elif item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (item[2].find('.gls.') >= 0 or item[2].find('.acr.') >= 0):
-                    query.jobs.insert(0, 'build_glossaries')
-                    return True
 
             for item in items['error']:
                 query.log_messages.append(('Error', item[0], filename, file_no, item[1], item[2]))
