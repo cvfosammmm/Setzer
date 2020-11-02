@@ -54,7 +54,7 @@ class LaTeXLogParser():
                     if item[2].find('run Biber') < 0:
                         return ['build_bibtex']
 
-                elif item[2].startswith('Package biblatex Warning: Please (re)run Biber on the file:'):
+                elif item[2] == 'Please (re)run Biber on the file:':
                     line = item[3]
                     if line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0:
                         if not tex_filename.rsplit('/', 1)[1][:-4] in biber_ran_on_files:
