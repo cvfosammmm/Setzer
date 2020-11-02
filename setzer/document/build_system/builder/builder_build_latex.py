@@ -106,7 +106,7 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
         query.error_count = 0
 
         log_items = self.latex_log_parser.parse_build_log(tex_filename, query.tex_filename)
-        additional_jobs = self.latex_log_parser.get_additional_jobs(log_items, tex_filename, query.biber_data['ran_on_files'])
+        additional_jobs = self.latex_log_parser.get_additional_jobs(log_items, tex_filename, query.bibtex_data['ran_on_files'], query.biber_data['ran_on_files'])
         file_no = 0
 
         for job in additional_jobs:

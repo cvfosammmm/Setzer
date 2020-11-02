@@ -33,9 +33,13 @@ class BuilderBuildBibTeX(builder_build.BuilderBuild):
 
     def run(self, query):
         tex_filename = query.build_data['tmp_tex_filename']
+        filename = tex_filename.rsplit('/', 1)[1][:-4]
 
         arguments = ['bibtex']
-        arguments.append(tex_filename.rsplit('/', 1)[1][:-3] + 'aux')
+        arguments.append(filename + '.aux')
+
+        query.bibtex_data['ran_on_files'].append(filename)
+
         custom_env = os.environ.copy()
         custom_env['BIBINPUTS'] = os.path.dirname(query.tex_filename) + ':' + os.path.dirname(tex_filename)
         try:
@@ -47,7 +51,6 @@ class BuilderBuildBibTeX(builder_build.BuilderBuild):
         self.process.wait()
 
         self.parse_bibtex_log(query, tex_filename[:-3] + 'blg')
-
         query.jobs.insert(0, 'build_latex')
 
     def parse_bibtex_log(self, query, log_filename):
