@@ -128,7 +128,7 @@ class AddRemovePackagesDialog(Dialog):
         self.view.remove_button.connect('clicked', remove_button_clicked)
 
         for name, details in self.packages.items():
-            if details['command'] in self.document.parser.symbols['packages']:
+            if details['command'] in self.document.get_packages():
                 self.add_to_list(self.view.remove_list, name)
             else:
                 self.add_to_list(self.view.add_list, name)

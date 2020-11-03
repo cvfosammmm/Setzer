@@ -75,8 +75,6 @@ class SourceBuffer(GtkSource.Buffer):
         self.placeholder_tag.set_property('background', '#fce94f')
         self.placeholder_tag.set_property('foreground', '#000')
 
-        self.view.connect('key-press-event', self.on_keypress)
-
         self.connect('mark-set', self.on_mark_set)
         self.connect('mark-deleted', self.on_mark_deleted)
         self.connect('insert-text', self.on_insert_text)
@@ -107,71 +105,23 @@ class SourceBuffer(GtkSource.Buffer):
         self.set_use_dark_scheme(self.document.dark_mode)
 
     def on_insert_text(self, buffer, location_iter, text, text_length):
-        if self.document.is_latex_document():
-            self.document.autocomplete.on_insert_text(buffer, location_iter, text, text_length)
         self.indentation_update = {'line_start': location_iter.get_line(), 'text_length': text_length}
+        self.document.add_change_code('text_inserted', (buffer, location_iter, text, text_length))
 
     def on_delete_range(self, buffer, start_iter, end_iter):
-        if self.document.is_latex_document():
-            self.document.autocomplete.on_delete_range(buffer, start_iter, end_iter)
         self.indentation_update = {'line_start': start_iter.get_line(), 'text_length': 0}
+        self.document.add_change_code('text_deleted', (buffer, start_iter, end_iter))
 
     def on_mark_set(self, buffer, insert, mark, user_data=None):
         if mark.get_name() == 'insert':
             self.update_placeholder_selection()
-            if self.document.is_latex_document():
-                self.document.autocomplete.update(False)
+            self.document.add_change_code('insert_mark_set')
         self.update_selection_state()
 
     def on_mark_deleted(self, buffer, mark, user_data=None):
         if mark.get_name() == 'insert':
-            if self.document.is_latex_document():
-                self.document.autocomplete.update(False)
+            self.document.add_change_code('insert_mark_deleted')
         self.update_selection_state()
-
-    def on_keypress(self, widget, event, data=None):
-        modifiers = Gtk.accelerator_get_default_mod_mask()
-
-        if event.keyval == Gdk.keyval_from_name('backslash') and event.state & modifiers == 0:
-            char = self.get_char_at_cursor()
-            if char.isalpha():
-                self.insert_at_cursor('\\ ')
-                insert_iter = self.get_iter_at_mark(self.get_insert())
-                insert_iter.backward_char()
-                self.place_cursor(insert_iter)
-                return True
-            return False
-
-        if self.document.is_latex_document():
-            bracket_vals = [Gdk.keyval_from_name('parenleft'), Gdk.keyval_from_name('bracketleft'), Gdk.keyval_from_name('braceleft')]
-            if event.keyval in bracket_vals and not self.document.autocomplete.is_active():
-                if self.get_char_before_cursor() == '\\':
-                    add_char = '\\'
-                else:
-                    add_char = ''
-                if event.keyval == Gdk.keyval_from_name('bracketleft'):
-                    self.begin_user_action()
-                    self.delete_selection(True, True)
-                    self.insert_at_cursor('[' + add_char + ']')
-                    self.end_user_action()
-                if event.keyval == Gdk.keyval_from_name('braceleft'):
-                    self.begin_user_action()
-                    self.delete_selection(True, True)
-                    self.insert_at_cursor('{' + add_char + '}')
-                    self.end_user_action()
-                if event.keyval == Gdk.keyval_from_name('parenleft'):
-                    self.begin_user_action()
-                    self.delete_selection(True, True)
-                    self.insert_at_cursor('(' + add_char + ')')
-                    self.end_user_action()
-                insert_iter = self.get_iter_at_mark(self.get_insert())
-                insert_iter.backward_char()
-                if add_char == '\\':
-                    insert_iter.backward_char()
-                self.place_cursor(insert_iter)
-                return True
-
-        return False
 
     def initially_set_text(self, text):
         self.begin_not_undoable_action()
@@ -231,10 +181,10 @@ class SourceBuffer(GtkSource.Buffer):
             text += '\\usepackage{' + packagename + '}'
             first_package = False
         
-        package_data = self.document.parser.symbols['packages_detailed'].items()
+        package_data = self.document.get_package_details()
         if package_data:
             max_end = 0
-            for package in package_data:
+            for package in package_data.items():
                 if package[1].end() > max_end:
                     max_end = package[1].end()
             insert_iter = self.get_iter_at_offset(max_end)
@@ -251,7 +201,7 @@ class SourceBuffer(GtkSource.Buffer):
                 self.insert_text_at_cursor(text)
 
     def remove_packages(self, packages):
-        packages_dict = self.document.parser.symbols['packages_detailed']
+        packages_dict = self.document.get_package_details()
         for package in packages:
             try:
                 match_obj = packages_dict[package]
@@ -401,6 +351,38 @@ class SourceBuffer(GtkSource.Buffer):
                 self.delete(start, end)
 
         self.end_user_action()
+
+    def add_backslash_with_space(self):
+        self.insert_at_cursor('\\ ')
+        insert_iter = self.get_iter_at_mark(self.get_insert())
+        insert_iter.backward_char()
+        self.place_cursor(insert_iter)
+
+    def autoadd_latex_brackets(self, char):
+        if self.get_char_before_cursor() == '\\':
+            add_char = '\\'
+        else:
+            add_char = ''
+        if char == '[':
+            self.begin_user_action()
+            self.delete_selection(True, True)
+            self.insert_at_cursor('[' + add_char + ']')
+            self.end_user_action()
+        if char == '{':
+            self.begin_user_action()
+            self.delete_selection(True, True)
+            self.insert_at_cursor('{' + add_char + '}')
+            self.end_user_action()
+        if char == '(':
+            self.begin_user_action()
+            self.delete_selection(True, True)
+            self.insert_at_cursor('(' + add_char + ')')
+            self.end_user_action()
+        insert_iter = self.get_iter_at_mark(self.get_insert())
+        insert_iter.backward_char()
+        if add_char == '\\':
+            insert_iter.backward_char()
+        self.place_cursor(insert_iter)
 
     def get_char_at_cursor(self):
         start_iter = self.get_iter_at_mark(self.get_insert())

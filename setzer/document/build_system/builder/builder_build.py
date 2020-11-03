@@ -30,20 +30,20 @@ class BuilderBuild(object):
             query.build_result = {'error': error,
                                  'error_arg': error_arg}
 
-    def move_build_files(self, query, tex_file_name):
+    def move_build_files(self, query):
         if query.build_data['do_cleanup']:
-            self.cleanup_build_files(query, query.tex_filename)
+            self.cleanup_build_files(query)
             self.cleanup_glossaries_files(query)
         else:
-            self.rename_build_files(query, tex_file_name)
+            self.rename_build_files(query)
 
-    def cleanup_build_files(self, query, tex_file_name):
+    def cleanup_build_files(self, query):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' , '.ilg',
                         '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc',
                         '.ist', '.glo', '.glg', '.acn', '.alg',
                         '.bcf', '.run.xml']
         for ending in file_endings:
-            try: os.remove(os.path.splitext(tex_file_name)[0] + ending)
+            try: os.remove(os.path.splitext(query.tex_filename)[0] + ending)
             except FileNotFoundError: pass
 
     def cleanup_glossaries_files(self, query):
@@ -51,12 +51,12 @@ class BuilderBuild(object):
             try: os.remove(os.path.splitext(query.tex_filename)[0] + ending)
             except FileNotFoundError: pass
 
-    def rename_build_files(self, query, tex_file_name):
+    def rename_build_files(self, query):
         file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,
                         '.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc',
                         '.ist', '.glo', '.glg', '.acn', '.alg', '.bcf', '.run.xml']
         for ending in file_endings:
-            move_from = os.path.splitext(tex_file_name)[0] + ending
+            move_from = os.path.splitext(query.tmp_tex_filename)[0] + ending
             move_to = os.path.splitext(query.tex_filename)[0] + ending
             try: shutil.move(move_from, move_to)
             except FileNotFoundError: pass

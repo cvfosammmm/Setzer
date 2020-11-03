@@ -55,10 +55,13 @@ class DocumentController(object):
         tab_keyvals = [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]
         keypress_handled = False
 
-        if not keypress_handled and self.document.is_latex_document():
-            keypress_handled = self.document.autocomplete.on_keypress(event)
-            if keypress_handled:
-                return True
+        try: autocomplete = self.document.autocomplete
+        except AttributeError: pass
+        else:
+            if not keypress_handled:
+                keypress_handled = self.document.autocomplete.on_keypress(event)
+                if keypress_handled:
+                    return True
 
         if not keypress_handled and event.keyval in tab_keyvals:
             if event.state & modifiers == 0:

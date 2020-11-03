@@ -19,7 +19,8 @@ import os.path
 import time
 import pickle
 
-from setzer.document.document import Document, LaTeXDocument, BibTeXDocument
+from setzer.document.latex.document_latex import DocumentLaTeX
+from setzer.document.bibtex.document_bibtex import DocumentBibTeX
 from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
@@ -124,14 +125,14 @@ class Workspace(Observable):
         self.add_change_code('document_removed', document)
 
     def create_latex_document(self, activate=False):
-        document = LaTeXDocument()
+        document = DocumentLaTeX()
         self.add_document(document)
 
         if activate:
             self.set_active_document(document)
 
     def create_bibtex_document(self, activate=False):
-        document = BibTeXDocument()
+        document = DocumentBibTeX()
         self.add_document(document)
 
         if activate:
@@ -139,9 +140,9 @@ class Workspace(Observable):
 
     def create_document_from_filename(self, filename, activate=False):
         if filename[-4:] == '.tex':
-            document = LaTeXDocument()
+            document = DocumentLaTeX()
         elif filename[-4:] == '.bib':
-            document = BibTeXDocument()
+            document = DocumentBibTeX()
         else:
             return None
         document.set_filename(filename)

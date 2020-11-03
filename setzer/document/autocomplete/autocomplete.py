@@ -18,7 +18,6 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from gi.repository import Gdk
 
 import setzer.document.autocomplete.autocomplete_viewgtk as view
 import setzer.document.autocomplete.session.session_blank as session_blank
@@ -45,7 +44,7 @@ class Autocomplete(object):
 
         self.provider = ServiceLocator.get_autocomplete_provider()
 
-        self.blank_session = session_blank.SessionBlank(self)
+        self.blank_session = session_blank.SessionBlank(self, self.document)
         self.session = self.blank_session
 
         self.shortcuts_bar_height = 37
@@ -62,7 +61,23 @@ class Autocomplete(object):
         self.view.list.connect('row-activated', self.on_row_activated)
         self.view.list.connect('row-selected', self.on_row_selected)
 
+        self.document.register_observer(self)
+
     def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'text_inserted':
+            buffer, location_iter, text, text_length = parameter
+            self.session.on_insert_text(buffer, location_iter, text, text_length)
+
+        if change_code == 'text_deleted':
+            buffer, start_iter, end_iter = parameter
+            self.session.on_delete_range(buffer, start_iter, end_iter)
+
+        if change_code == 'buffer_changed':
+            self.update(True)
+
+        if change_code in ['insert_mark_set', 'insert_mark_deleted']:
+            self.update(False)
 
         if change_code == 'font_string_changed':
             char_width, line_height = self.font_manager.get_char_dimensions(self.document_view.source_view)
@@ -72,15 +87,6 @@ class Autocomplete(object):
     def on_adjustment_value_changed(self, adjustment, user_data=None):
         self.update_visibility()
         return False
-
-    def on_insert_text(self, buffer, location_iter, text, text_length):
-        self.session.on_insert_text(buffer, location_iter, text, text_length)
-
-    def on_delete_range(self, buffer, start_iter, end_iter):
-        self.session.on_delete_range(buffer, start_iter, end_iter)
-
-    def on_buffer_changed(self, buffer, user_data=None):
-        self.update(True)
 
     def on_row_activated(self, box, row, user_data=None):
         self.document_view.source_view.grab_focus()
@@ -111,37 +117,7 @@ class Autocomplete(object):
     def on_keypress(self, event):
         ''' returns whether the keypress has been handled. '''
 
-        modifiers = Gtk.accelerator_get_default_mod_mask()
-
-        tab_keyvals = [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]
-        if event.keyval in tab_keyvals:
-            if event.state & modifiers == 0:
-                return self.session.on_tab_press()
-
-        if not self.is_visible():
-            return False
-
-        if event.keyval == Gdk.keyval_from_name('Down'):
-            if event.state & modifiers == 0:
-                self.view.select_next()
-                return True
-
-        if event.keyval == Gdk.keyval_from_name('Up'):
-            if event.state & modifiers == 0:
-                self.view.select_previous()
-                return True
-
-        if event.keyval == Gdk.keyval_from_name('Escape'):
-            if event.state & modifiers == 0:
-                self.session.cancel()
-                return True
-
-        if event.keyval == Gdk.keyval_from_name('Return'):
-            if event.state & modifiers == 0:
-                self.submit()
-                return True
-
-        return False
+        return self.session.on_keypress(event)
 
     def submit(self):
         self.session.submit()
@@ -162,7 +138,7 @@ class Autocomplete(object):
                 return
             current_word = self.document.get_latex_command_at_cursor()
             if can_activate and self.provider.get_items(current_word):
-                self.start_session(session_default.SessionDefault(self))
+                self.start_session(session_default.SessionDefault(self, self.document))
 
     def update_visibility(self):
         if self.session.will_show and self.position_is_visible() and not self.focus_hide and len(self.items) > 0:

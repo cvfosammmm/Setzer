@@ -37,7 +37,7 @@ class BuildSystemController(object):
         if change_code == 'build_state_change' and parameter == 'ready_for_building':
             document = self.document
             mode = document.get_build_mode()
-            filename = self.document.get_filename()[:]
+            query_obj = query.Query(self.document.get_filename()[:])
 
             if mode in ['forward_sync', 'build_and_forward_sync']:
                 insert = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
@@ -62,8 +62,6 @@ class BuildSystemController(object):
                 text = document.get_text()
                 do_cleanup = self.settings.get_value('preferences', 'cleanup_build_files')
 
-            query_obj = query.Query()
-            query_obj.tex_filename = filename
             if mode == 'build':
                 query_obj.jobs = ['build_latex']
                 query_obj.build_data['text'] = text
@@ -71,6 +69,7 @@ class BuildSystemController(object):
                 query_obj.build_data['use_latexmk'] = use_latexmk
                 query_obj.build_data['additional_arguments'] = additional_arguments
                 query_obj.build_data['do_cleanup'] = do_cleanup
+                query_obj.generate_temporary_files()
             elif mode == 'forward_sync' and document.build_pathname != None:
                 query_obj.jobs = ['forward_sync']
                 query_obj.forward_sync_data['build_pathname'] = document.build_pathname
@@ -93,6 +92,7 @@ class BuildSystemController(object):
                 query_obj.build_data['do_cleanup'] = do_cleanup
                 query_obj.forward_sync_data['line'] = synctex_arguments['line']
                 query_obj.forward_sync_data['line_offset'] = synctex_arguments['line_offset']
+                query_obj.generate_temporary_files()
 
             self.build_system.add_query(query_obj)
 

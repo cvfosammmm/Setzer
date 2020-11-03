@@ -82,6 +82,9 @@ class Preview(Observable):
             else:
                 self.page_renderer.deactivate()
 
+        if change_code == 'filename_change':
+            self.set_pdf_filename_from_tex_filename(parameter)
+
     def get_pdf_filename(self):
         return self.pdf_filename
         

@@ -146,7 +146,7 @@ class AutocompleteProvider(object):
         ref_types = self.ref_types['references']
 
         dynamic_items = list()
-        labels = self.get_labels_for_dynamic_items('labels')
+        labels = self.get_labels_for_dynamic_items()
 
         for ref_type in ref_types:
             if len(dynamic_items) >= 20: break
@@ -157,7 +157,7 @@ class AutocompleteProvider(object):
         ref_types = self.ref_types['citations']
 
         dynamic_items = list()
-        labels = self.get_labels_for_dynamic_items('bibitems')
+        labels = self.get_bibitems_for_dynamic_items()
 
         for ref_type in ref_types:
             if len(dynamic_items) >= 20: break
@@ -177,17 +177,15 @@ class AutocompleteProvider(object):
         return dynamic_items
 
     #@timer.timer
-    def get_labels_for_dynamic_items(self, label_type):
-        labels_first = set()
-        labels_second = set()
-        labels_rest = set()
+    def get_bibitems_for_dynamic_items(self):
+        bibitems_first = set()
+        bibitems_second = set()
+        bibitems_rest = set()
 
         pathnames_done = set()
         if self.workspace.active_document != None:
             pathnames_done = pathnames_done | {self.workspace.active_document.get_filename()}
-            labels_dict = self.workspace.active_document.parser.get_labels()
-            if label_type in labels_dict:
-                labels_first = labels_first | labels_dict[label_type]
+            bibitems_first = bibitems_first | self.workspace.active_document.get_bibitems()
 
             included_files = self.workspace.active_document.get_included_files()
             for pathname in included_files:
@@ -195,14 +193,12 @@ class AutocompleteProvider(object):
                     pathnames_done = pathnames_done | {pathname}
                     if pathname in self.included_files_labels:
                         labels_dict = self.included_files_labels[pathname]['labels']
-                        if label_type in labels_dict:
-                            labels_second = labels_second | labels_dict[label_type]
+                        if 'bibitems' in labels_dict:
+                            bibitems_second = bibitems_second | labels_dict['bibitems']
                     else:
                         document_object = self.workspace.get_document_by_filename(pathname)
                         if document_object:
-                            labels_dict = document_object.parser.get_labels()
-                            if label_type in labels_dict:
-                                labels_second = labels_second | labels_dict[label_type]
+                            bibitems_second = bibitems_second | document_object.get_bibitems()
 
         for document in self.workspace.open_documents:
             pathnames = {document.get_filename()} | document.get_included_files()
@@ -211,14 +207,52 @@ class AutocompleteProvider(object):
                     pathnames_done = pathnames_done | {pathname}
                     if pathname in self.included_files_labels:
                         labels_dict = self.included_files_labels[pathname]['labels']
-                        if label_type in labels_dict:
-                            labels_rest = labels_rest | labels_dict[label_type]
+                        if 'bibitems' in labels_dict:
+                            bibitems_rest = bibitems_rest | labels_dict['bibitems']
                     else:
                         document_object = self.workspace.get_document_by_filename(pathname)
                         if document_object:
-                            labels_dict = document_object.parser.get_labels()
-                            if label_type in labels_dict:
-                                labels_rest = labels_rest | labels_dict[label_type]
+                            bibitems_rest = bibitems_rest | document_object.get_bibitems()
+
+        bibitems = ['•'] + list(bibitems_first) + list(bibitems_second) + list(bibitems_rest)
+        return bibitems
+
+    def get_labels_for_dynamic_items(self):
+        labels_first = set()
+        labels_second = set()
+        labels_rest = set()
+
+        pathnames_done = set()
+        if self.workspace.active_document != None:
+            pathnames_done = pathnames_done | {self.workspace.active_document.get_filename()}
+            labels_first = labels_first | self.workspace.active_document.get_labels()
+
+            included_files = self.workspace.active_document.get_included_files()
+            for pathname in included_files:
+                if pathname not in pathnames_done:
+                    pathnames_done = pathnames_done | {pathname}
+                    if pathname in self.included_files_labels:
+                        labels_dict = self.included_files_labels[pathname]['labels']
+                        if 'labels' in labels_dict:
+                            labels_second = labels_second | labels_dict['labels']
+                    else:
+                        document_object = self.workspace.get_document_by_filename(pathname)
+                        if document_object:
+                            labels_second = labels_second | document_object.get_labels()
+
+        for document in self.workspace.open_documents:
+            pathnames = {document.get_filename()} | document.get_included_files()
+            for pathname in pathnames:
+                if pathname not in pathnames_done:
+                    pathnames_done = pathnames_done | {pathname}
+                    if pathname in self.included_files_labels:
+                        labels_dict = self.included_files_labels[pathname]['labels']
+                        if 'labels' in labels_dict:
+                            labels_rest = labels_rest | labels_dict['labels']
+                    else:
+                        document_object = self.workspace.get_document_by_filename(pathname)
+                        if document_object:
+                            labels_rest = labels_rest | document_object.get_labels()
 
         labels = ['•'] + list(labels_first) + list(labels_second) + list(labels_rest)
         return labels
@@ -242,9 +276,8 @@ class AutocompleteProvider(object):
         current_includes = set()
         open_docs_pathnames = self.workspace.get_open_documents_filenames()
         for document in self.workspace.open_latex_documents:
-            labels_dict = document.parser.get_labels()
-            current_includes = current_includes | labels_dict['bibliographies'] | labels_dict['included_latex_files']
-            for pathname in labels_dict['bibliographies']:
+            current_includes = current_includes | document.get_included_files()
+            for pathname in document.get_bibliography_files():
                 if pathname not in open_docs_pathnames:
                     if os.path.isfile(pathname):
                         if pathname not in self.included_files_labels:
@@ -253,7 +286,7 @@ class AutocompleteProvider(object):
                             last_parse_time = self.included_files_labels[pathname]['last_parse_time']
                             if last_parse_time < os.path.getmtime(pathname):
                                 self.included_files_labels[pathname] = self.parse_bibtex_file(pathname)
-            for pathname in labels_dict['included_latex_files']:
+            for pathname in document.get_included_latex_files():
                 if pathname not in open_docs_pathnames:
                     if os.path.isfile(pathname):
                         if pathname not in self.included_files_labels:

@@ -18,6 +18,8 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import GLib
+from gi.repository import Gdk
+from gi.repository import Gtk
 
 from setzer.app.service_locator import ServiceLocator
 
@@ -63,6 +65,41 @@ class SessionBeginEnd(object):
         if delete_start_offset >= start_offset and delete_end_offset <= end_offset:
             self.source_buffer.begin_user_action()
             GLib.idle_add(self.update_matching_block)
+
+    def on_keypress(self, event):
+        ''' returns whether the keypress has been handled. '''
+
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        tab_keyvals = [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]
+        if event.keyval in tab_keyvals:
+            if event.state & modifiers == 0:
+                return self.on_tab_press()
+
+        if not self.autocomplete.is_visible():
+            return False
+
+        if event.keyval == Gdk.keyval_from_name('Down'):
+            if event.state & modifiers == 0:
+                self.autocomplete.view.select_next()
+                return True
+
+        if event.keyval == Gdk.keyval_from_name('Up'):
+            if event.state & modifiers == 0:
+                self.autocomplete.view.select_previous()
+                return True
+
+        if event.keyval == Gdk.keyval_from_name('Escape'):
+            if event.state & modifiers == 0:
+                self.cancel()
+                return True
+
+        if event.keyval == Gdk.keyval_from_name('Return'):
+            if event.state & modifiers == 0:
+                self.submit()
+                return True
+
+        return False
 
     def update_matching_block(self):
         if not self.autocomplete.mark_start.get_deleted() and not self.autocomplete.mark_end.get_deleted() and not self.autocomplete.matching_mark_start.get_deleted() and not self.autocomplete.matching_mark_end.get_deleted():

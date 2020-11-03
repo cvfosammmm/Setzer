@@ -29,7 +29,7 @@ class BuilderBuildGlossaries(builder_build.BuilderBuild):
         builder_build.BuilderBuild.__init__(self)
 
     def run(self, query):
-        tex_filename = query.build_data['tmp_tex_filename']
+        tex_filename = query.tmp_tex_filename
 
         basename = os.path.basename(tex_filename).rsplit('.', 1)[0]
         arguments = ['makeglossaries']
@@ -37,7 +37,7 @@ class BuilderBuildGlossaries(builder_build.BuilderBuild):
         try:
             self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(tex_filename))
         except FileNotFoundError:
-            self.move_build_files(query, tex_filename)
+            self.move_build_files(query)
             self.throw_build_error(query, 'interpreter_not_working', 'makeglossaries missing')
             return
         self.process.wait()
@@ -46,7 +46,6 @@ class BuilderBuildGlossaries(builder_build.BuilderBuild):
             move_to = os.path.join(os.path.dirname(query.tex_filename), basename + ending)
             try: shutil.move(move_from, move_to)
             except FileNotFoundError: pass
-        self.cleanup_build_files(query, tex_filename)
 
         query.jobs.insert(0, 'build_latex')
 

@@ -15,24 +15,65 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gdk
+from gi.repository import Gtk
+
 from setzer.app.service_locator import ServiceLocator
 
 
 class SessionDefault(object):
 
-    def __init__(self, autocomplete):
+    def __init__(self, autocomplete, document):
         self.autocomplete = autocomplete
+        self.document = document
         self.will_show = True
 
         self.last_tabbed_command = None
         self.current_word = ""
-        self.current_word_offset = self.autocomplete.document.get_latex_command_at_cursor_offset()
+        self.current_word_offset = self.document.get_latex_command_at_cursor_offset()
 
     def on_insert_text(self, buffer, location_iter, text, text_length):
         pass
 
     def on_delete_range(self, buffer, start_iter, end_iter):
         pass
+
+    def on_keypress(self, event):
+        ''' returns whether the keypress has been handled. '''
+
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        tab_keyvals = [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]
+        if event.keyval in tab_keyvals:
+            if event.state & modifiers == 0:
+                return self.on_tab_press()
+
+        if not self.autocomplete.is_visible():
+            return False
+
+        if event.keyval == Gdk.keyval_from_name('Down'):
+            if event.state & modifiers == 0:
+                self.autocomplete.view.select_next()
+                return True
+
+        if event.keyval == Gdk.keyval_from_name('Up'):
+            if event.state & modifiers == 0:
+                self.autocomplete.view.select_previous()
+                return True
+
+        if event.keyval == Gdk.keyval_from_name('Escape'):
+            if event.state & modifiers == 0:
+                self.cancel()
+                return True
+
+        if event.keyval == Gdk.keyval_from_name('Return'):
+            if event.state & modifiers == 0:
+                self.submit()
+                return True
+
+        return False
 
     def on_tab_press(self):
         if not self.autocomplete.is_visible():
@@ -42,7 +83,7 @@ class SessionDefault(object):
             self.submit()
             return True
         else:
-            self.current_word = self.autocomplete.document.get_latex_command_at_cursor()
+            self.current_word = self.document.get_latex_command_at_cursor()
             i = self.get_number_of_matching_letters_on_tabpress(self.current_word, 0)
 
             command = self.autocomplete.view.list.get_selected_row().get_child().command
@@ -54,7 +95,7 @@ class SessionDefault(object):
                 if i >= 1:
                     text = (command['command'])[:len(self.current_word) + i]
                     self.last_tabbed_command = command['command'][1:]
-                    self.autocomplete.document.replace_latex_command_at_cursor(text, command['dotlabels'])
+                    self.document.replace_latex_command_at_cursor(text, command['dotlabels'])
                     return True
                 else:
                     current_word = (command['command'])[:len(self.current_word) + 1]
@@ -67,7 +108,7 @@ class SessionDefault(object):
                     else:
                         text = (command['command'])[:len(current_word) + i]
                         self.last_tabbed_command = command['command']
-                        self.autocomplete.document.replace_latex_command_at_cursor(text, command['dotlabels'])
+                        self.document.replace_latex_command_at_cursor(text, command['dotlabels'])
                         return True
 
     def get_number_of_matching_letters_on_tabpress(self, current_word, offset):
@@ -90,7 +131,7 @@ class SessionDefault(object):
 
     def update(self, can_show=False):
         if not self.current_word_changed_or_is_none():
-            self.current_word = self.autocomplete.document.get_latex_command_at_cursor()
+            self.current_word = self.document.get_latex_command_at_cursor()
             self.autocomplete.items = self.autocomplete.provider.get_items_for_completion_window(self.current_word, self.last_tabbed_command)
             if len(self.autocomplete.items) > 0:
                 if self.autocomplete.cursor_moved():
@@ -104,11 +145,11 @@ class SessionDefault(object):
             self.cancel()
 
     def get_offset(self):
-        self.current_word = self.autocomplete.document.get_latex_command_at_cursor()
+        self.current_word = self.document.get_latex_command_at_cursor()
         return len(self.current_word)
 
     def current_word_changed_or_is_none(self):
-        current_word_offset = self.autocomplete.document.get_latex_command_at_cursor_offset()
+        current_word_offset = self.document.get_latex_command_at_cursor_offset()
         if current_word_offset != self.current_word_offset:
             return True
         return (current_word_offset == None)
@@ -125,9 +166,9 @@ class SessionDefault(object):
 
     def insert_begin_end(self, command):
         text = command['command']
-        buffer = self.autocomplete.document.get_buffer()
+        buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        current_word = self.autocomplete.document.get_latex_command_at_cursor()
+        current_word = self.document.get_latex_command_at_cursor()
         start_iter = insert_iter.copy()
         start_iter.backward_chars(len(current_word))
 
@@ -135,14 +176,14 @@ class SessionDefault(object):
         if replace_previous_command_data[0]:
             self.insert_begin_end_replace(start_iter, insert_iter, replace_previous_command_data)
         else:
-            self.autocomplete.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
+            self.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
 
     def insert_begin_end_check_replace(self, insert_iter, text):
-        line_part = self.autocomplete.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
+        line_part = self.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
         line_regex = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})\{([^\{\[\|\(]+)\}')
         line_match = line_regex.match(line_part)
         if line_match:
-            document_text = self.autocomplete.document.get_text_after_offset(insert_iter.get_offset() + 1)
+            document_text = self.document.get_text_after_offset(insert_iter.get_offset() + 1)
             if self.get_end_match_object(document_text, line_match.group(2)):
                 return (line_match, text)
         return (None, text)
@@ -151,20 +192,20 @@ class SessionDefault(object):
         text = replace_previous_command_data[1]
         match_object = replace_previous_command_data[0]
 
-        self.autocomplete.document.get_buffer().begin_user_action()
+        self.document.get_buffer().begin_user_action()
 
         end_iter_begin = insert_iter.copy()
         end_iter_begin.forward_chars(match_object.end())
         start_iter_offset = start_iter_begin.get_offset()
-        self.autocomplete.document.get_buffer().replace_range_no_user_action(start_iter_begin, end_iter_begin, text, indent_lines=False, select_dot=True)
+        self.document.get_buffer().replace_range_no_user_action(start_iter_begin, end_iter_begin, text, indent_lines=False, select_dot=True)
 
         end_iter_offset = start_iter_offset + len(text)
-        document_text = self.autocomplete.document.get_text_after_offset(end_iter_offset)
+        document_text = self.document.get_text_after_offset(end_iter_offset)
         environment_name = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})\{([^\{\[\|\(]+)\}').match(match_object.group(0)).group(2)
         end_match_object = self.get_end_match_object(document_text, environment_name)
 
         if end_match_object != None:
-            start_iter_begin = self.autocomplete.document.get_buffer().get_iter_at_offset(end_iter_offset)
+            start_iter_begin = self.document.get_buffer().get_iter_at_offset(end_iter_offset)
             start_iter_end = start_iter_begin.copy()
             start_iter_end.forward_chars(end_match_object.start())
             end_iter_end = start_iter_begin.copy()
@@ -173,9 +214,9 @@ class SessionDefault(object):
             end_command_bracket_position = end_command.find('}')
             if end_command_bracket_position:
                 end_command = end_command[:end_command_bracket_position + 1]
-            self.autocomplete.document.get_buffer().replace_range_no_user_action(start_iter_end, end_iter_end, end_command, indent_lines=False, select_dot=False)
+            self.document.get_buffer().replace_range_no_user_action(start_iter_end, end_iter_end, end_command, indent_lines=False, select_dot=False)
 
-        self.autocomplete.document.get_buffer().end_user_action()
+        self.document.get_buffer().end_user_action()
 
     def get_end_match_object(self, text, environment_name):
         count = 0
@@ -196,18 +237,18 @@ class SessionDefault(object):
 
         replacement_pattern = self.get_replacement_pattern(text)
         if replacement_pattern == None:
-            self.autocomplete.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
+            self.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
         else:
             command_regex = ServiceLocator.get_regex_object(r'.*' + replacement_pattern[1])
             if command_regex.match(text):
                 self.insert_final_replace(text, replacement_pattern)
             else:
-                self.autocomplete.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
+                self.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
 
     def get_replacement_pattern(self, command):
-        buffer = self.autocomplete.document.get_buffer()
+        buffer = self.document.get_buffer()
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        line_part = self.autocomplete.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
+        line_part = self.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
         command_bracket_count = self.get_command_bracket_count(command)
 
         matches_group = list()
@@ -274,10 +315,10 @@ class SessionDefault(object):
                     text += '(' + inner_text + ')'
             count += 1
 
-        current_word = self.autocomplete.document.get_latex_command_at_cursor()
-        offset = self.autocomplete.document.get_cursor_offset() - len(current_word)
+        current_word = self.document.get_latex_command_at_cursor()
+        offset = self.document.get_cursor_offset() - len(current_word)
         length = len(current_word) + match_object.end()
-        self.autocomplete.document.replace_range(offset, length, text, indent_lines=True, select_dot=True)
+        self.document.replace_range(offset, length, text, indent_lines=True, select_dot=True)
 
     def cancel(self):
         self.autocomplete.end_session()

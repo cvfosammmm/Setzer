@@ -16,11 +16,13 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import _thread as thread
+import tempfile
+import os.path
 
 
 class Query(object):
 
-    def __init__(self):
+    def __init__(self, tex_filename):
         self.build_result = None
         self.build_result_lock = thread.allocate_lock()
         self.forward_sync_result = None
@@ -37,12 +39,17 @@ class Query(object):
         self.bibtex_data = {'ran_on_files': []}
         self.forward_sync_data = dict()
         self.backward_sync_data = dict()
-        self.tex_filename = None
+        self.tex_filename = tex_filename
 
         self.log_messages = list()
         self.bibtex_log_messages = list()
         self.force_building_to_stop = False
         self.error_count = 0
+
+    def generate_temporary_files(self):
+        self.build_data['tmp_directory'] = tempfile.TemporaryDirectory()
+        self.tmp_tex_filename = self.build_data['tmp_directory'].name + '/' + os.path.basename(self.tex_filename)
+        with open(self.tmp_tex_filename, 'w') as f: f.write(self.build_data['text'])
 
     def get_build_result(self):
         return_value = None

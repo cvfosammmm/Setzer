@@ -32,7 +32,7 @@ class BuilderBuildBibTeX(builder_build.BuilderBuild):
         self.bibtex_log_item_regex = ServiceLocator.get_regex_object(r'Warning--(.*)\n--line ([0-9]+) of file (.*)|I couldn' + "'" + r't open style file (.*)\n---line ([0-9]+) of file (.*)')
 
     def run(self, query):
-        tex_filename = query.build_data['tmp_tex_filename']
+        tex_filename = query.tmp_tex_filename
         filename = tex_filename.rsplit('/', 1)[1][:-4]
 
         arguments = ['bibtex']
@@ -45,7 +45,7 @@ class BuilderBuildBibTeX(builder_build.BuilderBuild):
         try:
             self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(tex_filename), env=custom_env)
         except FileNotFoundError:
-            self.move_build_files(query, tex_filename)
+            self.move_build_files(query)
             self.throw_build_error(query, 'interpreter_not_working', 'bibtex missing')
             return
         self.process.wait()

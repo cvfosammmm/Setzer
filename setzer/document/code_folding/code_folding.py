@@ -78,7 +78,7 @@ class CodeFolding(Observable):
         folding_regions = dict()
         folding_regions_by_region_id = dict()
         lines_with_regions = set()
-        blocks = self.document.parser.get_blocks()
+        blocks = self.document.get_blocks()
         if blocks == None: return self.is_enabled
 
         for block in blocks:
