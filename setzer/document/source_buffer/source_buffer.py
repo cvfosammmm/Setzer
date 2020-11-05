@@ -464,7 +464,7 @@ class SourceBuffer(GtkSource.Buffer):
             select_dot_offset = -1
             for part in parts:
                 insert_iter = self.get_iter_at_offset(insert_offset)
-                insert_offset += len(part.replace('\t', ' ' * self.tab_width))
+                insert_offset += len(part)
                 self.insert(insert_iter, part)
                 if count > 1:
                     insert_iter = self.get_iter_at_offset(insert_offset)
