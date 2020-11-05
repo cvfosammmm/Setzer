@@ -211,7 +211,7 @@ class Actions(object):
 
     def activate_bibtex_documents_mode(self):
         self.set_document_actions_active(True)
-        self.spellchecking_action.set_enabled(False)
+        self.enable_spellchecking_action()
         self.add_remove_packages_dialog_action.set_enabled(False)
 
     def enable_spellchecking_action(self):
