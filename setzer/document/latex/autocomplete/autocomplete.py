@@ -56,6 +56,8 @@ class Autocomplete(object):
 
         self.focus_hide = False
 
+        self.can_activate_on_end_user_action = True
+
         self.items = list()
 
         self.view.list.connect('row-activated', self.on_row_activated)
@@ -73,8 +75,9 @@ class Autocomplete(object):
             buffer, start_iter, end_iter = parameter
             self.session.on_delete_range(buffer, start_iter, end_iter)
 
-        if change_code == 'buffer_changed':
-            self.update(True)
+        if change_code == 'end_user_action':
+            self.update(self.can_activate_on_end_user_action)
+            self.can_activate_on_end_user_action = True
 
         if change_code in ['insert_mark_set', 'insert_mark_deleted']:
             self.update(False)

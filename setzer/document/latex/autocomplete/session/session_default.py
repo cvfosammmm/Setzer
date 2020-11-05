@@ -156,6 +156,7 @@ class SessionDefault(object):
 
     def submit(self):
         self.autocomplete.end_session()
+        self.autocomplete.can_activate_on_end_user_action = False
 
         row = self.autocomplete.view.list.get_selected_row()
         command = row.get_child().command

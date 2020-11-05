@@ -79,6 +79,7 @@ class SourceBuffer(GtkSource.Buffer):
         self.connect('mark-deleted', self.on_mark_deleted)
         self.connect('insert-text', self.on_insert_text)
         self.connect('delete-range', self.on_delete_range)
+        self.connect('end-user-action', self.on_end_user_action)
 
         self.document.add_change_code('buffer_ready')
 
@@ -111,6 +112,9 @@ class SourceBuffer(GtkSource.Buffer):
     def on_delete_range(self, buffer, start_iter, end_iter):
         self.indentation_update = {'line_start': start_iter.get_line(), 'text_length': 0}
         self.document.add_change_code('text_deleted', (buffer, start_iter, end_iter))
+
+    def on_end_user_action(self, buffer):
+        self.document.add_change_code('end_user_action')
 
     def on_mark_set(self, buffer, insert, mark, user_data=None):
         if mark.get_name() == 'insert':
