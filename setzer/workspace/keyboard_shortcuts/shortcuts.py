@@ -35,45 +35,6 @@ class Shortcuts(object):
         
         self.setup_shortcuts()
 
-    def activate_latex_documents_mode(self):
-        self.set_accels_for_insert_before_after_action(['\\textbf{', '}'], ['<Control>b'])
-        self.set_accels_for_insert_before_after_action(['\\textit{', '}'], ['<Control>i'])
-        self.set_accels_for_insert_before_after_action(['\\underline{', '}'], ['<Control>u'])
-        self.set_accels_for_insert_before_after_action(['\\emph{', '}'], ['<Control><Shift>e'])
-        self.set_accels_for_insert_before_after_action(['\\texttt{', '}'], ['<Control>m'])
-        self.set_accels_for_insert_before_after_action(['$ ', ' $'], ['<Control><Shift>m'])
-        self.set_accels_for_insert_before_after_action(['\\[ ', ' \\]'], ['<Alt><Shift>m'])
-        self.set_accels_for_insert_before_after_action(['\\begin{equation}\n\t', '\n\\end{equation}'], ['<Control><Shift>n'])
-        self.set_accels_for_insert_before_after_action(['\\begin{•}\n\t', '\n\\end{•}'], ['<Control>e'])
-        self.set_accels_for_insert_before_after_action(['_{', '}'], ['<Control><Shift>d'])
-        self.set_accels_for_insert_before_after_action(['^{', '}'], ['<Control><Shift>u'])
-        self.set_accels_for_insert_before_after_action(['\\sqrt{', '}'], ['<Control><Shift>q'])
-        self.set_accels_for_insert_symbol_action(['\\frac{•}{•}'], ['<Alt><Shift>f'])
-        self.set_accels_for_insert_symbol_action(['\\left •'], ['<Control><Shift>l'])
-        self.set_accels_for_insert_symbol_action(['\\right •'], ['<Control><Shift>r'])
-        self.set_accels_for_insert_symbol_action(['\\item •'], ['<Control><Shift>i'])
-        self.set_accels_for_insert_symbol_action(['\\\\\n'], ['<Control>Return'])
-        self.main_window.app.set_accels_for_action('win.comment-uncomment', ['<Control>K'])
-
-    def activate_bibtex_documents_mode(self):
-        self.set_accels_for_insert_before_after_action(['\\textbf{', '}'], [])
-        self.set_accels_for_insert_before_after_action(['\\textit{', '}'], [])
-        self.set_accels_for_insert_before_after_action(['\\underline{', '}'], [])
-        self.set_accels_for_insert_before_after_action(['\\emph{', '}'], [])
-        self.set_accels_for_insert_before_after_action(['\\texttt{', '}'], [])
-        self.set_accels_for_insert_before_after_action(['$ ', ' $'], [])
-        self.set_accels_for_insert_before_after_action(['\\[ ', ' \\]'], [])
-        self.set_accels_for_insert_before_after_action(['\\begin{equation}\n\t', '\n\\end{equation}'], [])
-        self.set_accels_for_insert_before_after_action(['_{', '}'], [])
-        self.set_accels_for_insert_before_after_action(['^{', '}'], [])
-        self.set_accels_for_insert_before_after_action(['\\sqrt{', '}'], [])
-        self.set_accels_for_insert_symbol_action(['\\frac{•}{•}'], [])
-        self.set_accels_for_insert_symbol_action(['\\left •'], [])
-        self.set_accels_for_insert_symbol_action(['\\right •'], [])
-        self.set_accels_for_insert_symbol_action(['\\item •'], [])
-        self.set_accels_for_insert_symbol_action(['\\\\\n'], [])
-        self.main_window.app.set_accels_for_action('win.comment-uncomment', [])
-
     def set_accels_for_insert_before_after_action(self, parameter, accels):
         self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', parameter)), accels)
 
@@ -166,7 +127,7 @@ class Shortcuts(object):
         return True
 
     def shortcut_build_log(self, accel_group=None, window=None, key=None, mask=None):
-        toggle = self.main_window.shortcuts_bar.button_build_log.get_child()
+        toggle = self.main_window.latex_shortcuts_bar.button_build_log.get_child()
         if toggle.get_sensitive():
             toggle.clicked()
         return True
@@ -177,6 +138,6 @@ class Shortcuts(object):
     def shortcut_quotes(self, accel_group=None, window=None, key=None, mask=None):
         active_document = self.workspace.get_active_document()
         if active_document != None and active_document.is_latex_document():
-            self.main_window.shortcuts_bar.quotes_button.set_active(True)
+            self.main_window.latex_shortcuts_bar.quotes_button.set_active(True)
 
 

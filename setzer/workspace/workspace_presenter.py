@@ -47,19 +47,21 @@ class WorkspacePresenter(object):
             document.set_dark_mode(ServiceLocator.get_is_dark_mode())
 
             if document.is_latex_document():
-                self.main_window.notebook.append_page(document.view)
-
+                self.main_window.latex_notebook.append_page(document.view)
             elif document.is_bibtex_document():
                 self.main_window.bibtex_notebook.append_page(document.view)
+            else:
+                self.main_window.others_notebook.append_page(document.view)
 
         if change_code == 'document_removed':
             document = parameter
 
             if document.is_latex_document():
-                self.main_window.notebook.remove(document.view)
-
+                self.main_window.latex_notebook.remove(document.view)
             elif document.is_bibtex_document():
                 self.main_window.bibtex_notebook.remove(document.view)
+            else:
+                self.main_window.others_notebook.remove(document.view)
 
             if self.workspace.active_document == None:
                 self.activate_blank_slate_mode()
@@ -68,7 +70,7 @@ class WorkspacePresenter(object):
             document = parameter
 
             if document.is_latex_document():
-                notebook = self.main_window.notebook
+                notebook = self.main_window.latex_notebook
                 notebook.set_current_page(notebook.page_num(document.view))
                 document.view.source_view.grab_focus()
                 try:
@@ -78,7 +80,6 @@ class WorkspacePresenter(object):
 
                 self.update_latex_shortcuts_bar()
                 self.activate_latex_documents_mode()
-
             elif document.is_bibtex_document():
                 notebook = self.main_window.bibtex_notebook
                 notebook.set_current_page(notebook.page_num(document.view))
@@ -86,6 +87,13 @@ class WorkspacePresenter(object):
 
                 self.update_bibtex_shortcuts_bar()
                 self.activate_bibtex_documents_mode()
+            else:
+                notebook = self.main_window.others_notebook
+                notebook.set_current_page(notebook.page_num(document.view))
+                document.view.source_view.grab_focus()
+
+                self.update_others_shortcuts_bar()
+                self.activate_other_documents_mode()
 
         if change_code == 'new_inactive_document':
             document = parameter
@@ -94,7 +102,7 @@ class WorkspacePresenter(object):
                 try:
                     self.main_window.preview_paned_overlay.remove(document.autocomplete.view)
                 except AttributeError: pass
-                self.main_window.shortcuts_bar.top_icons.remove(document.view.wizard_button)
+                self.main_window.latex_shortcuts_bar.top_icons.remove(document.view.wizard_button)
 
         if change_code == 'set_show_sidebar':
             self.animate_sidebar(parameter, True)
@@ -122,19 +130,23 @@ class WorkspacePresenter(object):
 
     def activate_blank_slate_mode(self):
         self.main_window.mode_stack.set_visible_child_name('blank_slate')
-        self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(False)
+        self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
 
     def activate_latex_documents_mode(self):
         self.main_window.mode_stack.set_visible_child_name('latex_documents')
-        self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(True)
+        self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(True)
 
     def activate_bibtex_documents_mode(self):
         self.main_window.mode_stack.set_visible_child_name('bibtex_documents')
-        self.main_window.shortcuts_bar.button_build_log.get_child().set_sensitive(False)
+        self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
+
+    def activate_other_documents_mode(self):
+        self.main_window.mode_stack.set_visible_child_name('other_documents')
+        self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
 
     def update_latex_shortcuts_bar(self):
         document = self.workspace.active_document
-        shortcuts_bar = self.main_window.shortcuts_bar
+        shortcuts_bar = self.main_window.latex_shortcuts_bar
 
         if shortcuts_bar.current_bottom != None:
             shortcuts_bar.remove(shortcuts_bar.current_bottom)
@@ -145,6 +157,15 @@ class WorkspacePresenter(object):
     def update_bibtex_shortcuts_bar(self):
         document = self.workspace.active_document
         shortcuts_bar = self.main_window.bibtex_shortcuts_bar
+
+        if shortcuts_bar.current_bottom != None:
+            shortcuts_bar.remove(shortcuts_bar.current_bottom)
+        shortcuts_bar.current_bottom = document.view.shortcuts_bar_bottom
+        shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
+
+    def update_others_shortcuts_bar(self):
+        document = self.workspace.active_document
+        shortcuts_bar = self.main_window.others_shortcuts_bar
 
         if shortcuts_bar.current_bottom != None:
             shortcuts_bar.remove(shortcuts_bar.current_bottom)
@@ -312,7 +333,7 @@ class WorkspacePresenter(object):
                     paned.child_set_property(self.main_window.build_log, 'shrink', False)
                     self.main_window.build_log_visible = True
                     self.workspace.set_build_log_position(paned.get_position())
-                self.main_window.shortcuts_bar.button_build_log.set_active(show_build_log)
+                self.main_window.latex_shortcuts_bar.button_build_log.set_active(show_build_log)
                 self.build_log_animating = False
                 return False
 
@@ -346,7 +367,7 @@ class WorkspacePresenter(object):
                 self.main_window.build_log_paned.child_set_property(self.main_window.build_log, 'shrink', True)
                 self.main_window.build_log_visible = False
                 self.main_window.build_log.hide()
-            self.main_window.shortcuts_bar.button_build_log.set_active(show_build_log)
+            self.main_window.latex_shortcuts_bar.button_build_log.set_active(show_build_log)
 
     def ease(self, time):
         return (time - 1)**3 + 1;

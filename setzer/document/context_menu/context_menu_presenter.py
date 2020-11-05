@@ -36,8 +36,7 @@ class ContextMenuPresenter(object):
         self.on_can_undo_changed(undo_manager)
         self.on_can_redo_changed(undo_manager)
 
-        if self.context_menu.document.is_latex_document():
-            self.on_can_forward_sync_changed(self.context_menu.document.can_forward_sync)
+        self.on_can_forward_sync_changed(self.context_menu.document.can_forward_sync)
 
     def set_zoom_level(self, zoom_level):
         self.scbar_view.model_button_reset_zoom.set_label("{:.0%}".format(zoom_level))

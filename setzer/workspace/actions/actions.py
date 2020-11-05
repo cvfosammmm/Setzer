@@ -184,10 +184,7 @@ class Actions(object):
 
         if change_code == 'new_active_document':
             document = parameter
-            if document.is_latex_document():
-                self.activate_latex_documents_mode()
-            elif document.is_bibtex_document():
-                self.activate_bibtex_documents_mode()
+            self.activate_document_mode()
             self.update_save_actions(document)
             document.register_observer(self)
 
@@ -204,15 +201,10 @@ class Actions(object):
         self.add_remove_packages_dialog_action.set_enabled(False)
         self.set_document_actions_active(False)
 
-    def activate_latex_documents_mode(self):
+    def activate_document_mode(self):
         self.set_document_actions_active(True)
         self.enable_spellchecking_action()
         self.add_remove_packages_dialog_action.set_enabled(True)
-
-    def activate_bibtex_documents_mode(self):
-        self.set_document_actions_active(True)
-        self.enable_spellchecking_action()
-        self.add_remove_packages_dialog_action.set_enabled(False)
 
     def enable_spellchecking_action(self):
         default_language = Gspell.Language.get_default()

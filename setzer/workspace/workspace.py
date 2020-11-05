@@ -21,6 +21,8 @@ import pickle
 
 from setzer.document.latex.document_latex import DocumentLaTeX
 from setzer.document.bibtex.document_bibtex import DocumentBibTeX
+from setzer.document.latex_cls.document_latex_cls import DocumentLaTeXCls
+from setzer.document.latex_sty.document_latex_sty import DocumentLaTeXSty
 from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
@@ -138,11 +140,29 @@ class Workspace(Observable):
         if activate:
             self.set_active_document(document)
 
+    def create_latex_cls_document(self, activate=False):
+        document = DocumentLaTeXCls()
+        self.add_document(document)
+
+        if activate:
+            self.set_active_document(document)
+
+    def create_latex_sty_document(self, activate=False):
+        document = DocumentLaTeXSty()
+        self.add_document(document)
+
+        if activate:
+            self.set_active_document(document)
+
     def create_document_from_filename(self, filename, activate=False):
         if filename[-4:] == '.tex':
             document = DocumentLaTeX()
         elif filename[-4:] == '.bib':
             document = DocumentBibTeX()
+        elif filename[-4:] == '.cls':
+            document = DocumentLaTeXCls()
+        elif filename[-4:] == '.sty':
+            document = DocumentLaTeXSty()
         else:
             return None
         document.set_filename(filename)
@@ -177,10 +197,7 @@ class Workspace(Observable):
             self.active_document.set_last_activated(time.time())
             self.set_has_visible_build_system(self.active_document)
             self.add_change_code('new_active_document', document)
-            if self.active_document.is_latex_document():
-                self.shortcuts.activate_latex_documents_mode()
-            elif self.active_document.is_bibtex_document():
-                self.shortcuts.activate_bibtex_documents_mode()
+            self.active_document.init_shortcuts(self.shortcuts)
             self.set_build_log()
 
     def set_build_log(self):

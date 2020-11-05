@@ -18,12 +18,15 @@
 import os.path
 import time
 
-import setzer.document.build_system.build_system as build_system
+import setzer.document.document_controller as document_controller
+import setzer.document.document_presenter as document_presenter
+import setzer.document.context_menu.context_menu as context_menu
+import setzer.document.document_switcher_item.document_switcher_item as document_switcher_item
 import setzer.document.document_viewgtk as document_view
 import setzer.document.search.search as search
-import setzer.document.code_folding.code_folding as code_folding
-import setzer.document.preview.preview as preview
+import setzer.document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
 import setzer.document.source_buffer.source_buffer as source_buffer
+import setzer.document.spellchecker.spellchecker as spellchecker
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 
@@ -41,12 +44,24 @@ class Document(Observable):
         self.deleted_on_disk_dialog_shown_after_last_save = False
         self.last_activated = 0
         self.dark_mode = False
+        self.is_master = False
+        self.can_forward_sync = False
 
         self.parser = None
         self.build_system = None
         self.source_buffer = source_buffer.SourceBuffer(self)
         self.source_buffer.connect('changed', self.on_buffer_changed)
         self.source_buffer.connect('modified-changed', self.on_modified_changed)
+
+        self.view = document_view.DocumentView(self, self.source_buffer.view)
+        self.search = search.Search(self, self.view, self.view.search_bar)
+        self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
+        self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
+        self.context_menu = context_menu.ContextMenu(self, self.view)
+        self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
+
+        self.presenter = document_presenter.DocumentPresenter(self, self.view)
+        self.controller = document_controller.DocumentController(self, self.view)
 
     def set_search_text(self, search_text):
         self.source_buffer.search_settings.set_search_text(search_text)

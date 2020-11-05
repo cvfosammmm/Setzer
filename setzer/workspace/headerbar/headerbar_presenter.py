@@ -49,10 +49,12 @@ class HeaderbarPresenter(object):
         if change_code == 'new_active_document':
             document = parameter
 
+            self.set_build_button_state()
+            self.main_window.headerbar.save_document_button.show_all()
             if document.is_latex_document():
-                self.activate_latex_documents_mode()
-            elif document.is_bibtex_document():
-                self.activate_bibtex_documents_mode()
+                self.activate_latex_document_mode()
+            else:
+                self.activate_other_document_mode()
 
         if change_code == 'update_recently_opened_documents':
             data = parameter.values()
@@ -101,9 +103,7 @@ class HeaderbarPresenter(object):
         self.main_window.headerbar.sidebar_toggle.hide()
         self.main_window.headerbar.sidebar_toggle.set_sensitive(False)
 
-    def activate_latex_documents_mode(self):
-        self.set_build_button_state()
-        self.main_window.headerbar.save_document_button.show_all()
+    def activate_latex_document_mode(self):
         self.main_window.headerbar.preview_toggle.show_all()
         self.main_window.headerbar.preview_toggle.set_sensitive(True)
         self.main_window.headerbar.help_toggle.show_all()
@@ -111,9 +111,7 @@ class HeaderbarPresenter(object):
         self.main_window.headerbar.sidebar_toggle.show_all()
         self.main_window.headerbar.sidebar_toggle.set_sensitive(True)
 
-    def activate_bibtex_documents_mode(self):
-        self.set_build_button_state()
-        self.main_window.headerbar.save_document_button.show_all()
+    def activate_other_document_mode(self):
         self.main_window.headerbar.preview_toggle.hide()
         self.main_window.headerbar.preview_toggle.set_sensitive(False)
         self.main_window.headerbar.help_toggle.hide()

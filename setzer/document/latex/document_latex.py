@@ -19,21 +19,13 @@ import os.path
 import time
 
 from setzer.document.document import Document
-import setzer.document.document_controller as document_controller
-import setzer.document.document_presenter as document_presenter
-import setzer.document.context_menu.context_menu as context_menu
-import setzer.document.build_system.build_system as build_system
-import setzer.document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
-import setzer.document.document_viewgtk as document_view
-import setzer.document.document_switcher_item.document_switcher_item as document_switcher_item
-import setzer.document.build_widget.build_widget as build_widget
-import setzer.document.search.search as search
-import setzer.document.autocomplete.autocomplete as autocomplete
-import setzer.document.spellchecker.spellchecker as spellchecker
-import setzer.document.code_folding.code_folding as code_folding
-import setzer.document.parser.latex_parser as latex_parser
-import setzer.document.preview.preview as preview
-import setzer.document.state_manager.state_manager_latex as state_manager_latex
+import setzer.document.latex.build_system.build_system as build_system
+import setzer.document.latex.build_widget.build_widget as build_widget
+import setzer.document.latex.autocomplete.autocomplete as autocomplete
+import setzer.document.latex.code_folding.code_folding as code_folding
+import setzer.document.latex.parser.latex_parser as latex_parser
+import setzer.document.latex.preview.preview as preview
+import setzer.document.latex.state_manager.state_manager_latex as state_manager_latex
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 
@@ -42,7 +34,6 @@ class DocumentLaTeX(Document):
 
     def __init__(self):
         Document.__init__(self)
-        self.is_master = False
         self.has_visible_build_system = False
 
         # possible states: idle, ready_for_building
@@ -52,15 +43,11 @@ class DocumentLaTeX(Document):
         # possible values: build, forward_sync, build_and_forward_sync
         self.build_mode = 'build_and_forward_sync'
         self.build_pathname = None
-        self.can_forward_sync = False
         self.can_backward_sync = False
         self.backward_sync_data = None
 
         self.preview = preview.Preview(self)
         self.state_manager = state_manager_latex.StateManagerLaTeX(self)
-        self.view = document_view.DocumentView(self, self.source_buffer.view)
-        self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
-        self.search = search.Search(self, self.view, self.view.search_bar)
 
         self.build_log_items = list()
         self.has_been_built = False
@@ -75,17 +62,32 @@ class DocumentLaTeX(Document):
         self.view.source_view.connect('focus-in-event', self.autocomplete.on_focus_in)
 
         self.build_system = build_system.BuildSystem(self)
-        self.presenter = document_presenter.DocumentPresenter(self, self.view)
-        self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
         self.code_folding = code_folding.CodeFolding(self)
-        self.controller = document_controller.DocumentController(self, self.view)
-        self.context_menu = context_menu.ContextMenu(self, self.view)
 
-        self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.parser = latex_parser.LaTeXParser(self)
 
         self.update_can_forward_sync()
         self.update_can_backward_sync()
+
+    def init_shortcuts(self, shortcuts_manager):
+        shortcuts_manager.set_accels_for_insert_before_after_action(['\\textbf{', '}'], ['<Control>b'])
+        shortcuts_manager.set_accels_for_insert_before_after_action(['\\textit{', '}'], ['<Control>i'])
+        shortcuts_manager.set_accels_for_insert_before_after_action(['\\underline{', '}'], ['<Control>u'])
+        shortcuts_manager.set_accels_for_insert_before_after_action(['\\emph{', '}'], ['<Control><Shift>e'])
+        shortcuts_manager.set_accels_for_insert_before_after_action(['\\texttt{', '}'], ['<Control>m'])
+        shortcuts_manager.set_accels_for_insert_before_after_action(['$ ', ' $'], ['<Control><Shift>m'])
+        shortcuts_manager.set_accels_for_insert_before_after_action(['\\[ ', ' \\]'], ['<Alt><Shift>m'])
+        shortcuts_manager.set_accels_for_insert_before_after_action(['\\begin{equation}\n\t', '\n\\end{equation}'], ['<Control><Shift>n'])
+        shortcuts_manager.set_accels_for_insert_before_after_action(['\\begin{•}\n\t', '\n\\end{•}'], ['<Control>e'])
+        shortcuts_manager.set_accels_for_insert_before_after_action(['_{', '}'], ['<Control><Shift>d'])
+        shortcuts_manager.set_accels_for_insert_before_after_action(['^{', '}'], ['<Control><Shift>u'])
+        shortcuts_manager.set_accels_for_insert_before_after_action(['\\sqrt{', '}'], ['<Control><Shift>q'])
+        shortcuts_manager.set_accels_for_insert_symbol_action(['\\frac{•}{•}'], ['<Alt><Shift>f'])
+        shortcuts_manager.set_accels_for_insert_symbol_action(['\\left •'], ['<Control><Shift>l'])
+        shortcuts_manager.set_accels_for_insert_symbol_action(['\\right •'], ['<Control><Shift>r'])
+        shortcuts_manager.set_accels_for_insert_symbol_action(['\\item •'], ['<Control><Shift>i'])
+        shortcuts_manager.set_accels_for_insert_symbol_action(['\\\\\n'], ['<Control>Return'])
+        shortcuts_manager.main_window.app.set_accels_for_action('win.comment-uncomment', ['<Control>K'])
 
     def get_latex_command_at_cursor(self):
         return self.source_buffer.get_latex_command_at_cursor()
@@ -233,6 +235,9 @@ class DocumentLaTeX(Document):
 
     def get_file_ending(self):
         return 'tex'
+
+    def get_is_master(self):
+        return self.is_master
 
     def is_latex_document(self):
         return True

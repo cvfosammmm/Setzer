@@ -19,19 +19,17 @@ import os.path
 import time
 
 from setzer.document.document import Document
-import setzer.document.bibtex.parser.bibtex_parser as bibtex_parser
-import setzer.document.bibtex.state_manager.state_manager_bibtex as state_manager_bibtex
+import setzer.document.latex_sty.state_manager.state_manager_latex_sty as state_manager_latex_sty
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 
 
-class DocumentBibTeX(Document):
+class DocumentLaTeXSty(Document):
 
     def __init__(self):
         Document.__init__(self)
 
-        self.state_manager = state_manager_bibtex.StateManagerBibTeX(self)
-        self.parser = bibtex_parser.BibTeXParser(self)
+        self.state_manager = state_manager_latex_sty.StateManagerLaTeXSty(self)
 
     def init_shortcuts(self, shortcuts_manager):
         shortcuts_manager.set_accels_for_insert_before_after_action(['\\textbf{', '}'], [])
@@ -53,8 +51,7 @@ class DocumentBibTeX(Document):
         shortcuts_manager.main_window.app.set_accels_for_action('win.comment-uncomment', [])
 
     def get_bibitems(self):
-        labels_dict = self.parser.get_labels()
-        return labels_dict['bibitems']
+        return set()
 
     def comment_uncomment(self):
         pass
@@ -66,7 +63,7 @@ class DocumentBibTeX(Document):
         return set()
 
     def get_file_ending(self):
-        return 'bib'
+        return 'sty'
 
     def get_is_master(self):
         return False
@@ -75,9 +72,9 @@ class DocumentBibTeX(Document):
         return False
 
     def is_bibtex_document(self):
-        return True
+        return False
 
     def get_gsv_language_name(self):
-        return 'bibtex'
+        return 'latex'
 
 

@@ -25,13 +25,7 @@ class DocumentSwitcherItem():
         self.view = document_switcher_item_view.OpenDocsPopoverItem(document)
 
         self.modified_state = document.get_modified()
-
-        if self.document.is_latex_document():
-            self.set_is_master()
-        else:
-            self.view.icon.show_all()
-            self.view.master_icon.hide()
-            self.view.master_label.hide()
+        self.set_is_master()
 
         self.document.register_observer(self)
 
@@ -52,7 +46,7 @@ class DocumentSwitcherItem():
             self.set_is_master()
 
     def set_is_master(self):
-        if self.document.is_master == True:
+        if self.document.get_is_master() == True:
             self.view.icon.hide()
             self.view.master_icon.show_all()
             self.view.master_label.show_all()
