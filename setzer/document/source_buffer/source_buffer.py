@@ -80,6 +80,8 @@ class SourceBuffer(GtkSource.Buffer):
         self.connect('insert-text', self.on_insert_text)
         self.connect('delete-range', self.on_delete_range)
         self.connect('end-user-action', self.on_end_user_action)
+        self.connect('changed', self.on_buffer_changed)
+        self.connect('modified-changed', self.on_modified_changed)
 
         self.document.add_change_code('buffer_ready')
 
@@ -115,6 +117,21 @@ class SourceBuffer(GtkSource.Buffer):
 
     def on_end_user_action(self, buffer):
         self.document.add_change_code('end_user_action')
+
+    def on_modified_changed(self, buffer):
+        self.document.add_change_code('modified_changed')
+
+    def on_buffer_changed(self, buffer):
+        self.update_indentation_tags()
+
+        self.update_placeholder_selection()
+
+        self.document.add_change_code('buffer_changed', buffer)
+
+        if self.is_empty():
+            self.document.add_change_code('document_not_empty')
+        else:
+            self.document.add_change_code('document_empty')
 
     def on_mark_set(self, buffer, insert, mark, user_data=None):
         if mark.get_name() == 'insert':

@@ -44,11 +44,15 @@ class BibTeXParser(object):
 
         GObject.timeout_add(1, self.compute_loop)
 
-    def on_buffer_changed(self):
-        self.last_buffer_change = time.time()
-        text = self.document.get_text()
-        with self.parse_jobs_lock:
-            self.parse_jobs['symbols'] = ParseJob(time.time() + 0.1, text)
+        self.document.register_observer(self)
+
+    def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'buffer_changed':
+            self.last_buffer_change = time.time()
+            text = self.document.get_text()
+            with self.parse_jobs_lock:
+                self.parse_jobs['symbols'] = ParseJob(time.time() + 0.1, text)
 
     def compute_loop(self):
         with self.parse_jobs_lock:

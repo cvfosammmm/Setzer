@@ -50,8 +50,6 @@ class Document(Observable):
         self.parser = None
         self.build_system = None
         self.source_buffer = source_buffer.SourceBuffer(self)
-        self.source_buffer.connect('changed', self.on_buffer_changed)
-        self.source_buffer.connect('modified-changed', self.on_modified_changed)
 
         self.view = document_view.DocumentView(self, self.source_buffer.view)
         self.search = search.Search(self, self.view, self.view.search_bar)
@@ -65,27 +63,6 @@ class Document(Observable):
 
     def set_search_text(self, search_text):
         self.source_buffer.search_settings.set_search_text(search_text)
-
-    def on_buffer_changed(self, buffer):
-        buffer.update_indentation_tags()
-
-        if self.parser != None:
-            self.parser.on_buffer_changed()
-
-        try: self.code_folding.on_buffer_changed(buffer)
-        except AttributeError: pass
-
-        self.source_buffer.update_placeholder_selection()
-
-        if self.is_empty():
-            self.add_change_code('document_not_empty')
-        else:
-            self.add_change_code('document_empty')
-
-        self.add_change_code('buffer_changed')
-
-    def on_modified_changed(self, buffer):
-        self.add_change_code('modified_changed')
 
     def set_dark_mode(self, dark_mode):
         self.dark_mode = dark_mode

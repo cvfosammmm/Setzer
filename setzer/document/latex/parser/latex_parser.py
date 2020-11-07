@@ -58,12 +58,16 @@ class LaTeXParser(object):
 
         GObject.timeout_add(1, self.compute_loop)
 
-    def on_buffer_changed(self):
-        self.last_buffer_change = time.time()
-        with self.parse_jobs_lock:
-            self.dirname = self.document.get_dirname()
-            self.parse_times['symbols'] = time.time() + 0.01
-            self.parse_times['blocks'] = time.time()
+        self.document.register_observer(self)
+
+    def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'buffer_changed':
+            self.last_buffer_change = time.time()
+            with self.parse_jobs_lock:
+                self.dirname = self.document.get_dirname()
+                self.parse_times['symbols'] = time.time() + 0.01
+                self.parse_times['blocks'] = time.time()
 
     def compute_loop(self):
         text = None

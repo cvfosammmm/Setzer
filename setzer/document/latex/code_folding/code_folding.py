@@ -45,7 +45,13 @@ class CodeFolding(Observable):
         self.presenter = code_folding_presenter.CodeFoldingPresenter(self, self.view)
         self.controller = code_folding_controller.CodeFoldingController(self)
 
-        self.on_buffer_changed(self.document.get_buffer())
+        self.document.register_observer(self)
+        self.add_change_code('buffer_changed', self.document.get_buffer())
+
+    def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'buffer_changed':
+            self.add_change_code('buffer_changed', parameter)
 
     def enable_code_folding(self):
         self.is_enabled = True
@@ -67,9 +73,6 @@ class CodeFolding(Observable):
             is_folded = not region['is_folded']
         region['is_folded'] = is_folded
         self.add_change_code('folding_state_changed', region)
-
-    def on_buffer_changed(self, buffer):
-        self.add_change_code('buffer_changed', buffer)
 
     def get_folding_region_by_region_id(self, region_id):
         return self.folding_regions_by_region_id[region_id]
