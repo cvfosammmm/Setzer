@@ -36,12 +36,12 @@ class ContextMenuPresenter(object):
         self.on_can_undo_changed(undo_manager)
         self.on_can_redo_changed(undo_manager)
 
-        self.on_can_forward_sync_changed(self.context_menu.document.can_forward_sync)
+        self.on_can_sync_changed(self.context_menu.document.can_sync)
 
     def set_zoom_level(self, zoom_level):
         self.scbar_view.model_button_reset_zoom.set_label("{:.0%}".format(zoom_level))
 
-    def on_can_forward_sync_changed(self, can_sync):
+    def on_can_sync_changed(self, can_sync):
         if self.context_menu.document.is_latex_document():
             self.scbar_view.model_button_show_in_preview.set_sensitive(can_sync)
 
@@ -95,7 +95,7 @@ class ContextMenuPresenter(object):
             menu_item_comment = Gtk.MenuItem.new_with_label(_('Toggle Comment'))
             menu_item_comment.connect('activate', self.context_menu.on_toggle_comment)
             menu_item_show_in_preview = Gtk.MenuItem.new_with_label(_('Show in Preview'))
-            menu_item_show_in_preview.set_sensitive(self.context_menu.document.can_forward_sync)
+            menu_item_show_in_preview.set_sensitive(self.context_menu.document.can_sync)
             menu_item_show_in_preview.connect('activate', self.context_menu.on_show_in_preview)
             menu.append(Gtk.SeparatorMenuItem())
             menu.append(menu_item_comment)

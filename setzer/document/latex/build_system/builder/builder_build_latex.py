@@ -72,7 +72,7 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
             self.throw_build_error(query, 'interpreter_not_working', 'log file missing')
             return
 
-        query.forward_sync_data['build_pathname'] = self.copy_synctex_file(query)
+        query.can_sync = self.copy_synctex_file(query)
         self.cleanup_files(query)
 
         if query.error_count == 0:
@@ -85,10 +85,10 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
 
         with query.build_result_lock:
             query.build_result = {'pdf_filename': new_pdf_filename, 
-                                 'build_pathname': query.forward_sync_data['build_pathname'],
-                                 'log_messages': query.log_messages + query.bibtex_log_messages,
-                                 'error': None,
-                                 'error_arg': None}
+                                  'has_synctex_file': query.can_sync,
+                                  'log_messages': query.log_messages + query.bibtex_log_messages,
+                                  'error': None,
+                                  'error_arg': None}
 
     def parse_build_log(self, query):
         query.log_messages = list()
@@ -127,7 +127,7 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
             os.makedirs(folder)
 
         try: shutil.copyfile(move_from, move_to)
-        except FileNotFoundError: return None
-        else: return query.tex_filename
+        except FileNotFoundError: return False
+        else: return True
 
 

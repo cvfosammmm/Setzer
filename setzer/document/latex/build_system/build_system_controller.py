@@ -69,14 +69,14 @@ class BuildSystemController(object):
                 query_obj.build_data['use_latexmk'] = use_latexmk
                 query_obj.build_data['additional_arguments'] = additional_arguments
                 query_obj.build_data['do_cleanup'] = do_cleanup
-            elif mode == 'forward_sync' and document.build_pathname != None:
+            elif mode == 'forward_sync':
                 query_obj.jobs = ['forward_sync']
-                query_obj.forward_sync_data['build_pathname'] = document.build_pathname
+                query_obj.can_sync = True
                 query_obj.forward_sync_data['line'] = synctex_arguments['line']
                 query_obj.forward_sync_data['line_offset'] = synctex_arguments['line_offset']
             elif mode == 'backward_sync' and document.backward_sync_data != None:
                 query_obj.jobs = ['backward_sync']
-                query_obj.backward_sync_data['build_pathname'] = document.build_pathname
+                query_obj.can_sync = True
                 query_obj.backward_sync_data['page'] = document.backward_sync_data['page']
                 query_obj.backward_sync_data['x'] = document.backward_sync_data['x']
                 query_obj.backward_sync_data['y'] = document.backward_sync_data['y']
@@ -89,6 +89,7 @@ class BuildSystemController(object):
                 query_obj.build_data['use_latexmk'] = use_latexmk
                 query_obj.build_data['additional_arguments'] = additional_arguments
                 query_obj.build_data['do_cleanup'] = do_cleanup
+                query_obj.can_sync = False
                 query_obj.forward_sync_data['line'] = synctex_arguments['line']
                 query_obj.forward_sync_data['line_offset'] = synctex_arguments['line_offset']
 

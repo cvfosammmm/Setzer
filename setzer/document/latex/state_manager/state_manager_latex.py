@@ -67,9 +67,9 @@ class StateManagerLaTeX():
         except KeyError:
             self.document.build_time = None
         try:
-            self.document.build_pathname = document_data['build_pathname']
+            self.document.has_synctex_file = document_data['has_synctex_file']
         except KeyError:
-            self.document.build_pathname = None
+            self.document.has_synctex_file = False
 
     def load_preview_state(self, document_data):
         try:
@@ -104,7 +104,7 @@ class StateManagerLaTeX():
         document_data['build_log_items'] = self.document.build_log_items
         document_data['has_been_built'] = self.document.has_been_built
         document_data['build_time'] = self.document.build_time
-        document_data['build_pathname'] = self.document.build_pathname
+        document_data['has_synctex_file'] = self.document.has_synctex_file
 
         document_data['pdf_filename'] = self.document.preview.pdf_filename
         document_data['pdf_date'] = self.document.preview.pdf_date

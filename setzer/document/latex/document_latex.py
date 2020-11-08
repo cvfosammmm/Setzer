@@ -42,8 +42,7 @@ class DocumentLaTeX(Document):
 
         # possible values: build, forward_sync, build_and_forward_sync
         self.build_mode = 'build_and_forward_sync'
-        self.build_pathname = None
-        self.can_backward_sync = False
+        self.has_synctex_file = False
         self.backward_sync_data = None
 
         self.preview = preview.Preview(self)
@@ -66,8 +65,7 @@ class DocumentLaTeX(Document):
 
         self.parser = latex_parser.LaTeXParser(self)
 
-        self.update_can_forward_sync()
-        self.update_can_backward_sync()
+        self.update_can_sync()
 
     def init_shortcuts(self, shortcuts_manager):
         shortcuts_manager.set_accels_for_insert_before_after_action(['\\textbf{', '}'], ['<Control>b'])
@@ -157,32 +155,24 @@ class DocumentLaTeX(Document):
     def get_build_mode(self):
         return self.build_mode
 
-    def set_build_pathname(self, pathname):
-        self.build_pathname = pathname
-        self.update_can_forward_sync()
-        self.update_can_backward_sync()
+    def set_has_synctex_file(self, has_synctex_file):
+        self.has_synctex_file = has_synctex_file
+        self.update_can_sync()
 
-    def update_can_forward_sync(self):
-        if self.build_pathname != None and self.preview.pdf_loaded:
-            self.can_forward_sync = True
+    def update_can_sync(self):
+        if self.has_synctex_file and self.preview.pdf_loaded:
+            self.can_sync = True
         else:
-            self.can_forward_sync = False
-        self.add_change_code('can_forward_sync_changed', self.can_forward_sync)
-
-    def update_can_backward_sync(self):
-        if self.build_pathname != None and self.preview.pdf_loaded:
-            self.can_backward_sync = True
-        else:
-            self.can_backward_sync = False
-        self.add_change_code('can_backward_sync_changed', self.can_backward_sync)
+            self.can_sync = False
+        self.add_change_code('can_sync_changed', self.can_sync)
 
     def forward_sync(self):
-        if self.can_forward_sync:
+        if self.can_sync:
             self.set_build_mode('forward_sync')
             self.start_building()
 
     def backward_sync(self, page, x, y, word, context):
-        if self.can_backward_sync:
+        if self.can_sync:
             self.backward_sync_data = {'page': page, 'x': x, 'y': y, 'word': word, 'context': context}
             self.set_build_mode('backward_sync')
             self.start_building()
@@ -192,7 +182,7 @@ class DocumentLaTeX(Document):
         self.start_building()
 
     def start_building(self):
-        if self.build_mode == 'forward_sync' and self.build_pathname == None: return
+        if self.build_mode == 'forward_sync' and not self.has_synctex_file: return
         if self.build_mode == 'backward_sync' and self.backward_sync_data == None: return
         if self.filename == None: return
 

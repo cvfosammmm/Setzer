@@ -39,8 +39,8 @@ class ContextMenu(object):
 
     def change_notification(self, change_code, notifying_object, parameter):
 
-        if change_code == 'can_forward_sync_changed':
-            self.presenter.on_can_forward_sync_changed(parameter)
+        if change_code == 'can_sync_changed':
+            self.presenter.on_can_sync_changed(parameter)
             
         if change_code == 'font_string_changed':
             zoom_level = self.font_manager.get_zoom_level()

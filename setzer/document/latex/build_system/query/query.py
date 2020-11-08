@@ -36,6 +36,7 @@ class Query(object):
         self.build_data = dict()
         self.biber_data = {'ran_on_files': []}
         self.bibtex_data = {'ran_on_files': []}
+        self.can_sync = False
         self.forward_sync_data = dict()
         self.backward_sync_data = dict()
         self.tex_filename = tex_filename

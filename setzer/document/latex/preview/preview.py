@@ -117,8 +117,7 @@ class Preview(Observable):
         self.yoffset = 0
         self.zoom_level = None
         self.add_change_code('pdf_changed')
-        self.document.update_can_forward_sync()
-        self.document.update_can_backward_sync()
+        self.document.update_can_sync()
 
     def set_position_from_offsets(self, xoffset=None, yoffset=None):
         value_changed = False
@@ -189,8 +188,7 @@ class Preview(Observable):
             self.pdf_loaded = True
             self.add_change_code('pdf_changed')
             self.set_zoom_fit_to_width()
-            self.document.update_can_forward_sync()
-            self.document.update_can_backward_sync()
+            self.document.update_can_sync()
 
     def update_fit_to_width_zoom_level(self, level):
         if level != self.zoom_level_fit_to_width:

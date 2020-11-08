@@ -36,16 +36,13 @@ class BuilderForwardSync(builder_build.BuilderBuild):
     def run(self, query):
         tex_filename = query.tex_filename
 
-        try: build_pathname = query.forward_sync_data['build_pathname']
-        except KeyError: build_pathname = None
-
-        if build_pathname == None:
+        if not query.can_sync:
             query.forward_sync_result = None
             return
 
         synctex_folder = self.config_folder + '/' + base64.urlsafe_b64encode(str.encode(query.tex_filename)).decode()
         arguments = ['synctex', 'view', '-i']
-        arguments.append(str(query.forward_sync_data['line']) + ':' + str(query.forward_sync_data['line_offset']) + ':' + build_pathname)
+        arguments.append(str(query.forward_sync_data['line']) + ':' + str(query.forward_sync_data['line_offset']) + ':' + tex_filename)
         arguments.append('-o')
         arguments.append(query.tex_filename[:-3] + 'pdf')
         arguments.append('-d')

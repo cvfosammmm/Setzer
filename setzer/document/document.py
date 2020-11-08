@@ -45,7 +45,7 @@ class Document(Observable):
         self.last_activated = 0
         self.dark_mode = False
         self.is_master = False
-        self.can_forward_sync = False
+        self.can_sync = False
 
         self.parser = None
         self.build_system = None

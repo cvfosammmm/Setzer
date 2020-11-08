@@ -33,9 +33,9 @@ class BuilderBackwardSync(builder_build.BuilderBuild):
         self.process = None
 
     def run(self, query):
-        tex_filename = query.backward_sync_data['build_pathname']
+        tex_filename = query.tex_filename
 
-        if query.backward_sync_data['build_pathname'] == None:
+        if not query.can_sync:
             query.backward_sync_result = None
             return
 
@@ -56,7 +56,7 @@ class BuilderBackwardSync(builder_build.BuilderBuild):
 
         match = self.backward_synctex_regex.search(raw)
         result = None
-        if match != None and match.group(1) == query.backward_sync_data['build_pathname']:
+        if match != None and match.group(1) == tex_filename:
             result = dict()
             result['line'] = max(int(match.group(2)) - 1, 0)
             result['word'] = query.backward_sync_data['word']

@@ -63,7 +63,7 @@ class PreviewPresenter(object):
         if change_code == 'invert_pdf_changed':
             self.view.drawing_area.queue_draw()
 
-        if change_code == 'can_backward_sync_changed':
+        if change_code == 'can_sync_changed':
             self.view.menu_item_backward_sync.set_sensitive(parameter)
 
     def show_blank_slate(self):

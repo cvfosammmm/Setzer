@@ -98,7 +98,7 @@ class BuildSystemPresenter(object):
                     else:
                         self.document.show_build_state(_('Success!'))
 
-                    self.document.set_build_pathname(build_blob['build_pathname'])
+                    self.document.set_has_synctex_file(build_blob['has_synctex_file'])
                     self.document.has_been_built = True
 
             elif result_blob['backward_sync'] != None:
