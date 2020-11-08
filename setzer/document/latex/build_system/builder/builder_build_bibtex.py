@@ -51,6 +51,11 @@ class BuilderBuildBibTeX(builder_build.BuilderBuild):
         self.parse_bibtex_log(query, tex_filename[:-3] + 'blg')
         query.jobs.insert(0, 'build_latex')
 
+    def stop_running(self):
+        if self.process != None:
+            self.process.kill()
+            self.process = None
+
     def parse_bibtex_log(self, query, log_filename):
         try: file = open(log_filename, 'rb')
         except FileNotFoundError as e: pass

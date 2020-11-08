@@ -67,4 +67,9 @@ class BuilderBackwardSync(builder_build.BuilderBuild):
         else:
             query.backward_sync_result = None
 
+    def stop_running(self):
+        if self.process != None:
+            self.process.kill()
+            self.process = None
+
 

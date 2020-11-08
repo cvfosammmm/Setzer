@@ -90,6 +90,11 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
                                   'error': None,
                                   'error_arg': None}
 
+    def stop_running(self):
+        if self.process != None:
+            self.process.kill()
+            self.process = None
+
     def parse_build_log(self, query):
         query.log_messages = list()
         query.error_count = 0

@@ -16,7 +16,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import _thread as thread
-import os.path
 
 
 class Query(object):

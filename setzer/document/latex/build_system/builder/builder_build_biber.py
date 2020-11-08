@@ -52,6 +52,11 @@ class BuilderBuildBiber(builder_build.BuilderBuild):
 
         query.jobs.insert(0, 'build_latex')
 
+    def stop_running(self):
+        if self.process != None:
+            self.process.kill()
+            self.process = None
+
     def parse_biber_log(self, query, log_filename):
         pass
 

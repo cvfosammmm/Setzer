@@ -98,12 +98,10 @@ class BuildSystem(object):
 
     def stop_building(self, notify=True):
         if self.active_query != None:
-            self.active_query.force_building_to_stop = True
+            self.active_query.jobs = []
             self.active_query = None
         for builder in self.builders.values():
-            if builder.process != None:
-                builder.process.kill()
-                builder.process = None
+            builder.stop_running()
         if notify:
             self.add_change_code('building_stopped')
 

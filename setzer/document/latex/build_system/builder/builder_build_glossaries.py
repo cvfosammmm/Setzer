@@ -49,4 +49,9 @@ class BuilderBuildGlossaries(builder_build.BuilderBuild):
 
         query.jobs.insert(0, 'build_latex')
 
+    def stop_running(self):
+        if self.process != None:
+            self.process.kill()
+            self.process = None
+
 
