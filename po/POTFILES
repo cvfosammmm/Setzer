@@ -33,11 +33,11 @@ setzer/dialogs/save_document/save_document.py
 setzer/dialogs/save_session/save_session.py
 setzer/dialogs/spellchecking_language/spellchecking_language.py
 setzer/document/document_controller.py
-setzer/document/build_system/build_system_presenter.py
-setzer/document/build_widget/build_widget_viewgtk.py
-setzer/document/preview/zoom_widget/zoom_widget.py
-setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py
-setzer/document/preview/preview_viewgtk.py
+setzer/document/latex/build_system/build_system_presenter.py
+setzer/document/latex/build_widget/build_widget_viewgtk.py
+setzer/document/latex/preview/zoom_widget/zoom_widget.py
+setzer/document/latex/preview/zoom_widget/zoom_widget_viewgtk.py
+setzer/document/latex/preview/preview_viewgtk.py
 setzer/document/search/search_viewgtk.py
 setzer/document/shortcutsbar/shortcutsbar_viewgtk.py
 setzer/workspace/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py
@@ -47,7 +47,7 @@ setzer/workspace/document_chooser/document_chooser_viewgtk.py
 setzer/workspace/document_switcher/document_switcher_viewgtk.py
 setzer/workspace/headerbar/headerbar_viewgtk.py
 setzer/workspace/help_panel/help_panel_viewgtk.py
-setzer/workspace/shortcutsbar/shortcutsbar_viewgtk.py
+setzer/workspace/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py
 setzer/workspace/sidebar/sidebar_viewgtk.py
 setzer/workspace/sidebar/sidebar.py
 setzer/workspace/workspace_viewgtk.py
