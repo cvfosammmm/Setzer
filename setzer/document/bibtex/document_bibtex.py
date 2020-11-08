@@ -31,6 +31,10 @@ class DocumentBibTeX(Document):
         Document.__init__(self)
 
         self.state_manager = state_manager_bibtex.StateManagerBibTeX(self)
+
+        self.symbols = dict()
+        self.symbols['bibitems'] = set()
+
         self.parser = bibtex_parser.BibTeXParser(self)
 
     def init_shortcuts(self, shortcuts_manager):
@@ -53,8 +57,7 @@ class DocumentBibTeX(Document):
         shortcuts_manager.main_window.app.set_accels_for_action('win.comment-uncomment', [])
 
     def get_bibitems(self):
-        labels_dict = self.parser.get_labels()
-        return labels_dict['bibitems']
+        return self.symbols['bibitems']
 
     def get_labels(self):
         return set()
