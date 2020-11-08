@@ -69,7 +69,6 @@ class BuildSystemController(object):
                 query_obj.build_data['use_latexmk'] = use_latexmk
                 query_obj.build_data['additional_arguments'] = additional_arguments
                 query_obj.build_data['do_cleanup'] = do_cleanup
-                query_obj.generate_temporary_files()
             elif mode == 'forward_sync' and document.build_pathname != None:
                 query_obj.jobs = ['forward_sync']
                 query_obj.forward_sync_data['build_pathname'] = document.build_pathname
@@ -92,7 +91,6 @@ class BuildSystemController(object):
                 query_obj.build_data['do_cleanup'] = do_cleanup
                 query_obj.forward_sync_data['line'] = synctex_arguments['line']
                 query_obj.forward_sync_data['line_offset'] = synctex_arguments['line_offset']
-                query_obj.generate_temporary_files()
 
             self.build_system.add_query(query_obj)
 

@@ -32,14 +32,14 @@ class LaTeXLogParser():
         self.badbox_line_number_regex = ServiceLocator.get_regex_object(r'lines ([0-9]+)--([0-9]+)')
         self.other_line_number_regex = ServiceLocator.get_regex_object(r'(l.| input line \n| input line )([0-9]+)( |.)')
 
-    def parse_build_log(self, tex_filename, orig_tex_filename):
+    def parse_build_log(self, tex_filename):
         log_filename = os.path.dirname(tex_filename) + '/' + os.path.basename(tex_filename).rsplit('.tex', 1)[0] + '.log'
         try: file = open(log_filename, 'rb')
         except FileNotFoundError as e: raise e
         else:
             text = file.read().decode('utf-8', errors='ignore')
 
-        doc_texts = self.split_log_text_by_file(text, tex_filename, orig_tex_filename)
+        doc_texts = self.split_log_text_by_file(text, tex_filename)
 
         log_items = dict()
         for filename, text in doc_texts.items():
@@ -183,7 +183,7 @@ class LaTeXLogParser():
                     log_messages['error'].append((None, line_number, text))
         return log_messages
 
-    def split_log_text_by_file(self, log_text, tex_filename, orig_tex_filename):
+    def split_log_text_by_file(self, log_text, tex_filename):
         doc_texts = dict()
 
         matches = self.doc_regex.split(log_text)
@@ -196,7 +196,7 @@ class LaTeXLogParser():
                 buffer = ''
                 filename = self.doc_regex.match(match).group(2).strip()
                 if not filename.startswith('/'):
-                    filename = os.path.normpath(os.path.dirname(orig_tex_filename) + '/' + filename)
+                    filename = os.path.normpath(os.path.dirname(tex_filename) + '/' + filename)
                 if not filename == tex_filename:
                     open_brackets = 0
                     char_count = 0
@@ -212,7 +212,7 @@ class LaTeXLogParser():
                     doc_texts[filename] = match
                     log_text = log_text.replace(match, '')
                 buffer = ''
-        doc_texts[orig_tex_filename] = log_text
+        doc_texts[tex_filename] = log_text
         return doc_texts
 
     def bl_get_line_number(self, line, matchiter):

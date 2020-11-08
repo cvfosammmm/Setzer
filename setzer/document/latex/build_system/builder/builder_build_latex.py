@@ -49,8 +49,8 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
             build_command = build_command_defaults[query.build_data['latex_interpreter']] + query.build_data['additional_arguments']
 
         arguments = build_command.split()
-        arguments.append('-output-directory=' + os.path.dirname(query.tmp_tex_filename))
-        arguments.append(query.tmp_tex_filename)
+        arguments.append('-output-directory=' + os.path.dirname(query.tex_filename))
+        arguments.append(query.tex_filename)
         try:
             self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(query.tex_filename))
         except FileNotFoundError:
@@ -76,7 +76,7 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
         self.move_build_files(query)
 
         if query.error_count == 0:
-            pdf_filename = os.path.dirname(query.tmp_tex_filename) + '/' + os.path.basename(query.tmp_tex_filename).rsplit('.tex', 1)[0] + '.pdf'
+            pdf_filename = os.path.dirname(query.tex_filename) + '/' + os.path.basename(query.tex_filename).rsplit('.tex', 1)[0] + '.pdf'
             new_pdf_filename = os.path.splitext(query.tex_filename)[0] + '.pdf'
             try: shutil.move(pdf_filename, new_pdf_filename)
             except FileNotFoundError: new_pdf_filename = None
@@ -90,14 +90,12 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
                                  'error': None,
                                  'error_arg': None}
 
-        query.build_data['tmp_directory'].cleanup()
-
     def parse_build_log(self, query):
         query.log_messages = list()
         query.error_count = 0
 
-        log_items = self.latex_log_parser.parse_build_log(query.tmp_tex_filename, query.tex_filename)
-        additional_jobs = self.latex_log_parser.get_additional_jobs(log_items, query.tmp_tex_filename, query.bibtex_data['ran_on_files'], query.biber_data['ran_on_files'])
+        log_items = self.latex_log_parser.parse_build_log(query.tex_filename)
+        additional_jobs = self.latex_log_parser.get_additional_jobs(log_items, query.tex_filename, query.bibtex_data['ran_on_files'], query.biber_data['ran_on_files'])
         file_no = 0
 
         for job in additional_jobs:
@@ -121,7 +119,7 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
         return False
 
     def copy_synctex_file(self, query):
-        move_from = os.path.splitext(query.tmp_tex_filename)[0] + '.synctex.gz'
+        move_from = os.path.splitext(query.tex_filename)[0] + '.synctex.gz'
         folder = self.config_folder + '/' + base64.urlsafe_b64encode(str.encode(query.tex_filename)).decode()
         move_to = folder + '/' + os.path.splitext(os.path.basename(query.tex_filename))[0] + '.synctex.gz'
 
@@ -130,6 +128,6 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
 
         try: shutil.copyfile(move_from, move_to)
         except FileNotFoundError: return None
-        else: return query.tmp_tex_filename
+        else: return query.tex_filename
 
 

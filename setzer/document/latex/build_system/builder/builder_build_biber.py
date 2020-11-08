@@ -30,7 +30,7 @@ class BuilderBuildBiber(builder_build.BuilderBuild):
         builder_build.BuilderBuild.__init__(self)
 
     def run(self, query):
-        tex_filename = query.tmp_tex_filename
+        tex_filename = query.tex_filename
         filename = tex_filename.rsplit('/', 1)[1][:-4]
 
         arguments = ['biber']
