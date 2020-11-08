@@ -44,12 +44,13 @@ class KeyboardShortcutsDialog(Dialog):
         data.append(section)
 
         section = {'title': _('Tools'), 'items': list()}
+        section['items'].append({'title': _('Save and build .pdf-file from document'), 'shortcut': 'F5'})
         section['items'].append({'title': _('Build .pdf-file from document'), 'shortcut': 'F6'})
-        section['items'].append({'title': _('Spellchecking dialog'), 'shortcut': 'F7'})
         data.append(section)
 
         section = {'title': 'Windows and Panels', 'items': list()}
         section['items'].append({'title': _('Show help panel'), 'shortcut': 'F1'})
+        section['items'].append({'title': _('Spellchecking dialog'), 'shortcut': 'F7'})
         section['items'].append({'title': _('Show build log'), 'shortcut': 'F8'})
         section['items'].append({'title': _('Show side panel'), 'shortcut': 'F9'})
         section['items'].append({'title': _('Show preview panel'), 'shortcut': 'F10'})

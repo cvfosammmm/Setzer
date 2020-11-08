@@ -56,7 +56,6 @@ class Shortcuts(object):
         self.accel_group.connect(Gdk.keyval_from_name('n'), c_mask, flags, self.shortcut_new)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask, flags, self.shortcut_show_open_docs)
         self.accel_group.connect(Gdk.keyval_from_name('F1'), 0, flags, self.shortcut_help)
-        self.accel_group.connect(Gdk.keyval_from_name('F6'), 0, flags, self.shortcut_build)
         self.accel_group.connect(Gdk.keyval_from_name('F8'), 0, flags, self.shortcut_build_log)
         self.accel_group.connect(Gdk.keyval_from_name('F9'), 0, flags, self.shortcut_sidebar)
         self.accel_group.connect(Gdk.keyval_from_name('F10'), 0, flags, self.shortcut_preview)
@@ -72,6 +71,8 @@ class Shortcuts(object):
         self.main_window.app.set_accels_for_action('win.find-next', ['<Control>g'])
         self.main_window.app.set_accels_for_action('win.find-prev', ['<Control><Shift>g'])
         self.main_window.app.set_accels_for_action('win.find-replace', ['<Control>h'])
+        self.main_window.app.set_accels_for_action('win.save-and-build', ['F5'])
+        self.main_window.app.set_accels_for_action('win.build', ['F6'])
         self.main_window.app.set_accels_for_action('win.save', ['<Control>s'])
         self.main_window.app.set_accels_for_action('win.save-as', ['<Control><Shift>s'])
         self.main_window.app.set_accels_for_action('win.close-active-document', ['<Control>w'])
@@ -95,18 +96,6 @@ class Shortcuts(object):
     def shortcut_show_open_docs(self, accel_group=None, window=None, key=None, mask=None):
         if self.main_window.headerbar.center_widget.center_button.get_sensitive():
             self.main_window.headerbar.center_widget.center_button.clicked()
-
-    def shortcut_build(self, accel_group=None, window=None, key=None, mask=None):
-        if self.workspace.get_active_document() != None:
-            if self.workspace.master_document != None:
-                document = self.workspace.master_document
-            else:
-                document = self.workspace.active_document
-            try:
-                document.build_widget.build_document_request()
-            except AttributeError:
-                pass
-        return True
 
     def shortcut_sidebar(self, accel_group=None, window=None, key=None, mask=None):
         toggle = self.main_window.headerbar.sidebar_toggle

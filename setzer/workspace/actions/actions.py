@@ -34,6 +34,8 @@ class Actions(object):
 
         self.new_latex_document_action = Gio.SimpleAction.new('new-latex-document', None)
         self.new_bibtex_document_action = Gio.SimpleAction.new('new-bibtex-document', None)
+        self.build_action = Gio.SimpleAction.new('build', None)
+        self.save_and_build_action = Gio.SimpleAction.new('save-and-build', None)
         self.save_action = Gio.SimpleAction.new('save', None)
         self.save_as_action = Gio.SimpleAction.new('save-as', None)
         self.save_all_action = Gio.SimpleAction.new('save-all', None)
@@ -77,6 +79,8 @@ class Actions(object):
 
         main_window.add_action(self.new_latex_document_action)
         main_window.add_action(self.new_bibtex_document_action)
+        main_window.add_action(self.build_action)
+        main_window.add_action(self.save_and_build_action)
         main_window.add_action(self.save_action)
         main_window.add_action(self.save_as_action)
         main_window.add_action(self.save_all_action)
@@ -116,6 +120,8 @@ class Actions(object):
 
         self.new_latex_document_action.connect('activate', self.on_new_latex_document_action_activated)
         self.new_bibtex_document_action.connect('activate', self.on_new_bibtex_document_action_activated)
+        self.build_action.connect('activate', self.on_build_action_activated)
+        self.save_and_build_action.connect('activate', self.on_save_and_build_action_activated)
         self.save_action.connect('activate', self.on_save_button_click)
         self.save_as_action.connect('activate', self.on_save_as_clicked)
         self.save_all_action.connect('activate', self.on_save_all_clicked)
@@ -258,6 +264,22 @@ class Actions(object):
 
     def on_new_bibtex_document_action_activated(self, action=None, parameter=None):
         self.workspace.create_bibtex_document(activate=True)
+
+    @_assert_has_active_document
+    def on_save_and_build_action_activated(self, action=None, parameter=None):
+        self.on_save_button_click()
+        self.on_build_action_activated()
+
+    @_assert_has_active_document
+    def on_build_action_activated(self, action=None, parameter=None):
+        if self.workspace.master_document != None:
+            document = self.workspace.master_document
+        else:
+            document = self.workspace.active_document
+        try:
+            document.build_widget.build_document_request()
+        except AttributeError:
+            pass
 
     @_assert_has_active_document
     def on_save_button_click(self, action=None, parameter=None):

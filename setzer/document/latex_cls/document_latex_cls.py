@@ -53,6 +53,9 @@ class DocumentLaTeXCls(Document):
     def get_bibitems(self):
         return set()
 
+    def get_labels(self):
+        return set()
+
     def comment_uncomment(self):
         pass
 

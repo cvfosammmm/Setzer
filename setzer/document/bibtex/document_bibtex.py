@@ -56,6 +56,9 @@ class DocumentBibTeX(Document):
         labels_dict = self.parser.get_labels()
         return labels_dict['bibitems']
 
+    def get_labels(self):
+        return set()
+
     def comment_uncomment(self):
         pass
 
