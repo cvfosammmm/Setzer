@@ -43,7 +43,7 @@ class BuilderBuildBibTeX(builder_build.BuilderBuild):
         try:
             self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(tex_filename))
         except FileNotFoundError:
-            self.move_build_files(query)
+            self.cleanup_files(query)
             self.throw_build_error(query, 'interpreter_not_working', 'bibtex missing')
             return
         self.process.wait()

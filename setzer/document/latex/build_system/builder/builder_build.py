@@ -30,7 +30,7 @@ class BuilderBuild(object):
             query.build_result = {'error': error,
                                  'error_arg': error_arg}
 
-    def move_build_files(self, query):
+    def cleanup_files(self, query):
         if query.build_data['do_cleanup']:
             self.cleanup_build_files(query)
             self.cleanup_glossaries_files(query)

@@ -54,7 +54,7 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
         try:
             self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(query.tex_filename))
         except FileNotFoundError:
-            self.move_build_files(query)
+            self.cleanup_files(query)
             self.throw_build_error(query, 'interpreter_missing', arguments[0])
             return
         self.process.communicate()
@@ -68,12 +68,12 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
             if self.parse_build_log(query):
                 return
         except FileNotFoundError as e:
-            self.move_build_files(query)
+            self.cleanup_files(query)
             self.throw_build_error(query, 'interpreter_not_working', 'log file missing')
             return
 
         query.forward_sync_data['build_pathname'] = self.copy_synctex_file(query)
-        self.move_build_files(query)
+        self.cleanup_files(query)
 
         if query.error_count == 0:
             pdf_filename = os.path.dirname(query.tex_filename) + '/' + os.path.basename(query.tex_filename).rsplit('.tex', 1)[0] + '.pdf'
