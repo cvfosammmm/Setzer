@@ -15,14 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import gi
-from gi.repository import GObject
-
-import _thread as thread, queue
-import time
 import os.path
 
 from setzer.app.service_locator import ServiceLocator
+from setzer.helpers.timer import timer
 
 
 class LaTeXParser(object):
@@ -30,107 +26,41 @@ class LaTeXParser(object):
     def __init__(self, document):
         self.document = document
         self.dirname = self.document.get_dirname()
-
-        self.symbols = dict()
-        self.symbols['labels'] = set()
-        self.symbols['included_latex_files'] = set()
-        self.symbols['bibliographies'] = set()
-        self.symbols['bibitems'] = set()
-        self.symbols['packages'] = set()
-        self.symbols['packages_detailed'] = dict()
-        self.labels_changed = True
-        self.last_result = None
-        self.symbols_lock = thread.allocate_lock()
-
-        self.last_buffer_change = time.time()
-
-        self.blocks = list()
-        self.blocks_changed = True
-        self.last_blocks_change = time.time()
-        self.blocks_lock = thread.allocate_lock()
-
-        self.parse_times = dict()
-        self.parse_times['symbols'] = None
-        self.parse_times['blocks'] = None
-        self.parse_symbols_job_running = False
-        self.parse_blocks_job_running = False
-        self.parse_jobs_lock = thread.allocate_lock()
-
-        GObject.timeout_add(1, self.compute_loop)
+        self.text = ''
 
         self.document.register_observer(self)
 
     def change_notification(self, change_code, notifying_object, parameter):
 
-        if change_code == 'buffer_changed':
-            self.last_buffer_change = time.time()
-            with self.parse_jobs_lock:
-                self.dirname = self.document.get_dirname()
-                self.parse_times['symbols'] = time.time() + 0.01
-                self.parse_times['blocks'] = time.time()
+        if change_code == 'text_inserted':
+            self.on_text_inserted(parameter)
 
-    def compute_loop(self):
-        text = None
-        with self.parse_jobs_lock:
-            starting_time = self.parse_times['symbols']
-        if starting_time != None:
-            with self.parse_jobs_lock:
-                parse_symbols_job_running = self.parse_symbols_job_running
-            if not parse_symbols_job_running and starting_time < time.time():
-                text = self.document.get_text()
-                with self.parse_jobs_lock:
-                    self.parse_times['symbols'] = None
-                thread.start_new_thread(self.parse_symbols, (text, ))
+        if change_code == 'text_deleted':
+            self.on_text_deleted(parameter)
 
-        with self.parse_jobs_lock:
-            starting_time = self.parse_times['blocks']
-        if starting_time != None:
-            with self.parse_jobs_lock:
-                parse_blocks_job_running = self.parse_blocks_job_running
-            if not parse_blocks_job_running and starting_time < time.time():
-                if text == None:
-                    text = self.document.get_text()
-                with self.parse_jobs_lock:
-                    self.parse_times['blocks'] = None
-                thread.start_new_thread(self.parse_blocks, (text, ))
+    #@timer
+    def on_text_deleted(self, parameter):
+        buffer, start_iter, end_iter = parameter
+        start_offset = start_iter.get_offset()
+        end_offset = end_iter.get_offset()
+        self.text = self.text[:start_offset] + self.text[end_offset:]
+        self.parse()
 
-        return True
+    #@timer
+    def on_text_inserted(self, parameter):
+        buffer, location_iter, text, text_length = parameter
+        offset = location_iter.get_offset()
+        self.text = self.text[:offset] + text + self.text[offset:]
+        self.parse()
 
-    def get_labels(self):
-        with self.symbols_lock:
-            if self.labels_changed or self.last_result == None:
-                result = dict()
-                result['labels'] = self.symbols['labels'].copy()
-                result['bibitems'] = self.symbols['bibitems'].copy()
-                result['included_latex_files'] = self.symbols['included_latex_files'].copy()
-                result['bibliographies'] = self.symbols['bibliographies'].copy()
-                self.last_result = result
-            else:
-                result = self.last_result
-            self.labels_changed = False
-        return result
+    #@timer
+    def parse(self):
+        self.dirname = self.document.get_dirname()
+        self.parse_symbols(self.text)
+        self.parse_blocks(self.text)
 
-    def get_blocks(self):
-        with self.blocks_lock:
-            if self.last_buffer_change > self.last_blocks_change:
-                result = None
-            elif self.blocks_changed:
-                result = self.blocks.copy()
-            else:
-                result = None
-            self.blocks_changed = False
-        return result
-
-    def get_blocks_now(self):
-        text = self.document.get_text()
-        self.parse_blocks(text)
-        with self.blocks_lock:
-            return self.blocks.copy()
-
+    #@timer
     def parse_blocks(self, text):
-        with self.parse_jobs_lock:
-            self.parse_blocks_job_running = True
-
         text_length = len(text)
 
         matches = {'begin_or_end': list(), 'others': list()}
@@ -185,19 +115,11 @@ class LaTeXParser(object):
 
         for single_list in blocks:
             blocks_list += single_list
-        blocks_list = sorted(blocks_list, key=lambda block: block[0])
 
-        with self.blocks_lock:
-            self.blocks = blocks_list
-            self.blocks_changed = True
-            self.last_blocks_change = time.time()
+        self.document.symbols['blocks'] = sorted(blocks_list, key=lambda block: block[0])
 
-        with self.parse_jobs_lock:
-            self.parse_blocks_job_running = False
-
+    #@timer
     def parse_symbols(self, text):
-        with self.parse_jobs_lock:
-            self.parse_symbols_job_running = True
         labels = set()
         included_latex_files = set()
         bibliographies = set()
@@ -226,15 +148,11 @@ class LaTeXParser(object):
             elif match.group(5) == 'bibitem':
                 bibitems = bibitems | {match.group(6).strip()}
 
-        with self.symbols_lock:
-            self.symbols['labels'] = labels
-            self.symbols['included_latex_files'] = included_latex_files
-            self.symbols['bibliographies'] = bibliographies
-            self.symbols['bibitems'] = bibitems
-            self.symbols['packages'] = packages
-            self.symbols['packages_detailed'] = packages_detailed
-            self.labels_changed = True
-        with self.parse_jobs_lock:
-            self.parse_symbols_job_running = False
+        self.document.symbols['labels'] = labels
+        self.document.symbols['included_latex_files'] = included_latex_files
+        self.document.symbols['bibliographies'] = bibliographies
+        self.document.symbols['bibitems'] = bibitems
+        self.document.symbols['packages'] = packages
+        self.document.symbols['packages_detailed'] = packages_detailed
 
 

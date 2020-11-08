@@ -64,6 +64,15 @@ class DocumentLaTeX(Document):
         self.build_system = build_system.BuildSystem(self)
         self.code_folding = code_folding.CodeFolding(self)
 
+        self.symbols = dict()
+        self.symbols['labels'] = set()
+        self.symbols['included_latex_files'] = set()
+        self.symbols['bibliographies'] = set()
+        self.symbols['bibitems'] = set()
+        self.symbols['packages'] = set()
+        self.symbols['packages_detailed'] = dict()
+        self.symbols['blocks'] = list()
+
         self.parser = latex_parser.LaTeXParser(self)
 
         self.update_can_sync()
@@ -101,16 +110,16 @@ class DocumentLaTeX(Document):
         self.get_buffer().add_packages(packages)
 
     def get_packages(self):
-        return self.parser.symbols['packages']
+        return self.symbols['packages']
 
     def get_package_details(self):
-        return self.parser.symbols['packages_detailed']
+        return self.symbols['packages_detailed']
 
     def remove_packages(self, packages):
         self.get_buffer().remove_packages(packages)
 
     def get_matching_begin_end_offset(self, orig_offset):
-        blocks = self.parser.get_blocks_now()
+        blocks = self.get_blocks()
         for block in blocks:
             if block[0] == orig_offset - 7:
                 return None if block[1] == None else block[1] + 5
@@ -119,26 +128,22 @@ class DocumentLaTeX(Document):
         return None
 
     def get_blocks(self):
-        return self.parser.get_blocks()
+        return self.symbols['blocks']
 
     def get_included_files(self):
         return self.get_included_latex_files() | self.get_bibliography_files()
 
     def get_included_latex_files(self):
-        labels_dict = self.parser.get_labels()
-        return labels_dict['included_latex_files']
+        return self.symbols['included_latex_files']
 
     def get_bibliography_files(self):
-        labels_dict = self.parser.get_labels()
-        return labels_dict['bibliographies']
+        return self.symbols['bibliographies']
 
     def get_bibitems(self):
-        labels_dict = self.parser.get_labels()
-        return labels_dict['bibitems']
+        return self.symbols['bibitems']
 
     def get_labels(self):
-        labels_dict = self.parser.get_labels()
-        return labels_dict['labels']
+        return self.symbols['labels']
 
     def change_build_state(self, state):
         self.build_state = state

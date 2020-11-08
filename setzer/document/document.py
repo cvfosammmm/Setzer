@@ -29,6 +29,7 @@ import setzer.document.source_buffer.source_buffer as source_buffer
 import setzer.document.spellchecker.spellchecker as spellchecker
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
+from setzer.helpers.timer import timer
 
 
 class Document(Observable):
@@ -150,6 +151,7 @@ class Document(Observable):
     def initially_set_text(self, text):
         self.get_buffer().initially_set_text(text)
 
+    #@timer
     def get_text(self):
         return self.get_buffer().get_all_text()
 

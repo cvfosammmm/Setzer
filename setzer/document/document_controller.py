@@ -63,6 +63,21 @@ class DocumentController(object):
                 if keypress_handled:
                     return True
 
+        if not keypress_handled and event.keyval == Gdk.keyval_from_name('c'):
+            if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
+                self.document.copy()
+                return True
+
+        if not keypress_handled and event.keyval == Gdk.keyval_from_name('x'):
+            if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
+                self.document.cut()
+                return True
+
+        if not keypress_handled and event.keyval == Gdk.keyval_from_name('v'):
+            if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
+                self.document.paste()
+                return True
+
         if not keypress_handled and event.keyval in tab_keyvals:
             if event.state & modifiers == 0:
                 buffer = self.document.get_buffer()

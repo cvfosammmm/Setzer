@@ -687,10 +687,16 @@ class SourceBuffer(GtkSource.Buffer):
             self.view.scroll_to_mark(self.mover_mark, 0, False, 0, 0)
 
     def cut(self):
-        self.view.emit('cut-clipboard')
+        self.copy()
+        bounds = self.get_selection_bounds()
+        if len(bounds) > 0:
+            self.delete(bounds[0], bounds[1])
 
     def copy(self):
-        self.view.emit('copy-clipboard')
+        text = self.get_selected_text()
+        if text != None:
+            clipboard = self.view.get_clipboard(Gdk.SELECTION_CLIPBOARD)
+            clipboard.set_text(text, -1)
 
     def paste(self):
         self.view.emit('paste-clipboard')

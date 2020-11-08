@@ -24,6 +24,7 @@ import setzer.document.latex.code_folding.code_folding_viewgtk as code_folding_v
 import setzer.document.latex.code_folding.code_folding_controller as code_folding_controller
 import setzer.document.latex.code_folding.code_folding_presenter as code_folding_presenter
 from setzer.helpers.observable import Observable
+from setzer.helpers.timer import timer
 
 
 class CodeFolding(Observable):
@@ -33,6 +34,7 @@ class CodeFolding(Observable):
 
         self.is_enabled = False
 
+        self.blocks = list()
         self.folding_regions = dict()
         self.folding_regions_by_region_id = dict()
         self.maximum_region_id = 0
@@ -55,7 +57,7 @@ class CodeFolding(Observable):
 
     def enable_code_folding(self):
         self.is_enabled = True
-        GObject.timeout_add(1, self.update_folding_regions)
+        GObject.timeout_add(2, self.update_folding_regions)
         self.add_change_code('is_enabled_changed')
 
     def disable_code_folding(self):
@@ -77,12 +79,16 @@ class CodeFolding(Observable):
     def get_folding_region_by_region_id(self, region_id):
         return self.folding_regions_by_region_id[region_id]
 
+    #@timer
     def update_folding_regions(self):
         folding_regions = dict()
         folding_regions_by_region_id = dict()
         lines_with_regions = set()
         blocks = self.document.get_blocks()
-        if blocks == None: return self.is_enabled
+        if self.blocks_changed(blocks):
+            self.blocks = blocks
+        else:
+            return self.is_enabled
 
         for block in blocks:
             if block[1] != None:
@@ -133,6 +139,14 @@ class CodeFolding(Observable):
             self.add_change_code('folding_regions_updated')
 
         return self.is_enabled
+
+    def blocks_changed(self, blocks):
+        if len(blocks) != len(self.blocks):
+            return True
+        for block_old, block_new in zip(blocks, self.blocks):
+            if block_old[0] != block_new[0] or block_old[1] != block_new[1]:
+                return True
+        return False
 
     def get_folded_regions(self):
         folded_regions = list()
