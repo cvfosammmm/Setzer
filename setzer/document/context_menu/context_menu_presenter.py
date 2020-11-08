@@ -36,14 +36,11 @@ class ContextMenuPresenter(object):
         self.on_can_undo_changed(undo_manager)
         self.on_can_redo_changed(undo_manager)
 
-        self.on_can_sync_changed(self.context_menu.document.can_sync)
-
     def set_zoom_level(self, zoom_level):
         self.scbar_view.model_button_reset_zoom.set_label("{:.0%}".format(zoom_level))
 
     def on_can_sync_changed(self, can_sync):
-        if self.context_menu.document.is_latex_document():
-            self.scbar_view.model_button_show_in_preview.set_sensitive(can_sync)
+        self.scbar_view.model_button_show_in_preview.set_sensitive(can_sync)
 
     def on_mark_set(self, buffer, location, mark):
         has_selection = self.context_menu.document.source_buffer.get_has_selection()

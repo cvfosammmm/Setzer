@@ -45,10 +45,7 @@ class Document(Observable):
         self.last_activated = 0
         self.dark_mode = False
         self.is_master = False
-        self.can_sync = False
 
-        self.parser = None
-        self.build_system = None
         self.source_buffer = source_buffer.SourceBuffer(self)
 
         self.view = document_view.DocumentView(self, self.source_buffer.view)
@@ -200,18 +197,6 @@ class Document(Observable):
 
     def insert_before_document_end(self, text):
         self.get_buffer().insert_before_document_end(text)
-
-    def add_packages(self, packages):
-        self.get_buffer().add_packages(packages)
-
-    def get_packages(self):
-        return self.parser.symbols['packages']
-
-    def get_package_details(self):
-        return self.parser.symbols['packages_detailed']
-
-    def remove_packages(self, packages):
-        self.get_buffer().remove_packages(packages)
 
     def insert_text(self, line_number, offset, text, indent_lines=True):
         self.get_buffer().insert_text(line_number, offset, text, indent_lines)

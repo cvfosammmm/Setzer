@@ -210,7 +210,9 @@ class Actions(object):
     def activate_document_mode(self):
         self.set_document_actions_active(True)
         self.enable_spellchecking_action()
-        self.add_remove_packages_dialog_action.set_enabled(True)
+        active_document = self.workspace.get_active_document()
+        if active_document.is_latex_document():
+            self.add_remove_packages_dialog_action.set_enabled(True)
 
     def enable_spellchecking_action(self):
         default_language = Gspell.Language.get_default()
@@ -421,7 +423,8 @@ class Actions(object):
     def add_packages(self, action, parameter):
         if parameter == None: return
         document = self.workspace.get_active_document()
-        document.add_packages(parameter)
+        if document.is_latex_document():
+            document.add_packages(parameter)
 
     @_assert_has_active_document
     def comment_uncomment(self, action, parameter=None):

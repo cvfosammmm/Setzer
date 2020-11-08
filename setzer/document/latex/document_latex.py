@@ -44,6 +44,7 @@ class DocumentLaTeX(Document):
         self.build_mode = 'build_and_forward_sync'
         self.has_synctex_file = False
         self.backward_sync_data = None
+        self.can_sync = False
 
         self.preview = preview.Preview(self)
         self.state_manager = state_manager_latex.StateManagerLaTeX(self)
@@ -95,6 +96,18 @@ class DocumentLaTeX(Document):
 
     def replace_latex_command_at_cursor(self, command, dotlabels, is_full_command=False):
         self.source_buffer.replace_latex_command_at_cursor(command, dotlabels, is_full_command)
+
+    def add_packages(self, packages):
+        self.get_buffer().add_packages(packages)
+
+    def get_packages(self):
+        return self.parser.symbols['packages']
+
+    def get_package_details(self):
+        return self.parser.symbols['packages_detailed']
+
+    def remove_packages(self, packages):
+        self.get_buffer().remove_packages(packages)
 
     def get_matching_begin_end_offset(self, orig_offset):
         blocks = self.parser.get_blocks_now()
