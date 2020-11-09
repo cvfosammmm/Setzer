@@ -116,7 +116,7 @@ class LaTeXParser(object):
         for single_list in blocks:
             blocks_list += single_list
 
-        self.document.symbols['blocks'] = sorted(blocks_list, key=lambda block: block[0])
+        self.document.set_blocks(sorted(blocks_list, key=lambda block: block[0]))
 
     #@timer
     def parse_symbols(self, text):

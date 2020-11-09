@@ -130,6 +130,10 @@ class DocumentLaTeX(Document):
     def get_blocks(self):
         return self.symbols['blocks']
 
+    def set_blocks(self, blocks):
+        self.symbols['blocks'] = blocks
+        self.add_change_code('blocks_changed')
+
     def get_included_files(self):
         return self.get_included_latex_files() | self.get_bibliography_files()
 
