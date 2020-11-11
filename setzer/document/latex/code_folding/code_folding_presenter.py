@@ -20,6 +20,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 from setzer.app.service_locator import ServiceLocator
+from setzer.helpers.timer import timer
 
 
 class CodeFoldingPresenter(object):
@@ -69,10 +70,13 @@ class CodeFoldingPresenter(object):
             self.view.set_size(line_height)
 
     def show_region(self, region):
-        mark_start = region['mark_start']
-        start_iter = self.source_buffer.get_iter_at_mark(mark_start)
-        mark_end = region['mark_end']
-        end_iter = self.source_buffer.get_iter_at_mark(mark_end)
+        offset_start = region['offset_start']
+        start_iter = self.source_buffer.get_iter_at_offset(offset_start)
+        start_iter.forward_to_line_end()
+        offset_end = region['offset_end']
+        end_iter = self.source_buffer.get_iter_at_offset(offset_end)
+        if not end_iter.ends_line():
+            end_iter.forward_to_line_end()
         end_iter.forward_char()
         self.source_buffer.remove_tag(self.tag, start_iter, end_iter)
         for some_region in self.model.folding_regions.values():
@@ -82,14 +86,18 @@ class CodeFoldingPresenter(object):
         self.update_line_visibility()
 
     def hide_region(self, region):
-        mark_start = region['mark_start']
-        start_iter = self.source_buffer.get_iter_at_mark(mark_start)
-        mark_end = region['mark_end']
-        end_iter = self.source_buffer.get_iter_at_mark(mark_end)
+        offset_start = region['offset_start']
+        start_iter = self.source_buffer.get_iter_at_offset(offset_start)
+        start_iter.forward_to_line_end()
+        offset_end = region['offset_end']
+        end_iter = self.source_buffer.get_iter_at_offset(offset_end)
+        if not end_iter.ends_line():
+            end_iter.forward_to_line_end()
         end_iter.forward_char()
         self.source_buffer.apply_tag(self.tag, start_iter, end_iter)
         self.update_line_visibility()
 
+    #@timer
     def update_line_visibility(self):
         for i in range(len(self.lines_skip_query_data)):
             self.lines_skip_query_data[i] = False
