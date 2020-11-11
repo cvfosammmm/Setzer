@@ -155,7 +155,7 @@ class SourceBuffer(GtkSource.Buffer):
             tag = self.indentation_tags[number_of_characters]
         except KeyError:
             tag = self.create_tag('indentation-' + str(number_of_characters))
-            tag.set_property('indent', -1 * number_of_characters * self.font_manager.get_char_width(self.view))
+            tag.set_property('indent', -1 * number_of_characters * self.font_manager.get_char_width(self.view, ' '))
             self.indentation_tags[number_of_characters] = tag
         return tag
 

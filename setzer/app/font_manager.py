@@ -55,15 +55,15 @@ class FontManager(Observable):
         char_width, line_height = self.get_char_dimensions(text_view)
         return line_height
 
-    def get_char_width(self, text_view):
-        char_width, line_height = self.get_char_dimensions(text_view)
+    def get_char_width(self, text_view, char='A'):
+        char_width, line_height = self.get_char_dimensions(text_view, char)
         return char_width
 
-    def get_char_dimensions(self, text_view):
+    def get_char_dimensions(self, text_view, char='A'):
         context = text_view.get_pango_context()
         font_desc = Pango.FontDescription.from_string(self.font_string)
         layout = Pango.Layout.new(context)
-        layout.set_text("A", -1)
+        layout.set_text(char, -1)
         layout.set_font_description(font_desc)
         return layout.get_pixel_size()
 
