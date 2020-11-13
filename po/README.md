@@ -28,7 +28,8 @@ As a workaround, you can install Setzer with the prefix `/tmp/usr` and run the n
 
 ## Before opening a PR
 
-- Please don't edit the first four lines in the `.po` file (for copyright simplifications).
+- Please don't add any copyright in the first lines in the `.po` file (for copyright simplifications).
+- Check that the `POTFILES` file is up-to-date, you can check this by running `generate-potfiles.sh`.
 - Only commit files you actually translated, discard all other files. Don't commit the `setzer.pot` file.
 - Ensure that your translation has the correct format, you can check this by simply running the update command again, the only diff should be the date.
 - Ensure that the `.mo` file are generated without an error (`ninja setzer-gmo -C builddir`).
