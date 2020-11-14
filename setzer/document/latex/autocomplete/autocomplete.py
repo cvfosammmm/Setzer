@@ -56,8 +56,6 @@ class Autocomplete(object):
 
         self.focus_hide = False
 
-        self.can_activate_on_end_user_action = True
-
         self.items = list()
 
         self.view.list.connect('row-activated', self.on_row_activated)
@@ -75,9 +73,8 @@ class Autocomplete(object):
             buffer, start_iter, end_iter = parameter
             self.session.on_delete_range(buffer, start_iter, end_iter)
 
-        if change_code == 'end_user_action':
-            self.update(self.can_activate_on_end_user_action)
-            self.can_activate_on_end_user_action = True
+        if change_code == 'buffer_changed':
+            self.update(True)
 
         if change_code in ['insert_mark_set', 'insert_mark_deleted']:
             self.update(False)
@@ -140,7 +137,12 @@ class Autocomplete(object):
                 self.session.update(can_activate)
                 return
             current_word = self.document.get_latex_command_at_cursor()
-            if can_activate and self.provider.get_items(current_word):
+            if can_activate:
+                items = self.provider.get_items(current_word)
+                if not items: return
+                for item in items:
+                    if item['command'] == current_word:
+                        return
                 self.start_session(session_default.SessionDefault(self, self.document))
 
     def update_visibility(self):
