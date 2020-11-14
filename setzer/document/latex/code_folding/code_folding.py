@@ -62,10 +62,10 @@ class CodeFolding(Observable):
 
         if change_code == 'buffer_changed':
             self.add_change_code('buffer_changed', parameter)
+            self.update_folding_regions()
 
     def enable_code_folding(self):
         self.is_enabled = True
-        GObject.timeout_add(2, self.update_folding_regions)
         self.add_change_code('is_enabled_changed')
 
     def disable_code_folding(self):
@@ -128,20 +128,20 @@ class CodeFolding(Observable):
     def get_folding_region_by_region_id(self, region_id):
         return self.folding_regions_by_region_id[region_id]
 
-    #@timer
+    @timer
     def update_folding_regions(self):
         folding_regions = dict()
         folding_regions_by_region_id = dict()
         last_line = -1
         blocks = self.document.get_blocks()
-        if not self.blocks_changed(blocks): return self.is_enabled
+        if not self.blocks_changed(blocks): return
         self.blocks = blocks
 
         for block in blocks:
             if block[1] != None:
                 start_iter = self.document.source_buffer.get_iter_at_offset(block[0])
                 line_start = start_iter.get_line()
-                if not line_start == last_line:
+                if line_start != last_line:
                     end_iter = self.document.source_buffer.get_iter_at_offset(block[1])
                     offset_start = start_iter.get_offset()
                     offset_end = end_iter.get_offset()
@@ -172,8 +172,6 @@ class CodeFolding(Observable):
             self.initial_folding()
         else:
             self.add_change_code('folding_regions_updated')
-
-        return self.is_enabled
 
     #@timer
     def delete_invalid_regions(self, folding_regions_by_region_id):
