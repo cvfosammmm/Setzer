@@ -65,6 +65,10 @@ class SessionBeginEnd(object):
         if delete_start_offset >= start_offset and delete_end_offset <= end_offset:
             self.source_buffer.begin_user_action()
             GLib.idle_add(self.update_matching_block)
+        elif delete_start_offset >= start_offset and delete_start_offset <= end_offset:
+            self.cancel()
+        elif delete_end_offset >= start_offset and delete_end_offset <= end_offset:
+            self.cancel()
 
     def on_keypress(self, event):
         ''' returns whether the keypress has been handled. '''
