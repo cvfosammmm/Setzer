@@ -2272,7 +2272,7 @@ msgstr "Setzer"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:8
 msgid "Simple yet full-featured LaTeX editor"
-msgstr "LaTeX-Editor mit vielen nützlichen Funktionen."
+msgstr "LaTeX-Editor mit vielen nützlichen Funktionen"
 
 #: data/org.cvfosammmm.Setzer.appdata.xml.in:9
 msgid "Cvfosammmm"
