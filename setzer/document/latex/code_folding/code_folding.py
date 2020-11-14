@@ -128,7 +128,7 @@ class CodeFolding(Observable):
     def get_folding_region_by_region_id(self, region_id):
         return self.folding_regions_by_region_id[region_id]
 
-    @timer
+    #@timer
     def update_folding_regions(self):
         folding_regions = dict()
         folding_regions_by_region_id = dict()
