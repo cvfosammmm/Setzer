@@ -45,7 +45,6 @@ class WorkspaceController(object):
             self.workspace.set_active_document(open_documents[-1])
 
     def observe_workspace_view(self):
-        self.observe_document_chooser()
         self.main_window.headerbar.sidebar_toggle.connect('toggled', self.on_sidebar_toggle_toggled)
         self.main_window.headerbar.preview_toggle.connect('toggled', self.on_preview_toggle_toggled)
         self.main_window.headerbar.help_toggle.connect('toggled', self.on_help_toggle_toggled)
@@ -54,40 +53,6 @@ class WorkspaceController(object):
         self.main_window.preview_paned.connect('size-allocate', self.on_preview_paned_size_allocate)
         self.main_window.latex_notebook_wrapper.connect('size-allocate', self.on_build_log_size_allocate)
         self.main_window.latex_shortcuts_bar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
-
-    def observe_document_chooser(self):
-        document_chooser = self.main_window.headerbar.document_chooser
-        document_chooser.connect('closed', self.on_document_chooser_closed)
-        document_chooser.search_entry.connect('search-changed', self.on_document_chooser_search_changed)
-        auto_suggest_box = document_chooser.auto_suggest_box
-        auto_suggest_box.connect('row-activated', self.on_document_chooser_selection)
-        document_chooser.other_documents_button.connect('clicked', self.on_open_document_button_click)
-        self.main_window.headerbar.open_document_blank_button.connect('clicked', self.on_open_document_button_click)
-
-    ''' 
-    *** signal handlers: headerbar
-    '''
-    
-    def on_document_chooser_closed(self, document_chooser, data=None):
-        document_chooser.search_entry.set_text('')
-        document_chooser.auto_suggest_box.unselect_all()
-
-    def on_document_chooser_search_changed(self, search_entry):
-        self.main_window.headerbar.document_chooser.search_filter()
-    
-    def on_document_chooser_selection(self, box, row):
-        self.main_window.headerbar.document_chooser.popdown()
-        filename = row.folder + '/' + row.filename
-        document_candidate = self.workspace.get_document_by_filename(filename)
-
-        if document_candidate != None:
-            self.workspace.set_active_document(document_candidate)
-        else:
-            self.workspace.create_document_from_filename(filename, activate=True)
-
-    def on_open_document_button_click(self, button_object=None):
-        filename = DialogLocator.get_dialog('open_document').run()
-        self.workspace.open_document_by_filename(filename)
 
     def on_build_log_button_clicked(self, toggle_button, parameter=None):
         self.workspace.set_show_build_log(toggle_button.get_active())

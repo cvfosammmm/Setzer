@@ -51,7 +51,6 @@ class Shortcuts(object):
         all_mask = Gdk.ModifierType.MODIFIER_MASK
         flags = Gtk.AccelFlags.MASK
         
-        self.accel_group.connect(Gdk.keyval_from_name('o'), c_mask, flags, self.shortcut_open)
         self.accel_group.connect(Gdk.keyval_from_name('o'), c_mask | s_mask, flags, self.shortcut_doc_chooser)
         self.accel_group.connect(Gdk.keyval_from_name('n'), c_mask, flags, self.shortcut_new)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask, flags, self.shortcut_show_open_docs)
@@ -71,6 +70,7 @@ class Shortcuts(object):
         self.main_window.app.set_accels_for_action('win.find-next', ['<Control>g'])
         self.main_window.app.set_accels_for_action('win.find-prev', ['<Control><Shift>g'])
         self.main_window.app.set_accels_for_action('win.find-replace', ['<Control>h'])
+        self.main_window.app.set_accels_for_action('win.open-document-dialog', ['<Control>o'])
         self.main_window.app.set_accels_for_action('win.save-and-build', ['F5'])
         self.main_window.app.set_accels_for_action('win.build', ['F6'])
         self.main_window.app.set_accels_for_action('win.save', ['<Control>s'])
@@ -81,10 +81,6 @@ class Shortcuts(object):
 
         # document edit shortcuts
         self.accel_group.connect(Gdk.keyval_from_name('quotedbl'), c_mask, flags, self.shortcut_quotes)
-
-    def shortcut_open(self, accel_group=None, window=None, key=None, mask=None):
-        filename = DialogLocator.get_dialog('open_document').run()
-        self.workspace.open_document_by_filename(filename)
 
     def shortcut_doc_chooser(self, accel_group=None, window=None, key=None, mask=None):
         if self.main_window.headerbar.open_document_button.get_sensitive():

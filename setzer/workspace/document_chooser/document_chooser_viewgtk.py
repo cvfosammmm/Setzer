@@ -57,6 +57,7 @@ class DocumentChooser(Gtk.Popover):
         self.not_found_slate.set_center_widget(outer_box)
         
         self.other_documents_button = Gtk.Button.new_with_label(_('Other Documents') + '...')
+        self.other_documents_button.set_action_name('win.open-document-dialog')
 
         self.notebook = Gtk.Notebook()
         self.notebook.set_show_tabs(False)

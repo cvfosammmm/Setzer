@@ -58,6 +58,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.pack_start(self.open_document_button)
         self.open_document_blank_button = Gtk.Button.new_with_label(_('Open') + '...')
         self.open_document_blank_button.set_tooltip_text(_('Open a document') + ' (' + _('Ctrl') + '+O)')
+        self.open_document_blank_button.set_action_name('win.open-document-dialog')
         self.pack_start(self.open_document_blank_button)
 
         self.new_document_button = Gtk.MenuButton()

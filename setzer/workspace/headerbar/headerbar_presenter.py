@@ -62,11 +62,9 @@ class HeaderbarPresenter(object):
                 self.main_window.headerbar.open_document_button.set_sensitive(True)
                 self.main_window.headerbar.open_document_button.show_all()
                 self.main_window.headerbar.open_document_blank_button.hide()
-                self.main_window.headerbar.open_document_blank_button.set_sensitive(False)
             else:
                 self.main_window.headerbar.open_document_button.hide()
                 self.main_window.headerbar.open_document_button.set_sensitive(False)
-                self.main_window.headerbar.open_document_blank_button.set_sensitive(True)
                 self.main_window.headerbar.open_document_blank_button.show_all()
 
         if change_code == 'update_recently_opened_session_files':

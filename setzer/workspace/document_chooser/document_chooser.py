@@ -15,18 +15,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from setzer.app.service_locator import ServiceLocator
-
 import os.path
 
+from setzer.app.service_locator import ServiceLocator
 
-class DocumentChooserPresenter(object):
-    ''' Mediator between workspace and view. '''
+
+class DocumentChooser(object):
     
     def __init__(self, workspace):
         self.workspace = workspace
+        self.main_window = ServiceLocator.get_main_window()
         self.view = ServiceLocator.get_main_window().headerbar.document_chooser
         self.workspace.register_observer(self)
+
+        self.view.connect('closed', self.on_document_chooser_closed)
+        self.view.search_entry.connect('search-changed', self.on_document_chooser_search_changed)
+        auto_suggest_box = self.view.auto_suggest_box
+        auto_suggest_box.connect('row-activated', self.on_document_chooser_selection)
 
     '''
     *** notification handlers, get called by observed workspace
@@ -40,5 +45,22 @@ class DocumentChooserPresenter(object):
             for item in sorted(data, key=lambda val: -val['date']):
                 items.append(os.path.split(item['filename']))
             self.view.update_autosuggest(items)
+
+    def on_document_chooser_closed(self, document_chooser, data=None):
+        document_chooser.search_entry.set_text('')
+        document_chooser.auto_suggest_box.unselect_all()
+
+    def on_document_chooser_search_changed(self, search_entry):
+        self.view.search_filter()
+    
+    def on_document_chooser_selection(self, box, row):
+        self.view.popdown()
+        filename = row.folder + '/' + row.filename
+        document_candidate = self.workspace.get_document_by_filename(filename)
+
+        if document_candidate != None:
+            self.workspace.set_active_document(document_candidate)
+        else:
+            self.workspace.create_document_from_filename(filename, activate=True)
 
 

@@ -34,6 +34,7 @@ class Actions(object):
 
         self.new_latex_document_action = Gio.SimpleAction.new('new-latex-document', None)
         self.new_bibtex_document_action = Gio.SimpleAction.new('new-bibtex-document', None)
+        self.open_document_dialog_action = Gio.SimpleAction.new('open-document-dialog', None)
         self.build_action = Gio.SimpleAction.new('build', None)
         self.save_and_build_action = Gio.SimpleAction.new('save-and-build', None)
         self.save_action = Gio.SimpleAction.new('save', None)
@@ -79,6 +80,7 @@ class Actions(object):
 
         main_window.add_action(self.new_latex_document_action)
         main_window.add_action(self.new_bibtex_document_action)
+        main_window.add_action(self.open_document_dialog_action)
         main_window.add_action(self.build_action)
         main_window.add_action(self.save_and_build_action)
         main_window.add_action(self.save_action)
@@ -120,6 +122,7 @@ class Actions(object):
 
         self.new_latex_document_action.connect('activate', self.on_new_latex_document_action_activated)
         self.new_bibtex_document_action.connect('activate', self.on_new_bibtex_document_action_activated)
+        self.open_document_dialog_action.connect('activate', self.on_open_document_dialog_action_activated)
         self.build_action.connect('activate', self.on_build_action_activated)
         self.save_and_build_action.connect('activate', self.on_save_and_build_action_activated)
         self.save_action.connect('activate', self.on_save_button_click)
@@ -266,6 +269,10 @@ class Actions(object):
 
     def on_new_bibtex_document_action_activated(self, action=None, parameter=None):
         self.workspace.create_bibtex_document(activate=True)
+
+    def on_open_document_dialog_action_activated(self, action=None, parameter=None):
+        filename = DialogLocator.get_dialog('open_document').run()
+        self.workspace.open_document_by_filename(filename)
 
     @_assert_has_active_document
     def on_save_and_build_action_activated(self, action=None, parameter=None):
