@@ -130,14 +130,14 @@ class Document(Observable):
     def save_to_disk(self):
         if self.filename == None: return False
         if self.get_buffer() == None: return False
-        else:
-            text = self.get_text()
-            if text != None:
-                with open(self.filename, 'w') as f:
-                    f.write(text)
-                self.update_save_date()
-                self.deleted_on_disk_dialog_shown_after_last_save = False
-                self.get_buffer().set_modified(False)
+
+        text = self.get_text()
+        if text != None:
+            with open(self.filename, 'w') as f:
+                f.write(text)
+            self.update_save_date()
+            self.deleted_on_disk_dialog_shown_after_last_save = False
+            self.get_buffer().set_modified(False)
 
     def update_save_date(self):
         self.save_date = os.path.getmtime(self.filename)

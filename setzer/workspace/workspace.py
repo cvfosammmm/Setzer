@@ -115,6 +115,7 @@ class Workspace(Observable):
         if document == self.master_document:
             self.unset_master_document()
         document.state_manager.save_document_state()
+        document.controller.continue_save_date_loop = False
         self.open_documents.remove(document)
         if document.is_latex_document():
             self.open_latex_documents.remove(document)

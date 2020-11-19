@@ -37,6 +37,7 @@ class DocumentController(object):
 
         self.view.source_view.connect('key-press-event', self.on_keypress)
         self.view.source_view.connect('button-press-event', self.on_buttonpress)
+        self.continue_save_date_loop = True
         GObject.timeout_add(500, self.save_date_loop)
         
     '''
@@ -133,6 +134,6 @@ class DocumentController(object):
             else:
                 self.document.source_buffer.set_modified(True)
             self.document.update_save_date()
-        return True
+        return self.continue_save_date_loop
 
 
