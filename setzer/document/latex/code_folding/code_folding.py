@@ -36,7 +36,6 @@ class CodeFolding(Observable):
 
         self.blocks = list()
         self.marks_start = dict()
-        self.marks_end = dict()
         self.folding_regions = dict()
         self.folding_regions_by_region_id = dict()
         self.maximum_region_id = 0
@@ -80,40 +79,32 @@ class CodeFolding(Observable):
         offset_start = start_iter.get_offset()
         offset_end = end_iter.get_offset()
         length = offset_end - offset_start
-        for index in list(self.marks_start):
-            if index > offset_start:
-                if index >= offset_end:
-                    region = self.folding_regions_by_region_id[self.marks_start[index]]
-                    region['offset_start'] = index - length
-                    self.marks_start[index - length] = self.marks_start[index]
-                del(self.marks_start[index])
-        for index in list(self.marks_end):
-            if index > offset_start:
-                if index >= offset_end:
-                    for region_id in self.marks_end[index]:
-                        region = self.folding_regions_by_region_id[region_id]
-                        region['offset_end'] = index - length
-                    self.marks_end[index - length] = self.marks_end[index]
-                del(self.marks_end[index])
+        marks_start = dict()
+        for index, region_id in self.marks_start.items():
+            if index <= offset_start:
+                marks_start[index] = region_id
+            elif index >= offset_end:
+                index2 = index - length
+                region = self.folding_regions_by_region_id[region_id]
+                region['offset_start'] = index2
+                marks_start[index2] = region_id
+        self.marks_start = marks_start
 
     #@timer
     def on_text_inserted(self, parameter):
         buffer, location_iter, text, text_length = parameter
         length = text_length
         offset = location_iter.get_offset() + length
-        for index in reversed(list(self.marks_start)):
-            if index >= offset:
-                region = self.folding_regions_by_region_id[self.marks_start[index]]
-                region['offset_start'] = index + length
-                self.marks_start[index + length] = self.marks_start[index]
-                del(self.marks_start[index])
-        for index in reversed(list(self.marks_end)):
-            if index >= offset:
-                for region_id in self.marks_end[index]:
-                    region = self.folding_regions_by_region_id[region_id]
-                    region['offset_end'] = index + length
-                self.marks_end[index + length] = self.marks_end[index]
-                del(self.marks_end[index])
+        marks_start = dict()
+        for index, region_id in self.marks_start.items():
+            if index < offset:
+                marks_start[index] = region_id
+            else:
+                index2 = index + length
+                region = self.folding_regions_by_region_id[region_id]
+                region['offset_start'] = index2
+                marks_start[index2] = region_id
+        self.marks_start = marks_start
 
     def toggle_folding_region(self, region, show_region_regardless_of_state=False, hide_region_regardless_of_state=False):
         if show_region_regardless_of_state:
@@ -139,29 +130,21 @@ class CodeFolding(Observable):
 
         for block in blocks:
             if block[1] != None:
-                start_iter = self.document.source_buffer.get_iter_at_offset(block[0])
-                line_start = start_iter.get_line()
-                if line_start != last_line:
-                    end_iter = self.document.source_buffer.get_iter_at_offset(block[1])
-                    offset_start = start_iter.get_offset()
-                    offset_end = end_iter.get_offset()
-                    line_end = end_iter.get_line()
-                    region_id = self.get_mark_start_at_offset(offset_start)
+                if block[2] != last_line:
+                    region_id = self.get_mark_start_at_offset(block[0])
                     if region_id != None:
                         region_dict = self.get_folding_region_by_region_id(region_id)
-                        region_dict['starting_line'] = line_start
-                        region_dict['ending_line'] = line_end
-                        region_dict['offset_end'] = offset_end
-                        self.move_mark_end(region_dict['offset_end'], offset_end, region_id)
+                        region_dict['starting_line'] = block[2]
+                        region_dict['ending_line'] = block[3]
+                        region_dict['offset_end'] = block[1]
                         folding_regions_by_region_id[region_id] = region_dict
                     else:
-                        self.add_mark_start(self.maximum_region_id, offset_start)
-                        self.add_mark_end(self.maximum_region_id, offset_end)
-                        region_dict = {'offset_start': offset_start, 'offset_end': offset_end, 'is_folded': False, 'starting_line': line_start, 'ending_line': line_end, 'id': self.maximum_region_id}
+                        self.add_mark_start(self.maximum_region_id, block[0])
+                        region_dict = {'offset_start': block[0], 'offset_end': block[1], 'is_folded': False, 'starting_line': block[2], 'ending_line': block[3], 'id': self.maximum_region_id}
                         folding_regions_by_region_id[self.maximum_region_id] = region_dict
                         self.maximum_region_id += 1
-                    folding_regions[line_start] = region_dict
-                last_line = line_start
+                    folding_regions[block[2]] = region_dict
+                last_line = block[2]
 
         self.delete_invalid_regions(folding_regions_by_region_id)
 
@@ -180,7 +163,6 @@ class CodeFolding(Observable):
             region = self.folding_regions_by_region_id[region_id]
             self.toggle_folding_region(region, show_region_regardless_of_state=True)
             self.delete_mark_start(region['offset_start'])
-            self.delete_mark_end(region['offset_end'], region_id)
 
     def add_mark_start(self, region_id, offset):
         self.marks_start[offset] = region_id
@@ -193,27 +175,12 @@ class CodeFolding(Observable):
             return self.marks_start[offset]
         return None
 
-    def move_mark_end(self, old_offset, new_offset, region_id):
-        self.delete_mark_end(old_offset, region_id)
-        self.add_mark_end(region_id, new_offset)
-
-    def add_mark_end(self, region_id, offset):
-        if offset in self.marks_end:
-            self.marks_end[offset].append(region_id)
-        else:
-            self.marks_end[offset] = [region_id]
-
-    def delete_mark_end(self, offset, region_id):
-        if not offset in self.marks_end: return
-        if len(self.marks_end[offset]) == 1:
-            del(self.marks_end[offset])
-        else:
-            self.marks_end[offset].remove(region_id)
-
+    #@timer
     def blocks_changed(self, blocks):
-        if len(blocks) != len(self.blocks):
+        blocks_old = self.blocks
+        if len(blocks) != len(blocks_old):
             return True
-        for block_old, block_new in zip(blocks, self.blocks):
+        for block_old, block_new in zip(blocks_old, blocks):
             if block_old[0] != block_new[0] or block_old[1] != block_new[1]:
                 return True
         return False
@@ -228,6 +195,7 @@ class CodeFolding(Observable):
     def set_initial_folded_regions(self, folded_regions):
         self.initial_folded_regions = folded_regions
         self.initial_folded_regions_set = True
+        self.initial_folding()
 
     def initial_folding(self):
         self.initial_folding_regions_checked_count += 1
@@ -238,7 +206,7 @@ class CodeFolding(Observable):
                         if region['ending_line'] == self.folding_regions[region['starting_line']]['ending_line']:
                             folding_region = self.folding_regions[region['starting_line']]
                             self.toggle_folding_region(folding_region, hide_region_regardless_of_state=True)
-            self.initial_folding_done = True
+                self.initial_folding_done = True
         if self.initial_folding_regions_checked_count >= 3:
             self.initial_folding_done = True
 

@@ -134,6 +134,9 @@ class DocumentLaTeX(Document):
         self.symbols['blocks'] = blocks
         self.add_change_code('blocks_changed')
 
+    def set_initial_folded_regions(self, folded_regions):
+        self.code_folding.set_initial_folded_regions(folded_regions)
+
     def get_included_files(self):
         return self.get_included_latex_files() | self.get_bibliography_files()
 

@@ -173,9 +173,6 @@ class Document(Observable):
     def is_empty(self):
         return self.source_buffer.is_empty()
 
-    def set_initial_folded_regions(self, folded_regions):
-        self.code_folding.set_initial_folded_regions(folded_regions)
-        
     def place_cursor(self, line_number, offset=0):
         self.get_buffer().place_cursor_and_scroll(line_number, offset)
 

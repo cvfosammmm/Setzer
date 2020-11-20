@@ -51,7 +51,7 @@ class StateManagerLaTeX():
         try:
             self.document.set_initial_folded_regions(document_data['folded_regions'])
         except KeyError:
-            self.document.set_initial_folded_regions(None)
+            self.document.set_initial_folded_regions([])
 
     def load_build_log_state(self, document_data):
         try:

@@ -27,6 +27,9 @@ class LaTeXParser(object):
         self.document = document
         self.dirname = self.document.get_dirname()
         self.text = ''
+        self.text_length = 0
+        self.number_of_lines = 0
+        self.block_symbol_matches = list()
 
         self.document.register_observer(self)
 
@@ -56,36 +59,44 @@ class LaTeXParser(object):
     #@timer
     def parse(self):
         self.dirname = self.document.get_dirname()
+        self.get_block_symbol_matches(self.text)
         self.parse_symbols(self.text)
-        self.parse_blocks(self.text)
+        self.text_length = len(self.text)
+        self.parse_blocks()
 
     #@timer
-    def parse_blocks(self, text):
-        text_length = len(text)
-
-        matches = {'begin_or_end': list(), 'others': list()}
-        for match in ServiceLocator.get_regex_object(r'\\(begin|end)\{((?:\w|•)+(?:\*){0,1})\}|\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{').finditer(text):
+    def get_block_symbol_matches(self, text):
+        self.block_symbol_matches = {'begin_or_end': list(), 'others': list()}
+        counter = 0
+        for match in ServiceLocator.get_regex_object(r'\n|\\(begin|end)\{((?:\w|•|\*)+)\}|\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{').finditer(text):
             if match.group(1) != None:
-                matches['begin_or_end'].append(match)
-            else:
-                matches['others'].append(match)
+                self.block_symbol_matches['begin_or_end'].append((match, counter))
+            elif match.group(3) != None:
+                self.block_symbol_matches['others'].append((match, counter))
+            if match.group(0) == '\n':
+                counter += 1
+        self.number_of_lines = counter
 
+    def parse_blocks(self):
         blocks = dict()
 
         end_document_offset = None
-        for match in matches['begin_or_end']:
+        end_document_line = None
+        for (match, count) in self.block_symbol_matches['begin_or_end']:
             if match.group(1) == 'begin':
-                try: blocks[match.group(2)].append([match.start(), None])
-                except KeyError: blocks[match.group(2)] = [[match.start(), None]]
+                try: blocks[match.group(2)].append([match.start(), None, count, None])
+                except KeyError: blocks[match.group(2)] = [[match.start(), None, count, None]]
             else:
                 if match.group(2).strip() == 'document':
                     end_document_offset = match.start()
+                    end_document_line = count
                 try: begins = blocks[match.group(2)]
                 except KeyError: pass
                 else:
                     for block in reversed(begins):
                         if block[1] == None:
                             block[1] = match.start()
+                            block[3] = count
                             break
 
         blocks_list = list()
@@ -95,19 +106,22 @@ class LaTeXParser(object):
         blocks = [list(), list(), list(), list(), list()]
         relevant_following_blocks = [list(), list(), list(), list(), list()]
         levels = {'part': 0, 'chapter': 1, 'section': 2, 'subsection': 3, 'subsubsection': 4}
-        for match in reversed(matches['others']):
+        for (match, count) in reversed(self.block_symbol_matches['others']):
             level = levels[match.group(3)]
-            block = [match.start(), None]
+            block = [match.start(), None, count, None]
 
             if len(relevant_following_blocks[level]) >= 1:
                 # - 1 to go one line up
                 block[1] = relevant_following_blocks[level][-1][0] - 1
+                block[3] = relevant_following_blocks[level][-1][2] - 1
             else:
                 if end_document_offset != None and block[0] < end_document_offset:
                     # - 1 to go one line up
                     block[1] = end_document_offset - 1
+                    block[3] = end_document_line - 1
                 else:
-                    block[1] = text_length
+                    block[1] = self.text_length
+                    block[3] = self.number_of_lines
 
             blocks[level].append(block)
             for i in range(level, 5):
