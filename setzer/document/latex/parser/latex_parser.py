@@ -100,6 +100,7 @@ class LaTeXParser(object):
     #@timer
     def on_text_inserted(self, parameter):
         buffer, location_iter, text, text_length = parameter
+        text_length = len(text)
         offset = location_iter.get_offset()
         new_line_count = text.count('\n')
         line_start = location_iter.get_line()

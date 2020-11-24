@@ -93,7 +93,7 @@ class CodeFolding(Observable):
     #@timer
     def on_text_inserted(self, parameter):
         buffer, location_iter, text, text_length = parameter
-        length = text_length
+        length = len(text)
         offset = location_iter.get_offset() + length
         marks_start = dict()
         for index, region_id in self.marks_start.items():
