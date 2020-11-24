@@ -29,7 +29,7 @@ class LaTeXParser(object):
         self.text = ''
         self.text_length = 0
         self.number_of_lines = 0
-        self.block_symbol_matches = list()
+        self.block_symbol_matches = {'begin_or_end': list(), 'others': list()}
 
         self.document.register_observer(self)
 
@@ -44,59 +44,131 @@ class LaTeXParser(object):
     #@timer
     def on_text_deleted(self, parameter):
         buffer, start_iter, end_iter = parameter
-        start_offset = start_iter.get_offset()
-        end_offset = end_iter.get_offset()
-        self.text = self.text[:start_offset] + self.text[end_offset:]
+        offset_start = start_iter.get_offset()
+        offset_end = end_iter.get_offset()
+        line_start = start_iter.get_line()
+        line_end = end_iter.get_line()
+        text_length = offset_end - offset_start
+        text = self.text[offset_start:offset_end]
+        deleted_line_count = text.count('\n')
+        text_before = self.text[:offset_start]
+        text_after = self.text[offset_end:]
+        self.text = text_before + text_after
+
+        block_symbol_matches = {'begin_or_end': list(), 'others': list()}
+        for match in self.block_symbol_matches['begin_or_end']:
+            if match[1] < line_start:
+                block_symbol_matches['begin_or_end'].append(match)
+        for match in self.block_symbol_matches['others']:
+            if match[1] < line_start:
+                block_symbol_matches['others'].append(match)
+
+        offset_line_start = text_before.rfind('\n') + 1
+        n_index = text_after.find('\n')
+        if n_index >= 0:
+            offset_line_end = offset_end + n_index
+        else:
+            offset_line_end = offset_end + len(text_after)
+        text = text_before[offset_line_start:] + text_after[:(offset_line_end - offset_end)]
+
+        additional_matches = self.parse_for_blocks(text, line_start, offset_line_start)
+        block_symbol_matches['begin_or_end'] += additional_matches['begin_or_end']
+        block_symbol_matches['others'] += additional_matches['others']
+
+        for match in self.block_symbol_matches['begin_or_end']:
+            if match[1] > line_end:
+                block_symbol_matches['begin_or_end'].append((match[0], match[1] - deleted_line_count, match[2] - text_length))
+        for match in self.block_symbol_matches['others']:
+            if match[1] > line_end:
+                block_symbol_matches['others'].append((match[0], match[1] - deleted_line_count, match[2] - text_length))
+
+        self.block_symbol_matches = block_symbol_matches
+        self.number_of_lines = self.number_of_lines - deleted_line_count
+        self.parse_blocks()
         self.parse()
 
     #@timer
     def on_text_inserted(self, parameter):
         buffer, location_iter, text, text_length = parameter
         offset = location_iter.get_offset()
-        self.text = self.text[:offset] + text + self.text[offset:]
+        new_line_count = text.count('\n')
+        line_start = location_iter.get_line()
+
+        text_before = self.text[:offset]
+        offset_line_start = text_before.rfind('\n') + 1
+        text_after = self.text[offset:]
+        n_index = text_after.find('\n')
+        if n_index >= 0:
+            offset_line_end = offset + n_index
+        else:
+            offset_line_end = offset + len(text_after)
+        self.text = text_before + text + text_after
+        text = text_before[offset_line_start:] + text + text_after[:(offset_line_end - offset)]
+
+        block_symbol_matches = {'begin_or_end': list(), 'others': list()}
+        for match in self.block_symbol_matches['begin_or_end']:
+            if match[1] < line_start:
+                block_symbol_matches['begin_or_end'].append(match)
+        for match in self.block_symbol_matches['others']:
+            if match[1] < line_start:
+                block_symbol_matches['others'].append(match)
+
+        additional_matches = self.parse_for_blocks(text, line_start, offset_line_start)
+        block_symbol_matches['begin_or_end'] += additional_matches['begin_or_end']
+        block_symbol_matches['others'] += additional_matches['others']
+
+        for match in self.block_symbol_matches['begin_or_end']:
+            if match[1] > line_start:
+                block_symbol_matches['begin_or_end'].append((match[0], match[1] + new_line_count, match[2] + text_length))
+
+        for match in self.block_symbol_matches['others']:
+            if match[1] > line_start:
+                block_symbol_matches['others'].append((match[0], match[1] + new_line_count, match[2] + text_length))
+
+        self.block_symbol_matches = block_symbol_matches
+        self.number_of_lines = self.number_of_lines + new_line_count
+        self.parse_blocks()
         self.parse()
+
+    def parse_for_blocks(self, text, line_start, offset_line_start):
+        block_symbol_matches = {'begin_or_end': list(), 'others': list()}
+        counter = line_start
+        for match in ServiceLocator.get_regex_object(r'\n|\\(begin|end)\{((?:\w|•|\*)+)\}|\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{').finditer(text):
+            if match.group(1) != None:
+                block_symbol_matches['begin_or_end'].append((match, counter, match.start() + offset_line_start))
+            elif match.group(3) != None:
+                block_symbol_matches['others'].append((match, counter, match.start() + offset_line_start))
+            if match.group(0) == '\n':
+                counter += 1
+        return block_symbol_matches
 
     #@timer
     def parse(self):
         self.dirname = self.document.get_dirname()
-        self.get_block_symbol_matches(self.text)
         self.parse_symbols(self.text)
         self.text_length = len(self.text)
-        self.parse_blocks()
 
     #@timer
-    def get_block_symbol_matches(self, text):
-        self.block_symbol_matches = {'begin_or_end': list(), 'others': list()}
-        counter = 0
-        for match in ServiceLocator.get_regex_object(r'\n|\\(begin|end)\{((?:\w|•|\*)+)\}|\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{').finditer(text):
-            if match.group(1) != None:
-                self.block_symbol_matches['begin_or_end'].append((match, counter))
-            elif match.group(3) != None:
-                self.block_symbol_matches['others'].append((match, counter))
-            if match.group(0) == '\n':
-                counter += 1
-        self.number_of_lines = counter
-
     def parse_blocks(self):
         blocks = dict()
 
         end_document_offset = None
         end_document_line = None
-        for (match, count) in self.block_symbol_matches['begin_or_end']:
+        for (match, line_number, offset) in self.block_symbol_matches['begin_or_end']:
             if match.group(1) == 'begin':
-                try: blocks[match.group(2)].append([match.start(), None, count, None])
-                except KeyError: blocks[match.group(2)] = [[match.start(), None, count, None]]
+                try: blocks[match.group(2)].append([offset, None, line_number, None])
+                except KeyError: blocks[match.group(2)] = [[offset, None, line_number, None]]
             else:
                 if match.group(2).strip() == 'document':
-                    end_document_offset = match.start()
-                    end_document_line = count
+                    end_document_offset = offset
+                    end_document_line = line_number
                 try: begins = blocks[match.group(2)]
                 except KeyError: pass
                 else:
                     for block in reversed(begins):
                         if block[1] == None:
-                            block[1] = match.start()
-                            block[3] = count
+                            block[1] = offset
+                            block[3] = line_number
                             break
 
         blocks_list = list()
@@ -106,9 +178,9 @@ class LaTeXParser(object):
         blocks = [list(), list(), list(), list(), list()]
         relevant_following_blocks = [list(), list(), list(), list(), list()]
         levels = {'part': 0, 'chapter': 1, 'section': 2, 'subsection': 3, 'subsubsection': 4}
-        for (match, count) in reversed(self.block_symbol_matches['others']):
+        for (match, line_number, offset) in reversed(self.block_symbol_matches['others']):
             level = levels[match.group(3)]
-            block = [match.start(), None, count, None]
+            block = [offset, None, line_number, None]
 
             if len(relevant_following_blocks[level]) >= 1:
                 # - 1 to go one line up
