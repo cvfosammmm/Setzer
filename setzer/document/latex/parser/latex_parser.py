@@ -25,11 +25,10 @@ class LaTeXParser(object):
 
     def __init__(self, document):
         self.document = document
-        self.dirname = self.document.get_dirname()
         self.text = ''
-        self.text_length = 0
         self.number_of_lines = 0
         self.block_symbol_matches = {'begin_or_end': list(), 'others': list()}
+        self.other_symbols = list()
 
         self.document.register_observer(self)
 
@@ -53,6 +52,7 @@ class LaTeXParser(object):
         deleted_line_count = text.count('\n')
         text_before = self.text[:offset_start]
         text_after = self.text[offset_end:]
+        offset_line_start = text_before.rfind('\n') + 1
         self.text = text_before + text_after
 
         block_symbol_matches = {'begin_or_end': list(), 'others': list()}
@@ -62,8 +62,11 @@ class LaTeXParser(object):
         for match in self.block_symbol_matches['others']:
             if match[1] < line_start:
                 block_symbol_matches['others'].append(match)
+        other_symbols = list()
+        for match in self.other_symbols:
+            if match[1] < offset_line_start:
+                other_symbols.append((match[0], match[1]))
 
-        offset_line_start = text_before.rfind('\n') + 1
         n_index = text_after.find('\n')
         if n_index >= 0:
             offset_line_end = offset_end + n_index
@@ -74,6 +77,8 @@ class LaTeXParser(object):
         additional_matches = self.parse_for_blocks(text, line_start, offset_line_start)
         block_symbol_matches['begin_or_end'] += additional_matches['begin_or_end']
         block_symbol_matches['others'] += additional_matches['others']
+        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource)\{((?:\s|\w|\:|\.|,)*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text):
+            other_symbols.append((match, match.start() + offset_line_start))
 
         for match in self.block_symbol_matches['begin_or_end']:
             if match[1] > line_end:
@@ -81,11 +86,16 @@ class LaTeXParser(object):
         for match in self.block_symbol_matches['others']:
             if match[1] > line_end:
                 block_symbol_matches['others'].append((match[0], match[1] - deleted_line_count, match[2] - text_length))
+        for match in self.other_symbols:
+            if match[1] > offset_line_end:
+                other_symbols.append((match[0], match[1] - text_length))
 
         self.block_symbol_matches = block_symbol_matches
         self.number_of_lines = self.number_of_lines - deleted_line_count
         self.parse_blocks()
-        self.parse()
+
+        self.other_symbols = other_symbols
+        self.parse_symbols()
 
     #@timer
     def on_text_inserted(self, parameter):
@@ -103,7 +113,7 @@ class LaTeXParser(object):
         else:
             offset_line_end = offset + len(text_after)
         self.text = text_before + text + text_after
-        text = text_before[offset_line_start:] + text + text_after[:(offset_line_end - offset)]
+        text_parse = text_before[offset_line_start:] + text + text_after[:(offset_line_end - offset)]
 
         block_symbol_matches = {'begin_or_end': list(), 'others': list()}
         for match in self.block_symbol_matches['begin_or_end']:
@@ -112,23 +122,33 @@ class LaTeXParser(object):
         for match in self.block_symbol_matches['others']:
             if match[1] < line_start:
                 block_symbol_matches['others'].append(match)
+        other_symbols = list()
+        for match in self.other_symbols:
+            if match[1] < offset_line_start:
+                other_symbols.append((match[0], match[1]))
 
-        additional_matches = self.parse_for_blocks(text, line_start, offset_line_start)
+        additional_matches = self.parse_for_blocks(text_parse, line_start, offset_line_start)
         block_symbol_matches['begin_or_end'] += additional_matches['begin_or_end']
         block_symbol_matches['others'] += additional_matches['others']
+        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource)\{((?:\s|\w|\:|\.|,)*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text_parse):
+            other_symbols.append((match, match.start() + offset_line_start))
 
         for match in self.block_symbol_matches['begin_or_end']:
             if match[1] > line_start:
                 block_symbol_matches['begin_or_end'].append((match[0], match[1] + new_line_count, match[2] + text_length))
-
         for match in self.block_symbol_matches['others']:
             if match[1] > line_start:
                 block_symbol_matches['others'].append((match[0], match[1] + new_line_count, match[2] + text_length))
+        for match in self.other_symbols:
+            if match[1] > offset_line_end:
+                other_symbols.append((match[0], match[1] - text_length))
 
         self.block_symbol_matches = block_symbol_matches
         self.number_of_lines = self.number_of_lines + new_line_count
         self.parse_blocks()
-        self.parse()
+
+        self.other_symbols = other_symbols
+        self.parse_symbols()
 
     def parse_for_blocks(self, text, line_start, offset_line_start):
         block_symbol_matches = {'begin_or_end': list(), 'others': list()}
@@ -143,13 +163,8 @@ class LaTeXParser(object):
         return block_symbol_matches
 
     #@timer
-    def parse(self):
-        self.dirname = self.document.get_dirname()
-        self.parse_symbols(self.text)
-        self.text_length = len(self.text)
-
-    #@timer
     def parse_blocks(self):
+        text_length = len(self.text)
         blocks = dict()
 
         end_document_offset = None
@@ -192,7 +207,7 @@ class LaTeXParser(object):
                     block[1] = end_document_offset - 1
                     block[3] = end_document_line - 1
                 else:
-                    block[1] = self.text_length
+                    block[1] = text_length
                     block[3] = self.number_of_lines
 
             blocks[level].append(block)
@@ -205,29 +220,32 @@ class LaTeXParser(object):
         self.document.set_blocks(sorted(blocks_list, key=lambda block: block[0]))
 
     #@timer
-    def parse_symbols(self, text):
+    def parse_symbols(self):
+        dirname = self.document.get_dirname()
+
         labels = set()
         included_latex_files = set()
         bibliographies = set()
         bibitems = set()
         packages = set()
         packages_detailed = dict()
-        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource)\{((?:\s|\w|\:|\.|,)*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text):
+        for match in self.other_symbols:
+            match = match[0]
             if match.group(1) == 'label':
                 labels = labels | {match.group(2).strip()}
             elif match.group(1) == 'include' or match.group(1) == 'input':
-                filename = os.path.normpath(os.path.join(self.dirname, match.group(2).strip()))
+                filename = os.path.normpath(os.path.join(dirname, match.group(2).strip()))
                 if not filename.endswith('.tex'):
                     filename += '.tex'
                 included_latex_files = included_latex_files | {filename}
             elif match.group(1) == 'bibliography':
                 bibfiles = match.group(2).strip().split(',')
                 for entry in bibfiles:
-                    bibliographies = bibliographies | {os.path.normpath(os.path.join(self.dirname, entry.strip() + '.bib'))}
+                    bibliographies = bibliographies | {os.path.normpath(os.path.join(dirname, entry.strip() + '.bib'))}
             elif match.group(1) == 'addbibresource':
                 bibfiles = match.group(2).strip().split(',')
                 for entry in bibfiles:
-                    bibliographies = bibliographies | {os.path.normpath(os.path.join(self.dirname, entry.strip()))}
+                    bibliographies = bibliographies | {os.path.normpath(os.path.join(dirname, entry.strip()))}
             elif match.group(3) == 'usepackage':
                 packages = packages | {match.group(4).strip()}
                 packages_detailed[match.group(4).strip()] = match
