@@ -275,6 +275,8 @@ class SessionDefault(object):
                 command_regex_pattern += r'\(([^\{\[\|\(]+)\)'
                 bracket_count += 1
         line_match = ServiceLocator.get_regex_object(command_regex_pattern).match(line_part)
+        if line_match == None: return None
+
         return (line_match, command_regex_pattern)
 
     def get_command_bracket_count(self, command):
