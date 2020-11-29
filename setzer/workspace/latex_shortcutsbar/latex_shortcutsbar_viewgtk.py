@@ -346,9 +346,6 @@ class LaTeXShortcutsBar(Gtk.HBox):
         self.pmb.add_header_button(box, _('Math Environments'))
         for environment in ['equation', 'equation*', 'align', 'align*', 'alignat', 'alignat*', 'flalign', 'flalign*', 'gather', 'gather*', 'multline', 'multline*']:
             self.pmb.add_action_button(box, environment, 'win.insert-before-after', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'], keyboard_shortcut=(_('Shift') + '+' + _('Ctrl') + '+N' if environment == 'equation' else None))
-        self.pmb.add_separator(box)
-        for environment in ['cases', 'split']:
-            self.pmb.add_action_button(box, environment, 'win.insert-before-after', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'])
         stack.add_named(box, 'math_environments')
         box.show_all()
 
@@ -386,6 +383,9 @@ class LaTeXShortcutsBar(Gtk.HBox):
             self.pmb.add_action_button(box, '\\' + math_stacking_symbol + '{}', 'win.insert-before-after', ['\\' + math_stacking_symbol + '{', '}'])
         for math_stacking_symbol in ['stackrel', 'overset', 'underset']:
             self.pmb.add_action_button(box, '\\' + math_stacking_symbol + '{}{}', 'win.insert-before-after', ['\\' + math_stacking_symbol + '{•}{', '}'])
+        self.pmb.add_separator(box)
+        for environment in ['cases', 'split']:
+            self.pmb.add_action_button(box, environment, 'win.insert-before-after', ['\\begin{' + environment + '}\n\t', '\n\\end{' + environment + '}'])
         stack.add_named(box, 'math_stacking_symbols')
         box.show_all()
 
