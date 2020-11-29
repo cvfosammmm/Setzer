@@ -52,13 +52,13 @@ class Shortcuts(object):
         flags = Gtk.AccelFlags.MASK
         
         self.accel_group.connect(Gdk.keyval_from_name('o'), c_mask | s_mask, flags, self.shortcut_doc_chooser)
-        self.accel_group.connect(Gdk.keyval_from_name('n'), c_mask, flags, self.shortcut_new)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask, flags, self.shortcut_show_open_docs)
         self.accel_group.connect(Gdk.keyval_from_name('F1'), 0, flags, self.shortcut_help)
         self.accel_group.connect(Gdk.keyval_from_name('F8'), 0, flags, self.shortcut_build_log)
         self.accel_group.connect(Gdk.keyval_from_name('F9'), 0, flags, self.shortcut_sidebar)
         self.accel_group.connect(Gdk.keyval_from_name('F10'), 0, flags, self.shortcut_preview)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask | s_mask, flags, self.shortcut_switch_document)
+        self.main_window.app.set_accels_for_action('win.new-latex-document', ['<Control>n'])
 
         # zoom
         self.main_window.app.set_accels_for_action('win.zoom-in', ['<Control>plus'])
@@ -85,9 +85,6 @@ class Shortcuts(object):
     def shortcut_doc_chooser(self, accel_group=None, window=None, key=None, mask=None):
         if self.main_window.headerbar.open_document_button.get_sensitive():
             self.main_window.headerbar.open_document_button.clicked()
-
-    def shortcut_new(self, accel_group=None, window=None, key=None, mask=None):
-        self.main_window.headerbar.new_document_button.set_active(True)
 
     def shortcut_show_open_docs(self, accel_group=None, window=None, key=None, mask=None):
         if self.main_window.headerbar.center_widget.center_button.get_sensitive():
