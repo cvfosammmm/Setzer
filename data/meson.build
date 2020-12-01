@@ -1,6 +1,7 @@
 # .desktop file
+desktop_file =files('org.cvfosammmm.Setzer.desktop')
 install_data(
-  files('org.cvfosammmm.Setzer.desktop'),
+  desktop_file,
   install_dir: join_paths(datadir, 'applications'),
 )
 
