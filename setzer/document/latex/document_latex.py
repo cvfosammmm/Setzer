@@ -135,7 +135,10 @@ class DocumentLaTeX(Document):
         self.add_change_code('blocks_changed')
 
     def set_initial_folded_regions(self, folded_regions):
-        self.code_folding.set_initial_folded_regions(folded_regions)
+        try:
+            self.code_folding.set_initial_folded_regions(folded_regions)
+        except AttributeError:
+            pass
 
     def get_included_files(self):
         return self.get_included_latex_files() | self.get_bibliography_files()
@@ -246,7 +249,11 @@ class DocumentLaTeX(Document):
         self.get_buffer().set_synctex_position(position)
 
     def get_folded_regions(self):
-        return self.code_folding.get_folded_regions()
+        try:
+            regions = self.code_folding.get_folded_regions()
+        except AttributeError:
+            regions = list()
+        return regions
 
     def get_file_ending(self):
         return 'tex'

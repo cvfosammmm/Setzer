@@ -20,9 +20,9 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import GObject
 
-import setzer.document.latex.code_folding.code_folding_viewgtk as code_folding_view
 import setzer.document.latex.code_folding.code_folding_controller as code_folding_controller
 import setzer.document.latex.code_folding.code_folding_presenter as code_folding_presenter
+import setzer.document.latex.code_folding.code_folding_gutter_object as code_folding_gutter_object
 from setzer.helpers.observable import Observable
 from setzer.helpers.timer import timer
 
@@ -44,12 +44,13 @@ class CodeFolding(Observable):
         self.initial_folding_regions_checked_count = 0
 
         self.document = document
-        self.view = code_folding_view.CodeFoldingView()
-        self.presenter = code_folding_presenter.CodeFoldingPresenter(self, self.view)
+        self.gutter_object = code_folding_gutter_object.CodeFoldingGutterObject(self)
+        document.gutter.add_widget(self.gutter_object)
+
+        self.presenter = code_folding_presenter.CodeFoldingPresenter(self)
         self.controller = code_folding_controller.CodeFoldingController(self)
 
         self.document.register_observer(self)
-        self.add_change_code('buffer_changed', self.document.get_buffer())
 
     def change_notification(self, change_code, notifying_object, parameter):
 
@@ -60,18 +61,19 @@ class CodeFolding(Observable):
             self.on_text_deleted(parameter)
 
         if change_code == 'buffer_changed':
-            self.add_change_code('buffer_changed', parameter)
-            self.update_folding_regions()
+            if self.is_enabled:
+                self.update_folding_regions()
 
     def enable_code_folding(self):
         self.is_enabled = True
-        self.add_change_code('is_enabled_changed')
+        self.update_folding_regions()
+        self.gutter_object.show()
 
     def disable_code_folding(self):
         self.is_enabled = False
         for region in self.folding_regions.values():
             self.toggle_folding_region(region, show_region_regardless_of_state=True)
-        self.add_change_code('is_enabled_changed')
+        self.gutter_object.hide()
 
     #@timer
     def on_text_deleted(self, parameter):
@@ -114,6 +116,10 @@ class CodeFolding(Observable):
         else:
             is_folded = not region['is_folded']
         region['is_folded'] = is_folded
+        if is_folded:
+            self.presenter.hide_region(region)
+        else:
+            self.presenter.show_region(region)
         self.add_change_code('folding_state_changed', region)
 
     def get_folding_region_by_region_id(self, region_id):
@@ -124,7 +130,10 @@ class CodeFolding(Observable):
         folding_regions = dict()
         folding_regions_by_region_id = dict()
         last_line = -1
-        blocks = self.document.get_blocks()
+        try:
+            blocks = self.document.get_blocks()
+        except AttributeError:
+            return
         if not self.blocks_changed(blocks): return
         self.blocks = blocks
 
@@ -153,8 +162,6 @@ class CodeFolding(Observable):
 
         if not self.initial_folding_done:
             self.initial_folding()
-        else:
-            self.add_change_code('folding_regions_updated')
 
     #@timer
     def delete_invalid_regions(self, folding_regions_by_region_id):

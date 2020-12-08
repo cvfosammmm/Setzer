@@ -30,7 +30,8 @@ class DocumentView(Gtk.HBox):
     def __init__(self, document, source_view):
         Gtk.HBox.__init__(self)
 
-        self.vbox = Gtk.VBox()        
+        self.vbox = Gtk.VBox()
+        self.overlay = Gtk.Overlay()
         self.scrolled_window = Gtk.ScrolledWindow()
         
         self.search_bar = search_view.SearchBar()
@@ -39,8 +40,9 @@ class DocumentView(Gtk.HBox):
 
         self.source_view = source_view
         self.scrolled_window.add(self.source_view)
+        self.overlay.add(self.scrolled_window)
 
-        self.vbox.pack_start(self.scrolled_window, True, True, 0)
+        self.vbox.pack_start(self.overlay, True, True, 0)
         self.vbox.pack_start(self.search_bar, False, False, 0)
         self.pack_start(self.vbox, True, True, 0)
 

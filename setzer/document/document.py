@@ -27,6 +27,8 @@ import setzer.document.search.search as search
 import setzer.document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
 import setzer.document.source_buffer.source_buffer as source_buffer
 import setzer.document.spellchecker.spellchecker as spellchecker
+import setzer.document.gutter.gutter as gutter
+import setzer.document.line_numbers.line_numbers as line_numbers
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 from setzer.helpers.timer import timer
@@ -50,6 +52,7 @@ class Document(Observable):
         self.source_buffer = source_buffer.SourceBuffer(self)
 
         self.view = document_view.DocumentView(self, self.source_buffer.view)
+        self.gutter = gutter.Gutter(self, self.view)
         self.search = search.Search(self, self.view, self.view.search_bar)
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
@@ -58,6 +61,8 @@ class Document(Observable):
 
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
+
+        self.line_numbers = line_numbers.LineNumbers(self, self.view)
 
     def set_search_text(self, search_text):
         self.source_buffer.search_settings.set_search_text(search_text)
@@ -169,6 +174,9 @@ class Document(Observable):
 
     def get_line(self, line_number):
         return self.get_buffer().get_line(line_number)
+
+    def get_current_line_number(self):
+        return self.get_buffer().get_current_line_number()
 
     def is_empty(self):
         return self.source_buffer.is_empty()

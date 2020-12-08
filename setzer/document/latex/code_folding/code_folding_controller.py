@@ -36,20 +36,6 @@ class CodeFoldingController(object):
             self.model.disable_code_folding()
         self.settings.register_observer(self)
 
-        self.source_view.connect('button-press-event', self.on_click)
-
-    def on_click(self, widget, event):
-        if self.model.is_enabled:
-            x, y = self.source_view.window_to_buffer_coords(Gtk.TextWindowType.LEFT, event.x, event.y)
-            if event.window == self.source_view.get_window(Gtk.TextWindowType.LEFT):
-                line_iter, line_top = self.source_view.get_line_at_y(y)
-                line_number = line_iter.get_line()
-                if x >= -18 and line_number in self.model.folding_regions:
-                    if event.type == Gdk.EventType.BUTTON_PRESS:
-                        self.model.toggle_folding_region(self.model.folding_regions[line_number])
-                    return True
-        return False
-
     def change_notification(self, change_code, notifying_object, parameter):
 
         if change_code == 'settings_changed':

@@ -52,7 +52,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <style name="background-pattern"          background="#f3f3f3"/>
   <style name="current-line-number"         background="dark4"/>
   <style name="text"                        foreground="white"/>
-  <style name="line-numbers"                use-style="text"/>
+  <style name="line-numbers"                foreground="white"/>
 
   <!-- Bracket Matching -->
   <style name="bracket-match"               foreground="white" background="aluminium4" bold="true"/>

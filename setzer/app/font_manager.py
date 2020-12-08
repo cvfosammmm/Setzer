@@ -101,6 +101,9 @@ box.autocomplete list row { font-size: ''' + str(font_size) + '''pt; }
 box.autocomplete list row label { font-family: ''' + font_family + '''; }
 ''').encode('utf-8'))
 
+    def get_font_desc(self):
+        return Pango.FontDescription.from_string(self.font_string)
+
     def get_font_size(self):
         font_desc = Pango.FontDescription.from_string(self.font_string)
         return font_desc.get_size()

@@ -30,7 +30,7 @@ class DocumentPresenter(object):
         self.view = document_view
         self.settings = ServiceLocator.get_settings()
 
-        self.view.source_view.set_show_line_numbers(self.settings.get_value('preferences', 'show_line_numbers'))
+        self.view.source_view.set_show_line_numbers(False)
         self.view.source_view.set_insert_spaces_instead_of_tabs(self.settings.get_value('preferences', 'spaces_instead_of_tabs'))
         self.view.source_view.set_tab_width(self.settings.get_value('preferences', 'tab_width'))
         self.view.source_view.set_highlight_current_line(self.settings.get_value('preferences', 'highlight_current_line'))
@@ -51,8 +51,6 @@ class DocumentPresenter(object):
 
         if change_code == 'settings_changed':
             section, item, value = parameter
-            if (section, item) == ('preferences', 'show_line_numbers'):
-                self.view.source_view.set_show_line_numbers(value)
             if (section, item) == ('preferences', 'spaces_instead_of_tabs'):
                 self.view.source_view.set_insert_spaces_instead_of_tabs(value)
             if (section, item) == ('preferences', 'tab_width'):

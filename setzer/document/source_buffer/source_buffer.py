@@ -85,7 +85,7 @@ class SourceBuffer(GtkSource.Buffer):
 
         self.document.add_change_code('buffer_ready')
 
-        self.view.set_left_margin(self.font_manager.get_char_width(self.view) - 3)
+        self.view.set_left_margin(self.font_manager.get_char_width(self.view))
 
     def change_notification(self, change_code, notifying_object, parameter):
 
@@ -98,7 +98,7 @@ class SourceBuffer(GtkSource.Buffer):
                 self.update_syntax_scheme()
 
         if change_code == 'font_string_changed':
-            self.view.set_left_margin(self.font_manager.get_char_width(self.view) - 3)
+            self.view.set_left_margin(self.font_manager.get_char_width(self.view))
 
     def update_syntax_scheme(self):
         name = self.settings.get_value('preferences', 'syntax_scheme')
@@ -523,6 +523,9 @@ class SourceBuffer(GtkSource.Buffer):
             return self.get_text(bounds[0], bounds[1], True)
         else:
             return None
+
+    def get_current_line_number(self):
+        return self.get_iter_at_mark(self.get_insert()).get_line()
 
     def is_empty(self):
         return self.get_end_iter().get_offset() > 0
