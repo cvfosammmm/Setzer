@@ -84,6 +84,7 @@ class Gutter(object):
     #@timer
     def draw_background(self, drawing_area, ctx):
         ctx.set_source_rgba(self.bg_color.red, self.bg_color.green, self.bg_color.blue, self.bg_color.alpha)
+        ctx.rectangle(0, 0, self.total_size, self.source_view.get_allocated_height())
         ctx.fill()
 
         if self.current_line != None:
