@@ -78,7 +78,7 @@ class LineNumbers(object):
 
             extent = ctx.text_extents(str(line[0]))
             yoffset = int(line[1] + (self.line_height + extent.height) / 2)
-            xoffset = int(offset + self.size - extent.x_advance)
+            xoffset = offset + self.size - int(extent.x_advance)
             ctx.move_to(xoffset, yoffset)
             ctx.show_text(str(line[0]))
 
