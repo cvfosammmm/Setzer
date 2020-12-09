@@ -33,7 +33,7 @@ class LineNumbers(object):
 
         self.font_manager = ServiceLocator.get_font_manager()
         self.font_manager.register_observer(self)
-        self.line_height = self.font_manager.get_line_height(self.source_view)
+        self.line_height = 0
         self.font_desc = self.font_manager.get_font_desc()
         self.char_width = self.font_manager.get_char_width(self.source_view)
         self.font_size = self.font_desc.get_size() * 4 / (3 * Pango.SCALE)
@@ -51,7 +51,6 @@ class LineNumbers(object):
     def change_notification(self, change_code, notifying_object, parameter):
 
         if change_code == 'font_string_changed':
-            self.line_height = self.font_manager.get_line_height(self.source_view)
             self.font_desc = self.font_manager.get_font_desc()
             self.char_width = self.font_manager.get_char_width(self.source_view)
             self.font_size = self.font_desc.get_size() * 4 / (3 * Pango.SCALE)
@@ -60,6 +59,9 @@ class LineNumbers(object):
             section, item, value = parameter
             if (section, item) == ('preferences', 'show_line_numbers'):
                 self.set_visibility(value)
+
+    def set_line_height(self, line_height):
+        self.line_height = line_height
 
     def on_click(self, event):
         return False
@@ -71,15 +73,16 @@ class LineNumbers(object):
         ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
 
         for line in lines:
-            if line[0] == current_line:
+            if current_line != None and line[0] == current_line[0]:
                 ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.BOLD)
 
             extent = ctx.text_extents(str(line[0]))
-            voffset = (self.line_height + extent.height) / 2
-            ctx.move_to(offset + self.size - extent.x_advance, line[1] + voffset)
+            yoffset = int(line[1] + (self.line_height + extent.height) / 2)
+            xoffset = int(offset + self.size - extent.x_advance)
+            ctx.move_to(xoffset, yoffset)
             ctx.show_text(str(line[0]))
 
-            if line[0] == current_line:
+            if current_line != None and line[0] == current_line[0]:
                 ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
 
     def update_size(self):

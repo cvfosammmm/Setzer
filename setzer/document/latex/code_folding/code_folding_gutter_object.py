@@ -20,7 +20,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gdk
 
-from setzer.app.service_locator import ServiceLocator
+from setzer.helpers.timer import timer
 
 
 class CodeFoldingGutterObject(object):
@@ -29,17 +29,11 @@ class CodeFoldingGutterObject(object):
         self.model = model
         self.source_view = self.model.document.source_buffer.view
 
-        font_manager = ServiceLocator.get_font_manager()
-        font_manager.register_observer(self)
-        line_height = font_manager.get_line_height(self.source_view)
-        self.size = line_height
+        self.size = 0
         self.visible = False
 
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code == 'font_string_changed':
-            line_height = notifying_object.get_line_height(self.source_view)
-            self.size = line_height
+    def set_line_height(self, line_height):
+        self.size = line_height
 
     def on_click(self, event):
         x, y = self.source_view.window_to_buffer_coords(Gtk.TextWindowType.LEFT, event.x, event.y)
@@ -51,6 +45,7 @@ class CodeFoldingGutterObject(object):
             return True
         return False
 
+    #@timer
     def on_draw(self, drawing_area, ctx, lines, current_line, offset):
         ctx.set_line_width(0)
         for line in lines:
