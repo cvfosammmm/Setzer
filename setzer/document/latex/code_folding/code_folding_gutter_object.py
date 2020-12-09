@@ -35,6 +35,9 @@ class CodeFoldingGutterObject(object):
     def set_line_height(self, line_height):
         self.size = line_height
 
+    def update_colors(self):
+        pass
+
     def on_click(self, event):
         x, y = self.source_view.window_to_buffer_coords(Gtk.TextWindowType.LEFT, event.x, event.y)
         line_iter, line_top = self.source_view.get_line_at_y(y)

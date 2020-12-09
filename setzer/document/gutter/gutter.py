@@ -31,6 +31,11 @@ class Gutter(object):
         self.source_view = document_view.source_view
         self.adjustment = document_view.scrolled_window.get_vadjustment()
 
+        self.widgets = list()
+        self.total_size = 0
+        self.lines = list()
+        self.current_line = 0
+
         self.font_manager = ServiceLocator.get_font_manager()
         self.font_manager.register_observer(self)
 
@@ -46,15 +51,11 @@ class Gutter(object):
         self.fg_color = Gdk.RGBA(0, 0, 0, 0)
         self.cl_color = Gdk.RGBA(0, 0, 0, 0)
         self.update_colors()
-        self.style_context.connect('changed', self.update_colors)
+        self.source_view.get_style_context().connect('changed', self.update_colors)
 
         document_view.overlay.add_overlay(self.view)
         document_view.overlay.set_overlay_pass_through(self.view, True)
 
-        self.widgets = list()
-        self.total_size = 0
-        self.lines = list()
-        self.current_line = 0
         self.line_height = self.font_manager.get_line_height(self.source_view)
 
         self.source_view.connect('button-press-event', self.on_click)
@@ -125,6 +126,11 @@ class Gutter(object):
             cl_color = self.style_context.lookup_color('theme_base_color')[1]
         self.cl_color = cl_color
 
+        for widget in self.widgets:
+            widget.update_colors()
+
+        self.view.queue_draw()
+
     #@timer
     def update_lines(self):
         lines = list()
@@ -179,6 +185,7 @@ class Gutter(object):
     def add_widget(self, widget):
         self.widgets.append(widget)
         widget.set_line_height(self.line_height)
+        widget.update_colors()
         self.update_sizes()
 
     def update_sizes(self):
