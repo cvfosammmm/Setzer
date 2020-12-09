@@ -48,27 +48,38 @@ class CodeFoldingGutterObject(object):
     #@timer
     def on_draw(self, drawing_area, ctx, lines, current_line, offset):
         ctx.set_line_width(0)
+        xoff1 = offset + 3 * self.size / 6
+        xoff2 = offset + 5 * self.size / 6
+        xoff3 = offset + 1 * self.size / 11
+        xoff4 = offset + 5 * self.size / 11
+        xoff5 = offset + 9 * self.size / 11
+        xoff6 = offset + 3 * self.size / 8
+        xoff7 = offset + 5.5 * self.size / 8
+        xoff8 = offset + 8 * self.size / 8
+        yoff1 = 1.5 * self.size / 8
+        yoff2 = 4 * self.size / 8
+        yoff3 = 6.5 * self.size / 8
+        yoff4 = 2 * self.size / 6
+        yoff5 = 4 * self.size / 6
+        len1 = 2 * self.size / 11
+
         for line in lines:
             if (line[0] - 1) in self.model.folding_regions.keys():
                 if self.model.folding_regions[line[0] - 1]['is_folded']:
-                    ctx.move_to(offset + 3 * self.size / 6, line[1] + 1.5 * self.size / 8)
-                    ctx.line_to(offset + 5 * self.size / 6, line[1] + 4 * self.size / 8)
-                    ctx.line_to(offset + 3 * self.size / 6, line[1] + 6.5 * self.size / 8)
-                    ctx.line_to(offset + 3 * self.size / 6, line[1] + 1.5 * self.size / 8)
-                    ctx.stroke_preserve()
+                    ctx.move_to(xoff1, line[1] + yoff1)
+                    ctx.line_to(xoff2, line[1] + yoff2)
+                    ctx.line_to(xoff1, line[1] + yoff3)
+                    ctx.line_to(xoff1, line[1] + yoff1)
                     ctx.fill()
-                    ctx.rectangle(offset + 1 * self.size / 11, line[1] + self.size, 2 * self.size / 11, -1)
-                    ctx.rectangle(offset + 5 * self.size / 11, line[1] + self.size, 2 * self.size / 11, -1)
-                    ctx.rectangle(offset + 9 * self.size / 11, line[1] + self.size, 2 * self.size / 11, -1)
-                    ctx.stroke_preserve()
+                    ctx.rectangle(xoff3, line[1] + self.size, len1, -1)
+                    ctx.rectangle(xoff4, line[1] + self.size, len1, -1)
+                    ctx.rectangle(xoff5, line[1] + self.size, len1, -1)
                     ctx.fill()
-                    ctx.set_line_width(0)
                 else:
-                    ctx.move_to(offset + 3 * self.size / 8, line[1] + 2 * self.size / 6)
-                    ctx.line_to(offset + 5.5 * self.size / 8, line[1] + 4 * self.size / 6)
-                    ctx.line_to(offset + 8 * self.size / 8, line[1] + 2 * self.size / 6)
-                    ctx.line_to(offset + 3 * self.size / 8, line[1] + 2 * self.size / 6)
-                    ctx.stroke_preserve()
+                    ctx.move_to(xoff6, line[1] + yoff4)
+                    ctx.line_to(xoff7, line[1] + yoff5)
+                    ctx.line_to(xoff8, line[1] + yoff4)
+                    ctx.line_to(xoff6, line[1] + yoff4)
                     ctx.fill()
 
     def update_size(self):

@@ -131,22 +131,36 @@ class Gutter(object):
         y_window = 0
         allocated_height = self.source_view.get_allocated_height()
         last_line_top = None
+        line = None
         current_line = None
         current_line_no = self.document.get_current_line_number() + 1
         offset = self.adjustment.get_value()
         while y_window <= allocated_height:
             y = y_window + offset
             line_iter, line_top = self.source_view.get_line_at_y(y)
-            y2, height = self.source_view.get_line_yrange(line_iter)
+
             if line_top != last_line_top:
+                if len(lines):
+                    lines[-1][2] = line_top - last_line_top
+                    if lines[-1][0] == current_line_no:
+                        current_line[2] = line_top - last_line_top
+
                 line = line_iter.get_line() + 1
-                lines.append((line, line_top - int(offset), height))
+
+                lines.append([line, line_top - int(offset), None])
                 if line == current_line_no:
-                    current_line = (line, line_top - int(offset), height)
+                    current_line = [line, line_top - int(offset), None]
+
                 last_line_top = line_top
             y_window += self.line_height - 1
             if y_window > allocated_height and y_window < allocated_height + self.line_height - 1:
                 y_window = allocated_height
+
+        y2, height = self.source_view.get_line_yrange(line_iter)
+        lines[-1][2] = height
+        if lines[-1][0] == current_line_no:
+            current_line[2] = height
+
         self.lines = lines
         self.current_line = current_line
 
