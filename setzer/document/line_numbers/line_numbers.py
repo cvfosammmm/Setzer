@@ -71,16 +71,16 @@ class LineNumbers(object):
         ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
 
         for line in lines:
+            if line[0] == current_line:
+                ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.BOLD)
+
             extent = ctx.text_extents(str(line[0]))
             voffset = (self.line_height + extent.height) / 2
             ctx.move_to(offset + self.size - extent.x_advance, line[1] + voffset)
+            ctx.show_text(str(line[0]))
 
             if line[0] == current_line:
-                ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.BOLD)
-                ctx.show_text(str(line[0]))
                 ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
-            else:
-                ctx.show_text(str(line[0]))
 
     def update_size(self):
         self.size = math.ceil(math.log(self.source_view.get_buffer().get_line_count() + 1, 10)) * self.char_width
