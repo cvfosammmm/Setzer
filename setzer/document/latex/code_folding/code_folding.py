@@ -175,7 +175,10 @@ class CodeFolding(Observable):
         self.marks_start[offset] = region_id
 
     def delete_mark_start(self, offset):
-        del(self.marks_start[offset])
+        try:
+            del(self.marks_start[offset])
+        except KeyError:
+            pass
 
     def get_mark_start_at_offset(self, offset):
         if offset in self.marks_start:
