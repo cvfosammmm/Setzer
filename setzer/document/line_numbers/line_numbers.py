@@ -17,9 +17,8 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-gi.require_version('PangoCairo', '1.0')
+from gi.repository import cairo
 from gi.repository import Pango
-from gi.repository import PangoCairo
 
 import math
 
@@ -33,6 +32,11 @@ class LineNumbers(object):
         self.source_view = document_view.source_view
 
         self.font_manager = ServiceLocator.get_font_manager()
+        self.font_manager.register_observer(self)
+        self.line_height = self.font_manager.get_line_height(self.source_view)
+        self.font_desc = self.font_manager.get_font_desc()
+        self.char_width = self.font_manager.get_char_width(self.source_view)
+        self.font_size = self.font_desc.get_size() * 4 / (3 * Pango.SCALE)
 
         self.size = 0
         self.visible = False
@@ -46,6 +50,12 @@ class LineNumbers(object):
 
     def change_notification(self, change_code, notifying_object, parameter):
 
+        if change_code == 'font_string_changed':
+            self.line_height = self.font_manager.get_line_height(self.source_view)
+            self.font_desc = self.font_manager.get_font_desc()
+            self.char_width = self.font_manager.get_char_width(self.source_view)
+            self.font_size = self.font_desc.get_size() * 4 / (3 * Pango.SCALE)
+
         if change_code == 'settings_changed':
             section, item, value = parameter
             if (section, item) == ('preferences', 'show_line_numbers'):
@@ -56,26 +66,24 @@ class LineNumbers(object):
 
     #@timer
     def on_draw(self, drawing_area, ctx, lines, current_line, offset):
-        layout = PangoCairo.create_layout(ctx)
-        layout.set_font_description(self.font_desc)
-        layout.set_width(self.size)
-        layout.set_alignment(Pango.Alignment.RIGHT)
+        ctx.set_font_size(self.font_size)
+        font_family = self.font_desc.get_family()
+        ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
 
         for line in lines:
-            ctx.move_to(offset + self.size, line[1])
+            extent = ctx.text_extents(str(line[0]))
+            voffset = (self.line_height + extent.height) / 2
+            ctx.move_to(offset + self.size - extent.x_advance, line[1] + voffset)
+
             if line[0] == current_line:
-                self.font_desc.set_weight(Pango.Weight.BOLD)
-                layout.set_font_description(self.font_desc)
+                ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.BOLD)
+                ctx.show_text(str(line[0]))
+                ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
             else:
-                self.font_desc.set_weight(Pango.Weight.NORMAL)
-                layout.set_font_description(self.font_desc)
-            layout.set_text(str(line[0]))
-            PangoCairo.show_layout(ctx, layout)
+                ctx.show_text(str(line[0]))
 
     def update_size(self):
-        self.font_desc = self.font_manager.get_font_desc()
-        char_width = self.font_manager.get_char_width(self.source_view)
-        self.size = math.ceil(math.log(self.source_view.get_buffer().get_line_count() + 1, 10)) * char_width
+        self.size = math.ceil(math.log(self.source_view.get_buffer().get_line_count() + 1, 10)) * self.char_width
 
     def get_size(self):
         return self.size
