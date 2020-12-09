@@ -63,7 +63,13 @@ class Gutter(object):
                 bg_color = Gdk.RGBA(0, 0, 0, 0)
                 bg_color.parse(bg_color_string)
             else:
-                bg_color = self.view.get_style_context().lookup_color('theme_base_color')[1]
+                theme_base_color = self.view.get_style_context().lookup_color('theme_base_color')[1]
+                theme_bg_color = self.view.get_style_context().lookup_color('theme_bg_color')[1]
+                bg_color = Gdk.RGBA(0, 0, 0, 0)
+                bg_color.red = theme_base_color.red / 2 + theme_bg_color.red / 2
+                bg_color.green = theme_base_color.green / 2 + theme_bg_color.green / 2
+                bg_color.blue = theme_base_color.blue / 2 + theme_bg_color.blue / 2
+                bg_color.alpha = theme_base_color.alpha / 2 + theme_bg_color.alpha / 2
             fg_color_string = line_numbers_style.get_property('foreground')
             if fg_color_string != None:
                 fg_color = Gdk.RGBA(0, 0, 0, 0)
