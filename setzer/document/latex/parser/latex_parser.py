@@ -25,7 +25,7 @@ class LaTeXParser(object):
 
     def __init__(self, document):
         self.document = document
-        self.text = ''
+        self.text_length = 0
         self.number_of_lines = 0
         self.block_symbol_matches = {'begin_or_end': list(), 'others': list()}
         self.other_symbols = list()
@@ -47,13 +47,19 @@ class LaTeXParser(object):
         offset_end = end_iter.get_offset()
         line_start = start_iter.get_line()
         line_end = end_iter.get_line()
+        char_count = buffer.get_char_count()
+        before_iter = buffer.get_iter_at_line(line_start)
+        after_iter = buffer.get_iter_at_line(line_end + 1)
+        if not after_iter.get_offset() == char_count:
+            after_iter.backward_char()
+
         text_length = offset_end - offset_start
-        text = self.text[offset_start:offset_end]
+        text = buffer.get_text(start_iter, end_iter, True)
         deleted_line_count = text.count('\n')
-        text_before = self.text[:offset_start]
-        text_after = self.text[offset_end:]
-        offset_line_start = text_before.rfind('\n') + 1
-        self.text = text_before + text_after
+        text_before = buffer.get_text(before_iter, start_iter, True)
+        text_after = buffer.get_text(end_iter, after_iter, True)
+        offset_line_start = before_iter.get_offset()
+        self.text_length = char_count - offset_end + offset_start
 
         block_symbol_matches = {'begin_or_end': list(), 'others': list()}
         for match in self.block_symbol_matches['begin_or_end']:
@@ -67,12 +73,8 @@ class LaTeXParser(object):
             if match[1] < offset_line_start:
                 other_symbols.append((match[0], match[1]))
 
-        n_index = text_after.find('\n')
-        if n_index >= 0:
-            offset_line_end = offset_end + n_index
-        else:
-            offset_line_end = offset_end + len(text_after)
-        text = text_before[offset_line_start:] + text_after[:(offset_line_end - offset_end)]
+        offset_line_end = offset_end + len(text_after)
+        text = text_before + text_after
 
         additional_matches = self.parse_for_blocks(text, line_start, offset_line_start)
         block_symbol_matches['begin_or_end'] += additional_matches['begin_or_end']
@@ -104,17 +106,18 @@ class LaTeXParser(object):
         offset = location_iter.get_offset()
         new_line_count = text.count('\n')
         line_start = location_iter.get_line()
+        char_count = buffer.get_char_count()
+        before_iter = buffer.get_iter_at_line(line_start)
+        after_iter = buffer.get_iter_at_line(line_start + 1)
+        if not after_iter.get_offset() == char_count:
+            after_iter.backward_char()
 
-        text_before = self.text[:offset]
-        offset_line_start = text_before.rfind('\n') + 1
-        text_after = self.text[offset:]
-        n_index = text_after.find('\n')
-        if n_index >= 0:
-            offset_line_end = offset + n_index
-        else:
-            offset_line_end = offset + len(text_after)
-        self.text = text_before + text + text_after
-        text_parse = text_before[offset_line_start:] + text + text_after[:(offset_line_end - offset)]
+        text_before = buffer.get_text(before_iter, location_iter, True)
+        offset_line_start = before_iter.get_offset()
+        text_after = buffer.get_text(location_iter, after_iter, True)
+        offset_line_end = offset + len(text_after)
+        self.text_length = char_count + text_length
+        text_parse = text_before + text + text_after
 
         block_symbol_matches = {'begin_or_end': list(), 'others': list()}
         for match in self.block_symbol_matches['begin_or_end']:
@@ -166,7 +169,6 @@ class LaTeXParser(object):
 
     #@timer
     def parse_blocks(self):
-        text_length = len(self.text)
         blocks = dict()
 
         end_document_offset = None
@@ -206,7 +208,7 @@ class LaTeXParser(object):
                     block[1] = end_document_offset - 1
                     block[3] = end_document_line - 1
                 else:
-                    block[1] = text_length
+                    block[1] = self.text_length
                     block[3] = self.number_of_lines
 
             blocks_list.append(block)
