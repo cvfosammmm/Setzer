@@ -32,7 +32,10 @@ class CodeFoldingGutterObject(object):
         self.size = 0
         self.visible = False
 
-    def set_line_height(self, line_height):
+    def set_font_desc(self, font_desc):
+        pass
+
+    def set_char_dimensions(self, line_height, char_width):
         self.size = line_height
 
     def update_colors(self):

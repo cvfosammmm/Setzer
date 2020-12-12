@@ -31,12 +31,10 @@ class LineNumbers(object):
     def __init__(self, document, document_view):
         self.source_view = document_view.source_view
 
-        self.font_manager = ServiceLocator.get_font_manager()
-        self.font_manager.register_observer(self)
         self.line_height = 0
-        self.font_desc = self.font_manager.get_font_desc()
-        self.char_width = self.font_manager.get_char_width(self.source_view)
-        self.font_size = self.font_desc.get_size() * 4 / (3 * Pango.SCALE)
+        self.char_width = 0
+        self.font_desc = None
+        self.font_size = None
         self.font_changed = True
         self.glyph_index = None
         self.extents = None
@@ -53,19 +51,19 @@ class LineNumbers(object):
 
     def change_notification(self, change_code, notifying_object, parameter):
 
-        if change_code == 'font_string_changed':
-            self.font_desc = self.font_manager.get_font_desc()
-            self.char_width = self.font_manager.get_char_width(self.source_view)
-            self.font_size = self.font_desc.get_size() * 4 / (3 * Pango.SCALE)
-            self.font_changed = True
-
         if change_code == 'settings_changed':
             section, item, value = parameter
             if (section, item) == ('preferences', 'show_line_numbers'):
                 self.set_visibility(value)
 
-    def set_line_height(self, line_height):
+    def set_font_desc(self, font_desc):
+        self.font_desc = font_desc
+        self.font_size = self.font_desc.get_size() * 4 / (3 * Pango.SCALE)
+        self.font_changed = True
+
+    def set_char_dimensions(self, line_height, char_width):
         self.line_height = line_height
+        self.char_width = char_width
         self.font_changed = True
 
     def update_colors(self):
