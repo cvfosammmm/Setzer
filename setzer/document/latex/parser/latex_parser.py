@@ -151,6 +151,7 @@ class LaTeXParser(object):
         self.other_symbols = other_symbols
         self.parse_symbols()
 
+    #@timer
     def parse_for_blocks(self, text, line_start, offset_line_start):
         block_symbol_matches = {'begin_or_end': list(), 'others': list()}
         counter = line_start
@@ -170,6 +171,7 @@ class LaTeXParser(object):
 
         end_document_offset = None
         end_document_line = None
+        blocks_list = list()
         for (match, line_number, offset) in self.block_symbol_matches['begin_or_end']:
             if match.group(1) == 'begin':
                 try: blocks[match.group(2)].append([offset, None, line_number, None])
@@ -178,20 +180,16 @@ class LaTeXParser(object):
                 if match.group(2).strip() == 'document':
                     end_document_offset = offset
                     end_document_line = line_number
-                try: begins = blocks[match.group(2)]
+                try: blocks_begin = blocks[match.group(2)]
                 except KeyError: pass
                 else:
-                    for block in reversed(begins):
-                        if block[1] == None:
-                            block[1] = offset
-                            block[3] = line_number
-                            break
+                    try: block_begin = blocks_begin.pop()
+                    except IndexError: pass
+                    else:
+                        block_begin[1] = offset
+                        block_begin[3] = line_number
+                        blocks_list.append(block_begin)
 
-        blocks_list = list()
-        for single_list in blocks.values():
-            blocks_list += single_list
-
-        blocks = [list(), list(), list(), list(), list()]
         relevant_following_blocks = [list(), list(), list(), list(), list()]
         levels = {'part': 0, 'chapter': 1, 'section': 2, 'subsection': 3, 'subsubsection': 4}
         for (match, line_number, offset) in reversed(self.block_symbol_matches['others']):
@@ -211,12 +209,9 @@ class LaTeXParser(object):
                     block[1] = text_length
                     block[3] = self.number_of_lines
 
-            blocks[level].append(block)
+            blocks_list.append(block)
             for i in range(level, 5):
                 relevant_following_blocks[i].append(block)
-
-        for single_list in blocks:
-            blocks_list += single_list
 
         self.document.set_blocks(sorted(blocks_list, key=lambda block: block[0]))
 
