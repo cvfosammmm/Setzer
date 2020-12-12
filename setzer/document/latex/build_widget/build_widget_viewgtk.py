@@ -34,7 +34,8 @@ class BuildWidgetView(Gtk.HBox):
         
         self.build_button = Gtk.Button.new_from_icon_name('builder-build-symbolic', Gtk.IconSize.MENU)
         self.build_button.set_focus_on_click(False)
-        self.build_button.set_tooltip_text(_('Build .pdf-file from document') + ' (F6)')
+        self.build_button.set_tooltip_text(_('Save and build .pdf-file from document') + ' (F5)')
+        self.build_button.set_action_name('win.save-and-build')
 
         self.stop_button = Gtk.Button.new_from_icon_name('process-stop-symbolic', Gtk.IconSize.MENU)
         self.stop_button.set_focus_on_click(False)

@@ -34,7 +34,6 @@ class BuildWidget(Observable):
         self.items = list()
 
         self.view = build_widget_view.BuildWidgetView()
-        self.view.build_button.connect('clicked', self.build_document_request)
         self.view.stop_button.connect('clicked', self.on_stop_build_button_click)
         self.view.clean_button.connect('clicked', self.on_clean_button_click)
 
