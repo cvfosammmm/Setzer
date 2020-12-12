@@ -53,6 +53,11 @@
     </provides>
 
     <releases>
+        <release version="0.3.8" date="2020-12-12">
+            <description>
+                <p translatable="no">Build button now does save and build, performance improvements, ...</p>
+            </description>
+        </release>
         <release version="0.3.7" date="2020-11-28">
             <description>
                 <p translatable="no">Performance improvements, ...</p>
