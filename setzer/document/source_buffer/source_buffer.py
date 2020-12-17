@@ -44,6 +44,8 @@ class SourceBuffer(GtkSource.Buffer):
         self.view.set_monospace(True)
         self.view.set_smart_home_end(True)
         self.view.set_auto_indent(True)
+        self.view.set_bottom_margin(18)
+        self.view.set_right_margin(12)
         self.settings = ServiceLocator.get_settings()
         self.source_language_manager = ServiceLocator.get_source_language_manager()
         self.source_style_scheme_manager = ServiceLocator.get_source_style_scheme_manager()
