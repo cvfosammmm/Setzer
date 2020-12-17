@@ -47,19 +47,27 @@ class LaTeXLogParser():
 
         return log_items
 
-    def get_additional_jobs(self, log_items, tex_filename, bibtex_ran_on_files, biber_ran_on_files):
+    def get_additional_jobs(self, log_items, tex_filename, bibtex_ran_on_files, biber_ran_on_files, makeindex_ran_on_files):
         jobs = set()
         for filename, items in log_items.items():
             for item in items['error'] + items['warning']:
+
                 if item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and item[2].find('.bbl.') >= 0:
                     if not tex_filename.rsplit('/', 1)[1][:-4] in bibtex_ran_on_files:
                         jobs |= {'build_bibtex'}
+
+                elif item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and item[2].find('.ind.') >= 0:
+                    if not tex_filename.rsplit('/', 1)[1][:-4] in makeindex_ran_on_files:
+                        jobs |= {'build_makeindex'}
 
                 elif item[2] == 'Please (re)run Biber on the file:':
                     line = item[3]
                     if line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0:
                         if not tex_filename.rsplit('/', 1)[1][:-4] in biber_ran_on_files:
                             jobs |= {'build_biber'}
+
+                elif item[2] == 'File `' + tex_filename.rsplit('/', 1)[1][:-4] + '.out\' has changed.':
+                    jobs |= {'build_latex'}
 
                 elif item[2] == 'Please rerun LaTeX.':
                     jobs |= {'build_latex'}
@@ -86,6 +94,12 @@ class LaTeXLogParser():
             return {'build_biber'}
         if 'build_bibtex' in jobs:
             return {'build_bibtex'}
+        if 'build_makeindex' in jobs:
+            return {'build_makeindex'}
+        if 'build_glossaries' in jobs:
+            return {'build_glossaries'}
+        if 'build_latex' in jobs:
+            return {'build_latex'}
         return jobs
 
     def parse_log_text(self, filename, text):

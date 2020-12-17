@@ -26,6 +26,7 @@ import setzer.document.latex.build_system.build_system_presenter as build_system
 import setzer.document.latex.build_system.builder.builder_build_latex as builder_build_latex
 import setzer.document.latex.build_system.builder.builder_build_bibtex as builder_build_bibtex
 import setzer.document.latex.build_system.builder.builder_build_biber as builder_build_biber
+import setzer.document.latex.build_system.builder.builder_build_makeindex as builder_build_makeindex
 import setzer.document.latex.build_system.builder.builder_build_glossaries as builder_build_glossaries
 import setzer.document.latex.build_system.builder.builder_forward_sync as builder_forward_sync
 import setzer.document.latex.build_system.builder.builder_backward_sync as builder_backward_sync
@@ -41,6 +42,7 @@ class BuildSystem(object):
         self.builders['build_latex'] = builder_build_latex.BuilderBuildLaTeX()
         self.builders['build_bibtex'] = builder_build_bibtex.BuilderBuildBibTeX()
         self.builders['build_biber'] = builder_build_biber.BuilderBuildBiber()
+        self.builders['build_makeindex'] = builder_build_makeindex.BuilderBuildMakeindex()
         self.builders['build_glossaries'] = builder_build_glossaries.BuilderBuildGlossaries()
         self.builders['forward_sync'] = builder_forward_sync.BuilderForwardSync()
         self.builders['backward_sync'] = builder_backward_sync.BuilderBackwardSync()
