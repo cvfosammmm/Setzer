@@ -60,6 +60,11 @@ class Gutter(object):
 
         self.source_view.connect('button-press-event', self.on_click)
 
+        self.highlight_current_line = False
+        settings = ServiceLocator.get_settings()
+        self.set_line_highlighting(settings.get_value('preferences', 'highlight_current_line'))
+        settings.register_observer(self)
+
     def change_notification(self, change_code, notifying_object, parameter):
 
         if change_code == 'font_string_changed':
@@ -67,6 +72,11 @@ class Gutter(object):
             for widget in self.widgets:
                 widget.set_font_desc(self.font_manager.get_font_desc())
                 widget.set_char_dimensions(self.line_height, self.char_width)
+
+        if change_code == 'settings_changed':
+            section, item, value = parameter
+            if (section, item) == ('preferences', 'highlight_current_line'):
+                self.set_line_highlighting(value)
 
     #@timer
     def on_draw(self, drawing_area, ctx, data = None):
@@ -84,7 +94,7 @@ class Gutter(object):
 
     #@timer
     def draw_background(self, drawing_area, ctx):
-        if self.current_line != None:
+        if self.highlight_current_line and self.current_line != None:
             ctx.rectangle(0, self.current_line[1], self.total_size, self.current_line[2])
             ctx.set_source_rgba(self.cl_color.red, self.cl_color.green, self.cl_color.blue, self.cl_color.alpha)
             ctx.fill()
@@ -202,5 +212,10 @@ class Gutter(object):
             self.total_size = total_size
             self.source_view.set_border_window_size(Gtk.TextWindowType.LEFT, self.total_size)
             self.view.set_size_request(self.total_size, 1000)
+
+    def set_line_highlighting(self, value):
+        self.highlight_current_line = value
+        self.view.queue_draw()
+
 
 
