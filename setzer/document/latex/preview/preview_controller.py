@@ -35,11 +35,18 @@ class PreviewController(object):
         self.zoom_momentum = 0
         self.context_menu_popup_button_event = None
 
+        display = self.view.scrolled_window.get_display()
+        self.cursor_default = Gdk.Cursor.new_from_name(display, 'default')
+        self.cursor_pointer = Gdk.Cursor.new_from_name(display, 'pointer')
+
         self.view.connect('size-allocate', self.on_size_allocate)
         self.view.scrolled_window.get_hadjustment().connect('value-changed', self.on_hadjustment_changed)
         self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_vadjustment_changed)
         self.view.scrolled_window.connect('scroll-event', self.on_scroll)
         self.view.drawing_area.connect('button-press-event', self.on_button_press)
+        self.view.scrolled_window.connect('enter-notify-event', self.on_enter)
+        self.view.scrolled_window.connect('motion-notify-event', self.on_hover)
+        self.view.scrolled_window.connect('leave-notify-event', self.on_leave)
         self.view.external_viewer_button.connect('clicked', self.on_external_viewer_button_clicked)
 
         def zoom_in(menu_item): self.preview.zoom_in()
@@ -80,7 +87,35 @@ class PreviewController(object):
                     self.zoom_momentum = 0
             return True
         return False
-    
+
+    def on_enter(self, widget, event):
+        self.update_cursor(event)
+
+    def on_hover(self, widget, event):
+        self.update_cursor(event)
+
+    def on_leave(self, widget, event):
+        self.update_cursor(event)
+
+    def update_cursor(self, event):
+        x_offset = event.x + self.view.scrolled_window.get_hadjustment().get_value()
+        y_offset = event.y + self.view.scrolled_window.get_vadjustment().get_value()
+
+        data = self.preview.get_page_number_and_offsets_by_document_offsets(x_offset, y_offset)
+        if data == None: return True
+
+        page_number, x_offset, y_offset = data
+        cursor = self.cursor_default
+        links = self.preview.get_links_for_page(page_number)
+        y_offset = (self.preview.page_height - y_offset)
+        for link in links:
+            if x_offset > link[0][0] and x_offset < link[0][2] and y_offset > link[0][1] and y_offset < link[0][3]:
+                cursor = self.cursor_pointer
+                break
+
+        window = self.view.scrolled_window.get_window()
+        window.set_cursor(cursor)
+
     def on_size_allocate(self, view=None, allocation=None):
         self.layouter.update_zoom_levels()
         self.view.drawing_area.queue_draw()
