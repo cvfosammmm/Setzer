@@ -112,63 +112,71 @@ class PreviewPresenter(object):
         self.view.scrolled_window.get_vadjustment().set_value(yoffset)
 
     #@helpers.timer
-    def draw(self, drawing_area, cairo_context, data = None):
+    def draw(self, drawing_area, ctx, data = None):
         if self.layouter.has_layout:
-            ctx = cairo_context
             bg_color = self.view.get_style_context().lookup_color('theme_bg_color')[1]
             border_color = self.view.get_style_context().lookup_color('borders')[1]
-
-            ctx.rectangle(0, 0, drawing_area.get_allocated_width(), drawing_area.get_allocated_height())
-            ctx.set_source_rgba(bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha)
-            ctx.fill()
+            self.draw_background(ctx, drawing_area, bg_color)
 
             ctx.transform(cairo.Matrix(1, 0, 0, 1, self.layouter.horizontal_margin, self.layouter.vertical_margin))
             for page_number in range(0, self.preview.number_of_pages):
-                ctx.set_source_rgba(border_color.red, border_color.green, border_color.blue, border_color.alpha)
-                ctx.rectangle(- self.layouter.border_width, - self.layouter.border_width, self.layouter.page_width + 2 * self.layouter.border_width, self.layouter.page_height + 2 * self.layouter.border_width)
-                ctx.fill()
-                ctx.set_source_rgba(1, 1, 1, 1)
-                ctx.rectangle(0, 0, self.layouter.page_width, self.layouter.page_height)
-                ctx.fill()
-
-                if page_number in self.page_renderer.rendered_pages:
-                    rendered_page_data = self.page_renderer.rendered_pages[page_number]
-                    surface = rendered_page_data[0]
-                    page_width = rendered_page_data[1] * self.layouter.hidpi_factor
-                    if isinstance(surface, cairo.ImageSurface):
-                        if page_width == self.layouter.page_width:
-                            ctx.set_source_surface(surface, 0, 0)
-                            ctx.paint()
-                        else:
-                            matrix = ctx.get_matrix()
-                            factor = self.layouter.page_width / page_width
-                            ctx.scale(factor, factor)
-                            ctx.set_source_surface(surface, 0, 0)
-                            ctx.paint()
-                            ctx.set_matrix(matrix)
-                        if self.preview.invert_pdf:
-                            ctx.set_operator(cairo.Operator.DIFFERENCE)
-                            ctx.set_source_rgb(1, 1, 1)
-                            ctx.rectangle(0, 0, self.layouter.page_width, self.layouter.page_height)
-                            ctx.fill()
-                            ctx.set_operator(cairo.Operator.OVER)
-
-                try:
-                    rectangles = self.layouter.visible_synctex_rectangles[page_number]
-                except KeyError: pass
-                else:
-                    time_factor = self.ease(min(self.highlight_duration + 0.25 - (time.time() - self.preview.visible_synctex_rectangles_time), 0.25) * 4)
-                    if time_factor < 0:
-                        self.preview.set_synctex_rectangles(list())
-                    else:
-                        ctx.set_source_rgba(0.976, 0.941, 0.420, 0.6 * time_factor)
-                        ctx.set_operator(cairo.Operator.MULTIPLY)
-                        for rectangle in rectangles:
-                            ctx.rectangle(rectangle['x'], rectangle['y'], rectangle['width'], rectangle['height'])
-                        ctx.fill()
-                        ctx.set_operator(cairo.Operator.OVER)
+                self.draw_page_background_and_outline(ctx, border_color)
+                self.draw_rendered_page(ctx, page_number)
+                self.draw_synctex_rectangles(ctx, page_number)
 
                 ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, self.layouter.page_height + self.layouter.page_gap))
+
+    def draw_background(self, ctx, drawing_area, bg_color):
+        ctx.rectangle(0, 0, drawing_area.get_allocated_width(), drawing_area.get_allocated_height())
+        ctx.set_source_rgba(bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha)
+        ctx.fill()
+
+    def draw_page_background_and_outline(self, ctx, border_color):
+        ctx.set_source_rgba(border_color.red, border_color.green, border_color.blue, border_color.alpha)
+        ctx.rectangle(- self.layouter.border_width, - self.layouter.border_width, self.layouter.page_width + 2 * self.layouter.border_width, self.layouter.page_height + 2 * self.layouter.border_width)
+        ctx.fill()
+        ctx.set_source_rgba(1, 1, 1, 1)
+        ctx.rectangle(0, 0, self.layouter.page_width, self.layouter.page_height)
+        ctx.fill()
+
+    def draw_rendered_page(self, ctx, page_number):
+        if page_number in self.page_renderer.rendered_pages:
+            rendered_page_data = self.page_renderer.rendered_pages[page_number]
+            surface = rendered_page_data[0]
+            page_width = rendered_page_data[1] * self.layouter.hidpi_factor
+            if isinstance(surface, cairo.ImageSurface):
+                if page_width == self.layouter.page_width:
+                    ctx.set_source_surface(surface, 0, 0)
+                    ctx.paint()
+                else:
+                    matrix = ctx.get_matrix()
+                    factor = self.layouter.page_width / page_width
+                    ctx.scale(factor, factor)
+                    ctx.set_source_surface(surface, 0, 0)
+                    ctx.paint()
+                    ctx.set_matrix(matrix)
+                if self.preview.invert_pdf:
+                    ctx.set_operator(cairo.Operator.DIFFERENCE)
+                    ctx.set_source_rgb(1, 1, 1)
+                    ctx.rectangle(0, 0, self.layouter.page_width, self.layouter.page_height)
+                    ctx.fill()
+                    ctx.set_operator(cairo.Operator.OVER)
+
+    def draw_synctex_rectangles(self, ctx, page_number):
+        try:
+            rectangles = self.layouter.visible_synctex_rectangles[page_number]
+        except KeyError: pass
+        else:
+            time_factor = self.ease(min(self.highlight_duration + 0.25 - (time.time() - self.preview.visible_synctex_rectangles_time), 0.25) * 4)
+            if time_factor < 0:
+                self.preview.set_synctex_rectangles(list())
+            else:
+                ctx.set_source_rgba(0.976, 0.941, 0.420, 0.6 * time_factor)
+                ctx.set_operator(cairo.Operator.MULTIPLY)
+                for rectangle in rectangles:
+                    ctx.rectangle(rectangle['x'], rectangle['y'], rectangle['width'], rectangle['height'])
+                ctx.fill()
+                ctx.set_operator(cairo.Operator.OVER)
 
     def ease(self, factor): return (factor - 1)**3 + 1
 

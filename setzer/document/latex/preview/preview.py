@@ -18,6 +18,7 @@
 import gi
 gi.require_version('Poppler', '0.18')
 from gi.repository import Poppler
+import PyPDF2
 
 import os.path
 import math
@@ -47,6 +48,7 @@ class Preview(Observable):
 
         self.poppler_document_lock = thread.allocate_lock()
         self.poppler_document = None
+        self.links = dict()
         self.number_of_pages = 0
         self.page_width = None
         self.page_height = None
@@ -113,6 +115,7 @@ class Preview(Observable):
         self.number_of_pages = 0
         self.page_width = None
         self.page_height = None
+        self.links = dict()
         self.xoffset = 0
         self.yoffset = 0
         self.zoom_level = None
@@ -145,6 +148,14 @@ class Preview(Observable):
             page = math.floor(yoffset / self.page_height) + 1
             self.presenter.scroll_to_position({'page': page, 'x': xoffset, 'y': yoffset - (page - 1) * self.page_height})
 
+    def scroll_dest_on_screen(self, dest):
+        page_number = dest.page_num
+        if self.xoffset > dest.left:
+            x = dest.left
+        else:
+            x = self.xoffset
+        self.presenter.scroll_to_position({'page': page_number, 'x': x, 'y': self.page_height - dest.top})
+
     def set_synctex_rectangles(self, rectangles):
         if self.layouter.has_layout:
             self.visible_synctex_rectangles = rectangles
@@ -176,6 +187,7 @@ class Preview(Observable):
                 page_size = self.poppler_document.get_page(0).get_size()
                 self.page_width = page_size.width
                 self.page_height = page_size.height
+                self.links = dict()
                 current_min = self.page_width
                 for page_number in range(0, min(self.number_of_pages, 3)):
                     page = self.poppler_document.get_page(page_number)
@@ -187,8 +199,36 @@ class Preview(Observable):
                 self.vertical_margin = current_min
             self.pdf_loaded = True
             self.add_change_code('pdf_changed')
+            self.links = dict()
             self.set_zoom_fit_to_width()
             self.document.update_can_sync()
+
+    def get_page_number_and_offsets_by_document_offsets(self, x, y):
+        return self.layouter.get_page_number_and_offsets_by_document_offsets(x, y)
+
+    def get_links_for_page(self, page_number):
+        if not page_number in self.links:
+
+            with open(self.pdf_filename, 'rb') as file:
+                pypdf_document = PyPDF2.PdfFileReader(file)
+                page = pypdf_document.getPage(page_number).getObject()
+
+                links = []
+                if '/Annots' in page.keys():
+                    for annotation in page['/Annots']:
+                        annotation_object = annotation.getObject()
+                        if annotation_object['/Subtype'] == '/Link':
+                            rect = annotation_object['/Rect']
+                            data = annotation_object['/A']
+                            if data['/S'] == '/GoTo':
+                                dest = self.poppler_document.find_dest(data['/D'])
+                                links.append([rect, dest, 'goto'])
+                            elif data['/S'] == '/URI':
+                                dest = data['/URI']
+                                links.append([rect, dest, 'uri'])
+            self.links[page_number] = links
+
+        return self.links[page_number]
 
     def update_fit_to_width_zoom_level(self, level):
         if level != self.zoom_level_fit_to_width:

@@ -155,6 +155,18 @@ class PreviewLayouter(Observable):
                 current_page += 1
             self.current_page = max(current_page, 1)
 
+    def get_page_number_and_offsets_by_document_offsets(self, x, y):
+        if self.has_layout:
+            if y % (self.page_height + self.page_gap) > self.page_height: return None
+            if x < self.horizontal_margin or x > (self.horizontal_margin + self.page_width): return None
+
+            page_number = int(y // (self.page_height + self.page_gap))
+            y_offset = y % (self.page_height + self.page_gap) / self.scale_factor
+            x_offset = (x - self.horizontal_margin) / self.scale_factor
+
+            return (page_number, x_offset, y_offset)
+        return None
+
     def get_current_page(self):
         return self.current_page
 

@@ -22,6 +22,7 @@ from gi.repository import Poppler
 from gi.repository import Gdk
 
 import math
+import webbrowser
 
 
 class PreviewController(object):
@@ -104,6 +105,24 @@ class PreviewController(object):
             return True
         elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state == Gdk.ModifierType.CONTROL_MASK:
             self.init_backward_sync(event)
+            return True
+        elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state == 0:
+            x_offset = event.x
+            y_offset = event.y
+            data = self.preview.get_page_number_and_offsets_by_document_offsets(x_offset, y_offset)
+            if data == None: return True
+
+            page_number, x_offset, y_offset = data
+            links = self.preview.get_links_for_page(page_number)
+            y_offset = (self.preview.page_height - y_offset)
+            for link in links:
+                if x_offset > link[0][0] and x_offset < link[0][2] and y_offset > link[0][1] and y_offset < link[0][3]:
+                    if link[2] == 'goto':
+                        self.preview.scroll_dest_on_screen(link[1])
+                        return True
+                    elif link[2] == 'uri':
+                        webbrowser.open_new_tab(link[1])
+
             return True
 
     def on_external_viewer_button_clicked(self, button):

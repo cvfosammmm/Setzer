@@ -81,13 +81,27 @@
             "name": "python3-pyxdg",
             "buildsystem": "simple",
             "build-commands": [
-                "pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} pyxdg"
+                "pip3 install --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"pyxdg\""
             ],
             "sources": [
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/39/03/12eb9062f43adb94e30f366743cb5c83fd15fef026500cd4de42c7c12280/pyxdg-0.26-py2.py3-none-any.whl",
-                    "sha256": "1948ff8e2db02156c0cccd2529b43c0cff56ebaa71f5f021bbd755bc1419190e"
+                    "url": "https://files.pythonhosted.org/packages/6f/2e/2251b5ae2f003d865beef79c8fcd517e907ed6a69f58c32403cec3eba9b2/pyxdg-0.27.tar.gz",
+                    "sha256": "80bd93aae5ed82435f20462ea0208fb198d8eec262e831ee06ce9ddb6b91c5a5"
+                }
+            ]
+        },
+        {
+            "name": "python3-pypdf2",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"pypdf2\""
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/b4/01/68fcc0d43daf4c6bdbc6b33cc3f77bda531c86b174cac56ef0ffdb96faab/PyPDF2-1.26.0.tar.gz",
+                    "sha256": "e28f902f2f0a1603ea95ebe21dff311ef09be3d0f0ef29a3e44a932729564385"
                 }
             ]
         },
