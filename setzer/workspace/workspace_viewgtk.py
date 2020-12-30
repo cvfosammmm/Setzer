@@ -30,6 +30,7 @@ import setzer.workspace.others_shortcutsbar.others_shortcutsbar_viewgtk as other
 import setzer.workspace.preview_panel.preview_panel_viewgtk as preview_panel_view
 import setzer.workspace.help_panel.help_panel_viewgtk as help_panel_view
 import setzer.workspace.sidebar.sidebar_viewgtk as sidebar_view
+import setzer.workspace.welcome_screen.welcome_screen_viewgtk as welcome_screen_view
 from setzer.app.service_locator import ServiceLocator
 
 import os.path
@@ -119,12 +120,12 @@ class MainWindow(Gtk.ApplicationWindow):
         self.sidebar_paned.pack2(self.preview_paned_overlay, True, False)
         self.sidebar_paned.get_style_context().add_class('sidebar_paned')
 
-        # blank slate
-        self.blank_slate = BlankSlate()
+        # welcome screen
+        self.welcome_screen = welcome_screen_view.WelcomeScreenView()
 
         # mode stack
         self.mode_stack = Gtk.Stack()
-        self.mode_stack.add_named(self.blank_slate, 'blank_slate')
+        self.mode_stack.add_named(self.welcome_screen, 'welcome_screen')
         self.mode_stack.add_named(self.sidebar_paned, 'latex_documents')
         self.mode_stack.add_named(self.bibtex_notebook_wrapper, 'bibtex_documents')
         self.mode_stack.add_named(self.others_notebook_wrapper, 'other_documents')
@@ -139,12 +140,4 @@ class MainWindow(Gtk.ApplicationWindow):
         self.css_provider_font_size = Gtk.CssProvider()
         self.style_context.add_provider_for_screen(self.get_screen(), self.css_provider_font_size, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
-
-class BlankSlate(Gtk.HBox):
-
-    def __init__(self):
-        Gtk.HBox.__init__(self)
-        
-        self.pack_start(Gtk.Label(_('No open documents')), True, True, 0)
-        
 

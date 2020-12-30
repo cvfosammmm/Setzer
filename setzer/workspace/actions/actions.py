@@ -184,7 +184,7 @@ class Actions(object):
 
         if change_code == 'document_removed':
             if self.workspace.active_document == None:
-                self.activate_blank_slate_mode()
+                self.activate_welcome_screen_mode()
                 self.update_save_actions(None)
 
         if change_code == 'new_inactive_document':
@@ -204,7 +204,7 @@ class Actions(object):
         if change_code == 'font_string_changed':
             self.update_zoom_actions()
 
-    def activate_blank_slate_mode(self):
+    def activate_welcome_screen_mode(self):
         self.save_all_action.set_enabled(False)
         self.spellchecking_action.set_enabled(False)
         self.add_remove_packages_dialog_action.set_enabled(False)

@@ -28,6 +28,7 @@ import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
 import setzer.workspace.preview_panel.preview_panel_presenter as preview_panel_presenter
 import setzer.workspace.help_panel.help_panel as help_panel
+import setzer.workspace.welcome_screen.welcome_screen as welcome_screen
 import setzer.workspace.sidebar.sidebar as sidebar
 import setzer.workspace.build_log.build_log as build_log
 import setzer.workspace.headerbar.headerbar_presenter as headerbar_presenter
@@ -63,6 +64,7 @@ class Workspace(Observable):
         self.invert_pdf = self.settings.get_value('preferences', 'invert_pdf')
 
         self.sidebar = sidebar.Sidebar()
+        self.welcome_screen = welcome_screen.WelcomeScreen()
         self.show_sidebar = self.settings.get_value('window_state', 'show_sidebar')
         self.sidebar_position = self.settings.get_value('window_state', 'sidebar_paned_position')
         self.show_help = self.settings.get_value('window_state', 'show_help')

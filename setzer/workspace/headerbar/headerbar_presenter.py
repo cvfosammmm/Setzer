@@ -31,7 +31,7 @@ class HeaderbarPresenter(object):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
         self.workspace.register_observer(self)
-        self.activate_blank_slate_mode()
+        self.activate_welcome_screen_mode()
 
     '''
     *** notification handlers, get called by observed workspace
@@ -44,7 +44,7 @@ class HeaderbarPresenter(object):
         if change_code == 'document_removed':
             document = parameter
             if self.workspace.active_document == None:
-                self.activate_blank_slate_mode()
+                self.activate_welcome_screen_mode()
 
         if change_code == 'new_active_document':
             document = parameter
@@ -91,7 +91,7 @@ class HeaderbarPresenter(object):
         if change_code == 'master_state_change':
             self.set_build_button_state()
 
-    def activate_blank_slate_mode(self):
+    def activate_welcome_screen_mode(self):
         self.set_build_button_state()
         self.main_window.headerbar.save_document_button.hide()
         self.main_window.headerbar.preview_toggle.hide()

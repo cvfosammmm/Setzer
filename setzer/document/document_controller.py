@@ -39,7 +39,7 @@ class DocumentController(object):
         self.view.source_view.connect('button-press-event', self.on_buttonpress)
         self.continue_save_date_loop = True
         GObject.timeout_add(500, self.save_date_loop)
-        
+
     '''
     *** signal handlers: changes in documents
     '''

@@ -31,7 +31,7 @@ class WorkspacePresenter(object):
         self.sidebar_animating = False
         self.preview_animating = False
         self.build_log_animating = False
-        self.activate_blank_slate_mode()
+        self.activate_welcome_screen_mode()
 
         def on_window_state(widget, event): self.on_realize()
         self.main_window.connect('draw', on_window_state)
@@ -64,7 +64,7 @@ class WorkspacePresenter(object):
                 self.main_window.others_notebook.remove(document.view)
 
             if self.workspace.active_document == None:
-                self.activate_blank_slate_mode()
+                self.activate_welcome_screen_mode()
 
         if change_code == 'new_active_document':
             document = parameter
@@ -128,19 +128,23 @@ class WorkspacePresenter(object):
         if change_code == 'set_dark_mode':
             ServiceLocator.get_settings().gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', parameter)
 
-    def activate_blank_slate_mode(self):
-        self.main_window.mode_stack.set_visible_child_name('blank_slate')
+    def activate_welcome_screen_mode(self):
+        self.workspace.welcome_screen.activate()
+        self.main_window.mode_stack.set_visible_child_name('welcome_screen')
         self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
 
     def activate_latex_documents_mode(self):
+        self.workspace.welcome_screen.deactivate()
         self.main_window.mode_stack.set_visible_child_name('latex_documents')
         self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(True)
 
     def activate_bibtex_documents_mode(self):
+        self.workspace.welcome_screen.deactivate()
         self.main_window.mode_stack.set_visible_child_name('bibtex_documents')
         self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
 
     def activate_other_documents_mode(self):
+        self.workspace.welcome_screen.deactivate()
         self.main_window.mode_stack.set_visible_child_name('other_documents')
         self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
 
