@@ -68,9 +68,11 @@ class WelcomeScreen(object):
         self.font_desc = Pango.FontDescription.from_string('cmr10')
         self.angle = 0.18
         self.alpha = 0.065
+        self.font_size = 40
         self.line_height = 70
 
         self.is_active = False
+        self.lines_per_second = 0.25
         self.animate = False
 
         self.fg_color = None
@@ -103,14 +105,13 @@ class WelcomeScreen(object):
         ctx.rotate(-self.angle)
         ctx.set_source_rgba(self.fg_color.red, self.fg_color.green, self.fg_color.blue, self.fg_color.alpha)
 
-        ctx.set_font_size(44)
-        ctx.scale(1, 1)
+        ctx.set_font_size(self.font_size)
         font_family = self.font_desc.get_family()
         ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
 
         if self.animate:
-            y = -self.line_height - (time.time() * 35) % self.line_height
-            line = int((time.time() * 0.5) % 20)
+            y = -self.line_height - int(time.time() * self.line_height * self.lines_per_second) % self.line_height
+            line = int(int(time.time() * self.lines_per_second) % self.lines_per_second) + int(self.lines_per_second * (int(time.time()) % int(20 // self.lines_per_second)))
         else:
             y = 0
             line = 0
