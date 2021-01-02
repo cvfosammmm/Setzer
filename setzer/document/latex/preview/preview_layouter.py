@@ -147,13 +147,8 @@ class PreviewLayouter(Observable):
 
     def compute_current_page(self):
         if self.has_layout and self.preview.presenter.scrolling_queue.empty():
-            current_page = 0
             offset = self.view.scrolled_window.get_vadjustment().get_value()
-            size_iter = self.vertical_margin
-            while size_iter <= offset:
-                size_iter += self.page_height + self.page_gap
-                current_page += 1
-            self.current_page = max(current_page, 1)
+            self.current_page = int(1 + offset // (self.page_height + self.page_gap))
 
     def get_page_number_and_offsets_by_document_offsets(self, x, y):
         if self.has_layout:
