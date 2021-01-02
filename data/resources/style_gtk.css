@@ -246,7 +246,7 @@ box.buildlog list {
 box.sidebar toolbar {
     padding: 0px;
     margin: 0px;
-    background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
+    background-color: @theme_base_color;
     border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
 box.sidebar toolbar toolbutton {
@@ -303,13 +303,13 @@ box.sidebar flowbox flowboxchild button.no_bottom_border {
 */
 
 box.shortcutsbar {
-    background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
+    background-color: @theme_base_color;
     border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
 box.shortcutsbar toolbar {
     padding: 0px;
     margin: 0px;
-    background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
+    background-color: @theme_base_color;
 }
 box.shortcutsbar toolbar toolbutton {
     padding: 0px;
@@ -347,7 +347,7 @@ box.preview scrolledwindow {
     background-color: #fff;
 }
 box.preview > box {
-    background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
+    background-color: @theme_base_color;
     border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
 box.preview > box button {
