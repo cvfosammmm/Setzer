@@ -80,6 +80,8 @@ class WelcomeScreen(object):
         self.update_colors()
         self.view.get_style_context().connect('changed', self.update_colors)
 
+        self.view_height = 0
+        self.view_width = 0
         self.gradient_size = None
         self.gradient_surface = None
         self.update_gradient()
@@ -123,19 +125,20 @@ class WelcomeScreen(object):
             ctx.move_to(-50, y)
             ctx.rotate(-self.angle)
             ctx.show_text(paragraph)
+            if y > (self.view_height + self.view_width / 3): break
 
         ctx.rotate(self.angle)
         self.draw_gradient(ctx)
 
     #@timer
     def draw_gradient(self, ctx):
-        view_width = self.view.get_allocated_width()
-        view_height = self.view.get_allocated_height()
+        self.view_width = self.view.get_allocated_width()
+        self.view_height = self.view.get_allocated_height()
         overlay_width = max(self.view.header.get_allocated_width(), self.view.description.get_allocated_width())
 
-        y = int(view_height / 2 - self.gradient_size / 2) - 25
-        x_start = int(view_width / 2 - overlay_width / 2 - self.gradient_size / 2.5)
-        x_end = view_width - x_start - self.gradient_size
+        y = int(self.view_height / 2 - self.gradient_size / 2) - 25
+        x_start = int(self.view_width / 2 - overlay_width / 2 - self.gradient_size / 2.5)
+        x_end = self.view_width - x_start - self.gradient_size
 
         ctx.set_source_surface(self.gradient_surface)
         for x in range(x_start, x_end, int((x_end - x_start) / 6)):
