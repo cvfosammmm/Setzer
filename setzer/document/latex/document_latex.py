@@ -50,6 +50,7 @@ class DocumentLaTeX(Document):
         self.state_manager = state_manager_latex.StateManagerLaTeX(self)
 
         self.build_log_items = list()
+        self.error_count = 0
         self.has_been_built = False
         self.last_build_start_time = None
         self.build_time = None
@@ -133,6 +134,33 @@ class DocumentLaTeX(Document):
     def set_blocks(self, blocks):
         self.symbols['blocks'] = blocks
         self.add_change_code('blocks_changed')
+
+    def set_build_log_items(self, log_items):
+        build_log_items = list()
+        error_count = 0
+
+        def add_items(items_list, new_items, filename, file_no, item_type):
+            for item in new_items[item_type.lower()]:
+                items_list.append((item_type, item[0], filename, file_no, item[1], item[2]))
+
+        for item_type in ['Error', 'Warning', 'Badbox']:
+            if self.filename in log_items:
+                add_items(build_log_items, log_items[self.filename], self.filename, 0, item_type)
+
+            counter = 1
+            for filename, items in log_items.items():
+                if item_type == 'Error':
+                    error_count += len(items['error'])
+                if filename != self.filename:
+                    file_no = counter
+                    counter += 1
+                    add_items(build_log_items, log_items[filename], filename, file_no, item_type)
+
+        self.build_log_items = build_log_items
+        self.error_count = error_count
+
+    def get_error_count(self):
+        return self.error_count
 
     def set_initial_folded_regions(self, folded_regions):
         try:

@@ -60,7 +60,6 @@ class BuildSystemPresenter(object):
                 if result_blob['build'] != None:
                     build_blob = result_blob['build']
 
-                    build_log_items = list()
                     if build_blob['error'] == 'interpreter_missing':
                         self.document.show_build_state('')
                         self.document.change_build_state('idle')
@@ -75,20 +74,10 @@ class BuildSystemPresenter(object):
                             DialogLocator.get_dialog('preferences').run()
                         return
 
-                    try:
-                        build_log_blob = build_blob['log_messages']
-                    except KeyError:
-                        pass
-                    else:
-                        for item in build_log_blob:
-                            build_log_items.append(item)
-                    self.document.build_log_items = build_log_items
+                    self.document.set_build_log_items(build_blob['log_messages'])
                     self.document.build_time = time.time() - self.document.last_build_start_time
 
-                    error_count = 0
-                    for item in self.document.build_log_items:
-                        if item[0] == 'Error':
-                            error_count += 1
+                    error_count = self.document.get_error_count()
                     if error_count > 0:
                         error_color_rgba = ServiceLocator.get_error_color()
                         error_color = '#' + format(int(error_color_rgba.red * 255), '02x') + format(int(error_color_rgba.green * 255), '02x') + format(int(error_color_rgba.blue * 255), '02x')

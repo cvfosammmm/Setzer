@@ -19,6 +19,7 @@ import setzer.workspace.build_log.build_log_presenter as build_log_presenter
 import setzer.workspace.build_log.build_log_controller as build_log_controller
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
+from setzer.helpers.timer import timer
 
 
 class BuildLog(Observable):
@@ -47,6 +48,7 @@ class BuildLog(Observable):
         self.update_items()
         self.document.register_observer(self)
 
+    #@timer
     def update_items(self, just_built=False):
         self.clear_items()
         for item in self.document.build_log_items:
@@ -87,6 +89,7 @@ class BuildLog(Observable):
         else:
             return False
 
+    #@timer
     def count_items(self, types='all'):
         count = 0
         if types == 'errors':

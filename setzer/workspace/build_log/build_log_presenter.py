@@ -16,6 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import setzer.workspace.build_log.build_log_viewgtk as build_log_view
+from setzer.helpers.timer import timer
 
 
 class BuildLogPresenter(object):
@@ -36,16 +37,19 @@ class BuildLogPresenter(object):
         if change_code == 'build_log_new_item':
             item = parameter
             row = build_log_view.BuildLogRowView(item[0], item[2], item[3], item[4], item[5])
-            self.view.list.prepend(row)
+            self.view.list.add(row)
 
         if change_code == 'build_log_finished_adding':
-            self.set_header_data(self.build_log.count_items('errors'), self.build_log.count_items('warnings') + self.build_log.count_items('badboxes'), parameter)
+            no_errors = self.build_log.count_items('errors')
+            no_others = self.build_log.count_items('warnings') + self.build_log.count_items('badboxes')
+            self.set_header_data(no_errors, no_others, parameter)
             self.view.list.show_all()
 
         if change_code == 'build_log_cleared_items':
             for entry in self.view.list.get_children():
                 self.view.list.remove(entry)
 
+    #@timer
     def set_header_data(self, errors, warnings, tried_building=False):
         if tried_building:
             if self.build_log.document.build_time != None:

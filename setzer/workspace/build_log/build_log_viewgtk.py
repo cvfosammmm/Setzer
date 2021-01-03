@@ -34,7 +34,6 @@ class BuildLogView(Gtk.VBox):
         self.scrolled_window = Gtk.ScrolledWindow()
         self.list = Gtk.ListBox()
         self.list.set_selection_mode(Gtk.SelectionMode.NONE)
-        self.list.set_sort_func(self.sort_function)
         self.scrolled_window.add(self.list)
 
         self.header = Gtk.HBox()
@@ -55,53 +54,7 @@ class BuildLogView(Gtk.VBox):
 
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
-                     
-    def sort_function(self, row1, row2, user_data=None):
-        message_type1 = row1.get_child().message_type
-        message_type2 = row2.get_child().message_type
 
-        if message_type1 != 'Error' and message_type2 == 'Error':
-            return 1
-        elif message_type1 == 'Error' and message_type2 != 'Error':
-            return 0
-        elif message_type1 == 'Error' and message_type2 == 'Error':
-            return self.file_number_sort(row1, row2)
-
-        if message_type1 != 'Warning' and message_type2 == 'Warning':
-            return 1
-        elif message_type1 == 'Warning' and message_type2 != 'Warning':
-            return -1
-        else:
-            return self.file_number_sort(row1, row2)
-
-    def file_number_sort(self, row1, row2):
-        file_no1 = row1.get_child().file_number
-        file_no2 = row2.get_child().file_number
-
-        if file_no1 > file_no2:
-            return 1
-        elif file_no1 < file_no2:
-            return -1
-        else:
-            return self.line_number_sort(row1, row2)
-
-    def line_number_sort(self, row1, row2):
-        line_number1 = row1.get_child().line_number
-        line_number2 = row2.get_child().line_number
-
-        if line_number1 != -1 and line_number2 == -1:
-            return -1
-        elif line_number1 == -1 and line_number2 != -1:
-            return 1
-        elif line_number1 == -1 and line_number2 == -1:
-            return 0
-        elif line_number1 > line_number2:
-            return 1
-        elif line_number1 == line_number2:
-            return 0
-        else:
-            return -1
-        
 
 class BuildLogRowView(Gtk.HBox):
 

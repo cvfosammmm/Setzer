@@ -20,6 +20,7 @@ import os.path
 import base64
 import shutil
 import subprocess
+from operator import itemgetter
 
 import setzer.document.latex.build_system.builder.builder_build as builder_build
 import setzer.document.latex.build_system.latex_log_parser.latex_log_parser as latex_log_parser
@@ -86,7 +87,8 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
         with query.build_result_lock:
             query.build_result = {'pdf_filename': new_pdf_filename, 
                                   'has_synctex_file': query.can_sync,
-                                  'log_messages': query.log_messages + query.bibtex_log_messages,
+                                  'log_messages': query.log_messages,
+                                  'bibtex_log_messages': query.bibtex_log_messages,
                                   'error': None,
                                   'error_arg': None}
 
@@ -109,17 +111,10 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
 
         for filename, items in log_items.items():
             query.error_count += len(items['error'])
-            if filename == query.tex_filename:
-                file_no = 0
-            else:
-                file_no += 1
-
-            for item in items['error']:
-                query.log_messages.append(('Error', item[0], filename, file_no, item[1], item[2]))
-            for item in items['warning']:
-                query.log_messages.append(('Warning', item[0], filename, file_no, item[1], item[2]))
-            for item in items['badbox']:
-                query.log_messages.append(('Badbox', item[0], filename, file_no, item[1], item[2]))
+            items['error'].sort(key=itemgetter(1))
+            items['warning'].sort(key=itemgetter(1))
+            items['badbox'].sort(key=itemgetter(1))
+        query.log_messages = log_items
 
         return False
 
