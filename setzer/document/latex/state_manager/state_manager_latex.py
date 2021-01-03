@@ -55,9 +55,9 @@ class StateManagerLaTeX():
 
     def load_build_log_state(self, document_data):
         try:
-            self.document.build_log_items = document_data['build_log_items']
+            self.document.build_log_data = document_data['build_log_data']
         except KeyError:
-            self.document.build_log_items = list()
+            self.document.build_log_data = {'items': list(), 'error_count': 0, 'warning_count': 0, 'badbox_count': 0}
         try:
             self.document.has_been_built = document_data['has_been_built']
         except KeyError:
@@ -101,7 +101,7 @@ class StateManagerLaTeX():
         document_data = dict()
         document_data['save_date'] = self.document.save_date
         document_data['folded_regions'] = self.document.get_folded_regions()
-        document_data['build_log_items'] = self.document.build_log_items
+        document_data['build_log_data'] = self.document.build_log_data
         document_data['has_been_built'] = self.document.has_been_built
         document_data['build_time'] = self.document.build_time
         document_data['has_synctex_file'] = self.document.has_synctex_file

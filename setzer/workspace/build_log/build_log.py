@@ -51,15 +51,14 @@ class BuildLog(Observable):
     #@timer
     def update_items(self, just_built=False):
         self.clear_items()
-        for item in self.document.build_log_items:
-            self.add_item(item[0], item[1], item[2], item[3], item[4], item[5])
+        for item in self.document.build_log_data['items']:
+            self.add_item(item)
         self.signal_finish_adding()
 
         if just_built and self.has_items(self.settings.get_value('preferences', 'autoshow_build_log')):
             self.workspace.set_show_build_log(True)
 
-    def add_item(self, item_type, specific_type, filename, file_no, line_number, message):
-        item = [item_type, specific_type, filename, file_no, line_number, message]
+    def add_item(self, item):
         self.items.append(item)
         self.add_change_code('build_log_new_item', item)
 
@@ -71,47 +70,19 @@ class BuildLog(Observable):
         self.add_change_code('build_log_cleared_items', None)
         
     def has_items(self, types='all'):
-        if types == 'errors':
-            for item in self.items:
-                if item[0] == 'Error':
-                    return True
-            return False
-        elif types == 'errors_warnings':
-            for item in self.items:
-                if item[0] == 'Error' or item[0] == 'Warning':
-                    return True
-            return False
-        elif types == 'all':
-            for item in self.items:
-                if item[0] == 'Error' or item[0] == 'Warning' or item[0] == 'Badbox':
-                    return True
-            return False
-        else:
-            return False
+        return self.count_items(types) > 0
 
-    #@timer
     def count_items(self, types='all'):
-        count = 0
         if types == 'errors':
-            for item in self.items:
-                if item[0] == 'Error':
-                    count += 1
+            return self.document.get_error_count()
         elif types == 'errors_warnings':
-            for item in self.items:
-                if item[0] == 'Error' or item[0] == 'Warning':
-                    count += 1
+            return self.document.get_error_count() + self.document.get_warning_count()
         elif types == 'all':
-            for item in self.items:
-                if item[0] == 'Error' or item[0] == 'Warning' or item[0] == 'Badbox':
-                    count += 1
+            return self.document.get_error_count() + self.document.get_warning_count() + self.document.get_badbox_count()
         elif types == 'warnings':
-            for item in self.items:
-                if item[0] == 'Warning':
-                    count += 1
+            return self.document.get_warning_count()
         elif types == 'badboxes':
-            for item in self.items:
-                if item[0] == 'Badbox':
-                    count += 1
-        return count
+            return self.document.get_badbox_count()
+        return 0
 
 

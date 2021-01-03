@@ -49,8 +49,7 @@ class DocumentLaTeX(Document):
         self.preview = preview.Preview(self)
         self.state_manager = state_manager_latex.StateManagerLaTeX(self)
 
-        self.build_log_items = list()
-        self.error_count = 0
+        self.build_log_data = {'items': list(), 'error_count': 0, 'warning_count': 0, 'badbox_count': 0}
         self.has_been_built = False
         self.last_build_start_time = None
         self.build_time = None
@@ -138,29 +137,37 @@ class DocumentLaTeX(Document):
     def set_build_log_items(self, log_items):
         build_log_items = list()
         error_count = 0
+        warning_count = 0
+        badbox_count = 0
 
-        def add_items(items_list, new_items, filename, file_no, item_type):
+        def add_items(items_list, new_items, filename, item_type):
             for item in new_items[item_type.lower()]:
-                items_list.append((item_type, item[0], filename, file_no, item[1], item[2]))
+                items_list.append((item_type, item[0], filename, item[1], item[2]))
 
         for item_type in ['Error', 'Warning', 'Badbox']:
             if self.filename in log_items:
-                add_items(build_log_items, log_items[self.filename], self.filename, 0, item_type)
+                add_items(build_log_items, log_items[self.filename], self.filename, item_type)
 
-            counter = 1
             for filename, items in log_items.items():
                 if item_type == 'Error':
                     error_count += len(items['error'])
+                if item_type == 'Warning':
+                    warning_count += len(items['warning'])
+                if item_type == 'Badbox':
+                    badbox_count += len(items['badbox'])
                 if filename != self.filename:
-                    file_no = counter
-                    counter += 1
-                    add_items(build_log_items, log_items[filename], filename, file_no, item_type)
+                    add_items(build_log_items, log_items[filename], filename, item_type)
 
-        self.build_log_items = build_log_items
-        self.error_count = error_count
+        self.build_log_data = {'items': build_log_items, 'error_count': error_count, 'warning_count': warning_count, 'badbox_count': badbox_count}
 
     def get_error_count(self):
-        return self.error_count
+        return self.build_log_data['error_count']
+
+    def get_warning_count(self):
+        return self.build_log_data['warning_count']
+
+    def get_badbox_count(self):
+        return self.build_log_data['badbox_count']
 
     def set_initial_folded_regions(self, folded_regions):
         try:

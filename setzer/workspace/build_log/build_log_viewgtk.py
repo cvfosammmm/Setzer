@@ -58,7 +58,7 @@ class BuildLogView(Gtk.VBox):
 
 class BuildLogRowView(Gtk.HBox):
 
-    def __init__(self, message_type, filename, file_number, line_number, message):
+    def __init__(self, message_type, filename, line_number, message):
         Gtk.HBox.__init__(self)
 
         symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
@@ -68,7 +68,6 @@ class BuildLogRowView(Gtk.HBox):
         self.icon_name = symbols[message_type]
         self.filename = filename
         self.filename_display = os.path.basename(filename)
-        self.file_number = file_number
         self.line_number = line_number
         self.line_number_display = _('Line {number}').format(number=str(line_number)) if line_number >= 0 else ''
 
