@@ -104,6 +104,9 @@ class WelcomeScreen(object):
 
     #@timer
     def draw(self, drawing_area, ctx):
+        self.view_width = self.view.get_allocated_width()
+        self.view_height = self.view.get_allocated_height()
+
         ctx.rotate(-self.angle)
         ctx.set_source_rgba(self.fg_color.red, self.fg_color.green, self.fg_color.blue, self.fg_color.alpha)
 
@@ -132,8 +135,6 @@ class WelcomeScreen(object):
 
     #@timer
     def draw_gradient(self, ctx):
-        self.view_width = self.view.get_allocated_width()
-        self.view_height = self.view.get_allocated_height()
         overlay_width = max(self.view.header.get_allocated_width(), self.view.description.get_allocated_width())
 
         y = int(self.view_height / 2 - self.gradient_size / 2) - 25
