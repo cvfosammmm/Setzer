@@ -19,6 +19,7 @@ import os
 import os.path
 import shutil
 import subprocess
+from operator import itemgetter
 
 import setzer.document.latex.build_system.builder.builder_build as builder_build
 from setzer.app.service_locator import ServiceLocator
@@ -29,7 +30,7 @@ class BuilderBuildBibTeX(builder_build.BuilderBuild):
     def __init__(self):
         builder_build.BuilderBuild.__init__(self)
 
-        self.bibtex_log_item_regex = ServiceLocator.get_regex_object(r'Warning--(.*)\n--line ([0-9]+) of file (.*)|I couldn' + "'" + r't open style file (.*)\n---line ([0-9]+) of file (.*)')
+        self.bibtex_log_item_regex = ServiceLocator.get_regex_object(r'Warning--(.*)\n--line ([0-9]+) of file (.*)|I couldn' + "'" + r't open style file (.*)\n---line ([0-9]+) of file (.*)|Warning--(.*)')
 
     def run(self, query):
         tex_filename = query.tex_filename
@@ -62,8 +63,7 @@ class BuilderBuildBibTeX(builder_build.BuilderBuild):
         else:
             text = file.read().decode('utf-8', errors='ignore')
 
-            query.bibtex_log_messages = list()
-            file_numbers = dict()
+            query.bibtex_log_messages = {'error': list(), 'warning': list(), 'badbox': list()}
             for item in self.bibtex_log_item_regex.finditer(text):
                 line = item.group(0)
 
@@ -71,16 +71,16 @@ class BuilderBuildBibTeX(builder_build.BuilderBuild):
                     query.error_count += 1
                     text = 'I couldn\'t open style file ' + item.group(4) + '.bst'
                     line_number = int(item.group(5).strip())
-                    query.bibtex_log_messages.append(('Error', None, query.tex_filename, 0, -1, text))
+                    query.bibtex_log_messages['error'].append(('Error', -1, text))
                 elif line.startswith('Warning--'):
-                    filename = os.path.basename(log_filename[:-3] + 'bib')
-                    try:
-                        file_no = file_numbers[filename]
-                    except KeyError:
-                        file_no = 10000 + len(file_numbers)
-                        file_numbers[filename] = file_no
-                    text = item.group(1)
-                    line_number = int(item.group(2).strip())
-                    query.bibtex_log_messages.append(('Warning', None, filename, file_no, line_number, text))
+                    if item.group(1) != None:
+                        text = item.group(1)
+                        line_number = int(item.group(2).strip())
+                    else:
+                        text = item.group(7)
+                        line_number = -1
+                    query.bibtex_log_messages['warning'].append(('Warning', line_number, text))
+            query.bibtex_log_messages['error'].sort(key=itemgetter(1))
+            query.bibtex_log_messages['warning'].sort(key=itemgetter(1))
 
 

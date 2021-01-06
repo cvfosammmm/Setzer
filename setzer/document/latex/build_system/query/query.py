@@ -41,8 +41,8 @@ class Query(object):
         self.backward_sync_data = dict()
         self.tex_filename = tex_filename
 
-        self.log_messages = list()
-        self.bibtex_log_messages = list()
+        self.log_messages = dict()
+        self.bibtex_log_messages = {'error': list(), 'warning': list(), 'badbox': list()}
         self.force_building_to_stop = False
         self.error_count = 0
 

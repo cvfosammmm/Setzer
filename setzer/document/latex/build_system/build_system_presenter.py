@@ -74,6 +74,7 @@ class BuildSystemPresenter(object):
                             DialogLocator.get_dialog('preferences').run()
                         return
 
+                    build_blob['log_messages']['BibTeX'] = build_blob['bibtex_log_messages']
                     self.document.set_build_log_items(build_blob['log_messages'])
                     self.document.build_time = time.time() - self.document.last_build_start_time
 
