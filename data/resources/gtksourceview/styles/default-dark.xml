@@ -69,7 +69,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <style name="def:doc-comment-element"     italic="true"/>
 
   <!-- Constants -->
-  <style name="def:constant"                foreground="plum1"/>
+  <style name="def:constant"                foreground="white"/>
   <style name="def:special-char"            foreground="skyblue1" bold="true"/>
 
   <!-- Identifiers -->
