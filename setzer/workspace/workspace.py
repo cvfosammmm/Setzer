@@ -168,7 +168,7 @@ class Workspace(Observable):
             document = DocumentLaTeXSty()
         else:
             return None
-        document.filename = filename
+        document.set_filename(filename)
         response = document.populate_from_filename()
         if response != False:
             self.add_document(document)
