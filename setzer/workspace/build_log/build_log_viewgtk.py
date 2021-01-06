@@ -17,6 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
+from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import Pango
 
@@ -29,12 +30,18 @@ class BuildLogView(Gtk.VBox):
         Gtk.VBox.__init__(self)
         self.get_style_context().add_class('buildlog')
 
-        self.position = 200
-        
         self.scrolled_window = Gtk.ScrolledWindow()
-        self.list = Gtk.ListBox()
-        self.list.set_selection_mode(Gtk.SelectionMode.NONE)
+        self.list = Gtk.DrawingArea()
+        self.list.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
+        self.list.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
+        self.list_color_hack = Gtk.ListBox()
+        self.list_color_hack_row = Gtk.ListBoxRow()
         self.scrolled_window.add(self.list)
+
+        style_context = self.list.get_style_context()
+        self.font = self.list_color_hack.get_style_context().get_font(style_context.get_state())
+        self.font_size = (self.font.get_size() * 4) / (3 * Pango.SCALE)
+        self.line_height = int(self.font_size) + 11
 
         self.header = Gtk.HBox()
         self.close_button = Gtk.Button.new_from_icon_name('window-close-symbolic', Gtk.IconSize.MENU)
@@ -48,61 +55,23 @@ class BuildLogView(Gtk.VBox):
         self.header.pack_start(self.header_label, True, True, 0)
         self.header.pack_start(self.close_button, False, False, 0)
 
+        self.setup_icons()
+        self.connect('style-updated', self.setup_icons)
+
         self.pack_start(self.header, False, False, 0)
         self.pack_start(self.scrolled_window, True, True, 0)
         self.set_size_request(200, 200)
 
+    def setup_icons(self, widget=None):
+        fg_color = self.get_style_context().lookup_color('theme_fg_color')[1]
+        self.icons = dict()
+        for icon_type, icon_name in [('Error', 'dialog-error-symbolic'), ('Warning', 'dialog-warning-symbolic'), ('Badbox', 'own-badbox-symbolic')]:
+            icon_info = Gtk.IconTheme.get_default().lookup_icon(icon_name, 16 * self.get_scale_factor(), 0)
+            pixbuf, was_symbolic = icon_info.load_symbolic(fg_color, fg_color, fg_color, fg_color)
+            surface = Gdk.cairo_surface_create_from_pixbuf(pixbuf, self.get_scale_factor())
+            self.icons[icon_type] = surface
+
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
-
-
-class BuildLogRowView(Gtk.HBox):
-
-    def __init__(self, message_type, filename, line_number, message):
-        Gtk.HBox.__init__(self)
-
-        symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
-        labels = {'Badbox': _('Badbox'), 'Error': _('Error'), 'Warning': _('Warning')}
-
-        self.message_type = message_type
-        self.icon_name = symbols[message_type]
-        self.filename = filename
-        self.filename_display = os.path.basename(filename)
-        self.line_number = line_number
-        self.line_number_display = _('Line {number}').format(number=str(line_number)) if line_number >= 0 else ''
-
-        self.icon_box = Gtk.VBox()
-        self.icon = Gtk.Image.new_from_icon_name(self.icon_name, Gtk.IconSize.MENU)
-        self.icon.set_margin_left(10)
-        self.icon.set_margin_right(12)
-        self.icon.set_margin_top(1)
-        self.icon.set_valign(0)
-        self.icon_box.pack_start(self.icon, False, False, 0)
-        self.label_message_type = Gtk.Label(labels[self.message_type])
-        self.label_message_type.set_size_request(76, -1)
-        self.label_message_type.set_xalign(0)
-        self.label_message_type.set_yalign(0)
-        self.label_filename = Gtk.Label(self.filename_display)
-        self.label_filename.set_ellipsize(Pango.EllipsizeMode.START)
-        self.label_filename.set_max_width_chars(10)
-        self.label_filename.set_size_request(120, -1)
-        self.label_filename.set_margin_right(18)
-        self.label_filename.set_xalign(0)
-        self.label_filename.set_yalign(0)
-        self.label_line_number = Gtk.Label(self.line_number_display)
-        self.label_line_number.set_size_request(76, -1)
-        self.label_line_number.set_xalign(0)
-        self.label_line_number.set_yalign(0)
-        self.label_message = Gtk.Label()
-        self.label_message.set_text(message)
-        self.label_message.set_size_request(100, -1)
-        self.label_message.set_xalign(0)
-        self.label_message.set_yalign(0)
-        self.label_message.set_line_wrap(False)
-        self.pack_start(self.icon_box, False, False, 0)
-        self.pack_start(self.label_message_type, False, False, 0)
-        self.pack_start(self.label_filename, False, False, 0)
-        self.pack_start(self.label_line_number, False, False, 0)
-        self.pack_start(self.label_message, True, True, 0)
 
 

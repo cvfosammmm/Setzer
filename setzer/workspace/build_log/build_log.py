@@ -31,7 +31,7 @@ class BuildLog(Observable):
         self.document = None
 
         self.items = list()
-        self.symbols = {'Badbox': 'own-badbox-symbolic', 'Error': 'dialog-error-symbolic', 'Warning': 'dialog-warning-symbolic'}
+        self.hover_item = None
 
         self.view = ServiceLocator.get_main_window().build_log
         self.presenter = build_log_presenter.BuildLogPresenter(self, self.view)
@@ -50,25 +50,22 @@ class BuildLog(Observable):
 
     #@timer
     def update_items(self, just_built=False):
-        self.clear_items()
-        for item in self.document.build_log_data['items']:
-            self.add_item(item)
+        self.items = self.document.build_log_data['items']
         self.signal_finish_adding()
 
         if just_built and self.has_items(self.settings.get_value('preferences', 'autoshow_build_log')):
             self.workspace.set_show_build_log(True)
 
-    def add_item(self, item):
-        self.items.append(item)
-        self.add_change_code('build_log_new_item', item)
+        self.set_hover_item(None)
+
+    def set_hover_item(self, item_num): 
+        if self.hover_item != item_num:
+            self.hover_item = item_num
+            self.add_change_code('hover_item_changed')
 
     def signal_finish_adding(self):
         self.add_change_code('build_log_finished_adding', self.document.has_been_built)
 
-    def clear_items(self):
-        self.items = list()
-        self.add_change_code('build_log_cleared_items', None)
-        
     def has_items(self, types='all'):
         return self.count_items(types) > 0
 

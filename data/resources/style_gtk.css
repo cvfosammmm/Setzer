@@ -231,13 +231,6 @@ box.buildlog > box label {
 box.buildlog > box button {
     margin: 6px;
 }
-box.buildlog list row {
-    padding-top: 3px;
-    padding-bottom: 3px;
-}
-box.buildlog list {
-    padding-bottom: 6px;
-}
 
 /*
 ** sidebar
