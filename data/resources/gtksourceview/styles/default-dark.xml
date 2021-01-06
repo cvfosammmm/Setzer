@@ -38,7 +38,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <color name="orange1"                     value="#fcaf3e"/>
   <color name="skyblue1"                    value="#729fcf"/>
   <color name="plum1"                       value="#ad7fa8"/>
-  <color name="plum3"                       value="#5c3566"/>
   <color name="scarletred3"                 value="#a40000"/>
   <color name="aluminium1"                  value="#eeeeec"/>
   <color name="aluminium3"                  value="#babdb6"/>
@@ -71,7 +70,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
 
   <!-- Constants -->
   <style name="def:constant"                foreground="plum1"/>
-  <style name="def:special-char"            foreground="plum3"/>
+  <style name="def:special-char"            foreground="skyblue1" bold="true"/>
 
   <!-- Identifiers -->
   <style name="def:identifier"              foreground="skyblue1"/>
@@ -94,7 +93,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
 
   <style name="latex:usepackage"            foreground="skyblue1" bold="true"/>
   <style name="latex:pkg-name"              use-style="text"/>
-  <style name="latex:special-char"          foreground="plum3"/>
+  <style name="latex:special-char"          foreground="skyblue1" bold="true"/>
 
   <style name="latex:display-math"          foreground="chameleon2"/>
   <style name="latex:math-boundary"         foreground="chameleon2" bold="true"/>
