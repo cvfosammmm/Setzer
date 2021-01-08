@@ -25,6 +25,8 @@ import math
 import time
 import queue
 
+from setzer.helpers.timer import timer
+
 
 class PreviewPresenter(object):
 
@@ -111,7 +113,7 @@ class PreviewPresenter(object):
         self.view.scrolled_window.get_hadjustment().set_value(xoffset)
         self.view.scrolled_window.get_vadjustment().set_value(yoffset)
 
-    #@helpers.timer
+    #@timer
     def draw(self, drawing_area, ctx, data = None):
         if self.layouter.has_layout:
             bg_color = self.view.get_style_context().lookup_color('theme_bg_color')[1]
@@ -119,7 +121,18 @@ class PreviewPresenter(object):
             self.draw_background(ctx, drawing_area, bg_color)
 
             ctx.transform(cairo.Matrix(1, 0, 0, 1, self.layouter.horizontal_margin, self.layouter.vertical_margin))
-            for page_number in range(0, self.preview.number_of_pages):
+
+            offset = self.view.scrolled_window.get_vadjustment().get_value()
+            view_width = self.view.scrolled_window.get_allocated_width()
+            view_height = self.view.scrolled_window.get_allocated_height()
+            additional_height = ctx.get_target().get_height() - view_height
+            additional_pages = additional_height // self.layouter.page_height + 2
+
+            first_page = max(int(offset // self.layouter.page_height) - additional_pages, 0)
+            last_page = min(int((offset + view_height) // self.layouter.page_height) + additional_pages, self.preview.number_of_pages)
+            ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, first_page * (self.layouter.page_height + self.layouter.page_gap)))
+
+            for page_number in range(first_page, last_page + 1):
                 self.draw_page_background_and_outline(ctx, border_color)
                 self.draw_rendered_page(ctx, page_number)
                 self.draw_synctex_rectangles(ctx, page_number)
@@ -131,6 +144,7 @@ class PreviewPresenter(object):
         ctx.set_source_rgba(bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha)
         ctx.fill()
 
+    #@timer
     def draw_page_background_and_outline(self, ctx, border_color):
         ctx.set_source_rgba(border_color.red, border_color.green, border_color.blue, border_color.alpha)
         ctx.rectangle(- self.layouter.border_width, - self.layouter.border_width, self.layouter.page_width + 2 * self.layouter.border_width, self.layouter.page_height + 2 * self.layouter.border_width)
