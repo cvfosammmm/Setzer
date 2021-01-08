@@ -23,6 +23,7 @@ from gi.repository import Gdk
 
 import math
 import webbrowser
+import _thread as thread
 
 
 class PreviewController(object):
@@ -156,7 +157,7 @@ class PreviewController(object):
                         self.preview.scroll_dest_on_screen(link[1])
                         return True
                     elif link[2] == 'uri':
-                        webbrowser.open_new_tab(link[1])
+                        thread.start_new_thread(webbrowser.open_new_tab, (link[1],))
 
             return True
 
