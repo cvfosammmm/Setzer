@@ -52,6 +52,7 @@ class BuildSystemPresenter(object):
                     try:
                         self.document.preview.set_pdf_filename(result_blob['build']['pdf_filename'])
                     except KeyError: pass
+                    self.document.add_change_code('pdf_updated')
 
                 if result_blob['forward_sync'] != None:
                     self.document.preview.set_synctex_rectangles(result_blob['forward_sync'])
