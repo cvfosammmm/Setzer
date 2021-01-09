@@ -50,6 +50,7 @@ class Gutter(object):
         self.bg_color = Gdk.RGBA(0, 0, 0, 0)
         self.fg_color = Gdk.RGBA(0, 0, 0, 0)
         self.cl_color = Gdk.RGBA(0, 0, 0, 0)
+        self.border_color = Gdk.RGBA(0, 0, 0, 0)
         self.update_colors()
         self.source_view.get_style_context().connect('changed', self.update_colors)
 
@@ -98,6 +99,9 @@ class Gutter(object):
             ctx.rectangle(0, self.current_line[1], self.total_size, self.current_line[2])
             ctx.set_source_rgba(self.cl_color.red, self.cl_color.green, self.cl_color.blue, self.cl_color.alpha)
             ctx.fill()
+        ctx.rectangle(self.total_size - 1, 0, self.total_size, drawing_area.get_allocated_height())
+        ctx.set_source_rgba(self.border_color.red, self.border_color.green, self.border_color.blue, self.border_color.alpha)
+        ctx.fill()
 
     #@timer
     def update_colors(self, style_context=None):
@@ -133,6 +137,14 @@ class Gutter(object):
         else:
             cl_color = self.style_context.lookup_color('theme_base_color')[1]
         self.cl_color = cl_color
+
+        theme_base_color = self.style_context.lookup_color('theme_base_color')[1]
+        theme_border_color = self.style_context.lookup_color('borders')[1]
+        self.border_color = Gdk.RGBA(0, 0, 0, 0)
+        self.border_color.red = theme_base_color.red / 2 + theme_border_color.red / 2
+        self.border_color.green = theme_base_color.green / 2 + theme_border_color.green / 2
+        self.border_color.blue = theme_base_color.blue / 2 + theme_border_color.blue / 2
+        self.border_color.alpha = theme_base_color.alpha / 2 + theme_border_color.alpha / 2
 
         for widget in self.widgets:
             widget.update_colors()
@@ -206,7 +218,7 @@ class Gutter(object):
                 total_size += widget.get_size()
 
         if total_size != 0:
-            total_size += 3
+            total_size += 4
 
         if total_size != self.total_size:
             self.total_size = total_size

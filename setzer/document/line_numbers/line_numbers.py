@@ -111,7 +111,7 @@ class LineNumbers(object):
         glyphs_bold = list()
         for line in lines:
             yoffset = int(line[1] + extra_y)
-            xoffset = offset + self.size
+            xoffset = offset + self.size - self.char_width
             cline = line[0]
 
             if current_line != None and cline == current_line[0]:
@@ -134,7 +134,7 @@ class LineNumbers(object):
             ctx.show_glyphs(glyphs_bold, len(glyphs_bold))
 
     def update_size(self):
-        self.size = math.ceil(math.log(self.source_view.get_buffer().get_line_count() + 1, 10)) * self.char_width
+        self.size = (1 + math.ceil(math.log(self.source_view.get_buffer().get_line_count() + 1, 10))) * self.char_width
 
     def get_size(self):
         return self.size

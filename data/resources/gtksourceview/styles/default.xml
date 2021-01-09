@@ -54,7 +54,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
 
   <!-- Global Settings -->
   <style name="current-line"                background="aluminium1"/>
-  <style name="line-numbers"                foreground="black"/>
+  <style name="line-numbers"                foreground="black" background="white"/>
   <style name="current-line-number"         background="aluminium1"/>
   <style name="draw-spaces"                 foreground="aluminium3"/>
   <style name="background-pattern"          background="#f3f3f3"/>
