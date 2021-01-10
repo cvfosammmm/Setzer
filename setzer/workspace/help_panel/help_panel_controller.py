@@ -20,6 +20,7 @@ gi.require_version('WebKit2', '4.0')
 from gi.repository import WebKit2
 
 import webbrowser
+import _thread as thread
 
 
 class HelpPanelController(object):
@@ -94,7 +95,7 @@ class HelpPanelController(object):
                 self.help_panel.set_uri(uri)
                 return True
             else:
-                webbrowser.open_new_tab(uri)
+                thread.start_new_thread(webbrowser.open_new_tab, (uri,))
                 decision.ignore()
                 return True
         elif decision_type == ra:
