@@ -50,6 +50,7 @@ class Preview(Observable):
         self.poppler_document_lock = thread.allocate_lock()
         self.poppler_document = None
         self.links_lock = thread.allocate_lock()
+        self.links_parsed = True
         with self.links_lock:
             self.links = dict()
         self.links_parser_lock = thread.allocate_lock()
