@@ -400,7 +400,7 @@ box.help {
     background-color: @theme_base_color;
 }
 box.help > box {
-    background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
+    background-color: @theme_base_color;
     border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
 box.help > box button {
