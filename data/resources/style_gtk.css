@@ -172,7 +172,7 @@ popover label.explaination {
     color: mix(@theme_fg_color, @theme_bg_color, 0.3);
     font-size: 13px;
 }
-.open-docs-popover label.master-label {
+.open-docs-popover label.root-label {
     opacity: 0.3;
 }
 popover label.explaination-header {

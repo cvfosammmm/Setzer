@@ -48,7 +48,7 @@ class Workspace(Observable):
 
         self.open_documents = list()
         self.open_latex_documents = list()
-        self.master_document = None
+        self.root_document = None
         self.recently_opened_documents = dict()
         self.untitled_documents_no = 0
 
@@ -114,8 +114,8 @@ class Workspace(Observable):
         self.update_recently_opened_document(document.get_filename(), notify=True)
 
     def remove_document(self, document):
-        if document == self.master_document:
-            self.unset_master_document()
+        if document == self.root_document:
+            self.unset_root_document()
         document.state_manager.save_document_state()
         document.controller.continue_save_date_loop = False
         self.open_documents.remove(document)
@@ -205,8 +205,8 @@ class Workspace(Observable):
 
     def set_build_log(self):
         if self.get_active_document() != None:
-            if self.master_document != None:
-                document = self.master_document
+            if self.root_document != None:
+                document = self.root_document
             else:
                 document = self.active_document
             if document.is_latex_document():
@@ -271,13 +271,13 @@ class Workspace(Observable):
                 return
             else:
                 try:
-                    master_document_filename = data['master_document_filename']
+                    root_document_filename = data['root_document_filename']
                 except KeyError:
-                    master_document_filename = None
+                    root_document_filename = None
                 for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
                     document = self.create_document_from_filename(item['filename'])
-                    if item['filename'] == master_document_filename and document != None:
-                        self.set_one_document_master(document)
+                    if item['filename'] == root_document_filename and document != None:
+                        self.set_one_document_root(document)
                 for item in data['recently_opened_documents'].values():
                     self.update_recently_opened_document(item['filename'], item['date'], notify=False)
                 try:
@@ -302,13 +302,13 @@ class Workspace(Observable):
                 return
             else:
                 try:
-                    master_document_filename = data['master_document_filename']
+                    root_document_filename = data['root_document_filename']
                 except KeyError:
-                    master_document_filename = None
+                    root_document_filename = None
                 for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
                     document = self.create_document_from_filename(item['filename'])
-                    if item['filename'] == master_document_filename and document != None:
-                        self.set_one_document_master(document)        
+                    if item['filename'] == root_document_filename and document != None:
+                        self.set_one_document_root(document)        
             if len(self.open_documents) > 0:
                 self.set_active_document(self.open_documents[-1])
             self.session_file_opened = filename
@@ -332,8 +332,8 @@ class Workspace(Observable):
                 'recently_opened_session_files': self.recently_opened_session_files,
                 'recently_help_searches': self.help_panel.search_results_blank
             }
-            if self.master_document != None:
-                data['master_document_filename'] = self.master_document.get_filename()
+            if self.root_document != None:
+                data['root_document_filename'] = self.root_document.get_filename()
             pickle.dump(data, filehandle)
             
     def save_session(self, session_filename):
@@ -349,8 +349,8 @@ class Workspace(Observable):
                         'last_activated': document.get_last_activated()
                     }
             data = {'open_documents': open_documents}
-            if self.master_document != None:
-                data['master_document_filename'] = self.master_document.get_filename()
+            if self.root_document != None:
+                data['root_document_filename'] = self.root_document.get_filename()
             pickle.dump(data, filehandle)
             self.session_file_opened = session_filename
             self.update_recently_opened_session_file(session_filename, notify=True)
@@ -366,35 +366,35 @@ class Workspace(Observable):
     def get_all_documents(self):
         return self.open_documents.copy() if len(self.open_documents) >= 1 else None
 
-    def set_one_document_master(self, master_document):
-        if master_document.is_latex_document():
-            self.master_document = master_document
+    def set_one_document_root(self, root_document):
+        if root_document.is_latex_document():
+            self.root_document = root_document
             for document in self.open_latex_documents:
-                if document == master_document:
-                    document.set_is_master(True)
+                if document == root_document:
+                    document.set_is_root(True)
                 else:
-                    document.set_is_master(False)
+                    document.set_is_root(False)
                 self.set_has_visible_build_system(document)
-            self.add_change_code('master_state_change', 'one_document')
+            self.add_change_code('root_state_change', 'one_document')
             self.set_build_log()
 
-    def unset_master_document(self):
+    def unset_root_document(self):
         for document in self.open_latex_documents:
-            document.set_is_master(False)
+            document.set_is_root(False)
             self.set_has_visible_build_system(document)
-        self.master_document = None
+        self.root_document = None
         self.set_has_visible_build_system(self.active_document)
-        self.add_change_code('master_state_change', 'no_master_document')
+        self.add_change_code('root_state_change', 'no_root_document')
         self.set_build_log()
 
-    def get_master_document(self):
-        return self.master_document
+    def get_root_document(self):
+        return self.root_document
 
     def set_has_visible_build_system(self, document):
         if document != None and document.is_latex_document():
-            if document == self.master_document:
+            if document == self.root_document:
                 document.set_has_visible_build_system(True)
-            elif document == self.active_document and self.master_document == None:
+            elif document == self.active_document and self.root_document == None:
                 document.set_has_visible_build_system(True)
             else:
                 document.set_has_visible_build_system(False)

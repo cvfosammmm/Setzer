@@ -39,8 +39,8 @@ class SaveSessionDialog(Dialog):
             self.view.set_current_folder(os.path.dirname(self.workspace.session_file_opened))
             self.view.set_current_name(os.path.basename(self.workspace.session_file_opened))
         else:
-            if self.workspace.master_document != None:
-                document = self.workspace.get_master_document()
+            if self.workspace.root_document != None:
+                document = self.workspace.get_root_document()
             else:
                 document = self.workspace.get_active_document()
             if document != None:

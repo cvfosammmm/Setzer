@@ -43,7 +43,7 @@ class PreviewPanelPresenter(object):
         if change_code == 'new_active_document':
             self.set_preview_document()
 
-        if change_code == 'master_state_change':
+        if change_code == 'root_state_change':
             self.set_preview_document()
 
     def activate_blank_page(self):
@@ -53,8 +53,8 @@ class PreviewPanelPresenter(object):
         if self.workspace.get_active_document() == None:
             self.activate_blank_page()
         else:
-            if self.workspace.master_document != None:
-                document = self.workspace.master_document
+            if self.workspace.root_document != None:
+                document = self.workspace.root_document
                 self.notebook.set_current_page(self.notebook.page_num(document.preview.view))
             elif self.workspace.active_document.is_latex_document():
                 document = self.workspace.active_document

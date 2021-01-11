@@ -34,8 +34,8 @@ class DocumentSwitcherController(object):
         self.view.document_list.connect('add', self.on_doclist_row_added)
         self.view.document_list.connect('row-activated', self.on_doclist_row_activated)
         self.view.connect('closed', self.on_doclist_row_popdown)
-        self.view.set_master_document_button.connect('clicked', self.set_selection_mode)
-        self.view.unset_master_document_button.connect('clicked', self.unset_master_document)
+        self.view.set_root_document_button.connect('clicked', self.set_selection_mode)
+        self.view.unset_root_document_button.connect('clicked', self.unset_root_document)
 
     def on_doclist_row_added(self, doclist, row, data=None):
         row.document_close_button.connect('clicked', self.on_doclist_close_clicked, row.document)
@@ -43,7 +43,7 @@ class DocumentSwitcherController(object):
     def on_doclist_row_activated(self, box, row, data=None):
         if self.view.in_selection_mode:
             self.document_switcher.set_mode('normal')
-            self.workspace.set_one_document_master(row.document)
+            self.workspace.set_one_document_root(row.document)
         else:
             self.view.popdown()
             self.workspace.set_active_document(row.document)
@@ -56,9 +56,9 @@ class DocumentSwitcherController(object):
         self.document_switcher.set_mode('selection')
         return True
 
-    def unset_master_document(self, action, parameter=None):
+    def unset_root_document(self, action, parameter=None):
         self.document_switcher.set_mode('normal')
-        self.workspace.unset_master_document()
+        self.workspace.unset_root_document()
 
     def on_doclist_close_clicked(self, button_object, document):
         if document.get_modified():

@@ -88,7 +88,7 @@ class HeaderbarPresenter(object):
                 self.main_window.headerbar.session_box.pack_start(button, False, False, 0)
                 self.main_window.headerbar.session_file_buttons.append(button)
 
-        if change_code == 'master_state_change':
+        if change_code == 'root_state_change':
             self.set_build_button_state()
 
     def activate_welcome_screen_mode(self):
@@ -118,8 +118,8 @@ class HeaderbarPresenter(object):
         self.main_window.headerbar.sidebar_toggle.set_sensitive(False)
 
     def set_build_button_state(self):
-        if self.workspace.master_document != None:
-            document = self.workspace.master_document
+        if self.workspace.root_document != None:
+            document = self.workspace.root_document
         else:
             document = self.workspace.active_document
 

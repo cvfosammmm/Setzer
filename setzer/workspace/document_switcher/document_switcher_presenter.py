@@ -77,7 +77,7 @@ class DocumentSwitcherPresenter(object):
         if change_code == 'docswitcher_mode_change':
             self.activate_mode(parameter)
 
-        if change_code == 'master_state_change':
+        if change_code == 'root_state_change':
             self.activate_mode(self.document_switcher.mode)
 
     def activate_mode(self, mode):
@@ -87,12 +87,12 @@ class DocumentSwitcherPresenter(object):
             self.activate_selection_mode()
     
     def activate_normal_mode(self):
-        self.activate_set_master_document_button()
-        if self.workspace.master_document != None:
-            self.view.unset_master_document_button.set_sensitive(True)
+        self.activate_set_root_document_button()
+        if self.workspace.root_document != None:
+            self.view.unset_root_document_button.set_sensitive(True)
         else:
-            self.view.unset_master_document_button.set_sensitive(False)
-        self.view.master_explaination_revealer.set_reveal_child(False)
+            self.view.unset_root_document_button.set_sensitive(False)
+        self.view.root_explaination_revealer.set_reveal_child(False)
         self.view.document_list.get_style_context().remove_class('selection-mode')
         self.view.document_list.get_style_context().add_class('normal-mode')
         for item in self.view.document_list.get_children():
@@ -103,9 +103,9 @@ class DocumentSwitcherPresenter(object):
         self.view.in_selection_mode = False
 
     def activate_selection_mode(self):
-        self.view.set_master_document_button.set_sensitive(False)
-        self.view.unset_master_document_button.set_sensitive(True)
-        self.view.master_explaination_revealer.set_reveal_child(True)
+        self.view.set_root_document_button.set_sensitive(False)
+        self.view.unset_root_document_button.set_sensitive(True)
+        self.view.root_explaination_revealer.set_reveal_child(True)
         self.view.set_can_focus(False)
         self.view.document_list.get_style_context().remove_class('normal-mode')
         self.view.document_list.get_style_context().add_class('selection-mode')
@@ -117,11 +117,11 @@ class DocumentSwitcherPresenter(object):
                 item.hide()
         self.view.in_selection_mode = True
 
-    def activate_set_master_document_button(self):
+    def activate_set_root_document_button(self):
         if len(self.workspace.open_latex_documents) > 0:
-            self.view.set_master_document_button.set_sensitive(True)
+            self.view.set_root_document_button.set_sensitive(True)
         else:
-            self.view.set_master_document_button.set_sensitive(False)
+            self.view.set_root_document_button.set_sensitive(False)
 
     def show_welcome_title(self):
         self.button.center_button.set_sensitive(False)

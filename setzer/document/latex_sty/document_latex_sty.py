@@ -68,7 +68,7 @@ class DocumentLaTeXSty(Document):
     def get_file_ending(self):
         return 'sty'
 
-    def get_is_master(self):
+    def get_is_root(self):
         return False
 
     def is_latex_document(self):

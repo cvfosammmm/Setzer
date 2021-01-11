@@ -47,7 +47,7 @@ class Document(Observable):
         self.deleted_on_disk_dialog_shown_after_last_save = False
         self.last_activated = 0
         self.dark_mode = False
-        self.is_master = False
+        self.is_root = False
 
         self.source_buffer = source_buffer.SourceBuffer(self)
 

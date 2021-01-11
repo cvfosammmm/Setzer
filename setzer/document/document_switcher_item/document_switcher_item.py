@@ -25,7 +25,7 @@ class DocumentSwitcherItem():
         self.view = document_switcher_item_view.OpenDocsPopoverItem(document)
 
         self.modified_state = document.get_modified()
-        self.set_is_master()
+        self.set_is_root()
 
         self.document.register_observer(self)
 
@@ -42,17 +42,17 @@ class DocumentSwitcherItem():
         if change_code == 'displayname_change':
             self.view.set_name(self.document.get_displayname(), self.modified_state)
 
-        if change_code == 'master_state_change':
-            self.set_is_master()
+        if change_code == 'root_state_change':
+            self.set_is_root()
 
-    def set_is_master(self):
-        if self.document.get_is_master() == True:
+    def set_is_root(self):
+        if self.document.get_is_root() == True:
             self.view.icon.hide()
-            self.view.master_icon.show_all()
-            self.view.master_label.show_all()
+            self.view.root_icon.show_all()
+            self.view.root_label.show_all()
         else:
             self.view.icon.show_all()
-            self.view.master_icon.hide()
-            self.view.master_label.hide()
+            self.view.root_icon.hide()
+            self.view.root_label.hide()
 
 

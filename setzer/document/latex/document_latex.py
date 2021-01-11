@@ -265,9 +265,9 @@ class DocumentLaTeX(Document):
     def invalidate_build_log(self):
         self.add_change_code('build_log_update')
 
-    def set_is_master(self, is_master):
-        self.is_master = is_master
-        self.add_change_code('master_state_change', is_master)
+    def set_is_root(self, is_root):
+        self.is_root = is_root
+        self.add_change_code('root_state_change', is_root)
 
     def set_has_visible_build_system(self, has_visible_build_system):
         if self.has_visible_build_system != has_visible_build_system:
@@ -293,8 +293,8 @@ class DocumentLaTeX(Document):
     def get_file_ending(self):
         return 'tex'
 
-    def get_is_master(self):
-        return self.is_master
+    def get_is_root(self):
+        return self.is_root
 
     def is_latex_document(self):
         return True

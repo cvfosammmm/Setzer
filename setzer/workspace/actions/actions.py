@@ -281,8 +281,8 @@ class Actions(object):
 
     @_assert_has_active_document
     def on_build_action_activated(self, action=None, parameter=None):
-        if self.workspace.master_document != None:
-            document = self.workspace.master_document
+        if self.workspace.root_document != None:
+            document = self.workspace.root_document
         else:
             document = self.workspace.active_document
         try:

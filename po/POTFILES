@@ -1,7 +1,6 @@
-# generated on Thu 12 Nov 2020 10:33:41 AM UTC
+# generated on Mon 11 Jan 2021 01:35:19 PM UTC
 
 ./data/org.cvfosammmm.Setzer.appdata.xml.in
-./data/org.cvfosammmm.Setzer.desktop
 
 ./setzer/app/autocomplete_provider/autocomplete_provider.py
 ./setzer/app/autocomplete_provider/__init__.py
@@ -95,6 +94,8 @@
 ./setzer/document/document_switcher_item/document_switcher_item_viewgtk.py
 ./setzer/document/document_switcher_item/__init__.py
 ./setzer/document/document_viewgtk.py
+./setzer/document/gutter/gutter.py
+./setzer/document/gutter/__init__.py
 ./setzer/document/__init__.py
 ./setzer/document/latex/autocomplete/autocomplete.py
 ./setzer/document/latex/autocomplete/autocomplete_viewgtk.py
@@ -108,6 +109,7 @@
 ./setzer/document/latex/build_system/builder/builder_build_bibtex.py
 ./setzer/document/latex/build_system/builder/builder_build_glossaries.py
 ./setzer/document/latex/build_system/builder/builder_build_latex.py
+./setzer/document/latex/build_system/builder/builder_build_makeindex.py
 ./setzer/document/latex/build_system/builder/builder_build.py
 ./setzer/document/latex/build_system/builder/builder_forward_sync.py
 ./setzer/document/latex/build_system/builder/__init__.py
@@ -127,9 +129,9 @@
 ./setzer/document/latex_cls/state_manager/__init__.py
 ./setzer/document/latex_cls/state_manager/state_manager_latex_cls.py
 ./setzer/document/latex/code_folding/code_folding_controller.py
+./setzer/document/latex/code_folding/code_folding_gutter_object.py
 ./setzer/document/latex/code_folding/code_folding_presenter.py
 ./setzer/document/latex/code_folding/code_folding.py
-./setzer/document/latex/code_folding/code_folding_viewgtk.py
 ./setzer/document/latex/code_folding/__init__.py
 ./setzer/document/latex/document_latex.py
 ./setzer/document/latex/__init__.py
@@ -153,6 +155,8 @@
 ./setzer/document/latex_sty/__init__.py
 ./setzer/document/latex_sty/state_manager/__init__.py
 ./setzer/document/latex_sty/state_manager/state_manager_latex_sty.py
+./setzer/document/line_numbers/__init__.py
+./setzer/document/line_numbers/line_numbers.py
 ./setzer/document/search/__init__.py
 ./setzer/document/search/search.py
 ./setzer/document/search/search_viewgtk.py
@@ -175,7 +179,7 @@
 ./setzer/workspace/build_log/build_log.py
 ./setzer/workspace/build_log/build_log_viewgtk.py
 ./setzer/workspace/build_log/__init__.py
-./setzer/workspace/document_chooser/document_chooser_presenter.py
+./setzer/workspace/document_chooser/document_chooser.py
 ./setzer/workspace/document_chooser/document_chooser_viewgtk.py
 ./setzer/workspace/document_chooser/__init__.py
 ./setzer/workspace/document_switcher/document_switcher_controller.py
@@ -204,6 +208,9 @@
 ./setzer/workspace/sidebar/__init__.py
 ./setzer/workspace/sidebar/sidebar.py
 ./setzer/workspace/sidebar/sidebar_viewgtk.py
+./setzer/workspace/welcome_screen/__init__.py
+./setzer/workspace/welcome_screen/welcome_screen.py
+./setzer/workspace/welcome_screen/welcome_screen_viewgtk.py
 ./setzer/workspace/workspace_controller.py
 ./setzer/workspace/workspace_presenter.py
 ./setzer/workspace/workspace.py
