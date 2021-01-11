@@ -46,6 +46,7 @@ class StateManagerLaTeX():
                         self.load_code_folding_state(document_data)
                         self.load_build_log_state(document_data)
                         self.load_preview_state(document_data)
+                        self.load_synctex_state(document_data)
 
     def load_code_folding_state(self, document_data):
         try:
@@ -66,10 +67,16 @@ class StateManagerLaTeX():
             self.document.build_time = document_data['build_time']
         except KeyError:
             self.document.build_time = None
+
+    def load_synctex_state(self, document_data):
         try:
             self.document.has_synctex_file = document_data['has_synctex_file']
         except KeyError:
             self.document.has_synctex_file = False
+        try:
+            self.document.can_sync = document_data['can_sync']
+        except KeyError:
+            self.document.can_sync = False
 
     def load_preview_state(self, document_data):
         try:
@@ -105,6 +112,7 @@ class StateManagerLaTeX():
         document_data['has_been_built'] = self.document.has_been_built
         document_data['build_time'] = self.document.build_time
         document_data['has_synctex_file'] = self.document.has_synctex_file
+        document_data['can_sync'] = self.document.can_sync
 
         document_data['pdf_filename'] = self.document.preview.pdf_filename
         document_data['pdf_date'] = self.document.preview.pdf_date
