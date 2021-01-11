@@ -25,6 +25,7 @@ import math
 import time
 import queue
 
+from setzer.app.service_locator import ServiceLocator
 from setzer.helpers.timer import timer
 
 
@@ -37,6 +38,8 @@ class PreviewPresenter(object):
         self.view = view
 
         self.highlight_duration = 1.5
+
+        self.color_manager = ServiceLocator.get_color_manager()
 
         self.view.drawing_area.connect('draw', self.draw)
         self.scrolling_queue = queue.Queue()
@@ -116,8 +119,8 @@ class PreviewPresenter(object):
     #@timer
     def draw(self, drawing_area, ctx, data = None):
         if self.layouter.has_layout:
-            bg_color = self.view.get_style_context().lookup_color('theme_bg_color')[1]
-            border_color = self.view.get_style_context().lookup_color('borders')[1]
+            bg_color = self.color_manager.get_theme_color('theme_bg_color')
+            border_color = self.color_manager.get_theme_color('borders')
             self.draw_background(ctx, drawing_area, bg_color)
 
             ctx.transform(cairo.Matrix(1, 0, 0, 1, self.layouter.horizontal_margin, self.layouter.vertical_margin))

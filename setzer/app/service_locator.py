@@ -26,6 +26,7 @@ import xml.etree.ElementTree as ET
 
 import setzer.app.settings as settingscontroller
 import setzer.app.autocomplete_provider.autocomplete_provider as autocomplete_provider
+import setzer.app.color_manager as color_manager
 import setzer.app.font_manager as font_manager
 import setzer.helpers.popover_menu_builder as popover_menu_builder
 
@@ -42,6 +43,7 @@ class ServiceLocator(object):
     packages_dict = None
     source_language_manager = None
     source_style_scheme_manager = None
+    color_manager = None
     font_manager = None
 
     def init_main_window(main_window):
@@ -50,18 +52,9 @@ class ServiceLocator(object):
     def get_main_window():
         return ServiceLocator.main_window
 
-    def get_theme_fg_color():
-        return ServiceLocator.main_window.get_style_context().lookup_color('theme_fg_color')[1]
-
-    def get_theme_bg_color():
-        return ServiceLocator.main_window.get_style_context().lookup_color('theme_bg_color')[1]
-
-    def get_error_color():
-        return ServiceLocator.main_window.get_style_context().lookup_color('error_color')[1]
-
     def get_is_dark_mode():
-        fg_color = ServiceLocator.get_theme_fg_color()
-        bg_color = ServiceLocator.get_theme_bg_color()
+        fg_color = ServiceLocator.get_color_manager().get_theme_color('theme_fg_color')
+        bg_color = ServiceLocator.get_color_manager().get_theme_color('theme_bg_color')
         return (fg_color.red + fg_color.green + fg_color.blue) * fg_color.alpha > (bg_color.red + bg_color.green + bg_color.blue) * bg_color.alpha
 
     def get_regex_object(pattern):
@@ -98,6 +91,11 @@ class ServiceLocator(object):
         if ServiceLocator.font_manager == None:
             ServiceLocator.font_manager = font_manager.FontManager(ServiceLocator.get_main_window(), ServiceLocator.get_settings())
         return ServiceLocator.font_manager
+
+    def get_color_manager():
+        if ServiceLocator.color_manager == None:
+            ServiceLocator.color_manager = color_manager.ColorManager(ServiceLocator.get_main_window())
+        return ServiceLocator.color_manager
 
     def get_popover_menu_builder():
         if ServiceLocator.popover_menu_builder == None:

@@ -112,11 +112,12 @@ class MainApplicationController(Gtk.Application):
                                           self.settings.get_value('window_state', 'height'))
         self.main_window.current_width = self.settings.get_value('window_state', 'width')
         self.main_window.current_height = self.settings.get_value('window_state', 'height')
-        self.fg_color = ServiceLocator.get_theme_fg_color()
-        self.bg_color = ServiceLocator.get_theme_bg_color()
-        self.style_context = self.main_window.get_style_context()
         self.first_window_state_event = True
         self.main_window.show_all()
+
+        self.color_manager = ServiceLocator.get_color_manager()
+        self.fg_color = self.color_manager.get_theme_color('theme_fg_color')
+        self.bg_color = self.color_manager.get_theme_color('theme_bg_color')
 
         self.main_window.connect('size-allocate', self.on_window_size_allocate)
         self.main_window.connect('notify::is-maximized', self.on_window_maximize_event)
@@ -142,8 +143,8 @@ class MainApplicationController(Gtk.Application):
     def on_window_draw(self, main_window, context):
         ''' check for theme changes, update sidebar, textviews '''
 
-        fg_color = ServiceLocator.get_theme_fg_color()
-        bg_color = ServiceLocator.get_theme_bg_color()
+        fg_color = self.color_manager.get_theme_color('theme_fg_color')
+        bg_color = self.color_manager.get_theme_color('theme_bg_color')
         if self.fg_color.red != fg_color.red or self.bg_color.red != bg_color.red:
             self.fg_color = fg_color
             self.bg_color = bg_color

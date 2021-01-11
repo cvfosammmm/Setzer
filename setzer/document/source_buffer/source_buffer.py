@@ -51,6 +51,7 @@ class SourceBuffer(GtkSource.Buffer):
         self.source_style_scheme_manager = ServiceLocator.get_source_style_scheme_manager()
         self.font_manager = ServiceLocator.get_font_manager()
         self.font_manager.register_observer(self)
+        self.color_manager = ServiceLocator.get_color_manager()
 
         self.mover_mark = self.create_mark('mover', self.get_start_iter(), True)
 
@@ -594,7 +595,7 @@ class SourceBuffer(GtkSource.Buffer):
     def add_synctex_tag(self, start_iter, end_iter):
         self.place_cursor(start_iter)
         self.synctex_tag_count += 1
-        self.create_tag('synctex_highlight-' + str(self.synctex_tag_count), background_rgba=Gdk.RGBA(0.976, 0.941, 0.420, 0.6), background_full_height=True)
+        self.create_tag('synctex_highlight-' + str(self.synctex_tag_count), background_rgba=self.color_manager.get_rgba(0.976, 0.941, 0.420, 0.6), background_full_height=True)
         tag = self.get_tag_table().lookup('synctex_highlight-' + str(self.synctex_tag_count))
         self.apply_tag(tag, start_iter, end_iter)
         if not self.synctex_highlight_tags:
@@ -639,8 +640,8 @@ class SourceBuffer(GtkSource.Buffer):
             time_factor = time.time() - item['time']
             if time_factor > 1.5:
                 if time_factor <= 1.75:
-                    opacity_factor = self.ease(1 - (time_factor - 1.5) * 4)
-                    item['tag'].set_property('background-rgba', Gdk.RGBA(0.976, 0.941, 0.420, opacity_factor * 0.6))
+                    opacity_factor = int(self.ease(1 - (time_factor - 1.5) * 4) * 20)
+                    item['tag'].set_property('background-rgba', self.color_manager.get_rgba(0.976, 0.941, 0.420, opacity_factor * 0.03))
                 else:
                     start = self.get_start_iter()
                     end = self.get_end_iter()

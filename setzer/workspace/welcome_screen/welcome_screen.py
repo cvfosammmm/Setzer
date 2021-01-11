@@ -17,7 +17,6 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gdk
 from gi.repository import GObject
 from gi.repository import Pango
 import cairo
@@ -77,6 +76,7 @@ class WelcomeScreen(object):
 
         self.fg_color = None
         self.bg_color = None
+        self.color_manager = ServiceLocator.get_color_manager()
         self.update_colors()
         self.view.get_style_context().connect('changed', self.update_colors)
 
@@ -165,14 +165,8 @@ class WelcomeScreen(object):
         gradient_context.fill()
 
     def update_colors(self, style_context=None):
-        theme_fg_color = self.view.drawing_area.get_style_context().lookup_color('theme_fg_color')[1]
-        theme_bg_color = self.view.drawing_area.get_style_context().lookup_color('theme_bg_color')[1]
-        self.fg_color = Gdk.RGBA(0, 0, 0, 0)
-        self.fg_color.red = theme_fg_color.red * self.alpha + theme_bg_color.red * (1 - self.alpha)
-        self.fg_color.green = theme_fg_color.green * self.alpha + theme_bg_color.green * (1 - self.alpha)
-        self.fg_color.blue = theme_fg_color.blue * self.alpha + theme_bg_color.blue * (1 - self.alpha)
-        self.fg_color.alpha = theme_fg_color.alpha * self.alpha + theme_bg_color.alpha * (1 - self.alpha)
-        self.bg_color = theme_bg_color
+        self.fg_color = self.color_manager.get_theme_color_mix('theme_fg_color', 'theme_bg_color', self.alpha)
+        self.bg_color = self.color_manager.get_theme_color('theme_bg_color')
 
         self.do_draw()
 

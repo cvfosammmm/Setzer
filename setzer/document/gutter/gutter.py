@@ -18,7 +18,6 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from gi.repository import Gdk
 
 from setzer.helpers.timer import timer
 from setzer.app.service_locator import ServiceLocator
@@ -47,10 +46,11 @@ class Gutter(object):
         def on_realize(widget): widget.get_window().set_pass_through(True)
         self.view.connect('realize', on_realize)
         self.style_context = self.view.get_style_context()
-        self.bg_color = Gdk.RGBA(0, 0, 0, 0)
-        self.fg_color = Gdk.RGBA(0, 0, 0, 0)
-        self.cl_color = Gdk.RGBA(0, 0, 0, 0)
-        self.border_color = Gdk.RGBA(0, 0, 0, 0)
+        self.color_manager = ServiceLocator.get_color_manager()
+        self.bg_color = None
+        self.fg_color = None
+        self.cl_color = None
+        self.border_color = None
         self.update_colors()
         self.source_view.get_style_context().connect('changed', self.update_colors)
 
@@ -109,42 +109,24 @@ class Gutter(object):
         line_numbers_style = style_scheme.get_style('line-numbers')
         bg_color_string = line_numbers_style.get_property('background')
         if bg_color_string != None:
-            bg_color = Gdk.RGBA(0, 0, 0, 0)
-            bg_color.parse(bg_color_string)
+            self.bg_color = self.color_manager.get_rgba_from_string(bg_color_string)
         else:
-            theme_base_color = self.style_context.lookup_color('theme_base_color')[1]
-            theme_bg_color = self.style_context.lookup_color('theme_bg_color')[1]
-            bg_color = Gdk.RGBA(0, 0, 0, 0)
-            bg_color.red = theme_base_color.red / 2 + theme_bg_color.red / 2
-            bg_color.green = theme_base_color.green / 2 + theme_bg_color.green / 2
-            bg_color.blue = theme_base_color.blue / 2 + theme_bg_color.blue / 2
-            bg_color.alpha = theme_base_color.alpha / 2 + theme_bg_color.alpha / 2
-        self.bg_color = bg_color
+            self.bg_color = self.color_manager.get_theme_color_mix('theme_base_color', 'theme_bg_color', 0.5)
 
         fg_color_string = line_numbers_style.get_property('foreground')
         if fg_color_string != None:
-            fg_color = Gdk.RGBA(0, 0, 0, 0)
-            fg_color.parse(fg_color_string)
+            self.fg_color = self.color_manager.get_rgba_from_string(fg_color_string)
         else:
-            fg_color = self.style_context.lookup_color('theme_fg_color')[1]
-        self.fg_color = fg_color
+            self.fg_color = self.color_manager.get_theme_color('theme_fg_color')
 
         current_line_style = style_scheme.get_style('current-line')
         cl_color_string = current_line_style.get_property('background')
         if cl_color_string != None:
-            cl_color = Gdk.RGBA(0, 0, 0, 0)
-            cl_color.parse(cl_color_string)
+            self.cl_color = self.color_manager.get_rgba_from_string(cl_color_string)
         else:
-            cl_color = self.style_context.lookup_color('theme_base_color')[1]
-        self.cl_color = cl_color
+            self.cl_color = self.color_manager.get_theme_color('theme_base_color')
 
-        theme_base_color = self.style_context.lookup_color('theme_base_color')[1]
-        theme_border_color = self.style_context.lookup_color('borders')[1]
-        self.border_color = Gdk.RGBA(0, 0, 0, 0)
-        self.border_color.red = theme_base_color.red / 2 + theme_border_color.red / 2
-        self.border_color.green = theme_base_color.green / 2 + theme_border_color.green / 2
-        self.border_color.blue = theme_base_color.blue / 2 + theme_border_color.blue / 2
-        self.border_color.alpha = theme_base_color.alpha / 2 + theme_border_color.alpha / 2
+        self.border_color = self.color_manager.get_theme_color_mix('theme_base_color', 'borders', 0.5)
 
         for widget in self.widgets:
             widget.update_colors()

@@ -81,7 +81,7 @@ class BuildSystemPresenter(object):
 
                     error_count = self.document.get_error_count()
                     if error_count > 0:
-                        error_color_rgba = ServiceLocator.get_error_color()
+                        error_color_rgba = ServiceLocator.get_color_manager().get_theme_color('error_color')
                         error_color = '#' + format(int(error_color_rgba.red * 255), '02x') + format(int(error_color_rgba.green * 255), '02x') + format(int(error_color_rgba.blue * 255), '02x')
                         str_errors = ngettext('<span color="{color}">Failed</span> ({amount} error)!', '<span color="{color}">Failed</span> ({amount} errors)!', error_count)
                         message = str_errors.format(color=error_color, amount=str(error_count))
