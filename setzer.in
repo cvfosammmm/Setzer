@@ -100,6 +100,7 @@ class MainApplicationController(Gtk.Application):
 
     def activate(self):
         self.workspace = Workspace()
+        ServiceLocator.init_workspace(self.workspace)
         ServiceLocator.init_autocomplete_provider(self.workspace)
         DialogLocator.init_dialogs(self.main_window, self.workspace)
 

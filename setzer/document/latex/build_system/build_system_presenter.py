@@ -93,7 +93,14 @@ class BuildSystemPresenter(object):
                     self.document.has_been_built = True
 
             elif result_blob['backward_sync'] != None:
-                self.document.set_synctex_position(result_blob['backward_sync'])
+                if not self.document.root_is_set:
+                    if result_blob['backward_sync']['filename'] == self.document.get_filename():
+                        self.document.set_synctex_position(result_blob['backward_sync'])
+                elif self.document.is_root:
+                    workspace = ServiceLocator.get_workspace()
+                    document = workspace.open_document_by_filename(result_blob['backward_sync']['filename'])
+                    if document != None:
+                        document.set_synctex_position(result_blob['backward_sync'])
 
             self.document.change_build_state('idle')
 

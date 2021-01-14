@@ -56,8 +56,9 @@ class BuilderBackwardSync(builder_build.BuilderBuild):
 
         match = self.backward_synctex_regex.search(raw)
         result = None
-        if match != None and match.group(1) == tex_filename:
+        if match != None:
             result = dict()
+            result['filename'] = match.group(1)
             result['line'] = max(int(match.group(2)) - 1, 0)
             result['word'] = query.backward_sync_data['word']
             result['context'] = query.backward_sync_data['context']

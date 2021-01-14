@@ -90,8 +90,9 @@ class Workspace(Observable):
             document_candidate = self.get_document_by_filename(filename)
             if document_candidate != None:
                 self.set_active_document(document_candidate)
+                return document_candidate
             else:
-                self.create_document_from_filename(filename, activate=True)
+                return self.create_document_from_filename(filename, activate=True)
 
     def switch_to_earliest_open_document(self):
         document = self.get_earliest_active_document()

@@ -33,6 +33,8 @@ import setzer.helpers.popover_menu_builder as popover_menu_builder
 
 class ServiceLocator(object):
 
+    main_window = None
+    workspace = None
     settings = None
     setzer_version = None
     resources_path = None
@@ -51,6 +53,12 @@ class ServiceLocator(object):
 
     def get_main_window():
         return ServiceLocator.main_window
+
+    def init_workspace(workspace):
+        ServiceLocator.workspace = workspace
+
+    def get_workspace():
+        return ServiceLocator.workspace
 
     def get_is_dark_mode():
         fg_color = ServiceLocator.get_color_manager().get_theme_color('theme_fg_color')
