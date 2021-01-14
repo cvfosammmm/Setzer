@@ -209,6 +209,7 @@ class Preview(Observable):
                 current_min -= 20
                 self.vertical_margin = current_min
             self.pdf_loaded = True
+            self.document.update_can_sync()
             self.add_change_code('pdf_changed')
             with self.links_lock:
                 self.links = dict()

@@ -48,6 +48,7 @@ class Document(Observable):
         self.last_activated = 0
         self.dark_mode = False
         self.is_root = False
+        self.root_is_set = False
 
         self.source_buffer = source_buffer.SourceBuffer(self)
 

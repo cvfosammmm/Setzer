@@ -26,11 +26,14 @@ class ContextMenu(object):
     def __init__(self, document, document_view):
         self.document = document
         self.document_view = document_view
+
         self.scbar_view = context_menu_view.ContextMenuView(document)
         stack = document_view.shortcuts_bar_bottom.more_actions_popover.get_child()
         stack.add_named(self.scbar_view, 'main')
         self.controller = context_menu_controller.ContextMenuController(self, self.scbar_view)
         self.presenter = context_menu_presenter.ContextMenuPresenter(self, self.scbar_view)
+
+        self.can_sync = False
 
         self.font_manager = ServiceLocator.get_font_manager()
         self.font_manager.register_observer(self)
@@ -40,11 +43,23 @@ class ContextMenu(object):
     def change_notification(self, change_code, notifying_object, parameter):
 
         if change_code == 'can_sync_changed':
-            self.presenter.on_can_sync_changed(parameter)
+            self.set_can_sync()
+            
+        if change_code == 'root_state_change':
+            self.set_can_sync()
             
         if change_code == 'font_string_changed':
             zoom_level = self.font_manager.get_zoom_level()
             self.presenter.set_zoom_level(zoom_level)
+
+    def set_can_sync(self):
+        can_sync = False
+        if self.document.is_latex_document():
+            if self.document.can_sync:
+                if self.document.is_root or not self.document.root_is_set:
+                    can_sync = True
+        self.can_sync = can_sync
+        self.presenter.on_can_sync_changed(can_sync)
 
     def on_undo(self, widget=None):
         self.document.undo()

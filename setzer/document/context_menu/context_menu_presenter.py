@@ -92,7 +92,7 @@ class ContextMenuPresenter(object):
             menu_item_comment = Gtk.MenuItem.new_with_label(_('Toggle Comment'))
             menu_item_comment.connect('activate', self.context_menu.on_toggle_comment)
             menu_item_show_in_preview = Gtk.MenuItem.new_with_label(_('Show in Preview'))
-            menu_item_show_in_preview.set_sensitive(self.context_menu.document.can_sync)
+            menu_item_show_in_preview.set_sensitive(self.context_menu.can_sync)
             menu_item_show_in_preview.connect('activate', self.context_menu.on_show_in_preview)
             menu.append(Gtk.SeparatorMenuItem())
             menu.append(menu_item_comment)

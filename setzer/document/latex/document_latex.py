@@ -265,8 +265,9 @@ class DocumentLaTeX(Document):
     def invalidate_build_log(self):
         self.add_change_code('build_log_update')
 
-    def set_is_root(self, is_root):
+    def set_root_state(self, is_root, root_is_set):
         self.is_root = is_root
+        self.root_is_set = root_is_set
         self.add_change_code('root_state_change', is_root)
 
     def set_has_visible_build_system(self, has_visible_build_system):

@@ -371,16 +371,16 @@ class Workspace(Observable):
             self.root_document = root_document
             for document in self.open_latex_documents:
                 if document == root_document:
-                    document.set_is_root(True)
+                    document.set_root_state(True, True)
                 else:
-                    document.set_is_root(False)
+                    document.set_root_state(False, True)
                 self.set_has_visible_build_system(document)
             self.add_change_code('root_state_change', 'one_document')
             self.set_build_log()
 
     def unset_root_document(self):
         for document in self.open_latex_documents:
-            document.set_is_root(False)
+            document.set_root_state(False, False)
             self.set_has_visible_build_system(document)
         self.root_document = None
         self.set_has_visible_build_system(self.active_document)
