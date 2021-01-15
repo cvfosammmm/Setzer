@@ -26,6 +26,7 @@ from gi.repository import Gtk
 from gi.repository import GObject
 
 from setzer.dialogs.dialog_locator import DialogLocator
+from setzer.app.service_locator import ServiceLocator
 
 
 class DocumentController(object):
@@ -34,6 +35,8 @@ class DocumentController(object):
 
         self.document = document
         self.view = document_view
+
+        self.forward_sync_manager = ServiceLocator.get_forward_sync_manager()
 
         self.view.source_view.connect('key-press-event', self.on_keypress)
         self.view.source_view.connect('button-press-event', self.on_buttonpress)
@@ -47,7 +50,7 @@ class DocumentController(object):
     def on_buttonpress(self, widget, event, data=None):
         if event.type == Gdk.EventType.BUTTON_PRESS:
             if event.state == Gdk.ModifierType.CONTROL_MASK:
-                GLib.idle_add(self.document.forward_sync)
+                GLib.idle_add(self.forward_sync_manager.forward_sync, self.document)
                 return False
         return False
 

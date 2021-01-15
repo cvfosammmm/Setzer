@@ -42,7 +42,7 @@ class DocumentSwitcherItem():
         if change_code == 'displayname_change':
             self.view.set_name(self.document.get_displayname(), self.modified_state)
 
-        if change_code == 'root_state_change':
+        if change_code == 'is_root_changed':
             self.set_is_root()
 
     def set_is_root(self):

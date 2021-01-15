@@ -40,10 +40,7 @@ class BuildSystemController(object):
             query_obj = query.Query(self.document.get_filename()[:])
 
             if mode in ['forward_sync', 'build_and_forward_sync']:
-                insert = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
-                synctex_arguments = dict()
-                synctex_arguments['line'] = insert.get_line() + 1
-                synctex_arguments['line_offset'] = insert.get_line_offset() + 1
+                synctex_arguments = self.document.forward_sync_arguments
 
             if mode in ['build', 'build_and_forward_sync']:
                 interpreter = self.settings.get_value('preferences', 'latex_interpreter')
@@ -72,6 +69,7 @@ class BuildSystemController(object):
             elif mode == 'forward_sync':
                 query_obj.jobs = ['forward_sync']
                 query_obj.can_sync = True
+                query_obj.forward_sync_data['filename'] = synctex_arguments['filename']
                 query_obj.forward_sync_data['line'] = synctex_arguments['line']
                 query_obj.forward_sync_data['line_offset'] = synctex_arguments['line_offset']
             elif mode == 'backward_sync' and document.backward_sync_data != None:
@@ -90,6 +88,7 @@ class BuildSystemController(object):
                 query_obj.build_data['additional_arguments'] = additional_arguments
                 query_obj.build_data['do_cleanup'] = do_cleanup
                 query_obj.can_sync = False
+                query_obj.forward_sync_data['filename'] = synctex_arguments['filename']
                 query_obj.forward_sync_data['line'] = synctex_arguments['line']
                 query_obj.forward_sync_data['line_offset'] = synctex_arguments['line_offset']
 

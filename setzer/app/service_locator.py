@@ -28,6 +28,7 @@ import setzer.app.settings as settingscontroller
 import setzer.app.autocomplete_provider.autocomplete_provider as autocomplete_provider
 import setzer.app.color_manager as color_manager
 import setzer.app.font_manager as font_manager
+import setzer.app.forward_sync_manager as forward_sync_manager
 import setzer.helpers.popover_menu_builder as popover_menu_builder
 
 
@@ -47,6 +48,7 @@ class ServiceLocator(object):
     source_style_scheme_manager = None
     color_manager = None
     font_manager = None
+    forward_sync_manager = None
 
     def init_main_window(main_window):
         ServiceLocator.main_window = main_window
@@ -104,6 +106,11 @@ class ServiceLocator(object):
         if ServiceLocator.color_manager == None:
             ServiceLocator.color_manager = color_manager.ColorManager(ServiceLocator.get_main_window())
         return ServiceLocator.color_manager
+
+    def get_forward_sync_manager():
+        if ServiceLocator.forward_sync_manager == None:
+            ServiceLocator.forward_sync_manager = forward_sync_manager.ForwardSyncManager(ServiceLocator.get_workspace())
+        return ServiceLocator.forward_sync_manager
 
     def get_popover_menu_builder():
         if ServiceLocator.popover_menu_builder == None:

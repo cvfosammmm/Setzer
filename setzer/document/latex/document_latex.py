@@ -44,6 +44,7 @@ class DocumentLaTeX(Document):
         self.build_mode = 'build_and_forward_sync'
         self.has_synctex_file = False
         self.backward_sync_data = None
+        self.forward_sync_arguments = None
         self.can_sync = False
 
         self.preview = preview.Preview(self)
@@ -229,7 +230,12 @@ class DocumentLaTeX(Document):
             self.can_sync = False
         self.add_change_code('can_sync_changed', self.can_sync)
 
-    def forward_sync(self):
+    def forward_sync(self, document):
+        insert = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
+        self.forward_sync_arguments = dict()
+        self.forward_sync_arguments['filename'] = document.get_filename()
+        self.forward_sync_arguments['line'] = insert.get_line() + 1
+        self.forward_sync_arguments['line_offset'] = insert.get_line_offset() + 1
         if self.can_sync:
             self.set_build_mode('forward_sync')
             self.start_building()
@@ -241,8 +247,15 @@ class DocumentLaTeX(Document):
             self.start_building()
 
     def build_and_forward_sync(self):
-        self.set_build_mode('build_and_forward_sync')
-        self.start_building()
+        document = ServiceLocator.get_workspace().active_document
+        if document != None:
+            insert = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
+            self.forward_sync_arguments = dict()
+            self.forward_sync_arguments['filename'] = document.get_filename()
+            self.forward_sync_arguments['line'] = insert.get_line() + 1
+            self.forward_sync_arguments['line_offset'] = insert.get_line_offset() + 1
+            self.set_build_mode('build_and_forward_sync')
+            self.start_building()
 
     def start_building(self):
         if self.build_mode == 'forward_sync' and not self.has_synctex_file: return
@@ -268,7 +281,7 @@ class DocumentLaTeX(Document):
     def set_root_state(self, is_root, root_is_set):
         self.is_root = is_root
         self.root_is_set = root_is_set
-        self.add_change_code('root_state_change', is_root)
+        self.add_change_code('is_root_changed', is_root)
 
     def set_has_visible_build_system(self, has_visible_build_system):
         if self.has_visible_build_system != has_visible_build_system:

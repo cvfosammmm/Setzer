@@ -42,7 +42,7 @@ class BuilderForwardSync(builder_build.BuilderBuild):
 
         synctex_folder = self.config_folder + '/' + base64.urlsafe_b64encode(str.encode(query.tex_filename)).decode()
         arguments = ['synctex', 'view', '-i']
-        arguments.append(str(query.forward_sync_data['line']) + ':' + str(query.forward_sync_data['line_offset']) + ':' + tex_filename)
+        arguments.append(str(query.forward_sync_data['line']) + ':' + str(query.forward_sync_data['line_offset']) + ':' + query.forward_sync_data['filename'])
         arguments.append('-o')
         arguments.append(query.tex_filename[:-3] + 'pdf')
         arguments.append('-d')
