@@ -32,24 +32,25 @@ class DocumentChangedOnDiskDialog(Dialog):
         self.main_window = main_window
 
     def run(self, document):
-        self.setup(document)
+        view = self.setup(document)
 
-        response = self.view.run()
+        response = view.run()
         if response == Gtk.ResponseType.YES:
             value = True
         else:
             value = False
 
-        self.close()
+        view.hide()
         return value
 
     def setup(self, document):
-        self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
+        view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
 
-        self.view.set_property('text', _('Document »{document}« has changed on disk.').format(document=document.get_displayname()))
-        self.view.format_secondary_markup(_('Should Setzer reload it now?'))
+        view.set_property('text', _('Document »{document}« has changed on disk.').format(document=document.get_displayname()))
+        view.format_secondary_markup(_('Should Setzer reload it now?'))
 
-        self.view.add_buttons(_('_Keep the current Version'), Gtk.ResponseType.CANCEL, _('_Reload from Disk'), Gtk.ResponseType.YES)
-        self.view.set_default_response(Gtk.ResponseType.YES)
+        view.add_buttons(_('_Keep the current Version'), Gtk.ResponseType.CANCEL, _('_Reload from Disk'), Gtk.ResponseType.YES)
+        view.set_default_response(Gtk.ResponseType.YES)
+        return view
 
 

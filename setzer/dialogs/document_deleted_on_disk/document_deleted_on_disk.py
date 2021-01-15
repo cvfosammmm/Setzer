@@ -32,16 +32,19 @@ class DocumentDeletedOnDiskDialog(Dialog):
         self.main_window = main_window
 
     def run(self, document):
-        self.setup(document)
+        view = self.setup(document)
 
-        self.view.run()
-        self.close()
+        view.run()
+        view.hide()
 
     def setup(self, document):
-        self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.WARNING)
+        view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.WARNING)
 
-        self.view.set_property('text', _('Document »{document}« was deleted from disk or moved.').format(document=document.get_displayname()))
-        self.view.format_secondary_markup(_('If you close it or close Setzer without saving, this document will be lost.'))
+        view.set_property('text', _('Document »{document}« was deleted from disk or moved.').format(document=document.get_displayname()))
+        view.format_secondary_markup(_('If you close it or close Setzer without saving, this document will be lost.'))
 
-        self.view.add_buttons(_('Ok'), Gtk.ResponseType.YES)
-        self.view.set_default_response(Gtk.ResponseType.YES)
+        view.add_buttons(_('Ok'), Gtk.ResponseType.YES)
+        view.set_default_response(Gtk.ResponseType.YES)
+        return view
+
+
