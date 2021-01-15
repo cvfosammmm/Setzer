@@ -19,6 +19,7 @@ import gi
 gi.require_version('Poppler', '0.18')
 from gi.repository import Poppler
 from pdfminer.pdfpage import PDFPage
+from pdfminer.pdftypes import PDFObjRef
 
 import os.path
 import math
@@ -238,35 +239,51 @@ class Preview(Observable):
             with open(self.pdf_filename, 'rb') as file:
                 for page_num, page in enumerate(PDFPage.get_pages(file)):
                     links[page_num] = list()
-                    if page.annots != None:
-                        for annot in page.annots.resolve():
-                            annot = annot.resolve()
+                    annots_final = self.resolve_annots(page.annots)
+                    for annot in annots_final:
+                        try:
+                            rect = annot['Rect']
+                        except KeyError:
+                            pass
+                        else:
                             try:
-                                rect = annot['Rect']
+                                data = annot['A']
                             except KeyError:
                                 pass
                             else:
                                 try:
-                                    data = annot['A']
+                                    named_dest = data['D']
                                 except KeyError:
                                     pass
                                 else:
-                                    try:
-                                        named_dest = data['D']
-                                    except KeyError:
-                                        pass
-                                    else:
-                                        dest = self.poppler_document.find_dest(named_dest.decode('utf-8'))
-                                        links[page_num].append([rect, dest, 'goto'])
-                                    try:
-                                        uri = data['URI']
-                                    except KeyError:
-                                        pass
-                                    else:
-                                        links[page_num].append([rect, uri.decode('utf-8'), 'uri'])
+                                    dest = self.poppler_document.find_dest(named_dest.decode('utf-8'))
+                                    links[page_num].append([rect, dest, 'goto'])
+                                try:
+                                    uri = data['URI']
+                                except KeyError:
+                                    pass
+                                else:
+                                    links[page_num].append([rect, uri.decode('utf-8'), 'uri'])
             with self.links_lock:
                 self.links = links
                 self.links_parsed = True
+
+    def resolve_annots(self, annots):
+        if annots == None: return []
+
+        if type(annots) is PDFObjRef:
+            annots = annots.resolve()
+
+        if type(annots) is dict:
+            return [annots]
+        else:
+            return_value = list()
+            for annot in annots:
+                if type(annots) is dict:
+                    return_value.append(annot)
+                else:
+                    return_value += self.resolve_annots(annot)
+            return return_value
 
     def update_fit_to_width_zoom_level(self, level):
         if level != self.zoom_level_fit_to_width:
