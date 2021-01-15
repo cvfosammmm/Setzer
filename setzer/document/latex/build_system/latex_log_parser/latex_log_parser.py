@@ -191,7 +191,7 @@ class LaTeXLogParser():
                     line_number = self.bl_get_line_number(line, matchiter)
                     log_messages['error'].append((None, line_number, text))
 
-                elif line.startswith('! '):
+                elif line.startswith('! ') and not line.startswith('!  ==> Fatal'):
                     text = line[2:].strip()
                     line_number = self.bl_get_line_number(line, matchiter)
                     log_messages['error'].append((None, line_number, text))
