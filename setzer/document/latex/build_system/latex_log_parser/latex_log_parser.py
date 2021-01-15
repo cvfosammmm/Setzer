@@ -23,7 +23,7 @@ from setzer.app.service_locator import ServiceLocator
 class LaTeXLogParser():
 
     def __init__(self):
-        self.doc_regex = ServiceLocator.get_regex_object(r'( *\((.*\.tex))')
+        self.doc_regex = ServiceLocator.get_regex_object(r'(\(([^\(\)]*\.(?:tex|gls)))')
         self.item_regex = ServiceLocator.get_regex_object(r'((?<!.) *' + 
     r'(?:Overfull \\hbox|Underfull \\hbox|' + 
     r'No file .*\.|File .* does not exist\.|' +
@@ -176,6 +176,11 @@ class LaTeXLogParser():
                     line_number = self.bl_get_line_number(line, matchiter)
                     log_messages['error'].append((None, line_number, text))
 
+                elif line.startswith('! Package'):
+                    text = self.get_text(line[2:], matchiter, True)
+                    line_number = self.bl_get_line_number(line, matchiter)
+                    log_messages['error'].append(('Undefined control sequence', line_number, text))
+
                 elif line.startswith('File') and line.endswith(' does not exist.\n'):
                     text = line.strip()
                     line_number = -1
@@ -187,7 +192,7 @@ class LaTeXLogParser():
                     log_messages['error'].append((None, line_number, text))
 
                 elif line.startswith('! File'):
-                    text = line[2:].strip()
+                    text = self.get_text(line[2:])
                     line_number = self.bl_get_line_number(line, matchiter)
                     log_messages['error'].append((None, line_number, text))
 
@@ -196,6 +201,18 @@ class LaTeXLogParser():
                     line_number = self.bl_get_line_number(line, matchiter)
                     log_messages['error'].append((None, line_number, text))
         return log_messages
+
+    def get_text(self, line, matchiter=None, can_be_multiline=False):
+        if can_be_multiline:
+            text = line.strip()
+            if not '.' in text and len(text) > 60:
+                try:
+                    text += next(matchiter).strip()
+                except StopIteration:
+                    pass
+            return text
+        else:
+            return line.strip()
 
     def split_log_text_by_file(self, log_text, tex_filename):
         doc_texts = dict()
