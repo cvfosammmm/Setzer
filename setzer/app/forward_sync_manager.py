@@ -26,6 +26,7 @@ class ForwardSyncManager(Observable):
         self.workspace = workspace
         self.workspace.register_observer(self)
         self.document = None
+        self.can_sync = False
         self.update_document()
 
     def change_notification(self, change_code, notifying_object, parameter):

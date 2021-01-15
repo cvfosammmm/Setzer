@@ -50,8 +50,8 @@ class DocumentController(object):
     def on_buttonpress(self, widget, event, data=None):
         if event.type == Gdk.EventType.BUTTON_PRESS:
             if event.state == Gdk.ModifierType.CONTROL_MASK:
-                GLib.idle_add(self.forward_sync_manager.forward_sync, self.document)
-                return False
+                if self.forward_sync_manager.can_sync:
+                    GLib.idle_add(self.forward_sync_manager.forward_sync, self.document)
         return False
 
     def on_keypress(self, widget, event, data=None):
