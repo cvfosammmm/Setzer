@@ -26,9 +26,9 @@ class LaTeXLogParser():
         self.doc_regex = ServiceLocator.get_regex_object(r'( *\((.*\.tex))')
         self.item_regex = ServiceLocator.get_regex_object(r'((?<!.) *' + 
     r'(?:Overfull \\hbox|Underfull \\hbox|' + 
-    r'No file .*\.|File .* does not exist\.|! I can' + "'" + r't find file\.|! File .* not found\.|' +
+    r'No file .*\.|File .* does not exist\.|' +
     r'(?:LaTeX|pdfTeX|LuaTeX|Package|Class) .*Warning.*:|LaTeX Font Warning:|' +
-    r'! Undefined control sequence\.|! Missing (?:.*) inserted.|! Package .* Error:|! (?:LaTeX|LuaTeX) Error:).*\n)')
+    r'! ).*\n)')
         self.badbox_line_number_regex = ServiceLocator.get_regex_object(r'lines ([0-9]+)--([0-9]+)')
         self.other_line_number_regex = ServiceLocator.get_regex_object(r'(l\.| input line \n| input line )([0-9]+)( |\.)')
 
