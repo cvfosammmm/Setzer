@@ -38,6 +38,9 @@ class BuildLogPresenter(object):
         self.view.list.connect('draw', self.draw)
         self.build_log.register_observer(self)
 
+        self.max_width = -1
+        self.height = -1
+
     '''
     *** notification handlers
     '''
@@ -49,7 +52,9 @@ class BuildLogPresenter(object):
             num_others = self.build_log.count_items('warnings') + self.build_log.count_items('badboxes')
             num_items = self.build_log.count_items('all')
             self.set_header_data(num_errors, num_others, parameter)
-            self.view.list.set_size_request(-1, num_items * self.view.line_height + 6)
+            self.max_width = -1
+            self.height = num_items * self.view.line_height + 6
+            self.view.list.set_size_request(self.max_width, self.height)
             self.view.list.queue_draw()
 
         if change_code == 'hover_item_changed':
@@ -108,23 +113,10 @@ class BuildLogPresenter(object):
             ctx.show_text(_('Line {number}').format(number=str(item[3])) if item[3] >= 0 else '')
 
             ctx.move_to(330, (count + 1) * self.view.line_height - 7)
-            text = self.ellipsize(ctx, item[4], view_width - 340)
-            ctx.show_text(text)
+            self.max_width = max(self.max_width, 342 + ctx.text_extents(item[4]).width)
+            ctx.show_text(item[4])
             count += 1
-
-    def ellipsize(self, ctx, text, max_width):
-        if ctx.text_extents(text).width <= max_width: return text
-        dots_width = ctx.text_extents('...').width
-
-        upper_bound = len(text)
-        lower_bound = 0
-        while upper_bound > lower_bound + 1:
-            new_bound = (upper_bound + lower_bound) // 2
-            if ctx.text_extents(text[:new_bound]).width > max_width - dots_width:
-                upper_bound = new_bound
-            else:
-                lower_bound = new_bound
-        return text[:lower_bound] + '...'
+        drawing_area.set_size_request(self.max_width, self.height)
 
     def ellipsize_front(self, ctx, text, max_width):
         if ctx.text_extents(text).width <= max_width: return text
