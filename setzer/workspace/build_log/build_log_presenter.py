@@ -55,6 +55,8 @@ class BuildLogPresenter(object):
             self.max_width = -1
             self.height = num_items * self.view.line_height + 6
             self.view.list.set_size_request(self.max_width, self.height)
+            self.view.scrolled_window.get_vadjustment().set_value(0)
+            self.view.scrolled_window.get_hadjustment().set_value(0)
             self.view.list.queue_draw()
 
         if change_code == 'hover_item_changed':
