@@ -64,6 +64,8 @@ class BuildLogPresenter(object):
 
     #@timer
     def draw(self, drawing_area, ctx):
+        update_size = False
+
         style_context = drawing_area.get_style_context()
 
         ctx.set_font_size(self.view.font_size)
@@ -115,10 +117,15 @@ class BuildLogPresenter(object):
             ctx.show_text(_('Line {number}').format(number=str(item[3])) if item[3] >= 0 else '')
 
             ctx.move_to(330, (count + 1) * self.view.line_height - 7)
-            self.max_width = max(self.max_width, 342 + ctx.text_extents(item[4]).width)
             ctx.show_text(item[4])
             count += 1
-        drawing_area.set_size_request(self.max_width, self.height)
+
+            if (342 + ctx.text_extents(item[4]).width) > self.max_width:
+                self.max_width = (342 + ctx.text_extents(item[4]).width)
+                update_size = True
+
+        if update_size:
+            drawing_area.set_size_request(self.max_width, self.height)
 
     def ellipsize_front(self, ctx, text, max_width):
         if ctx.text_extents(text).width <= max_width: return text
