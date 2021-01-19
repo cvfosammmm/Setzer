@@ -76,16 +76,14 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
         query.can_sync = self.copy_synctex_file(query)
         self.cleanup_files(query)
 
-        if query.error_count == 0:
-            pdf_filename = os.path.dirname(query.tex_filename) + '/' + os.path.basename(query.tex_filename).rsplit('.tex', 1)[0] + '.pdf'
-            new_pdf_filename = os.path.splitext(query.tex_filename)[0] + '.pdf'
-            try: shutil.move(pdf_filename, new_pdf_filename)
-            except FileNotFoundError: new_pdf_filename = None
-        else:
-            new_pdf_filename = None
+        pdf_filename = query.tex_filename.rsplit('.tex', 1)[0] + '.pdf'
+        if query.error_count > 0:
+            if os.path.isfile(pdf_filename):
+                os.remove(pdf_filename)
+            pdf_filename = None
 
         with query.build_result_lock:
-            query.build_result = {'pdf_filename': new_pdf_filename, 
+            query.build_result = {'pdf_filename': pdf_filename, 
                                   'has_synctex_file': query.can_sync,
                                   'log_messages': query.log_messages,
                                   'bibtex_log_messages': query.bibtex_log_messages,
