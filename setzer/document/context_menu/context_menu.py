@@ -44,14 +44,14 @@ class ContextMenu(object):
 
     def change_notification(self, change_code, notifying_object, parameter):
 
-        if change_code == 'update_sync_state':
-            self.can_sync = self.forward_sync_manager.can_sync
-            if self.document.is_latex_document():
-                self.presenter.on_can_sync_changed(self.can_sync)
-
         if change_code == 'font_string_changed':
             zoom_level = self.font_manager.get_zoom_level()
             self.presenter.set_zoom_level(zoom_level)
+
+        if self.document.is_latex_document():
+            if change_code == 'update_sync_state':
+                self.can_sync = self.forward_sync_manager.can_sync
+                self.presenter.on_can_sync_changed(self.can_sync)
 
     def on_undo(self, widget=None):
         self.document.undo()
