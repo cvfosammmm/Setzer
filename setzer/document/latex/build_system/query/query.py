@@ -32,7 +32,7 @@ class Query(object):
         self.synctex_file = None
         self.synctex_file_lock = thread.allocate_lock()
 
-        self.build_data = dict()
+        self.build_data = {'rerun_latex_reasons': set()}
         self.biber_data = {'ran_on_files': []}
         self.bibtex_data = {'ran_on_files': []}
         self.makeindex_data = {'ran_on_files': []}

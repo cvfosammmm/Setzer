@@ -47,48 +47,56 @@ class LaTeXLogParser():
 
         return log_items
 
-    def get_additional_jobs(self, log_items, tex_filename, bibtex_ran_on_files, biber_ran_on_files, makeindex_ran_on_files):
+    def get_additional_jobs(self, log_items, query):
         jobs = set()
+        rerun_latex_reasons = set()
         for filename, items in log_items.items():
             for item in items['error'] + items['warning']:
 
-                if item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and item[2].find('.bbl.') >= 0:
-                    if not tex_filename.rsplit('/', 1)[1][:-4] in bibtex_ran_on_files:
+                if item[2].startswith('No file ') and item[2].find(query.tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and item[2].find('.bbl.') >= 0:
+                    if not query.tex_filename.rsplit('/', 1)[1][:-4] in query.bibtex_data['ran_on_files']:
                         jobs |= {'build_bibtex'}
 
-                elif item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and item[2].find('.ind.') >= 0:
-                    if not tex_filename.rsplit('/', 1)[1][:-4] in makeindex_ran_on_files:
+                elif item[2].startswith('No file ') and item[2].find(query.tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and item[2].find('.ind.') >= 0:
+                    if not query.tex_filename.rsplit('/', 1)[1][:-4] in query.makeindex_data['ran_on_files']:
                         jobs |= {'build_makeindex'}
 
                 elif item[2] == 'Please (re)run Biber on the file:':
                     line = item[3]
-                    if line.find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0:
-                        if not tex_filename.rsplit('/', 1)[1][:-4] in biber_ran_on_files:
+                    if line.find(query.tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0:
+                        if not query.tex_filename.rsplit('/', 1)[1][:-4] in query.biber_data['ran_on_files']:
                             jobs |= {'build_biber'}
 
-                elif item[2] == 'File `' + tex_filename.rsplit('/', 1)[1][:-4] + '.out\' has changed.':
+                elif item[2] == 'File `' + query.tex_filename.rsplit('/', 1)[1][:-4] + '.out\' has changed.':
                     jobs |= {'build_latex'}
+                    rerun_latex_reasons |= {1}
 
                 elif item[2] == 'Please rerun LaTeX.':
                     jobs |= {'build_latex'}
+                    rerun_latex_reasons |= {2}
 
                 elif item[2] == 'Label(s) may have changed. Rerun to get cross-references right.':
                     jobs |= {'build_latex'}
+                    rerun_latex_reasons |= {3}
 
                 elif item[2] == 'Citation(s) may have changed.':
                     jobs |= {'build_latex'}
+                    rerun_latex_reasons |= {4}
 
-                elif item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (item[2].find('.toc.') >= 0 or item[2].find('.aux.') >= 0):
+                elif item[2].startswith('No file ') and item[2].find(query.tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (item[2].find('.toc.') >= 0 or item[2].find('.aux.') >= 0):
                     jobs |= {'build_latex'}
+                    rerun_latex_reasons |= {5}
 
                 elif item[2] == 'Rerun to get transparencies right.':
                     jobs |= {'build_latex'}
+                    rerun_latex_reasons |= {6}
 
-                elif item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (item[2].find('.gls.') >= 0 or item[2].find('.acr.') >= 0):
+                elif item[2].startswith('No file ') and item[2].find(query.tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (item[2].find('.gls.') >= 0 or item[2].find('.acr.') >= 0):
                     jobs |= {'build_glossaries'}
 
-                elif item[2].startswith('No file ') and item[2].find(tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (item[2].find('.aux.') >= 0):
+                elif item[2].startswith('No file ') and item[2].find(query.tex_filename.rsplit('.', 1)[0].rsplit('/', 1)[1]) >= 0 and (item[2].find('.aux.') >= 0):
                     jobs |= {'build_latex'}
+                    rerun_latex_reasons |= {7}
 
         if 'build_biber' in jobs:
             return {'build_biber'}
@@ -99,7 +107,11 @@ class LaTeXLogParser():
         if 'build_glossaries' in jobs:
             return {'build_glossaries'}
         if 'build_latex' in jobs:
-            return {'build_latex'}
+            if len(rerun_latex_reasons - query.build_data['rerun_latex_reasons']) > 0:
+                query.build_data['rerun_latex_reasons'] = rerun_latex_reasons
+                return {'build_latex'}
+            else:
+                jobs -= {'build_latex'}
         return jobs
 
     def parse_log_text(self, filename, text):
