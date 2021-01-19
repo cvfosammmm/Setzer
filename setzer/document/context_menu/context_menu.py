@@ -46,8 +46,9 @@ class ContextMenu(object):
 
         if change_code == 'update_sync_state':
             self.can_sync = self.forward_sync_manager.can_sync
-            self.presenter.on_can_sync_changed(self.can_sync)
-            
+            if self.document.is_latex_document():
+                self.presenter.on_can_sync_changed(self.can_sync)
+
         if change_code == 'font_string_changed':
             zoom_level = self.font_manager.get_zoom_level()
             self.presenter.set_zoom_level(zoom_level)
