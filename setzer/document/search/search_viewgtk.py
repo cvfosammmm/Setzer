@@ -38,7 +38,7 @@ class SearchBar(Gtk.Revealer):
         self.entry.get_style_context().add_class('search_entry')
         self.entry_css_provider = Gtk.CssProvider()
         self.entry.get_style_context().add_provider(self.entry_css_provider, 800)
-        
+
         self.arrow = Gtk.Image.new_from_icon_name('own-searchandreplacearrow-symbolic', Gtk.IconSize.LARGE_TOOLBAR)
 
         self.replace_entry = Gtk.Entry()

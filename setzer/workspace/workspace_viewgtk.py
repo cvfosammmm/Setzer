@@ -134,10 +134,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.css_provider = Gtk.CssProvider()
         resources_path = ServiceLocator.get_resources_path()
         self.css_provider.load_from_path(os.path.join(resources_path, 'style_gtk.css'))
-        self.style_context = Gtk.StyleContext()
-        self.style_context.add_provider_for_screen(self.get_screen(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+        Gtk.StyleContext.add_provider_for_screen(self.get_screen(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
         self.css_provider_font_size = Gtk.CssProvider()
-        self.style_context.add_provider_for_screen(self.get_screen(), self.css_provider_font_size, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+        Gtk.StyleContext.add_provider_for_screen(self.get_screen(), self.css_provider_font_size, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
 
