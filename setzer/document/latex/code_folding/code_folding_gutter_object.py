@@ -27,7 +27,7 @@ class CodeFoldingGutterObject(object):
 
     def __init__(self, model):
         self.model = model
-        self.source_view = self.model.document.source_buffer.view
+        self.source_view = self.model.document.view.source_view
 
         self.size = 0
         self.visible = False

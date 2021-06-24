@@ -106,7 +106,13 @@ class Settings(Observable):
             value = self.defaults[section][item]
             self.set_value(section, item, value)
         return value
-    
+
+    def get_source_buffer_options(self):
+        buffer_options = dict()
+        buffer_options['tab_width'] = self.get_value('preferences', 'tab_width')
+        buffer_options['spaces_instead_of_tabs'] = self.get_value('preferences', 'spaces_instead_of_tabs')
+        return buffer_options
+
     def set_value(self, section, item, value):
         try: section_dict = self.data[section]
         except KeyError:

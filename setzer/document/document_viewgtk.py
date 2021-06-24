@@ -27,7 +27,7 @@ import setzer.document.search.search_viewgtk as search_view
 
 class DocumentView(Gtk.HBox):
     
-    def __init__(self, document, source_view):
+    def __init__(self, document):
         Gtk.HBox.__init__(self)
 
         self.vbox = Gtk.VBox()
@@ -38,7 +38,13 @@ class DocumentView(Gtk.HBox):
         self.shortcuts_bar_bottom = shortcutsbar_view.ShortcutsBarBottom()
         self.wizard_button = shortcutsbar_view.WizardButton()
 
-        self.source_view = source_view
+        self.source_view = GtkSource.View.new_with_buffer(document.source_buffer)
+        self.source_view.set_monospace(True)
+        self.source_view.set_smart_home_end(True)
+        self.source_view.set_auto_indent(True)
+        self.source_view.set_bottom_margin(18)
+        self.source_view.set_right_margin(12)
+
         self.scrolled_window.add(self.source_view)
         self.overlay.add(self.scrolled_window)
 

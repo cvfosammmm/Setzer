@@ -32,9 +32,9 @@ class FontManager(Observable):
         self.settings = settings
         self.settings.register_observer(self)
 
-        textview = Gtk.TextView()
-        textview.set_monospace(True)
-        self.system_font = textview.get_pango_context().get_font_description().to_string()
+        self.text_view = Gtk.TextView()
+        self.text_view.set_monospace(True)
+        self.system_font = self.text_view.get_pango_context().get_font_description().to_string()
         self.font_string = None
         self.update_font_string()
 
@@ -51,16 +51,17 @@ class FontManager(Observable):
     def get_system_font(self):
         return self.system_font
 
-    def get_line_height(self, text_view):
-        char_width, line_height = self.get_char_dimensions(text_view)
+    def get_line_height(self):
+        char_width, line_height = self.get_char_dimensions()
         return line_height
 
-    def get_char_width(self, text_view, char='A'):
-        char_width, line_height = self.get_char_dimensions(text_view, char)
+    def get_char_width(self, char='A'):
+        char_width, line_height = self.get_char_dimensions(char)
+        print(char_width)
         return char_width
 
-    def get_char_dimensions(self, text_view, char='A'):
-        context = text_view.get_pango_context()
+    def get_char_dimensions(self, char='A'):
+        context = self.text_view.get_pango_context()
         font_desc = Pango.FontDescription.from_string(self.font_string)
         layout = Pango.Layout.new(context)
         layout.set_text(char, -1)

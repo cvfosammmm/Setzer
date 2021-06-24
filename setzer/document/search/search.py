@@ -40,7 +40,7 @@ class Search(object):
         self.search_bar.connect('size-allocate', self.on_search_bar_size_allocate)
         self.search_bar.match_counter.connect('size-allocate', self.on_match_counter_size_allocate)
 
-        self.document.register_observer(self)
+        self.document.source_buffer.register_observer(self)
 
     def observe_shortcuts_bar(self):
         self.document_view.shortcuts_bar_bottom.button_find.connect('toggled', self.on_find_button_clicked)
@@ -129,7 +129,7 @@ class Search(object):
 
             if result[0] == True:
                 buffer.select_range(result[2], result[1])
-                self.document.source_buffer.scroll_iter_onscreen(result[1])
+                self.document.scroll_iter_onscreen(result[1])
                 self.set_match_counter(search_context.get_occurrence_position(result[1], result[2]), search_context.get_occurrences_count())
             else:
                 search_iter = buffer.get_start_iter()
@@ -137,7 +137,7 @@ class Search(object):
 
                 if result[0] == True:
                     buffer.select_range(result[2], result[1])
-                    self.document.source_buffer.scroll_iter_onscreen(result[1])
+                    self.document.scroll_iter_onscreen(result[1])
                     self.set_match_counter(search_context.get_occurrence_position(result[1], result[2]), search_context.get_occurrences_count())
     
     def on_search_previous_match(self, entry=None):
@@ -153,7 +153,7 @@ class Search(object):
 
             if result[0] == True:
                 buffer.select_range(result[1], result[2])
-                self.document.source_buffer.scroll_iter_onscreen(result[2])
+                self.document.scroll_iter_onscreen(result[2])
                 self.set_match_counter(search_context.get_occurrence_position(result[1], result[2]), search_context.get_occurrences_count())
             else:
                 search_iter = buffer.get_end_iter()
@@ -161,7 +161,7 @@ class Search(object):
 
                 if result[0] == True:
                     buffer.select_range(result[1], result[2])
-                    self.document.source_buffer.scroll_iter_onscreen(result[2])
+                    self.document.scroll_iter_onscreen(result[2])
                     self.set_match_counter(search_context.get_occurrence_position(result[1], result[2]), search_context.get_occurrences_count())
     
     def on_search_entry_changed(self, entry):

@@ -15,8 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gdk
+
 import os.path
 import time
+import math
 
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
@@ -25,7 +30,6 @@ import setzer.document.document_switcher_item.document_switcher_item as document
 import setzer.document.document_viewgtk as document_view
 import setzer.document.search.search as search
 import setzer.document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
-import setzer.document.source_buffer.source_buffer as source_buffer
 import setzer.document.spellchecker.spellchecker as spellchecker
 import setzer.document.gutter.gutter as gutter
 import setzer.document.line_numbers.line_numbers as line_numbers
@@ -40,6 +44,9 @@ class Document(Observable):
         Observable.__init__(self)
 
         self.settings = ServiceLocator.get_settings()
+        self.font_manager = ServiceLocator.get_font_manager()
+        self.source_language_manager = ServiceLocator.get_source_language_manager()
+        self.source_style_scheme_manager = ServiceLocator.get_source_style_scheme_manager()
 
         self.displayname = ''
         self.filename = None
@@ -50,9 +57,8 @@ class Document(Observable):
         self.is_root = False
         self.root_is_set = False
 
-        self.source_buffer = source_buffer.SourceBuffer(self)
-
-        self.view = document_view.DocumentView(self, self.source_buffer.view)
+    def init_main_submodules(self):
+        self.view = document_view.DocumentView(self)
         self.gutter = gutter.Gutter(self, self.view)
         self.search = search.Search(self, self.view, self.view.search_bar)
         self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
@@ -65,12 +71,46 @@ class Document(Observable):
 
         self.line_numbers = line_numbers.LineNumbers(self, self.view)
 
+        # set source language for syntax highlighting
+        self.source_language = self.source_language_manager.get_language(self.get_gsv_language_name())
+        self.source_buffer.set_language(self.source_language)
+        self.update_syntax_scheme()
+
+        self.source_buffer.register_observer(self)
+        self.settings.register_observer(self)
+
+    def change_notification(self, change_code, notifying_object, parameter):
+
+        if change_code == 'settings_changed':
+            section, item, value = parameter
+            if (section, item) == ('preferences', 'tab_width'):
+                self.source_buffer.tab_width = self.settings.get_value('preferences', 'tab_width')
+            if (section, item) == ('preferences', 'spaces_instead_of_tabs'):
+                self.source_buffer.tab_width = self.settings.get_value('preferences', 'spaces_instead_of_tabs')
+
+            if (section, item) in [('preferences', 'syntax_scheme'), ('preferences', 'syntax_scheme_dark_mode')]:
+                self.update_syntax_scheme()
+
+        if change_code == 'cursor_to_scroll_onscreen':
+            self.scroll_cursor_onscreen()
+
+    def update_syntax_scheme(self):
+        name = self.settings.get_value('preferences', 'syntax_scheme')
+        self.source_style_scheme_light = self.source_style_scheme_manager.get_scheme(name)
+        name = self.settings.get_value('preferences', 'syntax_scheme_dark_mode')
+        self.source_style_scheme_dark = self.source_style_scheme_manager.get_scheme(name)
+        self.set_use_dark_scheme(self.dark_mode)
+
+    def set_use_dark_scheme(self, use_dark_scheme):
+        if use_dark_scheme: self.source_buffer.set_style_scheme(self.source_style_scheme_dark)
+        else: self.source_buffer.set_style_scheme(self.source_style_scheme_light)
+
     def set_search_text(self, search_text):
         self.source_buffer.search_settings.set_search_text(search_text)
 
     def set_dark_mode(self, dark_mode):
         self.dark_mode = dark_mode
-        self.get_buffer().set_use_dark_scheme(dark_mode)
+        self.set_use_dark_scheme(dark_mode)
 
     def get_buffer(self):
         return self.source_buffer
@@ -231,18 +271,52 @@ class Document(Observable):
         self.get_buffer().redo()
 
     def cut(self):
-        self.get_buffer().cut()
+        self.copy()
+        self.delete_selection()
 
     def copy(self):
-        self.get_buffer().copy()
+        text = self.source_buffer.get_selected_text()
+        if text != None:
+            clipboard = self.view.source_view.get_clipboard(Gdk.SELECTION_CLIPBOARD)
+            clipboard.set_text(text, -1)
 
     def paste(self):
-        self.get_buffer().paste()
+        self.view.source_view.emit('paste-clipboard')
 
     def delete_selection(self):
         self.get_buffer().delete_selection(True, True)
 
     def select_all(self):
         self.get_buffer().select_all()
+
+    def scroll_cursor_onscreen(self):
+        self.scroll_mark_onscreen(self.source_buffer.get_insert())
+
+    def scroll_mark_onscreen(self, text_mark):
+        self.scroll_iter_onscreen(self.source_buffer.get_iter_at_mark(text_mark))
+
+    def scroll_iter_onscreen(self, text_iter):
+        visible_lines = self.get_number_of_visible_lines()
+        iter_position = self.view.source_view.get_iter_location(text_iter).y
+        end_yrange = self.view.source_view.get_line_yrange(self.source_buffer.get_end_iter())
+        buffer_height = end_yrange.y + end_yrange.height
+        line_height = self.font_manager.get_line_height()
+        window_offset = self.view.source_view.get_visible_rect().y
+        window_height = self.view.source_view.get_visible_rect().height
+        gap = min(math.floor(max((visible_lines - 2), 0) / 2), 5)
+        if iter_position < window_offset + gap * line_height:
+            scroll_iter = self.view.source_view.get_iter_at_location(0, max(iter_position - gap * line_height, 0)).iter
+            self.source_buffer.move_mark(self.source_buffer.mover_mark, scroll_iter)
+            self.view.source_view.scroll_to_mark(self.source_buffer.mover_mark, 0, False, 0, 0)
+            return
+        gap = min(math.floor(max((visible_lines - 2), 0) / 2), 8)
+        if iter_position > (window_offset + window_height - (gap + 1) * line_height):
+            scroll_iter = self.view.source_view.get_iter_at_location(0, min(iter_position + gap * line_height, buffer_height)).iter
+            self.source_buffer.move_mark(self.source_buffer.mover_mark, scroll_iter)
+            self.view.source_view.scroll_to_mark(self.source_buffer.mover_mark, 0, False, 0, 0)
+
+    def get_number_of_visible_lines(self):
+        line_height = self.font_manager.get_line_height()
+        return math.floor(self.view.source_view.get_visible_rect().height / line_height)
 
 

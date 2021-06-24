@@ -29,6 +29,9 @@ class DocumentPresenter(object):
         self.document = document
         self.view = document_view
         self.settings = ServiceLocator.get_settings()
+        self.font_manager = ServiceLocator.get_font_manager()
+
+        self.indentation_update = None
 
         self.view.source_view.set_show_line_numbers(False)
         self.view.source_view.set_insert_spaces_instead_of_tabs(self.settings.get_value('preferences', 'spaces_instead_of_tabs'))
@@ -39,9 +42,11 @@ class DocumentPresenter(object):
             self.view.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
         else:
             self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
+        self.view.source_view.set_left_margin(self.font_manager.get_char_width() - 1)
 
         self.document.register_observer(self)
         self.settings.register_observer(self)
+        self.font_manager.register_observer(self)
 
     '''
     *** notification handlers, get called by observed document
@@ -64,5 +69,8 @@ class DocumentPresenter(object):
                     self.view.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
                 else:
                     self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
+
+        if change_code == 'font_string_changed':
+            self.view.source_view.set_left_margin(self.font_manager.get_char_width() - 1)
 
 

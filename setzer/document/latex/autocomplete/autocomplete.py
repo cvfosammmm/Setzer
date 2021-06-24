@@ -50,7 +50,7 @@ class Autocomplete(object):
         self.shortcuts_bar_height = 37
         self.cursor_offset = None
 
-        char_width, line_height = self.font_manager.get_char_dimensions(self.document_view.source_view)
+        char_width, line_height = self.font_manager.get_char_dimensions()
         self.view.scrolled_window.set_max_content_height(5 * line_height)
         self.view.scrolled_window.set_min_content_width(35 * char_width)
 
@@ -61,7 +61,7 @@ class Autocomplete(object):
         self.view.list.connect('row-activated', self.on_row_activated)
         self.view.list.connect('row-selected', self.on_row_selected)
 
-        self.document.register_observer(self)
+        self.document.source_buffer.register_observer(self)
 
     def change_notification(self, change_code, notifying_object, parameter):
 
@@ -80,7 +80,7 @@ class Autocomplete(object):
             self.update(False)
 
         if change_code == 'font_string_changed':
-            char_width, line_height = self.font_manager.get_char_dimensions(self.document_view.source_view)
+            char_width, line_height = self.font_manager.get_char_dimensions()
             self.view.scrolled_window.set_max_content_height(5 * line_height)
             self.view.scrolled_window.set_min_content_width(35 * char_width)
 
@@ -93,7 +93,7 @@ class Autocomplete(object):
         self.submit()
 
     def on_row_selected(self, box, row, user_data=None):
-        char_width, line_height = self.font_manager.get_char_dimensions(self.document_view.source_view)
+        char_width, line_height = self.font_manager.get_char_dimensions()
 
         if row != None:
             command = row.get_child().command
@@ -161,7 +161,7 @@ class Autocomplete(object):
             self.view.select_first()
 
     def position_is_visible(self):
-        line_height = self.font_manager.get_line_height(self.document_view.source_view)
+        line_height = self.font_manager.get_line_height()
 
         height = min(len(self.items), 5) * line_height + 20
 
@@ -188,7 +188,7 @@ class Autocomplete(object):
         else:
             self.view.set_margin_top(y_position + self.shortcuts_bar_height - height - line_height)
 
-        char_width, line_height = self.font_manager.get_char_dimensions(self.document_view.source_view)
+        char_width, line_height = self.font_manager.get_char_dimensions()
         width = 25 * char_width
         max_width = 35 * char_width
         while x_position <= self.main_window.preview_paned.get_allocated_width() - width - char_width:

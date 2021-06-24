@@ -19,11 +19,11 @@ import os.path
 import time
 
 from setzer.document.document import Document
+import setzer.document.source_buffer.source_buffer_latex as source_buffer_latex
 import setzer.document.latex.build_system.build_system as build_system
 import setzer.document.latex.build_widget.build_widget as build_widget
 import setzer.document.latex.autocomplete.autocomplete as autocomplete
 import setzer.document.latex.code_folding.code_folding as code_folding
-import setzer.document.latex.parser.latex_parser as latex_parser
 import setzer.document.latex.preview.preview as preview
 import setzer.document.latex.state_manager.state_manager_latex as state_manager_latex
 from setzer.helpers.observable import Observable
@@ -34,6 +34,10 @@ class DocumentLaTeX(Document):
 
     def __init__(self):
         Document.__init__(self)
+
+        self.source_buffer = source_buffer_latex.SourceBufferLaTeX(self.settings.get_source_buffer_options())
+        self.init_main_submodules()
+
         self.has_visible_build_system = False
 
         # possible states: idle, ready_for_building
@@ -64,17 +68,6 @@ class DocumentLaTeX(Document):
 
         self.build_system = build_system.BuildSystem(self)
         self.code_folding = code_folding.CodeFolding(self)
-
-        self.symbols = dict()
-        self.symbols['labels'] = set()
-        self.symbols['included_latex_files'] = set()
-        self.symbols['bibliographies'] = set()
-        self.symbols['bibitems'] = set()
-        self.symbols['packages'] = set()
-        self.symbols['packages_detailed'] = dict()
-        self.symbols['blocks'] = list()
-
-        self.parser = latex_parser.LaTeXParser(self)
 
         self.update_can_sync()
 
@@ -111,10 +104,10 @@ class DocumentLaTeX(Document):
         self.get_buffer().add_packages(packages)
 
     def get_packages(self):
-        return self.symbols['packages']
+        return self.source_buffer.get_packages()
 
     def get_package_details(self):
-        return self.symbols['packages_detailed']
+        return self.source_buffer.get_package_details()
 
     def remove_packages(self, packages):
         self.get_buffer().remove_packages(packages)
@@ -129,11 +122,7 @@ class DocumentLaTeX(Document):
         return None
 
     def get_blocks(self):
-        return self.symbols['blocks']
-
-    def set_blocks(self, blocks):
-        self.symbols['blocks'] = blocks
-        self.add_change_code('blocks_changed')
+        return self.source_buffer.get_blocks()
 
     def set_build_log_items(self, log_items):
         build_log_items = list()
@@ -180,16 +169,28 @@ class DocumentLaTeX(Document):
         return self.get_included_latex_files() | self.get_bibliography_files()
 
     def get_included_latex_files(self):
-        return self.symbols['included_latex_files']
+        dirname = self.get_dirname()
+
+        filenames = set()
+        for filename in self.source_buffer.get_included_latex_files():
+            filenames |= {os.path.normpath(os.path.join(dirname, filename))}
+
+        return filenames
 
     def get_bibliography_files(self):
-        return self.symbols['bibliographies']
+        dirname = self.get_dirname()
+
+        filenames = set()
+        for filename in self.source_buffer.get_included_latex_files():
+            filenames |= {os.path.normpath(os.path.join(dirname, filename))}
+
+        return filenames
 
     def get_bibitems(self):
-        return self.symbols['bibitems']
+        return self.source_buffer.get_bibitems()
 
     def get_labels(self):
-        return self.symbols['labels']
+        return self.source_buffer.get_labels()
 
     def change_build_state(self, state):
         self.build_state = state
@@ -296,6 +297,7 @@ class DocumentLaTeX(Document):
 
     def set_synctex_position(self, position):
         self.get_buffer().set_synctex_position(position)
+        self.scroll_cursor_onscreen()
 
     def get_folded_regions(self):
         try:

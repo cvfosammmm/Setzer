@@ -19,6 +19,7 @@ import os.path
 import time
 
 from setzer.document.document import Document
+import setzer.document.source_buffer.source_buffer as source_buffer
 import setzer.document.latex_cls.state_manager.state_manager_latex_cls as state_manager_latex_cls
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
@@ -28,6 +29,10 @@ class DocumentLaTeXCls(Document):
 
     def __init__(self):
         Document.__init__(self)
+
+        self.source_buffer = source_buffer.SourceBuffer(self.settings.get_source_buffer_options())
+
+        self.init_main_submodules()
 
         self.state_manager = state_manager_latex_cls.StateManagerLaTeXCls(self)
 

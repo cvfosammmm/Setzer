@@ -19,33 +19,21 @@ from setzer.app.service_locator import ServiceLocator
 from setzer.helpers.timer import timer
 
 
-class BibTeXParser(object):
+class ParserBibTeX(object):
 
-    def __init__(self, document):
-        self.document = document
+    def __init__(self, source_buffer):
+        self.source_buffer = source_buffer
         self.text = ''
 
-        self.document.register_observer(self)
-
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code == 'text_inserted':
-            self.on_text_inserted(parameter)
-
-        if change_code == 'text_deleted':
-            self.on_text_deleted(parameter)
-
     #@timer
-    def on_text_deleted(self, parameter):
-        buffer, start_iter, end_iter = parameter
+    def on_text_deleted(self, buffer, start_iter, end_iter):
         start_offset = start_iter.get_offset()
         end_offset = end_iter.get_offset()
         self.text = self.text[:start_offset] + self.text[end_offset:]
         self.parse_symbols(self.text)
 
     #@timer
-    def on_text_inserted(self, parameter):
-        buffer, location_iter, text, text_length = parameter
+    def on_text_inserted(self, buffer, location_iter, text, text_length):
         offset = location_iter.get_offset()
         self.text = self.text[:offset] + text + self.text[offset:]
         self.parse_symbols(self.text)
@@ -56,6 +44,6 @@ class BibTeXParser(object):
         for match in ServiceLocator.get_regex_object(r'@(\w+)\{(\w+)').finditer(text):
             bibitems = bibitems | {match.group(2).strip()}
 
-        self.document.symbols['bibitems'] = bibitems
+        self.source_buffer.symbols['bibitems'] = bibitems
 
 

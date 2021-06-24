@@ -55,15 +55,17 @@ class DocumentSwitcherPresenter(object):
         if change_code == 'new_inactive_document':
             document = parameter
             document.unregister_observer(self)
+            document.source_buffer.unregister_observer(self)
 
         if change_code == 'new_active_document':
             document = parameter
             self.show_document_name(document)
             self.view.document_list.invalidate_sort()
             document.register_observer(self)
+            document.source_buffer.register_observer(self)
 
         if change_code == 'modified_changed':
-            document = notifying_object
+            document = self.workspace.get_active_document()
             self.show_document_name(document)
 
         if change_code == 'filename_change':

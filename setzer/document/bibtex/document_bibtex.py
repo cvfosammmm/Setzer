@@ -19,7 +19,7 @@ import os.path
 import time
 
 from setzer.document.document import Document
-import setzer.document.bibtex.parser.bibtex_parser as bibtex_parser
+import setzer.document.source_buffer.source_buffer_bibtex as source_buffer_bibtex
 import setzer.document.bibtex.state_manager.state_manager_bibtex as state_manager_bibtex
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
@@ -30,12 +30,10 @@ class DocumentBibTeX(Document):
     def __init__(self):
         Document.__init__(self)
 
+        self.source_buffer = source_buffer_bibtex.SourceBufferBibTeX(self.settings.get_source_buffer_options())
+        self.init_main_submodules()
+
         self.state_manager = state_manager_bibtex.StateManagerBibTeX(self)
-
-        self.symbols = dict()
-        self.symbols['bibitems'] = set()
-
-        self.parser = bibtex_parser.BibTeXParser(self)
 
     def init_shortcuts(self, shortcuts_manager):
         shortcuts_manager.set_accels_for_insert_before_after_action(['\\textbf{', '}'], [])
@@ -57,7 +55,7 @@ class DocumentBibTeX(Document):
         shortcuts_manager.main_window.app.set_accels_for_action('win.comment-uncomment', [])
 
     def get_bibitems(self):
-        return self.symbols['bibitems']
+        return self.source_buffer.get_bibitems()
 
     def get_labels(self):
         return set()

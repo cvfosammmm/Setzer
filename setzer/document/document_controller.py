@@ -94,14 +94,14 @@ class DocumentController(object):
                 if result != None:
                     buffer.place_cursor(result[0])
                     buffer.select_range(result[0], result[1])
-                    self.document.source_buffer.scroll_iter_onscreen(result[1])
+                    self.document.scroll_iter_onscreen(result[1])
                     return True
                 
                 insert.backward_chars(1)
                 result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
                 if result != None:
                     buffer.select_range(result[0], result[1])
-                    self.document.source_buffer.scroll_iter_onscreen(result[1])
+                    self.document.scroll_iter_onscreen(result[1])
                     return True
             elif event.state & modifiers == Gdk.ModifierType.SHIFT_MASK:
                 buffer = self.document.get_buffer()
@@ -111,14 +111,14 @@ class DocumentController(object):
                 result = insert.backward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
                 if result != None:
                     buffer.select_range(result[0], result[1])
-                    self.document.source_buffer.scroll_iter_onscreen(result[1])
+                    self.document.scroll_iter_onscreen(result[1])
                     return True
 
                 insert.forward_chars(1)
                 result = insert.backward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
                 if result != None:
                     buffer.select_range(result[0], result[1])
-                    self.document.source_buffer.scroll_iter_onscreen(result[1])
+                    self.document.scroll_iter_onscreen(result[1])
                     return True
         return False
 

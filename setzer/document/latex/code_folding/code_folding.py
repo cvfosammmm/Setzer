@@ -50,7 +50,7 @@ class CodeFolding(Observable):
         self.presenter = code_folding_presenter.CodeFoldingPresenter(self)
         self.controller = code_folding_controller.CodeFoldingController(self)
 
-        self.document.register_observer(self)
+        self.document.source_buffer.register_observer(self)
 
     def change_notification(self, change_code, notifying_object, parameter):
 

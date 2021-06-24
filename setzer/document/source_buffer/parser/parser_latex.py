@@ -15,34 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import os.path
-
 from setzer.app.service_locator import ServiceLocator
 from setzer.helpers.timer import timer
 
 
-class LaTeXParser(object):
+class ParserLaTeX(object):
 
-    def __init__(self, document):
-        self.document = document
+    def __init__(self, source_buffer):
+        self.source_buffer = source_buffer
         self.text_length = 0
         self.number_of_lines = 0
         self.block_symbol_matches = {'begin_or_end': list(), 'others': list()}
         self.other_symbols = list()
 
-        self.document.register_observer(self)
-
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code == 'text_inserted':
-            self.on_text_inserted(parameter)
-
-        if change_code == 'text_deleted':
-            self.on_text_deleted(parameter)
-
     #@timer
-    def on_text_deleted(self, parameter):
-        buffer, start_iter, end_iter = parameter
+    def on_text_deleted(self, buffer, start_iter, end_iter):
         offset_start = start_iter.get_offset()
         offset_end = end_iter.get_offset()
         line_start = start_iter.get_line()
@@ -100,8 +87,7 @@ class LaTeXParser(object):
         self.parse_symbols()
 
     #@timer
-    def on_text_inserted(self, parameter):
-        buffer, location_iter, text, text_length = parameter
+    def on_text_inserted(self, buffer, location_iter, text, text_length):
         text_length = len(text)
         offset = location_iter.get_offset()
         new_line_count = text.count('\n')
@@ -215,12 +201,10 @@ class LaTeXParser(object):
             for i in range(level, 5):
                 relevant_following_blocks[i].append(block)
 
-        self.document.set_blocks(sorted(blocks_list, key=lambda block: block[0]))
+        self.source_buffer.set_blocks(sorted(blocks_list, key=lambda block: block[0]))
 
     #@timer
     def parse_symbols(self):
-        dirname = self.document.get_dirname()
-
         labels = set()
         included_latex_files = set()
         bibliographies = set()
@@ -232,29 +216,29 @@ class LaTeXParser(object):
             if match.group(1) == 'label':
                 labels = labels | {match.group(2).strip()}
             elif match.group(1) == 'include' or match.group(1) == 'input':
-                filename = os.path.normpath(os.path.join(dirname, match.group(2).strip()))
+                filename = match.group(2).strip()
                 if not filename.endswith('.tex'):
                     filename += '.tex'
                 included_latex_files = included_latex_files | {filename}
             elif match.group(1) == 'bibliography':
                 bibfiles = match.group(2).strip().split(',')
                 for entry in bibfiles:
-                    bibliographies = bibliographies | {os.path.normpath(os.path.join(dirname, entry.strip() + '.bib'))}
+                    bibliographies = bibliographies | {entry.strip() + '.bib'}
             elif match.group(1) == 'addbibresource':
                 bibfiles = match.group(2).strip().split(',')
                 for entry in bibfiles:
-                    bibliographies = bibliographies | {os.path.normpath(os.path.join(dirname, entry.strip()))}
+                    bibliographies = bibliographies | {entry.strip()}
             elif match.group(3) == 'usepackage':
                 packages = packages | {match.group(4).strip()}
                 packages_detailed[match.group(4).strip()] = match
             elif match.group(5) == 'bibitem':
                 bibitems = bibitems | {match.group(6).strip()}
 
-        self.document.symbols['labels'] = labels
-        self.document.symbols['included_latex_files'] = included_latex_files
-        self.document.symbols['bibliographies'] = bibliographies
-        self.document.symbols['bibitems'] = bibitems
-        self.document.symbols['packages'] = packages
-        self.document.symbols['packages_detailed'] = packages_detailed
+        self.source_buffer.symbols['labels'] = labels
+        self.source_buffer.symbols['included_latex_files'] = included_latex_files
+        self.source_buffer.symbols['bibliographies'] = bibliographies
+        self.source_buffer.symbols['bibitems'] = bibitems
+        self.source_buffer.symbols['packages'] = packages
+        self.source_buffer.symbols['packages_detailed'] = packages_detailed
 
 

@@ -28,6 +28,7 @@ class DocumentSwitcherItem():
         self.set_is_root()
 
         self.document.register_observer(self)
+        self.document.source_buffer.register_observer(self)
 
     def change_notification(self, change_code, notifying_object, parameter):
 

@@ -57,7 +57,7 @@ class Gutter(object):
         document_view.overlay.add_overlay(self.view)
         document_view.overlay.set_overlay_pass_through(self.view, True)
 
-        self.char_width, self.line_height = self.font_manager.get_char_dimensions(self.source_view)
+        self.char_width, self.line_height = self.font_manager.get_char_dimensions()
 
         self.source_view.connect('button-press-event', self.on_click)
 
@@ -69,7 +69,7 @@ class Gutter(object):
     def change_notification(self, change_code, notifying_object, parameter):
 
         if change_code == 'font_string_changed':
-            self.char_width, self.line_height = self.font_manager.get_char_dimensions(self.source_view)
+            self.char_width, self.line_height = self.font_manager.get_char_dimensions()
             for widget in self.widgets:
                 widget.set_font_desc(self.font_manager.get_font_desc())
                 widget.set_char_dimensions(self.line_height, self.char_width)
