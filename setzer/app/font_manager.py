@@ -57,7 +57,6 @@ class FontManager(Observable):
 
     def get_char_width(self, char='A'):
         char_width, line_height = self.get_char_dimensions(char)
-        print(char_width)
         return char_width
 
     def get_char_dimensions(self, char='A'):

@@ -28,6 +28,7 @@ class LaTeXLogParser():
     r'(?:Overfull \\hbox|Underfull \\hbox|' + 
     r'No file .*\.|File .* does not exist\.|' +
     r'(?:LaTeX|pdfTeX|LuaTeX|Package|Class) .*Warning.*:|LaTeX Font Warning:|' +
+    r'!(?:LaTeX|pdfTeX|LuaTeX|Package|Class) error|' +
     r'! ).*\n)')
         self.badbox_line_number_regex = ServiceLocator.get_regex_object(r'lines ([0-9]+)--([0-9]+)')
         self.other_line_number_regex = ServiceLocator.get_regex_object(r'(l\.| input line \n| input line )([0-9]+)( |\.)')
@@ -183,7 +184,7 @@ class LaTeXLogParser():
                     line_number = self.bl_get_line_number(line, matchiter)
                     log_messages['error'].append(('Undefined control sequence', line_number, text))
 
-                elif line.startswith('! LaTeX Error'):
+                elif line.startswith('! LaTeX Error') or line.startswith('!pdfTeX error'):
                     text = line[15:].strip()
                     line_number = self.bl_get_line_number(line, matchiter)
                     log_messages['error'].append((None, line_number, text))
