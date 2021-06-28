@@ -17,9 +17,10 @@
 
 import os
 import os.path
+import sys
 import base64
 import shutil
-import subprocess
+import pexpect
 from operator import itemgetter
 
 import setzer.document.latex.build_system.builder.builder_build as builder_build
@@ -37,7 +38,7 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
 
     def run(self, query):
         build_command_defaults = dict()
-        build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode -pdf'
+        build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode'
         build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode'
         build_command_defaults['lualatex'] = 'lualatex --synctex=1 --interaction=nonstopmode'
         if query.build_data['use_latexmk']:
@@ -53,16 +54,24 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
         arguments.append('-output-directory=' + os.path.dirname(query.tex_filename))
         arguments.append(query.tex_filename)
         try:
-            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=os.path.dirname(query.tex_filename))
+            self.process = pexpect.spawn(build_command + ' -output-directory="' + os.path.dirname(query.tex_filename) + '" "' + query.tex_filename + '"', cwd=os.path.dirname(query.tex_filename))
         except FileNotFoundError:
             self.cleanup_files(query)
             self.throw_build_error(query, 'interpreter_missing', arguments[0])
             return
-        self.process.communicate()
-        try:
-            self.process.wait()
-        except AttributeError:
-            pass
+
+        while True:
+            try:
+                out = self.process.expect(['\r\n', pexpect.TIMEOUT, pexpect.EOF], timeout=2)
+            except AttributeError:
+                break
+            if out == 0:
+                pass
+            elif out == 1:
+                self.process.sendcontrol('c')
+                self.process.sendline('x')
+            else:
+                break
 
         # parse results
         try:
@@ -92,7 +101,7 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
 
     def stop_running(self):
         if self.process != None:
-            self.process.kill()
+            self.process.terminate(True)
             self.process = None
 
     def parse_build_log(self, query):
