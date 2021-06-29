@@ -62,7 +62,7 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
 
         while True:
             try:
-                out = self.process.expect(['\r\n\r\n', pexpect.TIMEOUT, pexpect.EOF], timeout=2)
+                out = self.process.expect(['\r\n\r\n', pexpect.TIMEOUT, pexpect.EOF], timeout=20)
             except AttributeError:
                 break
             if out == 0:
@@ -103,6 +103,8 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
 
     def stop_running(self):
         if self.process != None:
+            self.process.sendcontrol('c')
+            self.process.sendline('x')
             self.process.terminate(True)
             self.process = None
 
