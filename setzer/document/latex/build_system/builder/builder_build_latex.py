@@ -62,14 +62,16 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
 
         while True:
             try:
-                out = self.process.expect(['\r\n', pexpect.TIMEOUT, pexpect.EOF], timeout=2)
+                out = self.process.expect(['\r\n\r\n', pexpect.TIMEOUT, pexpect.EOF], timeout=2)
             except AttributeError:
                 break
             if out == 0:
                 pass
             elif out == 1:
-                self.process.sendcontrol('c')
-                self.process.sendline('x')
+                for line in self.process.before.split(b'\n'):
+                    if line.startswith(b'!'):
+                        self.process.sendcontrol('c')
+                        self.process.sendline('x')
             else:
                 break
 
