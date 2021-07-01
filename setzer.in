@@ -86,7 +86,7 @@ class MainApplicationController(Gtk.Application):
 
         # open latex and bibtex files
         for file in files:
-            if file.get_path().endswith('.tex') or file.get_path().endswith('.bib'):
+            if file.get_path().endswith('.tex') or file.get_path().endswith('.bib') or file.get_path().endswith('.cls') or file.get_path().endswith('.sty'):
                 document_candidate = self.workspace.get_document_by_filename(file.get_path())
                 if document_candidate != None:
                     self.workspace.set_active_document(document_candidate)
