@@ -30,7 +30,7 @@ class WorkspacePresenter(object):
         self.sidebar = self.main_window.sidebar
         self.sidebar_animating = False
         self.preview_animating = False
-        self.build_log_animating = False
+        self.build_log_animation_id = None
         self.activate_welcome_screen_mode()
 
         def on_window_state(widget, event): self.on_realize()
@@ -78,21 +78,18 @@ class WorkspacePresenter(object):
                     document.autocomplete.update()
                 except AttributeError: pass
 
-                self.update_latex_shortcuts_bar()
                 self.activate_latex_documents_mode()
             elif document.is_bibtex_document():
                 notebook = self.main_window.bibtex_notebook
                 notebook.set_current_page(notebook.page_num(document.view))
                 document.view.source_view.grab_focus()
 
-                self.update_bibtex_shortcuts_bar()
                 self.activate_bibtex_documents_mode()
             else:
                 notebook = self.main_window.others_notebook
                 notebook.set_current_page(notebook.page_num(document.view))
                 document.view.source_view.grab_focus()
 
-                self.update_others_shortcuts_bar()
                 self.activate_other_documents_mode()
 
         if change_code == 'new_inactive_document':
@@ -102,7 +99,6 @@ class WorkspacePresenter(object):
                 try:
                     self.main_window.preview_paned_overlay.remove(document.autocomplete.view)
                 except AttributeError: pass
-                self.main_window.latex_shortcuts_bar.top_icons.remove(document.view.wizard_button)
 
         if change_code == 'set_show_sidebar':
             self.animate_sidebar(parameter, True)
@@ -131,50 +127,18 @@ class WorkspacePresenter(object):
     def activate_welcome_screen_mode(self):
         self.workspace.welcome_screen.activate()
         self.main_window.mode_stack.set_visible_child_name('welcome_screen')
-        self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
 
     def activate_latex_documents_mode(self):
         self.workspace.welcome_screen.deactivate()
         self.main_window.mode_stack.set_visible_child_name('latex_documents')
-        self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(True)
 
     def activate_bibtex_documents_mode(self):
         self.workspace.welcome_screen.deactivate()
         self.main_window.mode_stack.set_visible_child_name('bibtex_documents')
-        self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
 
     def activate_other_documents_mode(self):
         self.workspace.welcome_screen.deactivate()
         self.main_window.mode_stack.set_visible_child_name('other_documents')
-        self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
-
-    def update_latex_shortcuts_bar(self):
-        document = self.workspace.active_document
-        shortcuts_bar = self.main_window.latex_shortcuts_bar
-
-        if shortcuts_bar.current_bottom != None:
-            shortcuts_bar.remove(shortcuts_bar.current_bottom)
-        shortcuts_bar.current_bottom = document.view.shortcuts_bar_bottom
-        shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
-        shortcuts_bar.top_icons.insert(document.view.wizard_button, 0)
-
-    def update_bibtex_shortcuts_bar(self):
-        document = self.workspace.active_document
-        shortcuts_bar = self.main_window.bibtex_shortcuts_bar
-
-        if shortcuts_bar.current_bottom != None:
-            shortcuts_bar.remove(shortcuts_bar.current_bottom)
-        shortcuts_bar.current_bottom = document.view.shortcuts_bar_bottom
-        shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
-
-    def update_others_shortcuts_bar(self):
-        document = self.workspace.active_document
-        shortcuts_bar = self.main_window.others_shortcuts_bar
-
-        if shortcuts_bar.current_bottom != None:
-            shortcuts_bar.remove(shortcuts_bar.current_bottom)
-        shortcuts_bar.current_bottom = document.view.shortcuts_bar_bottom
-        shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
 
     def focus_active_document(self):
         active_document = self.workspace.get_active_document()
@@ -337,19 +301,19 @@ class WorkspacePresenter(object):
                     paned.child_set_property(self.main_window.build_log, 'shrink', False)
                     self.main_window.build_log_visible = True
                     self.workspace.set_build_log_position(paned.get_position())
-                self.main_window.latex_shortcuts_bar.button_build_log.set_active(show_build_log)
-                self.build_log_animating = False
+                self.build_log_animation_id = None
                 return False
 
-        if self.build_log_animating: return
-        if self.main_window.build_log_visible == show_build_log: return
+        if self.build_log_animation_id != None:
+            self.main_window.build_log_paned.remove_tick_callback(self.build_log_animation_id)
+        elif self.main_window.build_log_visible == show_build_log: return
 
         frame_clock = self.main_window.build_log_paned.get_frame_clock()
         duration = 200
 
         if show_build_log:
             self.main_window.build_log.show_all()
-            start = self.main_window.build_log_paned.get_allocated_height()
+            start = self.main_window.build_log_paned.get_position()
             end = self.workspace.build_log_position
             if end == -1:
                 end = self.main_window.build_log_paned.get_allocated_height() - 201
@@ -357,11 +321,11 @@ class WorkspacePresenter(object):
             start = self.main_window.build_log_paned.get_position()
             end = self.main_window.build_log_paned.get_allocated_height()
             self.main_window.build_log_paned.child_set_property(self.main_window.build_log, 'shrink', True)
+
         if frame_clock != None and animate:
             start_time = frame_clock.get_frame_time()
             end_time = start_time + 1000 * duration
-            self.build_log_animating = True
-            self.main_window.build_log_paned.add_tick_callback(set_position_on_tick, show_build_log)
+            self.build_log_animation_id = self.main_window.build_log_paned.add_tick_callback(set_position_on_tick, show_build_log)
         else:
             if show_build_log:
                 self.main_window.build_log_paned.child_set_property(self.main_window.build_log, 'shrink', False)
@@ -371,7 +335,6 @@ class WorkspacePresenter(object):
                 self.main_window.build_log_paned.child_set_property(self.main_window.build_log, 'shrink', True)
                 self.main_window.build_log_visible = False
                 self.main_window.build_log.hide()
-            self.main_window.latex_shortcuts_bar.button_build_log.set_active(show_build_log)
 
     def ease(self, time):
         return (time - 1)**3 + 1;

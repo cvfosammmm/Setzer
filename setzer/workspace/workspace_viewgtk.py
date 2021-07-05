@@ -24,9 +24,9 @@ from gi.repository import GLib
 
 import setzer.workspace.build_log.build_log_viewgtk as build_log_view
 import setzer.workspace.headerbar.headerbar_viewgtk as headerbar_view
-import setzer.workspace.latex_shortcutsbar.latex_shortcutsbar_viewgtk as latex_shortcutsbar_view
-import setzer.workspace.bibtex_shortcutsbar.bibtex_shortcutsbar_viewgtk as bibtex_shortcutsbar_view
-import setzer.workspace.others_shortcutsbar.others_shortcutsbar_viewgtk as others_shortcutsbar_view
+import setzer.workspace.shortcutsbar.latex_shortcutsbar.latex_shortcutsbar_viewgtk as latex_shortcutsbar_view
+import setzer.workspace.shortcutsbar.bibtex_shortcutsbar.bibtex_shortcutsbar_viewgtk as bibtex_shortcutsbar_view
+import setzer.workspace.shortcutsbar.others_shortcutsbar.others_shortcutsbar_viewgtk as others_shortcutsbar_view
 import setzer.workspace.preview_panel.preview_panel_viewgtk as preview_panel_view
 import setzer.workspace.help_panel.help_panel_viewgtk as help_panel_view
 import setzer.workspace.sidebar.sidebar_viewgtk as sidebar_view

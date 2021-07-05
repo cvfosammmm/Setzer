@@ -30,6 +30,7 @@ import setzer.workspace.preview_panel.preview_panel_presenter as preview_panel_p
 import setzer.workspace.help_panel.help_panel as help_panel
 import setzer.workspace.welcome_screen.welcome_screen as welcome_screen
 import setzer.workspace.sidebar.sidebar as sidebar
+import setzer.workspace.shortcutsbar.shortcutsbar as shortcutsbar
 import setzer.workspace.build_log.build_log as build_log
 import setzer.workspace.headerbar.headerbar_presenter as headerbar_presenter
 import setzer.workspace.document_chooser.document_chooser as document_chooser
@@ -73,6 +74,7 @@ class Workspace(Observable):
         self.build_log = build_log.BuildLog(self)
         self.show_build_log = self.settings.get_value('window_state', 'show_build_log')
         self.build_log_position = self.settings.get_value('window_state', 'build_log_paned_position')
+        self.shortcutsbar = shortcutsbar.ShortcutsBar(self)
         self.shortcuts = shortcuts.Shortcuts(self)
 
     def init_workspace_controller(self):

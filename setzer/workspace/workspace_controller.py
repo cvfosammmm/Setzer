@@ -52,10 +52,6 @@ class WorkspaceController(object):
         self.main_window.preview_help_stack.connect('size-allocate', self.on_preview_size_allocate)
         self.main_window.preview_paned.connect('size-allocate', self.on_preview_paned_size_allocate)
         self.main_window.latex_notebook_wrapper.connect('size-allocate', self.on_build_log_size_allocate)
-        self.main_window.latex_shortcuts_bar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
-
-    def on_build_log_button_clicked(self, toggle_button, parameter=None):
-        self.workspace.set_show_build_log(toggle_button.get_active())
 
     '''
     *** workspace menu
@@ -101,7 +97,7 @@ class WorkspaceController(object):
         if allocation.height != self.bl_allocation:
             self.bl_allocation = allocation.height
             if self.workspace.show_build_log and self.workspace.active_document != None:
-                if not self.workspace.presenter.build_log_animating:
+                if self.workspace.presenter.build_log_animation_id == None:
                     self.workspace.set_build_log_position(self.main_window.build_log_paned.get_position())
 
     def on_preview_paned_size_allocate(self, preview, allocation):

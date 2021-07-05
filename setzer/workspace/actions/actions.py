@@ -64,6 +64,7 @@ class Actions(object):
         self.show_preferences_action = Gio.SimpleAction.new('show-preferences-dialog', None)
         self.show_about_action = Gio.SimpleAction.new('show-about-dialog', None)
         self.quit_action = Gio.SimpleAction.new('quit', None)
+        self.show_build_log_action = Gio.SimpleAction.new('show-build-log', None)
         self.close_build_log_action = Gio.SimpleAction.new('close-build-log', None)
         sc_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'inline_spellchecking'))
         self.toggle_spellchecking_action = Gio.SimpleAction.new_stateful('toggle-spellchecking', None, sc_default)
@@ -110,6 +111,7 @@ class Actions(object):
         main_window.add_action(self.show_preferences_action)
         main_window.add_action(self.show_about_action)
         main_window.add_action(self.quit_action)
+        main_window.add_action(self.show_build_log_action)
         main_window.add_action(self.close_build_log_action)
         main_window.add_action(self.toggle_spellchecking_action)
         main_window.add_action(self.set_spellchecking_language_action)
@@ -151,6 +153,7 @@ class Actions(object):
         self.shortcuts_window_action.connect('activate', self.show_shortcuts_window)
         self.show_preferences_action.connect('activate', self.show_preferences_dialog)
         self.show_about_action.connect('activate', self.show_about_dialog)
+        self.show_build_log_action.connect('activate', self.show_build_log)
         self.close_build_log_action.connect('activate', self.close_build_log)
         self.toggle_spellchecking_action.connect('activate', self.on_spellchecking_toggle_toggled)
         self.set_spellchecking_language_action.connect('activate', self.start_spellchecking_language_dialog)
@@ -185,6 +188,7 @@ class Actions(object):
         if change_code == 'document_removed':
             if self.workspace.active_document == None:
                 self.activate_welcome_screen_mode()
+                self.update_document_actions(None)
                 self.update_save_actions(None)
 
         if change_code == 'new_inactive_document':
@@ -194,6 +198,7 @@ class Actions(object):
         if change_code == 'new_active_document':
             document = parameter
             self.activate_document_mode()
+            self.update_document_actions(document)
             self.update_save_actions(document)
             document.source_buffer.register_observer(self)
 
@@ -208,10 +213,8 @@ class Actions(object):
         self.save_all_action.set_enabled(False)
         self.spellchecking_action.set_enabled(False)
         self.add_remove_packages_dialog_action.set_enabled(False)
-        self.set_document_actions_active(False)
 
     def activate_document_mode(self):
-        self.set_document_actions_active(True)
         self.enable_spellchecking_action()
         active_document = self.workspace.get_active_document()
         if active_document.is_latex_document():
@@ -246,7 +249,12 @@ class Actions(object):
         else:
             self.save_all_action.set_enabled(False)
 
-    def set_document_actions_active(self, value):
+    def update_document_actions(self, document):
+        if document != None:
+            value = True
+        else:
+            value = False
+
         self.save_as_action.set_enabled(value)
         self.find_action.set_enabled(value)
         self.find_next_action.set_enabled(value)
@@ -255,6 +263,12 @@ class Actions(object):
         self.close_document_action.set_enabled(value)
         self.close_all_action.set_enabled(value)
         self.save_session_action.set_enabled(value)
+
+        if document != None and document.is_latex_document():
+            value = True
+        else:
+            value = False
+
         self.insert_before_after_action.set_enabled(value)
         self.insert_symbol_action.set_enabled(value)
         self.insert_before_document_end_action.set_enabled(value)
@@ -263,6 +277,8 @@ class Actions(object):
         self.add_packages_action.set_enabled(value)
         self.comment_uncomment_action.set_enabled(value)
         self.document_wizard_action.set_enabled(value)
+        self.show_build_log_action.set_enabled(value)
+        self.close_build_log_action.set_enabled(value)
 
     def on_new_latex_document_action_activated(self, action=None, parameter=None):
         self.workspace.create_latex_document(activate=True)
@@ -462,9 +478,12 @@ class Actions(object):
     def show_about_dialog(self, action, parameter=''):
         DialogLocator.get_dialog('about').run()
 
+    def show_build_log(self, action, parameter=''):
+        self.workspace.set_show_build_log(True)
+
     def close_build_log(self, action, parameter=''):
         self.workspace.set_show_build_log(False)
-        
+    
     def on_spellchecking_toggle_toggled(self, action, parameter=None):
         new_state = not action.get_state().get_boolean()
         action.set_state(GLib.Variant.new_boolean(new_state))
