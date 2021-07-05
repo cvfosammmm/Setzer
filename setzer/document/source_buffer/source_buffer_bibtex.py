@@ -19,7 +19,7 @@ from setzer.document.source_buffer.source_buffer import SourceBuffer
 import setzer.document.source_buffer.parser.parser_bibtex as parser_bibtex
 
 
-class SourceBufferLaTeX(SourceBuffer):
+class SourceBufferBibTeX(SourceBuffer):
 
     def __init__(self, options):
         SourceBuffer.__init__(self, options)
