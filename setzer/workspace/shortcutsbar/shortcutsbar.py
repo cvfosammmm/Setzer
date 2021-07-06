@@ -18,15 +18,15 @@
 from setzer.app.service_locator import ServiceLocator
 
 
-class ShortcutsBar(object):
+class Shortcutsbar(object):
 
     def __init__(self, workspace):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
 
-        self.main_window.latex_shortcuts_bar.button_build_log.set_active(self.workspace.get_show_build_log())
-        self.main_window.latex_shortcuts_bar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
-        self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
+        self.main_window.latex_shortcutsbar.button_build_log.set_active(self.workspace.get_show_build_log())
+        self.main_window.latex_shortcutsbar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
+        self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
 
         self.workspace.register_observer(self)
 
@@ -38,39 +38,39 @@ class ShortcutsBar(object):
 
         if change_code == 'document_removed':
             if self.workspace.active_document == None:
-                self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
+                self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
 
         if change_code == 'new_active_document':
             document = parameter
 
             if document.is_latex_document():
-                self.update_latex_shortcuts_bar(self.main_window.latex_shortcuts_bar)
-                self.main_window.latex_shortcuts_bar.top_icons.insert(document.view.wizard_button, 0)
-                self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(True)
+                self.update_shortcutsbar(self.main_window.latex_shortcutsbar)
+                self.main_window.latex_shortcutsbar.top_icons.insert(document.view.wizard_button, 0)
+                self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(True)
             elif document.is_bibtex_document():
-                self.update_latex_shortcuts_bar(self.main_window.bibtex_shortcuts_bar)
-                self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
+                self.update_shortcutsbar(self.main_window.bibtex_shortcutsbar)
+                self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
             else:
-                self.update_latex_shortcuts_bar(self.main_window.others_shortcuts_bar)
-                self.main_window.latex_shortcuts_bar.button_build_log.get_child().set_sensitive(False)
+                self.update_shortcutsbar(self.main_window.others_shortcutsbar)
+                self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
 
         if change_code == 'new_inactive_document':
             document = parameter
 
             if document.is_latex_document():
-                self.main_window.latex_shortcuts_bar.top_icons.remove(document.view.wizard_button)
+                self.main_window.latex_shortcutsbar.top_icons.remove(document.view.wizard_button)
 
         if change_code == 'show_build_log_state_change':
             show_build_log = parameter
-            self.main_window.latex_shortcuts_bar.button_build_log.set_active(show_build_log)
+            self.main_window.latex_shortcutsbar.button_build_log.set_active(show_build_log)
 
-    def update_shortcuts_bar(self, shortcuts_bar):
+    def update_shortcutsbar(self, shortcutsbar):
         document = self.workspace.active_document
 
-        if shortcuts_bar.current_bottom != None:
-            shortcuts_bar.remove(shortcuts_bar.current_bottom)
-        shortcuts_bar.current_bottom = document.view.shortcuts_bar_bottom
-        shortcuts_bar.pack_end(document.view.shortcuts_bar_bottom, False, False, 0)
+        if shortcutsbar.current_bottom != None:
+            shortcutsbar.remove(shortcutsbar.current_bottom)
+        shortcutsbar.current_bottom = document.view.shortcutsbar_bottom
+        shortcutsbar.pack_end(document.view.shortcutsbar_bottom, False, False, 0)
 
     def on_build_log_button_clicked(self, toggle_button, parameter=None):
         self.workspace.set_show_build_log(toggle_button.get_active())

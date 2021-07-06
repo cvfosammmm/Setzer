@@ -28,7 +28,7 @@ class ContextMenu(object):
         self.document_view = document_view
 
         self.scbar_view = context_menu_view.ContextMenuView(document)
-        stack = document_view.shortcuts_bar_bottom.more_actions_popover.get_child()
+        stack = document_view.shortcutsbar_bottom.more_actions_popover.get_child()
         stack.add_named(self.scbar_view, 'main')
         self.controller = context_menu_controller.ContextMenuController(self, self.scbar_view)
         self.presenter = context_menu_presenter.ContextMenuPresenter(self, self.scbar_view)

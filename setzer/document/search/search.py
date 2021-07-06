@@ -36,15 +36,15 @@ class Search(object):
         self.document = document
 
         self.observe_search_bar()
-        self.observe_shortcuts_bar()
+        self.observe_shortcutsbar()
         self.search_bar.connect('size-allocate', self.on_search_bar_size_allocate)
         self.search_bar.match_counter.connect('size-allocate', self.on_match_counter_size_allocate)
 
         self.document.source_buffer.register_observer(self)
 
-    def observe_shortcuts_bar(self):
-        self.document_view.shortcuts_bar_bottom.button_find.connect('toggled', self.on_find_button_clicked)
-        self.document_view.shortcuts_bar_bottom.button_find_and_replace.connect('toggled', self.on_find_replace_button_clicked)
+    def observe_shortcutsbar(self):
+        self.document_view.shortcutsbar_bottom.button_find.connect('toggled', self.on_find_button_clicked)
+        self.document_view.shortcutsbar_bottom.button_find_and_replace.connect('toggled', self.on_find_replace_button_clicked)
 
     def observe_search_bar(self):
         self.search_bar.entry.connect('search-changed', self.on_search_entry_changed)
@@ -207,23 +207,23 @@ class Search(object):
         return False
 
     def on_search_stop(self, entry=None):
-        self.document_view.shortcuts_bar_bottom.button_find_and_replace.set_active(False)
-        self.document_view.shortcuts_bar_bottom.button_find.set_active(False)
+        self.document_view.shortcutsbar_bottom.button_find_and_replace.set_active(False)
+        self.document_view.shortcutsbar_bottom.button_find.set_active(False)
 
     def on_find_button_clicked(self, button_object=None):
         if button_object.get_active() == True:
-            self.document_view.shortcuts_bar_bottom.button_find_and_replace.set_active(False)
+            self.document_view.shortcutsbar_bottom.button_find_and_replace.set_active(False)
             self.show_search_bar()
             self.set_mode_search()
-        elif self.document_view.shortcuts_bar_bottom.button_find_and_replace.get_active() == False:
+        elif self.document_view.shortcutsbar_bottom.button_find_and_replace.get_active() == False:
             self.hide_search_bar()
 
     def on_find_replace_button_clicked(self, button_object=None):
         if button_object.get_active() == True:
-            self.document_view.shortcuts_bar_bottom.button_find.set_active(False)
+            self.document_view.shortcutsbar_bottom.button_find.set_active(False)
             self.show_search_bar()
             self.set_mode_replace()
-        elif self.document_view.shortcuts_bar_bottom.button_find.get_active() == False:
+        elif self.document_view.shortcutsbar_bottom.button_find.get_active() == False:
             self.hide_search_bar()
 
     def on_search_bar_size_allocate(self, search_bar=None, allocation=None):

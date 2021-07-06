@@ -20,7 +20,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
-class ShortcutsBarBottom(Gtk.Toolbar):
+class ShortcutsbarBottom(Gtk.Toolbar):
 
     def __init__(self):
         Gtk.Toolbar.__init__(self)

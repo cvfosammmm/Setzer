@@ -59,9 +59,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.latex_notebook.set_show_border(False)
         self.latex_notebook.set_scrollable(True)
         self.latex_notebook.set_size_request(550, -1)
-        self.latex_shortcuts_bar = latex_shortcutsbar_view.LaTeXShortcutsBar()
+        self.latex_shortcutsbar = latex_shortcutsbar_view.LaTeXShortcutsbar()
         self.latex_notebook_wrapper = Gtk.VBox()
-        self.latex_notebook_wrapper.pack_start(self.latex_shortcuts_bar, False, False, 0)
+        self.latex_notebook_wrapper.pack_start(self.latex_shortcutsbar, False, False, 0)
         self.latex_notebook_wrapper.pack_start(self.latex_notebook, True, True, 0)
 
         # bibtex notebook
@@ -70,9 +70,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.bibtex_notebook.set_show_border(False)
         self.bibtex_notebook.set_scrollable(True)
         self.bibtex_notebook.set_size_request(550, -1)
-        self.bibtex_shortcuts_bar = bibtex_shortcutsbar_view.BibTeXShortcutsBar()
+        self.bibtex_shortcutsbar = bibtex_shortcutsbar_view.BibTeXShortcutsbar()
         self.bibtex_notebook_wrapper = Gtk.VBox()
-        self.bibtex_notebook_wrapper.pack_start(self.bibtex_shortcuts_bar, False, False, 0)
+        self.bibtex_notebook_wrapper.pack_start(self.bibtex_shortcutsbar, False, False, 0)
         self.bibtex_notebook_wrapper.pack_start(self.bibtex_notebook, True, True, 0)
 
         # others notebook
@@ -81,9 +81,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.others_notebook.set_show_border(False)
         self.others_notebook.set_scrollable(True)
         self.others_notebook.set_size_request(550, -1)
-        self.others_shortcuts_bar = others_shortcutsbar_view.OthersShortcutsBar()
+        self.others_shortcutsbar = others_shortcutsbar_view.OthersShortcutsbar()
         self.others_notebook_wrapper = Gtk.VBox()
-        self.others_notebook_wrapper.pack_start(self.others_shortcuts_bar, False, False, 0)
+        self.others_notebook_wrapper.pack_start(self.others_shortcutsbar, False, False, 0)
         self.others_notebook_wrapper.pack_start(self.others_notebook, True, True, 0)
 
         # build log

@@ -35,7 +35,7 @@ class DocumentView(Gtk.HBox):
         self.scrolled_window = Gtk.ScrolledWindow()
         
         self.search_bar = search_view.SearchBar()
-        self.shortcuts_bar_bottom = shortcutsbar_view.ShortcutsBarBottom()
+        self.shortcutsbar_bottom = shortcutsbar_view.ShortcutsbarBottom()
         self.wizard_button = shortcutsbar_view.WizardButton()
 
         self.source_view = GtkSource.View.new_with_buffer(document.source_buffer)

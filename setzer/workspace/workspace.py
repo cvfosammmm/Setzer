@@ -74,7 +74,7 @@ class Workspace(Observable):
         self.build_log = build_log.BuildLog(self)
         self.show_build_log = self.settings.get_value('window_state', 'show_build_log')
         self.build_log_position = self.settings.get_value('window_state', 'build_log_paned_position')
-        self.shortcutsbar = shortcutsbar.ShortcutsBar(self)
+        self.shortcutsbar = shortcutsbar.Shortcutsbar(self)
         self.shortcuts = shortcuts.Shortcuts(self)
 
     def init_workspace_controller(self):

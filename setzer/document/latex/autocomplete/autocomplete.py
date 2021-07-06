@@ -47,7 +47,7 @@ class Autocomplete(object):
         self.blank_session = session_blank.SessionBlank(self, self.document)
         self.session = self.blank_session
 
-        self.shortcuts_bar_height = 37
+        self.shortcutsbar_height = 37
         self.cursor_offset = None
 
         char_width, line_height = self.font_manager.get_char_dimensions()
@@ -184,9 +184,9 @@ class Autocomplete(object):
         full_height = 5 * line_height + 20
 
         if y_position >= line_height - 1 and y_position <= self.document_view.scrolled_window.get_allocated_height() - full_height - line_height:
-            self.view.set_margin_top(y_position + self.shortcuts_bar_height)
+            self.view.set_margin_top(y_position + self.shortcutsbar_height)
         else:
-            self.view.set_margin_top(y_position + self.shortcuts_bar_height - height - line_height)
+            self.view.set_margin_top(y_position + self.shortcutsbar_height - height - line_height)
 
         char_width, line_height = self.font_manager.get_char_dimensions()
         width = 25 * char_width

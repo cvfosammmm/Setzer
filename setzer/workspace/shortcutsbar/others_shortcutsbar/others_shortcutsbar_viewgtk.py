@@ -21,7 +21,7 @@ from gi.repository import Gtk
 from gi.repository import GLib
 
 
-class OthersShortcutsBar(Gtk.HBox):
+class OthersShortcutsbar(Gtk.HBox):
 
     def __init__(self):
         Gtk.HBox.__init__(self)

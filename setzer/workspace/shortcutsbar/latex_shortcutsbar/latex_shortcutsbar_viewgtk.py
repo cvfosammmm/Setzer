@@ -24,7 +24,7 @@ from gi.repository import Gio
 from setzer.app.service_locator import ServiceLocator
 
 
-class LaTeXShortcutsBar(Gtk.HBox):
+class LaTeXShortcutsbar(Gtk.HBox):
 
     def __init__(self):
         Gtk.HBox.__init__(self)

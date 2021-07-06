@@ -114,6 +114,6 @@ class Shortcuts(object):
     def shortcut_quotes(self, accel_group=None, window=None, key=None, mask=None):
         active_document = self.workspace.get_active_document()
         if active_document != None and active_document.is_latex_document():
-            self.main_window.latex_shortcuts_bar.quotes_button.set_active(True)
+            self.main_window.latex_shortcutsbar.quotes_button.set_active(True)
 
 
