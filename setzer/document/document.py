@@ -178,12 +178,17 @@ class Document(Observable):
         if self.get_buffer() == None: return False
 
         text = self.get_text()
-        if text != None:
-            with open(self.filename, 'w') as f:
-                f.write(text)
-            self.update_save_date()
-            self.deleted_on_disk_dialog_shown_after_last_save = False
-            self.get_buffer().set_modified(False)
+        if text == None: return False
+
+        dirname = os.path.dirname(self.filename)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+
+        with open(self.filename, 'w') as f:
+            f.write(text)
+        self.update_save_date()
+        self.deleted_on_disk_dialog_shown_after_last_save = False
+        self.get_buffer().set_modified(False)
 
     def update_save_date(self):
         self.save_date = os.path.getmtime(self.filename)
