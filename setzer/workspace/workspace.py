@@ -279,9 +279,10 @@ class Workspace(Observable):
                     root_document_filename = None
                 for item in sorted(data['open_documents'].values(), key=lambda val: val['last_activated']):
                     document = self.create_document_from_filename(item['filename'])
-                    document.set_last_activated(item['last_activated'])
-                    if item['filename'] == root_document_filename and document != None:
-                        self.set_one_document_root(document)
+                    if document != None:
+                        document.set_last_activated(item['last_activated'])
+                        if item['filename'] == root_document_filename:
+                            self.set_one_document_root(document)
                 for item in data['recently_opened_documents'].values():
                     self.update_recently_opened_document(item['filename'], item['date'], notify=False)
                 try:
