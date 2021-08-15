@@ -410,25 +410,16 @@ class Workspace(Observable):
             self.show_sidebar = show_sidebar
             self.add_change_code('set_show_sidebar', show_sidebar)
 
-    def set_sidebar_position(self, sidebar_position):
-        self.sidebar_position = sidebar_position
-
     def set_show_preview_or_help(self, show_preview, show_help):
         if show_preview != self.show_preview or show_help != self.show_help:
             self.show_preview = show_preview
             self.show_help = show_help
             self.add_change_code('set_show_preview_or_help')
 
-    def set_preview_position(self, preview_position):
-        self.preview_position = preview_position
-
     def set_show_build_log(self, show_build_log):
         if show_build_log != self.show_build_log:
             self.show_build_log = show_build_log
             self.add_change_code('show_build_log_state_change', show_build_log)
-
-    def set_build_log_position(self, build_log_position):
-        self.build_log_position = build_log_position
 
     def get_show_build_log(self):
         if self.show_build_log != None:

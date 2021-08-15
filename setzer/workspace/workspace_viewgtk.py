@@ -31,6 +31,7 @@ import setzer.workspace.preview_panel.preview_panel_viewgtk as preview_panel_vie
 import setzer.workspace.help_panel.help_panel_viewgtk as help_panel_view
 import setzer.workspace.sidebar.sidebar_viewgtk as sidebar_view
 import setzer.workspace.welcome_screen.welcome_screen_viewgtk as welcome_screen_view
+import setzer.widgets.animated_paned.animated_paned as animated_paned
 from setzer.app.service_locator import ServiceLocator
 
 import os.path
@@ -88,9 +89,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # build log
         self.build_log = build_log_view.BuildLogView()
-        self.build_log_paned = Gtk.VPaned()
-        self.build_log_paned.pack1(self.latex_notebook_wrapper, True, False)
-        self.build_log_paned.pack2(self.build_log, False, True)
+        self.build_log_paned = animated_paned.AnimatedVPaned(self.latex_notebook_wrapper, self.build_log, False)
         self.build_log_visible = None
 
         # preview
@@ -103,7 +102,6 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # sidebar
         self.sidebar = sidebar_view.Sidebar()
-        self.sidebar_visible = None
 
         # paneds
         self.preview_paned_overlay = Gtk.Overlay()
@@ -111,13 +109,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.preview_help_stack = Gtk.Stack()
         self.preview_help_stack.add_named(self.preview_panel, 'preview')
         self.preview_help_stack.add_named(self.help_panel, 'help')
-        self.preview_paned = Gtk.HPaned()
-        self.preview_paned.pack1(self.build_log_paned, True, False)
-        self.preview_paned.pack2(self.preview_help_stack, False, True)
+        self.preview_paned = animated_paned.AnimatedHPaned(self.build_log_paned, self.preview_help_stack, False)
         self.preview_paned_overlay.add(self.preview_paned)
-        self.sidebar_paned = Gtk.HPaned()
-        self.sidebar_paned.pack1(self.sidebar, False, True)
-        self.sidebar_paned.pack2(self.preview_paned_overlay, True, False)
+        self.sidebar_paned = animated_paned.AnimatedHPaned(self.sidebar, self.preview_paned_overlay, True)
         self.sidebar_paned.get_style_context().add_class('sidebar_paned')
 
         # welcome screen
