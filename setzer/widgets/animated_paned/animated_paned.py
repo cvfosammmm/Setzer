@@ -44,6 +44,12 @@ class AnimatedPaned(object):
 
         self.animated_widget.connect('size-allocate', self.on_size_allocate)
         self.connect('size-allocate', self.on_size_allocate)
+        self.connect('draw', self.on_realize)
+
+    def on_realize(self, view=None, cr=None, user_data=None):
+        if not self.is_initialized:
+            self.animate(False)
+            self.is_initialized = True
 
     def on_size_allocate(self, widget, allocation):
         if not self.is_initialized: return
@@ -62,18 +68,20 @@ class AnimatedPaned(object):
     def set_target_position(self, position):
         self.target_position = position
 
+    def set_show_widget(self, show_widget):
+        self.show_widget = show_widget
+
     def set_is_visible(self, is_visible):
         self.is_visible = is_visible
 
-    def animate(self, show_widget, animate=False):
+    def animate(self, animate=False):
         if self.animation_id != None: self.remove_tick_callback(self.animation_id)
-        elif self.is_visible == show_widget: return
+        elif self.is_visible == self.show_widget: return
 
-        self.show_widget = show_widget
         frame_clock = self.get_frame_clock()
         duration = 200
 
-        if show_widget:
+        if self.show_widget:
             end = self.target_position
         else:
             if self.animate_first_widget:
@@ -83,15 +91,15 @@ class AnimatedPaned(object):
 
         if frame_clock != None and animate:
             if self.get_position() != end:
-                if show_widget:
+                if self.show_widget:
                     self.animated_widget.show_all()
                 start = self.get_position()
                 start_time = frame_clock.get_frame_time()
                 end_time = start_time + 1000 * duration
-                self.animation_id = self.add_tick_callback(self.set_position_on_tick, (show_widget, start_time, end_time, start, end))
+                self.animation_id = self.add_tick_callback(self.set_position_on_tick, (self.show_widget, start_time, end_time, start, end))
                 self.child_set_property(self.animated_widget, 'shrink', True)
         else:
-            if show_widget:
+            if self.show_widget:
                 self.child_set_property(self.animated_widget, 'shrink', False)
                 self.animated_widget.show_all()
                 self.set_is_visible(True)

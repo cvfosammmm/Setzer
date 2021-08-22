@@ -25,17 +25,8 @@ class WorkspacePresenter(object):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
         self.workspace.register_observer(self)
-
-        self.preview_animating = False
-        self.build_log_animation_id = None
         self.activate_welcome_screen_mode()
-
-        self.main_window.sidebar_paned.set_target_position(self.workspace.sidebar_position)
-        self.main_window.preview_paned.set_target_position(self.workspace.preview_position)
-        self.main_window.build_log_paned.set_target_position(self.workspace.build_log_position)
-
-        def on_window_state(widget, event): self.on_realize()
-        self.main_window.connect('draw', on_window_state)
+        self.setup_paneds()
 
     '''
     *** notification handlers, get called by observed workspace
@@ -102,7 +93,8 @@ class WorkspacePresenter(object):
                 except AttributeError: pass
 
         if change_code == 'set_show_sidebar':
-            self.main_window.sidebar_paned.animate(parameter, True)
+            self.main_window.sidebar_paned.set_show_widget(parameter)
+            self.main_window.sidebar_paned.animate(True)
 
         if change_code == 'set_show_preview_or_help':
             if self.workspace.show_preview:
@@ -117,10 +109,12 @@ class WorkspacePresenter(object):
                     self.focus_active_document()
             else:
                 self.focus_active_document()
-            self.main_window.preview_paned.animate(self.workspace.show_preview or self.workspace.show_help, True)
+            self.main_window.preview_paned.set_show_widget(self.workspace.show_preview or self.workspace.show_help)
+            self.main_window.preview_paned.animate(True)
 
         if change_code == 'show_build_log_state_change':
-            self.main_window.build_log_paned.animate(self.workspace.show_build_log, True)
+            self.main_window.build_log_paned.set_show_widget(self.workspace.show_build_log)
+            self.main_window.build_log_paned.animate(True)
 
         if change_code == 'set_dark_mode':
             ServiceLocator.get_settings().gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', parameter)
@@ -146,30 +140,28 @@ class WorkspacePresenter(object):
         if active_document != None:
             active_document.view.source_view.grab_focus()
 
-    def on_realize(self, view=None, cr=None, user_data=None):
-        if self.main_window.sidebar_paned.is_initialized == False:
-            self.main_window.sidebar_paned.animate(self.workspace.show_sidebar, False)
-            self.main_window.headerbar.sidebar_toggle.set_active(self.main_window.sidebar_paned.is_visible)
-            self.main_window.sidebar_paned.is_initialized = True
+    def setup_paneds(self):
+        if self.workspace.show_preview:
+            self.main_window.preview_help_stack.set_visible_child_name('preview')
+        elif self.workspace.show_help:
+            self.main_window.preview_help_stack.set_visible_child_name('help')
 
-        if self.main_window.preview_paned.is_initialized == False:
-            if self.workspace.show_preview:
-                self.main_window.preview_help_stack.set_visible_child_name('preview')
-            elif self.workspace.show_help:
-                self.main_window.preview_help_stack.set_visible_child_name('help')
+        self.main_window.sidebar_paned.set_show_widget(self.workspace.show_sidebar)
+        self.main_window.preview_paned.set_show_widget(self.workspace.show_preview or self.workspace.show_help)
+        self.main_window.build_log_paned.set_show_widget(self.workspace.get_show_build_log())
 
-            if self.workspace.show_preview or self.workspace.show_help:
-                if self.workspace.show_sidebar == False and self.main_window.sidebar.get_allocated_width() > 1:
-                    self.main_window.preview_paned.set_target_position(self.main_window.preview_paned.target_position - self.main_window.sidebar.get_allocated_width() - 1)
-                else:
-                    self.main_window.preview_paned.set_target_position(self.main_window.preview_paned.target_position - self.main_window.sidebar.get_allocated_width() + 216)
-            self.main_window.preview_paned.animate(self.workspace.show_preview or self.workspace.show_help, False)
-            self.main_window.headerbar.preview_toggle.set_active(self.main_window.preview_paned.is_visible and self.workspace.show_preview)
-            self.main_window.headerbar.help_toggle.set_active(self.main_window.preview_paned.is_visible and self.workspace.show_help)
-            self.main_window.preview_paned.is_initialized = True
+        preview_position = self.workspace.preview_position
+        if self.workspace.show_preview or self.workspace.show_help:
+            if self.workspace.show_sidebar == False:
+                preview_position += - 217
+            else:
+                preview_position += self.workspace.sidebar_position - 216
+        self.main_window.preview_paned.set_target_position(preview_position)
+        self.main_window.sidebar_paned.set_target_position(self.workspace.sidebar_position)
+        self.main_window.build_log_paned.set_target_position(self.workspace.build_log_position)
 
-        if self.main_window.build_log_paned.is_initialized == False:
-            self.main_window.build_log_paned.animate(self.workspace.get_show_build_log(), False)
-            self.main_window.build_log_paned.is_initialized = True
+        self.main_window.headerbar.sidebar_toggle.set_active(self.workspace.show_sidebar)
+        self.main_window.headerbar.preview_toggle.set_active(self.main_window.preview_paned.is_visible and self.workspace.show_preview)
+        self.main_window.headerbar.help_toggle.set_active(self.main_window.preview_paned.is_visible and self.workspace.show_help)
 
 
