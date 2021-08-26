@@ -96,6 +96,7 @@ class KeyboardShortcutsDialog(Dialog):
         data.append(section)
 
         section = {'title': _('LaTeX Shortcuts'), 'items': list()}
+        section['items'].append({'title': _('Show current line in preview'), 'shortcut': '&lt;ctrl&gt;&lt;Alt&gt;J'})
         section['items'].append({'title': _('Comment / Uncomment current line(s)'), 'shortcut': '&lt;ctrl&gt;K'})
         section['items'].append({'title': _('New Line') + ' (\\\\)', 'shortcut': '&lt;ctrl&gt;Return'})
         section['items'].append({'title': _('Bold Text'), 'shortcut': '&lt;ctrl&gt;B'})

@@ -90,6 +90,7 @@ class DocumentLaTeX(Document):
         shortcuts_manager.set_accels_for_insert_symbol_action(['\\item •'], ['<Control><Shift>i'])
         shortcuts_manager.set_accels_for_insert_symbol_action(['\\\\\n'], ['<Control>Return'])
         shortcuts_manager.main_window.app.set_accels_for_action('win.comment-uncomment', ['<Control>K'])
+        shortcuts_manager.main_window.app.set_accels_for_action('win.forward_sync', ['<Control><Alt>J'])
 
     def get_latex_command_at_cursor(self):
         return self.source_buffer.get_latex_command_at_cursor()
