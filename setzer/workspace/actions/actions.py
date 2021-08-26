@@ -60,6 +60,7 @@ class Actions(object):
         self.add_remove_packages_dialog_action = Gio.SimpleAction.new('add-remove-packages-dialog', None)
         self.add_packages_action = Gio.SimpleAction.new('add-packages', GLib.VariantType('as'))
         self.comment_uncomment_action = Gio.SimpleAction.new('comment-uncomment', None)
+        self.forward_sync_action = Gio.SimpleAction.new('forward_sync', None)
         self.shortcuts_window_action = Gio.SimpleAction.new('show-shortcuts-window', None)
         self.show_preferences_action = Gio.SimpleAction.new('show-preferences-dialog', None)
         self.show_about_action = Gio.SimpleAction.new('show-about-dialog', None)
@@ -107,6 +108,7 @@ class Actions(object):
         main_window.add_action(self.add_remove_packages_dialog_action)
         main_window.add_action(self.add_packages_action)
         main_window.add_action(self.comment_uncomment_action)
+        main_window.add_action(self.forward_sync_action)
         main_window.add_action(self.shortcuts_window_action)
         main_window.add_action(self.show_preferences_action)
         main_window.add_action(self.show_about_action)
@@ -147,6 +149,7 @@ class Actions(object):
         self.add_remove_packages_dialog_action.connect('activate', self.start_add_remove_packages_dialog)
         self.add_packages_action.connect('activate', self.add_packages)
         self.comment_uncomment_action.connect('activate', self.comment_uncomment)
+        self.forward_sync_action.connect('activate', self.forward_sync)
         self.create_new_bibtex_entry_action.connect('activate', self.start_create_new_bibtex_entry_dialog)
         self.show_previous_bibtex_entries_action.connect('activate', self.start_show_previous_bibtex_entries_dialog)
         self.search_online_for_bibtex_entries_action.connect('activate', self.start_search_online_for_bibtex_entries_dialog)
@@ -276,6 +279,7 @@ class Actions(object):
         self.include_latex_file_action.set_enabled(value)
         self.add_packages_action.set_enabled(value)
         self.comment_uncomment_action.set_enabled(value)
+        self.forward_sync_action.set_enabled(value)
         self.document_wizard_action.set_enabled(value)
         self.show_build_log_action.set_enabled(value)
         self.close_build_log_action.set_enabled(value)
@@ -453,6 +457,11 @@ class Actions(object):
     def comment_uncomment(self, action, parameter=None):
         document = self.workspace.get_active_document()
         document.comment_uncomment()
+
+    @_assert_has_active_document
+    def forward_sync(self, action, parameter=None):
+        document = self.workspace.get_active_document()
+        document.forward_sync(document)
 
     @_assert_has_active_document
     def start_create_new_bibtex_entry_dialog(self, action, parameter=None):

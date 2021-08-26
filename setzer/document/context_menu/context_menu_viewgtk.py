@@ -58,7 +58,7 @@ class ContextMenuView(Gtk.VBox):
             box.set_margin_left(10)
             box.set_margin_right(10)
             self.model_button_toggle_comment = self.get_button(_('Toggle Comment'), keyboard_shortcut=_('Ctrl') + '+K')
-            self.model_button_show_in_preview = self.get_button(_('Show in Preview'), keyboard_shortcut=None)
+            self.model_button_show_in_preview = self.get_button(_('Show in Preview'), keyboard_shortcut=_('Ctrl') + _('Alt') + '+J')
 
             box.pack_start(self.model_button_toggle_comment, False, False, 0)
             box.pack_start(self.model_button_show_in_preview, False, False, 0)
