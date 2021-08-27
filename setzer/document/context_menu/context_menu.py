@@ -103,15 +103,15 @@ class ContextMenu(object):
         self.document.select_all()
 
     def on_zoom_out(self, widget=None, event=None):
-        ServiceLocator.get_main_window().zoom_out_action.activate()
+        ServiceLocator.get_font_manager().zoom_out()
         return True
 
     def on_zoom_in(self, widget=None, event=None):
-        ServiceLocator.get_main_window().zoom_in_action.activate()
+        ServiceLocator.get_font_manager().zoom_in()
         return True
 
     def on_reset_zoom(self, widget=None, event=None):
-        ServiceLocator.get_main_window().reset_zoom_action.activate()
+        ServiceLocator.get_font_manager().reset_zoom()
         return True
 
     def on_show_in_preview(self, widget=None):
