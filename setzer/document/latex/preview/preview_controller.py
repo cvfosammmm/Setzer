@@ -139,10 +139,10 @@ class PreviewController(object):
             self.view.context_menu.popup_at_pointer(event)
             self.context_menu_popup_button_event = event
             return True
-        elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state == Gdk.ModifierType.CONTROL_MASK:
+        elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & Gdk.ModifierIntent.DEFAULT_MOD_MASK == Gdk.ModifierType.CONTROL_MASK:
             self.init_backward_sync(event)
             return True
-        elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state == 0:
+        elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & Gdk.ModifierIntent.DEFAULT_MOD_MASK == 0:
             x_offset = event.x
             y_offset = event.y
             data = self.preview.get_page_number_and_offsets_by_document_offsets(x_offset, y_offset)
