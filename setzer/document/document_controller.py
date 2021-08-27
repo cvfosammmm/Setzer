@@ -48,8 +48,10 @@ class DocumentController(object):
     '''
 
     def on_buttonpress(self, widget, event, data=None):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
         if event.type == Gdk.EventType.BUTTON_PRESS:
-            if event.state == Gdk.ModifierType.CONTROL_MASK:
+            if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
                 if self.forward_sync_manager.can_sync:
                     GLib.idle_add(self.forward_sync_manager.forward_sync, self.document)
         return False

@@ -20,6 +20,7 @@ gi.require_version('Poppler', '0.18')
 gi.require_version('Gtk', '3.0')
 from gi.repository import Poppler
 from gi.repository import Gdk
+from gi.repository import Gtk
 
 import math
 import webbrowser
@@ -134,15 +135,17 @@ class PreviewController(object):
             self.preview.set_position_from_offsets(None, yoffset)
 
     def on_button_press(self, widget, event):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
             self.view.context_menu.show_all()
             self.view.context_menu.popup_at_pointer(event)
             self.context_menu_popup_button_event = event
             return True
-        elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & Gdk.ModifierIntent.DEFAULT_MOD_MASK == Gdk.ModifierType.CONTROL_MASK:
+        elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
             self.init_backward_sync(event)
             return True
-        elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & Gdk.ModifierIntent.DEFAULT_MOD_MASK == 0:
+        elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & modifiers == 0:
             x_offset = event.x
             y_offset = event.y
             data = self.preview.get_page_number_and_offsets_by_document_offsets(x_offset, y_offset)

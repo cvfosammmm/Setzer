@@ -71,8 +71,10 @@ class Search(object):
         self.on_search_stop()
 
     def on_replace_entry_keypress(self, entry, event):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
         if event.keyval == Gdk.keyval_from_name('Escape'):
-            if event.state & Gtk.accelerator_get_default_mod_mask() == 0:
+            if event.state & modifiers == 0:
                 self.on_search_stop()
                 return True
         return False

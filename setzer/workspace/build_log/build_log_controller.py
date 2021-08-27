@@ -18,6 +18,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk
+from gi.repository import Gtk
 
 
 class BuildLogController(object):
@@ -46,8 +47,9 @@ class BuildLogController(object):
 
     def on_button_press(self, drawing_area, event):
         if self.build_log.document == None: return
+        modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state == 0:
+        if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & modifiers == 0:
             item_num = max(0, min(int(event.y // self.view.line_height), len(self.build_log.items) - 1))
             item = self.build_log.items[item_num]
 
