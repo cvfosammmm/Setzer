@@ -79,10 +79,10 @@ class Autocomplete(object):
         self.update(True)
 
     def on_insert_mark_set(self, source_buffer):
-        self.update(True)
+        self.update(False)
 
     def on_insert_mark_deleted(self, source_buffer):
-        self.update(True)
+        self.update(False)
 
     def on_font_string_changed(self, font_manager):
         char_width, line_height = self.font_manager.get_char_dimensions()
