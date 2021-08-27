@@ -29,7 +29,8 @@ class ZoomWidget(object):
         self.view = view.PreviewZoomWidget()
         self.preview.view.action_bar.pack_end(self.view, False, False, 0)
 
-        self.preview.register_observer(self)
+        self.preview.connect('pdf_changed', self.on_pdf_changed)
+        self.preview.connect('zoom_level_changed', self.on_zoom_level_changed)
 
         self.view.zoom_in_button.connect('clicked', self.on_zoom_button_clicked, 'in')
         self.view.zoom_out_button.connect('clicked', self.on_zoom_button_clicked, 'out')
@@ -62,16 +63,14 @@ class ZoomWidget(object):
             self.view.zoom_button_box.pack_start(model_button, False, False, 0)
         self.view.zoom_button_box.show_all()
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_pdf_changed(self, preview):
+        if self.preview.pdf_loaded:
+            self.view.show_all()
+        else:
+            self.view.hide()
 
-        if change_code == 'pdf_changed':
-            if self.preview.pdf_loaded:
-                self.view.show_all()
-            else:
-                self.view.hide()
-
-        if change_code == 'zoom_level_changed':
-            self.update_zoom_level()
+    def on_zoom_level_changed(self, preview):
+        self.update_zoom_level()
 
     def on_zoom_button_clicked(self, button, direction):
         if direction == 'in':

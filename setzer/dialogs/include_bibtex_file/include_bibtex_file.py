@@ -188,5 +188,6 @@ class IncludeBibTeXFile(Dialog):
         self.settings.set_value('app_include_bibtex_file_dialog', 'presets', pickle.dumps(self.current_values))
         self.document.insert_before_document_end('''\\bibliographystyle{''' + self.get_style() + '''}
 \\bibliography{''' + self.get_display_filename() + '''}''')
+        self.document.scroll_cursor_onscreen()
 
 

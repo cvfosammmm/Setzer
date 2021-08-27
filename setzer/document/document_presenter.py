@@ -37,40 +37,33 @@ class DocumentPresenter(object):
         self.view.source_view.set_insert_spaces_instead_of_tabs(self.settings.get_value('preferences', 'spaces_instead_of_tabs'))
         self.view.source_view.set_tab_width(self.settings.get_value('preferences', 'tab_width'))
         self.view.source_view.set_highlight_current_line(self.settings.get_value('preferences', 'highlight_current_line'))
-        self.document.source_buffer.set_highlight_matching_brackets(self.settings.get_value('preferences', 'highlight_matching_brackets'))
+        self.document.source_buffer.source_buffer.set_highlight_matching_brackets(self.settings.get_value('preferences', 'highlight_matching_brackets'))
         if self.settings.get_value('preferences', 'enable_line_wrapping'):
             self.view.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
         else:
             self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
         self.view.source_view.set_left_margin(self.font_manager.get_char_width() - 1)
 
-        self.document.register_observer(self)
-        self.settings.register_observer(self)
-        self.font_manager.register_observer(self)
+        self.settings.connect('settings_changed', self.on_settings_changed)
+        self.font_manager.connect('font_string_changed', self.on_font_string_changed)
 
-    '''
-    *** notification handlers, get called by observed document
-    '''
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+        if (section, item) == ('preferences', 'spaces_instead_of_tabs'):
+            self.view.source_view.set_insert_spaces_instead_of_tabs(value)
+        if (section, item) == ('preferences', 'tab_width'):
+            self.view.source_view.set_tab_width(value)
+        if (section, item) == ('preferences', 'highlight_current_line'):
+            self.view.source_view.set_highlight_current_line(value)
+        if (section, item) == ('preferences', 'highlight_matching_brackets'):
+            self.document.source_buffer.source_buffer.set_highlight_matching_brackets(value)
+        if (section, item) == ('preferences', 'enable_line_wrapping'):
+            if value == True:
+                self.view.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+            else:
+                self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
 
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code == 'settings_changed':
-            section, item, value = parameter
-            if (section, item) == ('preferences', 'spaces_instead_of_tabs'):
-                self.view.source_view.set_insert_spaces_instead_of_tabs(value)
-            if (section, item) == ('preferences', 'tab_width'):
-                self.view.source_view.set_tab_width(value)
-            if (section, item) == ('preferences', 'highlight_current_line'):
-                self.view.source_view.set_highlight_current_line(value)
-            if (section, item) == ('preferences', 'highlight_matching_brackets'):
-                self.document.source_buffer.set_highlight_matching_brackets(value)
-            if (section, item) == ('preferences', 'enable_line_wrapping'):
-                if value == True:
-                    self.view.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
-                else:
-                    self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
-
-        if change_code == 'font_string_changed':
-            self.view.source_view.set_left_margin(self.font_manager.get_char_width() - 1)
+    def on_font_string_changed(self, font_manager):
+        self.view.source_view.set_left_margin(self.font_manager.get_char_width() - 1)
 
 

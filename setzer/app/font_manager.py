@@ -30,7 +30,7 @@ class FontManager(Observable):
 
         self.main_window = main_window
         self.settings = settings
-        self.settings.register_observer(self)
+        self.settings.connect('settings_changed', self.on_settings_changed)
 
         self.text_view = Gtk.TextView()
         self.text_view.set_monospace(True)
@@ -38,12 +38,10 @@ class FontManager(Observable):
         self.font_string = None
         self.update_font_string()
 
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code == 'settings_changed':
-            section, item, value = parameter
-            if (section, item) in [('preferences', 'font_string'), ('preferences', 'use_system_font')]:
-                self.update_font_string()
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+        if (section, item) in [('preferences', 'font_string'), ('preferences', 'use_system_font')]:
+            self.update_font_string()
 
     def update_font_string(self):
         self.set_font_string(self.get_normal_font_string())

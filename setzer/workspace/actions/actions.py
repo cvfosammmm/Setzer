@@ -166,12 +166,11 @@ class Actions(object):
 
         self.font_manager = ServiceLocator.get_font_manager()
         self.update_zoom_actions()
-        self.workspace.register_observer(self)
-        self.font_manager.register_observer(self)
 
-    '''
-    *** decorators
-    '''
+        self.workspace.connect('document_removed', self.on_document_removed)
+        self.workspace.connect('new_inactive_document', self.on_new_inactive_document)
+        self.workspace.connect('new_active_document', self.on_new_active_document)
+        self.font_manager.connect('font_string_changed', self.on_font_string_changed)
 
     def _assert_has_active_document(original_function):
         def new_function(self, *args, **kwargs):
@@ -179,35 +178,26 @@ class Actions(object):
                 return original_function(self, *args, **kwargs)
         return new_function    
 
-    '''
-    *** notification handlers, get called by observed workspace
-    '''
+    def on_document_removed(self, workspace, document):
+        if self.workspace.active_document == None:
+            self.activate_welcome_screen_mode()
+            self.update_document_actions(None)
+            self.update_save_actions(None)
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_new_inactive_document(self, workspace, document):
+        document.source_buffer.disconnect('modified_changed', self.on_modified_changed)
 
-        if change_code == 'document_removed':
-            if self.workspace.active_document == None:
-                self.activate_welcome_screen_mode()
-                self.update_document_actions(None)
-                self.update_save_actions(None)
+    def on_new_active_document(self, workspace, document):
+        self.activate_document_mode()
+        self.update_document_actions(document)
+        self.update_save_actions(document)
+        document.source_buffer.connect('modified_changed', self.on_modified_changed)
 
-        if change_code == 'new_inactive_document':
-            document = parameter
-            document.source_buffer.unregister_observer(self)
+    def on_font_string_changed(self, font_manager):
+        self.update_zoom_actions()
 
-        if change_code == 'new_active_document':
-            document = parameter
-            self.activate_document_mode()
-            self.update_document_actions(document)
-            self.update_save_actions(document)
-            document.source_buffer.register_observer(self)
-
-        if change_code == 'modified_changed':
-            document = self.workspace.get_active_document()
-            self.update_save_actions(document)
-
-        if change_code == 'font_string_changed':
-            self.update_zoom_actions()
+    def on_modified_changed(self, source_buffer):
+        self.update_save_actions(self.workspace.active_document)
 
     def activate_welcome_screen_mode(self):
         self.save_all_action.set_enabled(False)
@@ -411,16 +401,19 @@ class Actions(object):
 
     @_assert_has_active_document
     def insert_before_after(self, action, parameter):
-        active_document = self.workspace.get_active_document().insert_before_after(parameter[0], parameter[1])
+        self.workspace.get_active_document().insert_before_after(parameter[0], parameter[1])
+        self.workspace.get_active_document().scroll_cursor_onscreen()
 
     @_assert_has_active_document
     def insert_symbol(self, action, parameter):
         self.workspace.get_active_document().insert_text_at_cursor(parameter[0])
+        self.workspace.get_active_document().scroll_cursor_onscreen()
 
     @_assert_has_active_document
     def insert_before_document_end(self, action, parameter):
         document = self.workspace.get_active_document()
         document.insert_before_document_end(parameter[0])
+        document.scroll_cursor_onscreen()
 
     @_assert_has_active_document
     def start_wizard(self, action, parameter=None):

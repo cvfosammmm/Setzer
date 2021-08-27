@@ -166,7 +166,7 @@ class SessionDefault(object):
 
     def insert_begin_end(self, command):
         text = command['command']
-        buffer = self.document.get_buffer()
+        buffer = self.document.source_buffer.source_buffer
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         current_word = self.document.get_latex_command_at_cursor()
         start_iter = insert_iter.copy()
@@ -192,12 +192,12 @@ class SessionDefault(object):
         text = replace_previous_command_data[1]
         match_object = replace_previous_command_data[0]
 
-        self.document.get_buffer().begin_user_action()
+        self.document.source_buffer.source_buffer.begin_user_action()
 
         end_iter_begin = insert_iter.copy()
         end_iter_begin.forward_chars(match_object.end())
         start_iter_offset = start_iter_begin.get_offset()
-        self.document.get_buffer().replace_range_no_user_action(start_iter_begin, end_iter_begin, text, indent_lines=False, select_dot=True)
+        self.document.source_buffer.replace_range_no_user_action(start_iter_begin, end_iter_begin, text, indent_lines=False, select_dot=True)
 
         end_iter_offset = start_iter_offset + len(text)
         document_text = self.document.get_text_after_offset(end_iter_offset)
@@ -205,7 +205,7 @@ class SessionDefault(object):
         end_match_object = self.get_end_match_object(document_text, environment_name)
 
         if end_match_object != None:
-            start_iter_begin = self.document.get_buffer().get_iter_at_offset(end_iter_offset)
+            start_iter_begin = self.document.source_buffer.source_buffer.get_iter_at_offset(end_iter_offset)
             start_iter_end = start_iter_begin.copy()
             start_iter_end.forward_chars(end_match_object.start())
             end_iter_end = start_iter_begin.copy()
@@ -214,9 +214,9 @@ class SessionDefault(object):
             end_command_bracket_position = end_command.find('}')
             if end_command_bracket_position:
                 end_command = end_command[:end_command_bracket_position + 1]
-            self.document.get_buffer().replace_range_no_user_action(start_iter_end, end_iter_end, end_command, indent_lines=False, select_dot=False)
+            self.document.source_buffer.replace_range_no_user_action(start_iter_end, end_iter_end, end_command, indent_lines=False, select_dot=False)
 
-        self.document.get_buffer().end_user_action()
+        self.document.source_buffer.source_buffer.end_user_action()
 
     def get_end_match_object(self, text, environment_name):
         count = 0
@@ -246,7 +246,7 @@ class SessionDefault(object):
                 self.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
 
     def get_replacement_pattern(self, command):
-        buffer = self.document.get_buffer()
+        buffer = self.document.source_buffer.source_buffer
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         line_part = self.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
         command_bracket_count = self.get_command_bracket_count(command)

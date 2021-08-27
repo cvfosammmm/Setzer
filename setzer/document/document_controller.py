@@ -84,7 +84,7 @@ class DocumentController(object):
 
         if not keypress_handled and event.keyval in tab_keyvals:
             if event.state & modifiers == 0:
-                buffer = self.document.get_buffer()
+                buffer = self.document.source_buffer.source_buffer
                 insert = buffer.get_iter_at_mark(buffer.get_insert())
                 insert.forward_chars(1)
                 limit_iter = insert.copy()
@@ -104,7 +104,7 @@ class DocumentController(object):
                     self.document.scroll_iter_onscreen(result[1])
                     return True
             elif event.state & modifiers == Gdk.ModifierType.SHIFT_MASK:
-                buffer = self.document.get_buffer()
+                buffer = self.document.source_buffer.source_buffer
                 insert = buffer.get_iter_at_mark(buffer.get_insert())
                 limit_iter = insert.copy()
                 limit_iter.backward_lines(3)

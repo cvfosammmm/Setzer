@@ -47,32 +47,32 @@ class PreviewLayouter(Observable):
         self.visible_synctex_rectangles = dict()
         self.has_layout = False
 
-        self.preview.register_observer(self)
+        self.preview.connect('pdf_changed', self.on_pdf_or_zoom_level_changed)
+        self.preview.connect('zoom_level_changed', self.on_pdf_or_zoom_level_changed)
+        self.preview.connect('position_changed', self.on_position_changed)
 
         if self.preview.pdf_filename != None:
             self.update_layout()
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_pdf_or_zoom_level_changed(self, preview):
+        if self.preview.pdf_loaded:
+            self.update_layout()
+        else:
+            self.has_layout = False
+            self.vertical_margin = None
+            self.horizontal_margin = None
+            self.page_width = None
+            self.page_height = None
+            self.page_gap = None
+            self.border_width = None
+            self.canvas_width = None
+            self.canvas_height = None
+            self.scale_factor = None
+            self.add_change_code('layout_changed')
+        self.compute_current_page()
 
-        if change_code in ['pdf_changed', 'zoom_level_changed']:
-            if self.preview.pdf_loaded:
-                self.update_layout()
-            else:
-                self.has_layout = False
-                self.vertical_margin = None
-                self.horizontal_margin = None
-                self.page_width = None
-                self.page_height = None
-                self.page_gap = None
-                self.border_width = None
-                self.canvas_width = None
-                self.canvas_height = None
-                self.scale_factor = None
-                self.add_change_code('layout_changed')
-            self.compute_current_page()
-
-        if change_code == 'position_changed':
-            self.compute_current_page()
+    def on_position_changed(self, preview):
+        self.compute_current_page()
 
     def update_layout(self):
         if self.preview.zoom_level == None: return

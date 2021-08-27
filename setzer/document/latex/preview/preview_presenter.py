@@ -45,31 +45,28 @@ class PreviewPresenter(object):
         self.scrolling_queue = queue.Queue()
         self.view.drawing_area.connect('size-allocate', self.scrolling_loop)
         GObject.timeout_add(50, self.scrolling_loop)
-        self.preview.register_observer(self)
-        self.layouter.register_observer(self)
-        self.page_renderer.register_observer(self)
+
+        self.preview.connect('pdf_changed', self.on_pdf_changed)
+        self.preview.connect('invert_pdf_changed', self.on_invert_pdf_changed)
+        self.layouter.connect('layout_changed', self.on_layout_changed)
+        self.page_renderer.connect('rendered_pages_changed', self.on_rendered_pages_changed)
 
         self.show_blank_slate()
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_pdf_changed(self, preview):
+        if self.preview.pdf_loaded:
+            self.show_pdf()
+        else:
+            self.show_blank_slate()
 
-        if change_code == 'pdf_changed':
-            if self.preview.pdf_loaded:
-                self.show_pdf()
-            else:
-                self.show_blank_slate()
+    def on_invert_pdf_changed(self, preview):
+        self.view.drawing_area.queue_draw()
 
-        if change_code == 'layout_changed':
-            self.set_canvas_size()
+    def on_layout_changed(self, layouter):
+        self.set_canvas_size()
 
-        if change_code == 'rendered_pages_changed':
-            self.view.drawing_area.queue_draw()
-
-        if change_code == 'invert_pdf_changed':
-            self.view.drawing_area.queue_draw()
-
-        if change_code == 'can_sync_changed':
-            self.view.menu_item_backward_sync.set_sensitive(parameter)
+    def on_rendered_pages_changed(self, page_renderer):
+        self.view.drawing_area.queue_draw()
 
     def show_blank_slate(self):
         self.view.stack.set_visible_child_name('blank_slate')

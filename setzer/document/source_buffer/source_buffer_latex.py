@@ -21,8 +21,8 @@ import setzer.document.source_buffer.parser.parser_latex as parser_latex
 
 class SourceBufferLaTeX(SourceBuffer):
 
-    def __init__(self, options):
-        SourceBuffer.__init__(self, options)
+    def __init__(self):
+        SourceBuffer.__init__(self)
 
         self.symbols = dict()
         self.symbols['bibitems'] = set()
@@ -52,12 +52,12 @@ class SourceBufferLaTeX(SourceBuffer):
             for package in package_data.items():
                 if package[1].end() > max_end:
                     max_end = package[1].end()
-            insert_iter = self.get_iter_at_offset(max_end)
+            insert_iter = self.source_buffer.get_iter_at_offset(max_end)
             if not insert_iter.ends_line():
                 insert_iter.forward_to_line_end()
             self.insert_text_at_iter(insert_iter, '\n' + text)
         else:
-            end_iter = self.get_end_iter()
+            end_iter = self.source_buffer.get_end_iter()
             result = end_iter.backward_search('\\documentclass', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
             if result != None:
                 result[0].forward_to_line_end()
@@ -71,13 +71,13 @@ class SourceBufferLaTeX(SourceBuffer):
             try:
                 match_obj = packages_dict[package]
             except KeyError: return
-            start_iter = self.get_iter_at_offset(match_obj.start())
-            end_iter = self.get_iter_at_offset(match_obj.end())
-            text = self.get_text(start_iter, end_iter, False)
+            start_iter = self.source_buffer.get_iter_at_offset(match_obj.start())
+            end_iter = self.source_buffer.get_iter_at_offset(match_obj.end())
+            text = self.source_buffer.get_text(start_iter, end_iter, False)
             if text == match_obj.group(0):  
                 if start_iter.get_line_offset() == 0:
                     start_iter.backward_char()
-                self.delete(start_iter, end_iter)
+                self.source_buffer.delete(start_iter, end_iter)
 
     def get_packages(self):
         return self.symbols['packages']
@@ -99,5 +99,8 @@ class SourceBufferLaTeX(SourceBuffer):
 
     def get_labels(self):
         return self.symbols['labels']
+
+    def get_gsv_language_name(self):
+        return 'latex'
 
 

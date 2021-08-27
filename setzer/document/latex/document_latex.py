@@ -27,7 +27,6 @@ import setzer.document.latex.code_folding.code_folding as code_folding
 import setzer.document.latex.preview.preview as preview
 import setzer.document.latex.state_manager.state_manager_latex as state_manager_latex
 from setzer.helpers.observable import Observable
-from setzer.app.service_locator import ServiceLocator
 
 
 class DocumentLaTeX(Document):
@@ -35,7 +34,7 @@ class DocumentLaTeX(Document):
     def __init__(self):
         Document.__init__(self)
 
-        self.source_buffer = source_buffer_latex.SourceBufferLaTeX(self.settings.get_source_buffer_options())
+        self.source_buffer = source_buffer_latex.SourceBufferLaTeX()
         self.init_main_submodules()
 
         self.has_visible_build_system = False
@@ -101,7 +100,8 @@ class DocumentLaTeX(Document):
         self.source_buffer.replace_latex_command_at_cursor(command, dotlabels, is_full_command)
 
     def add_packages(self, packages):
-        self.get_buffer().add_packages(packages)
+        self.source_buffer.add_packages(packages)
+        self.scroll_cursor_onscreen()
 
     def get_packages(self):
         return self.source_buffer.get_packages()
@@ -110,7 +110,7 @@ class DocumentLaTeX(Document):
         return self.source_buffer.get_package_details()
 
     def remove_packages(self, packages):
-        self.get_buffer().remove_packages(packages)
+        self.source_buffer.remove_packages(packages)
 
     def get_matching_begin_end_offset(self, orig_offset):
         blocks = self.get_blocks()
@@ -232,11 +232,10 @@ class DocumentLaTeX(Document):
         self.add_change_code('can_sync_changed', self.can_sync)
 
     def forward_sync(self, document):
-        insert = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
         self.forward_sync_arguments = dict()
-        self.forward_sync_arguments['filename'] = document.get_filename()
-        self.forward_sync_arguments['line'] = insert.get_line() + 1
-        self.forward_sync_arguments['line_offset'] = insert.get_line_offset() + 1
+        self.forward_sync_arguments['filename'] = self.get_filename()
+        self.forward_sync_arguments['line'] = self.source_buffer.get_cursor_line_number() + 1
+        self.forward_sync_arguments['line_offset'] = self.source_buffer.get_cursor_line_offset() + 1
         if self.can_sync:
             self.set_build_mode('forward_sync')
             self.start_building()
@@ -248,15 +247,12 @@ class DocumentLaTeX(Document):
             self.start_building()
 
     def build_and_forward_sync(self):
-        document = ServiceLocator.get_workspace().active_document
-        if document != None:
-            insert = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
-            self.forward_sync_arguments = dict()
-            self.forward_sync_arguments['filename'] = document.get_filename()
-            self.forward_sync_arguments['line'] = insert.get_line() + 1
-            self.forward_sync_arguments['line_offset'] = insert.get_line_offset() + 1
-            self.set_build_mode('build_and_forward_sync')
-            self.start_building()
+        self.forward_sync_arguments = dict()
+        self.forward_sync_arguments['filename'] = self.get_filename()
+        self.forward_sync_arguments['line'] = self.source_buffer.get_cursor_line_number() + 1
+        self.forward_sync_arguments['line_offset'] = self.source_buffer.get_cursor_line_offset() + 1
+        self.set_build_mode('build_and_forward_sync')
+        self.start_building()
 
     def start_building(self):
         if self.build_mode == 'forward_sync' and not self.has_synctex_file: return
@@ -290,13 +286,13 @@ class DocumentLaTeX(Document):
             self.add_change_code('build_system_visibility_change', has_visible_build_system)
 
     def comment_uncomment(self):
-        self.get_buffer().comment_uncomment()
+        self.source_buffer.comment_uncomment()
 
     def set_invert_pdf(self, invert_pdf):
         self.preview.set_invert_pdf(invert_pdf)
 
     def set_synctex_position(self, position):
-        self.get_buffer().set_synctex_position(position)
+        self.source_buffer.set_synctex_position(position)
         self.scroll_cursor_onscreen()
 
     def get_folded_regions(self):
@@ -317,8 +313,5 @@ class DocumentLaTeX(Document):
 
     def is_bibtex_document(self):
         return False
-
-    def get_gsv_language_name(self):
-        return 'latex'
 
 

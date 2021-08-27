@@ -32,25 +32,29 @@ from setzer.helpers.observable import Observable
 import setzer.helpers.timer as timer
 
 
-class SourceBuffer(GtkSource.Buffer, Observable):
+class SourceBuffer(Observable):
 
-    def __init__(self, options):
-        GtkSource.Buffer.__init__(self)
+    def __init__(self):
         Observable.__init__(self)
 
-        self.tab_width = options['tab_width']
-        self.spaces_instead_of_tabs = options['spaces_instead_of_tabs']
+        self.settings = ServiceLocator.get_settings()
+
+        self.source_buffer = GtkSource.Buffer()
+        self.source_language_manager = ServiceLocator.get_source_language_manager()
+        self.source_style_scheme_manager = ServiceLocator.get_source_style_scheme_manager()
+        self.source_language = self.source_language_manager.get_language(self.get_gsv_language_name())
+        self.source_buffer.set_language(self.source_language)
+        self.update_syntax_scheme()
 
         self.parser = parser_dummy.ParserDummy(self)
-
         self.color_manager = ServiceLocator.get_color_manager()
         self.font_manager = ServiceLocator.get_font_manager()
 
-        self.mover_mark = self.create_mark('mover', self.get_start_iter(), True)
+        options = self.settings.get_source_buffer_options()
+        self.tab_width = options['tab_width']
+        self.spaces_instead_of_tabs = options['spaces_instead_of_tabs']
 
-        self.search_settings = GtkSource.SearchSettings()
-        self.search_context = GtkSource.SearchContext.new(self, self.search_settings)
-        self.search_context.set_highlight(True)
+        self.mover_mark = self.source_buffer.create_mark('mover', self.source_buffer.get_start_iter(), True)
 
         self.insert_position = 0
 
@@ -60,16 +64,31 @@ class SourceBuffer(GtkSource.Buffer, Observable):
         self.indentation_update = None
         self.indentation_tags = dict()
 
-        self.placeholder_tag = self.create_tag('placeholder')
+        self.placeholder_tag = self.source_buffer.create_tag('placeholder')
         self.placeholder_tag.set_property('background', '#fce94f')
         self.placeholder_tag.set_property('foreground', '#000')
 
-        self.connect('mark-set', self.on_mark_set)
-        self.connect('mark-deleted', self.on_mark_deleted)
-        self.connect('insert-text', self.on_insert_text)
-        self.connect('delete-range', self.on_delete_range)
-        self.connect('changed', self.on_buffer_changed)
-        self.connect('modified-changed', self.on_modified_changed)
+        self.source_buffer.connect('mark-set', self.on_mark_set)
+        self.source_buffer.connect('mark-deleted', self.on_mark_deleted)
+        self.source_buffer.connect('insert-text', self.on_insert_text)
+        self.source_buffer.connect('delete-range', self.on_delete_range)
+        self.source_buffer.connect('changed', self.on_buffer_changed)
+        self.source_buffer.connect('modified-changed', self.on_modified_changed)
+        self.undo_manager = self.source_buffer.get_undo_manager()
+        self.undo_manager.connect('can-undo-changed', self.on_can_undo_changed)
+        self.undo_manager.connect('can-redo-changed', self.on_can_redo_changed)
+
+        self.settings.connect('settings_changed', self.on_settings_changed)
+
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+        if (section, item) == ('preferences', 'tab_width'):
+            self.tab_width = self.settings.get_value('preferences', 'tab_width')
+        if (section, item) == ('preferences', 'spaces_instead_of_tabs'):
+            self.spaces_instead_of_tabs = self.settings.get_value('preferences', 'spaces_instead_of_tabs')
+
+        if (section, item) in [('preferences', 'syntax_scheme'), ('preferences', 'syntax_scheme_dark_mode')]:
+            self.update_syntax_scheme()
 
     def on_insert_text(self, buffer, location_iter, text, text_length):
         self.parser.on_text_inserted(buffer, location_iter, text, text_length)
@@ -83,6 +102,12 @@ class SourceBuffer(GtkSource.Buffer, Observable):
 
     def on_modified_changed(self, buffer):
         self.add_change_code('modified_changed')
+
+    def on_can_undo_changed(self, undo_manager):
+        self.add_change_code('can_undo_changed', self.undo_manager.can_undo())
+
+    def on_can_redo_changed(self, undo_manager):
+        self.add_change_code('can_redo_changed', self.undo_manager.can_redo())
 
     def on_buffer_changed(self, buffer):
         self.update_indentation_tags()
@@ -108,31 +133,51 @@ class SourceBuffer(GtkSource.Buffer, Observable):
         self.update_selection_state()
 
     def initially_set_text(self, text):
-        self.begin_not_undoable_action()
-        self.set_text(text)
-        self.end_not_undoable_action()
-        self.set_modified(False)
+        self.source_buffer.begin_not_undoable_action()
+        self.source_buffer.set_text(text)
+        self.source_buffer.end_not_undoable_action()
+        self.source_buffer.set_modified(False)
 
     def update_selection_state(self):
-        self.add_change_code('selection_might_have_changed')
+        self.add_change_code('selection_might_have_changed', self.source_buffer.get_has_selection())
+
+    def update_syntax_scheme(self):
+        name = self.settings.get_value('preferences', 'syntax_scheme')
+        self.source_style_scheme_light = self.source_style_scheme_manager.get_scheme(name)
+        name = self.settings.get_value('preferences', 'syntax_scheme_dark_mode')
+        self.source_style_scheme_dark = self.source_style_scheme_manager.get_scheme(name)
+        self.set_use_dark_scheme(ServiceLocator.get_is_dark_mode())
+
+    def set_use_dark_scheme(self, use_dark_scheme):
+        if use_dark_scheme: self.source_buffer.set_style_scheme(self.source_style_scheme_dark)
+        else: self.source_buffer.set_style_scheme(self.source_style_scheme_light)
+
+    def get_style_scheme(self):
+        return self.source_buffer.get_style_scheme()
+
+    def get_can_undo(self):
+        return self.undo_manager.can_undo()
+
+    def get_can_redo(self):
+        return self.undo_manager.can_redo()
 
     #@timer.timer
     def update_indentation_tags(self):
         if self.indentation_update != None:
-            start_iter = self.get_iter_at_line(self.indentation_update['line_start'])
+            start_iter = self.source_buffer.get_iter_at_line(self.indentation_update['line_start'])
             end_iter = start_iter.copy()
             end_iter.forward_chars(self.indentation_update['text_length'])
             end_iter.forward_to_line_end()
             start_iter.set_line_offset(0)
-            text = self.get_text(start_iter, end_iter, True)
+            text = self.source_buffer.get_text(start_iter, end_iter, True)
             for count, line in enumerate(text.splitlines()):
                 for tag in start_iter.get_tags():
-                    self.remove_tag(tag, start_iter, end_iter)
+                    self.source_buffer.remove_tag(tag, start_iter, end_iter)
                 number_of_characters = len(line.replace('\t', ' ' * self.tab_width)) - len(line.lstrip())
                 if number_of_characters > 0:
                     end_iter = start_iter.copy()
                     end_iter.forward_chars(1)
-                    self.apply_tag(self.get_indentation_tag(number_of_characters), start_iter, end_iter)
+                    self.source_buffer.apply_tag(self.get_indentation_tag(number_of_characters), start_iter, end_iter)
                 start_iter.forward_line()
 
             self.indentation_update = None
@@ -141,13 +186,13 @@ class SourceBuffer(GtkSource.Buffer, Observable):
         try:
             tag = self.indentation_tags[number_of_characters]
         except KeyError:
-            tag = self.create_tag('indentation-' + str(number_of_characters))
+            tag = self.source_buffer.create_tag('indentation-' + str(number_of_characters))
             tag.set_property('indent', -1 * number_of_characters * self.font_manager.get_char_width(' '))
             self.indentation_tags[number_of_characters] = tag
         return tag
 
     def insert_before_document_end(self, text):
-        end_iter = self.get_end_iter()
+        end_iter = self.source_buffer.get_end_iter()
         result = end_iter.backward_search('\\end{document}', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
         if result != None:
             self.insert_text_at_iter(result[0], '''
@@ -158,15 +203,15 @@ class SourceBuffer(GtkSource.Buffer, Observable):
             self.insert_text_at_cursor(text)
 
     def insert_text(self, line_number, offset, text, indent_lines=True):
-        insert_iter = self.get_iter_at_line_offset(line_number, offset)
+        insert_iter = self.source_buffer.get_iter_at_line_offset(line_number, offset)
         self.insert_text_at_iter(insert_iter, text, indent_lines)
 
     def insert_text_at_iter(self, insert_iter, text, indent_lines=True):
-        self.place_cursor(insert_iter)
+        self.source_buffer.place_cursor(insert_iter)
         self.insert_text_at_cursor(text, indent_lines)
 
-    def insert_text_at_cursor(self, text, indent_lines=True, scroll=True, select_dot=True):
-        self.begin_user_action()
+    def insert_text_at_cursor(self, text, indent_lines=True, select_dot=True):
+        self.source_buffer.begin_user_action()
 
         # replace tabs with spaces, if set in preferences
         if self.spaces_instead_of_tabs:
@@ -174,19 +219,19 @@ class SourceBuffer(GtkSource.Buffer, Observable):
             text = text.replace('\t', ' ' * number_of_spaces)
 
         dotcount = text.count('•')
-        insert_iter = self.get_iter_at_mark(self.get_insert())
-        bounds = self.get_selection_bounds()
+        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        bounds = self.source_buffer.get_selection_bounds()
         selection = ''
         if dotcount == 1:
-            bounds = self.get_selection_bounds()
+            bounds = self.source_buffer.get_selection_bounds()
             if len(bounds) > 0:
-                selection = self.get_text(bounds[0], bounds[1], True)
+                selection = self.source_buffer.get_text(bounds[0], bounds[1], True)
                 if len(selection) > 0:
                     text = text.replace('•', selection, 1)
 
         if indent_lines:
-            line_iter = self.get_iter_at_line(insert_iter.get_line())
-            ws_line = self.get_text(line_iter, insert_iter, False)
+            line_iter = self.source_buffer.get_iter_at_line(insert_iter.get_line())
+            ws_line = self.source_buffer.get_text(line_iter, insert_iter, False)
             lines = text.split('\n')
             ws_number = len(ws_line) - len(ws_line.lstrip())
             whitespace = ws_line[:ws_number]
@@ -198,39 +243,80 @@ class SourceBuffer(GtkSource.Buffer, Observable):
         else:
             final_text = text
 
-        self.delete_selection(False, False)
-        self.insert_at_cursor(final_text)
+        self.source_buffer.delete_selection(False, False)
+        self.source_buffer.insert_at_cursor(final_text)
 
         if select_dot:
             dotindex = final_text.find('•')
             if dotcount > 0:
                 selection_len = len(selection) if dotcount == 1 else 0
-                start = self.get_iter_at_mark(self.get_insert())
+                start = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
                 start.backward_chars(abs(dotindex + selection_len - len(final_text)))
-                self.place_cursor(start)
+                self.source_buffer.place_cursor(start)
                 end = start.copy()
                 end.forward_char()
-                self.select_range(start, end)
+                self.source_buffer.select_range(start, end)
 
-        if scroll:
-            self.add_change_code('cursor_to_scroll_onscreen')
+        self.source_buffer.end_user_action()
 
-        self.end_user_action()
+    def insert_template(self, template_start, template_end):
+        self.source_buffer.begin_user_action()
+
+        bounds = self.source_buffer.get_bounds()
+        text = self.source_buffer.get_text(bounds[0], bounds[1], True)
+        line_count_before_insert = self.source_buffer.get_line_count()
+
+        # replace tabs with spaces, if set in preferences
+        if self.settings.get_value('preferences', 'spaces_instead_of_tabs'):
+            number_of_spaces = self.settings.get_value('preferences', 'tab_width')
+            template_start = template_start.replace('\t', ' ' * number_of_spaces)
+            template_end = template_end.replace('\t', ' ' * number_of_spaces)
+
+        bounds = self.source_buffer.get_bounds()
+        self.source_buffer.insert(bounds[0], template_start)
+        bounds = self.source_buffer.get_bounds()
+        self.source_buffer.insert(bounds[1], template_end)
+
+        bounds = self.source_buffer.get_bounds()
+        bounds[0].forward_chars(len(template_start))
+        self.source_buffer.place_cursor(bounds[0])
+
+        self.source_buffer.end_user_action()
+        self.source_buffer.begin_user_action()
+
+        if len(text.strip()) > 0:
+            note = _('''% NOTE: The content of your document has been commented out
+% by the wizard. Just do a CTRL+Z (undo) to put it back in
+% or remove the "%" before each line you want to keep.
+% You can remove this note as well.
+% 
+''')
+            note_len = len(note)
+            note_number_of_lines = note.count('\n')
+            offset = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_line()
+            self.source_buffer.insert(self.source_buffer.get_iter_at_line(offset), note)
+            for line_number in range(offset + note_number_of_lines, line_count_before_insert + offset + note_number_of_lines):
+                self.source_buffer.insert(self.source_buffer.get_iter_at_line(line_number), '% ')
+            insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+            insert_iter.backward_chars(note_len + 2)
+            self.source_buffer.place_cursor(insert_iter)
+
+        self.source_buffer.end_user_action()
 
     def replace_range_by_offset_and_length(self, offset, length, text, indent_lines=True, select_dot=True):
-        start_iter = self.get_iter_at_offset(offset)
-        end_iter = self.get_iter_at_offset(offset + length)
+        start_iter = self.source_buffer.get_iter_at_offset(offset)
+        end_iter = self.source_buffer.get_iter_at_offset(offset + length)
         self.replace_range(start_iter, end_iter, text, indent_lines, select_dot)
 
     def replace_range(self, start_iter, end_iter, text, indent_lines=True, select_dot=True):
-        self.begin_user_action()
+        self.source_buffer.begin_user_action()
         self.replace_range_no_user_action(start_iter, end_iter, text, indent_lines, select_dot)
-        self.end_user_action()
+        self.source_buffer.end_user_action()
 
     def replace_range_no_user_action(self, start_iter, end_iter, text, indent_lines=True, select_dot=True):
         if indent_lines:
-            line_iter = self.get_iter_at_line(start_iter.get_line())
-            ws_line = self.get_text(line_iter, start_iter, False)
+            line_iter = self.source_buffer.get_iter_at_line(start_iter.get_line())
+            ws_line = self.source_buffer.get_text(line_iter, start_iter, False)
             lines = text.split('\n')
             ws_number = len(ws_line) - len(ws_line.lstrip())
             whitespace = ws_line[:ws_number]
@@ -242,8 +328,8 @@ class SourceBuffer(GtkSource.Buffer, Observable):
         else:
             final_text = text
 
-        self.delete(start_iter, end_iter)
-        self.insert(start_iter, final_text)
+        self.source_buffer.delete(start_iter, end_iter)
+        self.source_buffer.insert(start_iter, final_text)
 
         if select_dot:
             dotindex = final_text.find('•')
@@ -251,28 +337,28 @@ class SourceBuffer(GtkSource.Buffer, Observable):
                 start_iter.backward_chars(abs(dotindex - len(final_text)))
                 bound = start_iter.copy()
                 bound.forward_chars(1)
-                self.select_range(start_iter, bound)
+                self.source_buffer.select_range(start_iter, bound)
 
     def insert_before_after(self, before, after):
-        bounds = self.get_selection_bounds()
+        bounds = self.source_buffer.get_selection_bounds()
 
         if len(bounds) > 1:
-            text = before + self.get_text(*bounds, 0) + after
+            text = before + self.source_buffer.get_text(*bounds, 0) + after
             self.replace_range(bounds[0], bounds[1], text)
         else:
             text = before + '•' + after
             self.insert_text_at_cursor(text)
 
     def comment_uncomment(self):
-        self.begin_user_action()
+        self.source_buffer.begin_user_action()
 
-        bounds = self.get_selection_bounds()
+        bounds = self.source_buffer.get_selection_bounds()
 
         if len(bounds) > 1:
             end = (bounds[1].get_line() + 1) if (bounds[1].get_line_index() > 0) else bounds[1].get_line()
             line_numbers = list(range(bounds[0].get_line(), end))
         else:
-            line_numbers = [self.get_iter_at_mark(self.get_insert()).get_line()]
+            line_numbers = [self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_line()]
 
         do_comment = False
         for line_number in line_numbers:
@@ -282,24 +368,24 @@ class SourceBuffer(GtkSource.Buffer, Observable):
 
         if do_comment:
             for line_number in line_numbers:
-                self.insert(self.get_iter_at_line(line_number), '%')
+                self.source_buffer.insert(self.source_buffer.get_iter_at_line(line_number), '%')
         else:
             for line_number in line_numbers:
-                line = self.get_line(line_number)
+                line = self.source_buffer.get_line(line_number)
                 offset = len(line) - len(line.lstrip())
-                start = self.get_iter_at_line(line_number)
+                start = self.source_buffer.get_iter_at_line(line_number)
                 start.forward_chars(offset)
                 end = start.copy()
                 end.forward_char()
-                self.delete(start, end)
+                self.source_buffer.delete(start, end)
 
-        self.end_user_action()
+        self.source_buffer.end_user_action()
 
     def add_backslash_with_space(self):
         self.insert_at_cursor('\\ ')
-        insert_iter = self.get_iter_at_mark(self.get_insert())
+        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         insert_iter.backward_char()
-        self.place_cursor(insert_iter)
+        self.source_buffer.place_cursor(insert_iter)
 
     def autoadd_latex_brackets(self, char):
         if self.get_char_before_cursor() == '\\':
@@ -307,40 +393,40 @@ class SourceBuffer(GtkSource.Buffer, Observable):
         else:
             add_char = ''
         if char == '[':
-            self.begin_user_action()
-            self.delete_selection(True, True)
-            self.insert_at_cursor('[' + add_char + ']')
-            self.end_user_action()
+            self.source_buffer.begin_user_action()
+            self.source_buffer.delete_selection(True, True)
+            self.source_buffer.insert_at_cursor('[' + add_char + ']')
+            self.source_buffer.end_user_action()
         if char == '{':
-            self.begin_user_action()
-            self.delete_selection(True, True)
-            self.insert_at_cursor('{' + add_char + '}')
-            self.end_user_action()
+            self.source_buffer.begin_user_action()
+            self.source_buffer.delete_selection(True, True)
+            self.source_buffer.insert_at_cursor('{' + add_char + '}')
+            self.source_buffer.end_user_action()
         if char == '(':
-            self.begin_user_action()
-            self.delete_selection(True, True)
-            self.insert_at_cursor('(' + add_char + ')')
-            self.end_user_action()
-        insert_iter = self.get_iter_at_mark(self.get_insert())
+            self.source_buffer.begin_user_action()
+            self.source_buffer.delete_selection(True, True)
+            self.source_buffer.insert_at_cursor('(' + add_char + ')')
+            self.source_buffer.end_user_action()
+        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         insert_iter.backward_char()
         if add_char == '\\':
             insert_iter.backward_char()
-        self.place_cursor(insert_iter)
+        self.source_buffer.place_cursor(insert_iter)
 
     def get_char_at_cursor(self):
-        start_iter = self.get_iter_at_mark(self.get_insert())
+        start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         end_iter = start_iter.copy()
         end_iter.forward_char()
-        return self.get_text(start_iter, end_iter, False)
+        return self.source_buffer.get_text(start_iter, end_iter, False)
 
     def get_char_before_cursor(self):
-        start_iter = self.get_iter_at_mark(self.get_insert())
+        start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         end_iter = start_iter.copy()
         end_iter.backward_char()
-        return self.get_text(start_iter, end_iter, False)
+        return self.source_buffer.get_text(start_iter, end_iter, False)
 
     def get_latex_command_at_cursor(self):
-        insert_iter = self.get_iter_at_mark(self.get_insert())
+        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         limit_iter = insert_iter.copy()
         limit_iter.backward_chars(50)
         word_start_iter = insert_iter.copy()
@@ -351,7 +437,7 @@ class SourceBuffer(GtkSource.Buffer, Observable):
         return word
 
     def get_latex_command_at_cursor_offset(self):
-        insert_iter = self.get_iter_at_mark(self.get_insert())
+        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         limit_iter = insert_iter.copy()
         limit_iter.backward_chars(50)
         word_start_iter = insert_iter.copy()
@@ -362,7 +448,7 @@ class SourceBuffer(GtkSource.Buffer, Observable):
         return None
 
     def replace_latex_command_at_cursor(self, text, dotlabels, is_full_command=False):
-        insert_iter = self.get_iter_at_mark(self.get_insert())
+        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         current_word = self.get_latex_command_at_cursor()
         start_iter = insert_iter.copy()
         start_iter.backward_chars(len(current_word))
@@ -380,8 +466,8 @@ class SourceBuffer(GtkSource.Buffer, Observable):
             if end_command.find('•') >= 0:
                 dotlabels += 'environment###'
 
-            line_iter = self.get_iter_at_line(start_iter.get_line())
-            ws_line = self.get_text(line_iter, start_iter, False)
+            line_iter = self.source_buffer.get_iter_at_line(start_iter.get_line())
+            ws_line = self.source_buffer.get_text(line_iter, start_iter, False)
             lines = text.split('\n')
             ws_number = len(ws_line) - len(ws_line.lstrip())
             whitespace = ws_line[:ws_number]
@@ -393,69 +479,69 @@ class SourceBuffer(GtkSource.Buffer, Observable):
 
         parts = text.split('•')
         if len(parts) == 1:
-            orig_text = self.get_text(start_iter, insert_iter, False)
+            orig_text = self.source_buffer.get_text(start_iter, insert_iter, False)
             if parts[0].startswith(orig_text):
-                self.insert_at_cursor(parts[0][len(orig_text):])
+                self.source_buffer.insert_at_cursor(parts[0][len(orig_text):])
             else:
                 self.replace_range(start_iter, insert_iter, parts[0], indent_lines=True, select_dot=True)
         else:
-            self.begin_user_action()
+            self.source_buffer.begin_user_action()
 
-            self.delete(start_iter, insert_iter)
-            insert_offset = self.get_iter_at_mark(self.get_insert()).get_offset()
+            self.source_buffer.delete(start_iter, insert_iter)
+            insert_offset = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_offset()
             count = len(parts)
             select_dot_offset = -1
             for part in parts:
-                insert_iter = self.get_iter_at_offset(insert_offset)
+                insert_iter = self.source_buffer.get_iter_at_offset(insert_offset)
                 insert_offset += len(part)
-                self.insert(insert_iter, part)
+                self.source_buffer.insert(insert_iter, part)
                 if count > 1:
-                    insert_iter = self.get_iter_at_offset(insert_offset)
-                    self.insert_with_tags(insert_iter, '•', self.placeholder_tag)
+                    insert_iter = self.source_buffer.get_iter_at_offset(insert_offset)
+                    self.source_buffer.insert_with_tags(insert_iter, '•', self.placeholder_tag)
                     if select_dot_offset == -1:
                         select_dot_offset = insert_offset
                     insert_offset += 1
                 count -= 1
-            select_dot_iter = self.get_iter_at_offset(select_dot_offset)
+            select_dot_iter = self.source_buffer.get_iter_at_offset(select_dot_offset)
             bound = select_dot_iter.copy()
             bound.forward_chars(1)
-            self.select_range(select_dot_iter, bound)
+            self.source_buffer.select_range(select_dot_iter, bound)
 
-            self.end_user_action()
+            self.source_buffer.end_user_action()
 
     def get_line_at_cursor(self):
-        return self.get_line(self.get_iter_at_mark(self.get_insert()).get_line())
+        return self.get_line(self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_line())
 
     def get_line(self, line_number):
-        start = self.get_iter_at_line(line_number)
+        start = self.source_buffer.get_iter_at_line(line_number)
         end = start.copy()
         if not end.ends_line():
             end.forward_to_line_end()
-        return self.get_slice(start, end, False)
+        return self.source_buffer.get_slice(start, end, False)
 
     def get_all_text(self):
-        return self.get_text(self.get_start_iter(), self.get_end_iter(), True)
+        return self.source_buffer.get_text(self.source_buffer.get_start_iter(), self.source_buffer.get_end_iter(), True)
 
     def get_text_after_offset(self, offset):
-        return self.get_text(self.get_iter_at_offset(offset), self.get_end_iter(), True)
+        return self.source_buffer.get_text(self.source_buffer.get_iter_at_offset(offset), self.source_buffer.get_end_iter(), True)
 
     def get_selected_text(self):
-        bounds = self.get_selection_bounds()
+        bounds = self.source_buffer.get_selection_bounds()
         if len(bounds) == 2:
-            return self.get_text(bounds[0], bounds[1], True)
+            return self.source_buffer.get_text(bounds[0], bounds[1], True)
         else:
             return None
 
     def get_current_line_number(self):
-        return self.get_iter_at_mark(self.get_insert()).get_line()
+        return self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_line()
 
     def is_empty(self):
-        return self.get_end_iter().get_offset() > 0
+        return self.source_buffer.get_end_iter().get_offset() > 0
 
     def update_placeholder_selection(self):
         if self.get_cursor_offset() != self.insert_position:
-            if not self.get_selection_bounds():
-                start_iter = self.get_iter_at_mark(self.get_insert())
+            if not self.source_buffer.get_selection_bounds():
+                start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
                 prev_iter = start_iter.copy()
                 prev_iter.backward_char()
                 if start_iter.has_tag(self.placeholder_tag):
@@ -472,7 +558,7 @@ class SourceBuffer(GtkSource.Buffer, Observable):
 
                     moved_backward_from_end = (self.insert_position == self.get_cursor_offset() + tag_length)
                     if not moved_backward_from_end:
-                        self.select_range(start_iter, end_iter)
+                        self.source_buffer.select_range(start_iter, end_iter)
                 elif prev_iter.has_tag(self.placeholder_tag):
                     while prev_iter.has_tag(self.placeholder_tag):
                         prev_iter.backward_char()
@@ -487,16 +573,16 @@ class SourceBuffer(GtkSource.Buffer, Observable):
 
                     moved_forward_from_start = (self.insert_position == self.get_cursor_offset() - tag_length)
                     if not moved_forward_from_start:
-                        self.select_range(prev_iter, end_iter)
+                        self.source_buffer.select_range(prev_iter, end_iter)
 
             self.insert_position = self.get_cursor_offset()
 
     def set_synctex_position(self, position):
-        start = self.get_iter_at_line(position['line'])
+        start = self.source_buffer.get_iter_at_line(position['line'])
         end = start.copy()
         if not start.ends_line():
             end.forward_to_line_end()
-        text = self.get_text(start, end, False)
+        text = self.source_buffer.get_text(start, end, False)
 
         matches = self.get_synctex_word_bounds(text, position['word'], position['context'])
         if matches != None:
@@ -512,11 +598,11 @@ class SourceBuffer(GtkSource.Buffer, Observable):
             self.add_synctex_tag(start, end)
 
     def add_synctex_tag(self, start_iter, end_iter):
-        self.place_cursor(start_iter)
+        self.source_buffer.place_cursor(start_iter)
         self.synctex_tag_count += 1
-        self.create_tag('synctex_highlight-' + str(self.synctex_tag_count), background_rgba=self.color_manager.get_rgba(0.976, 0.941, 0.420, 0.6), background_full_height=True)
-        tag = self.get_tag_table().lookup('synctex_highlight-' + str(self.synctex_tag_count))
-        self.apply_tag(tag, start_iter, end_iter)
+        self.source_buffer.create_tag('synctex_highlight-' + str(self.synctex_tag_count), background_rgba=self.color_manager.get_rgba(0.976, 0.941, 0.420, 0.6), background_full_height=True)
+        tag = self.source_buffer.get_tag_table().lookup('synctex_highlight-' + str(self.synctex_tag_count))
+        self.source_buffer.apply_tag(tag, start_iter, end_iter)
         if not self.synctex_highlight_tags:
             GObject.timeout_add(15, self.remove_or_color_synctex_tags)
         self.synctex_highlight_tags[self.synctex_tag_count] = {'tag': tag, 'time': time.time()}
@@ -561,30 +647,47 @@ class SourceBuffer(GtkSource.Buffer, Observable):
                     opacity_factor = int(self.ease(1 - (time_factor - 1.5) * 4) * 20)
                     item['tag'].set_property('background-rgba', self.color_manager.get_rgba(0.976, 0.941, 0.420, opacity_factor * 0.03))
                 else:
-                    start = self.get_start_iter()
-                    end = self.get_end_iter()
-                    self.remove_tag(item['tag'], start, end)
-                    self.get_tag_table().remove(item['tag'])
+                    start = self.source_buffer.get_start_iter()
+                    end = self.source_buffer.get_end_iter()
+                    self.source_buffer.remove_tag(item['tag'], start, end)
+                    self.source_buffer.get_tag_table().remove(item['tag'])
                     del(self.synctex_highlight_tags[tag_count])
         return bool(self.synctex_highlight_tags)
 
     def ease(self, factor): return (factor - 1)**3 + 1
 
-    def place_cursor_and_scroll(self, line_number, offset=0):
-        text_iter = self.get_iter_at_line_offset(line_number, offset)
-        self.place_cursor(text_iter)
-        self.add_change_code('cursor_to_scroll_onscreen')
+    def place_cursor(self, line_number, offset=0):
+        text_iter = self.source_buffer.get_iter_at_line_offset(line_number, offset)
+        self.source_buffer.place_cursor(text_iter)
 
     def get_cursor_offset(self):
-        return self.get_iter_at_mark(self.get_insert()).get_offset()
+        return self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_offset()
 
     def get_cursor_line_offset(self):
-        return self.get_iter_at_mark(self.get_insert()).get_line_offset()
+        return self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_line_offset()
+
+    def get_cursor_line_number(self):
+        return self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_line()
 
     def cursor_ends_word(self):
-        return self.get_iter_at_mark(self.get_insert()).ends_word()
+        return self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).ends_word()
+
+    def delete_selection(self):
+        self.source_buffer.delete_selection(True, True)
 
     def select_all(self, widget=None):
-        self.select_range(self.get_start_iter(), self.get_end_iter())
+        self.source_buffer.select_range(self.source_buffer.get_start_iter(), self.source_buffer.get_end_iter())
+
+    def get_modified(self):
+        return self.source_buffer.get_modified()
+
+    def set_modified(self, modified):
+        self.source_buffer.set_modified(modified)
+
+    def undo(self):
+        self.source_buffer.undo()
+
+    def redo(self):
+        self.source_buffer.redo()
 
 

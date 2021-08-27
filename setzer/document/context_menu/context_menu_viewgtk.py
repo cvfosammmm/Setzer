@@ -107,3 +107,17 @@ class ContextMenuView(Gtk.VBox):
         return model_button
 
 
+class RCMenuView(object):
+    
+    def __init__(self):
+        self.menu_item_cut = Gtk.MenuItem.new_with_label(_('Cut'))
+        self.menu_item_copy = Gtk.MenuItem.new_with_label(_('Copy'))
+        self.menu_item_paste = Gtk.MenuItem.new_with_label(_('Paste'))
+        self.menu_item_delete = Gtk.MenuItem.new_with_label(_('Delete'))
+        self.menu_item_select_all = Gtk.MenuItem.new_with_label(_('Select All'))
+        self.menu_item_comment = Gtk.MenuItem.new_with_label(_('Toggle Comment'))
+        self.menu_item_show_in_preview = Gtk.MenuItem.new_with_label(_('Show in Preview'))
+        self.separator_menu_item1 = Gtk.SeparatorMenuItem()
+        self.separator_menu_item2 = Gtk.SeparatorMenuItem()
+
+

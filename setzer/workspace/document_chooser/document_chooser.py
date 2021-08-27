@@ -26,25 +26,20 @@ class DocumentChooser(object):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
         self.view = ServiceLocator.get_main_window().headerbar.document_chooser
-        self.workspace.register_observer(self)
+
+        self.workspace.connect('update_recently_opened_documents', self.on_update_recently_opened_documents)
 
         self.view.connect('closed', self.on_document_chooser_closed)
         self.view.search_entry.connect('search-changed', self.on_document_chooser_search_changed)
         auto_suggest_box = self.view.auto_suggest_box
         auto_suggest_box.connect('row-activated', self.on_document_chooser_selection)
 
-    '''
-    *** notification handlers, get called by observed workspace
-    '''
-
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code == 'update_recently_opened_documents':
-            items = list()
-            data = parameter.values()
-            for item in sorted(data, key=lambda val: -val['date']):
-                items.append(os.path.split(item['filename']))
-            self.view.update_autosuggest(items)
+    def on_update_recently_opened_documents(self, workspace, recently_opened_documents):
+        items = list()
+        data = recently_opened_documents.values()
+        for item in sorted(data, key=lambda val: -val['date']):
+            items.append(os.path.split(item['filename']))
+        self.view.update_autosuggest(items)
 
     def on_document_chooser_closed(self, document_chooser, data=None):
         document_chooser.search_entry.set_text('')

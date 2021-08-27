@@ -26,15 +26,11 @@ class BuildSystemController(object):
         self.document = document
         self.build_system = build_system
         self.settings = ServiceLocator.get_settings()
-        self.document.register_observer(self)
 
-    '''
-    *** notification handlers, get called by observed document
-    '''
+        self.document.connect('build_state_change', self.on_build_state_change)
 
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code == 'build_state_change' and parameter == 'ready_for_building':
+    def on_build_state_change(self, document, parameter):
+        if parameter == 'ready_for_building':
             document = self.document
             mode = document.get_build_mode()
             query_obj = query.Query(self.document.get_filename()[:])
@@ -94,7 +90,7 @@ class BuildSystemController(object):
 
             self.build_system.add_query(query_obj)
 
-        if change_code == 'build_state_change' and parameter == 'building_to_stop':
+        if parameter == 'building_to_stop':
             self.build_system.stop_building()
 
 

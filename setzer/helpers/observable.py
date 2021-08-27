@@ -23,23 +23,29 @@ class Observable(object):
 
     def __init__(self):
         self.observers = set()
+        self.connected_functions = dict()
     
     def add_change_code(self, change_code, parameter=None):
         ''' Observables call this method to notify observers of
             changes in their states. '''
-        
-        for observer in self.observers:
-            observer.change_notification(change_code, self, parameter)
-    
-    def register_observer(self, observer):
-        ''' Observer call this method to register themselves with observable
-            objects. They have themselves to implement a method
-            'change_notification(change_code, parameter)' which the observable
-            will call when it's state changes. '''
-        
-        self.observers.add(observer)
 
-    def unregister_observer(self, observer):        
-        self.observers.discard(observer)
+        if change_code in self.connected_functions:
+            for callback in self.connected_functions[change_code]:
+                if parameter != None:
+                    callback(self, parameter)
+                else:
+                    callback(self)
+
+    def connect(self, change_code, callback):
+        if change_code in self.connected_functions:
+            self.connected_functions[change_code].add(callback)
+        else:
+            self.connected_functions[change_code] = {callback}
+
+    def disconnect(self, change_code, callback):
+        if change_code in self.connected_functions:
+            self.connected_functions[change_code].discard(callback)
+            if len(self.connected_functions[change_code]) == 0:
+                del(self.connected_functions[change_code])
 
 

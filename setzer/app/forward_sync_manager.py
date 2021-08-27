@@ -24,22 +24,31 @@ class ForwardSyncManager(Observable):
         Observable.__init__(self)
 
         self.workspace = workspace
-        self.workspace.register_observer(self)
+        self.workspace.connect('new_inactive_document', self.on_new_inactive_document)
+        self.workspace.connect('new_active_document', self.on_new_active_document)
+        self.workspace.connect('root_state_change', self.on_root_state_change)
+
         self.document = None
         self.can_sync = False
         self.update_document()
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_new_inactive_document(self, workspace, document):
+        self.update_document()
+        self.set_can_sync()
 
-        if change_code in ['new_inactive_document', 'new_active_document', 'root_state_change']:
-            self.update_document()
-            self.set_can_sync()
+    def on_new_active_document(self, workspace, document):
+        self.update_document()
+        self.set_can_sync()
 
-        if change_code == 'can_sync_changed':
-            self.set_can_sync()
+    def on_root_state_change(self, workspace, state):
+        self.update_document()
+        self.set_can_sync()
 
-        if change_code == 'is_root_changed':
-            self.set_can_sync()
+    def on_can_sync_changed(self, document, can_sync):
+        self.set_can_sync()
+
+    def on_is_root_changed(self, document, is_root):
+        self.set_can_sync()
 
     def update_document(self):
         if self.workspace.root_document != None:
@@ -47,15 +56,18 @@ class ForwardSyncManager(Observable):
         elif self.workspace.active_document != None:
             self.set_document(self.workspace.active_document)
         elif self.document != None:
-            self.document.unregister_observer(self)
+            self.document.disconnect('is_root_changed', self.on_is_root_changed)
+            self.document.disconnect('can_sync_changed', self.on_can_sync_changed)
             self.document = None
 
     def set_document(self, document):
         if document != self.document:
             if self.document != None:
-                self.document.unregister_observer(self)
+                self.document.disconnect('is_root_changed', self.on_is_root_changed)
+                self.document.disconnect('can_sync_changed', self.on_can_sync_changed)
             self.document = document
-            self.document.register_observer(self)
+            self.document.connect('is_root_changed', self.on_is_root_changed)
+            self.document.connect('can_sync_changed', self.on_can_sync_changed)
 
     def set_can_sync(self):
         can_sync = False

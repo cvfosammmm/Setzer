@@ -32,7 +32,7 @@ class SessionBeginEnd(object):
 
         self.last_tabbed_command = None
         self.current_word = ""
-        self.source_buffer = self.autocomplete.document.get_buffer()
+        self.source_buffer = self.autocomplete.document.source_buffer.source_buffer
         self.delete_marks()
         start_iter = self.source_buffer.get_iter_at_offset(word_offset)
         end_iter = self.source_buffer.get_iter_at_offset(word_offset + word_len)
@@ -118,7 +118,7 @@ class SessionBeginEnd(object):
             end_iter = self.source_buffer.get_iter_at_offset(end_offset)
             matching_word = self.source_buffer.get_text(start_iter, end_iter, False)
             if matching_word != full_word:
-                self.source_buffer.replace_range_no_user_action(start_iter, end_iter, full_word, indent_lines=False, select_dot=False)
+                self.autocomplete.document.source_buffer.replace_range_no_user_action(start_iter, end_iter, full_word, indent_lines=False, select_dot=False)
         self.source_buffer.end_user_action()
 
     def on_tab_press(self):
@@ -143,7 +143,8 @@ class SessionBeginEnd(object):
                 if i >= 1:
                     text = (command['command'])[len(self.current_word):len(self.current_word) + i]
                     self.last_tabbed_command = command['command'][1:]
-                    self.autocomplete.document.insert_text_at_cursor(text, indent_lines=False, scroll=True, select_dot=False)
+                    self.autocomplete.document.insert_text_at_cursor(text, indent_lines=False, select_dot=False)
+                    self.autocomplete.document.scroll_cursor_onscreen()
                     return True
                 else:
                     current_word = (command['command'])[:len(self.current_word) + 1]
@@ -156,7 +157,8 @@ class SessionBeginEnd(object):
                     else:
                         text = (command['command'])[len(self.current_word):len(current_word) + i]
                         self.last_tabbed_command = command['command']
-                        self.autocomplete.document.insert_text_at_cursor(text, indent_lines=False, scroll=True, select_dot=False)
+                        self.autocomplete.document.insert_text_at_cursor(text, indent_lines=False, select_dot=False)
+                        self.autocomplete.document.scroll_cursor_onscreen()
                         return True
 
     def get_number_of_matching_letters_on_tabpress(self, current_word, offset):

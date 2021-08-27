@@ -47,14 +47,12 @@ class LineNumbers(object):
 
         settings = ServiceLocator.get_settings()
         self.set_visibility(settings.get_value('preferences', 'show_line_numbers'))
-        settings.register_observer(self)
+        settings.connect('settings_changed', self.on_settings_changed)
 
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code == 'settings_changed':
-            section, item, value = parameter
-            if (section, item) == ('preferences', 'show_line_numbers'):
-                self.set_visibility(value)
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+        if (section, item) == ('preferences', 'show_line_numbers'):
+            self.set_visibility(value)
 
     def set_font_desc(self, font_desc):
         self.font_desc = font_desc

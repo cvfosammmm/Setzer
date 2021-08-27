@@ -36,7 +36,7 @@ class BuildSystemPresenter(object):
 
         if change_code == 'building_started':
             self.document.change_build_state('building_in_progress')
-                
+
         if change_code == 'reset_timer':
             self.document.build_widget.view.reset_timer()
             self.document.build_widget.view.label.set_text('0:00')

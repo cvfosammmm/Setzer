@@ -34,16 +34,14 @@ class CodeFoldingController(object):
             self.model.enable_code_folding()
         else:
             self.model.disable_code_folding()
-        self.settings.register_observer(self)
+        self.settings.connect('settings_changed', self.on_settings_changed)
 
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code == 'settings_changed':
-            section, item, value = parameter
-            if (section, item) == ('preferences', 'enable_code_folding'):
-                if value == True:
-                    self.model.enable_code_folding()
-                else:
-                    self.model.disable_code_folding()
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+        if (section, item) == ('preferences', 'enable_code_folding'):
+            if value == True:
+                self.model.enable_code_folding()
+            else:
+                self.model.disable_code_folding()
 
 

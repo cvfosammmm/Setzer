@@ -38,7 +38,7 @@ class DocumentView(Gtk.HBox):
         self.shortcutsbar_bottom = shortcutsbar_view.ShortcutsbarBottom()
         self.wizard_button = shortcutsbar_view.WizardButton()
 
-        self.source_view = GtkSource.View.new_with_buffer(document.source_buffer)
+        self.source_view = GtkSource.View.new_with_buffer(document.source_buffer.source_buffer)
         self.source_view.set_monospace(True)
         self.source_view.set_smart_home_end(True)
         self.source_view.set_auto_indent(True)

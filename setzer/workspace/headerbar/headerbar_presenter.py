@@ -30,66 +30,64 @@ class HeaderbarPresenter(object):
     def __init__(self, workspace):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
-        self.workspace.register_observer(self)
+
+        self.workspace.connect('new_document', self.on_new_document)
+        self.workspace.connect('document_removed', self.on_document_removed)
+        self.workspace.connect('new_active_document', self.on_new_active_document)
+        self.workspace.connect('update_recently_opened_documents', self.on_update_recently_opened_documents)
+        self.workspace.connect('update_recently_opened_session_files', self.on_update_recently_opened_session_files)
+        self.workspace.connect('root_state_change', self.on_root_state_change)
+
         self.activate_welcome_screen_mode()
 
-    '''
-    *** notification handlers, get called by observed workspace
-    '''
+    def on_new_document(self, workspace, document): pass
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_document_removed(self, workspace, document):
+        if self.workspace.active_document == None:
+            self.activate_welcome_screen_mode()
 
-        if change_code == 'new_document': pass
+    def on_new_active_document(self, workspace, document):
+        self.set_build_button_state()
+        self.main_window.headerbar.save_document_button.show_all()
+        if document.is_latex_document():
+            self.activate_latex_document_mode()
+        else:
+            self.activate_other_document_mode()
 
-        if change_code == 'document_removed':
-            document = parameter
-            if self.workspace.active_document == None:
-                self.activate_welcome_screen_mode()
+    def on_update_recently_opened_documents(self, workspace, recently_opened_documents):
+        data = recently_opened_documents.values()
+        if len(data) > 0:
+            self.main_window.headerbar.open_document_button.set_sensitive(True)
+            self.main_window.headerbar.open_document_button.show_all()
+            self.main_window.headerbar.open_document_blank_button.hide()
+        else:
+            self.main_window.headerbar.open_document_button.hide()
+            self.main_window.headerbar.open_document_button.set_sensitive(False)
+            self.main_window.headerbar.open_document_blank_button.show_all()
 
-        if change_code == 'new_active_document':
-            document = parameter
+    def on_update_recently_opened_session_files(self, workspace, recently_opened_session_files):
+        items = list()
+        data = recently_opened_session_files.values()
+        for item in sorted(data, key=lambda val: -val['date']):
+            items.append(item['filename'])
+        for button in self.main_window.headerbar.session_file_buttons:
+            self.main_window.headerbar.session_box.remove(button)
+        if len(self.main_window.headerbar.session_file_buttons) > 0:
+            self.main_window.headerbar.session_box.remove(self.main_window.headerbar.session_box_separator)
+        self.main_window.headerbar.session_file_buttons = list()
+        if len(items) > 0:
+            self.main_window.headerbar.session_box.pack_start(self.main_window.headerbar.session_box_separator, False, False, 0)
+        for item in items:
+            button = Gtk.ModelButton()
+            button.set_label(item)
+            button.get_child().set_halign(Gtk.Align.START)
+            button.set_detailed_action_name(Gio.Action.print_detailed_name('win.restore-session', GLib.Variant('as', [item])))
+            button.show_all()
+            self.main_window.headerbar.session_box.pack_start(button, False, False, 0)
+            self.main_window.headerbar.session_file_buttons.append(button)
 
-            self.set_build_button_state()
-            self.main_window.headerbar.save_document_button.show_all()
-            if document.is_latex_document():
-                self.activate_latex_document_mode()
-            else:
-                self.activate_other_document_mode()
-
-        if change_code == 'update_recently_opened_documents':
-            data = parameter.values()
-            if len(data) > 0:
-                self.main_window.headerbar.open_document_button.set_sensitive(True)
-                self.main_window.headerbar.open_document_button.show_all()
-                self.main_window.headerbar.open_document_blank_button.hide()
-            else:
-                self.main_window.headerbar.open_document_button.hide()
-                self.main_window.headerbar.open_document_button.set_sensitive(False)
-                self.main_window.headerbar.open_document_blank_button.show_all()
-
-        if change_code == 'update_recently_opened_session_files':
-            items = list()
-            data = parameter.values()
-            for item in sorted(data, key=lambda val: -val['date']):
-                items.append(item['filename'])
-            for button in self.main_window.headerbar.session_file_buttons:
-                self.main_window.headerbar.session_box.remove(button)
-            if len(self.main_window.headerbar.session_file_buttons) > 0:
-                self.main_window.headerbar.session_box.remove(self.main_window.headerbar.session_box_separator)
-            self.main_window.headerbar.session_file_buttons = list()
-            if len(items) > 0:
-                self.main_window.headerbar.session_box.pack_start(self.main_window.headerbar.session_box_separator, False, False, 0)
-            for item in items:
-                button = Gtk.ModelButton()
-                button.set_label(item)
-                button.get_child().set_halign(Gtk.Align.START)
-                button.set_detailed_action_name(Gio.Action.print_detailed_name('win.restore-session', GLib.Variant('as', [item])))
-                button.show_all()
-                self.main_window.headerbar.session_box.pack_start(button, False, False, 0)
-                self.main_window.headerbar.session_file_buttons.append(button)
-
-        if change_code == 'root_state_change':
-            self.set_build_button_state()
+    def on_root_state_change(self, workspace, state):
+        self.set_build_button_state()
 
     def activate_welcome_screen_mode(self):
         self.set_build_button_state()

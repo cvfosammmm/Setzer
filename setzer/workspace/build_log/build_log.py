@@ -37,16 +37,17 @@ class BuildLog(Observable):
         self.presenter = build_log_presenter.BuildLogPresenter(self, self.view)
         self.controller = build_log_controller.BuildLogController(self, self.view)
 
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code == 'build_log_update':
-            if notifying_object == self.document:
-                self.update_items(True)
+    def on_build_log_update(self, document):
+        if document == self.document:
+            self.update_items(True)
 
     def set_document(self, document):
+        if self.document != None:
+            self.document.disconnect('build_log_update', self.on_build_log_update)
+
         self.document = document
         self.update_items()
-        self.document.register_observer(self)
+        self.document.connect('build_log_update', self.on_build_log_update)
 
     #@timer
     def update_items(self, just_built=False):

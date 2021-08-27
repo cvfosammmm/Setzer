@@ -44,8 +44,8 @@ class PreviewPageRenderer(Observable):
         self.is_active_lock = thread.allocate_lock()
         self.is_active = False
 
-        self.preview.register_observer(self)
-        self.layouter.register_observer(self)
+        self.preview.connect('position_changed', self.on_layout_or_position_changed)
+        self.layouter.connect('layout_changed', self.on_layout_or_position_changed)
 
         self.page_render_count_lock = thread.allocate_lock()
         self.page_render_count = dict()
@@ -55,13 +55,11 @@ class PreviewPageRenderer(Observable):
         thread.start_new_thread(self.render_page_loop, ())
         GObject.timeout_add(50, self.rendered_pages_loop)
 
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code in ['layout_changed', 'position_changed']:
-            if self.layouter.has_layout:
-                self.update_rendered_pages()
-            else:
-                self.rendered_pages = dict()
+    def on_layout_or_position_changed(self, notifying_object):
+        if self.layouter.has_layout:
+            self.update_rendered_pages()
+        else:
+            self.rendered_pages = dict()
 
     def activate(self):
         with self.is_active_lock:
@@ -163,6 +161,7 @@ class PreviewPageRenderer(Observable):
             self.add_change_code('rendered_pages_changed')
 
         scale_factor = self.layouter.scale_factor
+
         for page_number in range(0, self.preview.number_of_pages):
             if page_number not in self.rendered_pages or self.rendered_pages[page_number][1] != page_width or self.rendered_pages[page_number][2] != pdf_date:
                 with self.page_render_count_lock:

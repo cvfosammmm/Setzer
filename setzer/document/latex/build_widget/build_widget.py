@@ -43,31 +43,19 @@ class BuildWidget(Observable):
         self.build_button_state = ('idle', int(time.time()*1000))
         self.set_clean_button_state()
 
-        self.document.register_observer(self)
-        self.settings.register_observer(self)
+        self.document.connect('filename_change', self.on_filename_change)
+        self.document.connect('cleaned_up_build_files', self.on_cleaned_up_build_files)
+        self.document.connect('build_state_change', self.on_build_state_change)
+        self.document.connect('build_state', self.on_build_state)
+        self.settings.connect('settings_changed', self.on_settings_changed)
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_filename_change(self, document, filename):
+        self.set_clean_button_state()
 
-        if change_code == 'filename_change':
-            self.set_clean_button_state()
+    def on_cleaned_up_build_files(self, document):
+        self.set_clean_button_state()
 
-        if change_code == 'cleaned_up_build_files':
-            self.set_clean_button_state()
-
-        if change_code == 'settings_changed':
-            section, item, value = parameter
-            if (section, item) == ('preferences', 'cleanup_build_files'):
-                self.set_clean_button_state()
-
-        if change_code == 'build_state_change':
-            self.on_build_state_change()
-            self.set_clean_button_state()
-
-        if change_code == 'build_state':
-            message = parameter
-            self.show_message(message)
-
-    def on_build_state_change(self):
+    def on_build_state_change(self, document, build_state):
         document = self.document
         if document.build_mode in ['build', 'build_and_forward_sync']:
             state = document.get_build_state()
@@ -97,6 +85,15 @@ class BuildWidget(Observable):
             self.view.build_button.set_sensitive(True)
             self.view.build_button.show_all()
             self.view.stop_button.hide()
+        self.set_clean_button_state()
+
+    def on_build_state(self, document, message):
+        self.show_message(message)
+
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+        if (section, item) == ('preferences', 'cleanup_build_files'):
+            self.set_clean_button_state()
 
     def show_message(self, message=''):
         self.view.stop_timer()

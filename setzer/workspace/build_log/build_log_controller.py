@@ -55,6 +55,7 @@ class BuildLogController(object):
                 line_number = item[3] - 1
                 if line_number >= 0:
                     self.build_log.document.place_cursor(line_number)
+                    self.build_log.document.scroll_cursor_onscreen()
                     self.build_log.document.view.source_view.grab_focus()
             else:
                 if item[2] != None:
@@ -66,6 +67,7 @@ class BuildLogController(object):
                     line_number = item[3] - 1
                     if line_number >= 0:
                         self.build_log.workspace.active_document.place_cursor(item[3] - 1)
+                        self.build_log.workspace.active_document.scroll_cursor_onscreen()
                         self.build_log.workspace.active_document.view.source_view.grab_focus()
 
 

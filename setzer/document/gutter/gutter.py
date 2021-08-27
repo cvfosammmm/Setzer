@@ -36,7 +36,7 @@ class Gutter(object):
         self.current_line = 0
 
         self.font_manager = ServiceLocator.get_font_manager()
-        self.font_manager.register_observer(self)
+        self.font_manager.connect('font_string_changed', self.on_font_string_changed)
 
         self.view = Gtk.DrawingArea()
         self.view.set_valign(Gtk.Align.FILL)
@@ -64,20 +64,18 @@ class Gutter(object):
         self.highlight_current_line = False
         settings = ServiceLocator.get_settings()
         self.set_line_highlighting(settings.get_value('preferences', 'highlight_current_line'))
-        settings.register_observer(self)
+        settings.connect('settings_changed', self.on_settings_changed)
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_font_string_changed(self, font_manager):
+        self.char_width, self.line_height = self.font_manager.get_char_dimensions()
+        for widget in self.widgets:
+            widget.set_font_desc(self.font_manager.get_font_desc())
+            widget.set_char_dimensions(self.line_height, self.char_width)
 
-        if change_code == 'font_string_changed':
-            self.char_width, self.line_height = self.font_manager.get_char_dimensions()
-            for widget in self.widgets:
-                widget.set_font_desc(self.font_manager.get_font_desc())
-                widget.set_char_dimensions(self.line_height, self.char_width)
-
-        if change_code == 'settings_changed':
-            section, item, value = parameter
-            if (section, item) == ('preferences', 'highlight_current_line'):
-                self.set_line_highlighting(value)
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+        if (section, item) == ('preferences', 'highlight_current_line'):
+            self.set_line_highlighting(value)
 
     #@timer
     def on_draw(self, drawing_area, ctx, data = None):

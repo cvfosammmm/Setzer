@@ -25,26 +25,26 @@ class PreviewPanelPresenter(object):
         self.main_window = ServiceLocator.get_main_window()
         self.notebook = self.main_window.preview_panel.notebook
 
-        self.workspace.register_observer(self)
+        self.workspace.connect('new_document', self.on_new_document)
+        self.workspace.connect('document_removed', self.on_document_removed)
+        self.workspace.connect('new_active_document', self.on_new_active_document)
+        self.workspace.connect('root_state_change', self.on_root_state_change)
+
         self.activate_blank_page()
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_new_document(self, workspace, document):
+        if document.is_latex_document():
+            self.notebook.append_page(document.preview.view, None)
 
-        if change_code == 'new_document':
-            document = parameter
-            if document.is_latex_document():
-                self.notebook.append_page(document.preview.view, None)
+    def on_document_removed(self, workspace, document):
+        if document.is_latex_document():
+            self.notebook.remove(document.preview.view)
 
-        if change_code == 'document_removed':
-            document = parameter
-            if document.is_latex_document():
-                self.notebook.remove(document.preview.view)
+    def on_new_active_document(self, workspace, document):
+        self.set_preview_document()
 
-        if change_code == 'new_active_document':
-            self.set_preview_document()
-
-        if change_code == 'root_state_change':
-            self.set_preview_document()
+    def on_root_state_change(self, workspace, root_state):
+        self.set_preview_document()
 
     def activate_blank_page(self):
         self.notebook.set_current_page(0)

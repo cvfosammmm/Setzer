@@ -21,7 +21,6 @@ from setzer.app.service_locator import ServiceLocator
 
 
 class DocumentSwitcherPresenter(object):
-    ''' Mediator between workspace and view. '''
     
     def __init__(self, document_switcher, workspace):
         self.document_switcher = document_switcher
@@ -29,58 +28,52 @@ class DocumentSwitcherPresenter(object):
         self.button = ServiceLocator.get_main_window().headerbar.center_widget
         self.view = self.button.open_docs_popover
 
-        self.workspace.register_observer(self)
-        self.document_switcher.register_observer(self)
+        self.workspace.connect('new_document', self.on_new_document)
+        self.workspace.connect('document_removed', self.on_document_removed)
+        self.workspace.connect('new_inactive_document', self.on_new_inactive_document)
+        self.workspace.connect('new_active_document', self.on_new_active_document)
+        self.workspace.connect('root_state_change', self.on_root_state_change)
+        self.document_switcher.connect('docswitcher_mode_change', self.on_docswitcher_mode_change)
 
         self.show_welcome_title()
 
-    '''
-    *** notification handlers
-    '''
+    def on_new_document(self, workspace, document):
+        self.view.document_list.add(document.document_switcher_item.view)
+        self.activate_mode(self.document_switcher.mode)
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_document_removed(self, workspace, document):
+        self.view.document_list.remove(document.document_switcher_item.view)
+        self.activate_mode(self.document_switcher.mode)
+        if self.workspace.active_document == None:
+            self.show_welcome_title()
 
-        if change_code == 'new_document':
-            document = parameter
-            self.view.document_list.add(document.document_switcher_item.view)
-            self.activate_mode(self.document_switcher.mode)
+    def on_new_inactive_document(self, workspace, document):
+        document.disconnect('filename_change', self.on_filename_change)
+        document.disconnect('displayname_change', self.on_displayname_change)
+        document.source_buffer.disconnect('modified_changed', self.on_modified_changed)
 
-        if change_code == 'document_removed':
-            document = parameter
-            self.view.document_list.remove(document.document_switcher_item.view)
-            self.activate_mode(self.document_switcher.mode)
-            if self.workspace.active_document == None:
-                self.show_welcome_title()
+    def on_new_active_document(self, workspace, document):
+        self.show_document_name(document)
+        self.view.document_list.invalidate_sort()
+        document.connect('filename_change', self.on_filename_change)
+        document.connect('displayname_change', self.on_displayname_change)
+        document.source_buffer.connect('modified_changed', self.on_modified_changed)
 
-        if change_code == 'new_inactive_document':
-            document = parameter
-            document.unregister_observer(self)
-            document.source_buffer.unregister_observer(self)
+    def on_root_state_change(self, workspace, state):
+        self.activate_mode(self.document_switcher.mode)
 
-        if change_code == 'new_active_document':
-            document = parameter
-            self.show_document_name(document)
-            self.view.document_list.invalidate_sort()
-            document.register_observer(self)
-            document.source_buffer.register_observer(self)
+    def on_docswitcher_mode_change(self, document_switcher, mode):
+        self.activate_mode(mode)
 
-        if change_code == 'modified_changed':
-            document = self.workspace.get_active_document()
-            self.show_document_name(document)
+    def on_filename_change(self, document, filename):
+        self.show_document_name(document)
 
-        if change_code == 'filename_change':
-            document = notifying_object
-            self.show_document_name(document)
+    def on_displayname_change(self, document, displayname):
+        self.show_document_name(document)
 
-        if change_code == 'displayname_change':
-            document = notifying_object
-            self.show_document_name(document)
-
-        if change_code == 'docswitcher_mode_change':
-            self.activate_mode(parameter)
-
-        if change_code == 'root_state_change':
-            self.activate_mode(self.document_switcher.mode)
+    def on_modified_changed(self, source_buffer):
+        document = self.workspace.get_active_document()
+        self.show_document_name(document)
 
     def activate_mode(self, mode):
         if mode == 'normal':

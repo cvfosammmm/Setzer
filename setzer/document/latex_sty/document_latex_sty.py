@@ -19,7 +19,7 @@ import os.path
 import time
 
 from setzer.document.document import Document
-import setzer.document.source_buffer.source_buffer as source_buffer
+import setzer.document.source_buffer.source_buffer_latex_sty as source_buffer_latex_sty
 import setzer.document.latex_sty.state_manager.state_manager_latex_sty as state_manager_latex_sty
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
@@ -30,7 +30,7 @@ class DocumentLaTeXSty(Document):
     def __init__(self):
         Document.__init__(self)
 
-        self.source_buffer = source_buffer.SourceBuffer(self.settings.get_source_buffer_options())
+        self.source_buffer = source_buffer_latex_sty.SourceBufferLaTeXSty()
         self.init_main_submodules()
 
         self.state_manager = state_manager_latex_sty.StateManagerLaTeXSty(self)
@@ -80,8 +80,5 @@ class DocumentLaTeXSty(Document):
 
     def is_bibtex_document(self):
         return False
-
-    def get_gsv_language_name(self):
-        return 'latex'
 
 

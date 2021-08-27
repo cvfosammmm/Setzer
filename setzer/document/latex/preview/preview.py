@@ -80,26 +80,26 @@ class Preview(Observable):
         self.paging_widget = paging_widget.PagingWidget(self, self.layouter)
         self.zoom_widget = zoom_widget.ZoomWidget(self)
 
-        self.document.register_observer(self)
+        self.document.connect('build_system_visibility_change', self.on_build_system_visibility_change)
+        self.document.connect('filename_change', self.on_filename_change)
+        self.document.connect('pdf_updated', self.on_pdf_updated)
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_build_system_visibility_change(self, document, is_visible):
+        self.is_visible = is_visible
+        if self.is_visible:
+            self.page_renderer.activate()
+        else:
+            self.page_renderer.deactivate()
+        thread.start_new_thread(self.update_links, ())
 
-        if change_code == 'build_system_visibility_change':
-            self.is_visible = parameter
-            if self.is_visible:
-                self.page_renderer.activate()
-            else:
-                self.page_renderer.deactivate()
-            thread.start_new_thread(self.update_links, ())
+    def on_filename_change(self, document, filename):
+        self.set_pdf_filename_from_tex_filename(filename)
+        self.set_pdf_date()
+        self.load_pdf()
 
-        if change_code == 'filename_change':
-            self.set_pdf_filename_from_tex_filename(parameter)
-            self.set_pdf_date()
-            self.load_pdf()
-
-        if change_code == 'pdf_updated':
-            self.set_pdf_date()
-            self.load_pdf()
+    def on_pdf_updated(self, document):
+        self.set_pdf_date()
+        self.load_pdf()
 
     def get_pdf_filename(self):
         return self.pdf_filename

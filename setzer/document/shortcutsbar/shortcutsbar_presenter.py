@@ -24,18 +24,16 @@ class ShortcutsbarPresenter(object):
     def __init__(self, document, view):
         self.document = document
         self.view = view
-        self.document.source_buffer.register_observer(self)
+        self.document.source_buffer.connect('document_empty', self.on_document_empty)
+        self.document.source_buffer.connect('document_not_empty', self.on_document_not_empty)
         self.width = None
         self.view.connect('size-allocate', self.on_size_allocate)
         
-    '''
-    *** notification handlers, get called by observed workspace
-    '''
+    def on_document_empty(self, document):
+        self.update_wizard_button_visibility()
 
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code in ['document_empty', 'document_not_empty']:
-            self.update_wizard_button_visibility()
+    def on_document_not_empty(self, document):
+        self.update_wizard_button_visibility()
 
     def on_size_allocate(self, widget, allocation):
         if allocation.width != self.width:

@@ -108,5 +108,6 @@ class IncludeLaTeXFile(Dialog):
     def insert_template(self):
         text = '\\input{' + self.get_display_filename() + '}'
         self.document.insert_text_at_cursor(text)
+        self.document.scroll_cursor_onscreen()
 
 

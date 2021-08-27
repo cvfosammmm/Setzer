@@ -78,7 +78,10 @@ class DocumentWizard(Dialog):
 
         if response == Gtk.ResponseType.APPLY:
             self.save_presets()
-            self.insert_template()
+
+            document_class = self.current_values['document_class']
+            template_start, template_end = eval('self.get_insert_text_' + document_class + '()')
+            self.document.insert_template(template_start, template_end)
 
         self.view.dialog.hide()
 
@@ -212,56 +215,6 @@ class DocumentWizard(Dialog):
                     return True
         return False
 
-    def insert_template(self, data=None):
-        buff = self.document.get_buffer()
-        if buff != False:
-            buff.begin_user_action()
-
-            document_class = self.current_values['document_class']
-
-            bounds = buff.get_bounds()
-            text = buff.get_text(bounds[0], bounds[1], True)
-            line_count_before_insert = buff.get_line_count()
-
-            insert_start, insert_end = eval('self.get_insert_text_' + document_class + '()')
-
-            # replace tabs with spaces, if set in preferences
-            if self.settings.get_value('preferences', 'spaces_instead_of_tabs'):
-                number_of_spaces = self.settings.get_value('preferences', 'tab_width')
-                insert_start = insert_start.replace('\t', ' ' * number_of_spaces)
-                insert_end = insert_end.replace('\t', ' ' * number_of_spaces)
-
-            bounds = buff.get_bounds()
-            buff.insert(bounds[0], insert_start)
-            bounds = buff.get_bounds()
-            buff.insert(bounds[1], insert_end)
-
-            bounds = buff.get_bounds()
-            bounds[0].forward_chars(len(insert_start))
-            buff.place_cursor(bounds[0])
-
-            buff.end_user_action()
-            buff.begin_user_action()
-
-            if len(text.strip()) > 0:
-                note = _('''% NOTE: The content of your document has been commented out
-% by the wizard. Just do a CTRL+Z (undo) to put it back in
-% or remove the "%" before each line you want to keep.
-% You can remove this note as well.
-% 
-''')
-                note_len = len(note)
-                note_number_of_lines = note.count('\n')
-                offset = buff.get_iter_at_mark(buff.get_insert()).get_line()
-                buff.insert(buff.get_iter_at_line(offset), note)
-                for line_number in range(offset + note_number_of_lines, line_count_before_insert + offset + note_number_of_lines):
-                    buff.insert(buff.get_iter_at_line(line_number), '% ')
-                insert_iter = buff.get_iter_at_mark(buff.get_insert())
-                insert_iter.backward_chars(note_len + 2)
-                buff.place_cursor(insert_iter)
-
-            buff.end_user_action()
-            
     '''
     *** templates
     '''

@@ -27,24 +27,24 @@ class DocumentSwitcherItem():
         self.modified_state = document.get_modified()
         self.set_is_root()
 
-        self.document.register_observer(self)
-        self.document.source_buffer.register_observer(self)
+        self.document.connect('filename_change', self.on_filename_change)
+        self.document.connect('displayname_change', self.on_displayname_change)
+        self.document.connect('is_root_changed', self.on_is_root_changed)
+        self.document.source_buffer.connect('modified_changed', self.on_modified_changed)
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_filename_change(self, document, filename):
+        self.view.set_name(self.document.get_displayname(), self.modified_state)
 
-        if change_code == 'filename_change':
+    def on_modified_changed(self, source_buffer):
+        if self.document.get_modified() != self.modified_state:
+            self.modified_state = self.document.get_modified()
             self.view.set_name(self.document.get_displayname(), self.modified_state)
 
-        if change_code == 'modified_changed':
-            if self.document.get_modified() != self.modified_state:
-                self.modified_state = self.document.get_modified()
-                self.view.set_name(self.document.get_displayname(), self.modified_state)
+    def on_displayname_change(self, document):
+        self.view.set_name(self.document.get_displayname(), self.modified_state)
 
-        if change_code == 'displayname_change':
-            self.view.set_name(self.document.get_displayname(), self.modified_state)
-
-        if change_code == 'is_root_changed':
-            self.set_is_root()
+    def on_is_root_changed(self, document, is_root):
+        self.set_is_root()
 
     def set_is_root(self):
         if self.document.get_is_root() == True:

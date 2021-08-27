@@ -27,35 +27,34 @@ class HelpPanelPresenter(object):
         self.help_panel = help_panel
         self.view = view
 
-        self.help_panel.register_observer(self)
+        self.help_panel.connect('search_query_changed', self.on_search_query_changed)
+        self.help_panel.connect('uri_changed', self.on_uri_changed)
 
         self.view.content.load_uri(self.help_panel.current_uri)
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_search_query_changed(self, help_panel):
+        results_list = self.help_panel.search_results
+        for item in self.view.search_result_items:
+            self.view.search_results.remove(item)
+        self.view.search_result_items = list()
+        if results_list:
+            self.view.search_entry.get_style_context().remove_class('error')
+            self.view.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'edit-find-symbolic')
+            for item in reversed(results_list):
+                list_item = help_panel_view.SearchResultView(item)
+                self.view.search_results.prepend(list_item)
+                self.view.search_result_items.append(list_item)
+            self.view.search_results.show_all()
+        elif self.help_panel.query != '':
+            self.view.search_entry.get_style_context().add_class('error')
+            self.view.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'face-uncertain-symbolic')
+        else:
+            self.view.search_entry.get_style_context().remove_class('error')
+            self.view.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'edit-find-symbolic')
 
-        if change_code == 'search_query_changed':
-            results_list = self.help_panel.search_results
-            for item in self.view.search_result_items:
-                self.view.search_results.remove(item)
-            self.view.search_result_items = list()
-            if results_list:
-                self.view.search_entry.get_style_context().remove_class('error')
-                self.view.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'edit-find-symbolic')
-                for item in reversed(results_list):
-                    list_item = help_panel_view.SearchResultView(item)
-                    self.view.search_results.prepend(list_item)
-                    self.view.search_result_items.append(list_item)
-                self.view.search_results.show_all()
-            elif self.help_panel.query != '':
-                self.view.search_entry.get_style_context().add_class('error')
-                self.view.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'face-uncertain-symbolic')
-            else:
-                self.view.search_entry.get_style_context().remove_class('error')
-                self.view.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'edit-find-symbolic')
-
-        elif change_code == 'uri_changed':
-            if self.view.content.get_uri() != parameter:
-                self.view.content.load_uri(parameter)
-            self.view.search_button.set_active(False)
+    def on_uri_changed(self, help_panel, uri):
+        if self.view.content.get_uri() != uri:
+            self.view.content.load_uri(uri)
+        self.view.search_button.set_active(False)
 
 

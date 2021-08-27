@@ -30,19 +30,16 @@ class PagingWidget(object):
         self.preview.view.action_bar.pack_start(self.view, False, False, 0)
         self.update_number_of_pages()
         self.update_current_page()
-        self.preview.register_observer(self)
 
-    def change_notification(self, change_code, notifying_object, parameter):
+        self.preview.connect('pdf_changed', self.on_pdf_changed)
+        self.preview.connect('position_changed', self.on_position_changed)
 
-        if change_code == 'pdf_changed':
-            self.update_number_of_pages()
-            self.update_current_page()
+    def on_pdf_changed(self, preview):
+        self.update_number_of_pages()
+        self.update_current_page()
 
-        if change_code == 'layout_changed':
-            self.update_current_page()
-
-        if change_code == 'position_changed':
-            self.update_current_page()
+    def on_position_changed(self, preview):
+        self.update_current_page()
 
     def update_number_of_pages(self):
         if self.preview.pdf_filename != None:

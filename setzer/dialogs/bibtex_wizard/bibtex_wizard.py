@@ -271,27 +271,24 @@ class BibTeXWizard(Dialog):
                 view.show_all()
                     
     def insert_template(self, data=None):
-        buff = self.document.get_buffer()
-        if buff != False:
-            buff.begin_user_action()
-            document_type = self.current_values['document_type']
-            text = '@' + document_type + '{' + self.current_values['identifier'] + ''
+        document_type = self.current_values['document_type']
+        text = '@' + document_type + '{' + self.current_values['identifier'] + ''
 
-            for field in self.document_types[document_type]['fields_required']:
-                value = self.current_values['fields'][field]
+        for field in self.document_types[document_type]['fields_required']:
+            value = self.current_values['fields'][field]
+            text += ',\n\t' + field + ' '*(16 - len(field)) + '= "' + value + '"'
+
+        for field in self.document_types[document_type]['fields_optional']:
+            value = self.current_values['fields'][field]
+            if value != '':
                 text += ',\n\t' + field + ' '*(16 - len(field)) + '= "' + value + '"'
+            elif self.fields_entry_page.view.option_include_empty.get_active():
+                text += ',\n\t' + field + ' '*(16 - len(field)) + '= ""'
 
-            for field in self.document_types[document_type]['fields_optional']:
-                value = self.current_values['fields'][field]
-                if value != '':
-                    text += ',\n\t' + field + ' '*(16 - len(field)) + '= "' + value + '"'
-                elif self.fields_entry_page.view.option_include_empty.get_active():
-                    text += ',\n\t' + field + ' '*(16 - len(field)) + '= ""'
+        text += '\n}\n\n'
 
-            text += '\n}\n\n'
-
-            self.document.insert_text(0, 0, text, False)
-            self.document.place_cursor(0)
-            buff.end_user_action()
+        self.document.insert_text(0, 0, text, False)
+        self.document.place_cursor(0)
+        self.document.scroll_cursor_onscreen()
 
 

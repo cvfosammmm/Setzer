@@ -50,33 +50,26 @@ class CodeFolding(Observable):
         self.presenter = code_folding_presenter.CodeFoldingPresenter(self)
         self.controller = code_folding_controller.CodeFoldingController(self)
 
-        self.document.source_buffer.register_observer(self)
+        self.document.source_buffer.connect('text_inserted', self.on_text_inserted)
+        self.document.source_buffer.connect('text_deleted', self.on_text_deleted)
+        self.document.source_buffer.connect('buffer_changed', self.on_buffer_changed)
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_text_inserted(self, source_buffer, parameter):
+        buffer, location_iter, text, text_length = parameter
+        length = len(text)
+        offset = location_iter.get_offset() + length
+        marks_start = dict()
+        for index, region_id in self.marks_start.items():
+            if index < offset:
+                marks_start[index] = region_id
+            else:
+                index2 = index + length
+                region = self.folding_regions_by_region_id[region_id]
+                region['offset_start'] = index2
+                marks_start[index2] = region_id
+        self.marks_start = marks_start
 
-        if change_code == 'text_inserted':
-            self.on_text_inserted(parameter)
-
-        if change_code == 'text_deleted':
-            self.on_text_deleted(parameter)
-
-        if change_code == 'buffer_changed':
-            if self.is_enabled:
-                self.update_folding_regions()
-
-    def enable_code_folding(self):
-        self.is_enabled = True
-        self.update_folding_regions()
-        self.gutter_object.show()
-
-    def disable_code_folding(self):
-        self.is_enabled = False
-        for region in self.folding_regions.values():
-            self.toggle_folding_region(region, show_region_regardless_of_state=True)
-        self.gutter_object.hide()
-
-    #@timer
-    def on_text_deleted(self, parameter):
+    def on_text_deleted(self, source_buffer, parameter):
         buffer, start_iter, end_iter = parameter
         offset_start = start_iter.get_offset()
         offset_end = end_iter.get_offset()
@@ -92,21 +85,20 @@ class CodeFolding(Observable):
                 marks_start[index2] = region_id
         self.marks_start = marks_start
 
-    #@timer
-    def on_text_inserted(self, parameter):
-        buffer, location_iter, text, text_length = parameter
-        length = len(text)
-        offset = location_iter.get_offset() + length
-        marks_start = dict()
-        for index, region_id in self.marks_start.items():
-            if index < offset:
-                marks_start[index] = region_id
-            else:
-                index2 = index + length
-                region = self.folding_regions_by_region_id[region_id]
-                region['offset_start'] = index2
-                marks_start[index2] = region_id
-        self.marks_start = marks_start
+    def on_buffer_changed(self, source_buffer, parameter):
+        if self.is_enabled:
+            self.update_folding_regions()
+
+    def enable_code_folding(self):
+        self.is_enabled = True
+        self.update_folding_regions()
+        self.gutter_object.show()
+
+    def disable_code_folding(self):
+        self.is_enabled = False
+        for region in self.folding_regions.values():
+            self.toggle_folding_region(region, show_region_regardless_of_state=True)
+        self.gutter_object.hide()
 
     def toggle_folding_region(self, region, show_region_regardless_of_state=False, hide_region_regardless_of_state=False):
         if show_region_regardless_of_state:

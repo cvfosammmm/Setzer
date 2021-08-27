@@ -66,14 +66,14 @@ class BuildSystem(object):
     def register_observer(self, observer):
         ''' Observer call this method to register themselves with observable
             objects. They have themselves to implement a method
-            'change_notification(change_code, parameter)' which they observable
+            'change_notification(change_code, parameter)' which the observable
             will call when it's state changes. '''
-        
+
         self.observers.add(observer)
 
     def add_change_code(self, change_code, parameter=None):
         self.change_code_queue.put({'change_code': change_code, 'parameter': parameter})
-                
+
     def results_loop(self):
         if self.active_query != None:
             if self.active_query.is_done():

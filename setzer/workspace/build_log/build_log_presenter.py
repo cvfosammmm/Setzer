@@ -36,31 +36,27 @@ class BuildLogPresenter(object):
 
         self.set_header_data(0, 0, False)
         self.view.list.connect('draw', self.draw)
-        self.build_log.register_observer(self)
+
+        self.build_log.connect('build_log_finished_adding', self.on_build_log_finished_adding)
+        self.build_log.connect('hover_item_changed', self.on_hover_item_changed)
 
         self.max_width = -1
         self.height = -1
 
-    '''
-    *** notification handlers
-    '''
+    def on_build_log_finished_adding(self, build_log, has_been_built):
+        num_errors = self.build_log.count_items('errors')
+        num_others = self.build_log.count_items('warnings') + self.build_log.count_items('badboxes')
+        num_items = self.build_log.count_items('all')
+        self.set_header_data(num_errors, num_others, has_been_built)
+        self.max_width = -1
+        self.height = num_items * self.view.line_height + 6
+        self.view.list.set_size_request(self.max_width, self.height)
+        self.view.scrolled_window.get_vadjustment().set_value(0)
+        self.view.scrolled_window.get_hadjustment().set_value(0)
+        self.view.list.queue_draw()
 
-    def change_notification(self, change_code, notifying_object, parameter):
-
-        if change_code == 'build_log_finished_adding':
-            num_errors = self.build_log.count_items('errors')
-            num_others = self.build_log.count_items('warnings') + self.build_log.count_items('badboxes')
-            num_items = self.build_log.count_items('all')
-            self.set_header_data(num_errors, num_others, parameter)
-            self.max_width = -1
-            self.height = num_items * self.view.line_height + 6
-            self.view.list.set_size_request(self.max_width, self.height)
-            self.view.scrolled_window.get_vadjustment().set_value(0)
-            self.view.scrolled_window.get_hadjustment().set_value(0)
-            self.view.list.queue_draw()
-
-        if change_code == 'hover_item_changed':
-            self.view.list.queue_draw()
+    def on_hover_item_changed(self, build_log):
+        self.view.list.queue_draw()
 
     #@timer
     def draw(self, drawing_area, ctx):

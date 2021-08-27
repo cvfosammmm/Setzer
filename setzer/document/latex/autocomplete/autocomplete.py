@@ -34,7 +34,7 @@ class Autocomplete(object):
         self.document_view = document_view
         self.main_window = ServiceLocator.get_main_window()
         self.font_manager = ServiceLocator.get_font_manager()
-        self.font_manager.register_observer(self)
+        self.font_manager.connect('font_string_changed', self.on_font_string_changed)
 
         self.view = view.DocumentAutocompleteView()
         self.mark_start = Gtk.TextMark.new('ac_session_start', True)
@@ -61,28 +61,33 @@ class Autocomplete(object):
         self.view.list.connect('row-activated', self.on_row_activated)
         self.view.list.connect('row-selected', self.on_row_selected)
 
-        self.document.source_buffer.register_observer(self)
+        self.document.source_buffer.connect('text_inserted', self.on_text_inserted)
+        self.document.source_buffer.connect('text_deleted', self.on_text_deleted)
+        self.document.source_buffer.connect('buffer_changed', self.on_buffer_changed)
+        self.document.source_buffer.connect('insert_mark_set', self.on_insert_mark_set)
+        self.document.source_buffer.connect('insert_mark_deleted', self.on_insert_mark_deleted)
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_text_inserted(self, source_buffer, parameter):
+        buffer, location_iter, text, text_length = parameter
+        self.session.on_insert_text(buffer, location_iter, text, text_length)
 
-        if change_code == 'text_inserted':
-            buffer, location_iter, text, text_length = parameter
-            self.session.on_insert_text(buffer, location_iter, text, text_length)
+    def on_text_deleted(self, source_buffer, parameter):
+        buffer, start_iter, end_iter = parameter
+        self.session.on_delete_range(buffer, start_iter, end_iter)
 
-        if change_code == 'text_deleted':
-            buffer, start_iter, end_iter = parameter
-            self.session.on_delete_range(buffer, start_iter, end_iter)
+    def on_buffer_changed(self, source_buffer, buffer):
+        self.update(True)
 
-        if change_code == 'buffer_changed':
-            self.update(True)
+    def on_insert_mark_set(self, source_buffer):
+        self.update(True)
 
-        if change_code in ['insert_mark_set', 'insert_mark_deleted']:
-            self.update(False)
+    def on_insert_mark_deleted(self, source_buffer):
+        self.update(True)
 
-        if change_code == 'font_string_changed':
-            char_width, line_height = self.font_manager.get_char_dimensions()
-            self.view.scrolled_window.set_max_content_height(5 * line_height)
-            self.view.scrolled_window.set_min_content_width(35 * char_width)
+    def on_font_string_changed(self, font_manager):
+        char_width, line_height = self.font_manager.get_char_dimensions()
+        self.view.scrolled_window.set_max_content_height(5 * line_height)
+        self.view.scrolled_window.set_min_content_width(35 * char_width)
 
     def on_adjustment_value_changed(self, adjustment, user_data=None):
         self.update_visibility()
@@ -165,8 +170,7 @@ class Autocomplete(object):
 
         height = min(len(self.items), 5) * line_height + 20
 
-        buffer = self.document.get_buffer()
-        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        insert_iter = self.document.source_buffer.source_buffer.get_iter_at_mark(self.document.source_buffer.source_buffer.get_insert())
         iter_location = self.document_view.source_view.get_iter_location(insert_iter)
         start_iter = insert_iter.copy()
         start_iter.backward_chars(self.session.get_offset())

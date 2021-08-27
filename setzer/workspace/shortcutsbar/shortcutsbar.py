@@ -28,41 +28,33 @@ class Shortcutsbar(object):
         self.main_window.latex_shortcutsbar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
         self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
 
-        self.workspace.register_observer(self)
+        self.workspace.connect('document_removed', self.on_document_removed)
+        self.workspace.connect('new_active_document', self.on_new_active_document)
+        self.workspace.connect('new_inactive_document', self.on_new_inactive_document)
+        self.workspace.connect('show_build_log_state_change', self.on_show_build_log_state_change)
 
-    '''
-    *** notification handlers, get called by observed workspace
-    '''
+    def on_document_removed(self, workspace, document):
+        if self.workspace.active_document == None:
+            self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
 
-    def change_notification(self, change_code, notifying_object, parameter):
+    def on_new_active_document(self, workspace, document):
+        if document.is_latex_document():
+            self.update_shortcutsbar(self.main_window.latex_shortcutsbar)
+            self.main_window.latex_shortcutsbar.top_icons.insert(document.view.wizard_button, 0)
+            self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(True)
+        elif document.is_bibtex_document():
+            self.update_shortcutsbar(self.main_window.bibtex_shortcutsbar)
+            self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
+        else:
+            self.update_shortcutsbar(self.main_window.others_shortcutsbar)
+            self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
 
-        if change_code == 'document_removed':
-            if self.workspace.active_document == None:
-                self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
+    def on_new_inactive_document(self, workspace, document):
+        if document.is_latex_document():
+            self.main_window.latex_shortcutsbar.top_icons.remove(document.view.wizard_button)
 
-        if change_code == 'new_active_document':
-            document = parameter
-
-            if document.is_latex_document():
-                self.update_shortcutsbar(self.main_window.latex_shortcutsbar)
-                self.main_window.latex_shortcutsbar.top_icons.insert(document.view.wizard_button, 0)
-                self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(True)
-            elif document.is_bibtex_document():
-                self.update_shortcutsbar(self.main_window.bibtex_shortcutsbar)
-                self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
-            else:
-                self.update_shortcutsbar(self.main_window.others_shortcutsbar)
-                self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
-
-        if change_code == 'new_inactive_document':
-            document = parameter
-
-            if document.is_latex_document():
-                self.main_window.latex_shortcutsbar.top_icons.remove(document.view.wizard_button)
-
-        if change_code == 'show_build_log_state_change':
-            show_build_log = parameter
-            self.main_window.latex_shortcutsbar.button_build_log.set_active(show_build_log)
+    def on_show_build_log_state_change(self, workspace, show_build_log):
+        self.main_window.latex_shortcutsbar.button_build_log.set_active(show_build_log)
 
     def update_shortcutsbar(self, shortcutsbar):
         document = self.workspace.active_document

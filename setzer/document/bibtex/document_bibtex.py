@@ -30,7 +30,7 @@ class DocumentBibTeX(Document):
     def __init__(self):
         Document.__init__(self)
 
-        self.source_buffer = source_buffer_bibtex.SourceBufferBibTeX(self.settings.get_source_buffer_options())
+        self.source_buffer = source_buffer_bibtex.SourceBufferBibTeX()
         self.init_main_submodules()
 
         self.state_manager = state_manager_bibtex.StateManagerBibTeX(self)
@@ -80,8 +80,5 @@ class DocumentBibTeX(Document):
 
     def is_bibtex_document(self):
         return True
-
-    def get_gsv_language_name(self):
-        return 'bibtex'
 
 
