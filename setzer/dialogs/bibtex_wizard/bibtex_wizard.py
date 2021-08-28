@@ -139,12 +139,6 @@ class BibTeXWizard(Dialog):
 
         self.view = view.BibTeXWizardView(self.main_window)
 
-        self.pages = list()
-        self.pages.append(CreateNewEntryPage(self, self.document_types, self.current_values))
-        self.fields_entry_page = FieldsEntryPage(self, self.current_values)
-        self.pages.append(self.fields_entry_page)
-        for page in self.pages: self.view.notebook.append_page(page.view)
-
         self.is_not_setup = True
         self.document_type_set = False
 
@@ -152,6 +146,7 @@ class BibTeXWizard(Dialog):
         self.document = document
 
         if self.is_not_setup:
+            self.create_pages_and_add_them_to_view()
             self.init_current_values()
             self.setup()
             self.is_not_setup = False
@@ -172,6 +167,13 @@ class BibTeXWizard(Dialog):
             self.insert_template()
 
         self.view.dialog.hide()
+
+    def create_pages_and_add_them_to_view(self):
+        self.pages = list()
+        self.pages.append(CreateNewEntryPage(self, self.document_types, self.current_values))
+        self.fields_entry_page = FieldsEntryPage(self, self.current_values)
+        self.pages.append(self.fields_entry_page)
+        for page in self.pages: self.view.notebook.append_page(page.view)
 
     def init_current_values(self):
         self.current_values['document_type'] = 'article'
