@@ -22,6 +22,7 @@ from gi.repository import Gtk
 
 from setzer.dialogs.document_wizard.pages.page import Page, PageView
 from setzer.app.service_locator import ServiceLocator
+import setzer.widgets.async_svg.async_svg as async_svg
 
 import os
 
@@ -85,7 +86,7 @@ class DocumentClassPageView(PageView):
         self.preview_data.append({'name': 'beamer', 'image': 'beamer1.svg', 'text': _('<b>Beamer:</b>  A class for making presentation slides with LaTeX.\n\nThere are many predefined presentation styles.')})
         for item in self.preview_data:
             box = Gtk.VBox()
-            image = Gtk.Image.new_from_file(os.path.join(ServiceLocator.get_resources_path(), 'document_wizard', item['image']))
+            image = async_svg.AsyncSvg(os.path.join(ServiceLocator.get_resources_path(), 'document_wizard', item['image']), 374, 262)
             image.set_margin_bottom(6)
             label = Gtk.Label()
             label.set_markup(item['text'])
