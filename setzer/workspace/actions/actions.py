@@ -72,7 +72,6 @@ class Actions(object):
         self.spellchecking_action = Gio.SimpleAction.new('spellchecking', None)
         dm_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'prefer_dark_mode'))
         self.toggle_dark_mode_action = Gio.SimpleAction.new_stateful('toggle-dark-mode', None, dm_default)
-        settings.gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', dm_default)
         ip_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'invert_pdf'))
         self.toggle_invert_pdf_action = Gio.SimpleAction.new_stateful('toggle-invert-pdf', None, ip_default)
         self.zoom_out_action = Gio.SimpleAction.new('zoom-out', None)
