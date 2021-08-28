@@ -18,6 +18,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 
@@ -30,8 +31,9 @@ import math
 class Sidebar(object):
     ''' Init and controll sidebar '''
     
-    def __init__(self):
+    def __init__(self, workspace):
         self.view = ServiceLocator.get_main_window().sidebar
+        self.workspace = workspace
 
         # detect dark mode
         dm = 'True' if ServiceLocator.get_is_dark_mode() else 'False'
@@ -76,14 +78,12 @@ class Sidebar(object):
             self.page_views.append(page_view)
             page_view.connect('size-allocate', self.on_stack_size_allocate)
             button.connect('clicked', self.on_tab_button_clicked, page[0])
+            page_view.flowbox.connect('button-press-event', self.on_flowbox_clicked, page_view.symbols)
 
     def init_symbols_page(self, page_view):
         for symbol in page_view.symbols:
-            button = symbol[5]
-            button.set_focus_on_click(False)
-            button.set_size_request(page_view.symbol_width + 11, -1)
-            button.set_action_target_value(GLib.Variant('as', [symbol[1]]))
-            button.set_action_name('win.insert-symbol')
+            image = symbol[5]
+            image.set_size_request(page_view.symbol_width + 11, -1)
 
     '''
     *** signal handlers for buttons in sidebar
@@ -91,7 +91,16 @@ class Sidebar(object):
     
     def on_tab_button_clicked(self, button, page_name):
         self.view.stack.set_visible_child_name(page_name)
-    
+
+    def on_flowbox_clicked(self, flowbox, event, symbols_list):
+        child = flowbox.get_child_at_pos(event.x, event.y)
+
+        if child != None and self.workspace.active_document != None:
+            self.workspace.get_active_document().insert_text_at_cursor(symbols_list[child.get_index()][1])
+            self.workspace.get_active_document().content.scroll_cursor_onscreen()
+
+        return True
+
     '''
     *** manage borders of images
     '''

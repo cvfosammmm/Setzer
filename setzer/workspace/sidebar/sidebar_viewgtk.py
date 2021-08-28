@@ -74,7 +74,6 @@ class SidebarPageSymbolsList(SidebarPage):
         
         # symbols: icon name, latex code
         self.symbols = list()
-        self.images = list()
         
         self.flowbox = Gtk.FlowBox()
         self.flowbox.set_homogeneous(False)
@@ -98,14 +97,13 @@ class SidebarPageSymbolsList(SidebarPage):
 
             image = Gtk.Image.new_from_icon_name('sidebar-' + symbol[0] + '-symbolic', 0)
             image.set_pixel_size(int(size * 1.5))
-            self.images.append([image, symbol])
-            button = Gtk.Button()
-            button.set_image(image)
+            #button = Gtk.Button()
+            #button.set_image(image)
             tooltip_text = symbol[1]
             if symbol[2] != None: 
                 tooltip_text += ' (' + _('Package') + ': ' + symbol[2] + ')'
-            button.set_tooltip_text(tooltip_text)
-            symbol.append(button)
-            self.flowbox.insert(button, -1)
+            image.set_tooltip_text(tooltip_text)
+            symbol.append(image)
+            self.flowbox.insert(image, -1)
 
 

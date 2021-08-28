@@ -268,26 +268,21 @@ box.sidebar > box {
 box.sidebar flowbox flowboxchild {
     padding: 0px;
 }
-box.sidebar flowbox flowboxchild button {
-    background: none;
+box.sidebar flowbox flowboxchild image {
     background-color: @theme_base_color;
+    border: 1px solid mix(@borders, @theme_base_color, 0.68);
     border-left-width: 0px;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
     border-top-width: 0px;
-    border-color: mix(@borders, @theme_base_color, 0.68);
     margin: 0px;
     padding: 5px;
-    border-radius: 0px;
-    box-shadow: none;
 }
-box.sidebar flowbox flowboxchild button:active {
+box.sidebar flowbox flowboxchild image:active {
     background-color: mix(@theme_bg_color, @theme_base_color, 0.5);
 }
-box.sidebar flowbox flowboxchild button.no_right_border {
+box.sidebar flowbox flowboxchild image.no_right_border {
     border-right-width: 0px;
 }
-box.sidebar flowbox flowboxchild button.no_bottom_border {
+box.sidebar flowbox flowboxchild image.no_bottom_border {
     border-bottom-width: 0px;
 }
 

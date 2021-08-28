@@ -64,7 +64,7 @@ class Workspace(Observable):
         self.dark_mode = self.settings.get_value('preferences', 'prefer_dark_mode')
         self.invert_pdf = self.settings.get_value('preferences', 'invert_pdf')
 
-        self.sidebar = sidebar.Sidebar()
+        self.sidebar = sidebar.Sidebar(self)
         self.welcome_screen = welcome_screen.WelcomeScreen()
         self.show_sidebar = self.settings.get_value('window_state', 'show_sidebar')
         self.sidebar_position = self.settings.get_value('window_state', 'sidebar_paned_position')
