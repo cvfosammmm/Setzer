@@ -22,6 +22,8 @@ from gi.repository import Gdk, GdkPixbuf
 
 import os
 
+import setzer.widgets.filechooser_button.filechooser_button as filechooser_button
+
 
 class IncludeLaTeXFileView(object):
 
@@ -50,9 +52,9 @@ class IncludeLaTeXFileView(object):
         label.set_margin_bottom(3)
         label.set_margin_top(18)
         self.content.pack_start(label, False, False, 0)
-        self.file_chooser_button = Gtk.FileChooserButton()
+        self.file_chooser_button = filechooser_button.FilechooserButton(main_window)
         self.file_chooser_button.set_title(_('Select a LaTeX File'))
-        self.content.pack_start(self.file_chooser_button, False, False, 0)
+        self.content.pack_start(self.file_chooser_button.view, False, False, 0)
 
         label = Gtk.Label(_('Type of path to included file'))
         label.set_xalign(0)

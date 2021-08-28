@@ -58,7 +58,7 @@ class IncludeBibTeXFile(Dialog):
         self.view.natbib_style_buttons[self.current_values['natbib_style']].toggled()
 
         self.view.create_button.set_sensitive(False)
-        self.view.file_chooser_button.unselect_all()
+        self.view.file_chooser_button.reset()
         self.view.natbib_option.set_active(self.current_values['natbib_toggle'])
         self.on_natbib_toggled(self.view.natbib_option)
         response = self.view.run()

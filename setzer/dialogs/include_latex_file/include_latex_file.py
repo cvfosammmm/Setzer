@@ -50,7 +50,7 @@ class IncludeLaTeXFile(Dialog):
         self.view.pathtype_info_button.set_active(False)
 
         self.view.create_button.set_sensitive(False)
-        self.view.file_chooser_button.unselect_all()
+        self.view.file_chooser_button.reset()
         response = self.view.run()
 
         if response == Gtk.ResponseType.APPLY:
