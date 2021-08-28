@@ -30,12 +30,12 @@ class DocumentSwitcherItem():
         self.document.connect('filename_change', self.on_filename_change)
         self.document.connect('displayname_change', self.on_displayname_change)
         self.document.connect('is_root_changed', self.on_is_root_changed)
-        self.document.source_buffer.connect('modified_changed', self.on_modified_changed)
+        self.document.content.connect('modified_changed', self.on_modified_changed)
 
     def on_filename_change(self, document, filename):
         self.view.set_name(self.document.get_displayname(), self.modified_state)
 
-    def on_modified_changed(self, source_buffer):
+    def on_modified_changed(self, content):
         if self.document.get_modified() != self.modified_state:
             self.modified_state = self.document.get_modified()
             self.view.set_name(self.document.get_displayname(), self.modified_state)

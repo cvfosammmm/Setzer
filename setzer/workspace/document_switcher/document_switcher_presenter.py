@@ -50,14 +50,14 @@ class DocumentSwitcherPresenter(object):
     def on_new_inactive_document(self, workspace, document):
         document.disconnect('filename_change', self.on_filename_change)
         document.disconnect('displayname_change', self.on_displayname_change)
-        document.source_buffer.disconnect('modified_changed', self.on_modified_changed)
+        document.content.disconnect('modified_changed', self.on_modified_changed)
 
     def on_new_active_document(self, workspace, document):
         self.show_document_name(document)
         self.view.document_list.invalidate_sort()
         document.connect('filename_change', self.on_filename_change)
         document.connect('displayname_change', self.on_displayname_change)
-        document.source_buffer.connect('modified_changed', self.on_modified_changed)
+        document.content.connect('modified_changed', self.on_modified_changed)
 
     def on_root_state_change(self, workspace, state):
         self.activate_mode(self.document_switcher.mode)
@@ -71,7 +71,7 @@ class DocumentSwitcherPresenter(object):
     def on_displayname_change(self, document, displayname):
         self.show_document_name(document)
 
-    def on_modified_changed(self, source_buffer):
+    def on_modified_changed(self, content):
         document = self.workspace.get_active_document()
         self.show_document_name(document)
 

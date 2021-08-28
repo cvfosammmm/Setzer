@@ -26,13 +26,13 @@ import re
 import time
 import difflib
 
-import setzer.document.source_buffer.parser.parser_dummy as parser_dummy
+import setzer.document.content.parser.parser_dummy as parser_dummy
 from setzer.app.service_locator import ServiceLocator
 from setzer.helpers.observable import Observable
 import setzer.helpers.timer as timer
 
 
-class SourceBuffer(Observable):
+class Content(Observable):
 
     def __init__(self):
         Observable.__init__(self)

@@ -61,27 +61,27 @@ class Autocomplete(object):
         self.view.list.connect('row-activated', self.on_row_activated)
         self.view.list.connect('row-selected', self.on_row_selected)
 
-        self.document.source_buffer.connect('text_inserted', self.on_text_inserted)
-        self.document.source_buffer.connect('text_deleted', self.on_text_deleted)
-        self.document.source_buffer.connect('buffer_changed', self.on_buffer_changed)
-        self.document.source_buffer.connect('insert_mark_set', self.on_insert_mark_set)
-        self.document.source_buffer.connect('insert_mark_deleted', self.on_insert_mark_deleted)
+        self.document.content.connect('text_inserted', self.on_text_inserted)
+        self.document.content.connect('text_deleted', self.on_text_deleted)
+        self.document.content.connect('buffer_changed', self.on_buffer_changed)
+        self.document.content.connect('insert_mark_set', self.on_insert_mark_set)
+        self.document.content.connect('insert_mark_deleted', self.on_insert_mark_deleted)
 
-    def on_text_inserted(self, source_buffer, parameter):
+    def on_text_inserted(self, content, parameter):
         buffer, location_iter, text, text_length = parameter
         self.session.on_insert_text(buffer, location_iter, text, text_length)
 
-    def on_text_deleted(self, source_buffer, parameter):
+    def on_text_deleted(self, content, parameter):
         buffer, start_iter, end_iter = parameter
         self.session.on_delete_range(buffer, start_iter, end_iter)
 
-    def on_buffer_changed(self, source_buffer, buffer):
+    def on_buffer_changed(self, content, buffer):
         self.update(True)
 
-    def on_insert_mark_set(self, source_buffer):
+    def on_insert_mark_set(self, content):
         self.update(False)
 
-    def on_insert_mark_deleted(self, source_buffer):
+    def on_insert_mark_deleted(self, content):
         self.update(False)
 
     def on_font_string_changed(self, font_manager):
@@ -170,7 +170,7 @@ class Autocomplete(object):
 
         height = min(len(self.items), 5) * line_height + 20
 
-        insert_iter = self.document.source_buffer.source_buffer.get_iter_at_mark(self.document.source_buffer.source_buffer.get_insert())
+        insert_iter = self.document.content.source_buffer.get_iter_at_mark(self.document.content.source_buffer.get_insert())
         iter_location = self.document_view.source_view.get_iter_location(insert_iter)
         start_iter = insert_iter.copy()
         start_iter.backward_chars(self.session.get_offset())

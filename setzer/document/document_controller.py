@@ -86,7 +86,7 @@ class DocumentController(object):
 
         if not keypress_handled and event.keyval in tab_keyvals:
             if event.state & modifiers == 0:
-                buffer = self.document.source_buffer.source_buffer
+                buffer = self.document.content.source_buffer
                 insert = buffer.get_iter_at_mark(buffer.get_insert())
                 insert.forward_chars(1)
                 limit_iter = insert.copy()
@@ -106,7 +106,7 @@ class DocumentController(object):
                     self.document.scroll_iter_onscreen(result[1])
                     return True
             elif event.state & modifiers == Gdk.ModifierType.SHIFT_MASK:
-                buffer = self.document.source_buffer.source_buffer
+                buffer = self.document.content.source_buffer
                 insert = buffer.get_iter_at_mark(buffer.get_insert())
                 limit_iter = insert.copy()
                 limit_iter.backward_lines(3)
@@ -130,14 +130,14 @@ class DocumentController(object):
         if self.document.get_deleted_on_disk():
             DialogLocator.get_dialog('document_deleted_on_disk').run(self.document)
             self.document.deleted_on_disk_dialog_shown_after_last_save = True
-            self.document.source_buffer.set_modified(True)
+            self.document.content.set_modified(True)
             return True
         if self.document.get_changed_on_disk():
             if DialogLocator.get_dialog('document_changed_on_disk').run(self.document):
                 self.document.populate_from_filename()
-                self.document.source_buffer.set_modified(False)
+                self.document.content.set_modified(False)
             else:
-                self.document.source_buffer.set_modified(True)
+                self.document.content.set_modified(True)
             self.document.update_save_date()
         return self.continue_save_date_loop
 

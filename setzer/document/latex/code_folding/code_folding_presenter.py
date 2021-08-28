@@ -26,7 +26,7 @@ class CodeFoldingPresenter(object):
 
     def __init__(self, model):
         self.model = model
-        self.source_buffer = self.model.document.source_buffer.source_buffer
+        self.source_buffer = self.model.document.content.source_buffer
         self.tag = self.source_buffer.create_tag('invisible_region', invisible=1)
 
     def show_region(self, region):

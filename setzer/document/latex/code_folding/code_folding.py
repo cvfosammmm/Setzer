@@ -50,11 +50,11 @@ class CodeFolding(Observable):
         self.presenter = code_folding_presenter.CodeFoldingPresenter(self)
         self.controller = code_folding_controller.CodeFoldingController(self)
 
-        self.document.source_buffer.connect('text_inserted', self.on_text_inserted)
-        self.document.source_buffer.connect('text_deleted', self.on_text_deleted)
-        self.document.source_buffer.connect('buffer_changed', self.on_buffer_changed)
+        self.document.content.connect('text_inserted', self.on_text_inserted)
+        self.document.content.connect('text_deleted', self.on_text_deleted)
+        self.document.content.connect('buffer_changed', self.on_buffer_changed)
 
-    def on_text_inserted(self, source_buffer, parameter):
+    def on_text_inserted(self, content, parameter):
         buffer, location_iter, text, text_length = parameter
         length = len(text)
         offset = location_iter.get_offset() + length
@@ -69,7 +69,7 @@ class CodeFolding(Observable):
                 marks_start[index2] = region_id
         self.marks_start = marks_start
 
-    def on_text_deleted(self, source_buffer, parameter):
+    def on_text_deleted(self, content, parameter):
         buffer, start_iter, end_iter = parameter
         offset_start = start_iter.get_offset()
         offset_end = end_iter.get_offset()
@@ -85,7 +85,7 @@ class CodeFolding(Observable):
                 marks_start[index2] = region_id
         self.marks_start = marks_start
 
-    def on_buffer_changed(self, source_buffer, parameter):
+    def on_buffer_changed(self, content, parameter):
         if self.is_enabled:
             self.update_folding_regions()
 

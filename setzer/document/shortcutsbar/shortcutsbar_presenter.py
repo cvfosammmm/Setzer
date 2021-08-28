@@ -24,8 +24,8 @@ class ShortcutsbarPresenter(object):
     def __init__(self, document, view):
         self.document = document
         self.view = view
-        self.document.source_buffer.connect('document_empty', self.on_document_empty)
-        self.document.source_buffer.connect('document_not_empty', self.on_document_not_empty)
+        self.document.content.connect('document_empty', self.on_document_empty)
+        self.document.content.connect('document_not_empty', self.on_document_not_empty)
         self.width = None
         self.view.connect('size-allocate', self.on_size_allocate)
         

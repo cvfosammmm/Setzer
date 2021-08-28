@@ -69,11 +69,11 @@ class Document(Observable):
         self.line_numbers = line_numbers.LineNumbers(self, self.view)
 
     def update_syntax_scheme(self):
-        self.source_buffer.update_syntax_scheme()
+        self.content.update_syntax_scheme()
 
     def set_dark_mode(self, dark_mode):
         self.dark_mode = dark_mode
-        self.source_buffer.set_use_dark_scheme(dark_mode)
+        self.content.set_use_dark_scheme(dark_mode)
 
     def set_filename(self, filename):
         if filename == None:
@@ -114,14 +114,14 @@ class Document(Observable):
         self.last_activated = date
 
     def get_modified(self):
-        return self.source_buffer.get_modified()
+        return self.content.get_modified()
 
     def populate_from_filename(self):
         if self.filename == None: return False
         if not os.path.isfile(self.filename):
             self.set_filename(None)
             return False
-        if self.source_buffer == None: return False
+        if self.content == None: return False
 
         with open(self.filename) as f:
             text = f.read()
@@ -133,7 +133,7 @@ class Document(Observable):
                 
     def save_to_disk(self):
         if self.filename == None: return False
-        if self.source_buffer == None: return False
+        if self.content == None: return False
 
         text = self.get_text()
         if text == None: return False
@@ -146,7 +146,7 @@ class Document(Observable):
             f.write(text)
         self.update_save_date()
         self.deleted_on_disk_dialog_shown_after_last_save = False
-        self.source_buffer.set_modified(False)
+        self.content.set_modified(False)
 
     def update_save_date(self):
         self.save_date = os.path.getmtime(self.filename)
@@ -158,40 +158,40 @@ class Document(Observable):
         return not os.path.isfile(self.filename)
 
     def initially_set_text(self, text):
-        self.source_buffer.initially_set_text(text)
+        self.content.initially_set_text(text)
 
     def get_text(self):
-        return self.source_buffer.get_all_text()
+        return self.content.get_all_text()
 
     def get_text_after_offset(self, offset):
-        return self.source_buffer.get_text_after_offset(offset)
+        return self.content.get_text_after_offset(offset)
 
     def get_selected_text(self):
-        return self.source_buffer.get_selected_text()
+        return self.content.get_selected_text()
 
     def get_line_at_cursor(self):
-        return self.source_buffer.get_line_at_cursor()
+        return self.content.get_line_at_cursor()
 
     def get_char_at_cursor(self):
-        return self.source_buffer.get_char_at_cursor()
+        return self.content.get_char_at_cursor()
 
     def get_line(self, line_number):
-        return self.source_buffer.get_line(line_number)
+        return self.content.get_line(line_number)
 
     def get_current_line_number(self):
-        return self.source_buffer.get_current_line_number()
+        return self.content.get_current_line_number()
 
     def is_empty(self):
-        return self.source_buffer.is_empty()
+        return self.content.is_empty()
 
     def place_cursor(self, line_number, offset=0):
-        self.source_buffer.place_cursor(line_number, offset)
+        self.content.place_cursor(line_number, offset)
 
     def get_cursor_offset(self):
-        return self.source_buffer.get_cursor_offset()
+        return self.content.get_cursor_offset()
 
     def get_cursor_line_offset(self):
-        return self.source_buffer.get_cursor_line_offset()
+        return self.content.get_cursor_line_offset()
 
     def cursor_inside_latex_command_or_at_end(self):
         current_word = self.get_latex_command_at_cursor()
@@ -202,45 +202,45 @@ class Document(Observable):
     def cursor_at_latex_command_end(self):
         current_word = self.get_latex_command_at_cursor()
         if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
-            return self.source_buffer.cursor_ends_word()
+            return self.content.cursor_ends_word()
         return False
 
     def insert_before_document_end(self, text):
-        self.source_buffer.insert_before_document_end(text)
+        self.content.insert_before_document_end(text)
 
     def insert_text(self, line_number, offset, text, indent_lines=True):
-        self.source_buffer.insert_text(line_number, offset, text, indent_lines)
+        self.content.insert_text(line_number, offset, text, indent_lines)
 
     def insert_text_at_cursor(self, text, indent_lines=True, select_dot=True):
-        self.source_buffer.insert_text_at_cursor(text, indent_lines, select_dot)
+        self.content.insert_text_at_cursor(text, indent_lines, select_dot)
 
     def insert_template(self, template_start, template_end):
-        self.source_buffer.insert_template(template_start, template_end)
+        self.content.insert_template(template_start, template_end)
 
     def replace_range(self, offset, length, text, indent_lines=True, select_dot=True):
-        self.source_buffer.replace_range_by_offset_and_length(offset, length, text, indent_lines, select_dot)
+        self.content.replace_range_by_offset_and_length(offset, length, text, indent_lines, select_dot)
 
     def insert_before_after(self, before, after):
-        self.source_buffer.insert_before_after(before, after)
+        self.content.insert_before_after(before, after)
 
     def add_backslash_with_space(self):
-        self.source_buffer.add_backslash_with_space()
+        self.content.add_backslash_with_space()
 
     def autoadd_latex_brackets(self, char):
-        self.source_buffer.autoadd_latex_brackets(char)
+        self.content.autoadd_latex_brackets(char)
 
     def undo(self):
-        self.source_buffer.undo()
+        self.content.undo()
 
     def redo(self):
-        self.source_buffer.redo()
+        self.content.redo()
 
     def cut(self):
         self.copy()
         self.delete_selection()
 
     def copy(self):
-        text = self.source_buffer.get_selected_text()
+        text = self.content.get_selected_text()
         if text != None:
             clipboard = self.view.source_view.get_clipboard(Gdk.SELECTION_CLIPBOARD)
             clipboard.set_text(text, -1)
@@ -249,21 +249,21 @@ class Document(Observable):
         self.view.source_view.emit('paste-clipboard')
 
     def delete_selection(self):
-        self.source_buffer.delete_selection()
+        self.content.delete_selection()
 
     def select_all(self):
-        self.source_buffer.select_all()
+        self.content.select_all()
 
     def scroll_cursor_onscreen(self):
-        self.scroll_mark_onscreen(self.source_buffer.source_buffer.get_insert())
+        self.scroll_mark_onscreen(self.content.source_buffer.get_insert())
 
     def scroll_mark_onscreen(self, text_mark):
-        self.scroll_iter_onscreen(self.source_buffer.source_buffer.get_iter_at_mark(text_mark))
+        self.scroll_iter_onscreen(self.content.source_buffer.get_iter_at_mark(text_mark))
 
     def scroll_iter_onscreen(self, text_iter):
         visible_lines = self.get_number_of_visible_lines()
         iter_position = self.view.source_view.get_iter_location(text_iter).y
-        end_yrange = self.view.source_view.get_line_yrange(self.source_buffer.source_buffer.get_end_iter())
+        end_yrange = self.view.source_view.get_line_yrange(self.content.source_buffer.get_end_iter())
         buffer_height = end_yrange.y + end_yrange.height
         line_height = self.font_manager.get_line_height()
         window_offset = self.view.source_view.get_visible_rect().y
@@ -271,14 +271,14 @@ class Document(Observable):
         gap = min(math.floor(max((visible_lines - 2), 0) / 2), 5)
         if iter_position < window_offset + gap * line_height:
             scroll_iter = self.view.source_view.get_iter_at_location(0, max(iter_position - gap * line_height, 0)).iter
-            self.source_buffer.source_buffer.move_mark(self.source_buffer.mover_mark, scroll_iter)
-            self.view.source_view.scroll_to_mark(self.source_buffer.mover_mark, 0, False, 0, 0)
+            self.content.source_buffer.move_mark(self.content.mover_mark, scroll_iter)
+            self.view.source_view.scroll_to_mark(self.content.mover_mark, 0, False, 0, 0)
             return
         gap = min(math.floor(max((visible_lines - 2), 0) / 2), 8)
         if iter_position > (window_offset + window_height - (gap + 1) * line_height):
             scroll_iter = self.view.source_view.get_iter_at_location(0, min(iter_position + gap * line_height, buffer_height)).iter
-            self.source_buffer.source_buffer.move_mark(self.source_buffer.mover_mark, scroll_iter)
-            self.view.source_view.scroll_to_mark(self.source_buffer.mover_mark, 0, False, 0, 0)
+            self.content.source_buffer.move_mark(self.content.mover_mark, scroll_iter)
+            self.view.source_view.scroll_to_mark(self.content.mover_mark, 0, False, 0, 0)
 
     def get_number_of_visible_lines(self):
         line_height = self.font_manager.get_line_height()

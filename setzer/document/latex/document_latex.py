@@ -19,7 +19,7 @@ import os.path
 import time
 
 from setzer.document.document import Document
-import setzer.document.source_buffer.source_buffer_latex as source_buffer_latex
+import setzer.document.content.content_latex as content_latex
 import setzer.document.latex.build_system.build_system as build_system
 import setzer.document.latex.build_widget.build_widget as build_widget
 import setzer.document.latex.autocomplete.autocomplete as autocomplete
@@ -34,7 +34,7 @@ class DocumentLaTeX(Document):
     def __init__(self):
         Document.__init__(self)
 
-        self.source_buffer = source_buffer_latex.SourceBufferLaTeX()
+        self.content = content_latex.ContentLaTeX()
         self.init_main_submodules()
 
         self.has_visible_build_system = False
@@ -91,26 +91,26 @@ class DocumentLaTeX(Document):
         shortcuts_manager.main_window.app.set_accels_for_action('win.comment-uncomment', ['<Control>K'])
 
     def get_latex_command_at_cursor(self):
-        return self.source_buffer.get_latex_command_at_cursor()
+        return self.content.get_latex_command_at_cursor()
 
     def get_latex_command_at_cursor_offset(self):
-        return self.source_buffer.get_latex_command_at_cursor_offset()
+        return self.content.get_latex_command_at_cursor_offset()
 
     def replace_latex_command_at_cursor(self, command, dotlabels, is_full_command=False):
-        self.source_buffer.replace_latex_command_at_cursor(command, dotlabels, is_full_command)
+        self.content.replace_latex_command_at_cursor(command, dotlabels, is_full_command)
 
     def add_packages(self, packages):
-        self.source_buffer.add_packages(packages)
+        self.content.add_packages(packages)
         self.scroll_cursor_onscreen()
 
     def get_packages(self):
-        return self.source_buffer.get_packages()
+        return self.content.get_packages()
 
     def get_package_details(self):
-        return self.source_buffer.get_package_details()
+        return self.content.get_package_details()
 
     def remove_packages(self, packages):
-        self.source_buffer.remove_packages(packages)
+        self.content.remove_packages(packages)
 
     def get_matching_begin_end_offset(self, orig_offset):
         blocks = self.get_blocks()
@@ -122,7 +122,7 @@ class DocumentLaTeX(Document):
         return None
 
     def get_blocks(self):
-        return self.source_buffer.get_blocks()
+        return self.content.get_blocks()
 
     def set_build_log_items(self, log_items):
         build_log_items = list()
@@ -172,7 +172,7 @@ class DocumentLaTeX(Document):
         dirname = self.get_dirname()
 
         filenames = set()
-        for filename in self.source_buffer.get_included_latex_files():
+        for filename in self.content.get_included_latex_files():
             filenames |= {os.path.normpath(os.path.join(dirname, filename))}
 
         return filenames
@@ -181,16 +181,16 @@ class DocumentLaTeX(Document):
         dirname = self.get_dirname()
 
         filenames = set()
-        for filename in self.source_buffer.get_included_latex_files():
+        for filename in self.content.get_included_latex_files():
             filenames |= {os.path.normpath(os.path.join(dirname, filename))}
 
         return filenames
 
     def get_bibitems(self):
-        return self.source_buffer.get_bibitems()
+        return self.content.get_bibitems()
 
     def get_labels(self):
-        return self.source_buffer.get_labels()
+        return self.content.get_labels()
 
     def change_build_state(self, state):
         self.build_state = state
@@ -234,8 +234,8 @@ class DocumentLaTeX(Document):
     def forward_sync(self, document):
         self.forward_sync_arguments = dict()
         self.forward_sync_arguments['filename'] = self.get_filename()
-        self.forward_sync_arguments['line'] = self.source_buffer.get_cursor_line_number() + 1
-        self.forward_sync_arguments['line_offset'] = self.source_buffer.get_cursor_line_offset() + 1
+        self.forward_sync_arguments['line'] = self.content.get_cursor_line_number() + 1
+        self.forward_sync_arguments['line_offset'] = self.content.get_cursor_line_offset() + 1
         if self.can_sync:
             self.set_build_mode('forward_sync')
             self.start_building()
@@ -249,8 +249,8 @@ class DocumentLaTeX(Document):
     def build_and_forward_sync(self):
         self.forward_sync_arguments = dict()
         self.forward_sync_arguments['filename'] = self.get_filename()
-        self.forward_sync_arguments['line'] = self.source_buffer.get_cursor_line_number() + 1
-        self.forward_sync_arguments['line_offset'] = self.source_buffer.get_cursor_line_offset() + 1
+        self.forward_sync_arguments['line'] = self.content.get_cursor_line_number() + 1
+        self.forward_sync_arguments['line_offset'] = self.content.get_cursor_line_offset() + 1
         self.set_build_mode('build_and_forward_sync')
         self.start_building()
 
@@ -286,13 +286,13 @@ class DocumentLaTeX(Document):
             self.add_change_code('build_system_visibility_change', has_visible_build_system)
 
     def comment_uncomment(self):
-        self.source_buffer.comment_uncomment()
+        self.content.comment_uncomment()
 
     def set_invert_pdf(self, invert_pdf):
         self.preview.set_invert_pdf(invert_pdf)
 
     def set_synctex_position(self, position):
-        self.source_buffer.set_synctex_position(position)
+        self.content.set_synctex_position(position)
         self.scroll_cursor_onscreen()
 
     def get_folded_regions(self):

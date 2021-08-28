@@ -21,8 +21,8 @@ from setzer.helpers.timer import timer
 
 class ParserLaTeX(object):
 
-    def __init__(self, source_buffer):
-        self.source_buffer = source_buffer
+    def __init__(self, content):
+        self.content = content
         self.text_length = 0
         self.number_of_lines = 0
         self.block_symbol_matches = {'begin_or_end': list(), 'others': list()}
@@ -201,7 +201,7 @@ class ParserLaTeX(object):
             for i in range(level, 5):
                 relevant_following_blocks[i].append(block)
 
-        self.source_buffer.set_blocks(sorted(blocks_list, key=lambda block: block[0]))
+        self.content.set_blocks(sorted(blocks_list, key=lambda block: block[0]))
 
     #@timer
     def parse_symbols(self):
@@ -234,11 +234,11 @@ class ParserLaTeX(object):
             elif match.group(5) == 'bibitem':
                 bibitems = bibitems | {match.group(6).strip()}
 
-        self.source_buffer.symbols['labels'] = labels
-        self.source_buffer.symbols['included_latex_files'] = included_latex_files
-        self.source_buffer.symbols['bibliographies'] = bibliographies
-        self.source_buffer.symbols['bibitems'] = bibitems
-        self.source_buffer.symbols['packages'] = packages
-        self.source_buffer.symbols['packages_detailed'] = packages_detailed
+        self.content.symbols['labels'] = labels
+        self.content.symbols['included_latex_files'] = included_latex_files
+        self.content.symbols['bibliographies'] = bibliographies
+        self.content.symbols['bibitems'] = bibitems
+        self.content.symbols['packages'] = packages
+        self.content.symbols['packages_detailed'] = packages_detailed
 
 

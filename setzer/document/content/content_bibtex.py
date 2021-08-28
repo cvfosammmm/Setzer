@@ -15,15 +15,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from setzer.document.source_buffer.source_buffer import SourceBuffer
+from setzer.document.content.content import Content
+import setzer.document.content.parser.parser_bibtex as parser_bibtex
 
 
-class SourceBufferLaTeXCls(SourceBuffer):
+class ContentBibTeX(Content):
 
     def __init__(self):
-        SourceBuffer.__init__(self)
+        Content.__init__(self)
+
+        self.symbols = dict()
+        self.symbols['bibitems'] = set()
+
+        self.parser = parser_bibtex.ParserBibTeX(self)
+
+    def get_bibitems(self):
+        return self.symbols['bibitems']
 
     def get_gsv_language_name(self):
-        return 'latex'
+        return 'bibtex'
 
 

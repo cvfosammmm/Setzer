@@ -185,18 +185,18 @@ class Actions(object):
             self.update_save_actions(None)
 
     def on_new_inactive_document(self, workspace, document):
-        document.source_buffer.disconnect('modified_changed', self.on_modified_changed)
+        document.content.disconnect('modified_changed', self.on_modified_changed)
 
     def on_new_active_document(self, workspace, document):
         self.activate_document_mode()
         self.update_document_actions(document)
         self.update_save_actions(document)
-        document.source_buffer.connect('modified_changed', self.on_modified_changed)
+        document.content.connect('modified_changed', self.on_modified_changed)
 
     def on_font_string_changed(self, font_manager):
         self.update_zoom_actions()
 
-    def on_modified_changed(self, source_buffer):
+    def on_modified_changed(self, content):
         self.update_save_actions(self.workspace.active_document)
 
     def activate_welcome_screen_mode(self):

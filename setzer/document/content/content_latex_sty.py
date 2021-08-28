@@ -15,13 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from setzer.document.source_buffer.source_buffer import SourceBuffer
+from setzer.document.content.content import Content
 
 
-class SourceBufferLaTeXSty(SourceBuffer):
+class ContentLaTeXSty(Content):
 
     def __init__(self):
-        SourceBuffer.__init__(self)
+        Content.__init__(self)
 
     def get_gsv_language_name(self):
         return 'latex'

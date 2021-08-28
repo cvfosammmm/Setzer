@@ -18,8 +18,8 @@
 
 class ParserDummy(object):
 
-    def __init__(self, source_buffer):
-        self.source_buffer = source_buffer
+    def __init__(self, content):
+        self.content = content
 
     def on_text_deleted(self, buffer, start_iter, end_iter):
         pass

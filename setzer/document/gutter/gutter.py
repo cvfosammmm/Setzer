@@ -103,7 +103,7 @@ class Gutter(object):
 
     #@timer
     def update_colors(self, style_context=None):
-        style_scheme = self.document.source_buffer.get_style_scheme()
+        style_scheme = self.document.content.get_style_scheme()
         line_numbers_style = style_scheme.get_style('line-numbers')
         bg_color_string = line_numbers_style.get_property('background')
         if bg_color_string != None:

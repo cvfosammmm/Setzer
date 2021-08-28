@@ -37,7 +37,7 @@ class Search(object):
         self.document = document
 
         self.search_settings = GtkSource.SearchSettings()
-        self.search_context = GtkSource.SearchContext.new(self.document.source_buffer.source_buffer, self.search_settings)
+        self.search_context = GtkSource.SearchContext.new(self.document.content.source_buffer, self.search_settings)
         self.search_context.set_highlight(True)
 
         self.observe_search_bar()
@@ -45,7 +45,7 @@ class Search(object):
         self.search_bar.connect('size-allocate', self.on_search_bar_size_allocate)
         self.search_bar.match_counter.connect('size-allocate', self.on_match_counter_size_allocate)
 
-        self.document.source_buffer.connect('selection_might_have_changed', self.on_selection_might_have_changed)
+        self.document.content.connect('selection_might_have_changed', self.on_selection_might_have_changed)
 
     def observe_shortcutsbar(self):
         self.document_view.shortcutsbar_bottom.button_find.connect('toggled', self.on_find_button_clicked)

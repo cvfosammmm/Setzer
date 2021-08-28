@@ -32,7 +32,7 @@ class SessionBeginEnd(object):
 
         self.last_tabbed_command = None
         self.current_word = ""
-        self.source_buffer = self.autocomplete.document.source_buffer.source_buffer
+        self.source_buffer = self.autocomplete.document.content.source_buffer
         self.delete_marks()
         start_iter = self.source_buffer.get_iter_at_offset(word_offset)
         end_iter = self.source_buffer.get_iter_at_offset(word_offset + word_len)
@@ -118,7 +118,7 @@ class SessionBeginEnd(object):
             end_iter = self.source_buffer.get_iter_at_offset(end_offset)
             matching_word = self.source_buffer.get_text(start_iter, end_iter, False)
             if matching_word != full_word:
-                self.autocomplete.document.source_buffer.replace_range_no_user_action(start_iter, end_iter, full_word, indent_lines=False, select_dot=False)
+                self.autocomplete.document.content.replace_range_no_user_action(start_iter, end_iter, full_word, indent_lines=False, select_dot=False)
         self.source_buffer.end_user_action()
 
     def on_tab_press(self):

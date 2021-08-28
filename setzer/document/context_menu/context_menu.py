@@ -45,12 +45,12 @@ class ContextMenu(object):
             self.scbar_view.model_button_show_in_preview.connect('clicked', self.on_show_in_preview)
 
         self.document_view.source_view.connect('populate-popup', self.on_populate_popup)
-        self.document.source_buffer.connect('selection_might_have_changed', self.on_has_selection_changed)
-        self.document.source_buffer.connect('can_undo_changed', self.on_can_undo_changed)
-        self.document.source_buffer.connect('can_redo_changed', self.on_can_redo_changed)
+        self.document.content.connect('selection_might_have_changed', self.on_has_selection_changed)
+        self.document.content.connect('can_undo_changed', self.on_can_undo_changed)
+        self.document.content.connect('can_redo_changed', self.on_can_redo_changed)
 
-        self.scbar_view.model_button_undo.set_sensitive(self.document.source_buffer.get_can_undo())
-        self.scbar_view.model_button_redo.set_sensitive(self.document.source_buffer.get_can_redo())
+        self.scbar_view.model_button_undo.set_sensitive(self.document.content.get_can_undo())
+        self.scbar_view.model_button_redo.set_sensitive(self.document.content.get_can_redo())
 
         self.can_sync = False
         self.has_selection = False
@@ -75,10 +75,10 @@ class ContextMenu(object):
         self.scbar_view.model_button_delete.set_sensitive(has_selection)
         self.has_selection = has_selection
 
-    def on_can_undo_changed(self, source_buffer, can_undo):
+    def on_can_undo_changed(self, content, can_undo):
         self.scbar_view.model_button_undo.set_sensitive(can_undo)
 
-    def on_can_redo_changed(self, source_buffer, can_redo):
+    def on_can_redo_changed(self, content, can_redo):
         self.scbar_view.model_button_redo.set_sensitive(can_redo)
 
     def on_undo(self, widget=None):

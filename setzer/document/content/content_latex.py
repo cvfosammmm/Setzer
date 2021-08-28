@@ -15,14 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from setzer.document.source_buffer.source_buffer import SourceBuffer
-import setzer.document.source_buffer.parser.parser_latex as parser_latex
+from setzer.document.content.content import Content
+import setzer.document.content.parser.parser_latex as parser_latex
 
 
-class SourceBufferLaTeX(SourceBuffer):
+class ContentLaTeX(Content):
 
     def __init__(self):
-        SourceBuffer.__init__(self)
+        Content.__init__(self)
 
         self.symbols = dict()
         self.symbols['bibitems'] = set()
