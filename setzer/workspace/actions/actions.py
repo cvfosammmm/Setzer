@@ -402,18 +402,18 @@ class Actions(object):
     @_assert_has_active_document
     def insert_before_after(self, action, parameter):
         self.workspace.get_active_document().insert_before_after(parameter[0], parameter[1])
-        self.workspace.get_active_document().scroll_cursor_onscreen()
+        self.workspace.get_active_document().content.scroll_cursor_onscreen()
 
     @_assert_has_active_document
     def insert_symbol(self, action, parameter):
         self.workspace.get_active_document().insert_text_at_cursor(parameter[0])
-        self.workspace.get_active_document().scroll_cursor_onscreen()
+        self.workspace.get_active_document().content.scroll_cursor_onscreen()
 
     @_assert_has_active_document
     def insert_before_document_end(self, action, parameter):
         document = self.workspace.get_active_document()
         document.insert_before_document_end(parameter[0])
-        document.scroll_cursor_onscreen()
+        document.content.scroll_cursor_onscreen()
 
     @_assert_has_active_document
     def start_wizard(self, action, parameter=None):

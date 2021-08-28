@@ -122,7 +122,7 @@ class Search(object):
 
         if result[0] == True:
             buffer.select_range(result[2], result[1])
-            self.document.scroll_iter_onscreen(result[1])
+            self.document.content.scroll_cursor_onscreen()
             self.set_match_counter(self.search_context.get_occurrence_position(result[1], result[2]), self.search_context.get_occurrences_count())
         else:
             search_iter = buffer.get_start_iter()
@@ -130,7 +130,7 @@ class Search(object):
 
             if result[0] == True:
                 buffer.select_range(result[2], result[1])
-                self.document.scroll_iter_onscreen(result[1])
+                self.document.content.scroll_cursor_onscreen()
                 self.set_match_counter(self.search_context.get_occurrence_position(result[1], result[2]), self.search_context.get_occurrences_count())
     
     def on_search_previous_match(self, entry=None):
@@ -144,7 +144,7 @@ class Search(object):
 
         if result[0] == True:
             buffer.select_range(result[1], result[2])
-            self.document.scroll_iter_onscreen(result[2])
+            self.document.content.scroll_cursor_onscreen()
             self.set_match_counter(self.search_context.get_occurrence_position(result[1], result[2]), self.search_context.get_occurrences_count())
         else:
             search_iter = buffer.get_end_iter()
@@ -152,7 +152,7 @@ class Search(object):
 
             if result[0] == True:
                 buffer.select_range(result[1], result[2])
-                self.document.scroll_iter_onscreen(result[2])
+                self.document.content.scroll_cursor_onscreen()
                 self.set_match_counter(self.search_context.get_occurrence_position(result[1], result[2]), self.search_context.get_occurrences_count())
     
     def on_search_entry_changed(self, entry):

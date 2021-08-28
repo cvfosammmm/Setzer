@@ -19,14 +19,18 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('GtkSource', '4')
 from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import GObject
 from gi.repository import GtkSource
 
 import re
 import time
 import difflib
+import math
 
 import setzer.document.content.parser.parser_dummy as parser_dummy
+import setzer.document.content.parser.parser_bibtex as parser_bibtex
+import setzer.document.content.parser.parser_latex as parser_latex
 from setzer.app.service_locator import ServiceLocator
 from setzer.helpers.observable import Observable
 import setzer.helpers.timer as timer
@@ -34,19 +38,35 @@ import setzer.helpers.timer as timer
 
 class Content(Observable):
 
-    def __init__(self):
+    def __init__(self, language):
         Observable.__init__(self)
 
         self.settings = ServiceLocator.get_settings()
 
         self.source_buffer = GtkSource.Buffer()
+        self.source_view = GtkSource.View.new_with_buffer(self.source_buffer)
         self.source_language_manager = ServiceLocator.get_source_language_manager()
         self.source_style_scheme_manager = ServiceLocator.get_source_style_scheme_manager()
-        self.source_language = self.source_language_manager.get_language(self.get_gsv_language_name())
+
+        if language == 'bibtex': self.source_language = self.source_language_manager.get_language('bibtex')
+        else: self.source_language = self.source_language_manager.get_language('latex')
+
         self.source_buffer.set_language(self.source_language)
         self.update_syntax_scheme()
 
-        self.parser = parser_dummy.ParserDummy(self)
+        self.symbols = dict()
+        self.symbols['bibitems'] = set()
+        self.symbols['labels'] = set()
+        self.symbols['included_latex_files'] = set()
+        self.symbols['bibliographies'] = set()
+        self.symbols['packages'] = set()
+        self.symbols['packages_detailed'] = dict()
+        self.symbols['blocks'] = list()
+
+        if language == 'bibtex': self.parser = parser_bibtex.ParserBibTeX(self)
+        elif language == 'latex': self.parser = parser_latex.ParserLaTeX(self)
+        else: self.parser = parser_dummy.ParserDummy(self)
+
         self.color_manager = ServiceLocator.get_color_manager()
         self.font_manager = ServiceLocator.get_font_manager()
 
@@ -672,6 +692,19 @@ class Content(Observable):
     def cursor_ends_word(self):
         return self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).ends_word()
 
+    def cut(self):
+        self.copy()
+        self.delete_selection()
+
+    def copy(self):
+        text = self.get_selected_text()
+        if text != None:
+            clipboard = self.source_view.get_clipboard(Gdk.SELECTION_CLIPBOARD)
+            clipboard.set_text(text, -1)
+
+    def paste(self):
+        self.source_view.emit('paste-clipboard')
+
     def delete_selection(self):
         self.source_buffer.delete_selection(True, True)
 
@@ -689,5 +722,95 @@ class Content(Observable):
 
     def redo(self):
         self.source_buffer.redo()
+
+    def scroll_cursor_onscreen(self):
+        text_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        visible_lines = self.get_number_of_visible_lines()
+        iter_position = self.source_view.get_iter_location(text_iter).y
+        end_yrange = self.source_view.get_line_yrange(self.source_buffer.get_end_iter())
+        buffer_height = end_yrange.y + end_yrange.height
+        line_height = self.font_manager.get_line_height()
+        window_offset = self.source_view.get_visible_rect().y
+        window_height = self.source_view.get_visible_rect().height
+        gap = min(math.floor(max((visible_lines - 2), 0) / 2), 5)
+        if iter_position < window_offset + gap * line_height:
+            scroll_iter = self.source_view.get_iter_at_location(0, max(iter_position - gap * line_height, 0)).iter
+            self.source_buffer.move_mark(self.mover_mark, scroll_iter)
+            self.source_view.scroll_to_mark(self.mover_mark, 0, False, 0, 0)
+            return
+        gap = min(math.floor(max((visible_lines - 2), 0) / 2), 8)
+        if iter_position > (window_offset + window_height - (gap + 1) * line_height):
+            scroll_iter = self.source_view.get_iter_at_location(0, min(iter_position + gap * line_height, buffer_height)).iter
+            self.source_buffer.move_mark(self.mover_mark, scroll_iter)
+            self.source_view.scroll_to_mark(self.mover_mark, 0, False, 0, 0)
+
+    def get_number_of_visible_lines(self):
+        line_height = self.font_manager.get_line_height()
+        return math.floor(self.source_view.get_visible_rect().height / line_height)
+
+    def get_bibitems(self):
+        return self.symbols['bibitems']
+
+    def add_packages(self, packages):
+        first_package = True
+        text = ''
+        for packagename in packages:
+            if not first_package: text += '\n'
+            text += '\\usepackage{' + packagename + '}'
+            first_package = False
+        
+        package_data = self.get_package_details()
+        if package_data:
+            max_end = 0
+            for package in package_data.items():
+                if package[1].end() > max_end:
+                    max_end = package[1].end()
+            insert_iter = self.source_buffer.get_iter_at_offset(max_end)
+            if not insert_iter.ends_line():
+                insert_iter.forward_to_line_end()
+            self.insert_text_at_iter(insert_iter, '\n' + text)
+        else:
+            end_iter = self.source_buffer.get_end_iter()
+            result = end_iter.backward_search('\\documentclass', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
+            if result != None:
+                result[0].forward_to_line_end()
+                self.insert_text_at_iter(result[0], '\n' + text)
+            else:
+                self.insert_text_at_cursor(text)
+
+    def remove_packages(self, packages):
+        packages_dict = self.get_package_details()
+        for package in packages:
+            try:
+                match_obj = packages_dict[package]
+            except KeyError: return
+            start_iter = self.source_buffer.get_iter_at_offset(match_obj.start())
+            end_iter = self.source_buffer.get_iter_at_offset(match_obj.end())
+            text = self.source_buffer.get_text(start_iter, end_iter, False)
+            if text == match_obj.group(0):  
+                if start_iter.get_line_offset() == 0:
+                    start_iter.backward_char()
+                self.source_buffer.delete(start_iter, end_iter)
+
+    def get_packages(self):
+        return self.symbols['packages']
+
+    def get_package_details(self):
+        return self.symbols['packages_detailed']
+
+    def get_blocks(self):
+        return self.symbols['blocks']
+
+    def set_blocks(self, blocks):
+        self.symbols['blocks'] = blocks
+
+    def get_included_latex_files(self):
+        return self.symbols['included_latex_files']
+
+    def get_bibliography_files(self):
+        return self.symbols['bibliographies']
+
+    def get_labels(self):
+        return self.symbols['labels']
 
 

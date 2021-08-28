@@ -144,7 +144,7 @@ class SessionBeginEnd(object):
                     text = (command['command'])[len(self.current_word):len(self.current_word) + i]
                     self.last_tabbed_command = command['command'][1:]
                     self.autocomplete.document.insert_text_at_cursor(text, indent_lines=False, select_dot=False)
-                    self.autocomplete.document.scroll_cursor_onscreen()
+                    self.autocomplete.document.content.scroll_cursor_onscreen()
                     return True
                 else:
                     current_word = (command['command'])[:len(self.current_word) + 1]
@@ -158,7 +158,7 @@ class SessionBeginEnd(object):
                         text = (command['command'])[len(self.current_word):len(current_word) + i]
                         self.last_tabbed_command = command['command']
                         self.autocomplete.document.insert_text_at_cursor(text, indent_lines=False, select_dot=False)
-                        self.autocomplete.document.scroll_cursor_onscreen()
+                        self.autocomplete.document.content.scroll_cursor_onscreen()
                         return True
 
     def get_number_of_matching_letters_on_tabpress(self, current_word, offset):

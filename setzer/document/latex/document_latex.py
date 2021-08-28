@@ -19,7 +19,7 @@ import os.path
 import time
 
 from setzer.document.document import Document
-import setzer.document.content.content_latex as content_latex
+import setzer.document.content.content as content
 import setzer.document.latex.build_system.build_system as build_system
 import setzer.document.latex.build_widget.build_widget as build_widget
 import setzer.document.latex.autocomplete.autocomplete as autocomplete
@@ -34,7 +34,7 @@ class DocumentLaTeX(Document):
     def __init__(self):
         Document.__init__(self)
 
-        self.content = content_latex.ContentLaTeX()
+        self.content = content.Content('latex')
         self.init_main_submodules()
 
         self.has_visible_build_system = False
@@ -101,7 +101,7 @@ class DocumentLaTeX(Document):
 
     def add_packages(self, packages):
         self.content.add_packages(packages)
-        self.scroll_cursor_onscreen()
+        self.content.scroll_cursor_onscreen()
 
     def get_packages(self):
         return self.content.get_packages()
@@ -293,7 +293,7 @@ class DocumentLaTeX(Document):
 
     def set_synctex_position(self, position):
         self.content.set_synctex_position(position)
-        self.scroll_cursor_onscreen()
+        self.content.scroll_cursor_onscreen()
 
     def get_folded_regions(self):
         try:

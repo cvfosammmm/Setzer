@@ -82,25 +82,25 @@ class ContextMenu(object):
         self.scbar_view.model_button_redo.set_sensitive(can_redo)
 
     def on_undo(self, widget=None):
-        self.document.undo()
+        self.document.content.undo()
 
     def on_redo(self, widget=None):
-        self.document.redo()
+        self.document.content.redo()
 
     def on_cut(self, widget=None):
-        self.document.cut()
+        self.document.content.cut()
 
     def on_copy(self, widget=None):
-        self.document.copy()
+        self.document.content.copy()
 
     def on_paste(self, widget=None):
-        self.document.paste()
+        self.document.content.paste()
 
     def on_delete(self, widget=None):
-        self.document.delete_selection()
+        self.document.content.delete_selection()
 
     def on_select_all(self, widget=None):
-        self.document.select_all()
+        self.document.content.select_all()
 
     def on_zoom_out(self, widget=None, event=None):
         ServiceLocator.get_font_manager().zoom_out()

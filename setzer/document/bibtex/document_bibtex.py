@@ -19,7 +19,7 @@ import os.path
 import time
 
 from setzer.document.document import Document
-import setzer.document.content.content_bibtex as content_bibtex
+import setzer.document.content.content as content
 import setzer.document.bibtex.state_manager.state_manager_bibtex as state_manager_bibtex
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
@@ -30,7 +30,7 @@ class DocumentBibTeX(Document):
     def __init__(self):
         Document.__init__(self)
 
-        self.content = content_bibtex.ContentBibTeX()
+        self.content = content.Content('bibtex')
         self.init_main_submodules()
 
         self.state_manager = state_manager_bibtex.StateManagerBibTeX(self)

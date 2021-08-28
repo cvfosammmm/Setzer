@@ -71,17 +71,17 @@ class DocumentController(object):
 
         if not keypress_handled and event.keyval == Gdk.keyval_from_name('c'):
             if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-                self.document.copy()
+                self.document.content.copy()
                 return True
 
         if not keypress_handled and event.keyval == Gdk.keyval_from_name('x'):
             if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-                self.document.cut()
+                self.document.content.cut()
                 return True
 
         if not keypress_handled and event.keyval == Gdk.keyval_from_name('v'):
             if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-                self.document.paste()
+                self.document.content.paste()
                 return True
 
         if not keypress_handled and event.keyval in tab_keyvals:
@@ -96,14 +96,14 @@ class DocumentController(object):
                 if result != None:
                     buffer.place_cursor(result[0])
                     buffer.select_range(result[0], result[1])
-                    self.document.scroll_iter_onscreen(result[1])
+                    self.document.content.scroll_cursor_onscreen()
                     return True
                 
                 insert.backward_chars(1)
                 result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
                 if result != None:
                     buffer.select_range(result[0], result[1])
-                    self.document.scroll_iter_onscreen(result[1])
+                    self.document.content.scroll_cursor_onscreen()
                     return True
             elif event.state & modifiers == Gdk.ModifierType.SHIFT_MASK:
                 buffer = self.document.content.source_buffer
@@ -113,14 +113,14 @@ class DocumentController(object):
                 result = insert.backward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
                 if result != None:
                     buffer.select_range(result[0], result[1])
-                    self.document.scroll_iter_onscreen(result[1])
+                    self.document.content.scroll_cursor_onscreen()
                     return True
 
                 insert.forward_chars(1)
                 result = insert.backward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
                 if result != None:
                     buffer.select_range(result[0], result[1])
-                    self.document.scroll_iter_onscreen(result[1])
+                    self.document.content.scroll_cursor_onscreen()
                     return True
         return False
 

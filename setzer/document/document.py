@@ -15,13 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gdk
-
 import os.path
-import time
-import math
 
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
@@ -35,7 +29,6 @@ import setzer.document.gutter.gutter as gutter
 import setzer.document.line_numbers.line_numbers as line_numbers
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
-from setzer.helpers.timer import timer
 
 
 class Document(Observable):
@@ -127,7 +120,7 @@ class Document(Observable):
             text = f.read()
         self.initially_set_text(text)
         self.place_cursor(0, 0)
-        self.scroll_cursor_onscreen()
+        self.content.scroll_cursor_onscreen()
         self.update_save_date()
         return True
                 
@@ -228,60 +221,5 @@ class Document(Observable):
 
     def autoadd_latex_brackets(self, char):
         self.content.autoadd_latex_brackets(char)
-
-    def undo(self):
-        self.content.undo()
-
-    def redo(self):
-        self.content.redo()
-
-    def cut(self):
-        self.copy()
-        self.delete_selection()
-
-    def copy(self):
-        text = self.content.get_selected_text()
-        if text != None:
-            clipboard = self.view.source_view.get_clipboard(Gdk.SELECTION_CLIPBOARD)
-            clipboard.set_text(text, -1)
-
-    def paste(self):
-        self.view.source_view.emit('paste-clipboard')
-
-    def delete_selection(self):
-        self.content.delete_selection()
-
-    def select_all(self):
-        self.content.select_all()
-
-    def scroll_cursor_onscreen(self):
-        self.scroll_mark_onscreen(self.content.source_buffer.get_insert())
-
-    def scroll_mark_onscreen(self, text_mark):
-        self.scroll_iter_onscreen(self.content.source_buffer.get_iter_at_mark(text_mark))
-
-    def scroll_iter_onscreen(self, text_iter):
-        visible_lines = self.get_number_of_visible_lines()
-        iter_position = self.view.source_view.get_iter_location(text_iter).y
-        end_yrange = self.view.source_view.get_line_yrange(self.content.source_buffer.get_end_iter())
-        buffer_height = end_yrange.y + end_yrange.height
-        line_height = self.font_manager.get_line_height()
-        window_offset = self.view.source_view.get_visible_rect().y
-        window_height = self.view.source_view.get_visible_rect().height
-        gap = min(math.floor(max((visible_lines - 2), 0) / 2), 5)
-        if iter_position < window_offset + gap * line_height:
-            scroll_iter = self.view.source_view.get_iter_at_location(0, max(iter_position - gap * line_height, 0)).iter
-            self.content.source_buffer.move_mark(self.content.mover_mark, scroll_iter)
-            self.view.source_view.scroll_to_mark(self.content.mover_mark, 0, False, 0, 0)
-            return
-        gap = min(math.floor(max((visible_lines - 2), 0) / 2), 8)
-        if iter_position > (window_offset + window_height - (gap + 1) * line_height):
-            scroll_iter = self.view.source_view.get_iter_at_location(0, min(iter_position + gap * line_height, buffer_height)).iter
-            self.content.source_buffer.move_mark(self.content.mover_mark, scroll_iter)
-            self.view.source_view.scroll_to_mark(self.content.mover_mark, 0, False, 0, 0)
-
-    def get_number_of_visible_lines(self):
-        line_height = self.font_manager.get_line_height()
-        return math.floor(self.view.source_view.get_visible_rect().height / line_height)
 
 

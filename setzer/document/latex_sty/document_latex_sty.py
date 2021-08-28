@@ -19,7 +19,7 @@ import os.path
 import time
 
 from setzer.document.document import Document
-import setzer.document.content.content_latex_sty as content_latex_sty
+import setzer.document.content.content as content
 import setzer.document.latex_sty.state_manager.state_manager_latex_sty as state_manager_latex_sty
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
@@ -30,7 +30,7 @@ class DocumentLaTeXSty(Document):
     def __init__(self):
         Document.__init__(self)
 
-        self.content = content_latex_sty.ContentLaTeXSty()
+        self.content = content.Content('latex_sty')
         self.init_main_submodules()
 
         self.state_manager = state_manager_latex_sty.StateManagerLaTeXSty(self)

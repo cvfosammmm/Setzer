@@ -289,6 +289,6 @@ class BibTeXWizard(Dialog):
 
         self.document.insert_text(0, 0, text, False)
         self.document.place_cursor(0)
-        self.document.scroll_cursor_onscreen()
+        self.document.content.scroll_cursor_onscreen()
 
 
