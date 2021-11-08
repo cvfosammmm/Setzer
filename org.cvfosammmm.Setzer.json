@@ -43,6 +43,20 @@
             ]
         },
         {
+            "name": "popplerdata",
+            "no-autogen": true,
+            "make-install-args": [
+                "prefix=/app"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://poppler.freedesktop.org/poppler-data-0.4.11.tar.gz",
+                    "sha256": "2cec05cd1bb03af98a8b06a1e22f6e6e1a65b1e2f3816cb3069bb0874825f08c"
+                }
+            ]
+        },
+        {
             "name": "poppler",
             "buildsystem": "cmake-ninja",
             "config-opts": [
@@ -53,8 +67,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://poppler.freedesktop.org/poppler-20.10.0.tar.xz",
-                    "sha256": "434ecbbb539c1a75955030a1c9b24c7b58200b7f68d2e4269e29acf2f8f13336"
+                    "url": "https://poppler.freedesktop.org/poppler-21.11.0.tar.xz",
+                    "sha256": "31b76b5cac0a48612fdd154c02d9eca01fd38fb8eaa77c1196840ecdeb53a584"
                 }
             ]
         },
