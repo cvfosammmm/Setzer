@@ -290,8 +290,12 @@ class Search(object):
         search_bar.match_counter.set_margin_end(6 + 2*search_bar.next_button.get_allocated_width())
         if total == -1:
             search_bar.match_counter.set_text('')
+            search_bar.prev_button.set_sensitive(False)
+            search_bar.next_button.set_sensitive(False)
         else:
             search_bar.match_counter.set_text(str(match_no) + ' of ' + str(total))
+            search_bar.prev_button.set_sensitive(True)
+            search_bar.next_button.set_sensitive(True)
 
     def on_match_counter_size_allocate(self, widget=None, allocation=None):
         search_bar = self.document_view.search_bar
