@@ -57,13 +57,12 @@ class AnimatedPaned(object):
         if self.animation_id != None: return
 
         new_extent = self.get_animated_widget_extent()
-        if new_extent != self.animated_widget_extent:
-            self.animated_widget_extent = new_extent
+        self.animated_widget_extent = new_extent
 
-            if self.animate_first_widget:
-                self.set_target_position(new_extent)
-            else:
-                self.set_target_position(self.get_paned_extent() - new_extent - 1)
+        if self.animate_first_widget:
+            self.set_target_position(new_extent)
+        else:
+            self.set_target_position(self.get_paned_extent() - new_extent - 1)
 
     def set_target_position(self, position):
         self.target_position = position
