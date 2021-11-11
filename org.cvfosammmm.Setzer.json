@@ -43,6 +43,24 @@
             ]
         },
         {
+            "name": "boost",
+            "buildsystem": "simple",
+            "build-commands": [
+                "mkdir -p ${FLATPAK_DEST}/include",
+                "mv boost ${FLATPAK_DEST}/include"
+            ],
+            "cleanup": [
+                "/include"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://boostorg.jfrog.io/artifactory/main/release/1.73.0/source/boost_1_73_0.tar.bz2",
+                    "sha256": "4eb3b8d442b426dc35346235c8733b5ae35ba431690e38c6a8263dce9fcbb402"
+                }
+            ]
+        },
+        {
             "name": "popplerdata",
             "no-autogen": true,
             "make-install-args": [
@@ -172,18 +190,18 @@
             "name": "python3-pexpect",
             "buildsystem": "simple",
             "build-commands": [
-                "pip3 install --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"pexpect\""
+                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"pexpect\" --no-build-isolation"
             ],
             "sources": [
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/e5/9b/ff402e0e930e70467a7178abb7c128709a30dfb22d8777c043e501bc1b10/pexpect-4.8.0.tar.gz",
-                    "sha256": "fc65a43959d153d0114afe13997d439c22823a27cefceb5ff35c2178c6784c0c"
+                    "url": "https://files.pythonhosted.org/packages/39/7b/88dbb785881c28a102619d46423cb853b46dbccc70d3ac362d99773a78ce/pexpect-4.8.0-py2.py3-none-any.whl",
+                    "sha256": "0b48a55dcb3c05f3329815901ea4fc1537514d6ba867a152b581d69ae3710937"
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/20/e5/16ff212c1e452235a90aeb09066144d0c5a6a8c0834397e03f5224495c4e/ptyprocess-0.7.0.tar.gz",
-                    "sha256": "5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220"
+                    "url": "https://files.pythonhosted.org/packages/22/a6/858897256d0deac81a172289110f31629fc4cee19b6f01283303e18c8db3/ptyprocess-0.7.0-py2.py3-none-any.whl",
+                    "sha256": "4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35"
                 }
             ]
         },
