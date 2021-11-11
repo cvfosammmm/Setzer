@@ -55,6 +55,10 @@ class Workspace(Observable):
 
         self.active_document = None
 
+        self.can_sync = False
+        self.sync_document = None
+        self.update_sync_document()
+
         self.recently_opened_session_files = dict()
         self.session_file_opened = None
 
@@ -193,6 +197,8 @@ class Workspace(Observable):
     def set_active_document(self, document):
         if self.active_document != None:
             self.add_change_code('new_inactive_document', self.active_document)
+            self.update_sync_document()
+            self.set_can_sync()
             previously_active_document = self.active_document
             self.active_document = document
             self.set_has_visible_build_system(previously_active_document)
@@ -203,6 +209,8 @@ class Workspace(Observable):
             self.active_document.set_last_activated(time.time())
             self.set_has_visible_build_system(self.active_document)
             self.add_change_code('new_active_document', document)
+            self.update_sync_document()
+            self.set_can_sync()
             self.active_document.init_shortcuts(self.shortcuts)
             self.set_build_log()
 
@@ -382,6 +390,8 @@ class Workspace(Observable):
                     document.set_root_state(False, True)
                 self.set_has_visible_build_system(document)
             self.add_change_code('root_state_change', 'one_document')
+            self.update_sync_document()
+            self.set_can_sync()
             self.set_build_log()
 
     def unset_root_document(self):
@@ -391,6 +401,8 @@ class Workspace(Observable):
         self.root_document = None
         self.set_has_visible_build_system(self.active_document)
         self.add_change_code('root_state_change', 'no_root_document')
+        self.update_sync_document()
+        self.set_can_sync()
         self.set_build_log()
 
     def get_root_document(self):
@@ -404,6 +416,46 @@ class Workspace(Observable):
                 document.set_has_visible_build_system(True)
             else:
                 document.set_has_visible_build_system(False)
+
+    def update_sync_document(self):
+        if self.root_document != None:
+            self.set_sync_document(self.root_document)
+        elif self.active_document != None:
+            self.set_sync_document(self.active_document)
+        elif self.sync_document != None:
+            self.sync_document.disconnect('is_root_changed', self.on_is_root_changed)
+            self.sync_document.disconnect('can_sync_changed', self.on_can_sync_changed)
+            self.sync_document = None
+
+    def set_sync_document(self, document):
+        if document != self.sync_document:
+            if self.sync_document != None:
+                self.sync_document.disconnect('is_root_changed', self.on_is_root_changed)
+                self.sync_document.disconnect('can_sync_changed', self.on_can_sync_changed)
+            self.sync_document = document
+            self.sync_document.connect('is_root_changed', self.on_is_root_changed)
+            self.sync_document.connect('can_sync_changed', self.on_can_sync_changed)
+
+    def on_can_sync_changed(self, document, can_sync):
+        self.set_can_sync()
+
+    def on_is_root_changed(self, document, is_root):
+        self.set_can_sync()
+
+    def set_can_sync(self):
+        can_sync = False
+        if self.sync_document != None:
+            if self.sync_document.is_latex_document():
+                if self.sync_document.can_sync:
+                    can_sync = True
+        self.can_sync = can_sync
+        self.add_change_code('update_sync_state')
+
+    def forward_sync(self, active_document):
+        if self.root_document != None:
+            self.root_document.forward_sync(active_document)
+        else:
+            active_document.forward_sync(active_document)
 
     def set_show_sidebar(self, show_sidebar):
         if show_sidebar != self.show_sidebar:

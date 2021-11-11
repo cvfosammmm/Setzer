@@ -54,9 +54,9 @@ class ContextMenu(object):
 
         self.can_sync = False
         self.has_selection = False
-        self.forward_sync_manager = ServiceLocator.get_forward_sync_manager()
+        self.workspace = ServiceLocator.get_workspace()
         if self.document.is_latex_document():
-            self.forward_sync_manager.connect('update_sync_state', self.on_update_sync_state)
+            self.workspace.connect('update_sync_state', self.on_update_sync_state)
 
         self.font_manager = ServiceLocator.get_font_manager()
         self.font_manager.connect('font_string_changed', self.on_font_string_changed)
@@ -65,8 +65,8 @@ class ContextMenu(object):
         zoom_level = self.font_manager.get_zoom_level()
         self.scbar_view.model_button_reset_zoom.set_label("{:.0%}".format(zoom_level))
 
-    def on_update_sync_state(self, forward_sync_manager):
-        self.can_sync = self.forward_sync_manager.can_sync
+    def on_update_sync_state(self, workspace):
+        self.can_sync = self.workspace.can_sync
         self.scbar_view.model_button_show_in_preview.set_sensitive(self.can_sync)
 
     def on_has_selection_changed(self, document, has_selection):
@@ -115,7 +115,7 @@ class ContextMenu(object):
         return True
 
     def on_show_in_preview(self, widget=None):
-        self.forward_sync_manager.forward_sync(self.document)
+        self.workspace.forward_sync(self.document)
 
     def on_toggle_comment(self, menu_item):
         self.document.comment_uncomment()

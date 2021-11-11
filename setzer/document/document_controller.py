@@ -36,7 +36,7 @@ class DocumentController(object):
         self.document = document
         self.view = document_view
 
-        self.forward_sync_manager = ServiceLocator.get_forward_sync_manager()
+        self.workspace = ServiceLocator.get_workspace()
 
         self.view.source_view.connect('key-press-event', self.on_keypress)
         self.view.source_view.connect('button-press-event', self.on_buttonpress)
@@ -52,8 +52,8 @@ class DocumentController(object):
 
         if event.type == Gdk.EventType.BUTTON_PRESS:
             if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-                if self.forward_sync_manager.can_sync:
-                    GLib.idle_add(self.forward_sync_manager.forward_sync, self.document)
+                if self.workspace.can_sync:
+                    GLib.idle_add(self.workspace.forward_sync, self.document)
         return False
 
     def on_keypress(self, widget, event, data=None):
