@@ -73,6 +73,7 @@ class Shortcuts(object):
         self.main_window.app.set_accels_for_action('win.save-and-build', ['F5'])
         self.main_window.app.set_accels_for_action('win.build', ['F6'])
         self.main_window.app.set_accels_for_action('win.show-build-log', ['F8'])
+        self.main_window.app.set_accels_for_action('win.show-shortcuts-window', ['<Control>question'])
         self.main_window.app.set_accels_for_action('win.save', ['<Control>s'])
         self.main_window.app.set_accels_for_action('win.save-as', ['<Control><Shift>s'])
         self.main_window.app.set_accels_for_action('win.close-active-document', ['<Control>w'])

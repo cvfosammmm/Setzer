@@ -54,6 +54,7 @@ class KeyboardShortcutsDialog(Dialog):
         section['items'].append({'title': _('Show build log'), 'shortcut': 'F8'})
         section['items'].append({'title': _('Show side panel'), 'shortcut': 'F9'})
         section['items'].append({'title': _('Show preview panel'), 'shortcut': 'F10'})
+        section['items'].append({'title': _('Show keyboard shortcuts'), 'shortcut': '&lt;ctrl&gt;question'})
         section['items'].append({'title': _('Close Application'), 'shortcut': '&lt;ctrl&gt;Q'})
         data.append(section)
 
