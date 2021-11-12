@@ -54,6 +54,7 @@ class Shortcuts(object):
         self.accel_group.connect(Gdk.keyval_from_name('o'), c_mask | s_mask, flags, self.shortcut_doc_chooser)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask, flags, self.shortcut_show_open_docs)
         self.accel_group.connect(Gdk.keyval_from_name('F1'), 0, flags, self.shortcut_help)
+        self.accel_group.connect(Gdk.keyval_from_name('F8'), 0, flags, self.shortcut_build_log)
         self.accel_group.connect(Gdk.keyval_from_name('F9'), 0, flags, self.shortcut_sidebar)
         self.accel_group.connect(Gdk.keyval_from_name('F10'), 0, flags, self.shortcut_preview)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask | s_mask, flags, self.shortcut_switch_document)
@@ -72,7 +73,6 @@ class Shortcuts(object):
         self.main_window.app.set_accels_for_action('win.open-document-dialog', ['<Control>o'])
         self.main_window.app.set_accels_for_action('win.save-and-build', ['F5'])
         self.main_window.app.set_accels_for_action('win.build', ['F6'])
-        self.main_window.app.set_accels_for_action('win.show-build-log', ['F8'])
         self.main_window.app.set_accels_for_action('win.show-shortcuts-window', ['<Control>question'])
         self.main_window.app.set_accels_for_action('win.save', ['<Control>s'])
         self.main_window.app.set_accels_for_action('win.save-as', ['<Control><Shift>s'])
@@ -96,6 +96,10 @@ class Shortcuts(object):
         if toggle.get_sensitive():
             toggle.clicked()
         return True
+
+    def shortcut_build_log(self, accel_group=None, window=None, key=None, mask=None):
+        show_build_log = not self.workspace.get_show_build_log()
+        self.workspace.set_show_build_log(show_build_log)
 
     def shortcut_preview(self, accel_group=None, window=None, key=None, mask=None):
         toggle = self.main_window.headerbar.preview_toggle
