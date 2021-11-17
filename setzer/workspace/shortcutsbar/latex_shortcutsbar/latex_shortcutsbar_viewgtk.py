@@ -33,25 +33,22 @@ class LaTeXShortcutsbar(Gtk.HBox):
 
         self.current_bottom = None
 
-        self.create_top_toolbar()
+        self.top_icons = self.create_toolbar()
+        self.right_icons = self.create_toolbar()
+
         self.populate_top_toolbar()
-        self.create_right_toolbar()
         self.populate_right_toolbar()
+
         self.pack_start(self.top_icons, True, True, 0)
         self.pack_end(self.right_icons, False, False, 0)
 
-    def create_top_toolbar(self):
-        self.top_icons = Gtk.Toolbar()
-        self.top_icons.set_style(Gtk.ToolbarStyle.ICONS)
-        self.top_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
-        self.top_icons.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
-        
-    def create_right_toolbar(self):
-        self.right_icons = Gtk.Toolbar()
-        self.right_icons.set_style(Gtk.ToolbarStyle.ICONS)
-        self.right_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
-        self.right_icons.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
-        
+    def create_toolbar(self):
+        toolbar = Gtk.Toolbar()
+        toolbar.set_style(Gtk.ToolbarStyle.ICONS)
+        toolbar.set_orientation(Gtk.Orientation.HORIZONTAL)
+        toolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
+        return toolbar
+
     def populate_right_toolbar(self):
         self.button_build_log = Gtk.ToggleToolButton()
         self.button_build_log.set_icon_name('build-log-symbolic')
@@ -87,6 +84,21 @@ class LaTeXShortcutsbar(Gtk.HBox):
 
     def insert_document_button(self):
         popover = Gtk.PopoverMenu()
+
+        self.document_button = Gtk.MenuButton()
+        self.document_button.set_image(Gtk.Image.new_from_icon_name('application-x-addon-symbolic', Gtk.IconSize.MENU))
+        self.document_button.set_can_focus(False)
+        self.document_button.set_tooltip_text(_('Document'))
+        self.document_button.get_style_context().add_class('flat')
+        self.document_button.set_popover(popover)
+
+        button_wrapper = Gtk.ToolItem()
+        button_wrapper.add(self.document_button)
+        self.top_icons.insert(button_wrapper, 0)
+        GLib.idle_add(self.populate_document_menu, priority=GLib.PRIORITY_LOW)
+
+    def populate_document_menu(self):
+        popover = self.document_button.get_popover()
         stack = popover.get_child()
 
         box = Gtk.VBox()
@@ -114,19 +126,23 @@ class LaTeXShortcutsbar(Gtk.HBox):
         stack.add_named(box, 'document_info')
         box.show_all()
 
-        self.document_button = Gtk.MenuButton()
-        self.document_button.set_image(Gtk.Image.new_from_icon_name('application-x-addon-symbolic', Gtk.IconSize.MENU))
-        self.document_button.set_can_focus(False)
-        self.document_button.set_tooltip_text(_('Document'))
-        self.document_button.get_style_context().add_class('flat')
-        self.document_button.set_popover(popover)
-
-        button_wrapper = Gtk.ToolItem()
-        button_wrapper.add(self.document_button)
-        self.top_icons.insert(button_wrapper, 0)
-
     def insert_bibliography_button(self):
         popover = Gtk.PopoverMenu()
+
+        self.bibliography_button = Gtk.MenuButton()
+        self.bibliography_button.set_image(Gtk.Image.new_from_icon_name('view-dual-symbolic', Gtk.IconSize.MENU))
+        self.bibliography_button.set_can_focus(False)
+        self.bibliography_button.set_tooltip_text(_('Bibliography'))
+        self.bibliography_button.get_style_context().add_class('flat')
+        self.bibliography_button.set_popover(popover)
+
+        button_wrapper = Gtk.ToolItem()
+        button_wrapper.add(self.bibliography_button)
+        self.top_icons.insert(button_wrapper, 0)
+        GLib.idle_add(self.populate_bibliography_menu, priority=GLib.PRIORITY_LOW)
+
+    def populate_bibliography_menu(self):
+        popover = self.bibliography_button.get_popover()
         stack = popover.get_child()
 
         box = Gtk.VBox()
@@ -153,19 +169,23 @@ class LaTeXShortcutsbar(Gtk.HBox):
         stack.add_named(box, 'natbib_citations')
         box.show_all()
 
-        self.bibliography_button = Gtk.MenuButton()
-        self.bibliography_button.set_image(Gtk.Image.new_from_icon_name('view-dual-symbolic', Gtk.IconSize.MENU))
-        self.bibliography_button.set_can_focus(False)
-        self.bibliography_button.set_tooltip_text(_('Bibliography'))
-        self.bibliography_button.get_style_context().add_class('flat')
-        self.bibliography_button.set_popover(popover)
-
-        button_wrapper = Gtk.ToolItem()
-        button_wrapper.add(self.bibliography_button)
-        self.top_icons.insert(button_wrapper, 0)
-
     def insert_text_button(self):
         popover = Gtk.PopoverMenu()
+
+        self.text_button = Gtk.MenuButton()
+        self.text_button.set_image(Gtk.Image.new_from_icon_name('text-symbolic', Gtk.IconSize.MENU))
+        self.text_button.set_can_focus(False)
+        self.text_button.set_tooltip_text(_('Text'))
+        self.text_button.get_style_context().add_class('flat')
+        self.text_button.set_popover(popover)
+
+        button_wrapper = Gtk.ToolItem()
+        button_wrapper.add(self.text_button)
+        self.top_icons.insert(button_wrapper, 0)
+        GLib.idle_add(self.populate_text_menu, priority=GLib.PRIORITY_LOW)
+
+    def populate_text_menu(self):
+        popover = self.text_button.get_popover()
         stack = popover.get_child()
 
         box = Gtk.VBox()
@@ -278,27 +298,8 @@ class LaTeXShortcutsbar(Gtk.HBox):
         stack.add_named(box, 'cross_references')
         box.show_all()
 
-        self.text_button = Gtk.MenuButton()
-        self.text_button.set_image(Gtk.Image.new_from_icon_name('text-symbolic', Gtk.IconSize.MENU))
-        self.text_button.set_can_focus(False)
-        self.text_button.set_tooltip_text(_('Text'))
-        self.text_button.get_style_context().add_class('flat')
-        self.text_button.set_popover(popover)
-
-        button_wrapper = Gtk.ToolItem()
-        button_wrapper.add(self.text_button)
-        self.top_icons.insert(button_wrapper, 0)
-
     def insert_quotes_button(self):
         popover = Gtk.PopoverMenu()
-        stack = popover.get_child()
-
-        box = Gtk.VBox()
-        self.pmb.set_box_margin(box)
-        for item in [(_('Primary Quotes') + ' (`` ... \'\')', ['``', '\'\'']), (_('Secondary Quotes') + ' (` ... \')', ['`', '\'']), (_('German Quotes') + ' (\\glqq ... \\grqq{})', ['\\glqq ', '\\grqq{}']), (_('German Single Quotes') + ' (\\glq ... \\grq{})', ['\\glq ', '\\grq{}']), (_('French Quotes') + ' (\\flqq ... \\frqq{})', ['\\flqq ', '\\frqq{}']), (_('French Single Quotes') + ' (\\flq ... \\frq{})', ['\\flq ', '\\frq{}']), (_('German Alt Quotes') + ' (\\frqq ... \\flqq{})', ['\\frqq ', '\\flqq{}']), (_('German Alt Single Quotes') + ' (\\frq ... \\frq{})', ['\\frq ', '\\flq{}'])]:
-            self.pmb.add_action_button(box, item[0], 'win.insert-before-after', item[1])
-        stack.add_named(box, 'main')
-        box.show_all()
 
         button_wrapper = Gtk.ToolItem()
         self.quotes_button = Gtk.MenuButton()
@@ -311,9 +312,36 @@ class LaTeXShortcutsbar(Gtk.HBox):
         button_wrapper.add(self.quotes_button)
         self.quotes_button.get_popover().get_style_context().add_class('menu-own-quotes-symbolic')
         self.top_icons.insert(button_wrapper, 0)
+        GLib.idle_add(self.populate_quotes_menu, priority=GLib.PRIORITY_LOW)
+
+    def populate_quotes_menu(self):
+        popover = self.quotes_button.get_popover()
+        stack = popover.get_child()
+
+        box = Gtk.VBox()
+        self.pmb.set_box_margin(box)
+        for item in [(_('Primary Quotes') + ' (`` ... \'\')', ['``', '\'\'']), (_('Secondary Quotes') + ' (` ... \')', ['`', '\'']), (_('German Quotes') + ' (\\glqq ... \\grqq{})', ['\\glqq ', '\\grqq{}']), (_('German Single Quotes') + ' (\\glq ... \\grq{})', ['\\glq ', '\\grq{}']), (_('French Quotes') + ' (\\flqq ... \\frqq{})', ['\\flqq ', '\\frqq{}']), (_('French Single Quotes') + ' (\\flq ... \\frq{})', ['\\flq ', '\\frq{}']), (_('German Alt Quotes') + ' (\\frqq ... \\flqq{})', ['\\frqq ', '\\flqq{}']), (_('German Alt Single Quotes') + ' (\\frq ... \\frq{})', ['\\frq ', '\\flq{}'])]:
+            self.pmb.add_action_button(box, item[0], 'win.insert-before-after', item[1])
+        stack.add_named(box, 'main')
+        box.show_all()
 
     def insert_math_button(self):
         popover = Gtk.PopoverMenu()
+
+        self.math_button = Gtk.MenuButton()
+        self.math_button.set_image(Gtk.Image.new_from_icon_name('own-math-menu-symbolic', Gtk.IconSize.MENU))
+        self.math_button.set_can_focus(False)
+        self.math_button.set_tooltip_text(_('Math'))
+        self.math_button.get_style_context().add_class('flat')
+        self.math_button.set_popover(popover)
+
+        button_wrapper = Gtk.ToolItem()
+        button_wrapper.add(self.math_button)
+        self.top_icons.insert(button_wrapper, 0)
+        GLib.idle_add(self.populate_math_menu, priority=GLib.PRIORITY_LOW)
+
+    def populate_math_menu(self):
+        popover = self.math_button.get_popover()
         stack = popover.get_child()
 
         # main menu
@@ -407,19 +435,24 @@ class LaTeXShortcutsbar(Gtk.HBox):
         stack.add_named(box, 'math_spaces')
         box.show_all()
 
-        self.math_button = Gtk.MenuButton()
-        self.math_button.set_image(Gtk.Image.new_from_icon_name('own-math-menu-symbolic', Gtk.IconSize.MENU))
-        self.math_button.set_can_focus(False)
-        self.math_button.set_tooltip_text(_('Math'))
-        self.math_button.get_style_context().add_class('flat')
-        self.math_button.set_popover(popover)
-
-        button_wrapper = Gtk.ToolItem()
-        button_wrapper.add(self.math_button)
-        self.top_icons.insert(button_wrapper, 0)
-
     def insert_object_button(self):
         popover = Gtk.PopoverMenu()
+
+        button_wrapper = Gtk.ToolItem()
+        self.insert_object_button = Gtk.MenuButton()
+        self.insert_object_button.set_direction(Gtk.ArrowType.DOWN)
+        self.insert_object_button.set_image(Gtk.Image.new_from_icon_name('own-insert-object-symbolic', Gtk.IconSize.MENU))
+        self.insert_object_button.set_popover(popover)
+        self.insert_object_button.set_can_focus(False)
+        self.insert_object_button.set_tooltip_text(_('Objects'))
+        self.insert_object_button.get_style_context().add_class('flat')
+        button_wrapper.add(self.insert_object_button)
+        self.insert_object_button.get_popover().get_style_context().add_class('menu-insert-object-symbolic')
+        self.top_icons.insert(button_wrapper, 0)
+        GLib.idle_add(self.populate_insert_object_menu, priority=GLib.PRIORITY_LOW)
+
+    def populate_insert_object_menu(self):
+        popover = self.insert_object_button.get_popover()
         stack = popover.get_child()
 
         # main menu
@@ -444,17 +477,5 @@ class LaTeXShortcutsbar(Gtk.HBox):
         self.pmb.add_action_button(box, _('Plain Text'), 'win.insert-before-after', ['\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
         stack.add_named(box, 'code_listing')
         box.show_all()
-
-        button_wrapper = Gtk.ToolItem()
-        self.insert_object_button = Gtk.MenuButton()
-        self.insert_object_button.set_direction(Gtk.ArrowType.DOWN)
-        self.insert_object_button.set_image(Gtk.Image.new_from_icon_name('own-insert-object-symbolic', Gtk.IconSize.MENU))
-        self.insert_object_button.set_popover(popover)
-        self.insert_object_button.set_can_focus(False)
-        self.insert_object_button.set_tooltip_text(_('Objects'))
-        self.insert_object_button.get_style_context().add_class('flat')
-        button_wrapper.add(self.insert_object_button)
-        self.insert_object_button.get_popover().get_style_context().add_class('menu-insert-object-symbolic')
-        self.top_icons.insert(button_wrapper, 0)
 
 

@@ -18,6 +18,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from gi.repository import GLib
 from gi.repository import Gio
 
 import setzer.workspace.document_switcher.document_switcher_viewgtk as document_switcher_viewgtk
@@ -27,7 +28,7 @@ from setzer.app.service_locator import ServiceLocator
 
 class HeaderBar(Gtk.HeaderBar):
     ''' Title bar of the app, contains global controls '''
-        
+
     def __init__(self):
         Gtk.HeaderBar.__init__(self)
         self.pmb = ServiceLocator.get_popover_menu_builder()
@@ -84,6 +85,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.new_document_button.set_menu_model(self.new_document_menu)
 
         # workspace menu
+        self.session_file_buttons = list()
         self.insert_workspace_menu()
 
         # save document button
@@ -118,6 +120,34 @@ class HeaderBar(Gtk.HeaderBar):
 
     def insert_workspace_menu(self):
         popover = Gtk.PopoverMenu()
+
+        self.menu_button = Gtk.MenuButton()
+        image = Gtk.Image.new_from_icon_name('open-menu-symbolic', Gtk.IconSize.BUTTON)
+        self.menu_button.set_image(image)
+        self.menu_button.set_can_focus(False)
+        self.menu_button.set_popover(popover)
+        self.pack_end(self.menu_button)
+
+        # session submenu
+        self.session_box = Gtk.VBox()
+        self.pmb.set_box_margin(self.session_box)
+        self.pmb.add_header_button(self.session_box, _('Session'))
+        self.session_explaination = Gtk.Label(_('Save the list of open documents in a session file\nand restore it later, a convenient way to work\non multiple projects.'))
+        self.session_explaination.set_xalign(0)
+        self.session_explaination.get_style_context().add_class('explaination')
+        self.session_explaination.set_margin_top(8)
+        self.session_explaination.set_margin_bottom(11)
+        self.session_box.pack_start(self.session_explaination, False, False, 0)
+        self.pmb.add_action_button(self.session_box, _('Restore Previous Session') + '...', 'win.restore-session', [''])
+        self.pmb.add_action_button(self.session_box, _('Save Current Session') + '...', 'win.save-session')
+        self.session_box_separator = Gtk.SeparatorMenuItem()
+        self.session_box_separator.show_all()
+        self.session_box.show_all()
+
+        GLib.idle_add(self.populate_workspace_menu, priority=GLib.PRIORITY_LOW)
+
+    def populate_workspace_menu(self):
+        popover = self.menu_button.get_popover()
         stack = popover.get_child()
 
         box = Gtk.VBox()
@@ -151,22 +181,7 @@ class HeaderBar(Gtk.HeaderBar):
         box.show_all()
 
         # session submenu
-        self.session_box = Gtk.VBox()
-        self.pmb.set_box_margin(self.session_box)
-        self.pmb.add_header_button(self.session_box, _('Session'))
-        self.session_explaination = Gtk.Label(_('Save the list of open documents in a session file\nand restore it later, a convenient way to work\non multiple projects.'))
-        self.session_explaination.set_xalign(0)
-        self.session_explaination.get_style_context().add_class('explaination')
-        self.session_explaination.set_margin_top(8)
-        self.session_explaination.set_margin_bottom(11)
-        self.session_box.pack_start(self.session_explaination, False, False, 0)
-        self.pmb.add_action_button(self.session_box, _('Restore Previous Session') + '...', 'win.restore-session', [''])
-        self.pmb.add_action_button(self.session_box, _('Save Current Session') + '...', 'win.save-session')
         stack.add_named(self.session_box, 'session')
-        self.session_box_separator = Gtk.SeparatorMenuItem()
-        self.session_box_separator.show_all()
-        self.session_file_buttons = list()
-        self.session_box.show_all()
 
         # tools submenu
         box = Gtk.VBox()
@@ -177,12 +192,5 @@ class HeaderBar(Gtk.HeaderBar):
         self.pmb.add_action_button(box, _('Set Spellchecking Language') + '...', 'win.set-spellchecking-language')
         stack.add_named(box, 'tools')
         box.show_all()
-
-        self.menu_button = Gtk.MenuButton()
-        image = Gtk.Image.new_from_icon_name('open-menu-symbolic', Gtk.IconSize.BUTTON)
-        self.menu_button.set_image(image)
-        self.menu_button.set_can_focus(False)
-        self.menu_button.set_popover(popover)
-        self.pack_end(self.menu_button)
 
 
