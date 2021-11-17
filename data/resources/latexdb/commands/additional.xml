@@ -5,4 +5,7 @@
   <command name="\glqq •\grqq" text="\glqq •\grqq" onlymath="False" onlytext="True" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
   <command name="\nocite{*}" text="\nocite{*}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
   <command name="\og • \fg{}" text="\og • \fg{}" onlymath="False" onlytext="True" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
+  <command name="\cites{•}[and]{•}" text="\cites{•}[and]{•}" onlymath="False" onlytext="True" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###label###" />
+  <command name="\textcites{•}[and]{•}" text="\textcites{•}[and]{•}" onlymath="False" onlytext="True" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###label###" />
+  <command name="\parencites{•}[and]{•}" text="\parencites{•}[and]{•}" onlymath="False" onlytext="True" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###label###" />
 </commands>

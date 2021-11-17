@@ -59,6 +59,9 @@ class AutocompleteProvider(object):
         self.ref_types['citations'].append(('\\citeauthor*', _('Cite \'{label}\' (author detailed)'), _('Citation (author detailed)')))
         self.ref_types['citations'].append(('\\citeyear', _('Cite \'{label}\' (year)'), _('Citation (year)')))
         self.ref_types['citations'].append(('\\citeyearpar', _('Cite \'{label}\' (year with brackets)'), _('Citation (year with brackets)')))
+        self.ref_types['citations'].append(('\\textcite', _('Cite \'{label}\' (BibLaTeX)'), _('BibLaTeX citation')))
+        self.ref_types['citations'].append(('\\parencite', _('Cite \'{label}\' (BibLaTeX, with brackets)'), _('BibLaTeX citation (with brackets)')))
+        self.ref_types['citations'].append(('\\autocite', _('Cite \'{label}\' (BibLaTeX)'), _('BibLaTeX citation')))
         self.ref_types['usepackage'] = list()
         self.ref_types['usepackage'].append(('\\usepackage',))
 
