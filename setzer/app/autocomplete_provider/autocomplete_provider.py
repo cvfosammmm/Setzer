@@ -109,6 +109,7 @@ class AutocompleteProvider(object):
                     items.append(item)
         return items
 
+    #@timer.timer
     def get_items(self, word):
         items = list()
         try: static_items = self.static_proposals[word.lower()]
@@ -119,9 +120,13 @@ class AutocompleteProvider(object):
             if add_dynamic and len(dynamic_items) > 0 and dynamic_items[0]['command'].lower() < item['command'].lower():
                 add_dynamic = False
                 items += dynamic_items
-            items.append(item)
+            if not item['lowpriority']:
+                items.append(item)
         if add_dynamic:
             items += dynamic_items
+        for item in static_items:
+            if item['lowpriority']:
+                items.append(item)
         return items
 
     def get_dynamic_items(self, word):
