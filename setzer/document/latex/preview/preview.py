@@ -96,10 +96,15 @@ class Preview(Observable):
         self.set_pdf_filename_from_tex_filename(filename)
         self.set_pdf_date()
         self.load_pdf()
+        if self.pdf_loaded:
+            self.set_zoom_fit_to_width()
+            self.document.update_can_sync()
 
     def on_pdf_updated(self, document):
         self.set_pdf_date()
-        self.load_pdf()
+        if self.pdf_loaded:
+            self.load_pdf()
+            self.document.update_can_sync()
 
     def get_pdf_filename(self):
         return self.pdf_filename
@@ -216,8 +221,6 @@ class Preview(Observable):
                 self.links = dict()
             self.links_parsed = False
             thread.start_new_thread(self.update_links, ())
-            self.set_zoom_fit_to_width()
-            self.document.update_can_sync()
 
     def get_page_number_and_offsets_by_document_offsets(self, x, y):
         return self.layouter.get_page_number_and_offsets_by_document_offsets(x, y)
