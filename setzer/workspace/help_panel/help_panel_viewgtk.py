@@ -17,9 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-gi.require_version('WebKit2', '4.0')
 from gi.repository import Gtk
-from gi.repository import WebKit2
 
 
 class HelpPanelView(Gtk.VBox):
@@ -64,17 +62,6 @@ class HelpPanelView(Gtk.VBox):
 
         self.pack_start(self.action_bar, False, False, 0)
 
-        self.settings = WebKit2.Settings()
-        self.settings.set_enable_java(False)
-        self.settings.set_enable_javascript(False)
-        self.settings.set_enable_javascript_markup(False)
-        self.settings.set_enable_plugins(False)
-        self.settings.set_enable_developer_extras(False)
-        self.settings.set_enable_page_cache(False)
-
-        self.content = WebKit2.WebView.new_with_settings(self.settings)
-        self.content.set_can_focus(False)
-
         self.search_widget = Gtk.HBox()
         self.search_vbox = Gtk.VBox()
         self.search_vbox.set_margin_left(18)
@@ -95,9 +82,10 @@ class HelpPanelView(Gtk.VBox):
         self.search_vbox.set_center_widget(self.search_content_box)
         self.search_widget.set_center_widget(self.search_vbox)
 
+        self.settings = None
+        self.content = None
+
         self.stack = Gtk.Stack()
-        self.stack.add_named(self.content, 'content')
-        self.stack.add_named(self.search_widget, 'search')
         self.pack_start(self.stack, True, True, 0)
 
         self.show_all()
