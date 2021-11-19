@@ -451,7 +451,8 @@ class Workspace(Observable):
         self.can_sync = can_sync
         self.add_change_code('update_sync_state')
 
-    def forward_sync(self, active_document):
+    def forward_sync(self, active_document=None):
+        if active_document == None: return
         if self.root_document != None:
             self.root_document.forward_sync(active_document)
         else:

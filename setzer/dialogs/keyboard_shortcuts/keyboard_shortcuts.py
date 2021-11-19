@@ -46,6 +46,7 @@ class KeyboardShortcutsDialog(Dialog):
         section = {'title': _('Tools'), 'items': list()}
         section['items'].append({'title': _('Save and build .pdf-file from document'), 'shortcut': 'F5'})
         section['items'].append({'title': _('Build .pdf-file from document'), 'shortcut': 'F6'})
+        section['items'].append({'title': _('Show current position in preview'), 'shortcut': '&lt;ctrl&gt;&lt;Alt&gt;J'})
         data.append(section)
 
         section = {'title': 'Windows and Panels', 'items': list()}

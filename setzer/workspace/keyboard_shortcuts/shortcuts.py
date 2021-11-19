@@ -47,6 +47,7 @@ class Shortcuts(object):
         
         c_mask = Gdk.ModifierType.CONTROL_MASK
         s_mask = Gdk.ModifierType.SHIFT_MASK
+        a_mask = Gdk.ModifierType.MOD1_MASK
         m_mask = Gdk.ModifierType.META_MASK
         all_mask = Gdk.ModifierType.MODIFIER_MASK
         flags = Gtk.AccelFlags.MASK
@@ -58,6 +59,7 @@ class Shortcuts(object):
         self.accel_group.connect(Gdk.keyval_from_name('F9'), 0, flags, self.shortcut_sidebar)
         self.accel_group.connect(Gdk.keyval_from_name('F10'), 0, flags, self.shortcut_preview)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask | s_mask, flags, self.shortcut_switch_document)
+        self.accel_group.connect(Gdk.keyval_from_name('j'), c_mask | a_mask, flags, self.shortcut_forward_sync)
         self.main_window.app.set_accels_for_action('win.new-latex-document', ['<Control>n'])
 
         # zoom
@@ -120,5 +122,8 @@ class Shortcuts(object):
         active_document = self.workspace.get_active_document()
         if active_document != None and active_document.is_latex_document():
             self.main_window.latex_shortcutsbar.quotes_button.set_active(True)
+
+    def shortcut_forward_sync(self, accel_group=None, window=None, key=None, mask=None):
+        self.workspace.forward_sync(self.workspace.active_document)
 
 
