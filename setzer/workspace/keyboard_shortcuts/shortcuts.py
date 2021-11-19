@@ -51,7 +51,7 @@ class Shortcuts(object):
         m_mask = Gdk.ModifierType.META_MASK
         all_mask = Gdk.ModifierType.MODIFIER_MASK
         flags = Gtk.AccelFlags.MASK
-        
+
         self.accel_group.connect(Gdk.keyval_from_name('o'), c_mask | s_mask, flags, self.shortcut_doc_chooser)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask, flags, self.shortcut_show_open_docs)
         self.accel_group.connect(Gdk.keyval_from_name('F1'), 0, flags, self.shortcut_help)

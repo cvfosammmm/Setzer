@@ -17,9 +17,11 @@
 
 import gi
 gi.require_version('Poppler', '0.18')
+gi.require_version('Gtk', '3.0')
 from gi.repository import Poppler
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdftypes import PDFObjRef
+from gi.repository import GLib
 
 import os.path
 import math
@@ -62,6 +64,7 @@ class Preview(Observable):
         self.yoffset = 0
         self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0]
         self.zoom_level_fit_to_width = None
+        self.zoom_set = False
         self.zoom_level_fit_to_text_width = None
         self.zoom_level_fit_to_height = None
         self.zoom_level = None
@@ -97,8 +100,9 @@ class Preview(Observable):
         self.set_pdf_date()
         self.load_pdf()
         if self.pdf_loaded:
-            self.set_zoom_fit_to_width()
             self.document.update_can_sync()
+            if self.zoom_level == None:
+                self.set_zoom_fit_to_width()
 
     def on_pdf_updated(self, document):
         self.set_pdf_date()
@@ -297,6 +301,9 @@ class Preview(Observable):
                 self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0, level]
             else:
                 self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0]
+            if not self.zoom_set:
+                self.zoom_set = True
+                self.set_zoom_fit_to_width()
 
     def set_zoom_fit_to_height(self):
         zoom_level = (self.view.stack.get_allocated_height() + self.layouter.border_width) / (self.page_height * self.layouter.ppp)
@@ -323,12 +330,14 @@ class Preview(Observable):
             self.set_zoom_level(self.zoom_level_fit_to_width)
         else:
             self.set_zoom_level(1.0)
+            self.zoom_set = False
     
     def set_zoom_fit_to_width_auto_offset(self):
         if self.zoom_level_fit_to_width != None:
             zoom_level = self.zoom_level_fit_to_width
         else:
             zoom_level = 1.0
+            self.zoom_set = False
         x = self.view.get_allocated_width() / 2
         y = self.view.get_allocated_height() / 2
         xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
@@ -370,6 +379,7 @@ class Preview(Observable):
             position = self.get_position_by_screen_offset(xoffset, yoffset)
             self.presenter.scroll_to_position(position)
             self.add_change_code('zoom_level_changed')
+            self.zoom_set = True
 
     def open_external_viewer(self):
         if self.pdf_filename != None:
