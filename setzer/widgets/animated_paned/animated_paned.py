@@ -97,6 +97,7 @@ class AnimatedPaned(object):
                 end_time = start_time + 1000 * duration
                 self.animation_id = self.add_tick_callback(self.set_position_on_tick, (self.show_widget, start_time, end_time, start, end))
                 self.child_set_property(self.animated_widget, 'shrink', True)
+                self.fix_animated_widget_size()
         else:
             if self.show_widget:
                 self.child_set_property(self.animated_widget, 'shrink', False)
@@ -117,6 +118,7 @@ class AnimatedPaned(object):
             return True
         else:
             paned.set_position(end)
+            self.reset_animated_widget_size_request()
             if not show_widget:
                 self.animated_widget.hide()
                 self.set_is_visible(False)
@@ -136,6 +138,14 @@ class AnimatedHPaned(Gtk.HPaned, AnimatedPaned):
         Gtk.HPaned.__init__(self)
         AnimatedPaned.__init__(self, widget1, widget2, animate_first_widget)
 
+        self.original_size_request = self.animated_widget.get_size_request()[0]
+
+    def reset_animated_widget_size_request(self):
+        self.animated_widget.set_size_request(self.original_size_request, -1)
+
+    def fix_animated_widget_size(self):
+        self.animated_widget.set_size_request(self.get_animated_widget_extent(), -1)
+
     def get_animated_widget_extent(self):
         return self.animated_widget.get_allocated_width()
 
@@ -148,6 +158,14 @@ class AnimatedVPaned(Gtk.VPaned, AnimatedPaned):
     def __init__(self, widget1, widget2, animate_first_widget=True):
         Gtk.VPaned.__init__(self)
         AnimatedPaned.__init__(self, widget1, widget2, animate_first_widget)
+
+        self.original_size_request = self.animated_widget.get_size_request()[1]
+
+    def reset_animated_widget_size_request(self):
+        self.animated_widget.set_size_request(-1, self.original_size_request)
+
+    def fix_animated_widget_size(self):
+        self.animated_widget.set_size_request(-1, self.get_animated_widget_extent())
 
     def get_animated_widget_extent(self):
         return self.animated_widget.get_allocated_height()
