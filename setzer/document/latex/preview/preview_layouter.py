@@ -132,9 +132,8 @@ class PreviewLayouter(Observable):
             self.preview.set_zoom_fit_to_height()
         elif self.preview.first_show:
             self.preview.first_show = False
-            self.preview.set_zoom_fit_to_width()
 
-    def get_ppp(self):        
+    def get_ppp(self):
         monitor = Gdk.Display.get_default().get_monitor_at_point(1, 1)
         width_inch = monitor.get_width_mm() / 25.4
         width_pixels = monitor.get_geometry().width

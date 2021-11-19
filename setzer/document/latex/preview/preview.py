@@ -102,9 +102,11 @@ class Preview(Observable):
 
     def on_pdf_updated(self, document):
         self.set_pdf_date()
+        self.load_pdf()
         if self.pdf_loaded:
-            self.load_pdf()
             self.document.update_can_sync()
+            if self.zoom_level == None:
+                self.set_zoom_fit_to_width()
 
     def get_pdf_filename(self):
         return self.pdf_filename
