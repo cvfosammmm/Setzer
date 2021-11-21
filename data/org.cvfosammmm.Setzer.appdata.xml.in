@@ -53,6 +53,11 @@
     </provides>
 
     <releases>
+        <release version="0.4.2" date="2021-11-21">
+            <description>
+                <p translatable="no">Performance improvements, persistent zoom in preview, ...</p>
+            </description>
+        </release>
         <release version="0.4.1" date="2021-1-19">
             <description>
                 <p translatable="no">Bug fix</p>
