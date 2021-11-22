@@ -42,7 +42,7 @@ class DocumentView(Gtk.HBox):
         self.source_view.set_monospace(True)
         self.source_view.set_smart_home_end(True)
         self.source_view.set_auto_indent(True)
-        self.source_view.set_bottom_margin(18)
+        self.source_view.set_bottom_margin(120)
         self.source_view.set_right_margin(12)
 
         self.scrolled_window.add(self.source_view)
