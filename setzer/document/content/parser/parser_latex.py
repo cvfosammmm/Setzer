@@ -157,11 +157,20 @@ class ParserLaTeX(object):
     def parse_blocks(self):
         blocks = dict()
 
+        add_preamble_folding = True
         end_document_offset = None
         end_document_line = None
+        begin_document_offset = None
+        begin_document_line = None
         blocks_list = list()
         for (match, line_number, offset) in self.block_symbol_matches['begin_or_end']:
+            if line_number == 0:
+                add_preamble_folding = False
+
             if match.group(1) == 'begin':
+                if match.group(2).strip() == 'document':
+                    begin_document_offset = offset
+                    begin_document_line = line_number
                 try: blocks[match.group(2)].append([offset, None, line_number, None])
                 except KeyError: blocks[match.group(2)] = [[offset, None, line_number, None]]
             else:
@@ -181,6 +190,9 @@ class ParserLaTeX(object):
         relevant_following_blocks = [list(), list(), list(), list(), list()]
         levels = {'part': 0, 'chapter': 1, 'section': 2, 'subsection': 3, 'subsubsection': 4}
         for (match, line_number, offset) in reversed(self.block_symbol_matches['others']):
+            if line_number == 0:
+                add_preamble_folding = False
+
             level = levels[match.group(3)]
             block = [offset, None, line_number, None]
 
@@ -200,6 +212,9 @@ class ParserLaTeX(object):
             blocks_list.append(block)
             for i in range(level, 5):
                 relevant_following_blocks[i].append(block)
+
+        if add_preamble_folding and begin_document_offset and begin_document_line:
+            blocks_list.append([0, begin_document_offset - 1, 0, begin_document_line - 1])
 
         self.content.set_blocks(sorted(blocks_list, key=lambda block: block[0]))
 
