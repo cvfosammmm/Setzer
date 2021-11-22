@@ -269,6 +269,7 @@ box.sidebar flowbox flowboxchild {
     padding: 0px;
 }
 box.sidebar flowbox flowboxchild image {
+    color: @theme_fg_color;
     background-color: @theme_base_color;
     border: 1px solid mix(@borders, @theme_base_color, 0.68);
     border-left-width: 0px;

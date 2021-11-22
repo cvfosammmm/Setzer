@@ -102,7 +102,7 @@ class ServiceLocator(object):
 
     def get_color_manager():
         if ServiceLocator.color_manager == None:
-            ServiceLocator.color_manager = color_manager.ColorManager(ServiceLocator.get_main_window())
+            ServiceLocator.color_manager = color_manager.ColorManager(ServiceLocator.get_main_window(), ServiceLocator.get_settings(), ServiceLocator.get_source_style_scheme_manager())
         return ServiceLocator.color_manager
 
     def get_popover_menu_builder():

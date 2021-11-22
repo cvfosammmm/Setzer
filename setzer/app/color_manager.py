@@ -17,14 +17,21 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
+gi.require_version('GtkSource', '4')
 from gi.repository import Gdk
+from gi.repository import GtkSource
 
 
 class ColorManager(object):
 
-    def __init__(self, main_window):
+    def __init__(self, main_window, settings, source_style_scheme_manager):
         self.main_window = main_window
+        self.settings = settings
+
         self.style_context = main_window.get_style_context()
+        self.source_style_scheme_manager = source_style_scheme_manager
+        self.source_style_scheme = None
+        self.syntax_scheme_name = None
         self.main_window.connect('style-updated', self.on_style_updated)
 
         self.string_cache = dict()
@@ -33,6 +40,16 @@ class ColorManager(object):
 
     def on_style_updated(self, a, b=None):
         self.mix_cache = dict()
+
+    def update_syntax_scheme(self):
+        if self.settings.get_value('preferences', 'prefer_dark_mode'):
+            name = self.settings.get_value('preferences', 'syntax_scheme_dark_mode')
+        else:
+            name = self.settings.get_value('preferences', 'syntax_scheme')
+        if name == self.syntax_scheme_name: return
+
+        self.syntax_scheme_name = name
+        self.source_style_scheme = self.source_style_scheme_manager.get_scheme(name)
 
     def get_theme_color(self, name):
         return self.style_context.lookup_color(name)[1]
@@ -51,6 +68,13 @@ class ColorManager(object):
             mix_color.alpha = color1.alpha * ratio + color2.alpha * (1 - ratio)
             self.mix_cache[index] = mix_color
         return self.mix_cache[index]
+
+    def get_syntax_scheme_color(self, style_id, property_name):
+        self.update_syntax_scheme()
+        style = self.source_style_scheme.get_style(style_id)
+
+        if style == None: return None
+        return style.get_property(property_name)
 
     def get_rgba(self, red, green, blue, alpha):
         index = int(red * 1000000000000) + int(green * 1000000000) + int(blue * 1000000) + int(alpha * 1000)
