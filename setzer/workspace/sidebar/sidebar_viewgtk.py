@@ -63,7 +63,7 @@ class SidebarPage(Gtk.ScrolledWindow):
 
 class SidebarPageSymbolsList(SidebarPage):
 
-    def __init__(self, symbol_folder, symbol_width, is_dark_mode):
+    def __init__(self, symbol_folder, symbol_width):
         SidebarPage.__init__(self)
         self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         
@@ -80,8 +80,6 @@ class SidebarPageSymbolsList(SidebarPage):
         self.flowbox.set_valign(Gtk.Align.START)
         self.flowbox.set_max_children_per_line(20)
         
-        self.parent_folder = 'dark' if is_dark_mode else 'light'
-
         xml_tree = ET.parse(os.path.join(ServiceLocator.get_resources_path(), 'symbols', symbol_folder + '.xml'))
         xml_root = xml_tree.getroot()
         for symbol_tag in xml_root:

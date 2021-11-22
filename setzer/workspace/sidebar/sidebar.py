@@ -35,23 +35,20 @@ class Sidebar(object):
         self.view = ServiceLocator.get_main_window().sidebar
         self.workspace = workspace
 
-        # detect dark mode
-        dm = 'True' if ServiceLocator.get_is_dark_mode() else 'False'
-
         # tabbed pages: name, icon name, tooltip, widget
         self.pages = list()
         self.pages.append(['greek_letters', 'own-symbols-greek-letters-symbolic', _('Greek Letters'), 
-                           'sidebar_view.SidebarPageSymbolsList("greek_letters", 25, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("greek_letters", 25)'])
         self.pages.append(['arrows', 'own-symbols-arrows-symbolic', _('Arrows'), 
-                           'sidebar_view.SidebarPageSymbolsList("arrows", 48, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("arrows", 48)'])
         self.pages.append(['relations', 'own-symbols-relations-symbolic', _('Relations'), 
-                           'sidebar_view.SidebarPageSymbolsList("relations", 39, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("relations", 39)'])
         self.pages.append(['operators', 'own-symbols-operators-symbolic', _('Operators'), 
-                           'sidebar_view.SidebarPageSymbolsList("operators", 47, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("operators", 47)'])
         self.pages.append(['misc_math', 'own-symbols-misc-math-symbolic', _('Misc. Math'), 
-                           'sidebar_view.SidebarPageSymbolsList("misc_math", 42, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("misc_math", 42)'])
         self.pages.append(['misc_text', 'own-symbols-misc-text-symbolic', _('Misc. Symbols'), 
-                           'sidebar_view.SidebarPageSymbolsList("misc_text", 38, ' + dm + ')'])
+                           'sidebar_view.SidebarPageSymbolsList("misc_text", 38)'])
         self.page_views = list()
         self.init_page_stack()
 

@@ -475,7 +475,7 @@ class Actions(object):
 
     def close_build_log(self, action, parameter=''):
         self.workspace.set_show_build_log(False)
-    
+
     def on_spellchecking_toggle_toggled(self, action, parameter=None):
         new_state = not action.get_state().get_boolean()
         action.set_state(GLib.Variant.new_boolean(new_state))
