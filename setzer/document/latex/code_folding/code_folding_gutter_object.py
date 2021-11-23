@@ -29,6 +29,8 @@ class CodeFoldingGutterObject(object):
         self.model = model
         self.source_view = self.model.document.view.source_view
 
+        self.hovered_region = None
+
         self.size = 0
         self.visible = False
 
@@ -51,8 +53,19 @@ class CodeFoldingGutterObject(object):
             return True
         return False
 
+    def on_pointer_movement(self, event):
+        x, y = self.source_view.window_to_buffer_coords(Gtk.TextWindowType.LEFT, event.x, event.y)
+        line_iter, line_top = self.source_view.get_line_at_y(y)
+        line_number = line_iter.get_line()
+        if x >= -18 and line_number in self.model.folding_regions and event.type != Gdk.EventType.LEAVE_NOTIFY:
+            self.hovered_region = self.model.folding_regions[line_number]
+            self.source_view.queue_draw()
+        elif self.hovered_region != None:
+            self.hovered_region = None
+            self.source_view.queue_draw()
+
     #@timer
-    def on_draw(self, drawing_area, ctx, lines, current_line, offset):
+    def on_draw(self, gutter, drawing_area, ctx, lines, current_line, offset):
         ctx.set_line_width(0)
         xoff1 = offset + 3 * self.size / 6
         xoff2 = offset + 5 * self.size / 6
@@ -69,8 +82,25 @@ class CodeFoldingGutterObject(object):
         yoff5 = 4 * self.size / 6
         len1 = 2 * self.size / 11
 
+        line_countdown = 0
         for line in lines:
+            if line_countdown > 0:
+                ctx.set_source_rgba(gutter.border_color.red, gutter.border_color.green, gutter.border_color.blue, gutter.border_color.alpha)
+                ctx.rectangle(xoff6 - 1, line[1] + line[2], self.size, -line[2])
+                ctx.fill()
+                ctx.set_source_rgba(gutter.fg_color.red, gutter.fg_color.green, gutter.fg_color.blue, gutter.fg_color.alpha)
+                line_countdown -= 1
+
             if (line[0] - 1) in self.model.folding_regions.keys():
+                if self.hovered_region == self.model.folding_regions[(line[0] - 1)]:
+                    ctx.set_source_rgba(gutter.border_color.red, gutter.border_color.green, gutter.border_color.blue, gutter.border_color.alpha)
+                    ctx.rectangle(xoff6 - 1, line[1] + line[2], self.size, -line[2])
+                    ctx.fill()
+                    ctx.set_source_rgba(gutter.fg_color.red, gutter.fg_color.green, gutter.fg_color.blue, gutter.fg_color.alpha)
+
+                    if not self.model.folding_regions[line[0] - 1]['is_folded']:
+                        line_countdown = self.hovered_region['ending_line'] - self.hovered_region['starting_line']
+
                 if self.model.folding_regions[line[0] - 1]['is_folded']:
                     ctx.move_to(xoff1, line[1] + yoff1)
                     ctx.line_to(xoff2, line[1] + yoff2)

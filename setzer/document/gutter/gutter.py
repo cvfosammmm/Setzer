@@ -60,6 +60,9 @@ class Gutter(object):
         self.char_width, self.line_height = self.font_manager.get_char_dimensions()
 
         self.source_view.connect('button-press-event', self.on_click)
+        self.source_view.connect('enter-notify-event', self.on_pointer_movement)
+        self.source_view.connect('leave-notify-event', self.on_pointer_movement)
+        self.source_view.connect('motion-notify-event', self.on_pointer_movement)
 
         self.highlight_current_line = False
         settings = ServiceLocator.get_settings()
@@ -88,7 +91,7 @@ class Gutter(object):
             total_size = 3
             for widget in self.widgets:
                 if widget.is_visible():
-                    widget.on_draw(drawing_area, ctx, self.lines, self.current_line, total_size)
+                    widget.on_draw(self, drawing_area, ctx, self.lines, self.current_line, total_size)
                     total_size += widget.get_size()
 
     #@timer
@@ -181,6 +184,18 @@ class Gutter(object):
                     total_size += widget_size
                     if x <= total_size and x > total_size - widget_size:
                         return widget.on_click(event)
+        return False
+
+    def on_pointer_movement(self, widget, event):
+        x, y = self.source_view.window_to_buffer_coords(Gtk.TextWindowType.LEFT, event.x, event.y)
+        if event.window == self.source_view.get_window(Gtk.TextWindowType.LEFT):
+            x += self.total_size
+            total_size = 3
+            for widget in self.widgets:
+                if widget.is_visible():
+                    widget_size = widget.get_size()
+                    total_size += widget_size
+                    widget.on_pointer_movement(event)
         return False
 
     def add_widget(self, widget):

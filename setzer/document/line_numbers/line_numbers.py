@@ -70,8 +70,11 @@ class LineNumbers(object):
     def on_click(self, event):
         return False
 
+    def on_pointer_movement(self, event):
+        pass
+
     #@timer
-    def on_draw(self, drawing_area, ctx, lines, current_line, offset):
+    def on_draw(self, gutter, drawing_area, ctx, lines, current_line, offset):
         ctx.set_font_size(self.font_size)
         font_family = self.font_desc.get_family()
         ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
