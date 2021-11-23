@@ -402,7 +402,7 @@ class Content(Observable):
         self.source_buffer.end_user_action()
 
     def add_backslash_with_space(self):
-        self.insert_at_cursor('\\ ')
+        self.source_buffer.insert_at_cursor('\\ ')
         insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         insert_iter.backward_char()
         self.source_buffer.place_cursor(insert_iter)

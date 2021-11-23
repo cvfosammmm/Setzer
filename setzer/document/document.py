@@ -216,10 +216,4 @@ class Document(Observable):
     def insert_before_after(self, before, after):
         self.content.insert_before_after(before, after)
 
-    def add_backslash_with_space(self):
-        self.content.add_backslash_with_space()
-
-    def autoadd_latex_brackets(self, char):
-        self.content.autoadd_latex_brackets(char)
-
 

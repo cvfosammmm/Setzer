@@ -47,18 +47,18 @@ class SessionBlank(object):
         if event.keyval == Gdk.keyval_from_name('backslash') and event.state & modifiers == 0:
             char = self.document.get_char_at_cursor()
             if char.isalpha():
-                self.document.add_backslash_with_space()
+                self.document.content.add_backslash_with_space()
                 return True
             return False
 
         bracket_vals = [Gdk.keyval_from_name('parenleft'), Gdk.keyval_from_name('bracketleft'), Gdk.keyval_from_name('braceleft')]
         if event.keyval in bracket_vals and not self.document.autocomplete.is_active():
             if event.keyval == Gdk.keyval_from_name('bracketleft'):
-                self.document.autoadd_latex_brackets('[')
+                self.document.content.autoadd_latex_brackets('[')
             if event.keyval == Gdk.keyval_from_name('braceleft'):
-                self.document.autoadd_latex_brackets('{')
+                self.document.content.autoadd_latex_brackets('{')
             if event.keyval == Gdk.keyval_from_name('parenleft'):
-                self.document.autoadd_latex_brackets('(')
+                self.document.content.autoadd_latex_brackets('(')
             return True
 
         return False
