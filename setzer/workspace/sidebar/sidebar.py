@@ -93,7 +93,7 @@ class Sidebar(object):
         child = flowbox.get_child_at_pos(event.x, event.y)
 
         if child != None and self.workspace.active_document != None:
-            self.workspace.get_active_document().insert_text_at_cursor(symbols_list[child.get_index()][1])
+            self.workspace.get_active_document().content.insert_text_at_cursor(symbols_list[child.get_index()][1])
             self.workspace.get_active_document().content.scroll_cursor_onscreen()
 
         return True

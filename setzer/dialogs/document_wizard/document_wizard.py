@@ -81,7 +81,7 @@ class DocumentWizard(Dialog):
 
             document_class = self.current_values['document_class']
             template_start, template_end = eval('self.get_insert_text_' + document_class + '()')
-            self.document.insert_template(template_start, template_end)
+            self.document.content.insert_template(template_start, template_end)
 
         self.view.dialog.hide()
 

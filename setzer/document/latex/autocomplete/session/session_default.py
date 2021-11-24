@@ -179,11 +179,11 @@ class SessionDefault(object):
             self.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
 
     def insert_begin_end_check_replace(self, insert_iter, text):
-        line_part = self.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
+        line_part = self.document.content.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
         line_regex = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})\{([^\{\[\|\(]+)\}')
         line_match = line_regex.match(line_part)
         if line_match:
-            document_text = self.document.get_text_after_offset(insert_iter.get_offset() + 1)
+            document_text = self.document.content.get_text_after_offset(insert_iter.get_offset() + 1)
             if self.get_end_match_object(document_text, line_match.group(2)):
                 return (line_match, text)
         return (None, text)
@@ -200,7 +200,7 @@ class SessionDefault(object):
         self.document.content.replace_range_no_user_action(start_iter_begin, end_iter_begin, text, indent_lines=False, select_dot=True)
 
         end_iter_offset = start_iter_offset + len(text)
-        document_text = self.document.get_text_after_offset(end_iter_offset)
+        document_text = self.document.content.get_text_after_offset(end_iter_offset)
         environment_name = ServiceLocator.get_regex_object(r'(\w*(?:\*){0,1})\{([^\{\[\|\(]+)\}').match(match_object.group(0)).group(2)
         end_match_object = self.get_end_match_object(document_text, environment_name)
 
@@ -248,7 +248,7 @@ class SessionDefault(object):
     def get_replacement_pattern(self, command):
         buffer = self.document.content.source_buffer
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        line_part = self.document.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
+        line_part = self.document.content.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
         command_bracket_count = self.get_command_bracket_count(command)
 
         matches_group = list()
@@ -318,9 +318,9 @@ class SessionDefault(object):
             count += 1
 
         current_word = self.document.get_latex_command_at_cursor()
-        offset = self.document.get_cursor_offset() - len(current_word)
+        offset = self.document.content.get_cursor_offset() - len(current_word)
         length = len(current_word) + match_object.end()
-        self.document.replace_range(offset, length, text, indent_lines=True, select_dot=True)
+        self.document.content.replace_range(offset, length, text, indent_lines=True, select_dot=True)
 
     def cancel(self):
         self.autocomplete.end_session()

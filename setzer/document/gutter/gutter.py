@@ -142,7 +142,7 @@ class Gutter(object):
         last_line_top = None
         line = None
         current_line = None
-        current_line_no = self.document.get_current_line_number() + 1
+        current_line_no = self.document.content.get_current_line_number() + 1
         offset = self.adjustment.get_value()
         while y_window <= allocated_height:
             y = y_window + offset

@@ -70,7 +70,7 @@ class OpenDocsPopoverItem(Gtk.ListBoxRow):
         self.box.pack_end(self.document_close_button, False, False, 0)
         self.add(self.box)
 
-        self.set_name(document.get_filename(), document.get_modified())
+        self.set_name(document.get_filename(), document.content.get_modified())
         self.show_all()
         
     def set_name(self, filename, modified_state):

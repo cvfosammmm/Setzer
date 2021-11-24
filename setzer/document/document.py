@@ -61,9 +61,6 @@ class Document(Observable):
 
         self.line_numbers = line_numbers.LineNumbers(self, self.view)
 
-    def update_syntax_scheme(self):
-        self.content.update_syntax_scheme()
-
     def set_dark_mode(self, dark_mode):
         self.dark_mode = dark_mode
         self.content.set_use_dark_scheme(dark_mode)
@@ -106,9 +103,6 @@ class Document(Observable):
     def set_last_activated(self, date):
         self.last_activated = date
 
-    def get_modified(self):
-        return self.content.get_modified()
-
     def populate_from_filename(self):
         if self.filename == None: return False
         if not os.path.isfile(self.filename):
@@ -118,8 +112,8 @@ class Document(Observable):
 
         with open(self.filename) as f:
             text = f.read()
-        self.initially_set_text(text)
-        self.place_cursor(0, 0)
+        self.content.initially_set_text(text)
+        self.content.place_cursor(0, 0)
         self.content.scroll_cursor_onscreen()
         self.update_save_date()
         return True
@@ -150,42 +144,6 @@ class Document(Observable):
     def get_deleted_on_disk(self):
         return not os.path.isfile(self.filename)
 
-    def initially_set_text(self, text):
-        self.content.initially_set_text(text)
-
-    def get_text(self):
-        return self.content.get_all_text()
-
-    def get_text_after_offset(self, offset):
-        return self.content.get_text_after_offset(offset)
-
-    def get_selected_text(self):
-        return self.content.get_selected_text()
-
-    def get_line_at_cursor(self):
-        return self.content.get_line_at_cursor()
-
-    def get_char_at_cursor(self):
-        return self.content.get_char_at_cursor()
-
-    def get_line(self, line_number):
-        return self.content.get_line(line_number)
-
-    def get_current_line_number(self):
-        return self.content.get_current_line_number()
-
-    def is_empty(self):
-        return self.content.is_empty()
-
-    def place_cursor(self, line_number, offset=0):
-        self.content.place_cursor(line_number, offset)
-
-    def get_cursor_offset(self):
-        return self.content.get_cursor_offset()
-
-    def get_cursor_line_offset(self):
-        return self.content.get_cursor_line_offset()
-
     def cursor_inside_latex_command_or_at_end(self):
         current_word = self.get_latex_command_at_cursor()
         if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
@@ -197,23 +155,5 @@ class Document(Observable):
         if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
             return self.content.cursor_ends_word()
         return False
-
-    def insert_before_document_end(self, text):
-        self.content.insert_before_document_end(text)
-
-    def insert_text(self, line_number, offset, text, indent_lines=True):
-        self.content.insert_text(line_number, offset, text, indent_lines)
-
-    def insert_text_at_cursor(self, text, indent_lines=True, select_dot=True):
-        self.content.insert_text_at_cursor(text, indent_lines, select_dot)
-
-    def insert_template(self, template_start, template_end):
-        self.content.insert_template(template_start, template_end)
-
-    def replace_range(self, offset, length, text, indent_lines=True, select_dot=True):
-        self.content.replace_range_by_offset_and_length(offset, length, text, indent_lines, select_dot)
-
-    def insert_before_after(self, before, after):
-        self.content.insert_before_after(before, after)
 
 

@@ -131,12 +131,12 @@ class Autocomplete(object):
         if self.is_active():
             self.session.update(can_activate)
         if not self.is_active():
-            line = self.document.get_line_at_cursor()
-            offset = self.document.get_cursor_line_offset()
+            line = self.document.content.get_line_at_cursor()
+            offset = self.document.content.get_cursor_line_offset()
             line = line[:offset] + '%•%' + line[offset:]
             match = ServiceLocator.get_regex_object(r'.*\\(begin|end)\{((?:[^\{\[\(])*)%•%((?:[^\{\[\(])*)\}.*').match(line)
             if match:
-                word_offset = self.document.get_cursor_offset() - len(match.group(2))
+                word_offset = self.document.content.get_cursor_offset() - len(match.group(2))
                 word_len = len(match.group(2)) + len(match.group(3))
                 self.start_session(session_begin_end.SessionBeginEnd(self, word_offset, word_len))
                 self.session.update(can_activate)
@@ -224,7 +224,7 @@ class Autocomplete(object):
         return (show_x and show_y)
 
     def cursor_moved(self):
-        cursor_offset = self.document.get_cursor_offset()
+        cursor_offset = self.document.content.get_cursor_offset()
         if self.cursor_offset != cursor_offset:
             self.cursor_offset = cursor_offset
             return True

@@ -61,7 +61,7 @@ class DocumentSwitcherController(object):
         self.workspace.unset_root_document()
 
     def on_doclist_close_clicked(self, button_object, document):
-        if document.get_modified():
+        if document.content.get_modified():
             dialog = DialogLocator.get_dialog('close_confirmation')
             not_save_to_close = dialog.run([document])['not_save_to_close_documents']
             if document not in not_save_to_close:

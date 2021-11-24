@@ -372,7 +372,7 @@ class Workspace(Observable):
     def get_unsaved_documents(self):
         unsaved_documents = list()
         for document in self.open_documents:
-            if document.get_modified():
+            if document.content.get_modified():
                 unsaved_documents.append(document)
 
         return unsaved_documents if len(unsaved_documents) >= 1 else None

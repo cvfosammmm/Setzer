@@ -189,7 +189,7 @@ class Search(object):
             self.search_bar.replace_button.set_sensitive(False)
 
     def result_selected(self):
-        selected_text = self.document.get_selected_text()
+        selected_text = self.document.content.get_selected_text()
         if selected_text != None:
             if selected_text == self.search_bar.entry.get_text():
                 return True
@@ -275,7 +275,7 @@ class Search(object):
         self.search_bar.replace_wrapper.show_all()
         
     def set_text_current_selection(self):
-        selection = self.document.get_selected_text()
+        selection = self.document.content.get_selected_text()
         if selection != None:
             self.search_bar.entry.set_text(selection)
             return True

@@ -41,7 +41,7 @@ class ShortcutsbarPresenter(object):
             self.update_wizard_button_visibility()
 
     def update_wizard_button_visibility(self):
-        is_visible = (not self.document.is_empty()) and self.width > 675
+        is_visible = (not self.document.content.is_empty()) and self.width > 675
         self.view.wizard_button.label_revealer.set_reveal_child(is_visible)
 
 

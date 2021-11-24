@@ -226,7 +226,7 @@ class Actions(object):
             self.save_action.set_enabled(False)
             self.save_all_action.set_enabled(False)
         else:
-            if document.get_modified():
+            if document.content.get_modified():
                 self.save_action.set_enabled(True)
             elif document.get_filename() == None:
                 self.save_action.set_enabled(True)
@@ -390,7 +390,7 @@ class Actions(object):
 
     def on_close_document_clicked(self, action=None, parameter=None):
         document = self.workspace.get_active_document()
-        if document.get_modified():
+        if document.content.get_modified():
             dialog = DialogLocator.get_dialog('close_confirmation')
             not_save_to_close = dialog.run([document])['not_save_to_close_documents']
             if document not in not_save_to_close:
@@ -400,18 +400,18 @@ class Actions(object):
 
     @_assert_has_active_document
     def insert_before_after(self, action, parameter):
-        self.workspace.get_active_document().insert_before_after(parameter[0], parameter[1])
+        self.workspace.get_active_document().content.insert_before_after(parameter[0], parameter[1])
         self.workspace.get_active_document().content.scroll_cursor_onscreen()
 
     @_assert_has_active_document
     def insert_symbol(self, action, parameter):
-        self.workspace.get_active_document().insert_text_at_cursor(parameter[0])
+        self.workspace.get_active_document().content.insert_text_at_cursor(parameter[0])
         self.workspace.get_active_document().content.scroll_cursor_onscreen()
 
     @_assert_has_active_document
     def insert_before_document_end(self, action, parameter):
         document = self.workspace.get_active_document()
-        document.insert_before_document_end(parameter[0])
+        document.content.insert_before_document_end(parameter[0])
         document.content.scroll_cursor_onscreen()
 
     @_assert_has_active_document

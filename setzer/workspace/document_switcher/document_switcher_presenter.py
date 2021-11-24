@@ -123,7 +123,7 @@ class DocumentSwitcherPresenter(object):
         self.button.set_visible_child_name('welcome')
 
     def show_document_name(self, document):
-        mod_text = '*' if document.get_modified() else ''
+        mod_text = '*' if document.content.get_modified() else ''
         self.button.document_name_label.set_text(document.get_basename() + mod_text)
         dirname = document.get_dirname()
         if dirname != '':

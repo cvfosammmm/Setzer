@@ -24,7 +24,7 @@ class DocumentSwitcherItem():
         self.document = document
         self.view = document_switcher_item_view.OpenDocsPopoverItem(document)
 
-        self.modified_state = document.get_modified()
+        self.modified_state = document.content.get_modified()
         self.set_is_root()
 
         self.document.connect('filename_change', self.on_filename_change)
@@ -36,8 +36,8 @@ class DocumentSwitcherItem():
         self.view.set_name(self.document.get_displayname(), self.modified_state)
 
     def on_modified_changed(self, content):
-        if self.document.get_modified() != self.modified_state:
-            self.modified_state = self.document.get_modified()
+        if self.document.content.get_modified() != self.modified_state:
+            self.modified_state = self.document.content.get_modified()
             self.view.set_name(self.document.get_displayname(), self.modified_state)
 
     def on_displayname_change(self, document):

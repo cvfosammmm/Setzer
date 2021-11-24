@@ -45,7 +45,7 @@ class SessionBlank(object):
                 return self.on_tab_press()
 
         if event.keyval == Gdk.keyval_from_name('backslash') and event.state & modifiers == 0:
-            char = self.document.get_char_at_cursor()
+            char = self.document.content.get_char_at_cursor()
             if char.isalpha():
                 self.document.content.add_backslash_with_space()
                 return True

@@ -186,7 +186,7 @@ class IncludeBibTeXFile(Dialog):
 
     def insert_template(self):
         self.settings.set_value('app_include_bibtex_file_dialog', 'presets', pickle.dumps(self.current_values))
-        self.document.insert_before_document_end('''\\bibliographystyle{''' + self.get_style() + '''}
+        self.document.content.insert_before_document_end('''\\bibliographystyle{''' + self.get_style() + '''}
 \\bibliography{''' + self.get_display_filename() + '''}''')
         self.document.content.scroll_cursor_onscreen()
 

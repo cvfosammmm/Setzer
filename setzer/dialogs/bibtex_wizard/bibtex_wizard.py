@@ -289,8 +289,8 @@ class BibTeXWizard(Dialog):
 
         text += '\n}\n\n'
 
-        self.document.insert_text(0, 0, text, False)
-        self.document.place_cursor(0)
+        self.document.content.insert_text(0, 0, text, False)
+        self.document.content.place_cursor(0)
         self.document.content.scroll_cursor_onscreen()
 
 
