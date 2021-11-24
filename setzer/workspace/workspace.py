@@ -113,7 +113,7 @@ class Workspace(Observable):
         self.open_documents.append(document)
         if document.is_latex_document():
             self.open_latex_documents.append(document)
-            document.set_invert_pdf(self.invert_pdf)
+            document.preview.set_invert_pdf(self.invert_pdf)
         document.spellchecker.set_enabled(self.inline_spellchecking)
         document.spellchecker.set_language(self.spellchecking_language_code)
         document.state_manager.load_document_state()
@@ -491,7 +491,7 @@ class Workspace(Observable):
             self.invert_pdf = value
             self.settings.set_value('preferences', 'invert_pdf', self.invert_pdf)
             for document in self.open_latex_documents:
-                document.set_invert_pdf(self.invert_pdf)
+                document.preview.set_invert_pdf(self.invert_pdf)
 
     def set_inline_spellchecking(self, value):
         if self.inline_spellchecking != value:

@@ -320,7 +320,7 @@ class SessionDefault(object):
         current_word = self.document.content.get_latex_command_at_cursor()
         offset = self.document.content.get_cursor_offset() - len(current_word)
         length = len(current_word) + match_object.end()
-        self.document.content.replace_range(offset, length, text, indent_lines=True, select_dot=True)
+        self.document.content.replace_range_by_offset_and_length(offset, length, text, indent_lines=True, select_dot=True)
 
     def cancel(self):
         self.autocomplete.end_session()

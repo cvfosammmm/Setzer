@@ -39,7 +39,7 @@ class SessionBeginEnd(object):
         self.source_buffer.add_mark(self.autocomplete.mark_start, start_iter)
         self.source_buffer.add_mark(self.autocomplete.mark_end, end_iter)
 
-        matching_env_offset = self.autocomplete.document.get_matching_begin_end_offset(word_offset)
+        matching_env_offset = self.get_matching_begin_end_offset(word_offset)
         if matching_env_offset != None:
             self.has_matching_block = True
             matching_start_iter = self.source_buffer.get_iter_at_offset(matching_env_offset)
@@ -48,6 +48,15 @@ class SessionBeginEnd(object):
             self.source_buffer.add_mark(self.autocomplete.matching_mark_end, matching_end_iter)
         else:
             self.has_matching_block = False
+
+    def get_matching_begin_end_offset(self, orig_offset):
+        blocks = self.autocomplete.document.content.get_blocks()
+        for block in blocks:
+            if block[0] == orig_offset - 7:
+                return None if block[1] == None else block[1] + 5
+            elif block[1] == orig_offset - 5:
+                return None if block[0] == None else block[0] + 7
+        return None
 
     def on_insert_text(self, buffer, location_iter, text, text_length):
         location_offset = location_iter.get_offset()
@@ -235,7 +244,7 @@ class SessionBeginEnd(object):
 
         start_offset = self.source_buffer.get_iter_at_mark(self.autocomplete.mark_start).get_offset()
         end_offset = self.source_buffer.get_iter_at_mark(self.autocomplete.mark_end).get_offset()
-        self.autocomplete.document.content.replace_range(start_offset, end_offset - start_offset, text, indent_lines=False, select_dot=False)
+        self.autocomplete.document.content.replace_range_by_offset_and_length(start_offset, end_offset - start_offset, text, indent_lines=False, select_dot=False)
 
         self.will_show = False
         self.update()

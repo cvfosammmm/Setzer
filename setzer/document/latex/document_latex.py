@@ -90,15 +90,6 @@ class DocumentLaTeX(Document):
         shortcuts_manager.set_accels_for_insert_symbol_action(['\\\\\n'], ['<Control>Return'])
         shortcuts_manager.main_window.app.set_accels_for_action('win.comment-uncomment', ['<Control>K'])
 
-    def get_matching_begin_end_offset(self, orig_offset):
-        blocks = self.content.get_blocks()
-        for block in blocks:
-            if block[0] == orig_offset - 7:
-                return None if block[1] == None else block[1] + 5
-            elif block[1] == orig_offset - 5:
-                return None if block[0] == None else block[0] + 7
-        return None
-
     def set_build_log_items(self, log_items):
         build_log_items = list()
         error_count = 0
@@ -133,12 +124,6 @@ class DocumentLaTeX(Document):
 
     def get_badbox_count(self):
         return self.build_log_data['badbox_count']
-
-    def set_initial_folded_regions(self, folded_regions):
-        try:
-            self.code_folding.set_initial_folded_regions(folded_regions)
-        except AttributeError:
-            pass
 
     def change_build_state(self, state):
         self.build_state = state
@@ -232,9 +217,6 @@ class DocumentLaTeX(Document):
         if self.has_visible_build_system != has_visible_build_system:
             self.has_visible_build_system = has_visible_build_system
             self.add_change_code('build_system_visibility_change', has_visible_build_system)
-
-    def set_invert_pdf(self, invert_pdf):
-        self.preview.set_invert_pdf(invert_pdf)
 
     def get_file_ending(self):
         return 'tex'

@@ -50,9 +50,13 @@ class StateManagerLaTeX():
 
     def load_code_folding_state(self, document_data):
         try:
-            self.document.set_initial_folded_regions(document_data['folded_regions'])
+            folded_regions = document_data['folded_regions']
         except KeyError:
-            self.document.set_initial_folded_regions([])
+            folded_regions = []
+        try:
+            self.document.code_folding.set_initial_folded_regions(folded_regions)
+        except AttributeError:
+            pass
 
     def load_build_log_state(self, document_data):
         try:
