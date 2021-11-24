@@ -109,20 +109,14 @@ class DocumentLaTeX(Document):
     def get_package_details(self):
         return self.content.get_package_details()
 
-    def remove_packages(self, packages):
-        self.content.remove_packages(packages)
-
     def get_matching_begin_end_offset(self, orig_offset):
-        blocks = self.get_blocks()
+        blocks = self.content.get_blocks()
         for block in blocks:
             if block[0] == orig_offset - 7:
                 return None if block[1] == None else block[1] + 5
             elif block[1] == orig_offset - 5:
                 return None if block[0] == None else block[0] + 7
         return None
-
-    def get_blocks(self):
-        return self.content.get_blocks()
 
     def set_build_log_items(self, log_items):
         build_log_items = list()
@@ -185,12 +179,6 @@ class DocumentLaTeX(Document):
             filenames |= {os.path.normpath(os.path.join(dirname, filename))}
 
         return filenames
-
-    def get_bibitems(self):
-        return self.content.get_bibitems()
-
-    def get_labels(self):
-        return self.content.get_labels()
 
     def change_build_state(self, state):
         self.build_state = state
@@ -285,22 +273,12 @@ class DocumentLaTeX(Document):
             self.has_visible_build_system = has_visible_build_system
             self.add_change_code('build_system_visibility_change', has_visible_build_system)
 
-    def comment_uncomment(self):
-        self.content.comment_uncomment()
-
     def set_invert_pdf(self, invert_pdf):
         self.preview.set_invert_pdf(invert_pdf)
 
     def set_synctex_position(self, position):
         self.content.set_synctex_position(position)
         self.content.scroll_cursor_onscreen()
-
-    def get_folded_regions(self):
-        try:
-            regions = self.code_folding.get_folded_regions()
-        except AttributeError:
-            regions = list()
-        return regions
 
     def get_file_ending(self):
         return 'tex'

@@ -118,7 +118,7 @@ class ContextMenu(object):
         self.workspace.forward_sync(self.document)
 
     def on_toggle_comment(self, menu_item):
-        self.document.comment_uncomment()
+        self.document.content.comment_uncomment()
 
     def on_populate_popup(self, view, menu):
         rc_view = context_menu_view.RCMenuView()

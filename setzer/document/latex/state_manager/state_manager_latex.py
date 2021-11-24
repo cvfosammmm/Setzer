@@ -110,7 +110,11 @@ class StateManagerLaTeX():
     def save_document_state(self):
         document_data = dict()
         document_data['save_date'] = self.document.save_date
-        document_data['folded_regions'] = self.document.get_folded_regions()
+        try:
+            folded_regions = self.document.code_folding.get_folded_regions()
+        except AttributeError:
+            folded_regions = list()
+        document_data['folded_regions'] = folded_regions
         document_data['build_log_data'] = self.document.build_log_data
         document_data['has_been_built'] = self.document.has_been_built
         document_data['build_time'] = self.document.build_time

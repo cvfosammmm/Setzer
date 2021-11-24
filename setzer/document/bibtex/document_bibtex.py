@@ -54,18 +54,6 @@ class DocumentBibTeX(Document):
         shortcuts_manager.set_accels_for_insert_symbol_action(['\\\\\n'], [])
         shortcuts_manager.main_window.app.set_accels_for_action('win.comment-uncomment', [])
 
-    def get_bibitems(self):
-        return self.content.get_bibitems()
-
-    def get_labels(self):
-        return set()
-
-    def comment_uncomment(self):
-        pass
-
-    def get_folded_regions(self):
-        return []
-
     def get_included_files(self):
         return set()
 

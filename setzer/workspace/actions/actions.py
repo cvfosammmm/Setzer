@@ -444,7 +444,7 @@ class Actions(object):
     @_assert_has_active_document
     def comment_uncomment(self, action, parameter=None):
         document = self.workspace.get_active_document()
-        document.comment_uncomment()
+        document.content.comment_uncomment()
 
     @_assert_has_active_document
     def start_create_new_bibtex_entry_dialog(self, action, parameter=None):

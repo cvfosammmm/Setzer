@@ -193,7 +193,7 @@ class AutocompleteProvider(object):
         pathnames_done = set()
         if self.workspace.active_document != None:
             pathnames_done = pathnames_done | {self.workspace.active_document.get_filename()}
-            bibitems_first = bibitems_first | self.workspace.active_document.get_bibitems()
+            bibitems_first = bibitems_first | self.workspace.active_document.content.get_bibitems()
 
             included_files = self.workspace.active_document.get_included_files()
             for pathname in included_files:
@@ -206,7 +206,7 @@ class AutocompleteProvider(object):
                     else:
                         document_object = self.workspace.get_document_by_filename(pathname)
                         if document_object:
-                            bibitems_second = bibitems_second | document_object.get_bibitems()
+                            bibitems_second = bibitems_second | document_object.content.get_bibitems()
 
         for document in self.workspace.open_documents:
             pathnames = {document.get_filename()} | document.get_included_files()
@@ -220,7 +220,7 @@ class AutocompleteProvider(object):
                     else:
                         document_object = self.workspace.get_document_by_filename(pathname)
                         if document_object:
-                            bibitems_rest = bibitems_rest | document_object.get_bibitems()
+                            bibitems_rest = bibitems_rest | document_object.content.get_bibitems()
 
         bibitems = ['•'] + list(bibitems_first) + list(bibitems_second) + list(bibitems_rest)
         return bibitems
@@ -233,7 +233,7 @@ class AutocompleteProvider(object):
         pathnames_done = set()
         if self.workspace.active_document != None:
             pathnames_done = pathnames_done | {self.workspace.active_document.get_filename()}
-            labels_first = labels_first | self.workspace.active_document.get_labels()
+            labels_first = labels_first | self.workspace.active_document.content.get_labels()
 
             included_files = self.workspace.active_document.get_included_files()
             for pathname in included_files:
@@ -246,7 +246,7 @@ class AutocompleteProvider(object):
                     else:
                         document_object = self.workspace.get_document_by_filename(pathname)
                         if document_object:
-                            labels_second = labels_second | document_object.get_labels()
+                            labels_second = labels_second | document_object.content.get_labels()
 
         for document in self.workspace.open_documents:
             pathnames = {document.get_filename()} | document.get_included_files()
@@ -260,7 +260,7 @@ class AutocompleteProvider(object):
                     else:
                         document_object = self.workspace.get_document_by_filename(pathname)
                         if document_object:
-                            labels_rest = labels_rest | document_object.get_labels()
+                            labels_rest = labels_rest | document_object.content.get_labels()
 
         labels = ['•'] + list(labels_first) + list(labels_second) + list(labels_rest)
         return labels
