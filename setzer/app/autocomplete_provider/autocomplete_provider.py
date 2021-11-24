@@ -195,7 +195,7 @@ class AutocompleteProvider(object):
             pathnames_done = pathnames_done | {self.workspace.active_document.get_filename()}
             bibitems_first = bibitems_first | self.workspace.active_document.content.get_bibitems()
 
-            included_files = self.workspace.active_document.get_included_files()
+            included_files = self.get_included_files(self.workspace.active_document)
             for pathname in included_files:
                 if pathname not in pathnames_done:
                     pathnames_done = pathnames_done | {pathname}
@@ -209,7 +209,7 @@ class AutocompleteProvider(object):
                             bibitems_second = bibitems_second | document_object.content.get_bibitems()
 
         for document in self.workspace.open_documents:
-            pathnames = {document.get_filename()} | document.get_included_files()
+            pathnames = {document.get_filename()} | self.get_included_files(document)
             for pathname in pathnames:
                 if pathname not in pathnames_done:
                     pathnames_done = pathnames_done | {pathname}
@@ -235,7 +235,7 @@ class AutocompleteProvider(object):
             pathnames_done = pathnames_done | {self.workspace.active_document.get_filename()}
             labels_first = labels_first | self.workspace.active_document.content.get_labels()
 
-            included_files = self.workspace.active_document.get_included_files()
+            included_files = self.get_included_files(self.workspace.active_document)
             for pathname in included_files:
                 if pathname not in pathnames_done:
                     pathnames_done = pathnames_done | {pathname}
@@ -249,7 +249,7 @@ class AutocompleteProvider(object):
                             labels_second = labels_second | document_object.content.get_labels()
 
         for document in self.workspace.open_documents:
-            pathnames = {document.get_filename()} | document.get_included_files()
+            pathnames = {document.get_filename()} | self.get_included_files(document)
             for pathname in pathnames:
                 if pathname not in pathnames_done:
                     pathnames_done = pathnames_done | {pathname}
@@ -284,8 +284,8 @@ class AutocompleteProvider(object):
         current_includes = set()
         open_docs_pathnames = self.workspace.get_open_documents_filenames()
         for document in self.workspace.open_latex_documents:
-            current_includes = current_includes | document.get_included_files()
-            for pathname in document.get_bibliography_files():
+            current_includes = current_includes | self.get_included_files(document)
+            for pathname in self.get_bibliography_files(document):
                 if pathname not in open_docs_pathnames:
                     if os.path.isfile(pathname):
                         if pathname not in self.included_files_labels:
@@ -294,7 +294,7 @@ class AutocompleteProvider(object):
                             last_parse_time = self.included_files_labels[pathname]['last_parse_time']
                             if last_parse_time < os.path.getmtime(pathname):
                                 self.included_files_labels[pathname] = self.parse_bibtex_file(pathname)
-            for pathname in document.get_included_latex_files():
+            for pathname in self.get_included_latex_files(document):
                 if pathname not in open_docs_pathnames:
                     if os.path.isfile(pathname):
                         if pathname not in self.included_files_labels:
@@ -307,6 +307,27 @@ class AutocompleteProvider(object):
             if pathname not in current_includes or pathname in open_docs_pathnames:
                 del(self.included_files_labels[pathname])
         return True
+
+    def get_included_files(self, document):
+        return self.get_included_latex_files(document) | self.get_bibliography_files(document)
+
+    def get_included_latex_files(self, document):
+        dirname = document.get_dirname()
+
+        filenames = set()
+        for filename in document.content.get_included_latex_files():
+            filenames |= {os.path.normpath(os.path.join(dirname, filename))}
+
+        return filenames
+
+    def get_bibliography_files(self, document):
+        dirname = document.get_dirname()
+
+        filenames = set()
+        for filename in document.content.get_bibliography_files():
+            filenames |= {os.path.normpath(os.path.join(dirname, filename))}
+
+        return filenames
 
     def parse_latex_file(self, pathname):
         with open(pathname, 'r') as f:

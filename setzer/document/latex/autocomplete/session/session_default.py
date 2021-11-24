@@ -32,7 +32,7 @@ class SessionDefault(object):
 
         self.last_tabbed_command = None
         self.current_word = ""
-        self.current_word_offset = self.document.get_latex_command_at_cursor_offset()
+        self.current_word_offset = self.document.content.get_latex_command_at_cursor_offset()
 
     def on_insert_text(self, buffer, location_iter, text, text_length):
         pass
@@ -83,7 +83,7 @@ class SessionDefault(object):
             self.submit()
             return True
         else:
-            self.current_word = self.document.get_latex_command_at_cursor()
+            self.current_word = self.document.content.get_latex_command_at_cursor()
             i = self.get_number_of_matching_letters_on_tabpress(self.current_word, 0)
 
             command = self.autocomplete.view.list.get_selected_row().get_child().command
@@ -95,7 +95,7 @@ class SessionDefault(object):
                 if i >= 1:
                     text = (command['command'])[:len(self.current_word) + i]
                     self.last_tabbed_command = command['command'][1:]
-                    self.document.replace_latex_command_at_cursor(text, command['dotlabels'])
+                    self.document.content.replace_latex_command_at_cursor(text, command['dotlabels'])
                     return True
                 else:
                     current_word = (command['command'])[:len(self.current_word) + 1]
@@ -108,7 +108,7 @@ class SessionDefault(object):
                     else:
                         text = (command['command'])[:len(current_word) + i]
                         self.last_tabbed_command = command['command']
-                        self.document.replace_latex_command_at_cursor(text, command['dotlabels'])
+                        self.document.content.replace_latex_command_at_cursor(text, command['dotlabels'])
                         return True
 
     def get_number_of_matching_letters_on_tabpress(self, current_word, offset):
@@ -131,7 +131,7 @@ class SessionDefault(object):
 
     def update(self, can_show=False):
         if not self.current_word_changed_or_is_none():
-            self.current_word = self.document.get_latex_command_at_cursor()
+            self.current_word = self.document.content.get_latex_command_at_cursor()
             self.autocomplete.items = self.autocomplete.provider.get_items_for_completion_window(self.current_word, self.last_tabbed_command)
             if len(self.autocomplete.items) > 0:
                 if self.autocomplete.cursor_moved():
@@ -145,11 +145,11 @@ class SessionDefault(object):
             self.cancel()
 
     def get_offset(self):
-        self.current_word = self.document.get_latex_command_at_cursor()
+        self.current_word = self.document.content.get_latex_command_at_cursor()
         return len(self.current_word)
 
     def current_word_changed_or_is_none(self):
-        current_word_offset = self.document.get_latex_command_at_cursor_offset()
+        current_word_offset = self.document.content.get_latex_command_at_cursor_offset()
         if current_word_offset != self.current_word_offset:
             return True
         return (current_word_offset == None)
@@ -168,7 +168,7 @@ class SessionDefault(object):
         text = command['command']
         buffer = self.document.content.source_buffer
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        current_word = self.document.get_latex_command_at_cursor()
+        current_word = self.document.content.get_latex_command_at_cursor()
         start_iter = insert_iter.copy()
         start_iter.backward_chars(len(current_word))
 
@@ -176,7 +176,7 @@ class SessionDefault(object):
         if replace_previous_command_data[0]:
             self.insert_begin_end_replace(start_iter, insert_iter, replace_previous_command_data)
         else:
-            self.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
+            self.document.content.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
 
     def insert_begin_end_check_replace(self, insert_iter, text):
         line_part = self.document.content.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
@@ -237,13 +237,13 @@ class SessionDefault(object):
 
         replacement_pattern = self.get_replacement_pattern(text)
         if replacement_pattern == None:
-            self.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
+            self.document.content.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
         else:
             command_regex = ServiceLocator.get_regex_object(r'.*' + replacement_pattern[1])
             if command_regex.match(text):
                 self.insert_final_replace(text, replacement_pattern)
             else:
-                self.document.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
+                self.document.content.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
 
     def get_replacement_pattern(self, command):
         buffer = self.document.content.source_buffer
@@ -317,7 +317,7 @@ class SessionDefault(object):
                     text += '(' + inner_text + ')'
             count += 1
 
-        current_word = self.document.get_latex_command_at_cursor()
+        current_word = self.document.content.get_latex_command_at_cursor()
         offset = self.document.content.get_cursor_offset() - len(current_word)
         length = len(current_word) + match_object.end()
         self.document.content.replace_range(offset, length, text, indent_lines=True, select_dot=True)

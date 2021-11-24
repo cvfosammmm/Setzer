@@ -141,7 +141,7 @@ class Autocomplete(object):
                 self.start_session(session_begin_end.SessionBeginEnd(self, word_offset, word_len))
                 self.session.update(can_activate)
                 return
-            current_word = self.document.get_latex_command_at_cursor()
+            current_word = self.document.content.get_latex_command_at_cursor()
             if can_activate:
                 items = self.provider.get_items(current_word)
                 if not items: return

@@ -439,7 +439,8 @@ class Actions(object):
         if parameter == None: return
         document = self.workspace.get_active_document()
         if document.is_latex_document():
-            document.add_packages(parameter)
+            document.content.add_packages(parameter)
+            document.content.scroll_cursor_onscreen()
 
     @_assert_has_active_document
     def comment_uncomment(self, action, parameter=None):

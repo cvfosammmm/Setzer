@@ -90,25 +90,6 @@ class DocumentLaTeX(Document):
         shortcuts_manager.set_accels_for_insert_symbol_action(['\\\\\n'], ['<Control>Return'])
         shortcuts_manager.main_window.app.set_accels_for_action('win.comment-uncomment', ['<Control>K'])
 
-    def get_latex_command_at_cursor(self):
-        return self.content.get_latex_command_at_cursor()
-
-    def get_latex_command_at_cursor_offset(self):
-        return self.content.get_latex_command_at_cursor_offset()
-
-    def replace_latex_command_at_cursor(self, command, dotlabels, is_full_command=False):
-        self.content.replace_latex_command_at_cursor(command, dotlabels, is_full_command)
-
-    def add_packages(self, packages):
-        self.content.add_packages(packages)
-        self.content.scroll_cursor_onscreen()
-
-    def get_packages(self):
-        return self.content.get_packages()
-
-    def get_package_details(self):
-        return self.content.get_package_details()
-
     def get_matching_begin_end_offset(self, orig_offset):
         blocks = self.content.get_blocks()
         for block in blocks:
@@ -158,27 +139,6 @@ class DocumentLaTeX(Document):
             self.code_folding.set_initial_folded_regions(folded_regions)
         except AttributeError:
             pass
-
-    def get_included_files(self):
-        return self.get_included_latex_files() | self.get_bibliography_files()
-
-    def get_included_latex_files(self):
-        dirname = self.get_dirname()
-
-        filenames = set()
-        for filename in self.content.get_included_latex_files():
-            filenames |= {os.path.normpath(os.path.join(dirname, filename))}
-
-        return filenames
-
-    def get_bibliography_files(self):
-        dirname = self.get_dirname()
-
-        filenames = set()
-        for filename in self.content.get_included_latex_files():
-            filenames |= {os.path.normpath(os.path.join(dirname, filename))}
-
-        return filenames
 
     def change_build_state(self, state):
         self.build_state = state
@@ -275,10 +235,6 @@ class DocumentLaTeX(Document):
 
     def set_invert_pdf(self, invert_pdf):
         self.preview.set_invert_pdf(invert_pdf)
-
-    def set_synctex_position(self, position):
-        self.content.set_synctex_position(position)
-        self.content.scroll_cursor_onscreen()
 
     def get_file_ending(self):
         return 'tex'

@@ -145,13 +145,13 @@ class Document(Observable):
         return not os.path.isfile(self.filename)
 
     def cursor_inside_latex_command_or_at_end(self):
-        current_word = self.get_latex_command_at_cursor()
+        current_word = self.content.get_latex_command_at_cursor()
         if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
             return True
         return False
 
     def cursor_at_latex_command_end(self):
-        current_word = self.get_latex_command_at_cursor()
+        current_word = self.content.get_latex_command_at_cursor()
         if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
             return self.content.cursor_ends_word()
         return False
