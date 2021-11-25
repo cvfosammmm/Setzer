@@ -20,11 +20,14 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
-class PreviewZoomWidget(Gtk.HBox):
+class PreviewZoomWidget(Gtk.Revealer):
 
     def __init__(self):
-        Gtk.HBox.__init__(self)
-        self.get_style_context().add_class('zoom_widget')
+        Gtk.Revealer.__init__(self)
+        self.set_transition_type(Gtk.RevealerTransitionType.NONE)
+
+        self.box = Gtk.HBox()
+        self.box.get_style_context().add_class('zoom_widget')
         
         self.zoom_out_button = Gtk.Button.new_from_icon_name('zoom-out-symbolic', Gtk.IconSize.MENU)
         self.zoom_out_button.set_tooltip_text(_('Zoom out'))
@@ -57,9 +60,10 @@ class PreviewZoomWidget(Gtk.HBox):
         self.zoom_level_button.set_can_focus(False)
         self.zoom_level_button.add(self.label)
         
-        self.pack_start(self.zoom_out_button, False, False, 0)
-        self.pack_start(self.zoom_level_button, False, False, 0)
-        self.pack_start(self.zoom_in_button, False, False, 0)
+        self.box.pack_start(self.zoom_out_button, False, False, 0)
+        self.box.pack_start(self.zoom_level_button, False, False, 0)
+        self.box.pack_start(self.zoom_in_button, False, False, 0)
+        self.add(self.box)
         self.show_all()
 
 

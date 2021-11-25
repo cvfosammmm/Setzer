@@ -65,9 +65,9 @@ class ZoomWidget(object):
 
     def on_pdf_changed(self, preview):
         if self.preview.pdf_loaded:
-            self.view.show_all()
+            self.view.set_reveal_child(True)
         else:
-            self.view.hide()
+            self.view.set_reveal_child(False)
 
     def on_zoom_level_changed(self, preview):
         self.update_zoom_level()
