@@ -91,7 +91,7 @@ class ZoomWidget(object):
         self.preview.set_zoom_level_auto_offset(level)
 
     def update_zoom_level(self):
-        if self.preview.layouter.has_layout and self.preview.zoom_level != None:
+        if self.preview.zoom_level != None:
             self.view.label.set_text('{0:.1f}%'.format(self.preview.zoom_level * 100))
     
 
