@@ -19,13 +19,11 @@ import os.path
 import time
 
 from setzer.document.document import Document
-import setzer.document.content.content as content
 import setzer.document.build_system.build_system as build_system
 import setzer.document.build_widget.build_widget as build_widget
 import setzer.document.autocomplete.autocomplete as autocomplete
 import setzer.document.code_folding.code_folding as code_folding
 import setzer.document.preview.preview as preview
-import setzer.document.state_manager.state_manager_latex as state_manager_latex
 from setzer.helpers.observable import Observable
 
 
@@ -48,7 +46,6 @@ class DocumentLaTeX(Document):
         self.can_sync = False
 
         self.preview = preview.Preview(self)
-        self.state_manager = state_manager_latex.StateManagerLaTeX(self)
 
         self.build_log_data = {'items': list(), 'error_count': 0, 'warning_count': 0, 'badbox_count': 0}
         self.has_been_built = False
@@ -185,26 +182,9 @@ class DocumentLaTeX(Document):
     def invalidate_build_log(self):
         self.add_change_code('build_log_update')
 
-    def set_root_state(self, is_root, root_is_set):
-        self.is_root = is_root
-        self.root_is_set = root_is_set
-        self.add_change_code('is_root_changed', is_root)
-
     def set_has_visible_build_system(self, has_visible_build_system):
         if self.has_visible_build_system != has_visible_build_system:
             self.has_visible_build_system = has_visible_build_system
             self.add_change_code('build_system_visibility_change', has_visible_build_system)
-
-    def get_file_ending(self):
-        return 'tex'
-
-    def get_is_root(self):
-        return self.is_root
-
-    def is_latex_document(self):
-        return True
-
-    def is_bibtex_document(self):
-        return False
 
 

@@ -39,7 +39,13 @@ class SaveDocumentDialog(Dialog):
             self.view.set_current_name(os.path.basename(pathname))
             self.view.set_current_folder(document.get_dirname())
         else:
-            self.view.set_current_name('.' + document.get_file_ending())
+            if document.get_document_type() == 'latex':
+                ending = '.tex'
+            elif document.get_document_type() == 'bibtex':
+                ending = '.bib'
+            else:
+                ending = ''
+            self.view.set_current_name(ending)
         response = self.view.run()
         if response == Gtk.ResponseType.OK:
             filename = self.view.get_filename()

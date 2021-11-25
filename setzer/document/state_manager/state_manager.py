@@ -22,13 +22,14 @@ import os.path
 from setzer.app.service_locator import ServiceLocator
 
 
-class StateManagerLaTeX():
+class StateManager():
 
     def __init__(self, document):
         self.document = document
         self.data_pathname = ServiceLocator.get_config_folder()
 
     def load_document_state(self):
+        if not self.document.is_latex_document(): return
         if self.document.filename == None: return
 
         try: filehandle = open(self.data_pathname + '/' + base64.urlsafe_b64encode(str.encode(self.document.filename)).decode() + '.pickle', 'rb')
@@ -112,6 +113,8 @@ class StateManagerLaTeX():
         self.document.preview.scroll_to_position_from_offsets(xoffset, yoffset)
 
     def save_document_state(self):
+        if not self.document.is_latex_document(): return
+
         document_data = dict()
         document_data['save_date'] = self.document.save_date
         try:

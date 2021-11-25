@@ -18,6 +18,7 @@
 import os.path
 
 import setzer.document.content.content as content
+import setzer.document.state_manager.state_manager as state_manager
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
 import setzer.document.context_menu.context_menu as context_menu
@@ -28,6 +29,7 @@ import setzer.document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_prese
 import setzer.document.spellchecker.spellchecker as spellchecker
 import setzer.document.gutter.gutter as gutter
 import setzer.document.line_numbers.line_numbers as line_numbers
+import setzer.document.preview.preview as preview
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 
@@ -50,6 +52,7 @@ class Document(Observable):
         self.root_is_set = False
 
         self.content = content.Content(self.document_type)
+
         self.view = document_view.DocumentView(self)
         self.gutter = gutter.Gutter(self, self.view)
         self.search = search.Search(self, self.view, self.view.search_bar)
@@ -62,6 +65,8 @@ class Document(Observable):
         self.controller = document_controller.DocumentController(self, self.view)
 
         self.line_numbers = line_numbers.LineNumbers(self, self.view)
+
+        self.state_manager = state_manager.StateManager(self)
 
     def set_dark_mode(self, dark_mode):
         self.dark_mode = dark_mode
@@ -160,5 +165,19 @@ class Document(Observable):
         if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
             return self.content.cursor_ends_word()
         return False
+
+    def set_root_state(self, is_root, root_is_set):
+        self.is_root = is_root
+        self.root_is_set = root_is_set
+        self.add_change_code('is_root_changed', is_root)
+
+    def is_latex_document(self):
+        return self.document_type == 'latex'
+
+    def is_bibtex_document(self):
+        return self.document_type == 'bibtex'
+
+    def get_is_root(self):
+        return self.is_root
 
 

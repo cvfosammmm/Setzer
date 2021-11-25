@@ -19,10 +19,8 @@ import os.path
 import time
 import pickle
 
+from setzer.document.document import Document
 from setzer.document.document_latex import DocumentLaTeX
-from setzer.document.document_bibtex import DocumentBibTeX
-from setzer.document.document_latex_cls import DocumentLaTeXCls
-from setzer.document.document_latex_sty import DocumentLaTeXSty
 from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
@@ -144,21 +142,21 @@ class Workspace(Observable):
             self.set_active_document(document)
 
     def create_bibtex_document(self, activate=False):
-        document = DocumentBibTeX('bibtex')
+        document = Document('bibtex')
         self.add_document(document)
 
         if activate:
             self.set_active_document(document)
 
     def create_latex_cls_document(self, activate=False):
-        document = DocumentLaTeXCls('latex_cls')
+        document = Document('latex_cls')
         self.add_document(document)
 
         if activate:
             self.set_active_document(document)
 
     def create_latex_sty_document(self, activate=False):
-        document = DocumentLaTeXSty('latex_sty')
+        document = Document('latex_sty')
         self.add_document(document)
 
         if activate:
@@ -168,11 +166,11 @@ class Workspace(Observable):
         if filename[-4:] == '.tex':
             document = DocumentLaTeX('latex')
         elif filename[-4:] == '.bib':
-            document = DocumentBibTeX('bibtex')
+            document = Document('bibtex')
         elif filename[-4:] == '.cls':
-            document = DocumentLaTeXCls('latex_cls')
+            document = Document('latex_cls')
         elif filename[-4:] == '.sty':
-            document = DocumentLaTeXSty('latex_sty')
+            document = Document('latex_sty')
         else:
             return None
         document.set_filename(filename)
