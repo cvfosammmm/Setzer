@@ -122,7 +122,7 @@ class Document(Observable):
         if self.filename == None: return False
         if self.content == None: return False
 
-        text = self.get_text()
+        text = self.content.get_all_text()
         if text == None: return False
 
         dirname = os.path.dirname(self.filename)

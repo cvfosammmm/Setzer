@@ -294,7 +294,7 @@ class Preview(Observable):
                     return_value += self.resolve_annots(annot)
             return return_value
 
-    def update_fitting_zoom_levels(self):
+    def update_dynamic_zoom_levels(self):
         self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0]
 
         try: zoom_level_fit_to_width = (self.view.get_allocated_width() - 2 * int(self.layouter.horizontal_margin_points * self.layouter.ppp)) / (self.page_width * self.layouter.ppp)
