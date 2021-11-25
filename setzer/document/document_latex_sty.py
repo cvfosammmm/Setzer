@@ -19,7 +19,6 @@ import os.path
 import time
 
 from setzer.document.document import Document
-import setzer.document.content.content as content
 import setzer.document.state_manager.state_manager_latex_sty as state_manager_latex_sty
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
@@ -27,32 +26,10 @@ from setzer.app.service_locator import ServiceLocator
 
 class DocumentLaTeXSty(Document):
 
-    def __init__(self):
-        Document.__init__(self)
-
-        self.content = content.Content('latex_sty')
-        self.init_main_submodules()
+    def __init__(self, document_type):
+        Document.__init__(self, document_type)
 
         self.state_manager = state_manager_latex_sty.StateManagerLaTeXSty(self)
-
-    def init_shortcuts(self, shortcuts_manager):
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\textbf{', '}'], [])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\textit{', '}'], [])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\underline{', '}'], [])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\emph{', '}'], [])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\texttt{', '}'], [])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['$ ', ' $'], [])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\[ ', ' \\]'], [])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\begin{equation}\n\t', '\n\\end{equation}'], [])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['_{', '}'], [])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['^{', '}'], [])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\sqrt{', '}'], [])
-        shortcuts_manager.set_accels_for_insert_symbol_action(['\\frac{•}{•}'], [])
-        shortcuts_manager.set_accels_for_insert_symbol_action(['\\left •'], [])
-        shortcuts_manager.set_accels_for_insert_symbol_action(['\\right •'], [])
-        shortcuts_manager.set_accels_for_insert_symbol_action(['\\item •'], [])
-        shortcuts_manager.set_accels_for_insert_symbol_action(['\\\\\n'], [])
-        shortcuts_manager.main_window.app.set_accels_for_action('win.comment-uncomment', [])
 
     def get_file_ending(self):
         return 'sty'

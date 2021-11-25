@@ -137,28 +137,28 @@ class Workspace(Observable):
         self.add_change_code('document_removed', document)
 
     def create_latex_document(self, activate=False):
-        document = DocumentLaTeX()
+        document = DocumentLaTeX('latex')
         self.add_document(document)
 
         if activate:
             self.set_active_document(document)
 
     def create_bibtex_document(self, activate=False):
-        document = DocumentBibTeX()
+        document = DocumentBibTeX('bibtex')
         self.add_document(document)
 
         if activate:
             self.set_active_document(document)
 
     def create_latex_cls_document(self, activate=False):
-        document = DocumentLaTeXCls()
+        document = DocumentLaTeXCls('latex_cls')
         self.add_document(document)
 
         if activate:
             self.set_active_document(document)
 
     def create_latex_sty_document(self, activate=False):
-        document = DocumentLaTeXSty()
+        document = DocumentLaTeXSty('latex_sty')
         self.add_document(document)
 
         if activate:
@@ -166,13 +166,13 @@ class Workspace(Observable):
 
     def create_document_from_filename(self, filename, activate=False):
         if filename[-4:] == '.tex':
-            document = DocumentLaTeX()
+            document = DocumentLaTeX('latex')
         elif filename[-4:] == '.bib':
-            document = DocumentBibTeX()
+            document = DocumentBibTeX('bibtex')
         elif filename[-4:] == '.cls':
-            document = DocumentLaTeXCls()
+            document = DocumentLaTeXCls('latex_cls')
         elif filename[-4:] == '.sty':
-            document = DocumentLaTeXSty()
+            document = DocumentLaTeXSty('latex_sty')
         else:
             return None
         document.set_filename(filename)
@@ -211,7 +211,7 @@ class Workspace(Observable):
             self.add_change_code('new_active_document', document)
             self.update_sync_document()
             self.set_can_sync()
-            self.active_document.init_shortcuts(self.shortcuts)
+            self.shortcuts.set_document_type(self.active_document.get_document_type())
             self.set_build_log()
 
     def set_build_log(self):

@@ -31,11 +31,8 @@ from setzer.helpers.observable import Observable
 
 class DocumentLaTeX(Document):
 
-    def __init__(self):
-        Document.__init__(self)
-
-        self.content = content.Content('latex')
-        self.init_main_submodules()
+    def __init__(self, document_type):
+        Document.__init__(self, document_type)
 
         self.has_visible_build_system = False
 
@@ -69,26 +66,6 @@ class DocumentLaTeX(Document):
         self.code_folding = code_folding.CodeFolding(self)
 
         self.update_can_sync()
-
-    def init_shortcuts(self, shortcuts_manager):
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\textbf{', '}'], ['<Control>b'])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\textit{', '}'], ['<Control>i'])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\underline{', '}'], ['<Control>u'])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\emph{', '}'], ['<Control><Shift>e'])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\texttt{', '}'], ['<Control>m'])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['$ ', ' $'], ['<Control><Shift>m'])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\[ ', ' \\]'], ['<Alt><Shift>m'])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\begin{equation}\n\t', '\n\\end{equation}'], ['<Control><Shift>n'])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\begin{•}\n\t', '\n\\end{•}'], ['<Control>e'])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['_{', '}'], ['<Control><Shift>d'])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['^{', '}'], ['<Control><Shift>u'])
-        shortcuts_manager.set_accels_for_insert_before_after_action(['\\sqrt{', '}'], ['<Control><Shift>q'])
-        shortcuts_manager.set_accels_for_insert_symbol_action(['\\frac{•}{•}'], ['<Alt><Shift>f'])
-        shortcuts_manager.set_accels_for_insert_symbol_action(['\\left •'], ['<Control><Shift>l'])
-        shortcuts_manager.set_accels_for_insert_symbol_action(['\\right •'], ['<Control><Shift>r'])
-        shortcuts_manager.set_accels_for_insert_symbol_action(['\\item •'], ['<Control><Shift>i'])
-        shortcuts_manager.set_accels_for_insert_symbol_action(['\\\\\n'], ['<Control>Return'])
-        shortcuts_manager.main_window.app.set_accels_for_action('win.comment-uncomment', ['<Control>K'])
 
     def set_build_log_items(self, log_items):
         build_log_items = list()

@@ -17,6 +17,7 @@
 
 import os.path
 
+import setzer.document.content.content as content
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
 import setzer.document.context_menu.context_menu as context_menu
@@ -33,11 +34,12 @@ from setzer.app.service_locator import ServiceLocator
 
 class Document(Observable):
 
-    def __init__(self):
+    def __init__(self, document_type):
         Observable.__init__(self)
 
         self.font_manager = ServiceLocator.get_font_manager()
 
+        self.document_type = document_type
         self.displayname = ''
         self.filename = None
         self.save_date = None
@@ -47,7 +49,7 @@ class Document(Observable):
         self.is_root = False
         self.root_is_set = False
 
-    def init_main_submodules(self):
+        self.content = content.Content(self.document_type)
         self.view = document_view.DocumentView(self)
         self.gutter = gutter.Gutter(self, self.view)
         self.search = search.Search(self, self.view, self.view.search_bar)
@@ -64,6 +66,9 @@ class Document(Observable):
     def set_dark_mode(self, dark_mode):
         self.dark_mode = dark_mode
         self.content.set_use_dark_scheme(dark_mode)
+
+    def get_document_type(self):
+        return self.document_type
 
     def set_filename(self, filename):
         if filename == None:
