@@ -35,7 +35,12 @@ class PreviewView(Gtk.VBox):
         self.external_viewer_button.set_tooltip_text(_('External Viewer'))
         self.external_viewer_button.get_style_context().add_class('flat')
         self.external_viewer_button.set_can_focus(False)
-        self.action_bar.pack_end(self.external_viewer_button, False, False, 0)
+        self.external_viewer_button_revealer = Gtk.Revealer()
+        self.external_viewer_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
+        box = Gtk.HBox()
+        box.pack_start(self.external_viewer_button, False, False, 0)
+        self.external_viewer_button_revealer.add(box)
+        self.action_bar.pack_end(self.external_viewer_button_revealer, False, False, 0)
 
         self.pack_start(self.action_bar, False, False, 0)
 
