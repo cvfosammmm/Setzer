@@ -19,10 +19,10 @@ import os.path
 import time
 import pickle
 
-from setzer.document.latex.document_latex import DocumentLaTeX
-from setzer.document.bibtex.document_bibtex import DocumentBibTeX
-from setzer.document.latex_cls.document_latex_cls import DocumentLaTeXCls
-from setzer.document.latex_sty.document_latex_sty import DocumentLaTeXSty
+from setzer.document.document_latex import DocumentLaTeX
+from setzer.document.document_bibtex import DocumentBibTeX
+from setzer.document.document_latex_cls import DocumentLaTeXCls
+from setzer.document.document_latex_sty import DocumentLaTeXSty
 from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
