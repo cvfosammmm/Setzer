@@ -55,9 +55,6 @@ class DocumentLaTeXCls(Document):
         shortcuts_manager.set_accels_for_insert_symbol_action(['\\\\\n'], [])
         shortcuts_manager.main_window.app.set_accels_for_action('win.comment-uncomment', [])
 
-    def get_included_files(self):
-        return set()
-
     def get_file_ending(self):
         return 'cls'
 
