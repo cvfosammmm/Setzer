@@ -117,12 +117,8 @@ class PreviewLayouter(Observable):
 
         if self.view.get_allocated_width() < 300: return
         old_level = self.preview.zoom_level_fit_to_width
-        try:
-            level = (self.view.get_allocated_width() - 2 * int(self.horizontal_margin_points * self.ppp)) / (self.preview.page_width * self.ppp)
-        except TypeError:
-            pass
-        else:
-            self.preview.update_fit_to_width_zoom_level(level)
+
+        self.preview.update_fitting_zoom_levels()
 
         if old_level != None and self.preview.zoom_level == old_level:
             self.preview.set_zoom_fit_to_width()
