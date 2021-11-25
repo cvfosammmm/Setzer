@@ -68,7 +68,7 @@ class DocumentSwitcherPresenter(object):
     def on_filename_change(self, document, filename):
         self.show_document_name(document)
 
-    def on_displayname_change(self, document, displayname):
+    def on_displayname_change(self, document):
         self.show_document_name(document)
 
     def on_modified_changed(self, content):

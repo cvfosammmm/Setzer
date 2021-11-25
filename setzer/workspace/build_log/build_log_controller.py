@@ -61,11 +61,7 @@ class BuildLogController(object):
                     self.build_log.document.view.source_view.grab_focus()
             else:
                 if item[2] != None:
-                    document_candidate = self.build_log.workspace.get_document_by_filename(item[2])
-                    if document_candidate != None:
-                        self.build_log.workspace.set_active_document(document_candidate)
-                    else:
-                        self.build_log.workspace.create_document_from_filename(item[2], True)
+                    self.build_log.workspace.open_document_by_filename(item[2])
                     line_number = item[3] - 1
                     if line_number >= 0:
                         self.build_log.workspace.active_document.content.place_cursor(item[3] - 1)

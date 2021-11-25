@@ -270,10 +270,14 @@ class Actions(object):
         self.close_build_log_action.set_enabled(value)
 
     def on_new_latex_document_action_activated(self, action=None, parameter=None):
-        self.workspace.create_latex_document(activate=True)
+        document = self.workspace.create_latex_document()
+        self.workspace.add_document(document)
+        self.workspace.set_active_document(document)
 
     def on_new_bibtex_document_action_activated(self, action=None, parameter=None):
-        self.workspace.create_bibtex_document(activate=True)
+        document = self.workspace.create_bibtex_document()
+        self.workspace.add_document(document)
+        self.workspace.set_active_document(document)
 
     def on_open_document_dialog_action_activated(self, action=None, parameter=None):
         filename = DialogLocator.get_dialog('open_document').run()

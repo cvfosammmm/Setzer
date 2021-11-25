@@ -96,7 +96,10 @@ class Workspace(Observable):
                 self.set_active_document(document_candidate)
                 return document_candidate
             else:
-                return self.create_document_from_filename(filename, activate=True)
+                document = self.create_document_from_filename(filename)
+                if document != None:
+                    self.set_active_document(document)
+                return document
 
     def switch_to_earliest_open_document(self):
         document = self.get_earliest_active_document()
@@ -134,51 +137,33 @@ class Workspace(Observable):
                 self.set_active_document(candidate)
         self.add_change_code('document_removed', document)
 
-    def create_latex_document(self, activate=False):
-        document = DocumentLaTeX('latex')
-        self.add_document(document)
+    def create_latex_document(self):
+        return DocumentLaTeX('latex')
 
-        if activate:
-            self.set_active_document(document)
+    def create_bibtex_document(self):
+        return Document('bibtex')
 
-    def create_bibtex_document(self, activate=False):
-        document = Document('bibtex')
-        self.add_document(document)
+    def create_latex_cls_document(self):
+        return Document('latex_cls')
 
-        if activate:
-            self.set_active_document(document)
+    def create_latex_sty_document(self):
+        return Document('latex_sty')
 
-    def create_latex_cls_document(self, activate=False):
-        document = Document('latex_cls')
-        self.add_document(document)
-
-        if activate:
-            self.set_active_document(document)
-
-    def create_latex_sty_document(self, activate=False):
-        document = Document('latex_sty')
-        self.add_document(document)
-
-        if activate:
-            self.set_active_document(document)
-
-    def create_document_from_filename(self, filename, activate=False):
+    def create_document_from_filename(self, filename):
         if filename[-4:] == '.tex':
-            document = DocumentLaTeX('latex')
+            document = self.create_latex_document()
         elif filename[-4:] == '.bib':
-            document = Document('bibtex')
+            document = self.create_bibtex_document()
         elif filename[-4:] == '.cls':
-            document = Document('latex_cls')
+            document = self.create_latex_cls_document()
         elif filename[-4:] == '.sty':
-            document = Document('latex_sty')
+            document = self.create_latex_sty_document()
         else:
             return None
         document.set_filename(filename)
         response = document.populate_from_filename()
         if response != False:
             self.add_document(document)
-            if activate:
-                self.set_active_document(document)
             return document
         else:
             return None

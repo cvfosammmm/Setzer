@@ -44,6 +44,7 @@ class LaTeXLogParser():
 
         log_items = dict()
         for filename, text in doc_texts.items():
+            filename = ''.join(filename.splitlines())
             log_items[filename] = self.parse_log_text(filename, text)
 
         return log_items

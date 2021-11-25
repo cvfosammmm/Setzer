@@ -51,11 +51,6 @@ class DocumentChooser(object):
     def on_document_chooser_selection(self, box, row):
         self.view.popdown()
         filename = row.folder + '/' + row.filename
-        document_candidate = self.workspace.get_document_by_filename(filename)
-
-        if document_candidate != None:
-            self.workspace.set_active_document(document_candidate)
-        else:
-            self.workspace.create_document_from_filename(filename, activate=True)
+        self.workspace.open_document_by_filename(filename)
 
 
