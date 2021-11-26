@@ -409,17 +409,20 @@ class Workspace(Observable):
             self.set_sync_document(self.active_document)
         elif self.sync_document != None:
             self.sync_document.disconnect('is_root_changed', self.on_is_root_changed)
-            self.sync_document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
+            if self.sync_document.is_latex_document():
+                self.sync_document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
             self.sync_document = None
 
     def set_sync_document(self, document):
         if document != self.sync_document:
             if self.sync_document != None:
                 self.sync_document.disconnect('is_root_changed', self.on_is_root_changed)
-                self.sync_document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
+                if self.sync_document.is_latex_document():
+                    self.sync_document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
             self.sync_document = document
             self.sync_document.connect('is_root_changed', self.on_is_root_changed)
-            self.sync_document.build_system.connect('can_sync_changed', self.on_can_sync_changed)
+            if self.sync_document.is_latex_document():
+                self.sync_document.build_system.connect('can_sync_changed', self.on_can_sync_changed)
 
     def on_can_sync_changed(self, build_system, can_sync):
         self.set_can_sync()
@@ -438,6 +441,8 @@ class Workspace(Observable):
 
     def forward_sync(self, active_document=None):
         if active_document == None: return
+        if not self.sync_document.is_latex_document(): return
+
         if self.root_document != None:
             self.root_document.build_system.forward_sync(active_document)
         else:
