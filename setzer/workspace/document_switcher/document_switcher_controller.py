@@ -33,12 +33,14 @@ class DocumentSwitcherController(object):
     def observe_document_switcher_view(self):
         self.view.document_list.connect('add', self.on_doclist_row_added)
         self.view.document_list.connect('row-activated', self.on_doclist_row_activated)
+        self.view.document_list.connect('button-release-event', self.on_doclist_row_button_release)
         self.view.connect('closed', self.on_doclist_row_popdown)
         self.view.set_root_document_button.connect('clicked', self.set_selection_mode)
         self.view.unset_root_document_button.connect('clicked', self.unset_root_document)
 
     def on_doclist_row_added(self, doclist, row, data=None):
         row.document_close_button.connect('clicked', self.on_doclist_close_clicked, row.document)
+        row.document_close_button.connect('button-release-event', self.on_doclist_close_button_release, row.document)
 
     def on_doclist_row_activated(self, box, row, data=None):
         if self.view.in_selection_mode:
@@ -47,6 +49,16 @@ class DocumentSwitcherController(object):
         else:
             self.view.popdown()
             self.workspace.set_active_document(row.document)
+
+    def on_doclist_row_button_release(self, box, event, data=None):
+        if event.button != 2: return False
+        if self.view.in_selection_mode: return False
+
+        row = box.get_row_at_y(event.y)
+        if row.get_window() != event.window: return False
+
+        row.document_close_button.clicked()
+        return True
 
     def on_doclist_row_popdown(self, popover, data=None):
         self.document_switcher.set_mode('normal')
@@ -59,6 +71,13 @@ class DocumentSwitcherController(object):
     def unset_root_document(self, action, parameter=None):
         self.document_switcher.set_mode('normal')
         self.workspace.unset_root_document()
+
+    def on_doclist_close_button_release(self, button_object, event, document):
+        if event.button != 2: return False
+        if self.view.in_selection_mode: return False
+
+        button_object.clicked()
+        return True
 
     def on_doclist_close_clicked(self, button_object, document):
         if document.content.get_modified():
