@@ -66,14 +66,14 @@ class DocumentChooser(Gtk.Popover):
         self.notebook.insert_page(self.scrolled_window, None, 0)
         self.notebook.insert_page(self.not_found_slate, None, 1)
         self.notebook.set_current_page(0)
-        
+
         self.box = Gtk.VBox()
         self.box.pack_start(self.search_entry, False, False, 0)
         self.box.pack_start(self.notebook, True, True, 0)
         self.box.pack_start(self.other_documents_button, False, False, 0)
         self.box.show_all()
         self.add(self.box)
-        
+
         self.get_style_context().add_class('documentchooser')
         
     def update_autosuggest(self, items):
