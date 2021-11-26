@@ -66,6 +66,8 @@ class HelpPanel(Observable):
         self.view.stack.add_named(self.view.content, 'content')
         self.view.stack.add_named(self.view.search_widget, 'search')
 
+        self.view.show_all()
+
         self.controller = help_panel_controller.HelpPanelController(self, self.view)
         self.presenter = help_panel_presenter.HelpPanelPresenter(self, self.view)
 
