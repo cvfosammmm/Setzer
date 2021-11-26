@@ -132,7 +132,7 @@ class PreviewPresenter(object):
             last_page = min(int((offset + view_height) // self.layouter.page_height) + additional_pages, self.preview.number_of_pages)
             ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, first_page * (self.layouter.page_height + self.layouter.page_gap)))
 
-            for page_number in range(first_page, last_page + 1):
+            for page_number in range(first_page, last_page):
                 self.draw_page_background_and_outline(ctx, border_color)
                 self.draw_rendered_page(ctx, page_number)
                 self.draw_synctex_rectangles(ctx, page_number)
