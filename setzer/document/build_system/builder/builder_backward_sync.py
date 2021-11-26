@@ -50,18 +50,21 @@ class BuilderBackwardSync(builder_build.BuilderBuild):
             self.cleanup_files(query)
             self.throw_build_error(query, 'interpreter_not_working', 'synctex missing')
             return
-        self.process.wait()
-        raw = self.process.communicate()[0].decode('utf-8')
-        self.process = None
 
-        match = self.backward_synctex_regex.search(raw)
+        self.process.wait()
+
         result = None
-        if match != None:
-            result = dict()
-            result['filename'] = match.group(1)
-            result['line'] = max(int(match.group(2)) - 1, 0)
-            result['word'] = query.backward_sync_data['word']
-            result['context'] = query.backward_sync_data['context']
+        if self.process != None:
+            raw = self.process.communicate()[0].decode('utf-8')
+            self.process = None
+
+            match = self.backward_synctex_regex.search(raw)
+            if match != None:
+                result = dict()
+                result['filename'] = match.group(1)
+                result['line'] = max(int(match.group(2)) - 1, 0)
+                result['word'] = query.backward_sync_data['word']
+                result['context'] = query.backward_sync_data['context']
 
         if result != None:
             query.backward_sync_result = result

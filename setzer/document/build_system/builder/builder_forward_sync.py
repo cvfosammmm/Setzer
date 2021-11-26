@@ -53,19 +53,22 @@ class BuilderForwardSync(builder_build.BuilderBuild):
             self.cleanup_files(query)
             self.throw_build_error(query, 'interpreter_not_working', 'synctex missing')
             return
+
         self.process.wait()
-        raw = self.process.communicate()[0].decode('utf-8')
-        self.process = None
 
         rectangles = list()
-        for match in self.forward_synctex_regex.finditer(raw):
-            rectangle = dict()
-            rectangle['page'] = int(match.group(1))
-            rectangle['h'] = float(match.group(2))
-            rectangle['v'] = float(match.group(3))
-            rectangle['width'] = float(match.group(4))
-            rectangle['height'] = float(match.group(5))
-            rectangles.append(rectangle)
+        if self.process != None:
+            raw = self.process.communicate()[0].decode('utf-8')
+            self.process = None
+
+            for match in self.forward_synctex_regex.finditer(raw):
+                rectangle = dict()
+                rectangle['page'] = int(match.group(1))
+                rectangle['h'] = float(match.group(2))
+                rectangle['v'] = float(match.group(3))
+                rectangle['width'] = float(match.group(4))
+                rectangle['height'] = float(match.group(5))
+                rectangles.append(rectangle)
 
         if len(rectangles) > 0:
             query.forward_sync_result = rectangles
