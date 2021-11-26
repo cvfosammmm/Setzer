@@ -61,25 +61,24 @@ class StateManager():
 
     def load_build_log_state(self, document_data):
         try:
-            self.document.build_log_data = document_data['build_log_data']
+            self.document.build_system.build_log_data = document_data['build_log_data']
         except KeyError:
-            self.document.build_log_data = {'items': list(), 'error_count': 0, 'warning_count': 0, 'badbox_count': 0}
+            self.document.build_system.build_log_data = {'items': list(), 'error_count': 0, 'warning_count': 0, 'badbox_count': 0}
         try:
-            self.document.has_been_built = document_data['has_been_built']
+            self.document.build_system.document_has_been_built = document_data['has_been_built']
         except KeyError:
-            self.document.has_been_built = list()
+            self.document.build_system.document_has_been_built = False
         try:
-            self.document.build_time = document_data['build_time']
+            self.document.build_system.build_time = document_data['build_time']
         except KeyError:
-            self.document.build_time = None
+            self.document.build_system.build_time = None
 
     def load_synctex_state(self, document_data):
         try:
-            self.document.has_synctex_file = document_data['has_synctex_file']
+            self.document.build_system.has_synctex_file = document_data['has_synctex_file']
         except KeyError:
-            self.document.has_synctex_file = False
-        self.document.has_synctex_file
-        self.document.update_can_sync()
+            self.document.build_system.has_synctex_file = False
+        self.document.build_system.update_can_sync()
 
     def load_preview_state(self, document_data):
         try:
@@ -122,10 +121,10 @@ class StateManager():
         except AttributeError:
             folded_regions = list()
         document_data['folded_regions'] = folded_regions
-        document_data['build_log_data'] = self.document.build_log_data
-        document_data['has_been_built'] = self.document.has_been_built
-        document_data['build_time'] = self.document.build_time
-        document_data['has_synctex_file'] = self.document.has_synctex_file
+        document_data['build_log_data'] = self.document.build_system.build_log_data
+        document_data['has_been_built'] = self.document.build_system.document_has_been_built
+        document_data['build_time'] = self.document.build_system.build_time
+        document_data['has_synctex_file'] = self.document.build_system.has_synctex_file
 
         document_data['pdf_filename'] = self.document.preview.pdf_filename
         document_data['pdf_date'] = self.document.preview.pdf_date

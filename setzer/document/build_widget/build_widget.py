@@ -44,21 +44,17 @@ class BuildWidget(Observable):
         self.set_clean_button_state()
 
         self.document.connect('filename_change', self.on_filename_change)
-        self.document.connect('cleaned_up_build_files', self.on_cleaned_up_build_files)
-        self.document.connect('build_state_change', self.on_build_state_change)
-        self.document.connect('build_state', self.on_build_state)
+        self.document.build_system.connect('build_state_change', self.on_build_state_change)
+        self.document.build_system.connect('build_state', self.on_build_state)
         self.settings.connect('settings_changed', self.on_settings_changed)
 
     def on_filename_change(self, document, filename):
         self.set_clean_button_state()
 
-    def on_cleaned_up_build_files(self, document):
-        self.set_clean_button_state()
-
-    def on_build_state_change(self, document, build_state):
+    def on_build_state_change(self, build_system, build_state):
         document = self.document
-        if document.build_mode in ['build', 'build_and_forward_sync']:
-            state = document.get_build_state()
+        if document.build_system.build_mode in ['build', 'build_and_forward_sync']:
+            state = document.build_system.get_build_state()
             selfstate = self.build_button_state
             if state == 'idle' or state == '':
                 build_button_state = ('idle', int(time.time()*1000))
@@ -77,6 +73,7 @@ class BuildWidget(Observable):
                     self.view.build_button.hide()
                     self.view.stop_button.show_all()
                     self.view.reset_timer()
+                    self.view.label.set_text('0:00')
                     self.view.show_timer()
                     self.view.start_timer()
         else:
@@ -87,7 +84,7 @@ class BuildWidget(Observable):
             self.view.stop_button.hide()
         self.set_clean_button_state()
 
-    def on_build_state(self, document, message):
+    def on_build_state(self, build_system, message):
         self.show_message(message)
 
     def on_settings_changed(self, settings, parameter):
@@ -108,14 +105,14 @@ class BuildWidget(Observable):
             else:
                 return False
         if self.document.filename != None:
-            self.document.build_and_forward_sync()
+            self.document.build_system.build_and_forward_sync()
 
     def on_stop_build_button_click(self, button_object=None):
         document = self.document
         if document != None:
             if document.filename != None:
-                self.document.stop_building()
-    
+                self.document.build_system.stop_building()
+
     def set_clean_button_state(self):
         def get_clean_button_state(document):
             file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.fdb_latexmk', '.fls', '.idx' ,'.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc', '.ist', '.glo', '.glg', '.acn', '.alg', '.gls', '.acr', '.bcf', '.run.xml']
@@ -135,8 +132,15 @@ class BuildWidget(Observable):
 
     def on_clean_button_click(self, button_object=None):
         document = self.document
-        if document != None:
-            if document.filename != None:
-                self.document.cleanup_build_files()
+        if self.document == None: return
+        if self.document.filename == None: return
+
+        filename_base = os.path.splitext(document.get_filename())[0]
+        file_endings = ['.aux', '.blg', '.bbl', '.dvi', '.xdv', '.fdb_latexmk', '.fls', '.idx' ,'.ilg', '.ind', '.log', '.nav', '.out', '.snm', '.synctex.gz', '.toc', '.ist', '.glo', '.glg', '.acn', '.alg', '.gls', '.acr', '.bcf', '.run.xml', '.out.ps']
+        for ending in file_endings:
+            try: os.remove(filename_base + ending)
+            except FileNotFoundError: pass
+
+        self.set_clean_button_state()
 
 

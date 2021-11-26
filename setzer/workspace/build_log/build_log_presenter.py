@@ -139,8 +139,8 @@ class BuildLogPresenter(object):
 
     def set_header_data(self, errors, warnings, tried_building=False):
         if tried_building:
-            if self.build_log.document.build_time != None:
-                time_string = '{:.2f}s, '.format(self.build_log.document.build_time)
+            if self.build_log.document.build_system.build_time != None:
+                time_string = '{:.2f}s, '.format(self.build_log.document.build_system.build_time)
             else:
                 time_string = ''
 

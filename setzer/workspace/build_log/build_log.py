@@ -37,21 +37,21 @@ class BuildLog(Observable):
         self.presenter = build_log_presenter.BuildLogPresenter(self, self.view)
         self.controller = build_log_controller.BuildLogController(self, self.view)
 
-    def on_build_log_update(self, document):
-        if document == self.document:
+    def on_build_log_update(self, build_system):
+        if build_system.document == self.document:
             self.update_items(True)
 
     def set_document(self, document):
         if self.document != None:
-            self.document.disconnect('build_log_update', self.on_build_log_update)
+            self.document.build_system.disconnect('build_log_update', self.on_build_log_update)
 
         self.document = document
         self.update_items()
-        self.document.connect('build_log_update', self.on_build_log_update)
+        self.document.build_system.connect('build_log_update', self.on_build_log_update)
 
     #@timer
     def update_items(self, just_built=False):
-        self.items = self.document.build_log_data['items']
+        self.items = self.document.build_system.build_log_data['items']
         self.signal_finish_adding()
 
         if just_built and self.has_items(self.settings.get_value('preferences', 'autoshow_build_log')):
@@ -65,22 +65,22 @@ class BuildLog(Observable):
             self.add_change_code('hover_item_changed')
 
     def signal_finish_adding(self):
-        self.add_change_code('build_log_finished_adding', self.document.has_been_built)
+        self.add_change_code('build_log_finished_adding', self.document.build_system.document_has_been_built)
 
     def has_items(self, types='all'):
         return self.count_items(types) > 0
 
     def count_items(self, types='all'):
         if types == 'errors':
-            return self.document.get_error_count()
+            return self.document.build_system.get_error_count()
         elif types == 'errors_warnings':
-            return self.document.get_error_count() + self.document.get_warning_count()
+            return self.document.build_system.get_error_count() + self.document.build_system.get_warning_count()
         elif types == 'all':
-            return self.document.get_error_count() + self.document.get_warning_count() + self.document.get_badbox_count()
+            return self.document.build_system.get_error_count() + self.document.build_system.get_warning_count() + self.document.build_system.get_badbox_count()
         elif types == 'warnings':
-            return self.document.get_warning_count()
+            return self.document.build_system.get_warning_count()
         elif types == 'badboxes':
-            return self.document.get_badbox_count()
+            return self.document.build_system.get_badbox_count()
         return 0
 
 

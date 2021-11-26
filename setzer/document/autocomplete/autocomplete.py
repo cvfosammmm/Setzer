@@ -66,6 +66,10 @@ class Autocomplete(object):
         self.document.content.connect('buffer_changed', self.on_buffer_changed)
         self.document.content.connect('insert_mark_set', self.on_insert_mark_set)
         self.document.content.connect('insert_mark_deleted', self.on_insert_mark_deleted)
+        self.document.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_adjustment_value_changed)
+        self.document.view.scrolled_window.get_hadjustment().connect('value-changed', self.on_adjustment_value_changed)
+        self.document.view.source_view.connect('focus-out-event', self.on_focus_out)
+        self.document.view.source_view.connect('focus-in-event', self.on_focus_in)
 
     def on_text_inserted(self, content, parameter):
         buffer, location_iter, text, text_length = parameter

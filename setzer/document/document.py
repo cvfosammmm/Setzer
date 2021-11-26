@@ -30,6 +30,11 @@ import setzer.document.spellchecker.spellchecker as spellchecker
 import setzer.document.gutter.gutter as gutter
 import setzer.document.line_numbers.line_numbers as line_numbers
 import setzer.document.preview.preview as preview
+import setzer.document.build_system.build_system as build_system
+import setzer.document.build_widget.build_widget as build_widget
+import setzer.document.autocomplete.autocomplete as autocomplete
+import setzer.document.code_folding.code_folding as code_folding
+import setzer.document.preview.preview as preview
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 
@@ -67,6 +72,13 @@ class Document(Observable):
         self.line_numbers = line_numbers.LineNumbers(self, self.view)
 
         self.state_manager = state_manager.StateManager(self)
+
+    def add_latex_only_modules(self):
+        self.preview = preview.Preview(self)
+        self.autocomplete = autocomplete.Autocomplete(self, self.view)
+        self.build_system = build_system.BuildSystem(self)
+        self.build_widget = build_widget.BuildWidget(self)
+        self.code_folding = code_folding.CodeFolding(self)
 
     def set_dark_mode(self, dark_mode):
         self.dark_mode = dark_mode

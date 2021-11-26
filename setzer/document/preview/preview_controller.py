@@ -186,6 +186,6 @@ class PreviewController(object):
             rect.y2 = max(min(y, self.preview.page_height), 0)
             word = poppler_page.get_selected_text(Poppler.SelectionStyle.WORD, rect)
             context = poppler_page.get_selected_text(Poppler.SelectionStyle.LINE, rect)
-        self.preview.document.backward_sync(page, x, y, word, context)
+        self.preview.document.build_system.backward_sync(page, x, y, word, context)
 
 

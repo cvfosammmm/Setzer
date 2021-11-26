@@ -20,7 +20,6 @@ import time
 import pickle
 
 from setzer.document.document import Document
-from setzer.document.document_latex import DocumentLaTeX
 from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
@@ -90,16 +89,17 @@ class Workspace(Observable):
         self.controller = workspace_controller.WorkspaceController(self)
 
     def open_document_by_filename(self, filename):
-        if filename != None:
-            document_candidate = self.get_document_by_filename(filename)
-            if document_candidate != None:
-                self.set_active_document(document_candidate)
-                return document_candidate
-            else:
-                document = self.create_document_from_filename(filename)
-                if document != None:
-                    self.set_active_document(document)
-                return document
+        if filename == None: return None
+
+        document_candidate = self.get_document_by_filename(filename)
+        if document_candidate != None:
+            self.set_active_document(document_candidate)
+            return document_candidate
+        else:
+            document = self.create_document_from_filename(filename)
+            if document != None:
+                self.set_active_document(document)
+            return document
 
     def switch_to_earliest_open_document(self):
         document = self.get_earliest_active_document()
@@ -138,7 +138,9 @@ class Workspace(Observable):
         self.add_change_code('document_removed', document)
 
     def create_latex_document(self):
-        return DocumentLaTeX('latex')
+        document = Document('latex')
+        document.add_latex_only_modules()
+        return document
 
     def create_bibtex_document(self):
         return Document('bibtex')
@@ -184,13 +186,13 @@ class Workspace(Observable):
             self.set_can_sync()
             previously_active_document = self.active_document
             self.active_document = document
-            self.set_has_visible_build_system(previously_active_document)
+            self.update_preview_visibility(previously_active_document)
         else:
             self.active_document = document
 
         if self.active_document != None:
             self.active_document.set_last_activated(time.time())
-            self.set_has_visible_build_system(self.active_document)
+            self.update_preview_visibility(self.active_document)
             self.add_change_code('new_active_document', document)
             self.update_sync_document()
             self.set_can_sync()
@@ -371,7 +373,7 @@ class Workspace(Observable):
                     document.set_root_state(True, True)
                 else:
                     document.set_root_state(False, True)
-                self.set_has_visible_build_system(document)
+                self.update_preview_visibility(document)
             self.add_change_code('root_state_change', 'one_document')
             self.update_sync_document()
             self.set_can_sync()
@@ -380,9 +382,9 @@ class Workspace(Observable):
     def unset_root_document(self):
         for document in self.open_latex_documents:
             document.set_root_state(False, False)
-            self.set_has_visible_build_system(document)
+            self.update_preview_visibility(document)
         self.root_document = None
-        self.set_has_visible_build_system(self.active_document)
+        self.update_preview_visibility(self.active_document)
         self.add_change_code('root_state_change', 'no_root_document')
         self.update_sync_document()
         self.set_can_sync()
@@ -391,14 +393,14 @@ class Workspace(Observable):
     def get_root_document(self):
         return self.root_document
 
-    def set_has_visible_build_system(self, document):
+    def update_preview_visibility(self, document):
         if document != None and document.is_latex_document():
             if document == self.root_document:
-                document.set_has_visible_build_system(True)
+                document.preview.set_is_visible(True)
             elif document == self.active_document and self.root_document == None:
-                document.set_has_visible_build_system(True)
+                document.preview.set_is_visible(True)
             else:
-                document.set_has_visible_build_system(False)
+                document.preview.set_is_visible(False)
 
     def update_sync_document(self):
         if self.root_document != None:
@@ -407,19 +409,19 @@ class Workspace(Observable):
             self.set_sync_document(self.active_document)
         elif self.sync_document != None:
             self.sync_document.disconnect('is_root_changed', self.on_is_root_changed)
-            self.sync_document.disconnect('can_sync_changed', self.on_can_sync_changed)
+            self.sync_document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
             self.sync_document = None
 
     def set_sync_document(self, document):
         if document != self.sync_document:
             if self.sync_document != None:
                 self.sync_document.disconnect('is_root_changed', self.on_is_root_changed)
-                self.sync_document.disconnect('can_sync_changed', self.on_can_sync_changed)
+                self.sync_document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
             self.sync_document = document
             self.sync_document.connect('is_root_changed', self.on_is_root_changed)
-            self.sync_document.connect('can_sync_changed', self.on_can_sync_changed)
+            self.sync_document.build_system.connect('can_sync_changed', self.on_can_sync_changed)
 
-    def on_can_sync_changed(self, document, can_sync):
+    def on_can_sync_changed(self, build_system, can_sync):
         self.set_can_sync()
 
     def on_is_root_changed(self, document, is_root):
@@ -429,7 +431,7 @@ class Workspace(Observable):
         can_sync = False
         if self.sync_document != None:
             if self.sync_document.is_latex_document():
-                if self.sync_document.can_sync:
+                if self.sync_document.build_system.can_sync:
                     can_sync = True
         self.can_sync = can_sync
         self.add_change_code('update_sync_state')
@@ -437,9 +439,9 @@ class Workspace(Observable):
     def forward_sync(self, active_document=None):
         if active_document == None: return
         if self.root_document != None:
-            self.root_document.forward_sync(active_document)
+            self.root_document.build_system.forward_sync(active_document)
         else:
-            active_document.forward_sync(active_document)
+            active_document.build_system.forward_sync(active_document)
 
     def set_show_sidebar(self, show_sidebar):
         if show_sidebar != self.show_sidebar:

@@ -83,24 +83,24 @@ class Preview(Observable):
         self.paging_widget = paging_widget.PagingWidget(self, self.layouter)
         self.zoom_widget = zoom_widget.ZoomWidget(self)
 
-        self.document.connect('build_system_visibility_change', self.on_build_system_visibility_change)
         self.document.connect('filename_change', self.on_filename_change)
         self.document.connect('pdf_updated', self.on_pdf_updated)
 
-    def on_build_system_visibility_change(self, document, is_visible):
-        self.is_visible = is_visible
-        if self.is_visible:
-            self.page_renderer.activate()
-        else:
-            self.page_renderer.deactivate()
-        thread.start_new_thread(self.update_links, ())
+    def set_is_visible(self, is_visible):
+        if is_visible != self.is_visible:
+            self.is_visible = is_visible
+            if self.is_visible:
+                self.page_renderer.activate()
+            else:
+                self.page_renderer.deactivate()
+            thread.start_new_thread(self.update_links, ())
 
     def on_filename_change(self, document, filename):
         self.set_pdf_filename_from_tex_filename(filename)
         self.set_pdf_date()
         self.load_pdf()
         if self.pdf_loaded:
-            self.document.update_can_sync()
+            self.document.build_system.update_can_sync()
             if self.zoom_level == None:
                 self.set_zoom_fit_to_width()
 
@@ -108,7 +108,7 @@ class Preview(Observable):
         self.set_pdf_date()
         self.load_pdf()
         if self.pdf_loaded:
-            self.document.update_can_sync()
+            self.document.build_system.update_can_sync()
             if self.zoom_level == None:
                 self.set_zoom_fit_to_width()
 
@@ -144,7 +144,7 @@ class Preview(Observable):
         self.yoffset = 0
         self.zoom_level = None
         self.add_change_code('pdf_changed')
-        self.document.update_can_sync()
+        self.document.build_system.update_can_sync()
 
     def set_position_from_offsets(self, xoffset=None, yoffset=None):
         value_changed = False
@@ -221,7 +221,7 @@ class Preview(Observable):
                 current_min -= 20
                 self.vertical_margin = current_min
             self.pdf_loaded = True
-            self.document.update_can_sync()
+            self.document.build_system.update_can_sync()
             self.add_change_code('pdf_changed')
             with self.links_lock:
                 self.links = dict()
