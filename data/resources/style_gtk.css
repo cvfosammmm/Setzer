@@ -6,8 +6,8 @@ paned.sidebar_paned {
     background-color: mix(@theme_base_color, @theme_bg_color, 0.5);
 }
 button.new-document-menu-button {
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 /*

@@ -62,27 +62,29 @@ class HeaderBar(Gtk.HeaderBar):
         self.open_document_blank_button.set_action_name('win.open-document-dialog')
         self.pack_start(self.open_document_blank_button)
 
+        popover = Gtk.PopoverMenu()
+        stack = popover.get_child()
+        box = Gtk.VBox()
+        self.pmb.set_box_margin(box)
+        self.pmb.add_action_button(box, _('New LaTeX Document'), 'win.new-latex-document', keyboard_shortcut=_('Ctrl') + '+N')
+        self.pmb.add_action_button(box, _('New BibTeX Document'), 'win.new-bibtex-document')
+        stack.add_named(box, 'main')
+        box.show_all()
+
         box = Gtk.HBox()
-        self.new_latex_document_button = Gtk.Button.new_from_icon_name('document-new-symbolic', Gtk.IconSize.BUTTON)
-        self.new_latex_document_button.set_tooltip_text(_('Create a new LaTeX document') + ' (' + _('Ctrl') + '+N)')
-        self.new_latex_document_button.set_action_name('win.new-latex-document')
-        box.pack_start(self.new_latex_document_button, False, False, 0)
+        box.pack_start(Gtk.Image.new_from_icon_name('document-new-symbolic', Gtk.IconSize.MENU), False, False, 0)
+        box.pack_end(Gtk.Image.new_from_icon_name('pan-down-symbolic', Gtk.IconSize.MENU), False, False, 0)
+        box.set_size_request(40, -1)
 
         self.new_document_button = Gtk.MenuButton()
-        image = Gtk.Image.new_from_icon_name('pan-down-symbolic', Gtk.IconSize.BUTTON)
-        self.new_document_button.set_image(image)
+        self.new_document_button.add(box)
+        self.new_document_button.set_use_popover(True)
         self.new_document_button.set_can_focus(False)
         self.new_document_button.set_tooltip_text(_('Create a new document'))
         self.new_document_button.get_style_context().add_class('new-document-menu-button')
-        box.pack_start(self.new_document_button, False, False, 0)
-        box.get_style_context().add_class('linked')
+        self.new_document_button.set_popover(popover)
 
-        self.pack_start(box)
-
-        self.new_document_menu = Gio.Menu()
-        self.new_document_menu.append_item(Gio.MenuItem.new(_('New LaTeX Document'), 'win.new-latex-document'))
-        self.new_document_menu.append_item(Gio.MenuItem.new(_('New BibTeX Document'), 'win.new-bibtex-document'))
-        self.new_document_button.set_menu_model(self.new_document_menu)
+        self.pack_start(self.new_document_button)
 
         # workspace menu
         self.session_file_buttons = list()
