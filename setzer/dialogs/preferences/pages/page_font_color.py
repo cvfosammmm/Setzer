@@ -19,6 +19,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('GtkSource', '4')
 from gi.repository import Gtk
+from gi.repository import GLib
 from gi.repository import Pango
 from gi.repository import GtkSource
 
@@ -44,16 +45,21 @@ class PageFontColor(object):
         self.view.style_switcher_dark_mode.set_active_id(self.settings.get_value('preferences', 'syntax_scheme_dark_mode'))
         self.view.style_switcher_dark_mode.connect('changed', self.on_style_switcher_changed, True)
 
-        self.view.style_switcher_label_light.connect('clicked', self.set_style_switcher_page, 'light')
-        self.view.style_switcher_label_dark.connect('clicked', self.set_style_switcher_page, 'dark')
+        dark_mode_state = self.settings.get_value('preferences', 'prefer_dark_mode')
+        self.view.option_dark_mode.set_active(dark_mode_state)
+        self.view.option_dark_mode.connect('toggled', self.on_dark_mode_toggle_toggled)
+        self.view.style_switcher_stack.set_visible_child_name('dark' if dark_mode_state else 'light')
+        self.update_font_color_preview()
+        self.update_remove_button()
+
+        ip_state = self.settings.get_value('preferences', 'invert_pdf')
+        self.view.option_invert_preview.set_active(ip_state)
+        self.view.option_invert_preview.connect('toggled', self.on_ip_toggle_toggled)
 
         source_language_manager = ServiceLocator.get_source_language_manager()
         source_language = source_language_manager.get_language('latex')
         self.view.source_buffer.set_language(source_language)
         self.update_font_color_preview()
-
-        if ServiceLocator.get_is_dark_mode():
-            self.view.style_switcher_label_dark.clicked()
 
         self.view.add_scheme_button.connect('clicked', self.on_add_scheme_button_clicked)
         self.view.remove_scheme_button.connect('clicked', self.on_remove_scheme_button_clicked)
@@ -127,13 +133,21 @@ class PageFontColor(object):
                 os.remove(filename)
                 self.update_switchers()
 
-    def set_style_switcher_page(self, button, pagename):
-        self.view.style_switcher_label_light.get_style_context().remove_class('active')
-        self.view.style_switcher_label_dark.get_style_context().remove_class('active')
-        button.get_style_context().add_class('active')
-        self.view.style_switcher_stack.set_visible_child_name(pagename)
+    def on_dark_mode_toggle_toggled(self, button):
+        workspace = ServiceLocator.get_workspace()
+        new_state = not workspace.actions.toggle_dark_mode_action.get_state().get_boolean()
+        workspace.actions.toggle_dark_mode_action.set_state(GLib.Variant.new_boolean(new_state))
+        workspace.set_dark_mode(new_state)
+
+        self.view.style_switcher_stack.set_visible_child_name('dark' if new_state else 'light')
         self.update_font_color_preview()
         self.update_remove_button()
+
+    def on_ip_toggle_toggled(self, button):
+        workspace = ServiceLocator.get_workspace()
+        new_state = not workspace.actions.toggle_invert_pdf_action.get_state().get_boolean()
+        workspace.actions.toggle_invert_pdf_action.set_state(GLib.Variant.new_boolean(new_state))
+        workspace.set_invert_pdf(new_state)
 
     def get_scheme_id_from_file(self, pathname):
         tree = ET.parse(pathname)
@@ -183,7 +197,7 @@ class PageFontColor(object):
         source_style_scheme_light = source_style_scheme_manager.get_scheme(name)
         name = self.settings.get_value('preferences', 'syntax_scheme_dark_mode')
         source_style_scheme_dark = source_style_scheme_manager.get_scheme(name)
-        if self.view.style_switcher_label_light.get_style_context().has_class('active'):
+        if self.view.style_switcher_stack.get_visible_child_name() == 'light':
             self.view.source_buffer.set_style_scheme(source_style_scheme_light)
             self.view.preview_wrapper.get_style_context().remove_class('light-bg')
             self.view.preview_wrapper.get_style_context().remove_class('dark-bg')
@@ -236,26 +250,23 @@ class PageFontColorView(Gtk.VBox):
         self.font_chooser_revealer.add(vbox)
         self.pack_start(self.font_chooser_revealer, False, False, 0)
 
-        self.style_switcher_label_light = Gtk.Button()
-        self.style_switcher_label_light.set_label(_('Light Color Scheme'))
-        self.style_switcher_label_light.get_child().set_xalign(0)
-        self.style_switcher_label_light.set_margin_bottom(6)
-        self.style_switcher_label_light.get_style_context().add_class('style-switcher-label')
-        self.style_switcher_label_light.get_style_context().add_class('active')
+        label = Gtk.Label()
+        label.set_markup('<b>' + _('Colors') + '</b>')
+        label.set_xalign(0)
+        label.set_margin_bottom(6)
+        self.pack_start(label, False, False, 0)
 
-        self.style_switcher_label_dark = Gtk.Button()
-        self.style_switcher_label_dark.set_label(_('Dark Color Scheme'))
-        self.style_switcher_label_dark.get_child().set_xalign(0)
-        self.style_switcher_label_dark.set_margin_bottom(6)
-        self.style_switcher_label_dark.get_style_context().add_class('style-switcher-label')
+        self.option_dark_mode = Gtk.CheckButton(_('Dark Mode'))
+        self.pack_start(self.option_dark_mode, False, False, 0)
+        self.option_invert_preview = Gtk.CheckButton(_('Invert Colors in .pdf-Preview'))
+        self.pack_start(self.option_invert_preview, False, False, 0)
 
-        self.style_switcher_label_box = Gtk.HBox()
-        self.style_switcher_label_box.pack_start(self.style_switcher_label_light, False, False, 0)
-        separator = Gtk.Label(' | ')
-        separator.set_margin_bottom(6)
-        self.style_switcher_label_box.pack_start(separator, False, False, 0)
-        self.style_switcher_label_box.pack_start(self.style_switcher_label_dark, False, False, 0)
-        self.pack_start(self.style_switcher_label_box, False, False, 0)
+        label = Gtk.Label()
+        label.set_markup(_('Editor Color Scheme:'))
+        label.set_xalign(0)
+        label.set_margin_top(18)
+        label.set_margin_bottom(6)
+        self.pack_start(label, False, False, 0)
 
         self.style_switcher = Gtk.ComboBoxText()
         self.style_switcher_dark_mode = Gtk.ComboBoxText()
@@ -267,12 +278,6 @@ class PageFontColorView(Gtk.VBox):
         box.set_margin_bottom(18)
         box.pack_start(self.style_switcher_stack, False, False, 0)
         self.pack_start(box, False, False, 0)
-
-        label = Gtk.Label()
-        label.set_markup('<b>' + _('Manage Color Schemes') + '</b>')
-        label.set_xalign(0)
-        label.set_margin_bottom(6)
-        self.pack_start(label, False, False, 0)
 
         box = Gtk.HBox()
         box.set_margin_bottom(18)
