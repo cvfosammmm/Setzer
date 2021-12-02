@@ -18,10 +18,10 @@
 import gi
 gi.require_version('GtkSource', '4')
 from gi.repository import GtkSource
+from gi.repository import GLib
 
 import re
 import os, os.path
-from xdg.BaseDirectory import xdg_config_home
 import xml.etree.ElementTree as ET
 
 import setzer.app.settings as settingscontroller
@@ -132,7 +132,7 @@ class ServiceLocator(object):
         return ServiceLocator.packages_dict
 
     def get_config_folder():
-        return os.path.join(xdg_config_home, 'setzer')
+        return os.path.join(GLib.get_user_config_dir(), 'setzer')
 
     def init_setzer_version(setzer_version):
         ServiceLocator.setzer_version = setzer_version
