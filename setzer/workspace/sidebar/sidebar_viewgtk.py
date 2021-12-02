@@ -95,8 +95,6 @@ class SidebarPageSymbolsList(SidebarPage):
 
             image = Gtk.Image.new_from_icon_name('sidebar-' + symbol[0] + '-symbolic', 0)
             image.set_pixel_size(int(size * 1.5))
-            #button = Gtk.Button()
-            #button.set_image(image)
             tooltip_text = symbol[1]
             if symbol[2] != None: 
                 tooltip_text += ' (' + _('Package') + ': ' + symbol[2] + ')'
