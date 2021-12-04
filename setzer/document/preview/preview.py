@@ -22,11 +22,11 @@ from gi.repository import Poppler
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdftypes import PDFObjRef
 from gi.repository import GLib
+from gi.repository import Gio
 
 import os.path
 import math
 import time
-import subprocess
 import _thread as thread
 
 import setzer.document.preview.preview_viewgtk as preview_view
@@ -405,6 +405,4 @@ class Preview(Observable):
 
     def open_external_viewer(self):
         if self.pdf_filename != None:
-            subprocess.call(["xdg-open", self.pdf_filename])
-
-
+            Gio.AppInfo.launch_default_for_uri('file:' + self.pdf_filename)
