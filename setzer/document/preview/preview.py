@@ -396,12 +396,14 @@ class Preview(Observable):
         self.set_zoom_level(zoom_level, xoffset, yoffset)
 
     def set_zoom_level(self, level, xoffset=0, yoffset=0):
-        if level != self.zoom_level:
-            self.zoom_level = level
-            position = self.get_position_by_screen_offset(xoffset, yoffset)
-            self.presenter.scroll_to_position(position)
-            self.add_change_code('zoom_level_changed')
-            self.zoom_set = True
+        if level == None: return
+        if level == self.zoom_level: return
+
+        self.zoom_level = level
+        position = self.get_position_by_screen_offset(xoffset, yoffset)
+        self.presenter.scroll_to_position(position)
+        self.add_change_code('zoom_level_changed')
+        self.zoom_set = True
 
     def open_external_viewer(self):
         if self.pdf_filename != None:

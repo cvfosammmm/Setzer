@@ -44,7 +44,7 @@ class Shortcuts(object):
     def setup_shortcuts(self):
         self.accel_group = Gtk.AccelGroup()
         self.main_window.add_accel_group(self.accel_group)
-        
+
         c_mask = Gdk.ModifierType.CONTROL_MASK
         s_mask = Gdk.ModifierType.SHIFT_MASK
         a_mask = Gdk.ModifierType.MOD1_MASK
