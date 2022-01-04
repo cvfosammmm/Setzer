@@ -95,7 +95,7 @@ class Preview(Observable):
                 self.page_renderer.deactivate()
             thread.start_new_thread(self.update_links, ())
 
-    def on_filename_change(self, document, filename):
+    def on_filename_change(self, document, filename=None):
         self.set_pdf_filename_from_tex_filename(filename)
         self.set_pdf_date()
         self.load_pdf()

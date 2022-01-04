@@ -65,7 +65,7 @@ class DocumentSwitcherPresenter(object):
     def on_docswitcher_mode_change(self, document_switcher, mode):
         self.activate_mode(mode)
 
-    def on_filename_change(self, document, filename):
+    def on_filename_change(self, document, filename=None):
         self.show_document_name(document)
 
     def on_displayname_change(self, document):
