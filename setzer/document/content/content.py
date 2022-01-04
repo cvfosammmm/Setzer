@@ -391,7 +391,7 @@ class Content(Observable):
                 self.source_buffer.insert(self.source_buffer.get_iter_at_line(line_number), '%')
         else:
             for line_number in line_numbers:
-                line = self.source_buffer.get_line(line_number)
+                line = self.get_line(line_number)
                 offset = len(line) - len(line.lstrip())
                 start = self.source_buffer.get_iter_at_line(line_number)
                 start.forward_chars(offset)
