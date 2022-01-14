@@ -164,7 +164,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.pmb.add_separator(box)
         self.pmb.add_action_button(box, _('Preferences'), 'win.show-preferences-dialog')
         self.pmb.add_separator(box)
-        self.pmb.add_action_button(box, _('Keyboard Shortcuts'), 'win.show-shortcuts-window')
+        self.pmb.add_action_button(box, _('Keyboard Shortcuts'), 'win.show-shortcuts-window', keyboard_shortcut=_('Ctrl') + '+?')
         self.pmb.add_action_button(box, _('About'), 'win.show-about-dialog')
         self.pmb.add_separator(box)
         self.pmb.add_action_button(box, _('Close All Documents'), 'win.close-all-documents')
