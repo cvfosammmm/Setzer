@@ -48,7 +48,7 @@ class BuildWidget(Observable):
         self.document.build_system.connect('build_state', self.on_build_state)
         self.settings.connect('settings_changed', self.on_settings_changed)
 
-    def on_filename_change(self, document, filename):
+    def on_filename_change(self, document, filename=None):
         self.set_clean_button_state()
 
     def on_build_state_change(self, build_system, build_state):

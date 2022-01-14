@@ -32,7 +32,7 @@ class DocumentSwitcherItem():
         self.document.connect('is_root_changed', self.on_is_root_changed)
         self.document.content.connect('modified_changed', self.on_modified_changed)
 
-    def on_filename_change(self, document, filename):
+    def on_filename_change(self, document, filename=None):
         self.view.set_name(self.document.get_displayname(), self.modified_state)
 
     def on_modified_changed(self, content):
