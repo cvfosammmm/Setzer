@@ -95,9 +95,9 @@ class AnimatedPaned(object):
                 start = self.get_position()
                 start_time = frame_clock.get_frame_time()
                 end_time = start_time + 1000 * duration
-                self.animation_id = self.add_tick_callback(self.set_position_on_tick, (self.show_widget, start_time, end_time, start, end))
                 self.child_set_property(self.animated_widget, 'shrink', True)
                 self.fix_animated_widget_size()
+                self.animation_id = self.add_tick_callback(self.set_position_on_tick, (self.show_widget, start_time, end_time, start, end))
         else:
             if self.show_widget:
                 self.child_set_property(self.animated_widget, 'shrink', False)
@@ -112,7 +112,7 @@ class AnimatedPaned(object):
     def set_position_on_tick(self, paned, frame_clock_cb, user_data):
         show_widget, start_time, end_time, start, end = user_data
         now = frame_clock_cb.get_frame_time()
-        if now < end_time and paned.get_position != end:
+        if now < end_time and paned.get_position() != end:
             t = self.ease((now - start_time) / (end_time - start_time))
             paned.set_position(int(start + t * (end - start)))
             return True

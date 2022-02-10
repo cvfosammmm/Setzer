@@ -46,18 +46,22 @@ class WorkspaceController(object):
         show_preview = toggle_button.get_active()
         if show_preview:
             show_help = False
-            self.main_window.headerbar.help_toggle.set_active(False)
         else:
             show_help = self.workspace.show_help
         self.workspace.set_show_preview_or_help(show_preview, show_help)
+
+        if show_preview:
+            self.main_window.headerbar.help_toggle.set_active(False)
 
     def on_help_toggle_toggled(self, toggle_button, parameter=None):
         show_help = toggle_button.get_active()
         if show_help:
             show_preview = False
-            self.main_window.headerbar.preview_toggle.set_active(False)
         else:
             show_preview = self.workspace.show_preview
         self.workspace.set_show_preview_or_help(show_preview, show_help)
+
+        if show_help:
+            self.main_window.headerbar.preview_toggle.set_active(False)
 
 

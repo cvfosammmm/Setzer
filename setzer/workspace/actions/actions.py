@@ -404,8 +404,9 @@ class Actions(object):
 
     @_assert_has_active_document
     def insert_before_after(self, action, parameter):
-        self.workspace.get_active_document().content.insert_before_after(parameter[0], parameter[1])
-        self.workspace.get_active_document().content.scroll_cursor_onscreen()
+        active_document = self.workspace.get_active_document()
+        active_document.content.insert_before_after(parameter[0], parameter[1])
+        active_document.content.scroll_cursor_onscreen()
 
     @_assert_has_active_document
     def insert_symbol(self, action, parameter):
