@@ -106,11 +106,11 @@ class BuildSystem(Observable):
             self.can_sync = False
         self.add_change_code('can_sync_changed', self.can_sync)
 
-    def forward_sync(self, document):
+    def forward_sync(self, active_document):
         self.forward_sync_arguments = dict()
-        self.forward_sync_arguments['filename'] = self.document.get_filename()
-        self.forward_sync_arguments['line'] = self.document.content.get_cursor_line_number() + 1
-        self.forward_sync_arguments['line_offset'] = self.document.content.get_cursor_line_offset() + 1
+        self.forward_sync_arguments['filename'] = active_document.get_filename()
+        self.forward_sync_arguments['line'] = active_document.content.get_cursor_line_number() + 1
+        self.forward_sync_arguments['line_offset'] = active_document.content.get_cursor_line_offset() + 1
         if self.can_sync:
             self.set_build_mode('forward_sync')
             self.start_building()
@@ -121,11 +121,11 @@ class BuildSystem(Observable):
             self.set_build_mode('backward_sync')
             self.start_building()
 
-    def build_and_forward_sync(self):
+    def build_and_forward_sync(self, active_document):
         self.forward_sync_arguments = dict()
-        self.forward_sync_arguments['filename'] = self.document.get_filename()
-        self.forward_sync_arguments['line'] = self.document.content.get_cursor_line_number() + 1
-        self.forward_sync_arguments['line_offset'] = self.document.content.get_cursor_line_offset() + 1
+        self.forward_sync_arguments['filename'] = active_document.get_filename()
+        self.forward_sync_arguments['line'] = active_document.content.get_cursor_line_number() + 1
+        self.forward_sync_arguments['line_offset'] = active_document.content.get_cursor_line_offset() + 1
         self.set_build_mode('build_and_forward_sync')
         self.start_building()
 

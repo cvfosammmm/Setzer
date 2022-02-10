@@ -105,7 +105,9 @@ class BuildWidget(Observable):
             else:
                 return False
         if self.document.filename != None:
-            self.document.build_system.build_and_forward_sync()
+            active_document = ServiceLocator.get_workspace().get_active_document()
+            if active_document != None:
+                self.document.build_system.build_and_forward_sync(active_document)
 
     def on_stop_build_button_click(self, button_object=None):
         document = self.document
