@@ -48,6 +48,12 @@ class BuildWidget(Observable):
         self.document.build_system.connect('build_state', self.on_build_state)
         self.settings.connect('settings_changed', self.on_settings_changed)
 
+        self.view.build_timer.connect('notify::child-revealed', self.on_revealer_finished)
+
+    def on_revealer_finished(self, revealer, params):
+        if not revealer.get_child_revealed():
+            self.view.build_timer.hide()
+
     def on_filename_change(self, document, filename=None):
         self.set_clean_button_state()
 
@@ -61,13 +67,12 @@ class BuildWidget(Observable):
             else:
                 build_button_state = ('building', int(time.time()*1000))
 
-            self.view.build_timer.show_all()
             if selfstate[0] != build_button_state[0]:
                 self.build_button_state = build_button_state
                 if build_button_state[0] == 'idle':
+                    self.view.stop_button.hide()
                     self.view.build_button.set_sensitive(True)
                     self.view.build_button.show_all()
-                    self.view.stop_button.hide()
                 else:
                     self.view.build_button.set_sensitive(False)
                     self.view.build_button.hide()

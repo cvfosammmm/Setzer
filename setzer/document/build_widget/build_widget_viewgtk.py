@@ -55,13 +55,14 @@ class BuildWidgetView(Gtk.HBox):
         self.build_timer_wrapper.pack_start(self.label, False, False, 0)
         self.build_timer_wrapper.pack_start(Gtk.DrawingArea(), True, True, 0)
         self.build_timer.add(self.build_timer_wrapper)
+        self.build_timer_wrapper.show_all()
+
+        self.show()
 
         self.pack_start(self.build_timer, False, False, 0)
-        self.pack_start(self.build_button, False, False, 0)
-        self.pack_start(self.stop_button, False, False, 0)
-        self.pack_start(self.clean_button, False, False, 0)
-
-        self.show_all()
+        self.pack_end(self.clean_button, False, False, 0)
+        self.pack_end(self.build_button, False, False, 0)
+        self.pack_end(self.stop_button, False, False, 0)
         
     def start_timer(self):
         self.timer_active = True
@@ -82,8 +83,9 @@ class BuildWidgetView(Gtk.HBox):
         self.timer = 0
         self.label.set_text('')
         self.build_timer.set_size_request(-1, -1)
-    
+
     def show_timer(self):
+        self.build_timer.show()
         self.state_change_count += 1
         GObject.timeout_add(5, self.reveal, self.state_change_count)
         
