@@ -144,6 +144,8 @@ class Sidebar(object):
             offset += page.get_allocated_height() + label.get_allocated_height() + 1
 
     def on_flowbox_clicked(self, flowbox, event, symbols_list):
+        if event.button != 1: return
+
         child = flowbox.get_child_at_pos(event.x, event.y)
 
         if child != None and self.workspace.active_document != None:
