@@ -235,55 +235,66 @@ box.buildlog > box button {
 ** sidebar
 */
 
-box.sidebar toolbar {
+overlay.sidebar {
+    background-color: @theme_base_color;
+}
+overlay.sidebar toolbar {
     padding: 0px;
     margin: 0px;
     background-color: @theme_base_color;
-    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
-box.sidebar toolbar toolbutton {
+overlay.sidebar toolbar toolbutton {
     padding: 0px;
     margin: 0px;
 }
-box.sidebar toolbar button {
+overlay.sidebar toolbar button {
     margin: 0px;
     padding: 6px;
     border-width: 0px;
     border-radius: 0px;
     box-shadow: none;
 }
-box.sidebar toolbar toolbutton.first button {
-    border-top-width: 0px;
-}
-box.sidebar toolbar button:checked {
+overlay.sidebar toolbar button:checked {
     background: mix(@theme_base_color, @borders, 0.45);
 }
-box.sidebar toolbar button:active {
+overlay.sidebar toolbar button:active {
     background: mix(@theme_base_color, @borders, 0.45);
 }
-box.sidebar > box {
+overlay.sidebar label {
+    padding: 9px 8px 8px 9px;
     background-color: @theme_base_color;
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
-box.sidebar flowbox flowboxchild {
+overlay.sidebar label.overlay {
+    border-bottom-width: 0px;
+}
+overlay.sidebar box.tabs-box {
+    background-color: @theme_base_color;
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
+    padding-bottom: 0px;
+}
+overlay.sidebar box.tabs-box.no-border {
+    border-bottom-width: 0px;
+    padding-bottom: 1px;
+}
+overlay.sidebar flowbox {
+    background-color: mix(@theme_base_color, @theme_bg_color, 0.7);
+    padding-bottom: 36px;
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
+}
+overlay.sidebar flowbox flowboxchild {
     padding: 0px;
 }
-box.sidebar flowbox flowboxchild image {
+overlay.sidebar flowbox flowboxchild image {
     color: @theme_fg_color;
-    background-color: @theme_base_color;
-    border: 1px solid mix(@borders, @theme_base_color, 0.68);
-    border-left-width: 0px;
-    border-top-width: 0px;
+    background-color: mix(@theme_base_color, @theme_bg_color, 0.7);
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
+    border-right: 1px solid mix(@theme_base_color, @borders, 0.5);
     margin: 0px;
     padding: 5px;
 }
-box.sidebar flowbox flowboxchild image:active {
-    background-color: mix(@theme_bg_color, @theme_base_color, 0.5);
-}
-box.sidebar flowbox flowboxchild image.no_right_border {
+overlay.sidebar flowbox flowboxchild image.no_right_border {
     border-right-width: 0px;
-}
-box.sidebar flowbox flowboxchild image.no_bottom_border {
-    border-bottom-width: 0px;
 }
 
 /*

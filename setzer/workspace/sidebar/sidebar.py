@@ -21,11 +21,13 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
+from gi.repository import GObject
 
 import setzer.workspace.sidebar.sidebar_viewgtk as sidebar_view
 from setzer.app.service_locator import ServiceLocator
 
 import math
+import time
 
 
 class Sidebar(object):
@@ -34,6 +36,8 @@ class Sidebar(object):
     def __init__(self, workspace):
         self.view = ServiceLocator.get_main_window().sidebar
         self.workspace = workspace
+
+        self.scroll_to = None
 
         # tabbed pages: name, icon name, tooltip, widget
         self.pages = list()
@@ -49,45 +53,95 @@ class Sidebar(object):
                            'sidebar_view.SidebarPageSymbolsList("misc_math", 42)'])
         self.pages.append(['misc_text', 'own-symbols-misc-text-symbolic', _('Misc. Symbols'), 
                            'sidebar_view.SidebarPageSymbolsList("misc_text", 38)'])
-        self.page_views = list()
         self.init_page_stack()
 
         self.view.show_all()
 
-    def init_page_stack(self):
-        self.tab_buttons = list()
-        for page in self.pages:
-            if len(self.tab_buttons) == 0:
-                button = Gtk.RadioToolButton()
-            else:
-                button = Gtk.RadioToolButton.new_from_widget(self.tab_buttons[0])
-            button.set_icon_name(page[1])
-            button.set_focus_on_click(False)
-            button.set_tooltip_text(page[2])
-            if len(self.tab_buttons) == 0:
-                button.get_style_context().add_class('first')
+        self.view.connect('size-allocate', self.on_scroll_or_resize)
+        self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_scroll_or_resize)
+        self.view.next_button.connect('clicked', self.on_next_button_clicked)
+        self.view.prev_button.connect('clicked', self.on_prev_button_clicked)
 
-            self.tab_buttons.append(button)
-            self.view.tabs.insert(button, -1)
+    def init_page_stack(self):
+        for page in reversed(self.pages):
             page_view = eval(page[3])
-            self.view.stack.add_named(page_view, page[0])
-            self.init_symbols_page(page_view)
-            self.page_views.append(page_view)
+            label = Gtk.Label(page[2])
+            label.set_xalign(0)
+            label.set_halign(Gtk.Align.START)
+            label.set_valign(Gtk.Align.START)
+            label.set_size_request(108, -1)
+            label.get_style_context().add_class('overlay')
+            self.view.add_overlay(label)
+            self.view.reorder_overlay(label, 0)
+            self.view.set_overlay_pass_through(label, True)
+            self.view.labels.append(label)
+            self.view.page_views.append(page_view)
+            self.view.vbox.pack_end(page_view, False, False, 0)
+            placeholder = Gtk.Label(page[2])
+            placeholder.set_xalign(0)
+            if page != self.pages[0]:
+                self.view.vbox.pack_end(placeholder, False, False, 0)
             page_view.connect('size-allocate', self.on_stack_size_allocate)
-            button.connect('clicked', self.on_tab_button_clicked, page[0])
-            page_view.flowbox.connect('button-press-event', self.on_flowbox_clicked, page_view.symbols)
+            page_view.connect('button-press-event', self.on_flowbox_clicked, page_view.symbols)
+            self.init_symbols_page(page_view)
 
     def init_symbols_page(self, page_view):
         for symbol in page_view.symbols:
             image = symbol[5]
             image.set_size_request(page_view.symbol_width + 11, -1)
 
-    '''
-    *** signal handlers for buttons in sidebar
-    '''
-    
-    def on_tab_button_clicked(self, button, page_name):
-        self.view.stack.set_visible_child_name(page_name)
+    def on_scroll_or_resize(self, *args):
+        scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
+        if scrolling_offset == 0:
+            self.view.prev_button.set_sensitive(False)
+        else:
+            self.view.prev_button.set_sensitive(True)
+        final_label_offset = self.view.vbox.get_allocated_height() - self.view.page_views[0].get_allocated_height()
+        if scrolling_offset >= final_label_offset:
+            self.view.next_button.set_sensitive(False)
+        else:
+            self.view.next_button.set_sensitive(True)
+        self.update_labels()
+
+    def update_labels(self):
+        offset = 0
+        scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
+        self.view.tabs_box.get_style_context().remove_class('no-border')
+        for key, page in enumerate(reversed(self.view.page_views)):
+            label = self.view.labels[len(self.view.page_views) - key - 1]
+            margin_top = max(0, offset - int(scrolling_offset))
+            label.set_margin_top(margin_top)
+            if margin_top > 0 and margin_top <= label.get_allocated_height():
+                self.view.tabs_box.get_style_context().add_class('no-border')
+            offset += page.get_allocated_height() + label.get_allocated_height() + 1
+
+    def on_next_button_clicked(self, button):
+        offset = 0
+        scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
+        for key, page in enumerate(reversed(self.view.page_views)):
+            label = self.view.labels[len(self.view.page_views) - key - 1]
+            if offset >= scrolling_offset - (page.get_allocated_height() + label.get_allocated_height()):
+                new_offset = offset + (page.get_allocated_height() + label.get_allocated_height()) + 1
+                if key < len(self.view.page_views) - 1:
+                    self.scroll_view(new_offset)
+                break
+            offset += page.get_allocated_height() + label.get_allocated_height() + 1
+
+    def on_prev_button_clicked(self, button):
+        offset = 0
+        old_offset = 0
+        scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
+        for key, page in enumerate(reversed(self.view.page_views)):
+            label = self.view.labels[len(self.view.page_views) - key - 1]
+            if offset >= scrolling_offset - (page.get_allocated_height() + label.get_allocated_height()):
+                if offset == int(scrolling_offset):
+                    new_offset = old_offset
+                else:
+                    new_offset = offset
+                self.scroll_view(new_offset)
+                break
+            old_offset = offset
+            offset += page.get_allocated_height() + label.get_allocated_height() + 1
 
     def on_flowbox_clicked(self, flowbox, event, symbols_list):
         child = flowbox.get_child_at_pos(event.x, event.y)
@@ -108,33 +162,38 @@ class Sidebar(object):
             if isinstance(symbol_page, sidebar_view.SidebarPageSymbolsList):
                 width_with_border = symbol_page.symbol_width + 11
                 width_avail = allocation.width
-                symbols_per_line = width_avail // width_with_border
-                number_of_lines = math.ceil(len(symbol_page.symbols) / symbols_per_line)
+                symbols_per_line = int((width_avail) / width_with_border)
 
-                height_with_border = symbol_page.symbols[0][5].get_preferred_height()[0]
-                for line_no in range(1, number_of_lines):
-                    # get max for each element
-                    max_height = 0
-                    for el_no in range(0, symbols_per_line):
-                        try:
-                            symbol = symbol_page.symbols[(line_no * symbols_per_line) + 1 + el_no]
-                        except IndexError:
-                            el_height = 0
-                        else:
-                            el_height = symbol[5].get_preferred_height()[0]
-                            if symbol[5].get_style_context().has_class('no_bottom_border'):
-                                el_height += 1
-                        if el_height > max_height: max_height = el_height
-                    height_with_border += max_height
-                height_avail = (allocation.height + 1) # +1px for removed child borders
                 for number, image in enumerate(symbol_page.symbols):
                     if (number % symbols_per_line) == (symbols_per_line - 1):
                         image[5].get_style_context().add_class('no_right_border')
                     else:
                         image[5].get_style_context().remove_class('no_right_border')
-                    if (number >= (number_of_lines - 1) * symbols_per_line) and (height_avail <= height_with_border):
-                        image[5].get_style_context().add_class('no_bottom_border')
-                    else:
-                        image[5].get_style_context().remove_class('no_bottom_border')
+
+    def scroll_view(self, position, duration=0.2):
+        adjustment = self.view.scrolled_window.get_vadjustment()
+        self.scroll_to = {'position_start': adjustment.get_value(), 'position_end': position, 'time_start': time.time(), 'duration': duration}
+        self.view.scrolled_window.set_kinetic_scrolling(False)
+        GObject.timeout_add(15, self.do_scroll)
+
+    def do_scroll(self):
+        if self.scroll_to != None:
+            adjustment = self.view.scrolled_window.get_vadjustment()
+            time_elapsed = time.time() - self.scroll_to['time_start']
+            if self.scroll_to['duration'] == 0:
+                time_elapsed_percent = 1
+            else:
+                time_elapsed_percent = time_elapsed / self.scroll_to['duration']
+            if time_elapsed_percent >= 1:
+                adjustment.set_value(self.scroll_to['position_end'])
+                self.scroll_to = None
+                self.view.scrolled_window.set_kinetic_scrolling(True)
+                return False
+            else:
+                adjustment.set_value(self.scroll_to['position_start'] * (1 - self.ease(time_elapsed_percent)) + self.scroll_to['position_end'] * self.ease(time_elapsed_percent))
+                return True
+        return False
+
+    def ease(self, time): return (time - 1)**3 + 1
 
 
