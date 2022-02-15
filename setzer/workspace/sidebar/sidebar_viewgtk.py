@@ -49,13 +49,13 @@ class Sidebar(Gtk.Overlay):
         self.tabs.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
 
         self.prev_button = Gtk.ToolButton()
-        self.prev_button.set_icon_name('go-previous-symbolic')
+        self.prev_button.set_icon_name('go-up-symbolic')
         self.prev_button.set_focus_on_click(False)
         self.prev_button.set_tooltip_text(_('Back'))
         self.tabs.insert(self.prev_button, -1)
 
         self.next_button = Gtk.ToolButton()
-        self.next_button.set_icon_name('go-next-symbolic')
+        self.next_button.set_icon_name('go-down-symbolic')
         self.next_button.set_focus_on_click(False)
         self.next_button.set_tooltip_text(_('Forward'))
         self.tabs.insert(self.next_button, -1)
