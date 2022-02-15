@@ -67,7 +67,9 @@ class Settings(Observable):
         
         self.defaults['app_include_bibtex_file_dialog'] = dict()
         self.defaults['app_include_bibtex_file_dialog']['presets'] = None
-        
+
+        self.defaults['app_recent_symbols'] = {'symbols': []}
+
         self.defaults['preferences'] = dict()
         self.defaults['preferences']['cleanup_build_files'] = True
         self.defaults['preferences']['autoshow_build_log'] = 'errors_warnings'
@@ -133,7 +135,7 @@ class Settings(Observable):
         else:
             try: self.data = pickle.load(filehandle)
             except EOFError: False
-            
+
         return True
         
     def pickle(self):

@@ -67,7 +67,23 @@ class Sidebar(Gtk.Overlay):
 
         self.labels = list()
         self.page_views = list()
-        
+
+        self.label_recent = Gtk.Label(_('Recent'))
+        self.label_recent.set_xalign(0)
+        self.label_recent.set_halign(Gtk.Align.START)
+        self.label_recent.set_valign(Gtk.Align.START)
+        self.label_recent.set_size_request(108, -1)
+        self.label_recent.get_style_context().add_class('overlay')
+        self.add_overlay(self.label_recent)
+        self.reorder_overlay(self.label_recent, 0)
+        self.set_overlay_pass_through(self.label_recent, True)
+
+        self.page_view_recent = Gtk.FlowBox()
+        self.page_view_recent.set_homogeneous(False)
+        self.page_view_recent.set_valign(Gtk.Align.START)
+        self.page_view_recent.set_max_children_per_line(20)
+        self.vbox.pack_start(self.page_view_recent, False, False, 0)
+
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
                      
@@ -104,7 +120,7 @@ class SidebarPageSymbolsList(SidebarPage):
             self.symbols.append([symbol_tag.attrib['file'].rsplit('.')[0], symbol_tag.attrib['command'], symbol_tag.attrib.get('package', None), int(symbol_tag.attrib.get('original_width', 10)), int(symbol_tag.attrib.get('original_height', 10))])
         
         self.init_symbols_list()
-        
+
     def init_symbols_list(self):
         for symbol in self.symbols:
             size = max(symbol[3], symbol[4])

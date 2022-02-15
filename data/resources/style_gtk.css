@@ -294,7 +294,7 @@ overlay.sidebar flowbox flowboxchild image {
     padding: 5px;
 }
 overlay.sidebar flowbox flowboxchild image.no_right_border {
-    border-right-width: 0px;
+    border-right: 1px solid mix(@theme_base_color, @theme_bg_color, 0.7);
 }
 
 /*
