@@ -53,6 +53,11 @@
     </provides>
 
     <releases>
+        <release version="0.4.4" date="2022-2-16">
+            <description>
+                <p translatable="no">Redesigned symbols sidebar with search and recent symbols, ...</p>
+            </description>
+        </release>
         <release version="0.4.3" date="2022-2-10">
             <description>
                 <p translatable="no">Forward synctex from included files, code folding hover effect, ...</p>
