@@ -15,11 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-from gi.repository import GObject
-
 import setzer.document.code_folding.code_folding_controller as code_folding_controller
 import setzer.document.code_folding.code_folding_presenter as code_folding_presenter
 import setzer.document.code_folding.code_folding_gutter_object as code_folding_gutter_object
