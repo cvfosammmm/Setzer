@@ -159,24 +159,19 @@ class PreviewPresenter(object):
             surface = rendered_page_data[0]
             page_width = rendered_page_data[1] * self.layouter.hidpi_factor
             if isinstance(surface, cairo.ImageSurface):
-                if page_width == self.layouter.page_width:
-                    ctx.set_source_surface(surface, 0, 0)
-                    ctx.rectangle(0, 0, self.layouter.page_width, self.layouter.page_height)
-                    ctx.fill()
-                else:
-                    matrix = ctx.get_matrix()
-                    factor = self.layouter.page_width / page_width
-                    ctx.scale(factor, factor)
-                    ctx.set_source_surface(surface, 0, 0)
-                    ctx.rectangle(0, 0, self.layouter.page_width, self.layouter.page_height)
-                    ctx.fill()
-                    ctx.set_matrix(matrix)
+                matrix = ctx.get_matrix()
+                factor = self.layouter.page_width / page_width
+                ctx.scale(factor, factor)
+                ctx.set_source_surface(surface, 0, 0)
+                ctx.rectangle(0, 0, self.layouter.page_width / factor, self.layouter.page_height / factor)
+                ctx.fill()
                 if self.preview.invert_pdf:
                     ctx.set_operator(cairo.Operator.DIFFERENCE)
                     ctx.set_source_rgb(1, 1, 1)
-                    ctx.rectangle(0, 0, self.layouter.page_width, self.layouter.page_height)
+                    ctx.rectangle(0, 0, self.layouter.page_width / factor, self.layouter.page_height / factor)
                     ctx.fill()
                     ctx.set_operator(cairo.Operator.OVER)
+                ctx.set_matrix(matrix)
 
     def draw_synctex_rectangles(self, ctx, page_number):
         try:
