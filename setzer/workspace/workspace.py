@@ -67,7 +67,8 @@ class Workspace(Observable):
 
         self.sidebar = sidebar.Sidebar(self)
         self.welcome_screen = welcome_screen.WelcomeScreen()
-        self.show_sidebar = self.settings.get_value('window_state', 'show_sidebar')
+        self.show_symbols = self.settings.get_value('window_state', 'show_symbols')
+        self.show_document_structure = self.settings.get_value('window_state', 'show_document_structure')
         self.sidebar_position = self.settings.get_value('window_state', 'sidebar_paned_position')
         self.show_help = self.settings.get_value('window_state', 'show_help')
         self.show_preview = self.settings.get_value('window_state', 'show_preview')
@@ -448,10 +449,11 @@ class Workspace(Observable):
         else:
             active_document.build_system.forward_sync(active_document)
 
-    def set_show_sidebar(self, show_sidebar):
-        if show_sidebar != self.show_sidebar:
-            self.show_sidebar = show_sidebar
-            self.add_change_code('set_show_sidebar', show_sidebar)
+    def set_show_symbols_or_document_structure(self, show_symbols, show_document_structure):
+        if show_symbols != self.show_symbols or show_document_structure != self.show_document_structure:
+            self.show_symbols = show_symbols
+            self.show_document_structure = show_document_structure
+            self.add_change_code('set_show_symbols_or_document_structure')
 
     def set_show_preview_or_help(self, show_preview, show_help):
         if show_preview != self.show_preview or show_help != self.show_help:

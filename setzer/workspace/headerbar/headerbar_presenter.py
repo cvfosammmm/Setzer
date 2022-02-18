@@ -96,24 +96,30 @@ class HeaderbarPresenter(object):
         self.main_window.headerbar.preview_toggle.set_sensitive(False)
         self.main_window.headerbar.help_toggle.hide()
         self.main_window.headerbar.help_toggle.set_sensitive(False)
-        self.main_window.headerbar.sidebar_toggle.hide()
-        self.main_window.headerbar.sidebar_toggle.set_sensitive(False)
+        self.main_window.headerbar.symbols_toggle.hide()
+        self.main_window.headerbar.symbols_toggle.set_sensitive(False)
+        self.main_window.headerbar.document_structure_toggle.hide()
+        self.main_window.headerbar.document_structure_toggle.set_sensitive(False)
 
     def activate_latex_document_mode(self):
         self.main_window.headerbar.preview_toggle.show_all()
         self.main_window.headerbar.preview_toggle.set_sensitive(True)
         self.main_window.headerbar.help_toggle.show_all()
         self.main_window.headerbar.help_toggle.set_sensitive(True)
-        self.main_window.headerbar.sidebar_toggle.show_all()
-        self.main_window.headerbar.sidebar_toggle.set_sensitive(True)
+        self.main_window.headerbar.symbols_toggle.show_all()
+        self.main_window.headerbar.symbols_toggle.set_sensitive(True)
+        self.main_window.headerbar.document_structure_toggle.show_all()
+        self.main_window.headerbar.document_structure_toggle.set_sensitive(True)
 
     def activate_other_document_mode(self):
         self.main_window.headerbar.preview_toggle.hide()
         self.main_window.headerbar.preview_toggle.set_sensitive(False)
         self.main_window.headerbar.help_toggle.hide()
         self.main_window.headerbar.help_toggle.set_sensitive(False)
-        self.main_window.headerbar.sidebar_toggle.hide()
-        self.main_window.headerbar.sidebar_toggle.set_sensitive(False)
+        self.main_window.headerbar.symbols_toggle.hide()
+        self.main_window.headerbar.symbols_toggle.set_sensitive(False)
+        self.main_window.headerbar.document_structure_toggle.hide()
+        self.main_window.headerbar.document_structure_toggle.set_sensitive(False)
 
     def set_build_button_state(self):
         if self.workspace.root_document != None:

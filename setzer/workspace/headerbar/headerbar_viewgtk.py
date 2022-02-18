@@ -35,13 +35,20 @@ class HeaderBar(Gtk.HeaderBar):
 
         self.set_show_close_button(True)
 
-        # sidebar toggle
-        self.sidebar_toggle_revealer = Gtk.Revealer()
-        self.sidebar_toggle = Gtk.ToggleButton()
-        self.sidebar_toggle.set_image(Gtk.Image.new_from_icon_name('builder-view-left-pane-symbolic', Gtk.IconSize.MENU))
-        self.sidebar_toggle.set_can_focus(False)
-        self.sidebar_toggle.set_tooltip_text(_('Toggle sidebar') + ' (F9)')
-        self.pack_start(self.sidebar_toggle)
+        # sidebar toggles
+        box = Gtk.HBox()
+        self.document_structure_toggle = Gtk.ToggleButton()
+        self.document_structure_toggle.set_image(Gtk.Image.new_from_icon_name('view-list-bullet-symbolic', Gtk.IconSize.MENU))
+        self.document_structure_toggle.set_can_focus(False)
+        self.document_structure_toggle.set_tooltip_text(_('Toggle document structure') + ' (F1)')
+        box.pack_start(self.document_structure_toggle, False, False, 0)
+        self.symbols_toggle = Gtk.ToggleButton()
+        self.symbols_toggle.set_image(Gtk.Image.new_from_icon_name('own-symbols-misc-text-symbolic', Gtk.IconSize.MENU))
+        self.symbols_toggle.set_can_focus(False)
+        self.symbols_toggle.set_tooltip_text(_('Toggle symbols') + ' (F9)')
+        box.pack_start(self.symbols_toggle, False, False, 0)
+        box.get_style_context().add_class('linked')
+        self.pack_start(box)
 
         # open documents button
         self.document_chooser = document_chooser_viewgtk.DocumentChooser()

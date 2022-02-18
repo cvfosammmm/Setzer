@@ -34,6 +34,7 @@ import setzer.document.build_system.build_system as build_system
 import setzer.document.build_widget.build_widget as build_widget
 import setzer.document.autocomplete.autocomplete as autocomplete
 import setzer.document.code_folding.code_folding as code_folding
+import setzer.document.document_structure.document_structure as document_structure
 import setzer.document.preview.preview as preview
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
@@ -78,6 +79,7 @@ class Document(Observable):
         self.autocomplete = autocomplete.Autocomplete(self, self.view)
         self.build_system = build_system.BuildSystem(self)
         self.build_widget = build_widget.BuildWidget(self)
+        self.document_structure = document_structure.DocumentStructure(self)
         self.code_folding = code_folding.CodeFolding(self)
 
     def set_dark_mode(self, dark_mode):

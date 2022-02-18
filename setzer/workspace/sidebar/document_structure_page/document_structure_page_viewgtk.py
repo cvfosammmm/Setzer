@@ -20,11 +20,24 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
-class Sidebar(Gtk.Stack):
+class DocumentStructurePageView(Gtk.VBox):
 
     def __init__(self):
-        Gtk.Stack.__init__(self)
+        Gtk.VBox.__init__(self)
 
-        self.get_style_context().add_class('sidebar')
+        self.get_style_context().add_class('sidebar-document-structure')
+
+        self.tabs_box = Gtk.HBox()
+        self.tabs_box.get_style_context().add_class('tabs-box')
+        self.tabs_box.pack_start(Gtk.Label('Document Structure'), False, False, 0)
+        self.pack_start(self.tabs_box, False, False, 0)
+
+        self.scrolled_window = Gtk.ScrolledWindow()
+        self.vbox = Gtk.VBox()
+        self.vbox.get_style_context().add_class('treeview-container')
+        self.scrolled_window.add(self.vbox)
+        self.pack_start(self.scrolled_window, True, True, 0)
+
+        self.show_all()
 
 

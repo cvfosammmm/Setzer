@@ -28,7 +28,7 @@ class WorkspacePresenter(object):
         self.workspace.connect('document_removed', self.on_document_removed)
         self.workspace.connect('new_active_document', self.on_new_active_document)
         self.workspace.connect('new_inactive_document', self.on_new_inactive_document)
-        self.workspace.connect('set_show_sidebar', self.on_set_show_sidebar)
+        self.workspace.connect('set_show_symbols_or_document_structure', self.on_set_show_symbols_or_document_structure)
         self.workspace.connect('set_show_preview_or_help', self.on_set_show_preview_or_help)
         self.workspace.connect('show_build_log_state_change', self.on_show_build_log_state_change)
         self.workspace.connect('set_dark_mode', self.on_set_dark_mode)
@@ -87,8 +87,13 @@ class WorkspacePresenter(object):
                 self.main_window.preview_paned_overlay.remove(document.autocomplete.view)
             except AttributeError: pass
 
-    def on_set_show_sidebar(self, workspace, show_sidebar):
-        self.main_window.sidebar_paned.set_show_widget(show_sidebar)
+    def on_set_show_symbols_or_document_structure(self, workspace):
+        if self.workspace.show_symbols:
+            self.main_window.sidebar.set_visible_child_name('symbols')
+        elif self.workspace.show_document_structure:
+            self.main_window.sidebar.set_visible_child_name('document_structure')
+        self.focus_active_document()
+        self.main_window.sidebar_paned.set_show_widget(self.workspace.show_symbols or self.workspace.show_document_structure)
         self.main_window.sidebar_paned.animate(True)
 
     def on_set_show_preview_or_help(self, workspace):
@@ -137,18 +142,24 @@ class WorkspacePresenter(object):
             active_document.view.source_view.grab_focus()
 
     def setup_paneds(self):
+        if self.workspace.show_document_structure:
+            self.main_window.sidebar.set_visible_child_name('document_structure')
+        elif self.workspace.show_symbols:
+            self.main_window.sidebar.set_visible_child_name('symbols')
+
         if self.workspace.show_preview:
             self.main_window.preview_help_stack.set_visible_child_name('preview')
         elif self.workspace.show_help:
             self.main_window.preview_help_stack.set_visible_child_name('help')
 
-        self.main_window.sidebar_paned.set_show_widget(self.workspace.show_sidebar)
+        show_sidebar = (self.workspace.show_symbols or self.workspace.show_document_structure)
+        self.main_window.sidebar_paned.set_show_widget(show_sidebar)
         self.main_window.preview_paned.set_show_widget(self.workspace.show_preview or self.workspace.show_help)
         self.main_window.build_log_paned.set_show_widget(self.workspace.get_show_build_log())
 
         preview_position = self.workspace.preview_position
         if self.workspace.show_preview or self.workspace.show_help:
-            if self.workspace.show_sidebar == False:
+            if show_sidebar == False:
                 preview_position += - 217
             else:
                 preview_position += self.workspace.sidebar_position - 216
@@ -156,7 +167,8 @@ class WorkspacePresenter(object):
         self.main_window.sidebar_paned.set_target_position(self.workspace.sidebar_position)
         self.main_window.build_log_paned.set_target_position(self.workspace.build_log_position)
 
-        self.main_window.headerbar.sidebar_toggle.set_active(self.workspace.show_sidebar)
+        self.main_window.headerbar.symbols_toggle.set_active(self.workspace.show_symbols)
+        self.main_window.headerbar.document_structure_toggle.set_active(self.workspace.show_document_structure)
         self.main_window.headerbar.preview_toggle.set_active(self.workspace.show_preview)
         self.main_window.headerbar.help_toggle.set_active(self.workspace.show_help)
 

@@ -144,11 +144,12 @@ class ParserLaTeX(object):
     def parse_for_blocks(self, text, line_start, offset_line_start):
         block_symbol_matches = {'begin_or_end': list(), 'others': list()}
         counter = line_start
-        for match in ServiceLocator.get_regex_object(r'\n|\\(begin|end)\{((?:\w|•|\*)+)\}|\\(part|chapter|section|subsection|subsubsection)(?:\*){0,1}\{').finditer(text):
+        for match in ServiceLocator.get_regex_object(r'\n|\\(begin|end)\{((?:\w|•|\*)+)\}|\\(part|chapter|section|subsection|subsubsection|paragraph|subparagraph)(?:\*){0,1}\{([^\{\[]*)\}').finditer(text):
             if match.group(1) != None:
                 block_symbol_matches['begin_or_end'].append((match, counter, match.start() + offset_line_start))
             elif match.group(3) != None:
                 block_symbol_matches['others'].append((match, counter, match.start() + offset_line_start))
+                counter += len(match.group(0).splitlines()) - 1
             if match.group(0) == '\n':
                 counter += 1
         return block_symbol_matches
@@ -185,10 +186,11 @@ class ParserLaTeX(object):
                     else:
                         block_begin[1] = offset
                         block_begin[3] = line_number
+                        block_begin.append(match.group(2))
                         blocks_list.append(block_begin)
 
-        relevant_following_blocks = [list(), list(), list(), list(), list()]
-        levels = {'part': 0, 'chapter': 1, 'section': 2, 'subsection': 3, 'subsubsection': 4}
+        relevant_following_blocks = [list(), list(), list(), list(), list(), list(), list()]
+        levels = {'part': 0, 'chapter': 1, 'section': 2, 'subsection': 3, 'subsubsection': 4, 'paragraph': 5, 'subparagraph': 6}
         for (match, line_number, offset) in reversed(self.block_symbol_matches['others']):
             if line_number == 0:
                 add_preamble_folding = False
@@ -209,12 +211,14 @@ class ParserLaTeX(object):
                     block[1] = self.text_length
                     block[3] = self.number_of_lines
 
+            block.append(match.group(3))
+            block.append(match.group(4))
             blocks_list.append(block)
             for i in range(level, 5):
                 relevant_following_blocks[i].append(block)
 
         if add_preamble_folding and begin_document_offset and begin_document_line:
-            blocks_list.append([0, begin_document_offset - 1, 0, begin_document_line - 1])
+            blocks_list.append([0, begin_document_offset - 1, 0, begin_document_line - 1, 'preamble'])
 
         self.content.set_blocks(sorted(blocks_list, key=lambda block: block[0]))
 

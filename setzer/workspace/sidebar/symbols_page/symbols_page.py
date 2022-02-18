@@ -54,6 +54,7 @@ class SymbolsPage(object):
 
         self.view.vbox.connect('size-allocate', self.on_scroll_or_resize)
         self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_scroll_or_resize)
+        self.view.vbox.connect('realize', self.on_scroll_or_resize)
         self.view.next_button.connect('clicked', self.on_next_button_clicked)
         self.view.prev_button.connect('clicked', self.on_prev_button_clicked)
         self.view.search_button.connect('toggled', self.on_search_button_toggled)
@@ -137,16 +138,17 @@ class SymbolsPage(object):
         self.update_labels()
 
     def update_labels(self):
-        offset = self.view.symbols_view_recent.get_allocated_height() + self.view.label_recent.get_allocated_height() + 1
+        offset = self.view.symbols_view_recent.get_allocated_height() + self.view.tabs.get_allocated_height() + 1
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
         self.view.tabs_box.get_style_context().remove_class('no-border')
         for key, symbols_view in enumerate(reversed(self.view.symbols_views)):
             label = self.view.labels[len(self.view.symbols_views) - key - 1]
+            placeholder = self.view.placeholders[len(self.view.symbols_views) - key - 1]
             margin_top = max(0, offset - int(scrolling_offset))
             label.set_margin_top(margin_top)
             if margin_top > 0 and margin_top <= label.get_allocated_height():
                 self.view.tabs_box.get_style_context().add_class('no-border')
-            offset += symbols_view.get_allocated_height() + label.get_allocated_height() + 1
+            offset += symbols_view.get_allocated_height() + placeholder.get_allocated_height()
 
     def on_next_button_clicked(self, button):
         offset = self.view.symbols_view_recent.get_allocated_height() + self.view.label_recent.get_allocated_height() + 1

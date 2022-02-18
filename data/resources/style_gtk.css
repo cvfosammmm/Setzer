@@ -235,30 +235,50 @@ box.buildlog > box button {
 ** sidebar
 */
 
-box.sidebar-symbols {
+.sidebar {
     background-color: @theme_base_color;
 }
-box.sidebar-symbols toolbar {
+.sidebar toolbar {
     padding: 0px;
     margin: 0px;
     background-color: @theme_base_color;
 }
-box.sidebar-symbols toolbar toolbutton {
+.sidebar toolbar toolbutton {
     padding: 0px;
     margin: 0px;
 }
-box.sidebar-symbols toolbar button {
+.sidebar toolbar button {
     margin: 0px;
     padding: 6px;
     border-width: 0px;
     border-radius: 0px;
     box-shadow: none;
 }
-box.sidebar-symbols toolbar button:checked {
+.sidebar toolbar button:checked {
     background: mix(@theme_base_color, @borders, 0.45);
 }
-box.sidebar-symbols toolbar button:active {
+.sidebar toolbar button:active {
     background: mix(@theme_base_color, @borders, 0.45);
+}
+.sidebar box.tabs-box {
+    background-color: @theme_base_color;
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
+    padding-bottom: 0px;
+}
+.sidebar box.tabs-box.no-border {
+    border-bottom-width: 0px;
+    padding-bottom: 1px;
+}
+.sidebar box.tabs-box > label {
+    padding: 9px 8px 8px 9px;
+    background-color: @theme_base_color;
+}
+box.sidebar-document-structure treeview.view:hover {
+    background-color: @theme_bg_color;
+}
+box.sidebar-document-structure box.treeview-container {
+    margin-top: 8px;
+    margin-bottom: 6px;
 }
 box.sidebar-symbols label {
     padding: 9px 8px 8px 9px;
@@ -267,15 +287,6 @@ box.sidebar-symbols label {
 }
 box.sidebar-symbols label.overlay {
     border-bottom-width: 0px;
-}
-box.sidebar-symbols box.tabs-box {
-    background-color: @theme_base_color;
-    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
-    padding-bottom: 0px;
-}
-box.sidebar-symbols box.tabs-box.no-border {
-    border-bottom-width: 0px;
-    padding-bottom: 1px;
 }
 box.sidebar-symbols flowbox {
     background-color: mix(@theme_base_color, @theme_bg_color, 0.7);

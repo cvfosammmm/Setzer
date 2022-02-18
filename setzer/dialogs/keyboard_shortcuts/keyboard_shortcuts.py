@@ -51,9 +51,10 @@ class KeyboardShortcutsDialog(Dialog):
 
         section = {'title': 'Windows and Panels', 'items': list()}
         section['items'].append({'title': _('Show help panel'), 'shortcut': 'F1'})
+        section['items'].append({'title': _('Show document structure panel'), 'shortcut': 'F2'})
+        section['items'].append({'title': _('Show symbols panel'), 'shortcut': 'F3'})
         section['items'].append({'title': _('Spellchecking dialog'), 'shortcut': 'F7'})
         section['items'].append({'title': _('Show build log'), 'shortcut': 'F8'})
-        section['items'].append({'title': _('Show side panel'), 'shortcut': 'F9'})
         section['items'].append({'title': _('Show preview panel'), 'shortcut': 'F10'})
         section['items'].append({'title': _('Show keyboard shortcuts'), 'shortcut': '&lt;ctrl&gt;question'})
         section['items'].append({'title': _('Close Application'), 'shortcut': '&lt;ctrl&gt;Q'})

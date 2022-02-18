@@ -15,11 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-
 import setzer.workspace.sidebar.symbols_page.symbols_page as symbols_page
+import setzer.workspace.sidebar.document_structure_page.document_structure_page as document_structure_page
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -29,7 +26,12 @@ class Sidebar(object):
         self.view = ServiceLocator.get_main_window().sidebar
         self.workspace = workspace
 
+        self.document_structure_page = document_structure_page.DocumentStructurePage(workspace)
+        self.view.add_named(self.document_structure_page.view, 'document_structure')
+
         self.symbols_page = symbols_page.SymbolsPage(workspace)
-        self.view.append_page(self.symbols_page.view, Gtk.Label(_('Symbols')))
+        self.view.add_named(self.symbols_page.view, 'symbols')
+
+        self.view.queue_draw()
 
 

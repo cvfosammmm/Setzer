@@ -55,8 +55,9 @@ class Shortcuts(object):
         self.accel_group.connect(Gdk.keyval_from_name('o'), c_mask | s_mask, flags, self.shortcut_doc_chooser)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask, flags, self.shortcut_show_open_docs)
         self.accel_group.connect(Gdk.keyval_from_name('F1'), 0, flags, self.shortcut_help)
+        self.accel_group.connect(Gdk.keyval_from_name('F2'), 0, flags, self.shortcut_document_structure)
+        self.accel_group.connect(Gdk.keyval_from_name('F3'), 0, flags, self.shortcut_symbols)
         self.accel_group.connect(Gdk.keyval_from_name('F8'), 0, flags, self.shortcut_build_log)
-        self.accel_group.connect(Gdk.keyval_from_name('F9'), 0, flags, self.shortcut_sidebar)
         self.accel_group.connect(Gdk.keyval_from_name('F10'), 0, flags, self.shortcut_preview)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask | s_mask, flags, self.shortcut_switch_document)
         self.accel_group.connect(Gdk.keyval_from_name('j'), c_mask | a_mask, flags, self.shortcut_forward_sync)
@@ -150,8 +151,14 @@ class Shortcuts(object):
         if self.main_window.headerbar.center_widget.center_button.get_sensitive():
             self.main_window.headerbar.center_widget.center_button.clicked()
 
-    def shortcut_sidebar(self, accel_group=None, window=None, key=None, mask=None):
-        toggle = self.main_window.headerbar.sidebar_toggle
+    def shortcut_symbols(self, accel_group=None, window=None, key=None, mask=None):
+        toggle = self.main_window.headerbar.symbols_toggle
+        if toggle.get_sensitive():
+            toggle.clicked()
+        return True
+
+    def shortcut_document_structure(self, accel_group=None, window=None, key=None, mask=None):
+        toggle = self.main_window.headerbar.document_structure_toggle
         if toggle.get_sensitive():
             toggle.clicked()
         return True

@@ -50,7 +50,8 @@ class Settings(Observable):
         self.defaults['window_state']['width'] = 1020
         self.defaults['window_state']['height'] = 550
         self.defaults['window_state']['is_maximized'] = False
-        self.defaults['window_state']['show_sidebar'] = False
+        self.defaults['window_state']['show_symbols'] = False
+        self.defaults['window_state']['show_document_structure'] = False
         self.defaults['window_state']['sidebar_paned_position'] = -1
         self.defaults['window_state']['show_help'] = False
         self.defaults['window_state']['show_preview'] = False

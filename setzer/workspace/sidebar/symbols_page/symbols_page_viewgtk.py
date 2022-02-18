@@ -90,6 +90,7 @@ class SymbolsPageView(Gtk.VBox):
 
         self.labels = list()
         self.symbols_views = list()
+        self.placeholders = list()
 
         self.label_recent = Gtk.Label(_('Recent'))
         self.label_recent.set_xalign(0)
@@ -140,6 +141,7 @@ class SymbolsPageView(Gtk.VBox):
             self.vbox.pack_end(symbols_list_view, False, False, 0)
             placeholder = Gtk.Label(symbols_list[2])
             placeholder.set_xalign(0)
+            self.placeholders.append(placeholder)
             self.vbox.pack_end(placeholder, False, False, 0)
 
     def do_get_request_mode(self):
