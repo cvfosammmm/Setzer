@@ -273,13 +273,6 @@ box.buildlog > box button {
     padding: 9px 8px 8px 9px;
     background-color: @theme_base_color;
 }
-box.sidebar-document-structure treeview.view:hover {
-    background-color: @theme_bg_color;
-}
-box.sidebar-document-structure box.treeview-container {
-    margin-top: 8px;
-    margin-bottom: 6px;
-}
 box.sidebar-symbols label {
     padding: 9px 8px 8px 9px;
     background-color: @theme_base_color;

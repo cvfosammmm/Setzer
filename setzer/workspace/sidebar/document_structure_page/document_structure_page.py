@@ -16,6 +16,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import setzer.workspace.sidebar.document_structure_page.document_structure_page_viewgtk as document_structure_page_view
+import setzer.workspace.sidebar.document_structure_page.document_structure_page_presenter as document_structure_page_presenter
+import setzer.workspace.sidebar.document_structure_page.document_structure_page_controller as document_structure_page_controller
 import setzer.helpers.path as path_helpers
 from setzer.app.service_locator import ServiceLocator
 from setzer.helpers.timer import timer
@@ -28,6 +30,10 @@ class DocumentStructurePage(object):
 
         self.document = None
         self.integrated_includes = dict()
+        self.nodes = list()
+        self.nodes_in_line = list()
+        self.hover_item = None
+        self.height = 0
 
         self.workspace = workspace
 
@@ -41,8 +47,8 @@ class DocumentStructurePage(object):
 
         self.levels = {'part': 0, 'chapter': 1, 'section': 2, 'subsection': 3, 'subsubsection': 4, 'paragraph': 5, 'subparagraph': 6, 'file': 7}
 
-        self.view.tree_view.connect('row-activated', self.row_activated)
-        self.view.tree_view.connect('draw', self.draw)
+        self.presenter = document_structure_page_presenter.DocumentStructurePagePresenter(self, self.view)
+        self.controller = document_structure_page_controller.DocumentStructurePageController(self, self.view)
 
     def on_new_document(self, workspace, document):
         if document in self.integrated_includes:
@@ -155,34 +161,34 @@ class DocumentStructurePage(object):
                 last_line = block[2]
 
         self.sections = sections
-        self.update_tree_store()
+        self.update_tree_view()
 
     #@timer
-    def update_tree_store(self):
-        offset = self.view.tree_view.get_vadjustment().get_value()
-        self.view.tree_store.clear()
+    def update_tree_view(self):
         current_level = 0
-        predecessor_iter = {0: None, 1: None, 2: None, 3: None, 4: None, 5: None, 6: None}
+        height = 0
+        nodes = list()
+        predecessor = {0: None, 1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
         for section in self.sections.values():
             section_type = section['block'][4]
             level = self.levels[section_type]
-            tree_iter = self.view.tree_store.append(predecessor_iter[level], [section['filename'], section['starting_line'], section_type + '-symbolic', ' '.join(section['block'][5].splitlines())])
+            node = {'item': [section['filename'], section['starting_line'], section_type + '-symbolic', ' '.join(section['block'][5].splitlines())], 'children': list()}
+            if predecessor[level] == None:
+                nodes.append(node)
+            else:
+                predecessor[level]['children'].append(node)
             for i in range(level + 1, 8):
-                predecessor_iter[i] = tree_iter
-        self.view.tree_view.expand_all()
-        self.scroll_to = offset
+                predecessor[i] = node
+            height += self.view.line_height
+        self.height = height + 14
+        self.nodes = nodes
+        self.view.content.set_size_request(-1, self.height)
+        self.set_hover_item(None)
+        self.view.content.queue_draw()
 
-    def draw(self, widget, cr):
-        if self.scroll_to != None:
-            self.view.tree_view.get_vadjustment().set_value(self.scroll_to)
-            self.scroll_to = None
-        return False
-
-    def row_activated(self, tree_view, path, column):
-        filename = self.view.tree_store[path][0]
-        line_number = self.view.tree_store[path][1]
-        document = self.workspace.open_document_by_filename(filename)
-        document.content.place_cursor(line_number)
-        document.content.scroll_cursor_onscreen()
+    def set_hover_item(self, item_num): 
+        if self.hover_item != item_num:
+            self.hover_item = item_num
+            self.view.content.queue_draw()
 
 

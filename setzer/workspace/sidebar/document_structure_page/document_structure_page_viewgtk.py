@@ -18,6 +18,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import Pango
 
 
@@ -33,41 +34,18 @@ class DocumentStructurePageView(Gtk.VBox):
         self.tabs_box.pack_start(Gtk.Label('Document Structure'), False, False, 0)
         self.pack_start(self.tabs_box, False, False, 0)
 
+        self.content = Gtk.DrawingArea()
+        self.content.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
+        self.content.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
+
+        style_context = self.content.get_style_context()
+        self.font = self.content.get_style_context().get_font(style_context.get_state())
+        self.font_size = (self.font.get_size() * 4) / (3 * Pango.SCALE)
+        self.line_height = int(self.font_size) + 11
+
         self.scrolled_window = Gtk.ScrolledWindow()
-        self.vbox = Gtk.VBox()
-        self.vbox.get_style_context().add_class('treeview-container')
-        self.scrolled_window.add(self.vbox)
+        self.scrolled_window.add(self.content)
         self.pack_start(self.scrolled_window, True, True, 0)
-
-        self.tree_view = Gtk.TreeView()
-
-        self.tree_store = Gtk.TreeStore(str, int, str, str)
-        self.tree_view.set_model(self.tree_store)
-
-        self.tree_view.set_headers_visible(False)
-        self.tree_view.set_activate_on_single_click(True)
-        self.tree_view.get_selection().set_mode(Gtk.SelectionMode.NONE)
-        self.tree_view.set_show_expanders(False)
-        self.tree_view.set_level_indentation(18)
-        self.tree_view.set_can_focus(False)
-
-        renderer = Gtk.CellRendererPixbuf()
-        renderer.set_sensitive(True)
-        renderer.set_property('width', 23)
-        renderer.set_property('xalign', 1)
-        column = Gtk.TreeViewColumn()
-        column.pack_start(renderer, False)
-        column.add_attribute(renderer, 'icon_name', 2)
-
-        renderer = Gtk.CellRendererText()
-        renderer.set_sensitive(True)
-        renderer.set_property('ellipsize', Pango.EllipsizeMode.END)
-        renderer.set_property('xpad', 8)
-        column.pack_start(renderer, True)
-        column.add_attribute(renderer, 'text', 3)
-
-        self.tree_view.append_column(column)
-        self.vbox.pack_start(self.tree_view, True, True, 0)
 
         self.show_all()
 

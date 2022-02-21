@@ -24,6 +24,7 @@ from gi.repository import Pango
 import os.path
 
 import setzer.workspace.build_log.build_log_viewgtk as build_log_view
+import setzer.helpers.drawing as drawing_helper
 from setzer.helpers.timer import timer
 
 
@@ -106,7 +107,7 @@ class BuildLogPresenter(object):
             ctx.show_text(item[0])
 
             ctx.move_to(116, (count + 1) * self.view.line_height - 7)
-            text = self.ellipsize_front(ctx, os.path.basename(item[2]), 120)
+            text = drawing_helper.ellipsize_front(ctx, os.path.basename(item[2]), 120)
             ctx.show_text(text)
 
             ctx.move_to(254, (count + 1) * self.view.line_height - 7)
@@ -122,20 +123,6 @@ class BuildLogPresenter(object):
 
         if update_size:
             drawing_area.set_size_request(self.max_width, self.height)
-
-    def ellipsize_front(self, ctx, text, max_width):
-        if ctx.text_extents(text).width <= max_width: return text
-        dots_width = ctx.text_extents('...').width
-
-        upper_bound = len(text)
-        lower_bound = 0
-        while upper_bound > lower_bound + 1:
-            new_bound = (upper_bound + lower_bound) // 2
-            if ctx.text_extents(text[new_bound:]).width > max_width - dots_width:
-                lower_bound = new_bound
-            else:
-                upper_bound = new_bound
-        return '...' + text[upper_bound:]
 
     def set_header_data(self, errors, warnings, tried_building=False):
         if tried_building:
