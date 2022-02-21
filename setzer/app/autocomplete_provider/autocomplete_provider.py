@@ -24,6 +24,7 @@ import re
 import time
 import xml.etree.ElementTree as ET
 
+import setzer.helpers.path as path_helpers
 import setzer.helpers.timer as timer
 
 
@@ -315,8 +316,9 @@ class AutocompleteProvider(object):
         dirname = document.get_dirname()
 
         filenames = set()
-        for filename in document.content.get_included_latex_files():
-            filenames |= {os.path.normpath(os.path.join(dirname, filename))}
+        if document.content.get_included_latex_files():
+            for filename, offset in document.content.get_included_latex_files():
+                filenames |= {path_helpers.get_abspath(filename, dirname)}
 
         return filenames
 
@@ -325,7 +327,7 @@ class AutocompleteProvider(object):
 
         filenames = set()
         for filename in document.content.get_bibliography_files():
-            filenames |= {os.path.normpath(os.path.join(dirname, filename))}
+            filenames |= {path_helpers.get_abspath(filename, dirname)}
 
         return filenames
 

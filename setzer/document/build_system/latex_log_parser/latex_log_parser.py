@@ -17,6 +17,7 @@
 
 import os.path
 
+import setzer.helpers.path as path_helpers
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -241,7 +242,7 @@ class LaTeXLogParser():
                 buffer = ''
                 filename = self.doc_regex.match(match).group(2).strip()
                 if not filename.startswith('/'):
-                    filename = os.path.normpath(os.path.dirname(tex_filename) + '/' + filename)
+                    filename = path_helpers.get_abspath(filename, os.path.dirname(tex_filename))
                 if not filename == tex_filename:
                     open_brackets = 0
                     char_count = 0
