@@ -34,7 +34,8 @@
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer11" />
+     inkscape:current-layer="layer11"
+     inkscape:document-rotation="0" />
   <metadata
      id="metadata90">
     <rdf:RDF>
@@ -76,19 +77,6 @@
          offset="0"
          id="stop7214" />
     </linearGradient>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter897"
-       x="-2.5238651e-07"
-       width="1.0000005"
-       y="-1.6296088e-07"
-       height="1.0000003">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="8.7089162e-07"
-         id="feGaussianBlur899" />
-    </filter>
   </defs>
   <g
      transform="translate(-301.0002,-177)"
@@ -108,23 +96,9 @@
      transform="translate(-59.999998,-544)"
      id="layer11">
     <path
-       d="m 60.979975,548 v 9.02002 a 2,2 45 0 0 2,2 h 9.020023 a 2,2 135 0 0 2,-2 V 548 a 2,2 45 0 0 -2,-2 h -9.020023 a 2,2 135 0 0 -2,2 z"
        id="path74842-3"
        style="vector-effect:none;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:1.085;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none"
-       sodipodi:nodetypes="ccccc"
-       inkscape:path-effect="#path-effect903"
-       inkscape:original-d="m 60.979975,546 v 13.02002 H 73.999998 V 546 Z" />
-    <text
-       xml:space="preserve"
-       style="font-size:17.5939px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke-width:0.439848;filter:url(#filter897)"
-       x="60.298759"
-       y="559.02814"
-       id="text883"
-       transform="matrix(1.0219662,0,0,1.0219662,0.26574305,-12.218646)"><tspan
-         sodipodi:role="line"
-         id="tspan881"
-         x="60.298759"
-         y="559.02814"
-         style="fill:#ffffff;fill-opacity:1;stroke-width:0.439848">S</tspan></text>
+       d="M 2.9804688 2 A 2 2 0 0 0 0.98046875 4 L 0.98046875 13.019531 A 2 2 0 0 0 2.9804688 15.019531 L 4.8339844 15.019531 C 4.2793426 14.886637 3.7139311 14.725297 3.1269531 14.509766 L 3.1269531 12.683594 C 3.8468704 13.08745 4.5515352 13.392802 5.2421875 13.597656 C 5.9328398 13.802511 6.6120565 13.904297 7.2792969 13.904297 C 8.2918634 13.904297 9.0728662 13.704644 9.6230469 13.306641 C 10.173228 12.908638 10.449219 12.340992 10.449219 11.603516 C 10.449219 10.959687 10.249566 10.456635 9.8515625 10.09375 C 9.4594125 9.7308649 8.8134692 9.4587863 7.9121094 9.2773438 L 6.8320312 9.0664062 C 5.5092565 8.8030219 4.552089 8.3900116 3.9609375 7.828125 C 3.369786 7.2662384 3.0742187 6.4852355 3.0742188 5.484375 C 3.0742188 4.3254838 3.4813569 3.4133341 4.2949219 2.7460938 C 4.700595 2.4157599 5.1819793 2.1667939 5.7382812 2 L 2.9804688 2 z M 9.9648438 2 C 10.472033 2.1061764 10.986389 2.2369994 11.511719 2.4121094 L 11.511719 4.140625 C 10.838625 3.8187108 10.202473 3.5799056 9.6054688 3.421875 C 9.0084642 3.2638444 8.4329868 3.1835938 7.8769531 3.1835938 C 6.9112105 3.1835938 6.1654406 3.3715027 5.6386719 3.7460938 C 5.1177562 4.1206848 4.8574219 4.6530977 4.8574219 5.34375 C 4.8574219 5.9231956 5.0296738 6.361654 5.375 6.6601562 C 5.7261791 6.9528055 6.3877794 7.1896512 7.359375 7.3710938 L 8.4296875 7.5917969 C 9.7524622 7.8434753 10.727246 8.2878058 11.353516 8.9257812 C 11.985638 9.5579037 12.300781 10.407413 12.300781 11.472656 C 12.300781 12.742754 11.874067 13.705794 11.019531 14.361328 C 10.649094 14.647459 10.188108 14.858292 9.6660156 15.019531 L 12 15.019531 A 2 2 0 0 0 14 13.019531 L 14 4 A 2 2 0 0 0 12 2 L 9.9648438 2 z "
+       transform="translate(59.999998,544)" />
   </g>
 </svg>

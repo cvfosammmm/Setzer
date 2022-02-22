@@ -34,7 +34,8 @@
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer11" />
+     inkscape:current-layer="layer11"
+     inkscape:document-rotation="0" />
   <metadata
      id="metadata90">
     <rdf:RDF>
@@ -108,23 +109,9 @@
      transform="translate(-59.999998,-544)"
      id="layer11">
     <path
-       d="m 60.979975,548 v 9.02002 a 2,2 45 0 0 2,2 h 9.020023 a 2,2 135 0 0 2,-2 V 548 a 2,2 45 0 0 -2,-2 h -9.020023 a 2,2 135 0 0 -2,2 z"
        id="path74842-3"
        style="vector-effect:none;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:1.085;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none"
-       sodipodi:nodetypes="ccccc"
-       inkscape:path-effect="#path-effect903"
-       inkscape:original-d="m 60.979975,546 v 13.02002 H 73.999998 V 546 Z" />
-    <text
-       xml:space="preserve"
-       style="font-size:17.5939px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke-width:0.439848;filter:url(#filter897)"
-       x="60.298759"
-       y="559.02814"
-       id="text883"
-       transform="matrix(1.0219662,0,0,1.0219662,0.6375368,-12.279712)"><tspan
-         sodipodi:role="line"
-         id="tspan881"
-         x="60.298759"
-         y="559.02814"
-         style="fill:#ffffff;fill-opacity:1;stroke-width:0.439848">P</tspan></text>
+       d="M 2.9804688 2 A 2 2 0 0 0 0.98046875 4 L 0.98046875 13.019531 A 2 2 0 0 0 2.9804688 15.019531 L 4.0253906 15.019531 L 4.0253906 2 L 2.9804688 2 z M 9.1464844 2 C 10.071055 2.1325259 10.811056 2.4370073 11.355469 2.921875 C 12.110504 3.5832624 12.488281 4.5541336 12.488281 5.8359375 C 12.488281 7.1294473 12.110504 8.1061908 11.355469 8.7675781 C 10.606287 9.4289655 9.4983963 9.7597656 8.0292969 9.7597656 L 5.7988281 9.7597656 L 5.7988281 15.019531 L 12 15.019531 A 2 2 0 0 0 14 13.019531 L 14 4 A 2 2 0 0 0 12 2 L 9.1464844 2 z M 5.7988281 3.3769531 L 5.7988281 8.3027344 L 8.0292969 8.3027344 C 8.8545678 8.3027344 9.4926795 8.0893773 9.9433594 7.6621094 C 10.394039 7.2348414 10.619141 6.6260906 10.619141 5.8359375 C 10.619141 5.0516374 10.394039 4.4467992 9.9433594 4.0195312 C 9.4926795 3.5922633 8.8545678 3.3769531 8.0292969 3.3769531 L 5.7988281 3.3769531 z "
+       transform="translate(59.999998,544)" />
   </g>
 </svg>
