@@ -21,6 +21,8 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import cairo
 
+import os.path
+
 from setzer.helpers.timer import timer
 import setzer.helpers.drawing as drawing_helper
 
@@ -40,56 +42,110 @@ class DocumentStructurePagePresenter(object):
         self.fg_color = None
         self.icon_infos = dict()
         self.icons = dict()
-        self.first_line = None
-        self.last_line = None
 
         for icon_name in self.model.levels:
             self.icon_infos[icon_name] = Gtk.IconTheme.get_default().lookup_icon(icon_name + '-symbolic', 16 * self.view.get_scale_factor(), 0)
+        self.icon_infos['tag'] = Gtk.IconTheme.get_default().lookup_icon('tag-symbolic', 16 * self.view.get_scale_factor(), 0)
 
-        self.view.content.connect('draw', self.draw)
+        self.view.content_files.connect('draw', self.draw_files)
+        self.view.content_structure.connect('draw', self.draw_structure)
+        self.view.content_labels.connect('draw', self.draw_labels)
 
     #@timer
-    def draw(self, drawing_area, ctx):
-        style_context = drawing_area.get_style_context()
+    def draw_files(self, drawing_area, ctx):
+        first_line, last_line = self.drawing_setup(drawing_area, ctx, self.model.structure_view_height + self.view.files_label.get_allocated_height())
 
-        ctx.set_font_size(self.view.font_size)
-        ctx.select_font_face(self.view.font.get_family(), cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
+        self.draw_background(drawing_area, ctx)
 
-        offset = self.view.scrolled_window.get_vadjustment().get_value()
-        self.view_width = self.view.scrolled_window.get_allocated_width()
-        view_height = self.view.scrolled_window.get_allocated_height()
-        additional_height = ctx.get_target().get_height() - view_height
-        additional_lines = additional_height // self.view.line_height + 2
-        self.first_line = max(int(offset // self.view.line_height) - additional_lines, 0)
-        self.last_line = int((offset + view_height) // self.view.line_height) + additional_lines
+        count = 0
 
-        self.bg_color = style_context.lookup_color('theme_base_color')[1]
-        self.hover_color = style_context.lookup_color('theme_bg_color')[1]
-        fg_color = style_context.lookup_color('theme_fg_color')[1]
+        if self.model.files_hover_item == 0:
+            ctx.set_source_rgba(self.hover_color.red, self.hover_color.green, self.hover_color.blue, self.hover_color.alpha)
+            ctx.rectangle(0, count * self.view.line_height + 8, self.view_width, self.view.line_height)
+            ctx.fill()
 
-        if not self.fg_color or fg_color.red != self.fg_color.red or fg_color.green != self.fg_color.green or fg_color.blue != self.fg_color.blue or fg_color.alpha != self.fg_color.alpha:
-            self.fg_color = fg_color
-            self.icons = dict()
-            for icon_name, icon_info in self.icon_infos.items():
-                pixbuf, was_symbolic = icon_info.load_symbolic(self.fg_color, self.fg_color, self.fg_color, self.fg_color)
-                surface = Gdk.cairo_surface_create_from_pixbuf(pixbuf, self.view.get_scale_factor())
-                self.icons[icon_name + '-symbolic'] = surface
+        ctx.move_to(9, count * self.view.line_height + 12)
+        surface = self.icons['file-symbolic']
+        surface.set_device_offset(-9 * self.view.get_scale_factor(), -(count * self.view.line_height + 12) * self.view.get_scale_factor())
+        ctx.set_source_surface(surface)
+        ctx.rectangle(9, count * self.view.line_height + 12, 16, 16)
+        ctx.fill()
+
+        ctx.set_source_rgba(self.fg_color.red, self.fg_color.green, self.fg_color.blue, self.fg_color.alpha)
+        text = drawing_helper.ellipsize_back(ctx, os.path.basename(self.model.document.get_filename()), self.view_width - 53)
+        ctx.move_to(35, (count + 1) * self.view.line_height + 1)
+        ctx.show_text(text)
+
+        count += 1
+
+        for include in self.model.includes:
+            if count >= first_line and count <= last_line:
+                if count == self.model.files_hover_item:
+                    ctx.set_source_rgba(self.hover_color.red, self.hover_color.green, self.hover_color.blue, self.hover_color.alpha)
+                    ctx.rectangle(0, count * self.view.line_height + 8, self.view_width, self.view.line_height)
+                    ctx.fill()
+
+                ctx.move_to(27, count * self.view.line_height + 12)
+                surface = self.icons['file-symbolic']
+                surface.set_device_offset(-27 * self.view.get_scale_factor(), -(count * self.view.line_height + 12) * self.view.get_scale_factor())
+                ctx.set_source_surface(surface)
+                ctx.rectangle(27, count * self.view.line_height + 12, 16, 16)
+                ctx.fill()
+
+                ctx.set_source_rgba(self.fg_color.red, self.fg_color.green, self.fg_color.blue, self.fg_color.alpha)
+                text = drawing_helper.ellipsize_back(ctx, os.path.basename(include['filename']), self.view_width - 71)
+                ctx.move_to(53, (count + 1) * self.view.line_height + 1)
+                ctx.show_text(text)
+
+            count += 1
+
+    #@timer
+    def draw_labels(self, drawing_area, ctx):
+        first_line, last_line = self.drawing_setup(drawing_area, ctx, self.model.structure_view_height + self.view.files_label.get_allocated_height() * 2 + self.model.files_view_height)
+
+        self.draw_background(drawing_area, ctx)
+
+        count = 0
+        for label in self.model.labels:
+            if count >= first_line and count <= last_line:
+                if count == self.model.labels_hover_item:
+                    ctx.set_source_rgba(self.hover_color.red, self.hover_color.green, self.hover_color.blue, self.hover_color.alpha)
+                    ctx.rectangle(0, count * self.view.line_height + 8, self.view_width, self.view.line_height)
+                    ctx.fill()
+
+                ctx.move_to(9, count * self.view.line_height + 12)
+                surface = self.icons['tag-symbolic']
+                surface.set_device_offset(-9 * self.view.get_scale_factor(), -(count * self.view.line_height + 12) * self.view.get_scale_factor())
+                ctx.set_source_surface(surface)
+                ctx.rectangle(9, count * self.view.line_height + 12, 16, 16)
+                ctx.fill()
+
+                ctx.set_source_rgba(self.fg_color.red, self.fg_color.green, self.fg_color.blue, self.fg_color.alpha)
+                text = drawing_helper.ellipsize_back(ctx, label[0], self.view_width - 53)
+                ctx.move_to(35, (count + 1) * self.view.line_height + 1)
+                ctx.show_text(text)
+
+            count += 1
+
+    #@timer
+    def draw_structure(self, drawing_area, ctx):
+        first_line, last_line = self.drawing_setup(drawing_area, ctx, 0)
 
         self.draw_background(drawing_area, ctx)
         self.nodes_in_line = list()
-        self.draw_nodes(self.model.nodes, 0, 0, drawing_area, ctx)
+        self.draw_nodes(self.model.nodes, first_line, last_line, 0, 0, drawing_area, ctx)
         self.model.nodes_in_line = self.nodes_in_line
 
     def draw_background(self, drawing_area, ctx):
         ctx.set_source_rgba(self.bg_color.red, self.bg_color.green, self.bg_color.blue, self.bg_color.alpha)
-        ctx.rectangle(0, 0, self.view_width, self.model.height)
+        ctx.rectangle(0, 0, self.view_width, self.model.structure_view_height)
         ctx.fill()
 
-    def draw_nodes(self, nodes, level, count, drawing_area, ctx):
+    def draw_nodes(self, nodes, first_line, last_line, level, count, drawing_area, ctx):
         for node in nodes:
             self.nodes_in_line.append(node)
-            if count >= self.first_line and count <= self.last_line:
-                if count == self.model.hover_item:
+            if count >= first_line and count <= last_line:
+                if count == self.model.structure_hover_item:
                     ctx.set_source_rgba(self.hover_color.red, self.hover_color.green, self.hover_color.blue, self.hover_color.alpha)
                     ctx.rectangle(0, count * self.view.line_height + 8, self.view_width, self.view.line_height)
                     ctx.fill()
@@ -106,7 +162,35 @@ class DocumentStructurePagePresenter(object):
                 ctx.move_to(35 + level * 18, (count + 1) * self.view.line_height + 1)
                 ctx.show_text(text)
             count += 1
-            count = self.draw_nodes(node['children'], level + 1, count, drawing_area, ctx)
+            count = self.draw_nodes(node['children'], first_line, last_line, level + 1, count, drawing_area, ctx)
         return count
+
+    def drawing_setup(self, drawing_area, ctx, widget_offset):
+        style_context = drawing_area.get_style_context()
+
+        ctx.set_font_size(self.view.font_size)
+        ctx.select_font_face(self.view.font.get_family(), cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
+
+        offset = self.view.scrolled_window.get_vadjustment().get_value() - widget_offset
+        self.view_width = self.view.scrolled_window.get_allocated_width()
+        view_height = self.view.scrolled_window.get_allocated_height()
+        additional_height = ctx.get_target().get_height() - view_height
+        additional_lines = additional_height // self.view.line_height + 2
+        first_line = max(int(offset // self.view.line_height) - additional_lines, 0)
+        last_line = int((offset + view_height) // self.view.line_height) + additional_lines
+
+        self.bg_color = style_context.lookup_color('theme_base_color')[1]
+        self.hover_color = style_context.lookup_color('theme_bg_color')[1]
+        fg_color = style_context.lookup_color('theme_fg_color')[1]
+
+        if not self.fg_color or fg_color.red != self.fg_color.red or fg_color.green != self.fg_color.green or fg_color.blue != self.fg_color.blue or fg_color.alpha != self.fg_color.alpha:
+            self.fg_color = fg_color
+            self.icons = dict()
+            for icon_name, icon_info in self.icon_infos.items():
+                pixbuf, was_symbolic = icon_info.load_symbolic(self.fg_color, self.fg_color, self.fg_color, self.fg_color)
+                surface = Gdk.cairo_surface_create_from_pixbuf(pixbuf, self.view.get_scale_factor())
+                self.icons[icon_name + '-symbolic'] = surface
+
+        return (first_line, last_line)
 
 

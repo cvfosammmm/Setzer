@@ -29,11 +29,19 @@ class DocumentStructurePage(object):
         self.view = document_structure_page_view.DocumentStructurePageView()
 
         self.document = None
-        self.integrated_includes = dict()
         self.nodes = list()
         self.nodes_in_line = list()
-        self.hover_item = None
-        self.height = 0
+        self.structure_hover_item = None
+        self.structure_view_height = 0
+
+        self.includes = list()
+        self.integrated_includes = dict()
+        self.files_hover_item = None
+        self.files_view_height = 0
+
+        self.labels = list()
+        self.labels_hover_item = None
+        self.labels_view_height = 0
 
         self.workspace = workspace
 
@@ -54,11 +62,13 @@ class DocumentStructurePage(object):
         if document in self.integrated_includes:
             self.update_integrated_includes()
             self.update_sections()
+            self.update_labels()
 
     def on_document_removed(self, workspace, document):
         if document in self.integrated_includes:
             self.update_integrated_includes()
             self.update_sections()
+            self.update_labels()
 
     def on_new_active_document(self, workspace, document):
         self.set_document()
@@ -69,10 +79,12 @@ class DocumentStructurePage(object):
     def on_buffer_changed(self, content, parameter):
         self.update_integrated_includes()
         self.update_sections()
+        self.update_labels()
 
     def on_is_root_changed(self, document, parameter):
         self.update_integrated_includes()
         self.update_sections()
+        self.update_labels()
 
     def set_document(self):
         if self.workspace.get_active_document() == None:
@@ -96,6 +108,7 @@ class DocumentStructurePage(object):
             self.document.connect('is_root_changed', self.on_is_root_changed)
             self.update_integrated_includes()
             self.update_sections()
+            self.update_labels()
 
     def update_integrated_includes(self):
         integrated_includes = dict()
@@ -110,6 +123,7 @@ class DocumentStructurePage(object):
             if document not in integrated_includes:
                 document.content.disconnect('buffer_changed', self.on_buffer_changed)
         self.integrated_includes = integrated_includes
+        self.update_files_view()
 
     def get_includes(self):
         includes = list()
@@ -161,10 +175,10 @@ class DocumentStructurePage(object):
                 last_line = block[2]
 
         self.sections = sections
-        self.update_tree_view()
+        self.update_structure_view()
 
     #@timer
-    def update_tree_view(self):
+    def update_structure_view(self):
         current_level = 0
         height = 0
         nodes = list()
@@ -180,15 +194,48 @@ class DocumentStructurePage(object):
             for i in range(level + 1, 8):
                 predecessor[i] = node
             height += self.view.line_height
-        self.height = height + 14
+        self.structure_view_height = height + 14
         self.nodes = nodes
-        self.view.content.set_size_request(-1, self.height)
-        self.set_hover_item(None)
-        self.view.content.queue_draw()
+        self.view.content_structure.set_size_request(-1, self.structure_view_height)
+        self.set_structure_hover_item(None)
+        self.view.content_structure.queue_draw()
 
-    def set_hover_item(self, item_num): 
-        if self.hover_item != item_num:
-            self.hover_item = item_num
-            self.view.content.queue_draw()
+    def update_files_view(self):
+        self.includes = self.get_includes()
+        self.files_view_height = (len(self.includes) + 1) * self.view.line_height + 14
+        self.view.content_files.set_size_request(-1, self.files_view_height)
+        self.set_files_hover_item(None)
+        self.view.content_files.queue_draw()
+
+    def update_labels(self):
+        labels = list()
+        for label in self.document.content.get_labels_with_offset():
+            label.append(self.document.get_filename())
+            labels.append(label)
+        for document in self.integrated_includes:
+            for label in document.content.get_labels_with_offset():
+                label.append(document.get_filename())
+                labels.append(label)
+        self.labels = labels
+
+        self.labels_view_height = len(self.labels) * self.view.line_height + 14
+        self.view.content_labels.set_size_request(-1, self.labels_view_height)
+        self.set_labels_hover_item(None)
+        self.view.content_labels.queue_draw()
+
+    def set_structure_hover_item(self, item_num): 
+        if self.structure_hover_item != item_num:
+            self.structure_hover_item = item_num
+            self.view.content_structure.queue_draw()
+
+    def set_files_hover_item(self, item_num): 
+        if self.files_hover_item != item_num:
+            self.files_hover_item = item_num
+            self.view.content_files.queue_draw()
+
+    def set_labels_hover_item(self, item_num): 
+        if self.labels_hover_item != item_num:
+            self.labels_hover_item = item_num
+            self.view.content_labels.queue_draw()
 
 

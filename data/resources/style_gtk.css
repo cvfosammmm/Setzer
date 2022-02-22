@@ -307,6 +307,15 @@ box.sidebar-symbols box.search_bar {
 box.sidebar-symbols box.search_bar button {
     margin-left: 6px;
 }
+.sidebar-document-structure scrolledwindow label {
+    padding: 9px 8px 8px 9px;
+    background-color: @theme_base_color;
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
+}
+.sidebar-document-structure label.overlay {
+    padding: 9px 8px 8px 9px;
+    background-color: @theme_base_color;
+}
 
 /*
 ** shortcuts bar

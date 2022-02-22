@@ -225,6 +225,7 @@ class ParserLaTeX(object):
     #@timer
     def parse_symbols(self):
         labels = set()
+        labels_with_offset = list()
         included_latex_files = list()
         bibliographies = set()
         bibitems = set()
@@ -235,6 +236,7 @@ class ParserLaTeX(object):
             match = match[0]
             if match.group(1) == 'label':
                 labels = labels | {match.group(2).strip()}
+                labels_with_offset.append([match.group(2).strip(), offset])
             elif match.group(1) == 'include' or match.group(1) == 'input':
                 filename = match.group(2).strip()
                 if not filename.endswith('.tex'):
@@ -255,6 +257,7 @@ class ParserLaTeX(object):
                 bibitems = bibitems | {match.group(6).strip()}
 
         self.content.symbols['labels'] = labels
+        self.content.symbols['labels_with_offset'] = labels_with_offset
         self.content.symbols['included_latex_files'] = included_latex_files
         self.content.symbols['bibliographies'] = bibliographies
         self.content.symbols['bibitems'] = bibitems

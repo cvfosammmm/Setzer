@@ -146,9 +146,9 @@ class SymbolsPageView(Gtk.VBox):
 
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
-                     
+
     def do_get_preferred_width(self):
-        return 234, 300
+        return 252, 300
 
 
 class SidebarSymbolsList(Gtk.FlowBox):

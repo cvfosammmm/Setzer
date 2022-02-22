@@ -57,6 +57,7 @@ class Content(Observable):
         self.symbols = dict()
         self.symbols['bibitems'] = set()
         self.symbols['labels'] = set()
+        self.symbols['labels_with_offset'] = list()
         self.symbols['included_latex_files'] = set()
         self.symbols['bibliographies'] = set()
         self.symbols['packages'] = set()
@@ -689,6 +690,9 @@ class Content(Observable):
     def get_cursor_line_number(self):
         return self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_line()
 
+    def get_line_number_at_offset(self, offset):
+        return self.source_buffer.get_iter_at_offset(offset).get_line()
+
     def cursor_ends_word(self):
         return self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).ends_word()
 
@@ -812,5 +816,8 @@ class Content(Observable):
 
     def get_labels(self):
         return self.symbols['labels']
+
+    def get_labels_with_offset(self):
+        return self.symbols['labels_with_offset']
 
 
