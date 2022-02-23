@@ -93,8 +93,8 @@ class DocumentStructurePageController(object):
         labels_view_offset = files_view_offset + self.model.files_view_height + label_height
 
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
-        pointer_offset = scrolling_offset + event.y - 8
-        offset = int((scrolling_offset + event.y - 8) // self.view.line_height)
+        pointer_offset = scrolling_offset + event.y - 9
+        offset = int((scrolling_offset + event.y - 9) // self.view.line_height)
         if pointer_offset >= 0 and pointer_offset <= self.model.structure_view_height:
             offset = int(pointer_offset // self.view.line_height)
             self.model.set_structure_hover_item(offset)
@@ -121,7 +121,7 @@ class DocumentStructurePageController(object):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & modifiers == 0:
-            item_num = max(0, min(int((event.y - 8) // self.view.line_height), len(self.model.nodes_in_line) - 1))
+            item_num = max(0, min(int((event.y - 9) // self.view.line_height), len(self.model.nodes_in_line) - 1))
             item = self.model.nodes_in_line[item_num]['item']
 
             filename = item[0]
@@ -135,7 +135,7 @@ class DocumentStructurePageController(object):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & modifiers == 0:
-            item_num = max(0, min(int((event.y - 8) // self.view.line_height), len(self.model.includes)))
+            item_num = max(0, min(int((event.y - 9) // self.view.line_height), len(self.model.includes)))
 
             if item_num == 0:
                 filename = self.model.document.get_filename()
@@ -149,7 +149,7 @@ class DocumentStructurePageController(object):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & modifiers == 0:
-            item_num = max(0, min(int((event.y - 8) // self.view.line_height), len(self.model.labels) - 1))
+            item_num = max(0, min(int((event.y - 9) // self.view.line_height), len(self.model.labels) - 1))
 
             filename = self.model.labels[item_num][2]
             document = self.model.workspace.open_document_by_filename(filename)

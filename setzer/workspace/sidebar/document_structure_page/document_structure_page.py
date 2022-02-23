@@ -201,7 +201,7 @@ class DocumentStructurePage(object):
             for i in range(level + 1, 8):
                 predecessor[i] = node
             height += self.view.line_height
-        self.structure_view_height = height + 14
+        self.structure_view_height = height + 33
         self.nodes = nodes
         self.view.content_structure.set_size_request(-1, self.structure_view_height)
         self.set_structure_hover_item(None)
@@ -209,7 +209,7 @@ class DocumentStructurePage(object):
 
     def update_files_view(self):
         self.includes = self.get_includes()
-        self.files_view_height = (len(self.includes) + 1) * self.view.line_height + 14
+        self.files_view_height = (len(self.includes) + 1) * self.view.line_height + 33
         self.view.content_files.set_size_request(-1, self.files_view_height)
         self.set_files_hover_item(None)
         self.view.content_files.queue_draw()
@@ -225,7 +225,7 @@ class DocumentStructurePage(object):
                 labels.append(label)
         self.labels = labels
 
-        self.labels_view_height = len(self.labels) * self.view.line_height + 14
+        self.labels_view_height = len(self.labels) * self.view.line_height + 33
         self.view.content_labels.set_size_request(-1, self.labels_view_height)
         self.set_labels_hover_item(None)
         self.view.content_labels.queue_draw()

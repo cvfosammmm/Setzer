@@ -62,19 +62,19 @@ class DocumentStructurePagePresenter(object):
 
         if self.model.files_hover_item == 0:
             ctx.set_source_rgba(self.hover_color.red, self.hover_color.green, self.hover_color.blue, self.hover_color.alpha)
-            ctx.rectangle(0, count * self.view.line_height + 8, self.view_width, self.view.line_height)
+            ctx.rectangle(0, count * self.view.line_height + 9, self.view_width, self.view.line_height)
             ctx.fill()
 
-        ctx.move_to(9, count * self.view.line_height + 12)
+        ctx.move_to(9, count * self.view.line_height + 13)
         surface = self.icons['file-symbolic']
-        surface.set_device_offset(-9 * self.view.get_scale_factor(), -(count * self.view.line_height + 12) * self.view.get_scale_factor())
+        surface.set_device_offset(-9 * self.view.get_scale_factor(), -(count * self.view.line_height + 13) * self.view.get_scale_factor())
         ctx.set_source_surface(surface)
-        ctx.rectangle(9, count * self.view.line_height + 12, 16, 16)
+        ctx.rectangle(9, count * self.view.line_height + 13, 16, 16)
         ctx.fill()
 
         ctx.set_source_rgba(self.fg_color.red, self.fg_color.green, self.fg_color.blue, self.fg_color.alpha)
         text = drawing_helper.ellipsize_back(ctx, os.path.basename(self.model.document.get_filename()), self.view_width - 53)
-        ctx.move_to(35, (count + 1) * self.view.line_height + 1)
+        ctx.move_to(35, (count + 1) * self.view.line_height + 2)
         ctx.show_text(text)
 
         count += 1
@@ -83,19 +83,19 @@ class DocumentStructurePagePresenter(object):
             if count >= first_line and count <= last_line:
                 if count == self.model.files_hover_item:
                     ctx.set_source_rgba(self.hover_color.red, self.hover_color.green, self.hover_color.blue, self.hover_color.alpha)
-                    ctx.rectangle(0, count * self.view.line_height + 8, self.view_width, self.view.line_height)
+                    ctx.rectangle(0, count * self.view.line_height + 9, self.view_width, self.view.line_height)
                     ctx.fill()
 
-                ctx.move_to(27, count * self.view.line_height + 12)
+                ctx.move_to(27, count * self.view.line_height + 13)
                 surface = self.icons['file-symbolic']
-                surface.set_device_offset(-27 * self.view.get_scale_factor(), -(count * self.view.line_height + 12) * self.view.get_scale_factor())
+                surface.set_device_offset(-27 * self.view.get_scale_factor(), -(count * self.view.line_height + 13) * self.view.get_scale_factor())
                 ctx.set_source_surface(surface)
-                ctx.rectangle(27, count * self.view.line_height + 12, 16, 16)
+                ctx.rectangle(27, count * self.view.line_height + 13, 16, 16)
                 ctx.fill()
 
                 ctx.set_source_rgba(self.fg_color.red, self.fg_color.green, self.fg_color.blue, self.fg_color.alpha)
                 text = drawing_helper.ellipsize_back(ctx, os.path.basename(include['filename']), self.view_width - 71)
-                ctx.move_to(53, (count + 1) * self.view.line_height + 1)
+                ctx.move_to(53, (count + 1) * self.view.line_height + 2)
                 ctx.show_text(text)
 
             count += 1
@@ -111,19 +111,19 @@ class DocumentStructurePagePresenter(object):
             if count >= first_line and count <= last_line:
                 if count == self.model.labels_hover_item:
                     ctx.set_source_rgba(self.hover_color.red, self.hover_color.green, self.hover_color.blue, self.hover_color.alpha)
-                    ctx.rectangle(0, count * self.view.line_height + 8, self.view_width, self.view.line_height)
+                    ctx.rectangle(0, count * self.view.line_height + 9, self.view_width, self.view.line_height)
                     ctx.fill()
 
-                ctx.move_to(9, count * self.view.line_height + 12)
+                ctx.move_to(9, count * self.view.line_height + 13)
                 surface = self.icons['tag-symbolic']
-                surface.set_device_offset(-9 * self.view.get_scale_factor(), -(count * self.view.line_height + 12) * self.view.get_scale_factor())
+                surface.set_device_offset(-9 * self.view.get_scale_factor(), -(count * self.view.line_height + 13) * self.view.get_scale_factor())
                 ctx.set_source_surface(surface)
-                ctx.rectangle(9, count * self.view.line_height + 12, 16, 16)
+                ctx.rectangle(9, count * self.view.line_height + 13, 16, 16)
                 ctx.fill()
 
                 ctx.set_source_rgba(self.fg_color.red, self.fg_color.green, self.fg_color.blue, self.fg_color.alpha)
                 text = drawing_helper.ellipsize_back(ctx, label[0], self.view_width - 53)
-                ctx.move_to(35, (count + 1) * self.view.line_height + 1)
+                ctx.move_to(35, (count + 1) * self.view.line_height + 2)
                 ctx.show_text(text)
 
             count += 1
@@ -148,19 +148,19 @@ class DocumentStructurePagePresenter(object):
             if count >= first_line and count <= last_line:
                 if count == self.model.structure_hover_item:
                     ctx.set_source_rgba(self.hover_color.red, self.hover_color.green, self.hover_color.blue, self.hover_color.alpha)
-                    ctx.rectangle(0, count * self.view.line_height + 8, self.view_width, self.view.line_height)
+                    ctx.rectangle(0, count * self.view.line_height + 9, self.view_width, self.view.line_height)
                     ctx.fill()
 
-                ctx.move_to(9 + level * 18, count * self.view.line_height + 12)
+                ctx.move_to(9 + level * 18, count * self.view.line_height + 13)
                 surface = self.icons[node['item'][2]]
-                surface.set_device_offset(- (9 + level * 18) * self.view.get_scale_factor(), -(count * self.view.line_height + 12) * self.view.get_scale_factor())
+                surface.set_device_offset(- (9 + level * 18) * self.view.get_scale_factor(), -(count * self.view.line_height + 13) * self.view.get_scale_factor())
                 ctx.set_source_surface(surface)
-                ctx.rectangle(9 + level * 18, count * self.view.line_height + 12, 16, 16)
+                ctx.rectangle(9 + level * 18, count * self.view.line_height + 13, 16, 16)
                 ctx.fill()
 
                 ctx.set_source_rgba(self.fg_color.red, self.fg_color.green, self.fg_color.blue, self.fg_color.alpha)
                 text = drawing_helper.ellipsize_back(ctx, node['item'][3], self.view_width - (53 + level * 18))
-                ctx.move_to(35 + level * 18, (count + 1) * self.view.line_height + 1)
+                ctx.move_to(35 + level * 18, (count + 1) * self.view.line_height + 2)
                 ctx.show_text(text)
             count += 1
             count = self.draw_nodes(node['children'], first_line, last_line, level + 1, count, drawing_area, ctx)
