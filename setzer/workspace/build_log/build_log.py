@@ -42,6 +42,8 @@ class BuildLog(Observable):
             self.update_items(True)
 
     def set_document(self, document):
+        if document == self.document: return
+
         if self.document != None:
             self.document.build_system.disconnect('build_log_update', self.on_build_log_update)
 
