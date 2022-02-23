@@ -65,6 +65,8 @@ class DocumentStructurePageController(object):
             self.view.prev_button.set_sensitive(True)
         if scrolling_offset >= labels_label_offset:
             self.view.next_button.set_sensitive(False)
+        elif scrolling_offset >= self.view.content_vbox.get_allocated_height() - self.view.scrolled_window.get_allocated_height():
+            self.view.next_button.set_sensitive(False)
         else:
             self.view.next_button.set_sensitive(True)
 

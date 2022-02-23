@@ -222,11 +222,13 @@ class DocumentStructurePage(object):
     def update_labels(self):
         labels = list()
         for label in self.document.content.get_labels_with_offset():
-            label.append(self.document.get_filename())
+            filename = self.document.get_filename()
+            label.append(filename)
             labels.append(label)
         for document in self.integrated_includes:
             for label in document.content.get_labels_with_offset():
-                label.append(document.get_filename())
+                filename = document.get_filename()
+                label.append(filename)
                 labels.append(label)
         labels.sort(key=lambda label: label[0].lower())
         self.labels = labels
