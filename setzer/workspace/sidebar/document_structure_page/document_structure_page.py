@@ -21,6 +21,7 @@ from gi.repository import GObject
 
 import os.path
 import time
+from operator import itemgetter
 
 import setzer.workspace.sidebar.document_structure_page.document_structure_page_viewgtk as document_structure_page_view
 import setzer.workspace.sidebar.document_structure_page.document_structure_page_presenter as document_structure_page_presenter
@@ -214,6 +215,7 @@ class DocumentStructurePage(object):
         self.set_files_hover_item(None)
         self.view.content_files.queue_draw()
 
+    #@timer
     def update_labels(self):
         labels = list()
         for label in self.document.content.get_labels_with_offset():
@@ -223,6 +225,7 @@ class DocumentStructurePage(object):
             for label in document.content.get_labels_with_offset():
                 label.append(document.get_filename())
                 labels.append(label)
+        labels.sort(key=lambda label: label[0].lower())
         self.labels = labels
 
         self.labels_view_height = len(self.labels) * self.view.line_height + 33
