@@ -125,7 +125,7 @@ class SymbolsPageView(Gtk.VBox):
         self.init_symbols_lists()
 
     def init_symbols_lists(self):
-        for symbols_list in reversed(self.symbols_lists):
+        for symbols_list in self.symbols_lists:
             symbols_list_view = eval(symbols_list[3])
             label = Gtk.Label(symbols_list[2])
             label.set_xalign(0)
@@ -134,15 +134,14 @@ class SymbolsPageView(Gtk.VBox):
             label.set_size_request(108, -1)
             label.get_style_context().add_class('overlay')
             self.overlay.add_overlay(label)
-            self.overlay.reorder_overlay(label, 1)
             self.overlay.set_overlay_pass_through(label, True)
             self.labels.append(label)
-            self.symbols_views.append(symbols_list_view)
-            self.vbox.pack_end(symbols_list_view, False, False, 0)
             placeholder = Gtk.Label(symbols_list[2])
             placeholder.set_xalign(0)
             self.placeholders.append(placeholder)
-            self.vbox.pack_end(placeholder, False, False, 0)
+            self.vbox.pack_start(placeholder, False, False, 0)
+            self.symbols_views.append(symbols_list_view)
+            self.vbox.pack_start(symbols_list_view, False, False, 0)
 
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE

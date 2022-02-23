@@ -273,6 +273,9 @@ box.buildlog > box button {
     padding: 9px 8px 8px 9px;
     background-color: @theme_base_color;
 }
+box.sidebar-symbols {
+    background-color: mix(@theme_base_color, @theme_bg_color, 0.7);
+}
 box.sidebar-symbols label {
     padding: 9px 8px 8px 9px;
     background-color: @theme_base_color;

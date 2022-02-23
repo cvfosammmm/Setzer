@@ -141,14 +141,15 @@ class SymbolsPage(object):
         offset = self.view.symbols_view_recent.get_allocated_height() + self.view.tabs.get_allocated_height() + 1
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
         self.view.tabs_box.get_style_context().remove_class('no-border')
-        for key, symbols_view in enumerate(reversed(self.view.symbols_views)):
-            label = self.view.labels[len(self.view.symbols_views) - key - 1]
+        for key, symbols_view in enumerate(self.view.symbols_views):
+            label = self.view.labels[key]
             placeholder = self.view.placeholders[len(self.view.symbols_views) - key - 1]
             margin_top = max(0, offset - int(scrolling_offset))
             label.set_margin_top(margin_top)
             if margin_top > 0 and margin_top <= label.get_allocated_height():
                 self.view.tabs_box.get_style_context().add_class('no-border')
-            offset += symbols_view.get_allocated_height() + placeholder.get_allocated_height()
+            if len(symbols_view.visible_symbols) > 0:
+                offset += symbols_view.get_allocated_height() + placeholder.get_allocated_height()
 
     def on_next_button_clicked(self, button):
         offset = self.view.symbols_view_recent.get_allocated_height() + self.view.label_recent.get_allocated_height() + 1
@@ -157,14 +158,20 @@ class SymbolsPage(object):
             self.scroll_view(offset)
             return
 
-        for key, symbols_view in enumerate(reversed(self.view.symbols_views)):
+        for key, symbols_view in enumerate(self.view.symbols_views):
             label = self.view.labels[len(self.view.symbols_views) - key - 1]
-            if offset >= scrolling_offset - (symbols_view.get_allocated_height() + label.get_allocated_height()):
+
+            if len(symbols_view.visible_symbols) > 0:
+                view_height = (symbols_view.get_allocated_height() + label.get_allocated_height()) + 1
+            else:
+                view_height = 0
+
+            if offset > scrolling_offset - view_height:
                 new_offset = offset + (symbols_view.get_allocated_height() + label.get_allocated_height()) + 1
                 if key < len(self.view.symbols_views) - 1:
                     self.scroll_view(new_offset)
                 break
-            offset += symbols_view.get_allocated_height() + label.get_allocated_height() + 1
+            offset += view_height
 
     def on_prev_button_clicked(self, button):
         offset = self.view.symbols_view_recent.get_allocated_height() + self.view.label_recent.get_allocated_height() + 1
@@ -175,9 +182,15 @@ class SymbolsPage(object):
             self.scroll_view(0)
             return
 
-        for key, symbols_view in enumerate(reversed(self.view.symbols_views)):
+        for key, symbols_view in enumerate(self.view.symbols_views):
             label = self.view.labels[len(self.view.symbols_views) - key - 1]
-            if offset >= scrolling_offset - (symbols_view.get_allocated_height() + label.get_allocated_height()):
+
+            if len(symbols_view.visible_symbols) > 0:
+                view_height = (symbols_view.get_allocated_height() + label.get_allocated_height()) + 1
+            else:
+                view_height = 0
+
+            if offset > scrolling_offset - view_height:
                 if offset == int(scrolling_offset):
                     new_offset = old_offset
                 else:
@@ -185,7 +198,7 @@ class SymbolsPage(object):
                 self.scroll_view(new_offset)
                 break
             old_offset = offset
-            offset += symbols_view.get_allocated_height() + label.get_allocated_height() + 1
+            offset += view_height
 
     def on_search_button_toggled(self, button):
         if button.get_active():
@@ -210,7 +223,7 @@ class SymbolsPage(object):
 
     def update_symbols(self):
         search_words = self.view.search_entry.get_text().split()
-        for symbols_view in reversed(self.view.symbols_views):
+        for i, symbols_view in enumerate(self.view.symbols_views):
             for symbol in symbols_view.visible_symbols:
                 symbols_view.remove(symbol[5])
             symbols_view.visible_symbols = []
@@ -224,8 +237,15 @@ class SymbolsPage(object):
                 if symbol_found:
                     symbols_view.visible_symbols.append(symbol)
                     symbols_view.insert(image, -1)
+            if len(symbols_view.visible_symbols) > 0:
                 symbols_view.show_all()
-            self.update_borders(symbols_view, symbols_view.get_allocated_width())
+                self.view.labels[i].show_all()
+                self.view.placeholders[i].show_all()
+                self.update_borders(symbols_view, symbols_view.get_allocated_width())
+            else:
+                symbols_view.hide()
+                self.view.labels[i].hide()
+                self.view.placeholders[i].hide()
 
     def on_flowbox_clicked(self, flowbox, event, symbols_view):
         if event.button != 1: return
