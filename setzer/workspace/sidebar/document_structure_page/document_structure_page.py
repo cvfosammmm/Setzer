@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import os.path
+
 import setzer.workspace.sidebar.document_structure_page.document_structure_page_viewgtk as document_structure_page_view
 import setzer.workspace.sidebar.document_structure_page.document_structure_page_presenter as document_structure_page_presenter
 import setzer.workspace.sidebar.document_structure_page.document_structure_page_controller as document_structure_page_controller
@@ -150,7 +152,7 @@ class DocumentStructurePage(object):
                             block_included.append(includes[0]['document'].get_filename())
                         blocks.append(block_included)
                 else:
-                    file_block = [0, 0, 0, 0, 'file', includes[0]['filename'], includes[0]['filename']]
+                    file_block = [0, 0, 0, 0, 'file', os.path.basename(includes[0]['filename']), includes[0]['filename']]
                     blocks.append(file_block)
                 del(includes[0])
             if len(block) < 7:
