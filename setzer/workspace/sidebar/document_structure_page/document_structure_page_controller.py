@@ -36,6 +36,8 @@ class DocumentStructurePageController(object):
         self.view.vbox.connect('size-allocate', self.on_scroll_or_resize)
         self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_scroll_or_resize)
         self.view.vbox.connect('realize', self.on_scroll_or_resize)
+        self.view.next_button.connect('clicked', self.on_next_button_clicked)
+        self.view.prev_button.connect('clicked', self.on_prev_button_clicked)
 
     def on_enter(self, widget, event):
         self.update_hover_state(event)
@@ -49,6 +51,20 @@ class DocumentStructurePageController(object):
         self.model.set_labels_hover_item(None)
 
     def on_scroll_or_resize(self, *args):
+        label_height = self.view.files_label.get_allocated_height()
+        files_label_offset = self.model.structure_view_height + label_height
+        labels_label_offset = files_label_offset + self.model.files_view_height + label_height
+        scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
+
+        if scrolling_offset == 0:
+            self.view.prev_button.set_sensitive(False)
+        else:
+            self.view.prev_button.set_sensitive(True)
+        if scrolling_offset >= labels_label_offset:
+            self.view.next_button.set_sensitive(False)
+        else:
+            self.view.next_button.set_sensitive(True)
+
         self.update_labels()
 
     def update_labels(self):
@@ -141,5 +157,29 @@ class DocumentStructurePageController(object):
             document.content.place_cursor(line_number)
             document.content.scroll_cursor_onscreen()
             self.model.workspace.active_document.view.source_view.grab_focus()
+
+    def on_next_button_clicked(self, button):
+        label_height = self.view.files_label.get_allocated_height()
+        files_label_offset = self.model.structure_view_height + label_height
+        labels_label_offset = files_label_offset + self.model.files_view_height + label_height
+        scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
+
+        if scrolling_offset < files_label_offset:
+            self.model.scroll_view(files_label_offset)
+        elif scrolling_offset < labels_label_offset:
+            self.model.scroll_view(labels_label_offset)
+
+    def on_prev_button_clicked(self, button):
+        label_height = self.view.files_label.get_allocated_height()
+        files_label_offset = self.model.structure_view_height + label_height
+        labels_label_offset = files_label_offset + self.model.files_view_height + label_height
+        scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
+
+        if scrolling_offset > labels_label_offset:
+            self.model.scroll_view(labels_label_offset)
+        elif scrolling_offset > files_label_offset:
+            self.model.scroll_view(files_label_offset)
+        elif scrolling_offset > 0:
+            self.model.scroll_view(0)
 
 

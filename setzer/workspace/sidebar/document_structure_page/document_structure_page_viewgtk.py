@@ -37,6 +37,24 @@ class DocumentStructurePageView(Gtk.Overlay):
         self.tabs_box.pack_start(Gtk.Label('Document Structure'), False, False, 0)
         self.vbox.pack_start(self.tabs_box, False, False, 0)
 
+        self.tabs = Gtk.Toolbar()
+        self.tabs.set_style(Gtk.ToolbarStyle.ICONS)
+        self.tabs.set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.tabs.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
+        self.tabs_box.pack_end(self.tabs, False, False, 0)
+
+        self.prev_button = Gtk.ToolButton()
+        self.prev_button.set_icon_name('go-up-symbolic')
+        self.prev_button.set_focus_on_click(False)
+        self.prev_button.set_tooltip_text(_('Back'))
+        self.tabs.insert(self.prev_button, -1)
+
+        self.next_button = Gtk.ToolButton()
+        self.next_button.set_icon_name('go-down-symbolic')
+        self.next_button.set_focus_on_click(False)
+        self.next_button.set_tooltip_text(_('Forward'))
+        self.tabs.insert(self.next_button, -1)
+
         self.content_structure = Gtk.DrawingArea()
         self.content_structure.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self.content_structure.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)

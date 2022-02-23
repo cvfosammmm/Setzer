@@ -15,7 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import GObject
+
 import os.path
+import time
 
 import setzer.workspace.sidebar.document_structure_page.document_structure_page_viewgtk as document_structure_page_view
 import setzer.workspace.sidebar.document_structure_page.document_structure_page_presenter as document_structure_page_presenter
@@ -239,5 +244,11 @@ class DocumentStructurePage(object):
         if self.labels_hover_item != item_num:
             self.labels_hover_item = item_num
             self.view.content_labels.queue_draw()
+
+    def scroll_view(self, position, duration=0.2):
+        adjustment = self.view.scrolled_window.get_vadjustment()
+        self.scroll_to = {'position_start': adjustment.get_value(), 'position_end': position, 'time_start': time.time(), 'duration': duration}
+        self.view.scrolled_window.set_kinetic_scrolling(False)
+        GObject.timeout_add(15, self.presenter.do_scroll)
 
 

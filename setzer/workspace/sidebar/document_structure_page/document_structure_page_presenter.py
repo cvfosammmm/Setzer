@@ -22,6 +22,7 @@ from gi.repository import Gdk
 from gi.repository import cairo
 
 import os.path
+import time
 
 from setzer.helpers.timer import timer
 import setzer.helpers.drawing as drawing_helper
@@ -192,5 +193,25 @@ class DocumentStructurePagePresenter(object):
                 self.icons[icon_name + '-symbolic'] = surface
 
         return (first_line, last_line)
+
+    def do_scroll(self):
+        if self.model.scroll_to != None:
+            adjustment = self.view.scrolled_window.get_vadjustment()
+            time_elapsed = time.time() - self.model.scroll_to['time_start']
+            if self.model.scroll_to['duration'] == 0:
+                time_elapsed_percent = 1
+            else:
+                time_elapsed_percent = time_elapsed / self.model.scroll_to['duration']
+            if time_elapsed_percent >= 1:
+                adjustment.set_value(self.model.scroll_to['position_end'])
+                self.model.scroll_to = None
+                self.view.scrolled_window.set_kinetic_scrolling(True)
+                return False
+            else:
+                adjustment.set_value(self.model.scroll_to['position_start'] * (1 - self.ease(time_elapsed_percent)) + self.model.scroll_to['position_end'] * self.ease(time_elapsed_percent))
+                return True
+        return False
+
+    def ease(self, time): return (time - 1)**3 + 1
 
 
