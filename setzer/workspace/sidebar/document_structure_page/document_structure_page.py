@@ -202,7 +202,10 @@ class DocumentStructurePage(object):
             for i in range(level + 1, 8):
                 predecessor[i] = node
             height += self.view.line_height
-        self.structure_view_height = height + 33
+
+        if height != 0:
+            height += 33
+        self.structure_view_height = height
         self.nodes = nodes
         self.view.content_structure.set_size_request(-1, self.structure_view_height)
         self.set_structure_hover_item(None)
@@ -228,7 +231,10 @@ class DocumentStructurePage(object):
         labels.sort(key=lambda label: label[0].lower())
         self.labels = labels
 
-        self.labels_view_height = len(self.labels) * self.view.line_height + 33
+        if len(labels) == 0:
+            self.labels_view_height = 0
+        else:
+            self.labels_view_height = len(self.labels) * self.view.line_height + 33
         self.view.content_labels.set_size_request(-1, self.labels_view_height)
         self.set_labels_hover_item(None)
         self.view.content_labels.queue_draw()

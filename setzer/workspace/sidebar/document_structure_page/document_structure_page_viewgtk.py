@@ -34,7 +34,7 @@ class DocumentStructurePageView(Gtk.Overlay):
 
         self.tabs_box = Gtk.HBox()
         self.tabs_box.get_style_context().add_class('tabs-box')
-        self.tabs_box.pack_start(Gtk.Label('Document Structure'), False, False, 0)
+        self.tabs_box.pack_start(Gtk.Label('Files'), False, False, 0)
         self.vbox.pack_start(self.tabs_box, False, False, 0)
 
         self.tabs = Gtk.Toolbar()
@@ -55,6 +55,15 @@ class DocumentStructurePageView(Gtk.Overlay):
         self.next_button.set_tooltip_text(_('Forward'))
         self.tabs.insert(self.next_button, -1)
 
+        self.content_files = Gtk.DrawingArea()
+        self.content_files.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
+        self.content_files.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
+        self.content_vbox.pack_start(self.content_files, False, False, 0)
+
+        self.structure_label = Gtk.Label(_('Document Structure'))
+        self.structure_label.set_xalign(0)
+        self.content_vbox.pack_start(self.structure_label, False, False, 0)
+
         self.content_structure = Gtk.DrawingArea()
         self.content_structure.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self.content_structure.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
@@ -65,23 +74,14 @@ class DocumentStructurePageView(Gtk.Overlay):
         self.font_size = (self.font.get_size() * 4) / (3 * Pango.SCALE)
         self.line_height = int(self.font_size) + 11
 
-        self.files_label = Gtk.Label(_('Files'))
-        self.files_label.set_xalign(0)
-        self.content_vbox.pack_start(self.files_label, False, False, 0)
-
-        self.files_label_overlay = Gtk.Label(_('Files'))
-        self.files_label_overlay.set_xalign(0)
-        self.files_label_overlay.set_halign(Gtk.Align.START)
-        self.files_label_overlay.set_valign(Gtk.Align.START)
-        self.files_label_overlay.set_size_request(148, -1)
-        self.files_label_overlay.get_style_context().add_class('overlay')
-        self.add_overlay(self.files_label_overlay)
-        self.set_overlay_pass_through(self.files_label_overlay, True)
-
-        self.content_files = Gtk.DrawingArea()
-        self.content_files.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        self.content_files.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
-        self.content_vbox.pack_start(self.content_files, False, False, 0)
+        self.structure_label_overlay = Gtk.Label(_('Document Structure'))
+        self.structure_label_overlay.set_xalign(0)
+        self.structure_label_overlay.set_halign(Gtk.Align.START)
+        self.structure_label_overlay.set_valign(Gtk.Align.START)
+        self.structure_label_overlay.set_size_request(148, -1)
+        self.structure_label_overlay.get_style_context().add_class('overlay')
+        self.add_overlay(self.structure_label_overlay)
+        self.set_overlay_pass_through(self.structure_label_overlay, True)
 
         self.labels_label = Gtk.Label(_('Labels'))
         self.labels_label.set_xalign(0)

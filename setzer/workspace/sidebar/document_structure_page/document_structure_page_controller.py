@@ -51,9 +51,12 @@ class DocumentStructurePageController(object):
         self.model.set_labels_hover_item(None)
 
     def on_scroll_or_resize(self, *args):
-        label_height = self.view.files_label.get_allocated_height()
-        files_label_offset = self.model.structure_view_height + label_height
-        labels_label_offset = files_label_offset + self.model.files_view_height + label_height
+        tabs_height = self.view.tabs_box.get_allocated_height()
+        label_height = self.view.structure_label.get_allocated_height()
+        structure_label_offset = self.model.files_view_height + tabs_height
+        labels_label_offset = structure_label_offset + self.model.structure_view_height
+        if self.model.structure_view_height:
+            labels_label_offset += label_height
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
 
         if scrolling_offset == 0:
@@ -68,43 +71,52 @@ class DocumentStructurePageController(object):
         self.update_labels()
 
     def update_labels(self):
-        label_height = self.view.files_label.get_allocated_height()
-        files_label_offset = self.model.structure_view_height + label_height
-        labels_label_offset = files_label_offset + self.model.files_view_height + label_height
+        tabs_height = self.view.tabs_box.get_allocated_height()
+        label_height = self.view.structure_label.get_allocated_height()
+        structure_label_offset = self.model.files_view_height + tabs_height
+        labels_label_offset = structure_label_offset + self.model.structure_view_height
+        if self.model.structure_view_height:
+            labels_label_offset += label_height
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
 
         self.view.tabs_box.get_style_context().remove_class('no-border')
 
-        margin_top = max(0, files_label_offset - int(scrolling_offset))
-        self.view.files_label_overlay.set_margin_top(margin_top)
+        margin_top = max(0, structure_label_offset - int(scrolling_offset))
+        self.view.structure_label_overlay.set_margin_top(margin_top)
 
-        if margin_top > 0 and margin_top <= label_height:
+        if margin_top > 0 and margin_top <= tabs_height:
             self.view.tabs_box.get_style_context().add_class('no-border')
 
         margin_top = max(0, labels_label_offset - int(scrolling_offset))
         self.view.labels_label_overlay.set_margin_top(margin_top)
 
-        if margin_top > 0 and margin_top <= label_height:
+        if margin_top > 0 and margin_top <= tabs_height:
             self.view.tabs_box.get_style_context().add_class('no-border')
 
     def update_hover_state(self, event):
-        label_height = self.view.files_label.get_allocated_height()
-        files_view_offset = self.model.structure_view_height + label_height
-        labels_view_offset = files_view_offset + self.model.files_view_height + label_height
+        tabs_height = self.view.tabs_box.get_allocated_height()
+        label_height = self.view.labels_label.get_allocated_height()
+        structure_label_height = self.view.structure_label.get_allocated_height()
+        structure_view_offset = self.model.files_view_height
+        if self.model.structure_view_height:
+            structure_view_offset += structure_label_height
+        labels_view_offset = structure_view_offset + self.model.structure_view_height
+        if self.model.labels_view_height:
+            labels_view_offset += label_height
 
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
         pointer_offset = scrolling_offset + event.y - 9
         offset = int((scrolling_offset + event.y - 9) // self.view.line_height)
-        if pointer_offset >= 0 and pointer_offset <= self.model.structure_view_height:
-            offset = int(pointer_offset // self.view.line_height)
-            self.model.set_structure_hover_item(offset)
-            self.model.set_files_hover_item(None)
-            self.model.set_labels_hover_item(None)
-        elif pointer_offset >= files_view_offset and pointer_offset <= files_view_offset + self.model.files_view_height:
-            pointer_offset -= files_view_offset
+        if pointer_offset >= 0 and pointer_offset <= self.model.files_view_height:
             offset = int(pointer_offset // self.view.line_height)
             self.model.set_structure_hover_item(None)
             self.model.set_files_hover_item(offset)
+            self.model.set_labels_hover_item(None)
+        elif pointer_offset >= structure_view_offset and pointer_offset <= structure_view_offset + self.model.structure_view_height:
+            pointer_offset -= structure_view_offset
+            offset = int(pointer_offset // self.view.line_height)
+            self.model.set_structure_hover_item(offset)
+            self.model.set_files_hover_item(None)
             self.model.set_labels_hover_item(None)
         elif pointer_offset >= labels_view_offset and pointer_offset <= labels_view_offset + self.model.labels_view_height:
             pointer_offset -= labels_view_offset
@@ -159,26 +171,32 @@ class DocumentStructurePageController(object):
             self.model.workspace.active_document.view.source_view.grab_focus()
 
     def on_next_button_clicked(self, button):
-        label_height = self.view.files_label.get_allocated_height()
-        files_label_offset = self.model.structure_view_height + label_height
-        labels_label_offset = files_label_offset + self.model.files_view_height + label_height
+        tabs_height = self.view.tabs_box.get_allocated_height()
+        label_height = self.view.structure_label.get_allocated_height()
+        structure_label_offset = self.model.files_view_height + tabs_height
+        labels_label_offset = structure_label_offset + self.model.structure_view_height
+        if self.model.structure_view_height:
+            labels_label_offset += label_height
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
 
-        if scrolling_offset < files_label_offset:
-            self.model.scroll_view(files_label_offset)
+        if scrolling_offset < structure_label_offset:
+            self.model.scroll_view(structure_label_offset)
         elif scrolling_offset < labels_label_offset:
             self.model.scroll_view(labels_label_offset)
 
     def on_prev_button_clicked(self, button):
-        label_height = self.view.files_label.get_allocated_height()
-        files_label_offset = self.model.structure_view_height + label_height
-        labels_label_offset = files_label_offset + self.model.files_view_height + label_height
+        tabs_height = self.view.tabs_box.get_allocated_height()
+        label_height = self.view.structure_label.get_allocated_height()
+        structure_label_offset = self.model.files_view_height + tabs_height
+        labels_label_offset = structure_label_offset + self.model.structure_view_height
+        if self.model.structure_view_height:
+            labels_label_offset += label_height
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
 
         if scrolling_offset > labels_label_offset:
             self.model.scroll_view(labels_label_offset)
-        elif scrolling_offset > files_label_offset:
-            self.model.scroll_view(files_label_offset)
+        elif scrolling_offset > structure_label_offset:
+            self.model.scroll_view(structure_label_offset)
         elif scrolling_offset > 0:
             self.model.scroll_view(0)
 
