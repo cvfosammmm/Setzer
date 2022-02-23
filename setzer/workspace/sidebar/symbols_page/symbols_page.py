@@ -130,11 +130,15 @@ class SymbolsPage(object):
             self.view.prev_button.set_sensitive(False)
         else:
             self.view.prev_button.set_sensitive(True)
-        final_label_offset = self.view.vbox.get_allocated_height() - self.view.symbols_views[0].get_allocated_height()
+
+        final_label_offset = self.view.vbox.get_allocated_height() - self.view.symbols_views[-1].get_allocated_height()
         if scrolling_offset >= final_label_offset:
+            self.view.next_button.set_sensitive(False)
+        elif scrolling_offset >= self.view.vbox.get_allocated_height() - self.view.scrolled_window.get_allocated_height():
             self.view.next_button.set_sensitive(False)
         else:
             self.view.next_button.set_sensitive(True)
+
         self.update_labels()
 
     def update_labels(self):
