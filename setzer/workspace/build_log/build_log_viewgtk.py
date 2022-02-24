@@ -34,12 +34,10 @@ class BuildLogView(Gtk.VBox):
         self.list = Gtk.DrawingArea()
         self.list.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self.list.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
-        self.list_color_hack = Gtk.ListBox()
-        self.list_color_hack_row = Gtk.ListBoxRow()
         self.scrolled_window.add(self.list)
 
         style_context = self.list.get_style_context()
-        self.font = self.list_color_hack.get_style_context().get_font(style_context.get_state())
+        self.font = self.list.get_style_context().get_font(style_context.get_state())
         self.font_size = (self.font.get_size() * 4) / (3 * Pango.SCALE)
         self.line_height = int(self.font_size) + 11
 

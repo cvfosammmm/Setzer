@@ -75,8 +75,8 @@ class BuildLogPresenter(object):
         additional_lines = additional_height // self.view.line_height + 2
 
         bg_color = style_context.lookup_color('theme_base_color')[1]
-        hover_color = self.view.list_color_hack_row.get_style_context().get_background_color(Gtk.StateFlags.PRELIGHT)
-        fg_color = self.view.list_color_hack.get_style_context().get_color(style_context.get_state())
+        hover_color = style_context.lookup_color('theme_bg_color')[1]
+        fg_color = style_context.lookup_color('theme_fg_color')[1]
 
         ctx.set_source_rgba(bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha)
         ctx.rectangle(0, max(0, offset - additional_height), view_width, max(len(self.build_log.items) * self.view.line_height, view_height + 2 * additional_height))
