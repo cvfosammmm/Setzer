@@ -8,7 +8,7 @@ Website: <a href="https://www.cvfosammmm.org/setzer/">https://www.cvfosammmm.org
 
 ![Screenshot](https://github.com/cvfosammmm/Setzer/raw/master/data/screenshot.png)
 
-Setzer is a LaTeX editor written in Python with Gtk. I'm happy if you give it a try and provide feedback via the issue tracker here on GitHub, be it about design, code architecture, bugs, feature requests, ... I try to respond to issues immediately.
+Setzer is a LaTeX editor written in Python with Gtk. I'm happy if you give it a try and provide feedback via the issue tracker here on GitHub, be it about design, code architecture, bugs, feature requests, ...
 
 ## Running Setzer with Gnome Builder
 
