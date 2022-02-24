@@ -50,7 +50,7 @@ class BuildLogPresenter(object):
         num_items = self.build_log.count_items('all')
         self.set_header_data(num_errors, num_others, has_been_built)
         self.max_width = -1
-        self.height = num_items * self.view.line_height + 6
+        self.height = num_items * self.view.line_height + 24
         self.view.list.set_size_request(self.max_width, self.height)
         self.view.scrolled_window.get_vadjustment().set_value(0)
         self.view.scrolled_window.get_hadjustment().set_value(0)
