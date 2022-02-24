@@ -160,9 +160,9 @@ class WorkspacePresenter(object):
         preview_position = self.workspace.preview_position
         if self.workspace.show_preview or self.workspace.show_help:
             if show_sidebar == False:
-                preview_position += - 217
+                preview_position += - 253
             else:
-                preview_position += self.workspace.sidebar_position - 216
+                preview_position += self.workspace.sidebar_position - 252
         self.main_window.preview_paned.set_target_position(preview_position)
         self.main_window.sidebar_paned.set_target_position(self.workspace.sidebar_position)
         self.main_window.build_log_paned.set_target_position(self.workspace.build_log_position)
