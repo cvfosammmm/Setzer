@@ -53,6 +53,11 @@
     </provides>
 
     <releases>
+        <release version="0.4.5" date="2022-2-24">
+            <description>
+                <p translatable="no">Document structure widget in the sidebar, ...</p>
+            </description>
+        </release>
         <release version="0.4.4" date="2022-2-16">
             <description>
                 <p translatable="no">Redesigned symbols sidebar with search and recent symbols, ...</p>
