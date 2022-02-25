@@ -39,17 +39,16 @@ class DocumentStructurePage(object):
         self.document = None
         self.nodes = list()
         self.nodes_in_line = list()
-        self.structure_hover_item = None
         self.structure_view_height = 0
 
         self.includes = list()
         self.integrated_includes = dict()
-        self.files_hover_item = None
         self.files_view_height = 0
 
         self.labels = list()
-        self.labels_hover_item = None
         self.labels_view_height = 0
+
+        self.hover_item = (None, None)
 
         self.workspace = workspace
 
@@ -112,6 +111,7 @@ class DocumentStructurePage(object):
             self.document = document
             self.document.content.connect('buffer_changed', self.on_buffer_changed)
             self.document.connect('is_root_changed', self.on_is_root_changed)
+            self.update_data()
 
     def update_data(self, *params):
         self.update_integrated_includes()
@@ -215,14 +215,14 @@ class DocumentStructurePage(object):
         self.view.content_widgets['structure'].set_size_request(-1, height)
         self.structure_view_height = height
         self.nodes = nodes
-        self.set_structure_hover_item(None)
+        self.set_hover_item(None, None)
         self.view.content_widgets['structure'].queue_draw()
 
     def update_files_view(self):
         self.includes = self.get_includes()
         self.files_view_height = (len(self.includes) + 1) * self.view.line_height + 33
         self.view.content_widgets['files'].set_size_request(-1, self.files_view_height)
-        self.set_files_hover_item(None)
+        self.set_hover_item(None, None)
         self.view.content_widgets['files'].queue_draw()
 
     #@timer
@@ -251,23 +251,16 @@ class DocumentStructurePage(object):
             self.view.labels['labels']['inline'].show()
             self.view.labels['labels']['overlay'].show()
         self.view.content_widgets['labels'].set_size_request(-1, self.labels_view_height)
-        self.set_labels_hover_item(None)
+        self.set_hover_item(None, None)
         self.view.content_widgets['labels'].queue_draw()
 
-    def set_structure_hover_item(self, item_num): 
-        if self.structure_hover_item != item_num:
-            self.structure_hover_item = item_num
-            self.view.content_widgets['structure'].queue_draw()
-
-    def set_files_hover_item(self, item_num): 
-        if self.files_hover_item != item_num:
-            self.files_hover_item = item_num
-            self.view.content_widgets['files'].queue_draw()
-
-    def set_labels_hover_item(self, item_num): 
-        if self.labels_hover_item != item_num:
-            self.labels_hover_item = item_num
-            self.view.content_widgets['labels'].queue_draw()
+    def set_hover_item(self, section, item_num):
+        if self.hover_item != (section, item_num):
+            if self.hover_item[0] != None:
+                self.view.content_widgets[self.hover_item[0]].queue_draw()
+            self.hover_item = (section, item_num)
+            if section != None:
+                self.view.content_widgets[section].queue_draw()
 
     def scroll_view(self, position, duration=0.2):
         adjustment = self.view.scrolled_window.get_vadjustment()

@@ -60,7 +60,7 @@ class DocumentStructurePagePresenter(object):
 
         count = 0
 
-        if self.model.files_hover_item == 0:
+        if self.model.hover_item == ('files', 0):
             ctx.set_source_rgba(self.hover_color.red, self.hover_color.green, self.hover_color.blue, self.hover_color.alpha)
             ctx.rectangle(0, count * self.view.line_height + 9, self.view_width, self.view.line_height)
             ctx.fill()
@@ -81,7 +81,7 @@ class DocumentStructurePagePresenter(object):
 
         for include in self.model.includes:
             if count >= first_line and count <= last_line:
-                if count == self.model.files_hover_item:
+                if self.model.hover_item == ('files', count):
                     ctx.set_source_rgba(self.hover_color.red, self.hover_color.green, self.hover_color.blue, self.hover_color.alpha)
                     ctx.rectangle(0, count * self.view.line_height + 9, self.view_width, self.view.line_height)
                     ctx.fill()
@@ -112,7 +112,7 @@ class DocumentStructurePagePresenter(object):
         count = 0
         for label in self.model.labels:
             if count >= first_line and count <= last_line:
-                if count == self.model.labels_hover_item:
+                if self.model.hover_item == ('labels', count):
                     ctx.set_source_rgba(self.hover_color.red, self.hover_color.green, self.hover_color.blue, self.hover_color.alpha)
                     ctx.rectangle(0, count * self.view.line_height + 9, self.view_width, self.view.line_height)
                     ctx.fill()
@@ -152,7 +152,7 @@ class DocumentStructurePagePresenter(object):
         for node in nodes:
             self.nodes_in_line.append(node)
             if count >= first_line and count <= last_line:
-                if count == self.model.structure_hover_item:
+                if self.model.hover_item == ('structure', count):
                     ctx.set_source_rgba(self.hover_color.red, self.hover_color.green, self.hover_color.blue, self.hover_color.alpha)
                     ctx.rectangle(0, count * self.view.line_height + 9, self.view_width, self.view.line_height)
                     ctx.fill()

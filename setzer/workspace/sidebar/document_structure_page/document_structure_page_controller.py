@@ -49,9 +49,7 @@ class DocumentStructurePageController(object):
         self.update_hover_state(event)
 
     def on_leave(self, widget, event):
-        self.model.set_structure_hover_item(None)
-        self.model.set_files_hover_item(None)
-        self.model.set_labels_hover_item(None)
+        self.model.set_hover_item(None, None)
 
     def on_scroll_or_resize(self, *args):
         label_offsets = self.get_label_offsets()
@@ -75,40 +73,15 @@ class DocumentStructurePageController(object):
                 self.view.tabs_box.get_style_context().add_class('no-border')
 
     def update_hover_state(self, event):
-        tabs_height = self.view.tabs_box.get_allocated_height()
         label_height = self.view.labels['labels']['inline'].get_allocated_height()
-        structure_label_height = self.view.labels['structure']['inline'].get_allocated_height()
-        structure_view_offset = self.model.files_view_height
-        if self.model.structure_view_height:
-            structure_view_offset += structure_label_height
-        labels_view_offset = structure_view_offset + self.model.structure_view_height
-        if self.model.labels_view_height:
-            labels_view_offset += label_height
-
-        scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
-        pointer_offset = scrolling_offset + event.y - 9
-        offset = int((scrolling_offset + event.y - 9) // self.view.line_height)
-        if pointer_offset >= 0 and pointer_offset <= self.model.files_view_height:
-            offset = int(pointer_offset // self.view.line_height)
-            self.model.set_structure_hover_item(None)
-            self.model.set_files_hover_item(offset)
-            self.model.set_labels_hover_item(None)
-        elif pointer_offset >= structure_view_offset and pointer_offset <= structure_view_offset + self.model.structure_view_height:
-            pointer_offset -= structure_view_offset
-            offset = int(pointer_offset // self.view.line_height)
-            self.model.set_structure_hover_item(offset)
-            self.model.set_files_hover_item(None)
-            self.model.set_labels_hover_item(None)
-        elif pointer_offset >= labels_view_offset and pointer_offset <= labels_view_offset + self.model.labels_view_height:
-            pointer_offset -= labels_view_offset
-            offset = int(pointer_offset // self.view.line_height)
-            self.model.set_structure_hover_item(None)
-            self.model.set_files_hover_item(None)
-            self.model.set_labels_hover_item(offset)
-        else:
-            self.model.set_structure_hover_item(None)
-            self.model.set_files_hover_item(None)
-            self.model.set_labels_hover_item(None)
+        pointer_offset = self.view.scrolled_window.get_vadjustment().get_value() + event.y
+        for name, offset in zip(reversed(['files'] + list(self.view.labels)), reversed([0] + self.get_label_offsets())):
+            if pointer_offset >= offset + 9:
+                pointer_offset -= (offset + 9)
+                item_num = int(pointer_offset // self.view.line_height)
+                self.model.set_hover_item(name, item_num)
+                return
+        self.model.set_hover_item(None, None)
 
     def on_button_press_structure(self, drawing_area, event):
         modifiers = Gtk.accelerator_get_default_mod_mask()
