@@ -131,7 +131,7 @@ class ParserLaTeX(object):
                 block_symbol_matches['others'].append((match[0], match[1] + new_line_count, match[2] + text_length))
         for match in self.other_symbols:
             if match[1] > offset_line_end:
-                other_symbols.append((match[0], match[1] - text_length))
+                other_symbols.append((match[0], match[1] + text_length))
 
         self.block_symbol_matches = block_symbol_matches
         self.number_of_lines = self.number_of_lines + new_line_count
