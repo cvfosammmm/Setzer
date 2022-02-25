@@ -48,9 +48,9 @@ class DocumentStructurePagePresenter(object):
             self.icon_infos[icon_name] = Gtk.IconTheme.get_default().lookup_icon(icon_name + '-symbolic', 16 * self.view.get_scale_factor(), 0)
         self.icon_infos['tag'] = Gtk.IconTheme.get_default().lookup_icon('tag-symbolic', 16 * self.view.get_scale_factor(), 0)
 
-        self.view.content_files.connect('draw', self.draw_files)
-        self.view.content_structure.connect('draw', self.draw_structure)
-        self.view.content_labels.connect('draw', self.draw_labels)
+        self.view.content_widgets['files'].connect('draw', self.draw_files)
+        self.view.content_widgets['structure'].connect('draw', self.draw_structure)
+        self.view.content_widgets['labels'].connect('draw', self.draw_labels_widget)
 
     #@timer
     def draw_files(self, drawing_area, ctx):
@@ -101,16 +101,16 @@ class DocumentStructurePagePresenter(object):
             count += 1
 
     #@timer
-    def draw_labels(self, drawing_area, ctx):
+    def draw_labels_widget(self, drawing_area, ctx):
         if len(self.model.labels) == 0:
-            self.view.labels_label.hide()
-            self.view.labels_label_overlay.hide()
+            self.view.labels['labels']['inline'].hide()
+            self.view.labels['labels']['overlay'].hide()
             return True
 
-        self.view.labels_label.show()
-        self.view.labels_label_overlay.show()
+        self.view.labels['labels']['inline'].show()
+        self.view.labels['labels']['overlay'].show()
 
-        first_line, last_line = self.drawing_setup(drawing_area, ctx, self.model.files_view_height + self.view.structure_label.get_allocated_height() * 2 + self.model.structure_view_height)
+        first_line, last_line = self.drawing_setup(drawing_area, ctx, self.model.files_view_height + self.view.labels['structure']['inline'].get_allocated_height() * 2 + self.model.structure_view_height)
 
         self.draw_background(drawing_area, ctx)
 
@@ -139,14 +139,14 @@ class DocumentStructurePagePresenter(object):
     #@timer
     def draw_structure(self, drawing_area, ctx):
         if len(self.model.nodes) == 0:
-            self.view.structure_label.hide()
-            self.view.structure_label_overlay.hide()
+            self.view.labels['structure']['inline'].hide()
+            self.view.labels['structure']['overlay'].hide()
             return True
 
-        self.view.structure_label.show()
-        self.view.structure_label_overlay.show()
+        self.view.labels['structure']['inline'].show()
+        self.view.labels['structure']['overlay'].show()
 
-        first_line, last_line = self.drawing_setup(drawing_area, ctx, self.model.files_view_height + self.view.structure_label.get_allocated_height())
+        first_line, last_line = self.drawing_setup(drawing_area, ctx, self.model.files_view_height + self.view.labels['structure']['inline'].get_allocated_height())
 
         self.draw_background(drawing_area, ctx)
         self.nodes_in_line = list()

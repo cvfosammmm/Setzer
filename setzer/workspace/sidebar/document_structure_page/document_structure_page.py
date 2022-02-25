@@ -70,13 +70,13 @@ class DocumentStructurePage(object):
         if document in self.integrated_includes:
             self.update_integrated_includes()
             self.update_sections()
-            self.update_labels()
+            self.update_labels_widget()
 
     def on_document_removed(self, workspace, document):
         if document in self.integrated_includes:
             self.update_integrated_includes()
             self.update_sections()
-            self.update_labels()
+            self.update_labels_widget()
 
     def on_new_active_document(self, workspace, document):
         self.set_document()
@@ -87,12 +87,12 @@ class DocumentStructurePage(object):
     def on_buffer_changed(self, content, parameter):
         self.update_integrated_includes()
         self.update_sections()
-        self.update_labels()
+        self.update_labels_widget()
 
     def on_is_root_changed(self, document, parameter):
         self.update_integrated_includes()
         self.update_sections()
-        self.update_labels()
+        self.update_labels_widget()
 
     def set_document(self):
         if self.workspace.get_active_document() == None:
@@ -116,7 +116,7 @@ class DocumentStructurePage(object):
             self.document.connect('is_root_changed', self.on_is_root_changed)
             self.update_integrated_includes()
             self.update_sections()
-            self.update_labels()
+            self.update_labels_widget()
 
     def update_integrated_includes(self):
         integrated_includes = dict()
@@ -207,19 +207,19 @@ class DocumentStructurePage(object):
             height += 33
         self.structure_view_height = height
         self.nodes = nodes
-        self.view.content_structure.set_size_request(-1, self.structure_view_height)
+        self.view.content_widgets['structure'].set_size_request(-1, self.structure_view_height)
         self.set_structure_hover_item(None)
-        self.view.content_structure.queue_draw()
+        self.view.content_widgets['structure'].queue_draw()
 
     def update_files_view(self):
         self.includes = self.get_includes()
         self.files_view_height = (len(self.includes) + 1) * self.view.line_height + 33
-        self.view.content_files.set_size_request(-1, self.files_view_height)
+        self.view.content_widgets['files'].set_size_request(-1, self.files_view_height)
         self.set_files_hover_item(None)
-        self.view.content_files.queue_draw()
+        self.view.content_widgets['files'].queue_draw()
 
     #@timer
-    def update_labels(self):
+    def update_labels_widget(self):
         labels = list()
         for label in self.document.content.get_labels_with_offset():
             filename = self.document.get_filename()
@@ -237,24 +237,24 @@ class DocumentStructurePage(object):
             self.labels_view_height = 0
         else:
             self.labels_view_height = len(self.labels) * self.view.line_height + 33
-        self.view.content_labels.set_size_request(-1, self.labels_view_height)
+        self.view.content_widgets['labels'].set_size_request(-1, self.labels_view_height)
         self.set_labels_hover_item(None)
-        self.view.content_labels.queue_draw()
+        self.view.content_widgets['labels'].queue_draw()
 
     def set_structure_hover_item(self, item_num): 
         if self.structure_hover_item != item_num:
             self.structure_hover_item = item_num
-            self.view.content_structure.queue_draw()
+            self.view.content_widgets['structure'].queue_draw()
 
     def set_files_hover_item(self, item_num): 
         if self.files_hover_item != item_num:
             self.files_hover_item = item_num
-            self.view.content_files.queue_draw()
+            self.view.content_widgets['files'].queue_draw()
 
     def set_labels_hover_item(self, item_num): 
         if self.labels_hover_item != item_num:
             self.labels_hover_item = item_num
-            self.view.content_labels.queue_draw()
+            self.view.content_widgets['labels'].queue_draw()
 
     def scroll_view(self, position, duration=0.2):
         adjustment = self.view.scrolled_window.get_vadjustment()

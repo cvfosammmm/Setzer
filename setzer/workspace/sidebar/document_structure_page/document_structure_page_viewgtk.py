@@ -26,12 +26,55 @@ class DocumentStructurePageView(Gtk.Overlay):
 
     def __init__(self):
         Gtk.Overlay.__init__(self)
+        self.get_style_context().add_class('sidebar-document-structure')
 
         self.vbox = Gtk.VBox()
         self.content_vbox = Gtk.VBox()
 
-        self.get_style_context().add_class('sidebar-document-structure')
+        self.add_buttons()
+        self.add_scrolled_window()
 
+        self.content_widgets = dict()
+        self.labels = dict()
+
+        self.add_content_widget('files')
+        self.add_label('structure', _('Document Structure'))
+        self.add_content_widget('structure')
+        self.add_label('labels', _('Labels'))
+        self.add_content_widget('labels')
+
+        style_context = self.content_widgets['structure'].get_style_context()
+        self.font = style_context.get_font(style_context.get_state())
+        self.font_size = (self.font.get_size() * 4) / (3 * Pango.SCALE)
+        self.line_height = int(self.font_size) + 11
+
+        self.show_all()
+
+    def add_content_widget(self, name):
+        content_widget = Gtk.DrawingArea()
+        content_widget.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
+        content_widget.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
+        self.content_vbox.pack_start(content_widget, False, False, 0)
+
+        self.content_widgets[name] = content_widget
+
+    def add_label(self, name, text):
+        label_inline = Gtk.Label(text)
+        label_inline.set_xalign(0)
+        self.content_vbox.pack_start(label_inline, False, False, 0)
+
+        label_overlay = Gtk.Label(text)
+        label_overlay.set_xalign(0)
+        label_overlay.set_halign(Gtk.Align.START)
+        label_overlay.set_valign(Gtk.Align.START)
+        label_overlay.set_size_request(148, -1)
+        label_overlay.get_style_context().add_class('overlay')
+        self.add_overlay(label_overlay)
+        self.set_overlay_pass_through(label_overlay, True)
+
+        self.labels[name] = {'inline': label_inline, 'overlay': label_overlay}
+
+    def add_buttons(self):
         self.tabs_box = Gtk.HBox()
         self.tabs_box.get_style_context().add_class('tabs-box')
         self.tabs_box.pack_start(Gtk.Label('Files'), False, False, 0)
@@ -55,58 +98,11 @@ class DocumentStructurePageView(Gtk.Overlay):
         self.next_button.set_tooltip_text(_('Forward'))
         self.tabs.insert(self.next_button, -1)
 
-        self.content_files = Gtk.DrawingArea()
-        self.content_files.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        self.content_files.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
-        self.content_vbox.pack_start(self.content_files, False, False, 0)
-
-        self.structure_label = Gtk.Label(_('Document Structure'))
-        self.structure_label.set_xalign(0)
-        self.content_vbox.pack_start(self.structure_label, False, False, 0)
-
-        self.content_structure = Gtk.DrawingArea()
-        self.content_structure.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        self.content_structure.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
-        self.content_vbox.pack_start(self.content_structure, False, False, 0)
-
-        style_context = self.content_structure.get_style_context()
-        self.font = self.content_structure.get_style_context().get_font(style_context.get_state())
-        self.font_size = (self.font.get_size() * 4) / (3 * Pango.SCALE)
-        self.line_height = int(self.font_size) + 11
-
-        self.structure_label_overlay = Gtk.Label(_('Document Structure'))
-        self.structure_label_overlay.set_xalign(0)
-        self.structure_label_overlay.set_halign(Gtk.Align.START)
-        self.structure_label_overlay.set_valign(Gtk.Align.START)
-        self.structure_label_overlay.set_size_request(148, -1)
-        self.structure_label_overlay.get_style_context().add_class('overlay')
-        self.add_overlay(self.structure_label_overlay)
-        self.set_overlay_pass_through(self.structure_label_overlay, True)
-
-        self.labels_label = Gtk.Label(_('Labels'))
-        self.labels_label.set_xalign(0)
-        self.content_vbox.pack_start(self.labels_label, False, False, 0)
-
-        self.labels_label_overlay = Gtk.Label(_('Labels'))
-        self.labels_label_overlay.set_xalign(0)
-        self.labels_label_overlay.set_halign(Gtk.Align.START)
-        self.labels_label_overlay.set_valign(Gtk.Align.START)
-        self.labels_label_overlay.set_size_request(148, -1)
-        self.labels_label_overlay.get_style_context().add_class('overlay')
-        self.add_overlay(self.labels_label_overlay)
-        self.set_overlay_pass_through(self.labels_label_overlay, True)
-
-        self.content_labels = Gtk.DrawingArea()
-        self.content_labels.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        self.content_labels.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
-        self.content_vbox.pack_start(self.content_labels, False, False, 0)
-
+    def add_scrolled_window(self):
         self.scrolled_window = Gtk.ScrolledWindow()
         self.scrolled_window.add(self.content_vbox)
         self.vbox.pack_start(self.scrolled_window, True, True, 0)
-
         self.add(self.vbox)
-        self.show_all()
 
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE

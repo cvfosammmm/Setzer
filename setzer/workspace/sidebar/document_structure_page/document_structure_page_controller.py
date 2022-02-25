@@ -30,12 +30,15 @@ class DocumentStructurePageController(object):
         self.view.scrolled_window.connect('enter-notify-event', self.on_enter)
         self.view.scrolled_window.connect('motion-notify-event', self.on_hover)
         self.view.scrolled_window.connect('leave-notify-event', self.on_leave)
-        self.view.content_structure.connect('button-press-event', self.on_button_press_structure)
-        self.view.content_files.connect('button-press-event', self.on_button_press_files)
-        self.view.content_labels.connect('button-press-event', self.on_button_press_labels)
+
+        self.view.content_widgets['structure'].connect('button-press-event', self.on_button_press_structure)
+        self.view.content_widgets['files'].connect('button-press-event', self.on_button_press_files)
+        self.view.content_widgets['labels'].connect('button-press-event', self.on_button_press_labels)
+
         self.view.vbox.connect('size-allocate', self.on_scroll_or_resize)
         self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_scroll_or_resize)
         self.view.vbox.connect('realize', self.on_scroll_or_resize)
+
         self.view.next_button.connect('clicked', self.on_next_button_clicked)
         self.view.prev_button.connect('clicked', self.on_prev_button_clicked)
 
@@ -52,7 +55,7 @@ class DocumentStructurePageController(object):
 
     def on_scroll_or_resize(self, *args):
         tabs_height = self.view.tabs_box.get_allocated_height()
-        label_height = self.view.structure_label.get_allocated_height()
+        label_height = self.view.labels['structure']['inline'].get_allocated_height()
         structure_label_offset = self.model.files_view_height + tabs_height
         labels_label_offset = structure_label_offset + self.model.structure_view_height
         if self.model.structure_view_height:
@@ -74,7 +77,7 @@ class DocumentStructurePageController(object):
 
     def update_labels(self):
         tabs_height = self.view.tabs_box.get_allocated_height()
-        label_height = self.view.structure_label.get_allocated_height()
+        label_height = self.view.labels['structure']['inline'].get_allocated_height()
         structure_label_offset = self.model.files_view_height + tabs_height
         labels_label_offset = structure_label_offset + self.model.structure_view_height
         if self.model.structure_view_height:
@@ -84,21 +87,21 @@ class DocumentStructurePageController(object):
         self.view.tabs_box.get_style_context().remove_class('no-border')
 
         margin_top = max(0, structure_label_offset - int(scrolling_offset))
-        self.view.structure_label_overlay.set_margin_top(margin_top)
+        self.view.labels['structure']['overlay'].set_margin_top(margin_top)
 
         if margin_top > 0 and margin_top <= tabs_height:
             self.view.tabs_box.get_style_context().add_class('no-border')
 
         margin_top = max(0, labels_label_offset - int(scrolling_offset))
-        self.view.labels_label_overlay.set_margin_top(margin_top)
+        self.view.labels['labels']['overlay'].set_margin_top(margin_top)
 
         if margin_top > 0 and margin_top <= tabs_height:
             self.view.tabs_box.get_style_context().add_class('no-border')
 
     def update_hover_state(self, event):
         tabs_height = self.view.tabs_box.get_allocated_height()
-        label_height = self.view.labels_label.get_allocated_height()
-        structure_label_height = self.view.structure_label.get_allocated_height()
+        label_height = self.view.labels['labels']['inline'].get_allocated_height()
+        structure_label_height = self.view.labels['structure']['inline'].get_allocated_height()
         structure_view_offset = self.model.files_view_height
         if self.model.structure_view_height:
             structure_view_offset += structure_label_height
@@ -173,33 +176,30 @@ class DocumentStructurePageController(object):
             self.model.workspace.active_document.view.source_view.grab_focus()
 
     def on_next_button_clicked(self, button):
-        tabs_height = self.view.tabs_box.get_allocated_height()
-        label_height = self.view.structure_label.get_allocated_height()
-        structure_label_offset = self.model.files_view_height + tabs_height
-        labels_label_offset = structure_label_offset + self.model.structure_view_height
-        if self.model.structure_view_height:
-            labels_label_offset += label_height
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
 
-        if scrolling_offset < structure_label_offset:
-            self.model.scroll_view(structure_label_offset)
-        elif scrolling_offset < labels_label_offset:
-            self.model.scroll_view(labels_label_offset)
+        for label_offset in self.get_label_offsets():
+            if scrolling_offset < label_offset:
+                self.model.scroll_view(label_offset)
+                break
 
     def on_prev_button_clicked(self, button):
-        tabs_height = self.view.tabs_box.get_allocated_height()
-        label_height = self.view.structure_label.get_allocated_height()
-        structure_label_offset = self.model.files_view_height + tabs_height
-        labels_label_offset = structure_label_offset + self.model.structure_view_height
-        if self.model.structure_view_height:
-            labels_label_offset += label_height
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
 
-        if scrolling_offset > labels_label_offset:
-            self.model.scroll_view(labels_label_offset)
-        elif scrolling_offset > structure_label_offset:
-            self.model.scroll_view(structure_label_offset)
-        elif scrolling_offset > 0:
-            self.model.scroll_view(0)
+        for label_offset in reversed([0] + self.get_label_offsets()):
+            if scrolling_offset > label_offset:
+                self.model.scroll_view(label_offset)
+                break
+
+    def get_label_offsets(self):
+        offsets = list()
+        offset = self.view.tabs_box.get_allocated_height()
+        labels = [label['inline'] for label in self.view.labels.values()]
+        for child in self.view.content_vbox.get_children():
+            if child in labels:
+                offsets.append(offset)
+            if child.is_visible():
+                offset += child.get_allocated_height()
+        return offsets
 
 
