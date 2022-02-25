@@ -103,12 +103,7 @@ class DocumentStructurePagePresenter(object):
     #@timer
     def draw_labels_widget(self, drawing_area, ctx):
         if len(self.model.labels) == 0:
-            self.view.labels['labels']['inline'].hide()
-            self.view.labels['labels']['overlay'].hide()
             return True
-
-        self.view.labels['labels']['inline'].show()
-        self.view.labels['labels']['overlay'].show()
 
         first_line, last_line = self.drawing_setup(drawing_area, ctx, self.model.files_view_height + self.view.labels['structure']['inline'].get_allocated_height() * 2 + self.model.structure_view_height)
 
@@ -139,12 +134,7 @@ class DocumentStructurePagePresenter(object):
     #@timer
     def draw_structure(self, drawing_area, ctx):
         if len(self.model.nodes) == 0:
-            self.view.labels['structure']['inline'].hide()
-            self.view.labels['structure']['overlay'].hide()
             return True
-
-        self.view.labels['structure']['inline'].show()
-        self.view.labels['structure']['overlay'].show()
 
         first_line, last_line = self.drawing_setup(drawing_area, ctx, self.model.files_view_height + self.view.labels['structure']['inline'].get_allocated_height())
 

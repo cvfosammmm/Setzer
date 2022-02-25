@@ -54,49 +54,25 @@ class DocumentStructurePageController(object):
         self.model.set_labels_hover_item(None)
 
     def on_scroll_or_resize(self, *args):
-        tabs_height = self.view.tabs_box.get_allocated_height()
-        label_height = self.view.labels['structure']['inline'].get_allocated_height()
-        structure_label_offset = self.model.files_view_height + tabs_height
-        labels_label_offset = structure_label_offset + self.model.structure_view_height
-        if self.model.structure_view_height:
-            labels_label_offset += label_height
+        label_offsets = self.get_label_offsets()
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
 
-        if scrolling_offset == 0:
-            self.view.prev_button.set_sensitive(False)
-        else:
-            self.view.prev_button.set_sensitive(True)
-        if scrolling_offset >= labels_label_offset:
-            self.view.next_button.set_sensitive(False)
-        elif scrolling_offset >= self.view.content_vbox.get_allocated_height() - self.view.scrolled_window.get_allocated_height():
-            self.view.next_button.set_sensitive(False)
-        else:
-            self.view.next_button.set_sensitive(True)
+        self.view.prev_button.set_sensitive(scrolling_offset != 0)
+        self.view.next_button.set_sensitive(scrolling_offset < label_offsets[-1] and scrolling_offset < self.view.content_vbox.get_allocated_height() - self.view.scrolled_window.get_allocated_height())
 
         self.update_labels()
 
     def update_labels(self):
         tabs_height = self.view.tabs_box.get_allocated_height()
-        label_height = self.view.labels['structure']['inline'].get_allocated_height()
-        structure_label_offset = self.model.files_view_height + tabs_height
-        labels_label_offset = structure_label_offset + self.model.structure_view_height
-        if self.model.structure_view_height:
-            labels_label_offset += label_height
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
 
         self.view.tabs_box.get_style_context().remove_class('no-border')
+        for label_name, label_offset in zip(self.view.labels, self.get_label_offsets()):
+            margin_top = max(0, label_offset - int(scrolling_offset))
+            self.view.labels[label_name]['overlay'].set_margin_top(margin_top)
 
-        margin_top = max(0, structure_label_offset - int(scrolling_offset))
-        self.view.labels['structure']['overlay'].set_margin_top(margin_top)
-
-        if margin_top > 0 and margin_top <= tabs_height:
-            self.view.tabs_box.get_style_context().add_class('no-border')
-
-        margin_top = max(0, labels_label_offset - int(scrolling_offset))
-        self.view.labels['labels']['overlay'].set_margin_top(margin_top)
-
-        if margin_top > 0 and margin_top <= tabs_height:
-            self.view.tabs_box.get_style_context().add_class('no-border')
+            if margin_top > 0 and margin_top <= tabs_height:
+                self.view.tabs_box.get_style_context().add_class('no-border')
 
     def update_hover_state(self, event):
         tabs_height = self.view.tabs_box.get_allocated_height()

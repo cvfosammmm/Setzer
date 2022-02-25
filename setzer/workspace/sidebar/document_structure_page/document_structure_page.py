@@ -66,17 +66,15 @@ class DocumentStructurePage(object):
         self.presenter = document_structure_page_presenter.DocumentStructurePagePresenter(self, self.view)
         self.controller = document_structure_page_controller.DocumentStructurePageController(self, self.view)
 
+        self.signal_id = self.view.connect('draw', self.on_first_draw)
+
     def on_new_document(self, workspace, document):
         if document in self.integrated_includes:
-            self.update_integrated_includes()
-            self.update_sections()
-            self.update_labels_widget()
+            self.update_data()
 
     def on_document_removed(self, workspace, document):
         if document in self.integrated_includes:
-            self.update_integrated_includes()
-            self.update_sections()
-            self.update_labels_widget()
+            self.update_data()
 
     def on_new_active_document(self, workspace, document):
         self.set_document()
@@ -85,14 +83,14 @@ class DocumentStructurePage(object):
         self.set_document()
 
     def on_buffer_changed(self, content, parameter):
-        self.update_integrated_includes()
-        self.update_sections()
-        self.update_labels_widget()
+        self.update_data()
 
     def on_is_root_changed(self, document, parameter):
-        self.update_integrated_includes()
-        self.update_sections()
-        self.update_labels_widget()
+        self.update_data()
+
+    def on_first_draw(self, view, *parameter):
+        self.view.disconnect(self.signal_id)
+        self.update_data()
 
     def set_document(self):
         if self.workspace.get_active_document() == None:
@@ -114,9 +112,11 @@ class DocumentStructurePage(object):
             self.document = document
             self.document.content.connect('buffer_changed', self.on_buffer_changed)
             self.document.connect('is_root_changed', self.on_is_root_changed)
-            self.update_integrated_includes()
-            self.update_sections()
-            self.update_labels_widget()
+
+    def update_data(self, *params):
+        self.update_integrated_includes()
+        self.update_sections()
+        self.update_labels_widget()
 
     def update_integrated_includes(self):
         integrated_includes = dict()
@@ -205,9 +205,16 @@ class DocumentStructurePage(object):
 
         if height != 0:
             height += 33
+            self.view.content_widgets['structure'].show()
+            self.view.labels['structure']['inline'].show()
+            self.view.labels['structure']['overlay'].show()
+        else:
+            self.view.content_widgets['structure'].hide()
+            self.view.labels['structure']['inline'].hide()
+            self.view.labels['structure']['overlay'].hide()
+        self.view.content_widgets['structure'].set_size_request(-1, height)
         self.structure_view_height = height
         self.nodes = nodes
-        self.view.content_widgets['structure'].set_size_request(-1, self.structure_view_height)
         self.set_structure_hover_item(None)
         self.view.content_widgets['structure'].queue_draw()
 
@@ -235,8 +242,14 @@ class DocumentStructurePage(object):
 
         if len(labels) == 0:
             self.labels_view_height = 0
+            self.view.content_widgets['labels'].hide()
+            self.view.labels['labels']['inline'].hide()
+            self.view.labels['labels']['overlay'].hide()
         else:
             self.labels_view_height = len(self.labels) * self.view.line_height + 33
+            self.view.content_widgets['labels'].show()
+            self.view.labels['labels']['inline'].show()
+            self.view.labels['labels']['overlay'].show()
         self.view.content_widgets['labels'].set_size_request(-1, self.labels_view_height)
         self.set_labels_hover_item(None)
         self.view.content_widgets['labels'].queue_draw()
