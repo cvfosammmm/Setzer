@@ -131,9 +131,10 @@ class PreviewLayouter(Observable):
 
     def get_ppp(self):
         monitor = Gdk.Display.get_default().get_monitor_at_point(1, 1)
-        width_inch = monitor.get_width_mm() / 25.4
+        width_mm = monitor.get_width_mm()
         width_pixels = monitor.get_geometry().width
-        if width_inch > 0 and width_pixels > 0:
+        if width_mm > 1 and width_pixels > 0:
+            width_inch = width_mm / 25.4
             ppi = int(width_pixels / width_inch)
         else:
             ppi = 96
