@@ -398,6 +398,8 @@ class Preview(Observable):
     def set_zoom_level(self, level, xoffset=0, yoffset=0):
         if level == None: return
         if level == self.zoom_level: return
+        if level > 4.0: level = 4.0
+        if level < 0.25: level = 0.25
 
         self.zoom_level = level
         position = self.get_position_by_screen_offset(xoffset, yoffset)
@@ -408,3 +410,5 @@ class Preview(Observable):
     def open_external_viewer(self):
         if self.pdf_filename != None:
             Gio.AppInfo.launch_default_for_uri('file:' + self.pdf_filename)
+
+
