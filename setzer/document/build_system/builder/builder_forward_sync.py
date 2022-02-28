@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import _thread as thread
 import base64
 import subprocess
 
@@ -53,8 +52,10 @@ class BuilderForwardSync(builder_build.BuilderBuild):
             self.cleanup_files(query)
             self.throw_build_error(query, 'interpreter_not_working', 'synctex missing')
             return
-
-        self.process.wait()
+        try:
+            self.process.wait(5)
+        except subprocess.TimeoutExpired:
+            pass
 
         rectangles = list()
         if self.process != None:
