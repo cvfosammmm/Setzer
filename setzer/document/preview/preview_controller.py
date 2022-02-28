@@ -83,8 +83,8 @@ class PreviewController(object):
                 self.zoom_momentum += event.delta_y - event.delta_x
                 if(self.preview.presenter.scrolling_queue.empty()):
                     zoom_level = min(max(self.preview.zoom_level * (1 - 0.1 * self.zoom_momentum), 0.25), 4)
-                    xoffset = (-event.x + event.x * zoom_level / self.preview.zoom_level) / (zoom_level * self.layouter.ppp)
-                    yoffset = (-event.y + event.y * zoom_level / self.preview.zoom_level) / (zoom_level * self.layouter.ppp)
+                    xoffset = (-event.x + event.x * zoom_level / self.preview.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
+                    yoffset = (-event.y + event.y * zoom_level / self.preview.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
                     self.preview.set_zoom_level(zoom_level, xoffset, yoffset)
                     self.zoom_momentum = 0
             return True

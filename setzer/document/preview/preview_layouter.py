@@ -30,14 +30,12 @@ class PreviewLayouter(Observable):
         self.view = view
 
         self.hidpi_factor = self.view.get_scale_factor()
-        self.ppp = self.get_ppp() # pixels per point
         self.vertical_margin_points = 0
         self.horizontal_margin_points = 0
         self.vertical_margin = None
         self.horizontal_margin = None
         self.page_width = None
         self.page_height = None
-        self.page_gap_points = 5
         self.page_gap = None
         self.border_width = None
         self.canvas_width = None
@@ -78,14 +76,14 @@ class PreviewLayouter(Observable):
         if self.preview.zoom_level == None: return
         if not self.preview.pdf_loaded: return
 
-        self.vertical_margin = int(self.ppp * self.vertical_margin_points)
-        self.page_width = int(round(self.preview.zoom_level * self.ppp * self.preview.page_width))
-        self.horizontal_margin = int(self.ppp * self.horizontal_margin_points)
+        self.vertical_margin = int(self.hidpi_factor * self.vertical_margin_points)
+        self.page_width = int(round(self.preview.zoom_level * self.hidpi_factor * self.preview.page_width))
+        self.horizontal_margin = int(self.hidpi_factor * self.horizontal_margin_points)
         self.horizontal_margin = int(max((self.view.get_allocated_width() - self.page_width) / 2, self.horizontal_margin))
-        self.page_height = int(self.preview.zoom_level * self.ppp * self.preview.page_height)
-        self.page_gap = int(self.ppp * self.page_gap_points)
+        self.page_height = int(self.preview.zoom_level * self.hidpi_factor * self.preview.page_height)
+        self.page_gap = int(self.hidpi_factor * 10)
         self.border_width = 1
-        self.scale_factor = self.preview.zoom_level * self.ppp
+        self.scale_factor = self.preview.zoom_level * self.hidpi_factor
         self.canvas_width = self.page_width + 2 * self.horizontal_margin
         self.canvas_height = self.preview.number_of_pages * (self.page_height + self.page_gap) - self.page_gap + 2 * self.vertical_margin
         self.has_layout = True
@@ -112,7 +110,7 @@ class PreviewLayouter(Observable):
     def update_zoom_levels(self):
         if not self.has_layout: return
 
-        self.horizontal_margin = int(self.ppp * self.horizontal_margin_points)
+        self.horizontal_margin = int(self.hidpi_factor * self.horizontal_margin_points)
         self.horizontal_margin = int(max((self.view.get_allocated_width() - self.page_width) / 2, self.horizontal_margin))
 
         if self.view.get_allocated_width() < 300: return
@@ -128,17 +126,6 @@ class PreviewLayouter(Observable):
             self.preview.set_zoom_fit_to_height()
         elif self.preview.first_show:
             self.preview.first_show = False
-
-    def get_ppp(self):
-        monitor = Gdk.Display.get_default().get_monitor_at_point(1, 1)
-        width_inch = monitor.get_width_mm() / 25.4
-        width_pixels = monitor.get_geometry().width
-        if width_inch > 0 and width_pixels > 0:
-            ppi = int(width_pixels / width_inch)
-        else:
-            ppi = 96
-
-        return self.hidpi_factor * ppi / 72
 
     def compute_current_page(self):
         if self.has_layout and self.preview.presenter.scrolling_queue.empty():

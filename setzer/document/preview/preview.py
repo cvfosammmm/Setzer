@@ -297,7 +297,7 @@ class Preview(Observable):
     def update_dynamic_zoom_levels(self):
         self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0]
 
-        try: zoom_level_fit_to_width = (self.view.get_allocated_width() - 2 * int(self.layouter.horizontal_margin_points * self.layouter.ppp)) / (self.page_width * self.layouter.ppp)
+        try: zoom_level_fit_to_width = (self.view.get_allocated_width() - 2 * int(self.layouter.horizontal_margin_points * self.layouter.hidpi_factor)) / (self.page_width * self.layouter.hidpi_factor)
         except TypeError: return
 
         if zoom_level_fit_to_width != self.zoom_level_fit_to_width:
@@ -309,7 +309,7 @@ class Preview(Observable):
         if zoom_level_fit_to_width != None:
             self.zoom_levels.append(zoom_level_fit_to_width)
 
-        try: zoom_level_fit_to_height = (self.view.stack.get_allocated_height() + self.layouter.border_width) / (self.page_height * self.layouter.ppp)
+        try: zoom_level_fit_to_height = (self.view.stack.get_allocated_height() + self.layouter.border_width) / (self.page_height * self.layouter.hidpi_factor)
         except TypeError: return
 
         if zoom_level_fit_to_height != self.zoom_level_fit_to_height:
@@ -328,12 +328,12 @@ class Preview(Observable):
             self.zoom_levels.append(zoom_level_fit_to_text_width)
 
     def set_zoom_fit_to_height(self):
-        zoom_level = (self.view.stack.get_allocated_height() + self.layouter.border_width) / (self.page_height * self.layouter.ppp)
+        zoom_level = (self.view.stack.get_allocated_height() + self.layouter.border_width) / (self.page_height * self.layouter.hidpi_factor)
         if zoom_level == self.zoom_level: return
 
-        xoffset = ((self.page_width * zoom_level * self.layouter.ppp - self.view.get_allocated_width()) / 2) / (zoom_level * self.layouter.ppp) - self.xoffset
+        xoffset = ((self.page_width * zoom_level * self.layouter.hidpi_factor - self.view.get_allocated_width()) / 2) / (zoom_level * self.layouter.hidpi_factor) - self.xoffset
         y = self.view.get_allocated_height() / 2
-        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
         self.zoom_level_fit_to_height = zoom_level
         self.set_zoom_level(zoom_level, xoffset, yoffset)
 
@@ -341,9 +341,9 @@ class Preview(Observable):
         zoom_level = self.zoom_level_fit_to_width * (self.page_width / (self.page_width - 2 * self.vertical_margin))
         if zoom_level == self.zoom_level: return
 
-        xoffset = ((self.page_width * zoom_level * self.layouter.ppp - self.view.get_allocated_width()) / 2) / (zoom_level * self.layouter.ppp) - self.xoffset
+        xoffset = ((self.page_width * zoom_level * self.layouter.hidpi_factor - self.view.get_allocated_width()) / 2) / (zoom_level * self.layouter.hidpi_factor) - self.xoffset
         y = self.view.get_allocated_height() / 2
-        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
         self.zoom_level_fit_to_text_width = zoom_level
         self.set_zoom_level(zoom_level, xoffset, yoffset)
 
@@ -362,8 +362,8 @@ class Preview(Observable):
             self.zoom_set = False
         x = self.view.get_allocated_width() / 2
         y = self.view.get_allocated_height() / 2
-        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
-        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
+        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
         self.set_zoom_level(zoom_level, xoffset, yoffset)
 
     def zoom_in(self):
@@ -373,8 +373,8 @@ class Preview(Observable):
             zoom_level = max(self.zoom_levels)
         x = self.view.get_allocated_width() / 2
         y = self.view.get_allocated_height() / 2
-        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
-        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
+        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
         self.set_zoom_level(zoom_level, xoffset, yoffset)
 
     def zoom_out(self):
@@ -384,15 +384,15 @@ class Preview(Observable):
             zoom_level = min(self.zoom_levels)
         x = self.view.get_allocated_width() / 2
         y = self.view.get_allocated_height() / 2
-        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
-        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
+        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
         self.set_zoom_level(zoom_level, xoffset, yoffset)
 
     def set_zoom_level_auto_offset(self, zoom_level):
         x = self.view.get_allocated_width() / 2
         y = self.view.get_allocated_height() / 2
-        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
-        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.ppp)
+        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
+        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
         self.set_zoom_level(zoom_level, xoffset, yoffset)
 
     def set_zoom_level(self, level, xoffset=0, yoffset=0):
