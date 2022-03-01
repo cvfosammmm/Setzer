@@ -108,7 +108,7 @@ class PreviewPresenter(object):
         return True
 
     def scroll_now(self, position):
-        yoffset = max((self.layouter.page_gap + self.layouter.page_height) * (position['page'] - 1) + self.layouter.vertical_margin + position['y'] * self.layouter.scale_factor, 0)
+        yoffset = max((self.layouter.page_gap + self.layouter.page_height) * (position['page'] - 1) + position['y'] * self.layouter.scale_factor, 0)
         xoffset = self.layouter.horizontal_margin + position['x'] * self.layouter.scale_factor
         self.view.scrolled_window.get_hadjustment().set_value(xoffset)
         self.view.scrolled_window.get_vadjustment().set_value(yoffset)
@@ -120,7 +120,7 @@ class PreviewPresenter(object):
             border_color = self.color_manager.get_theme_color('borders')
             self.draw_background(ctx, drawing_area, bg_color)
 
-            ctx.transform(cairo.Matrix(1, 0, 0, 1, self.layouter.horizontal_margin, self.layouter.vertical_margin))
+            ctx.transform(cairo.Matrix(1, 0, 0, 1, self.layouter.horizontal_margin, 0))
 
             offset = self.view.scrolled_window.get_vadjustment().get_value()
             view_width = self.view.scrolled_window.get_allocated_width()

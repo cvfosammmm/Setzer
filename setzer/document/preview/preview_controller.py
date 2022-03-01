@@ -131,7 +131,7 @@ class PreviewController(object):
         if self.layouter.has_layout:
             self.layouter.compute_current_page()
             yoffset = max(self.layouter.current_page - 1, 0) * self.preview.page_height
-            yoffset += min(max(adjustment.get_value() - self.layouter.vertical_margin - max(self.layouter.current_page - 1, 0) * (self.layouter.page_height + self.layouter.page_gap), 0), self.layouter.page_height) / self.layouter.scale_factor
+            yoffset += min(max(adjustment.get_value() - max(self.layouter.current_page - 1, 0) * (self.layouter.page_height + self.layouter.page_gap), 0), self.layouter.page_height) / self.layouter.scale_factor
             self.preview.set_position_from_offsets(None, yoffset)
 
     def on_button_press(self, widget, event):
@@ -169,7 +169,7 @@ class PreviewController(object):
 
     def init_backward_sync(self, event):
         if not self.layouter.has_layout: return False
-        y_total_pixels = min(max(event.y - self.layouter.vertical_margin, 0), (self.layouter.page_height + self.layouter.page_gap) * self.preview.number_of_pages - self.layouter.page_gap)
+        y_total_pixels = min(max(event.y, 0), (self.layouter.page_height + self.layouter.page_gap) * self.preview.number_of_pages - self.layouter.page_gap)
         x_pixels = min(max(event.x - self.layouter.horizontal_margin, 0), self.layouter.page_width)
         page = math.floor(y_total_pixels / (self.layouter.page_height + self.layouter.page_gap))
         y_pixels = min(max(y_total_pixels - page * (self.layouter.page_height + self.layouter.page_gap), 0), self.layouter.page_height)

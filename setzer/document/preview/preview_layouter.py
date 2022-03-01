@@ -15,10 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gdk
-
 from setzer.helpers.observable import Observable
 
 
@@ -30,9 +26,6 @@ class PreviewLayouter(Observable):
         self.view = view
 
         self.hidpi_factor = self.view.get_scale_factor()
-        self.vertical_margin_points = 0
-        self.horizontal_margin_points = 0
-        self.vertical_margin = None
         self.horizontal_margin = None
         self.page_width = None
         self.page_height = None
@@ -57,7 +50,6 @@ class PreviewLayouter(Observable):
             self.update_layout()
         else:
             self.has_layout = False
-            self.vertical_margin = None
             self.horizontal_margin = None
             self.page_width = None
             self.page_height = None
@@ -76,16 +68,14 @@ class PreviewLayouter(Observable):
         if self.preview.zoom_level == None: return
         if not self.preview.pdf_loaded: return
 
-        self.vertical_margin = int(self.hidpi_factor * self.vertical_margin_points)
         self.page_width = int(round(self.preview.zoom_level * self.hidpi_factor * self.preview.page_width))
-        self.horizontal_margin = int(self.hidpi_factor * self.horizontal_margin_points)
-        self.horizontal_margin = int(max((self.view.get_allocated_width() - self.page_width) / 2, self.horizontal_margin))
+        self.horizontal_margin = int(max((self.view.get_allocated_width() - self.page_width) / 2, 0))
         self.page_height = int(self.preview.zoom_level * self.hidpi_factor * self.preview.page_height)
         self.page_gap = int(self.hidpi_factor * 10)
         self.border_width = 1
         self.scale_factor = self.preview.zoom_level * self.hidpi_factor
         self.canvas_width = self.page_width + 2 * self.horizontal_margin
-        self.canvas_height = self.preview.number_of_pages * (self.page_height + self.page_gap) - self.page_gap + 2 * self.vertical_margin
+        self.canvas_height = self.preview.number_of_pages * (self.page_height + self.page_gap) - self.page_gap
         self.has_layout = True
         self.compute_current_page()
         self.update_zoom_levels()
@@ -93,25 +83,23 @@ class PreviewLayouter(Observable):
         self.add_change_code('layout_changed')
 
     def update_synctex_rectangles(self):
-        if self.has_layout:
-            self.visible_synctex_rectangles = dict()
-            for rectangle in self.preview.visible_synctex_rectangles:
-                new_rectangle = dict()
-                new_rectangle['page'] = rectangle['page']
-                new_rectangle['x'] = rectangle['h'] * self.scale_factor
-                new_rectangle['y'] = (rectangle['v'] - rectangle['height']) * self.scale_factor
-                new_rectangle['width'] = rectangle['width'] * self.scale_factor
-                new_rectangle['height'] = rectangle['height'] * self.scale_factor
-                try:
-                    self.visible_synctex_rectangles[rectangle['page'] - 1].append(new_rectangle)
-                except KeyError:
-                    self.visible_synctex_rectangles[rectangle['page'] - 1] = [new_rectangle]
+        self.visible_synctex_rectangles = dict()
+        for rectangle in self.preview.visible_synctex_rectangles:
+            new_rectangle = dict()
+            new_rectangle['page'] = rectangle['page']
+            new_rectangle['x'] = rectangle['h'] * self.scale_factor
+            new_rectangle['y'] = (rectangle['v'] - rectangle['height']) * self.scale_factor
+            new_rectangle['width'] = rectangle['width'] * self.scale_factor
+            new_rectangle['height'] = rectangle['height'] * self.scale_factor
+            try:
+                self.visible_synctex_rectangles[rectangle['page'] - 1].append(new_rectangle)
+            except KeyError:
+                self.visible_synctex_rectangles[rectangle['page'] - 1] = [new_rectangle]
 
     def update_zoom_levels(self):
         if not self.has_layout: return
 
-        self.horizontal_margin = int(self.hidpi_factor * self.horizontal_margin_points)
-        self.horizontal_margin = int(max((self.view.get_allocated_width() - self.page_width) / 2, self.horizontal_margin))
+        self.horizontal_margin = int(max((self.view.get_allocated_width() - self.page_width) / 2, 0))
 
         if self.view.get_allocated_width() < 300: return
         old_level = self.preview.zoom_level_fit_to_width
