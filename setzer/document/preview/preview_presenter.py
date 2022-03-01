@@ -63,7 +63,8 @@ class PreviewPresenter(object):
         self.view.drawing_area.queue_draw()
 
     def on_layout_changed(self, layouter):
-        self.set_canvas_size()
+        if self.layouter.has_layout:
+            self.view.drawing_area.set_size_request(self.layouter.canvas_width, self.layouter.canvas_height)
 
     def on_rendered_pages_changed(self, page_renderer):
         self.view.drawing_area.queue_draw()
@@ -80,10 +81,6 @@ class PreviewPresenter(object):
         self.view.external_viewer_button.set_sensitive(True)
         self.view.external_viewer_button_revealer.set_reveal_child(True)
 
-    def set_canvas_size(self):
-        if self.layouter.has_layout:
-            self.view.drawing_area.set_size_request(self.layouter.canvas_width, self.layouter.canvas_height)
-
     def start_fade_loop(self):
         def draw():
             timer = (self.highlight_duration + 0.25 - time.time() + self.preview.visible_synctex_rectangles_time)
@@ -95,23 +92,22 @@ class PreviewPresenter(object):
 
     def scroll_to_position(self, position):
         if self.layouter.has_layout:
-            self.scrolling_queue.put(position)
+            yoffset = max((self.layouter.page_gap + self.layouter.page_height) * (position['page'] - 1) + position['y'] * self.layouter.scale_factor, 0)
+            xoffset = self.layouter.get_horizontal_margin() + position['x'] * self.layouter.scale_factor
+            self.scrolling_queue.put((xoffset, yoffset))
 
     def scrolling_loop(self, widget=None, allocation=None):
         allocated_height = int(self.view.drawing_area.get_allocated_height())
-        if self.layouter.has_layout and allocated_height == max(int(self.layouter.canvas_height), allocated_height):
+        if self.layouter.has_layout and allocated_height >= int(self.layouter.canvas_height):
             while self.scrolling_queue.empty() == False:
                 todo = self.scrolling_queue.get(block=False)
                 if self.scrolling_queue.empty():
                     self.scroll_now(todo)
-                    self.preview.add_change_code('position_changed')
         return True
 
     def scroll_now(self, position):
-        yoffset = max((self.layouter.page_gap + self.layouter.page_height) * (position['page'] - 1) + position['y'] * self.layouter.scale_factor, 0)
-        xoffset = self.layouter.horizontal_margin + position['x'] * self.layouter.scale_factor
-        self.view.scrolled_window.get_hadjustment().set_value(xoffset)
-        self.view.scrolled_window.get_vadjustment().set_value(yoffset)
+        self.view.scrolled_window.get_hadjustment().set_value(position[0])
+        self.view.scrolled_window.get_vadjustment().set_value(position[1])
 
     #@timer
     def draw(self, drawing_area, ctx, data = None):
@@ -120,7 +116,7 @@ class PreviewPresenter(object):
             border_color = self.color_manager.get_theme_color('borders')
             self.draw_background(ctx, drawing_area, bg_color)
 
-            ctx.transform(cairo.Matrix(1, 0, 0, 1, self.layouter.horizontal_margin, 0))
+            ctx.transform(cairo.Matrix(1, 0, 0, 1, self.layouter.get_horizontal_margin(), 0))
 
             offset = self.view.scrolled_window.get_vadjustment().get_value()
             view_width = self.view.scrolled_window.get_allocated_width()
@@ -154,24 +150,27 @@ class PreviewPresenter(object):
         ctx.fill()
 
     def draw_rendered_page(self, ctx, page_number):
-        if page_number in self.page_renderer.rendered_pages:
-            rendered_page_data = self.page_renderer.rendered_pages[page_number]
-            surface = rendered_page_data[0]
-            page_width = rendered_page_data[1] * self.layouter.hidpi_factor
-            if isinstance(surface, cairo.ImageSurface):
-                matrix = ctx.get_matrix()
-                factor = self.layouter.page_width / page_width
-                ctx.scale(factor, factor)
-                ctx.set_source_surface(surface, 0, 0)
-                ctx.rectangle(0, 0, self.layouter.page_width / factor, self.layouter.page_height / factor)
-                ctx.fill()
-                if self.preview.invert_pdf:
-                    ctx.set_operator(cairo.Operator.DIFFERENCE)
-                    ctx.set_source_rgb(1, 1, 1)
-                    ctx.rectangle(0, 0, self.layouter.page_width / factor, self.layouter.page_height / factor)
-                    ctx.fill()
-                    ctx.set_operator(cairo.Operator.OVER)
-                ctx.set_matrix(matrix)
+        if not page_number in self.page_renderer.rendered_pages: return
+
+        rendered_page_data = self.page_renderer.rendered_pages[page_number]
+        surface = rendered_page_data[0]
+        page_width = rendered_page_data[1] * self.layouter.hidpi_factor
+
+        if not isinstance(surface, cairo.ImageSurface): return
+
+        matrix = ctx.get_matrix()
+        factor = self.layouter.page_width / page_width
+        ctx.scale(factor, factor)
+        ctx.set_source_surface(surface, 0, 0)
+        ctx.rectangle(0, 0, self.layouter.page_width / factor, self.layouter.page_height / factor)
+        ctx.fill()
+        if self.preview.invert_pdf:
+            ctx.set_operator(cairo.Operator.DIFFERENCE)
+            ctx.set_source_rgb(1, 1, 1)
+            ctx.rectangle(0, 0, self.layouter.page_width / factor, self.layouter.page_height / factor)
+            ctx.fill()
+            ctx.set_operator(cairo.Operator.OVER)
+        ctx.set_matrix(matrix)
 
     def draw_synctex_rectangles(self, ctx, page_number):
         try:

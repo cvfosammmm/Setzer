@@ -33,12 +33,16 @@ class PagingWidget(object):
 
         self.preview.connect('pdf_changed', self.on_pdf_changed)
         self.preview.connect('position_changed', self.on_position_changed)
+        self.preview.connect('zoom_level_changed', self.on_zoom_level_changed)
 
     def on_pdf_changed(self, preview):
         self.update_number_of_pages()
         self.update_current_page()
 
     def on_position_changed(self, preview):
+        self.update_current_page()
+
+    def on_zoom_level_changed(self, preview):
         self.update_current_page()
 
     def update_number_of_pages(self):
@@ -48,7 +52,7 @@ class PagingWidget(object):
             self.view.label_number_of_pages.set_text("0")
 
     def update_current_page(self):
-        if self.preview.pdf_loaded and self.layouter.has_layout:
+        if self.layouter.has_layout:
             self.view.label_current_page.set_text(str(self.layouter.get_current_page()))
         else:
             self.view.label_current_page.set_text("0")

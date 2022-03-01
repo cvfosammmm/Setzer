@@ -26,7 +26,6 @@ class PreviewLayouter(Observable):
         self.view = view
 
         self.hidpi_factor = self.view.get_scale_factor()
-        self.horizontal_margin = None
         self.page_width = None
         self.page_height = None
         self.page_gap = None
@@ -34,23 +33,12 @@ class PreviewLayouter(Observable):
         self.canvas_width = None
         self.canvas_height = None
         self.scale_factor = None
-        self.current_page = None
         self.visible_synctex_rectangles = dict()
         self.has_layout = False
 
-        self.preview.connect('pdf_changed', self.on_pdf_or_zoom_level_changed)
-        self.preview.connect('zoom_level_changed', self.on_pdf_or_zoom_level_changed)
-        self.preview.connect('position_changed', self.on_position_changed)
-
-        if self.preview.pdf_filename != None:
-            self.update_layout()
-
-    def on_pdf_or_zoom_level_changed(self, preview):
-        if self.preview.pdf_loaded:
-            self.update_layout()
-        else:
-            self.has_layout = False
-            self.horizontal_margin = None
+    def update_layout(self):
+        if self.preview.zoom_level == None or not self.preview.pdf_loaded:
+            self.has_layut = False
             self.page_width = None
             self.page_height = None
             self.page_gap = None
@@ -58,28 +46,16 @@ class PreviewLayouter(Observable):
             self.canvas_width = None
             self.canvas_height = None
             self.scale_factor = None
-            self.add_change_code('layout_changed')
-        self.compute_current_page()
-
-    def on_position_changed(self, preview):
-        self.compute_current_page()
-
-    def update_layout(self):
-        if self.preview.zoom_level == None: return
-        if not self.preview.pdf_loaded: return
-
-        self.page_width = int(round(self.preview.zoom_level * self.hidpi_factor * self.preview.page_width))
-        self.horizontal_margin = int(max((self.view.get_allocated_width() - self.page_width) / 2, 0))
-        self.page_height = int(self.preview.zoom_level * self.hidpi_factor * self.preview.page_height)
-        self.page_gap = int(self.hidpi_factor * 10)
-        self.border_width = 1
-        self.scale_factor = self.preview.zoom_level * self.hidpi_factor
-        self.canvas_width = self.page_width + 2 * self.horizontal_margin
-        self.canvas_height = self.preview.number_of_pages * (self.page_height + self.page_gap) - self.page_gap
-        self.has_layout = True
-        self.compute_current_page()
-        self.update_zoom_levels()
-        self.update_synctex_rectangles()
+        else:
+            self.scale_factor = self.preview.zoom_level * self.hidpi_factor
+            self.page_width = int(round(self.scale_factor * self.preview.page_width))
+            self.page_height = int(self.scale_factor * self.preview.page_height)
+            self.page_gap = int(self.hidpi_factor * 10)
+            self.border_width = 1
+            self.canvas_width = self.page_width + 2 * self.get_horizontal_margin()
+            self.canvas_height = self.preview.number_of_pages * (self.page_height + self.page_gap) - self.page_gap
+            self.has_layout = True
+            self.update_synctex_rectangles()
         self.add_change_code('layout_changed')
 
     def update_synctex_rectangles(self):
@@ -96,43 +72,23 @@ class PreviewLayouter(Observable):
             except KeyError:
                 self.visible_synctex_rectangles[rectangle['page'] - 1] = [new_rectangle]
 
-    def update_zoom_levels(self):
-        if not self.has_layout: return
-
-        self.horizontal_margin = int(max((self.view.get_allocated_width() - self.page_width) / 2, 0))
-
-        if self.view.get_allocated_width() < 300: return
-        old_level = self.preview.zoom_level_fit_to_width
-
-        self.preview.update_dynamic_zoom_levels()
-
-        if old_level != None and self.preview.zoom_level == old_level:
-            self.preview.set_zoom_fit_to_width()
-        elif self.preview.zoom_level != None and self.preview.zoom_level_fit_to_text_width != None and self.preview.zoom_level_fit_to_text_width == self.preview.zoom_level:
-            self.preview.set_zoom_fit_to_text_width()
-        elif self.preview.zoom_level != None and self.preview.zoom_level_fit_to_height != None and self.preview.zoom_level_fit_to_height == self.preview.zoom_level:
-            self.preview.set_zoom_fit_to_height()
-        elif self.preview.first_show:
-            self.preview.first_show = False
-
-    def compute_current_page(self):
-        if self.has_layout and self.preview.presenter.scrolling_queue.empty():
-            offset = self.view.scrolled_window.get_vadjustment().get_value()
-            self.current_page = int(1 + offset // (self.page_height + self.page_gap))
+    def get_horizontal_margin(self):
+        return int(max((self.view.get_allocated_width() - self.page_width) / 2, 0))
 
     def get_page_number_and_offsets_by_document_offsets(self, x, y):
         if self.has_layout:
             if y % (self.page_height + self.page_gap) > self.page_height: return None
-            if x < self.horizontal_margin or x > (self.horizontal_margin + self.page_width): return None
+            if x < self.get_horizontal_margin() or x > (self.get_horizontal_margin() + self.page_width): return None
 
             page_number = int(y // (self.page_height + self.page_gap))
             y_offset = y % (self.page_height + self.page_gap) / self.scale_factor
-            x_offset = (x - self.horizontal_margin) / self.scale_factor
+            x_offset = (x - self.get_horizontal_margin()) / self.scale_factor
 
             return (page_number, x_offset, y_offset)
         return None
 
     def get_current_page(self):
-        return self.current_page
+        offset = self.view.scrolled_window.get_vadjustment().get_value()
+        return int(1 + offset // (self.page_height + self.page_gap))
 
 

@@ -124,14 +124,13 @@ class PreviewPageRenderer(Observable):
         with self.is_active_lock:
             is_active = self.is_active
         if not is_active: return
+        if not self.layouter.has_layout: return
 
         hidpi_factor = self.layouter.hidpi_factor
         page_width = self.layouter.page_width
         page_height = self.layouter.page_height
 
-        current_page = self.layouter.get_current_page()
-        if current_page == None: return
-        else: current_page -= 1
+        current_page = self.layouter.get_current_page() - 1
 
         visible_pages = [current_page, min(current_page + math.floor(self.preview.view.get_allocated_height() / page_height) + 1, self.preview.number_of_pages - 1)]
 

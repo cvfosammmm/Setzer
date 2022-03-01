@@ -103,7 +103,7 @@ class PreviewController(object):
         x_offset = event.x + self.view.scrolled_window.get_hadjustment().get_value()
         y_offset = event.y + self.view.scrolled_window.get_vadjustment().get_value()
 
-        data = self.preview.get_page_number_and_offsets_by_document_offsets(x_offset, y_offset)
+        data = self.layouter.get_page_number_and_offsets_by_document_offsets(x_offset, y_offset)
         if data == None: return True
 
         page_number, x_offset, y_offset = data
@@ -119,20 +119,13 @@ class PreviewController(object):
         window.set_cursor(cursor)
 
     def on_size_allocate(self, view=None, allocation=None):
-        self.layouter.update_zoom_levels()
-        self.view.drawing_area.queue_draw()
+        self.preview.update_dynamic_zoom_levels()
 
     def on_hadjustment_changed(self, adjustment):
-        if self.layouter.has_layout:
-            xoffset = max((adjustment.get_value() - self.layouter.horizontal_margin) / self.layouter.scale_factor, 0)
-            self.preview.set_position_from_offsets(xoffset, None)
-    
+        self.preview.update_position()
+
     def on_vadjustment_changed(self, adjustment):
-        if self.layouter.has_layout:
-            self.layouter.compute_current_page()
-            yoffset = max(self.layouter.current_page - 1, 0) * self.preview.page_height
-            yoffset += min(max(adjustment.get_value() - max(self.layouter.current_page - 1, 0) * (self.layouter.page_height + self.layouter.page_gap), 0), self.layouter.page_height) / self.layouter.scale_factor
-            self.preview.set_position_from_offsets(None, yoffset)
+        self.preview.update_position()
 
     def on_button_press(self, widget, event):
         modifiers = Gtk.accelerator_get_default_mod_mask()
@@ -148,7 +141,7 @@ class PreviewController(object):
         elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & modifiers == 0:
             x_offset = event.x
             y_offset = event.y
-            data = self.preview.get_page_number_and_offsets_by_document_offsets(x_offset, y_offset)
+            data = self.layouter.get_page_number_and_offsets_by_document_offsets(x_offset, y_offset)
             if data == None: return True
 
             page_number, x_offset, y_offset = data
@@ -170,7 +163,7 @@ class PreviewController(object):
     def init_backward_sync(self, event):
         if not self.layouter.has_layout: return False
         y_total_pixels = min(max(event.y, 0), (self.layouter.page_height + self.layouter.page_gap) * self.preview.number_of_pages - self.layouter.page_gap)
-        x_pixels = min(max(event.x - self.layouter.horizontal_margin, 0), self.layouter.page_width)
+        x_pixels = min(max(event.x - self.layouter.get_horizontal_margin(), 0), self.layouter.page_width)
         page = math.floor(y_total_pixels / (self.layouter.page_height + self.layouter.page_gap))
         y_pixels = min(max(y_total_pixels - page * (self.layouter.page_height + self.layouter.page_gap), 0), self.layouter.page_height)
         x = x_pixels / self.layouter.scale_factor
