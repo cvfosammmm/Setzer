@@ -33,7 +33,7 @@ class PagingWidget(object):
 
         self.preview.connect('pdf_changed', self.on_pdf_changed)
         self.preview.connect('position_changed', self.on_position_changed)
-        self.preview.connect('zoom_level_changed', self.on_zoom_level_changed)
+        self.preview.zoom_manager.connect('zoom_level_changed', self.on_zoom_level_changed)
 
     def on_pdf_changed(self, preview):
         self.update_number_of_pages()

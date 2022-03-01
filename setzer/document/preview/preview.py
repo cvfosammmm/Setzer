@@ -19,21 +19,20 @@ import gi
 gi.require_version('Poppler', '0.18')
 gi.require_version('Gtk', '3.0')
 from gi.repository import Poppler
-from pdfminer.pdfpage import PDFPage
-from pdfminer.pdftypes import PDFObjRef
 from gi.repository import GLib
 from gi.repository import Gio
 
 import os.path
-import math
 import time
-import _thread as thread
+import math
 
 import setzer.document.preview.preview_viewgtk as preview_view
 import setzer.document.preview.preview_layouter as preview_layouter
 import setzer.document.preview.preview_presenter as preview_presenter
 import setzer.document.preview.preview_controller as preview_controller
 import setzer.document.preview.preview_page_renderer as preview_page_renderer
+import setzer.document.preview.preview_links_parser as preview_links_parser
+import setzer.document.preview.preview_zoom_manager as preview_zoom_manager
 import setzer.document.preview.zoom_widget.zoom_widget as zoom_widget
 import setzer.document.preview.paging_widget.paging_widget as paging_widget
 from setzer.helpers.observable import Observable
@@ -50,35 +49,23 @@ class Preview(Observable):
         self.pdf_date = None
         self.invert_pdf = False
 
-        self.poppler_document_lock = thread.allocate_lock()
         self.poppler_document = None
-        self.links_lock = thread.allocate_lock()
-        self.links_parsed = True
-        with self.links_lock:
-            self.links = dict()
-        self.links_parser_lock = thread.allocate_lock()
         self.number_of_pages = 0
         self.page_width = None
         self.page_height = None
         self.xoffset = 0
         self.yoffset = 0
-        self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0]
-        self.zoom_level_fit_to_width = None
-        self.zoom_set = False
-        self.zoom_level_fit_to_text_width = None
-        self.zoom_level_fit_to_height = None
-        self.zoom_level = None
-        self.visible_synctex_rectangles = list()
-        self.visible_synctex_rectangles_time = None
         self.pdf_loaded = False
 
-        self.is_visible = False
-        self.first_show = True
+        self.visible_synctex_rectangles = list()
+        self.visible_synctex_rectangles_time = None
 
         self.view = preview_view.PreviewView()
         self.layouter = preview_layouter.PreviewLayouter(self, self.view)
+        self.zoom_manager = preview_zoom_manager.PreviewZoomManager(self, self.layouter, self.view)
         self.controller = preview_controller.PreviewController(self, self.layouter, self.view)
         self.page_renderer = preview_page_renderer.PreviewPageRenderer(self, self.layouter)
+        self.links_parser = preview_links_parser.PreviewLinksParser(self)
         self.presenter = preview_presenter.PreviewPresenter(self, self.layouter, self.page_renderer, self.view)
         self.paging_widget = paging_widget.PagingWidget(self, self.layouter)
         self.zoom_widget = zoom_widget.ZoomWidget(self)
@@ -86,31 +73,14 @@ class Preview(Observable):
         self.document.connect('filename_change', self.on_filename_change)
         self.document.connect('pdf_updated', self.on_pdf_updated)
 
-    def set_is_visible(self, is_visible):
-        if is_visible != self.is_visible:
-            self.is_visible = is_visible
-            if self.is_visible:
-                self.page_renderer.activate()
-            else:
-                self.page_renderer.deactivate()
-            thread.start_new_thread(self.update_links, ())
-
     def on_filename_change(self, document, filename=None):
         self.set_pdf_filename_from_tex_filename(filename)
         self.set_pdf_date()
         self.load_pdf()
-        if self.pdf_loaded:
-            self.document.build_system.update_can_sync()
-            if self.zoom_level == None:
-                self.set_zoom_fit_to_width()
 
     def on_pdf_updated(self, document):
         self.set_pdf_date()
         self.load_pdf()
-        if self.pdf_loaded:
-            self.document.build_system.update_can_sync()
-            if self.zoom_level == None:
-                self.set_zoom_fit_to_width()
 
     def get_pdf_filename(self):
         return self.pdf_filename
@@ -129,25 +99,6 @@ class Preview(Observable):
         self.invert_pdf = invert_pdf
         self.add_change_code('invert_pdf_changed')
 
-    def reset_pdf_data(self):
-        self.pdf_loaded = False
-        self.pdf_filename = None
-        self.pdf_date = None
-        with self.poppler_document_lock:
-            self.poppler_document = None
-        self.number_of_pages = 0
-        self.page_width = None
-        self.page_height = None
-        self.links_parsed = True
-        self.links = dict()
-        self.xoffset = 0
-        self.yoffset = 0
-        self.zoom_level = None
-        self.layouter.update_layout()
-        self.add_change_code('pdf_changed')
-        self.update_dynamic_zoom_levels()
-        self.document.build_system.update_can_sync()
-
     def update_position(self):
         if not self.layouter.has_layout: return
         if not self.presenter.scrolling_queue.empty(): return
@@ -160,13 +111,9 @@ class Preview(Observable):
         yoffset += min(max(offset - max(current_page - 1, 0) * (self.layouter.page_height + self.layouter.page_gap), 0), self.layouter.page_height) / self.layouter.scale_factor
 
         value_changed = False
-        if xoffset != None and xoffset != self.xoffset:
+        if xoffset != self.xoffset or yoffset != self.yoffset:
             self.xoffset = xoffset
-            value_changed = True
-        if yoffset != None and yoffset != self.yoffset:
             self.yoffset = yoffset
-            value_changed = True
-        if value_changed:
             self.add_change_code('position_changed')
 
     def scroll_to_position_from_offsets(self, xoffset=0, yoffset=0):
@@ -181,6 +128,12 @@ class Preview(Observable):
         else:
             x = self.xoffset
         self.presenter.scroll_to_position({'page': page_number, 'x': x, 'y': self.page_height - dest.top})
+
+    def scroll_by_offsets(self, xoffset, yoffset):
+        if self.xoffset != None and self.yoffset != None:
+            page = math.floor(self.yoffset / self.page_height) + 1
+            position = {'page': page, 'x': self.xoffset + xoffset, 'y': self.yoffset - (page - 1) * self.page_height + yoffset}
+            self.presenter.scroll_to_position(position)
 
     def set_synctex_rectangles(self, rectangles):
         if self.layouter.has_layout:
@@ -201,214 +154,47 @@ class Preview(Observable):
 
     def load_pdf(self):
         try:
-            with self.poppler_document_lock:
-                self.poppler_document = Poppler.Document.new_from_file('file:' + self.pdf_filename)
+            self.poppler_document = Poppler.Document.new_from_file('file:' + self.pdf_filename)
         except TypeError:
             self.reset_pdf_data()
         except gi.repository.GLib.Error:
             self.reset_pdf_data()
         else:
-            with self.poppler_document_lock:
-                self.number_of_pages = self.poppler_document.get_n_pages()
-                page_size = self.poppler_document.get_page(0).get_size()
-                self.page_width = page_size.width
-                self.page_height = page_size.height
-                current_min = self.page_width
-                for page_number in range(0, min(self.number_of_pages, 3)):
-                    page = self.poppler_document.get_page(page_number)
-                    layout = page.get_text_layout()
-                    for rect in layout[1]:
-                        if rect.x1 < current_min:
-                            current_min = rect.x1
-                current_min -= 20
-                self.vertical_margin = current_min
+            self.number_of_pages = self.poppler_document.get_n_pages()
+            page_size = self.poppler_document.get_page(0).get_size()
+            self.page_width = page_size.width
+            self.page_height = page_size.height
+            current_min = self.page_width
+            for page_number in range(0, min(self.number_of_pages, 3)):
+                page = self.poppler_document.get_page(page_number)
+                layout = page.get_text_layout()
+                for rect in layout[1]:
+                    if rect.x1 < current_min:
+                        current_min = rect.x1
+            current_min -= 20
+            self.vertical_margin = current_min
             self.pdf_loaded = True
-            self.document.build_system.update_can_sync()
-            self.update_dynamic_zoom_levels()
-            if not self.zoom_set:
-                self.zoom_set = True
-                self.set_zoom_fit_to_width()
-
+            self.zoom_manager.update_dynamic_zoom_levels()
             self.layouter.update_layout()
             self.add_change_code('pdf_changed')
-            with self.links_lock:
-                self.links = dict()
-            self.links_parsed = False
-            thread.start_new_thread(self.update_links, ())
+            self.document.build_system.update_can_sync()
+            if self.zoom_manager.get_zoom_level() == None:
+                self.zoom_manager.set_zoom_fit_to_width()
 
-    def get_links_for_page(self, page_number):
-        with self.links_lock:
-            try:
-                return self.links[page_number]
-            except KeyError:
-                return list()
-
-    def update_links(self):
-        with self.links_parser_lock:
-            if self.links_parsed: return
-            if not self.is_visible: return
-
-            links = dict()
-
-            with open(self.pdf_filename, 'rb') as file:
-                for page_num, page in enumerate(PDFPage.get_pages(file)):
-                    links[page_num] = list()
-                    annots_final = self.resolve_annots(page.annots)
-                    for annot in annots_final:
-                        try:
-                            rect = annot['Rect']
-                        except KeyError:
-                            pass
-                        else:
-                            try:
-                                data = annot['A']
-                            except KeyError:
-                                pass
-                            else:
-                                try:
-                                    named_dest = data['D']
-                                except KeyError:
-                                    pass
-                                else:
-                                    dest = self.poppler_document.find_dest(named_dest.decode('utf-8'))
-                                    links[page_num].append([rect, dest, 'goto'])
-                                try:
-                                    uri = data['URI']
-                                except KeyError:
-                                    pass
-                                else:
-                                    links[page_num].append([rect, uri.decode('utf-8'), 'uri'])
-            with self.links_lock:
-                self.links = links
-                self.links_parsed = True
-
-    def resolve_annots(self, annots):
-        if annots == None: return []
-
-        if type(annots) is PDFObjRef:
-            annots = annots.resolve()
-
-        if type(annots) is dict:
-            return [annots]
-        else:
-            return_value = list()
-            for annot in annots:
-                if type(annots) is dict:
-                    return_value.append(annot)
-                else:
-                    return_value += self.resolve_annots(annot)
-            return return_value
-
-    def update_dynamic_zoom_levels(self):
-        if not self.layouter.has_layout: return
-        if self.view.get_allocated_width() < 300: return
-
-        old_level = self.zoom_level_fit_to_width
-
-        self.zoom_levels = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0, 4.0]
-
-        try: zoom_level_fit_to_width = self.view.get_allocated_width() / (self.page_width * self.layouter.hidpi_factor)
-        except TypeError: return
-        self.zoom_level_fit_to_width = zoom_level_fit_to_width
-        if zoom_level_fit_to_width != None:
-            self.zoom_levels.append(zoom_level_fit_to_width)
-
-        try: zoom_level_fit_to_height = (self.view.stack.get_allocated_height() + self.layouter.border_width) / (self.page_height * self.layouter.hidpi_factor)
-        except TypeError: return
-        self.zoom_level_fit_to_height = zoom_level_fit_to_height
-        if zoom_level_fit_to_height != None:
-            self.zoom_levels.append(zoom_level_fit_to_height)
-
-        try: zoom_level_fit_to_text_width = self.zoom_level_fit_to_width * (self.page_width / (self.page_width - 2 * self.vertical_margin))
-        except TypeError: return
-        self.zoom_level_fit_to_text_width = zoom_level_fit_to_text_width
-        if zoom_level_fit_to_text_width != None:
-            self.zoom_levels.append(zoom_level_fit_to_text_width)
-
-        if old_level != None and self.zoom_level == old_level:
-            self.set_zoom_fit_to_width()
-        elif self.zoom_level != None and self.zoom_level_fit_to_text_width != None and self.zoom_level_fit_to_text_width == self.zoom_level:
-            self.set_zoom_fit_to_text_width()
-        elif self.zoom_level != None and self.zoom_level_fit_to_height != None and self.zoom_level_fit_to_height == self.zoom_level:
-            self.set_zoom_fit_to_height()
-        elif self.first_show:
-            self.first_show = False
-
-    def set_zoom_fit_to_height(self):
-        zoom_level = (self.view.stack.get_allocated_height() + self.layouter.border_width) / (self.page_height * self.layouter.hidpi_factor)
-        if zoom_level == self.zoom_level: return
-
-        y = self.view.get_allocated_height() / 2
-        xoffset = ((self.page_width * zoom_level * self.layouter.hidpi_factor - self.view.get_allocated_width()) / 2) / (zoom_level * self.layouter.hidpi_factor) - self.xoffset
-        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
-        self.zoom_level_fit_to_height = zoom_level
-        self.set_zoom_level(zoom_level, xoffset, yoffset)
-
-    def set_zoom_fit_to_text_width(self):
-        zoom_level = self.zoom_level_fit_to_width * (self.page_width / (self.page_width - 2 * self.vertical_margin))
-        if zoom_level == self.zoom_level: return
-        self.zoom_level_fit_to_text_width = zoom_level
-
-        x = self.view.get_allocated_width() / 2
-        y = self.view.get_allocated_height() / 2
-        xoffset = (self.page_width / 2) - x / (zoom_level * self.layouter.hidpi_factor) - self.xoffset
-        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
-        self.set_zoom_level(zoom_level, xoffset, yoffset)
-
-    def set_zoom_fit_to_width(self):
-        if self.zoom_level_fit_to_width != None:
-            self.set_zoom_level(self.zoom_level_fit_to_width)
-        else:
-            self.set_zoom_level(1.0)
-            self.zoom_set = False
-
-    def set_zoom_fit_to_width_auto_offset(self):
-        if self.zoom_level_fit_to_width != None:
-            zoom_level = self.zoom_level_fit_to_width
-        else:
-            zoom_level = 1.0
-            self.zoom_set = False
-        self.set_zoom_level_auto_offset(zoom_level)
-
-    def zoom_in(self):
-        try:
-            zoom_level = min([level for level in self.zoom_levels if level > self.zoom_level])
-        except ValueError:
-            zoom_level = max(self.zoom_levels)
-        self.set_zoom_level_auto_offset(zoom_level)
-
-    def zoom_out(self):
-        try:
-            zoom_level = max([level for level in self.zoom_levels if level < self.zoom_level])
-        except ValueError:
-            zoom_level = min(self.zoom_levels)
-        self.set_zoom_level_auto_offset(zoom_level)
-
-    def set_zoom_level_auto_offset(self, zoom_level):
-        x = self.view.get_allocated_width() / 2
-        y = self.view.get_allocated_height() / 2
-        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
-        yoffset = (-y + y * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
-        self.set_zoom_level(zoom_level, xoffset, yoffset)
-
-    def set_zoom_level(self, level, xoffset=0, yoffset=0):
-        if level == None: return
-        if level == self.zoom_level: return
-        if level > 4.0: level = 4.0
-        if level < 0.25: level = 0.25
-
-        self.zoom_level = level
-
+    def reset_pdf_data(self):
+        self.pdf_loaded = False
+        self.pdf_filename = None
+        self.pdf_date = None
+        self.poppler_document = None
+        self.number_of_pages = 0
+        self.page_width = None
+        self.page_height = None
+        self.xoffset = 0
+        self.yoffset = 0
         self.layouter.update_layout()
-        self.update_dynamic_zoom_levels()
-
-        if self.xoffset != None and self.yoffset != None:
-            page = math.floor(self.yoffset / self.page_height) + 1
-            position = {'page': page, 'x': self.xoffset + xoffset, 'y': self.yoffset - (page - 1) * self.page_height + yoffset}
-            self.presenter.scroll_to_position(position)
-
-        self.zoom_set = True
-        self.add_change_code('zoom_level_changed')
+        self.zoom_manager.update_dynamic_zoom_levels()
+        self.add_change_code('pdf_changed')
+        self.document.build_system.update_can_sync()
 
     def open_external_viewer(self):
         if self.pdf_filename != None:

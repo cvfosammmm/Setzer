@@ -397,11 +397,11 @@ class Workspace(Observable):
     def update_preview_visibility(self, document):
         if document != None and document.is_latex_document():
             if document == self.root_document:
-                document.preview.set_is_visible(True)
+                document.preview.page_renderer.activate()
             elif document == self.active_document and self.root_document == None:
-                document.preview.set_is_visible(True)
+                document.preview.page_renderer.activate()
             else:
-                document.preview.set_is_visible(False)
+                document.preview.page_renderer.deactivate()
 
     def update_sync_document(self):
         if self.root_document != None:

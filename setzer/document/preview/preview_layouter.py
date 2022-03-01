@@ -37,8 +37,8 @@ class PreviewLayouter(Observable):
         self.has_layout = False
 
     def update_layout(self):
-        if self.preview.zoom_level == None or not self.preview.pdf_loaded:
-            self.has_layut = False
+        if self.preview.zoom_manager.get_zoom_level() == None or not self.preview.pdf_loaded:
+            self.has_layout = False
             self.page_width = None
             self.page_height = None
             self.page_gap = None
@@ -47,7 +47,7 @@ class PreviewLayouter(Observable):
             self.canvas_height = None
             self.scale_factor = None
         else:
-            self.scale_factor = self.preview.zoom_level * self.hidpi_factor
+            self.scale_factor = self.preview.zoom_manager.get_zoom_level() * self.hidpi_factor
             self.page_width = int(round(self.scale_factor * self.preview.page_width))
             self.page_height = int(self.scale_factor * self.preview.page_height)
             self.page_gap = int(self.hidpi_factor * 10)

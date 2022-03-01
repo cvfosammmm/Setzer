@@ -51,19 +51,19 @@ class PreviewController(object):
         self.view.scrolled_window.connect('leave-notify-event', self.on_leave)
         self.view.external_viewer_button.connect('clicked', self.on_external_viewer_button_clicked)
 
-        def zoom_in(menu_item): self.preview.zoom_in()
+        def zoom_in(menu_item): self.preview.zoom_manager.zoom_in()
         self.view.menu_item_zoom_in.connect('activate', zoom_in)
 
-        def zoom_out(menu_item): self.preview.zoom_out()
+        def zoom_out(menu_item): self.preview.zoom_manager.zoom_out()
         self.view.menu_item_zoom_out.connect('activate', zoom_out)
 
-        def zoom_fit_to_width(menu_item): self.preview.set_zoom_fit_to_width_auto_offset()
+        def zoom_fit_to_width(menu_item): self.preview.zoom_manager.set_zoom_fit_to_width_auto_offset()
         self.view.menu_item_zoom_fit_to_width.connect('activate', zoom_fit_to_width)
 
-        def zoom_fit_to_text_width(menu_item): self.preview.set_zoom_fit_to_text_width()
+        def zoom_fit_to_text_width(menu_item): self.preview.zoom_manager.set_zoom_fit_to_text_width()
         self.view.menu_item_zoom_fit_to_text_width.connect('activate', zoom_fit_to_text_width)
 
-        def zoom_fit_to_height(menu_item): self.preview.set_zoom_fit_to_height()
+        def zoom_fit_to_height(menu_item): self.preview.zoom_manager.set_zoom_fit_to_height()
         self.view.menu_item_zoom_fit_to_height.connect('activate', zoom_fit_to_height)
 
         def backward_sync(menu_item):
@@ -74,18 +74,14 @@ class PreviewController(object):
 
     def on_scroll(self, widget, event):
         if event.state == Gdk.ModifierType.CONTROL_MASK:
-            direction = False
-            if event.delta_y - event.delta_x < 0:
-                direction = 'in'
-            elif event.delta_y - event.delta_x > 0:
-                direction = 'out'
-            if direction != False:
+            if event.delta_y != event.delta_x:
                 self.zoom_momentum += event.delta_y - event.delta_x
                 if(self.preview.presenter.scrolling_queue.empty()):
-                    zoom_level = min(max(self.preview.zoom_level * (1 - 0.1 * self.zoom_momentum), 0.25), 4)
-                    xoffset = (-event.x + event.x * zoom_level / self.preview.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
-                    yoffset = (-event.y + event.y * zoom_level / self.preview.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
-                    self.preview.set_zoom_level(zoom_level, xoffset, yoffset)
+                    zoom_level = min(max(self.preview.zoom_manager.get_zoom_level() * (1 - 0.1 * self.zoom_momentum), 0.25), 4)
+                    xoffset = (-event.x + event.x * zoom_level / self.preview.zoom_manager.get_zoom_level()) / (zoom_level * self.layouter.hidpi_factor)
+                    yoffset = (-event.y + event.y * zoom_level / self.preview.zoom_manager.get_zoom_level()) / (zoom_level * self.layouter.hidpi_factor)
+                    self.preview.zoom_manager.set_zoom_level(zoom_level)
+                    self.preview.scroll_by_offsets(xoffset, yoffset)
                     self.zoom_momentum = 0
             return True
         return False
@@ -108,7 +104,7 @@ class PreviewController(object):
 
         page_number, x_offset, y_offset = data
         cursor = self.cursor_default
-        links = self.preview.get_links_for_page(page_number)
+        links = self.preview.links_parser.get_links_for_page(page_number)
         y_offset = (self.preview.page_height - y_offset)
         for link in links:
             if x_offset > link[0][0] and x_offset < link[0][2] and y_offset > link[0][1] and y_offset < link[0][3]:
@@ -119,7 +115,7 @@ class PreviewController(object):
         window.set_cursor(cursor)
 
     def on_size_allocate(self, view=None, allocation=None):
-        self.preview.update_dynamic_zoom_levels()
+        self.preview.zoom_manager.update_dynamic_zoom_levels()
 
     def on_hadjustment_changed(self, adjustment):
         self.preview.update_position()
@@ -145,7 +141,7 @@ class PreviewController(object):
             if data == None: return True
 
             page_number, x_offset, y_offset = data
-            links = self.preview.get_links_for_page(page_number)
+            links = self.preview.links_parser.get_links_for_page(page_number)
             y_offset = (self.preview.page_height - y_offset)
             for link in links:
                 if x_offset > link[0][0] and x_offset < link[0][2] and y_offset > link[0][1] and y_offset < link[0][3]:
@@ -170,15 +166,14 @@ class PreviewController(object):
         y = y_pixels / self.layouter.scale_factor
         page += 1
 
-        with self.preview.poppler_document_lock:
-            poppler_page = self.preview.poppler_document.get_page(page - 1)
-            rect = Poppler.Rectangle()
-            rect.x1 = max(min(x, self.preview.page_width), 0)
-            rect.y1 = max(min(y, self.preview.page_height), 0)
-            rect.x2 = max(min(x, self.preview.page_width), 0)
-            rect.y2 = max(min(y, self.preview.page_height), 0)
-            word = poppler_page.get_selected_text(Poppler.SelectionStyle.WORD, rect)
-            context = poppler_page.get_selected_text(Poppler.SelectionStyle.LINE, rect)
+        poppler_page = self.preview.poppler_document.get_page(page - 1)
+        rect = Poppler.Rectangle()
+        rect.x1 = max(min(x, self.preview.page_width), 0)
+        rect.y1 = max(min(y, self.preview.page_height), 0)
+        rect.x2 = max(min(x, self.preview.page_width), 0)
+        rect.y2 = max(min(y, self.preview.page_height), 0)
+        word = poppler_page.get_selected_text(Poppler.SelectionStyle.WORD, rect)
+        context = poppler_page.get_selected_text(Poppler.SelectionStyle.LINE, rect)
         self.preview.document.build_system.backward_sync(page, x, y, word, context)
 
 

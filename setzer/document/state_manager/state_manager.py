@@ -108,7 +108,7 @@ class StateManager():
         if pdf_date <= os.path.getmtime(pdf_filename) - 10: return
 
         self.document.preview.set_pdf_filename(pdf_filename)
-        self.document.preview.set_zoom_level(zoom_level)
+        self.document.preview.zoom_manager.set_zoom_level(zoom_level)
         self.document.preview.scroll_to_position_from_offsets(xoffset, yoffset)
 
     def save_document_state(self):
@@ -130,7 +130,7 @@ class StateManager():
         document_data['pdf_date'] = self.document.preview.pdf_date
         document_data['xoffset'] = self.document.preview.xoffset
         document_data['yoffset'] = self.document.preview.yoffset
-        document_data['zoom_level'] = self.document.preview.zoom_level
+        document_data['zoom_level'] = self.document.preview.zoom_manager.zoom_level
 
         if self.document.filename != None:
             try: filehandle = open(self.data_pathname + '/' + base64.urlsafe_b64encode(str.encode(self.document.filename)).decode() + '.pickle', 'wb')

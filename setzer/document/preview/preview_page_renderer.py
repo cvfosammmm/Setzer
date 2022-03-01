@@ -91,12 +91,11 @@ class PreviewPageRenderer(Observable):
                     with self.visible_pages_lock:
                         is_visible = (todo['page_number'] >= self.visible_pages_additional[0] and todo['page_number'] <= self.visible_pages_additional[1])
                     if todo['render_count'] == render_count and is_visible:
-                        with self.preview.poppler_document_lock:
-                            surface = cairo.ImageSurface(cairo.Format.ARGB32, todo['page_width'] * todo['hidpi_factor'], todo['page_height'] * 2)
-                            ctx = cairo.Context(surface)
-                            ctx.scale(todo['scale_factor'] * todo['hidpi_factor'], todo['scale_factor'] * todo['hidpi_factor'])
-                            page = self.preview.poppler_document.get_page(todo['page_number'])
-                            page.render(ctx)
+                        surface = cairo.ImageSurface(cairo.Format.ARGB32, todo['page_width'] * todo['hidpi_factor'], todo['page_height'] * 2)
+                        ctx = cairo.Context(surface)
+                        ctx.scale(todo['scale_factor'] * todo['hidpi_factor'], todo['scale_factor'] * todo['hidpi_factor'])
+                        page = self.preview.poppler_document.get_page(todo['page_number'])
+                        page.render(ctx)
                         self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [surface, todo['page_width'], todo['pdf_date']]})
             else:
                 time.sleep(0.05)

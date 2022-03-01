@@ -30,7 +30,7 @@ class ZoomWidget(object):
         self.preview.view.action_bar.pack_end(self.view, False, False, 0)
 
         self.preview.connect('pdf_changed', self.on_pdf_changed)
-        self.preview.connect('zoom_level_changed', self.on_zoom_level_changed)
+        self.preview.zoom_manager.connect('zoom_level_changed', self.on_zoom_level_changed)
 
         self.view.zoom_in_button.connect('clicked', self.on_zoom_button_clicked, 'in')
         self.view.zoom_out_button.connect('clicked', self.on_zoom_button_clicked, 'out')
@@ -55,7 +55,7 @@ class ZoomWidget(object):
         self.view.zoom_button_box.pack_start(model_button, False, False, 0)
         separator = Gtk.SeparatorMenuItem()
         self.view.zoom_button_box.pack_start(separator, False, False, 0)
-        for level in self.preview.zoom_levels:
+        for level in self.preview.zoom_manager.get_list_of_zoom_levels():
             model_button = Gtk.ModelButton()
             model_button.set_label('{0:.0f}%'.format(level * 100))
             model_button.get_child().set_halign(Gtk.Align.START)
@@ -74,24 +74,24 @@ class ZoomWidget(object):
 
     def on_zoom_button_clicked(self, button, direction):
         if direction == 'in':
-            self.preview.zoom_in()
+            self.preview.zoom_manager.zoom_in()
         else:
-            self.preview.zoom_out()
+            self.preview.zoom_manager.zoom_out()
 
     def on_fit_to_width_button_clicked(self, button):
-        self.preview.set_zoom_fit_to_width_auto_offset()
+        self.preview.zoom_manager.set_zoom_fit_to_width_auto_offset()
 
     def on_fit_to_text_width_button_clicked(self, button):
-        self.preview.set_zoom_fit_to_text_width()
+        self.preview.zoom_manager.set_zoom_fit_to_text_width()
 
     def on_fit_to_height_button_clicked(self, button):
-        self.preview.set_zoom_fit_to_height()
+        self.preview.zoom_manager.set_zoom_fit_to_height()
 
     def on_set_zoom_button_clicked(self, button, level):
-        self.preview.set_zoom_level_auto_offset(level)
+        self.preview.zoom_manager.set_zoom_level_auto_offset(level)
 
     def update_zoom_level(self):
-        if self.preview.zoom_level != None:
-            self.view.label.set_text('{0:.1f}%'.format(self.preview.zoom_level * 100))
+        if self.preview.zoom_manager.get_zoom_level() != None:
+            self.view.label.set_text('{0:.1f}%'.format(self.preview.zoom_manager.get_zoom_level() * 100))
     
 
