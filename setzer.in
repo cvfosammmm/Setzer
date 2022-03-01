@@ -94,7 +94,9 @@ class MainApplicationController(Gtk.Application):
                 if document_candidate != None:
                     self.workspace.set_active_document(document_candidate)
                 else:
-                    self.workspace.create_document_from_filename(file.get_path(), activate=True)
+                    document_candidate = self.workspace.create_document_from_filename(file.get_path())
+                    if document_candidate != None:
+                        self.workspace.set_active_document(document_candidate)
 
     def do_activate(self):
         if not self.is_active:
