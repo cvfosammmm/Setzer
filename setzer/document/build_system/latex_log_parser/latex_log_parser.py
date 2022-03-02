@@ -82,6 +82,10 @@ class LaTeXLogParser():
                     jobs |= {'build_latex'}
                     rerun_latex_reasons |= {3}
 
+                elif item[2] == 'There were undefined references.':
+                    jobs |= {'build_latex'}
+                    rerun_latex_reasons |= {3}
+
                 elif item[2] == 'Citation(s) may have changed.':
                     jobs |= {'build_latex'}
                     rerun_latex_reasons |= {4}
