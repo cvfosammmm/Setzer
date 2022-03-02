@@ -28,9 +28,6 @@ import time
 import difflib
 import math
 
-import setzer.document.content.parser.parser_dummy as parser_dummy
-import setzer.document.content.parser.parser_bibtex as parser_bibtex
-import setzer.document.content.parser.parser_latex as parser_latex
 from setzer.app.service_locator import ServiceLocator
 from setzer.helpers.observable import Observable
 import setzer.helpers.timer as timer
@@ -38,8 +35,9 @@ import setzer.helpers.timer as timer
 
 class Content(Observable):
 
-    def __init__(self, language):
+    def __init__(self, language, document):
         Observable.__init__(self)
+        self.document = document
 
         self.settings = ServiceLocator.get_settings()
 
@@ -53,20 +51,6 @@ class Content(Observable):
 
         self.source_buffer.set_language(self.source_language)
         self.update_syntax_scheme()
-
-        self.symbols = dict()
-        self.symbols['bibitems'] = set()
-        self.symbols['labels'] = set()
-        self.symbols['labels_with_offset'] = list()
-        self.symbols['included_latex_files'] = set()
-        self.symbols['bibliographies'] = set()
-        self.symbols['packages'] = set()
-        self.symbols['packages_detailed'] = dict()
-        self.symbols['blocks'] = list()
-
-        if language == 'bibtex': self.parser = parser_bibtex.ParserBibTeX(self)
-        elif language == 'latex': self.parser = parser_latex.ParserLaTeX(self)
-        else: self.parser = parser_dummy.ParserDummy(self)
 
         self.color_manager = ServiceLocator.get_color_manager()
         self.font_manager = ServiceLocator.get_font_manager()
@@ -112,12 +96,12 @@ class Content(Observable):
             self.update_syntax_scheme()
 
     def on_insert_text(self, buffer, location_iter, text, text_length):
-        self.parser.on_text_inserted(buffer, location_iter, text, text_length)
+        self.document.parser.on_text_inserted(buffer, location_iter, text, text_length)
         self.indentation_update = {'line_start': location_iter.get_line(), 'text_length': text_length}
         self.add_change_code('text_inserted', (buffer, location_iter, text, text_length))
 
     def on_delete_range(self, buffer, start_iter, end_iter):
-        self.parser.on_text_deleted(buffer, start_iter, end_iter)
+        self.document.parser.on_text_deleted(buffer, start_iter, end_iter)
         self.indentation_update = {'line_start': start_iter.get_line(), 'text_length': 0}
         self.add_change_code('text_deleted', (buffer, start_iter, end_iter))
 
@@ -752,9 +736,6 @@ class Content(Observable):
         line_height = self.font_manager.get_line_height()
         return math.floor(self.source_view.get_visible_rect().height / line_height)
 
-    def get_bibitems(self):
-        return self.symbols['bibitems']
-
     def add_packages(self, packages):
         first_package = True
         text = ''
@@ -763,7 +744,7 @@ class Content(Observable):
             text += '\\usepackage{' + packagename + '}'
             first_package = False
         
-        package_data = self.get_package_details()
+        package_data = self.document.get_package_details()
         if package_data:
             max_end = 0
             for package in package_data.items():
@@ -783,7 +764,7 @@ class Content(Observable):
                 self.insert_text_at_cursor(text)
 
     def remove_packages(self, packages):
-        packages_dict = self.get_package_details()
+        packages_dict = self.document.get_package_details()
         for package in packages:
             try:
                 match_obj = packages_dict[package]
@@ -795,29 +776,5 @@ class Content(Observable):
                 if start_iter.get_line_offset() == 0:
                     start_iter.backward_char()
                 self.source_buffer.delete(start_iter, end_iter)
-
-    def get_packages(self):
-        return self.symbols['packages']
-
-    def get_package_details(self):
-        return self.symbols['packages_detailed']
-
-    def get_blocks(self):
-        return self.symbols['blocks']
-
-    def set_blocks(self, blocks):
-        self.symbols['blocks'] = blocks
-
-    def get_included_latex_files(self):
-        return self.symbols['included_latex_files']
-
-    def get_bibliography_files(self):
-        return self.symbols['bibliographies']
-
-    def get_labels(self):
-        return self.symbols['labels']
-
-    def get_labels_with_offset(self):
-        return self.symbols['labels_with_offset']
 
 

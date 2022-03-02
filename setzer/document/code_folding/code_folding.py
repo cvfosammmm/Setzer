@@ -118,7 +118,7 @@ class CodeFolding(Observable):
         folding_regions_by_region_id = dict()
         last_line = -1
         try:
-            blocks = self.document.content.get_blocks()
+            blocks = self.document.get_blocks()
         except AttributeError:
             return
         if not self.blocks_changed(blocks): return

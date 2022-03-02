@@ -21,8 +21,8 @@ from setzer.helpers.timer import timer
 
 class ParserBibTeX(object):
 
-    def __init__(self, content):
-        self.content = content
+    def __init__(self, document):
+        self.document = document
         self.text = ''
 
     #@timer
@@ -44,6 +44,6 @@ class ParserBibTeX(object):
         for match in ServiceLocator.get_regex_object(r'@(\w+)\{(\w+)').finditer(text):
             bibitems = bibitems | {match.group(2).strip()}
 
-        self.content.symbols['bibitems'] = bibitems
+        self.document.symbols['bibitems'] = bibitems
 
 

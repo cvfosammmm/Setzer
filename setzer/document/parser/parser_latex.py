@@ -21,8 +21,8 @@ from setzer.helpers.timer import timer
 
 class ParserLaTeX(object):
 
-    def __init__(self, content):
-        self.content = content
+    def __init__(self, document):
+        self.document = document
         self.text_length = 0
         self.number_of_lines = 0
         self.block_symbol_matches = {'begin_or_end': list(), 'others': list()}
@@ -220,7 +220,7 @@ class ParserLaTeX(object):
         if add_preamble_folding and begin_document_offset and begin_document_line:
             blocks_list.append([0, begin_document_offset - 1, 0, begin_document_line - 1, 'preamble'])
 
-        self.content.set_blocks(sorted(blocks_list, key=lambda block: block[0]))
+        self.document.set_blocks(sorted(blocks_list, key=lambda block: block[0]))
 
     #@timer
     def parse_symbols(self):
@@ -256,12 +256,12 @@ class ParserLaTeX(object):
             elif match.group(5) == 'bibitem':
                 bibitems = bibitems | {match.group(6).strip()}
 
-        self.content.symbols['labels'] = labels
-        self.content.symbols['labels_with_offset'] = labels_with_offset
-        self.content.symbols['included_latex_files'] = included_latex_files
-        self.content.symbols['bibliographies'] = bibliographies
-        self.content.symbols['bibitems'] = bibitems
-        self.content.symbols['packages'] = packages
-        self.content.symbols['packages_detailed'] = packages_detailed
+        self.document.symbols['labels'] = labels
+        self.document.symbols['labels_with_offset'] = labels_with_offset
+        self.document.symbols['included_latex_files'] = included_latex_files
+        self.document.symbols['bibliographies'] = bibliographies
+        self.document.symbols['bibitems'] = bibitems
+        self.document.symbols['packages'] = packages
+        self.document.symbols['packages_detailed'] = packages_detailed
 
 

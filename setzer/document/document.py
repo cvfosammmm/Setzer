@@ -35,6 +35,9 @@ import setzer.document.build_widget.build_widget as build_widget
 import setzer.document.autocomplete.autocomplete as autocomplete
 import setzer.document.code_folding.code_folding as code_folding
 import setzer.document.preview.preview as preview
+import setzer.document.parser.parser_dummy as parser_dummy
+import setzer.document.parser.parser_bibtex as parser_bibtex
+import setzer.document.parser.parser_latex as parser_latex
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 
@@ -56,7 +59,20 @@ class Document(Observable):
         self.is_root = False
         self.root_is_set = False
 
-        self.content = content.Content(self.document_type)
+        self.symbols = dict()
+        self.symbols['bibitems'] = set()
+        self.symbols['labels'] = set()
+        self.symbols['labels_with_offset'] = list()
+        self.symbols['included_latex_files'] = set()
+        self.symbols['bibliographies'] = set()
+        self.symbols['packages'] = set()
+        self.symbols['packages_detailed'] = dict()
+        self.symbols['blocks'] = list()
+
+        self.content = content.Content(self.document_type, self)
+        if self.document_type == 'bibtex': self.parser = parser_bibtex.ParserBibTeX(self)
+        elif self.document_type == 'latex': self.parser = parser_latex.ParserLaTeX(self)
+        else: self.parser = parser_dummy.ParserDummy(self)
 
         self.view = document_view.DocumentView(self)
         self.gutter = gutter.Gutter(self, self.view)
@@ -191,5 +207,32 @@ class Document(Observable):
 
     def get_is_root(self):
         return self.is_root
+
+    def get_bibitems(self):
+        return self.symbols['bibitems']
+
+    def get_packages(self):
+        return self.symbols['packages']
+
+    def get_package_details(self):
+        return self.symbols['packages_detailed']
+
+    def get_blocks(self):
+        return self.symbols['blocks']
+
+    def set_blocks(self, blocks):
+        self.symbols['blocks'] = blocks
+
+    def get_included_latex_files(self):
+        return self.symbols['included_latex_files']
+
+    def get_bibliography_files(self):
+        return self.symbols['bibliographies']
+
+    def get_labels(self):
+        return self.symbols['labels']
+
+    def get_labels_with_offset(self):
+        return self.symbols['labels_with_offset']
 
 

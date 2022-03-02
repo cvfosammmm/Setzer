@@ -50,7 +50,7 @@ class SessionBeginEnd(object):
             self.has_matching_block = False
 
     def get_matching_begin_end_offset(self, orig_offset):
-        blocks = self.autocomplete.document.content.get_blocks()
+        blocks = self.autocomplete.document.get_blocks()
         for block in blocks:
             if block[0] == orig_offset - 7:
                 return None if block[1] == None else block[1] + 5

@@ -121,7 +121,7 @@ class DocumentStructurePage(object):
     def update_integrated_includes(self):
         integrated_includes = dict()
         if self.document.get_is_root():
-            for filename, offset in self.document.content.get_included_latex_files():
+            for filename, offset in self.document.get_included_latex_files():
                 filename = path_helpers.get_abspath(filename, self.document.get_dirname())
                 document = self.workspace.get_document_by_filename(filename)
                 if document:
@@ -135,7 +135,7 @@ class DocumentStructurePage(object):
 
     def get_includes(self):
         includes = list()
-        for filename, offset in self.document.content.get_included_latex_files():
+        for filename, offset in self.document.get_included_latex_files():
             filename = path_helpers.get_abspath(filename, self.document.get_dirname())
             document = self.workspace.get_document_by_filename(filename)
             if document and document in self.integrated_includes:
@@ -150,10 +150,10 @@ class DocumentStructurePage(object):
 
         includes = self.get_includes()
         blocks = list()
-        for block in self.document.content.get_blocks():
+        for block in self.document.get_blocks():
             while len(includes) > 0 and includes[0]['offset'] < block[0]:
                 if includes[0]['document'] != None:
-                    for block_included in includes[0]['document'].content.get_blocks():
+                    for block_included in includes[0]['document'].get_blocks():
                         if len(block_included) < 7:
                             block_included.append(includes[0]['document'].get_filename())
                         blocks.append(block_included)
@@ -167,7 +167,7 @@ class DocumentStructurePage(object):
 
         while len(includes) > 0:
             if includes[0]['document'] != None:
-                for block in includes[0]['document'].content.get_blocks():
+                for block in includes[0]['document'].get_blocks():
                     if len(block) < 7:
                         block.append(includes[0]['document'].get_filename())
                     blocks.append(block)
@@ -228,12 +228,12 @@ class DocumentStructurePage(object):
     #@timer
     def update_labels_widget(self):
         labels = list()
-        for label in self.document.content.get_labels_with_offset():
+        for label in self.document.get_labels_with_offset():
             filename = self.document.get_filename()
             label.append(filename)
             labels.append(label)
         for document in self.integrated_includes:
-            for label in document.content.get_labels_with_offset():
+            for label in document.get_labels_with_offset():
                 filename = document.get_filename()
                 label.append(filename)
                 labels.append(label)
