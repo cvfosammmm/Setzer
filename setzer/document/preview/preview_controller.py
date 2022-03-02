@@ -73,7 +73,9 @@ class PreviewController(object):
         self.view.menu_item_backward_sync.connect('activate', backward_sync)
 
     def on_scroll(self, widget, event):
-        if event.state == Gdk.ModifierType.CONTROL_MASK:
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
             if event.delta_y != event.delta_x:
                 self.zoom_momentum += event.delta_y - event.delta_x
                 if(self.preview.presenter.scrolling_queue.empty()):
