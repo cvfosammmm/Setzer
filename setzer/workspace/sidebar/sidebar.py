@@ -17,6 +17,10 @@
 
 import setzer.workspace.sidebar.symbols_page.symbols_page as symbols_page
 import setzer.workspace.sidebar.document_structure_page.document_structure_page as document_structure_page
+import setzer.workspace.sidebar.document_structure_page.data_provider as data_provider
+import setzer.workspace.sidebar.document_structure_page.files as files_section
+import setzer.workspace.sidebar.document_structure_page.structure as structure_section
+import setzer.workspace.sidebar.document_structure_page.labels as labels_section
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -26,8 +30,22 @@ class Sidebar(object):
         self.view = ServiceLocator.get_main_window().sidebar
         self.workspace = workspace
 
-        self.document_structure_page = document_structure_page.DocumentStructurePage(workspace)
-        self.view.add_named(self.document_structure_page.view, 'document_structure')
+        self.data_provider = data_provider.DataProvider(self, workspace)
+
+        self.document_structure_page = document_structure_page.DocumentStructurePage()
+
+        self.files_section = files_section.FilesSection(self.data_provider)
+        self.document_structure_page.add_content_widget('files', self.files_section.view)
+
+        self.document_structure_page.add_label('structure', _('Document Structure'))
+        self.structure_section = structure_section.StructureSection(self.data_provider, self.document_structure_page.labels['structure'])
+        self.document_structure_page.add_content_widget('structure', self.structure_section.view)
+
+        self.document_structure_page.add_label('labels', _('Labels'))
+        self.labels_section = labels_section.LabelsSection(self.data_provider, self.document_structure_page.labels['labels'])
+        self.document_structure_page.add_content_widget('labels', self.labels_section.view)
+
+        self.view.add_named(self.document_structure_page, 'document_structure')
 
         self.symbols_page = symbols_page.SymbolsPage(workspace)
         self.view.add_named(self.symbols_page.view, 'symbols')
