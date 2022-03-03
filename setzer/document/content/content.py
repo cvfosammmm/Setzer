@@ -59,7 +59,7 @@ class Content(Observable):
         self.tab_width = options['tab_width']
         self.spaces_instead_of_tabs = options['spaces_instead_of_tabs']
 
-        self.mover_mark = self.source_buffer.create_mark('mover', self.source_buffer.get_start_iter(), True)
+        self.scroll_to = None
 
         self.insert_position = 0
 
@@ -722,15 +722,39 @@ class Content(Observable):
         window_height = self.source_view.get_visible_rect().height
         gap = min(math.floor(max((visible_lines - 2), 0) / 2), 5)
         if iter_position < window_offset + gap * line_height:
-            scroll_iter = self.source_view.get_iter_at_location(0, max(iter_position - gap * line_height, 0)).iter
-            self.source_buffer.move_mark(self.mover_mark, scroll_iter)
-            self.source_view.scroll_to_mark(self.mover_mark, 0, False, 0, 0)
+            self.scroll_view(max(iter_position - gap * line_height, 0))
             return
         gap = min(math.floor(max((visible_lines - 2), 0) / 2), 8)
         if iter_position > (window_offset + window_height - (gap + 1) * line_height):
-            scroll_iter = self.source_view.get_iter_at_location(0, min(iter_position + gap * line_height, buffer_height)).iter
-            self.source_buffer.move_mark(self.mover_mark, scroll_iter)
-            self.source_view.scroll_to_mark(self.mover_mark, 0, False, 0, 0)
+            self.scroll_view(min(iter_position + gap * line_height - window_height, buffer_height))
+
+    def scroll_view(self, position, duration=0.2):
+        view = self.document.view.scrolled_window
+        adjustment = view.get_vadjustment()
+        self.scroll_to = {'position_start': adjustment.get_value(), 'position_end': position, 'time_start': time.time(), 'duration': duration}
+        view.set_kinetic_scrolling(False)
+        GObject.timeout_add(15, self.do_scroll)
+
+    def do_scroll(self):
+        view = self.document.view.scrolled_window
+        if self.scroll_to != None:
+            adjustment = view.get_vadjustment()
+            time_elapsed = time.time() - self.scroll_to['time_start']
+            if self.scroll_to['duration'] == 0:
+                time_elapsed_percent = 1
+            else:
+                time_elapsed_percent = time_elapsed / self.scroll_to['duration']
+            if time_elapsed_percent >= 1:
+                adjustment.set_value(self.scroll_to['position_end'])
+                self.scroll_to = None
+                view.set_kinetic_scrolling(True)
+                return False
+            else:
+                adjustment.set_value(self.scroll_to['position_start'] * (1 - self.ease(time_elapsed_percent)) + self.scroll_to['position_end'] * self.ease(time_elapsed_percent))
+                return True
+        return False
+
+    def ease(self, time): return (time - 1)**3 + 1
 
     def get_number_of_visible_lines(self):
         line_height = self.font_manager.get_line_height()
