@@ -52,6 +52,7 @@ class DocumentStructurePage(Gtk.Overlay):
     def add_label(self, name, text):
         label_inline = Gtk.Label(text)
         label_inline.set_xalign(0)
+        label_inline.get_style_context().add_class('headline')
         self.content_vbox.pack_start(label_inline, False, False, 0)
 
         label_overlay = Gtk.Label(text)

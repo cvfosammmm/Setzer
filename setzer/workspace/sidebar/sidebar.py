@@ -21,6 +21,7 @@ import setzer.workspace.sidebar.document_structure_page.data_provider as data_pr
 import setzer.workspace.sidebar.document_structure_page.files as files_section
 import setzer.workspace.sidebar.document_structure_page.structure as structure_section
 import setzer.workspace.sidebar.document_structure_page.labels as labels_section
+import setzer.workspace.sidebar.document_stats.document_stats as document_stats_section
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -28,7 +29,6 @@ class Sidebar(object):
 
     def __init__(self, workspace):
         self.view = ServiceLocator.get_main_window().sidebar
-        self.workspace = workspace
 
         self.data_provider = data_provider.DataProvider(self, workspace)
 
@@ -44,6 +44,10 @@ class Sidebar(object):
         self.document_structure_page.add_label('labels', _('Labels'))
         self.labels_section = labels_section.LabelsSection(self.data_provider, self.document_structure_page.labels['labels'])
         self.document_structure_page.add_content_widget('labels', self.labels_section.view)
+
+        self.document_structure_page.add_label('stats', _('Document Stats'))
+        self.document_stats_section = document_stats_section.DocumentStats(workspace, self.document_structure_page.labels['stats'])
+        self.document_structure_page.add_content_widget('stats', self.document_stats_section.view)
 
         self.view.add_named(self.document_structure_page, 'document_structure')
 

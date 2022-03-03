@@ -310,7 +310,7 @@ box.sidebar-symbols box.search_bar {
 box.sidebar-symbols box.search_bar button {
     margin-left: 6px;
 }
-.sidebar-document-structure scrolledwindow label {
+.sidebar-document-structure scrolledwindow label.headline {
     padding: 9px 8px 8px 9px;
     background-color: @theme_base_color;
     border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
@@ -318,6 +318,17 @@ box.sidebar-symbols box.search_bar button {
 .sidebar-document-structure label.overlay {
     padding: 9px 8px 8px 9px;
     background-color: @theme_base_color;
+}
+box.document-stats .description {
+    color: mix(@theme_fg_color, @theme_bg_color, 0.3);
+    font-size: 13px;
+    padding: 9px 8px 8px 9px;
+}
+box.document-stats box {
+    padding: 3px 8px 3px 9px;
+}
+box.document-stats {
+    margin-bottom: 24px;
 }
 
 /*
