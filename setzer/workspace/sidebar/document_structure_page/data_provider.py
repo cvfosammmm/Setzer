@@ -63,15 +63,7 @@ class DataProvider(Observable):
         self.update_data()
 
     def set_document(self):
-        if self.workspace.get_active_document() == None:
-            document = None
-        else:
-            if self.workspace.root_document != None:
-                document = self.workspace.root_document
-            elif self.workspace.active_document.is_latex_document():
-                document = self.workspace.active_document
-            else:
-                document = None
+        document = self.workspace.get_root_or_active_latex_document()
         if document != self.document:
             if self.document != None:
                 self.document.content.disconnect('buffer_changed', self.on_buffer_changed)

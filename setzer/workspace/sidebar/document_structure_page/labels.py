@@ -41,9 +41,9 @@ class LabelsSection(structure_widget.StructureWidget):
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & modifiers == 0:
             item_num = max(0, min(int((event.y - 9) // self.view.line_height), len(self.labels) - 1))
 
-            filename = self.labels[item_num][2]
-            document = self.data_provider.workspace.open_document_by_filename(filename)
+            document = self.labels[item_num][2]
             line_number = document.content.get_line_number_at_offset(self.labels[item_num][1])
+            self.data_provider.workspace.set_active_document(document)
             document.content.place_cursor(line_number)
             document.content.scroll_cursor_onscreen()
             self.data_provider.workspace.active_document.view.source_view.grab_focus()
@@ -52,13 +52,12 @@ class LabelsSection(structure_widget.StructureWidget):
     def update_items(self, *params):
         labels = list()
         for label in self.data_provider.document.get_labels_with_offset():
-            filename = self.data_provider.document.get_filename()
-            label.append(filename)
+            document = self.data_provider.document
+            label.append(document)
             labels.append(label)
         for document in self.data_provider.integrated_includes:
             for label in document.get_labels_with_offset():
-                filename = document.get_filename()
-                label.append(filename)
+                label.append(document)
                 labels.append(label)
         labels.sort(key=lambda label: label[0].lower())
         self.labels = labels

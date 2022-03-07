@@ -18,6 +18,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from gi.repository import Pango
 
 
 class DocumentStatsView(Gtk.VBox):
@@ -32,21 +33,13 @@ class DocumentStatsView(Gtk.VBox):
         description.get_style_context().add_class('description')
         self.pack_start(description, False, False, 0)
 
-        self.label_words_in_text = Gtk.Label()
-        self.label_words_in_headers = Gtk.Label()
-        self.label_words_outside_text = Gtk.Label()
-
-        self.add_line(_('Words in text:  '), self.label_words_in_text)
-        self.add_line(_('Words in headers:  '), self.label_words_in_headers)
-        self.add_line(_('Words outside text:  '), self.label_words_outside_text)
+        self.label_current_file = Gtk.Label()
+        self.label_current_file.set_line_wrap(True)
+        self.label_current_file.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.label_current_file.set_xalign(0)
+        self.label_current_file.get_style_context().add_class('stats-paragraph')
+        self.pack_start(self.label_current_file, False, False, 0)
 
         self.show_all()
-
-    def add_line(self, description_text, values_label):
-        box = Gtk.HBox()
-        box.pack_start(Gtk.Label(description_text), False, False, 0)
-        values_label.set_xalign(1)
-        box.pack_start(values_label, False, False, 0)
-        self.pack_start(box, False, False, 0)
 
 

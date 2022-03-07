@@ -39,10 +39,7 @@ class SaveSessionDialog(Dialog):
             self.view.set_current_folder(os.path.dirname(self.workspace.session_file_opened))
             self.view.set_current_name(os.path.basename(self.workspace.session_file_opened))
         else:
-            if self.workspace.root_document != None:
-                document = self.workspace.get_root_document()
-            else:
-                document = self.workspace.get_active_document()
+            document = self.workspace.get_root_or_active_latex_document()
             if document != None:
                 pathname = document.get_filename()
                 if pathname != None:

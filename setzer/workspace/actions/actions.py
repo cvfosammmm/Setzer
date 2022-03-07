@@ -290,14 +290,9 @@ class Actions(object):
 
     @_assert_has_active_document
     def on_build_action_activated(self, action=None, parameter=None):
-        if self.workspace.root_document != None:
-            document = self.workspace.root_document
-        else:
-            document = self.workspace.active_document
-        try:
+        document = self.workspace.get_root_or_active_latex_document()
+        if document != None:
             document.build_widget.build_document_request()
-        except AttributeError:
-            pass
 
     @_assert_has_active_document
     def on_save_button_click(self, action=None, parameter=None):

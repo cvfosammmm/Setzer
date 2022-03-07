@@ -327,6 +327,9 @@ box.document-stats .description {
 box.document-stats box {
     padding: 3px 8px 3px 9px;
 }
+box.document-stats label.stats-paragraph {
+    padding: 3px 8px 3px 9px;
+}
 box.document-stats {
     margin-bottom: 24px;
 }

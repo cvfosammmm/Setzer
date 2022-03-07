@@ -48,9 +48,9 @@ class StructureSection(structure_widget.StructureWidget):
             item_num = max(0, min(int((event.y - 9) // self.view.line_height), len(self.nodes_in_line) - 1))
             item = self.nodes_in_line[item_num]['item']
 
-            filename = item[0]
+            document = item[0]
             line_number = item[1]
-            document = self.data_provider.workspace.open_document_by_filename(filename)
+            self.data_provider.workspace.set_active_document(document)
             document.content.place_cursor(line_number)
             document.content.scroll_cursor_onscreen()
             self.data_provider.workspace.active_document.view.source_view.grab_focus()
@@ -66,31 +66,31 @@ class StructureSection(structure_widget.StructureWidget):
                 if includes[0]['document'] != None:
                     for block_included in includes[0]['document'].get_blocks():
                         if len(block_included) < 7:
-                            block_included.append(includes[0]['document'].get_filename())
+                            block_included.append(includes[0]['document'])
                         blocks.append(block_included)
                 else:
-                    file_block = [0, 0, 0, 0, 'file', os.path.basename(includes[0]['filename']), includes[0]['filename']]
+                    file_block = [0, 0, 0, 0, 'file', os.path.basename(includes[0]['filename']), includes[0]['document']]
                     blocks.append(file_block)
                 del(includes[0])
             if len(block) < 7:
-                block.append(self.data_provider.document.get_filename())
+                block.append(self.data_provider.document)
             blocks.append(block)
 
         while len(includes) > 0:
             if includes[0]['document'] != None:
                 for block in includes[0]['document'].get_blocks():
                     if len(block) < 7:
-                        block.append(includes[0]['document'].get_filename())
+                        block.append(includes[0]['document'])
                     blocks.append(block)
             else:
-                file_block = [0, 0, 0, 0, 'file', includes[0]['filename'], includes[0]['filename']]
+                file_block = [0, 0, 0, 0, 'file', includes[0]['filename'], includes[0]['document']]
                 blocks.append(file_block)
             del(includes[0])
 
         last_line = -1
         for block in blocks:
             if block[1] != None and block[4] in self.levels and block[2] != last_line:
-                sections[block[2]] = {'filename': block[6], 'offset_start': block[0], 'starting_line': block[2], 'block': block}
+                sections[block[2]] = {'document': block[6], 'offset_start': block[0], 'starting_line': block[2], 'block': block}
                 last_line = block[2]
 
         current_level = 0
@@ -100,7 +100,7 @@ class StructureSection(structure_widget.StructureWidget):
         for section in sections.values():
             section_type = section['block'][4]
             level = self.levels[section_type]
-            node = {'item': [section['filename'], section['starting_line'], section_type + '-symbolic', ' '.join(section['block'][5].splitlines())], 'children': list()}
+            node = {'item': [section['document'], section['starting_line'], section_type + '-symbolic', ' '.join(section['block'][5].splitlines())], 'children': list()}
             if predecessor[level] == None:
                 nodes.append(node)
             else:

@@ -201,13 +201,9 @@ class Workspace(Observable):
             self.set_build_log()
 
     def set_build_log(self):
-        if self.get_active_document() != None:
-            if self.root_document != None:
-                document = self.root_document
-            else:
-                document = self.active_document
-            if document.is_latex_document():
-                self.build_log.set_document(document)
+        document = self.get_root_or_active_latex_document()
+        if document != None:
+            self.build_log.set_document(document)
 
     def get_last_active_document(self):
         for document in sorted(self.open_documents, key=lambda val: -val.last_activated):
@@ -394,6 +390,17 @@ class Workspace(Observable):
     def get_root_document(self):
         return self.root_document
 
+    def get_root_or_active_latex_document(self):
+        if self.get_active_document() == None:
+            return None
+        else:
+            if self.root_document != None:
+                return self.root_document
+            elif self.active_document.is_latex_document():
+                return self.active_document
+            else:
+                return None
+
     def update_preview_visibility(self, document):
         if document != None and document.is_latex_document():
             if document == self.root_document:
@@ -402,6 +409,14 @@ class Workspace(Observable):
                 document.preview.page_renderer.activate()
             else:
                 document.preview.page_renderer.deactivate()
+
+    def update_sync_document(self):
+        document = self.get_root_or_active_latex_document()
+        if document != None:
+            self.set_sync_document(document)
+            self.sync_document.disconnect('is_root_changed', self.on_is_root_changed)
+            self.sync_document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
+            self.sync_document = None
 
     def update_sync_document(self):
         if self.root_document != None:
@@ -415,15 +430,17 @@ class Workspace(Observable):
             self.sync_document = None
 
     def set_sync_document(self, document):
-        if document != self.sync_document:
-            if self.sync_document != None:
-                self.sync_document.disconnect('is_root_changed', self.on_is_root_changed)
-                if self.sync_document.is_latex_document():
-                    self.sync_document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
-            self.sync_document = document
-            self.sync_document.connect('is_root_changed', self.on_is_root_changed)
+        if document == None: return
+        if document == self.sync_document: return
+
+        if self.sync_document != None:
+            self.sync_document.disconnect('is_root_changed', self.on_is_root_changed)
             if self.sync_document.is_latex_document():
-                self.sync_document.build_system.connect('can_sync_changed', self.on_can_sync_changed)
+                self.sync_document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
+        self.sync_document = document
+        self.sync_document.connect('is_root_changed', self.on_is_root_changed)
+        if self.sync_document.is_latex_document():
+            self.sync_document.build_system.connect('can_sync_changed', self.on_can_sync_changed)
 
     def on_can_sync_changed(self, build_system, can_sync):
         self.set_can_sync()
@@ -444,10 +461,9 @@ class Workspace(Observable):
         if active_document == None: return
         if not self.sync_document.is_latex_document(): return
 
-        if self.root_document != None:
-            self.root_document.build_system.forward_sync(active_document)
-        else:
-            active_document.build_system.forward_sync(active_document)
+        document = self.get_root_or_active_latex_document()
+        if document != None:
+            document.build_system.forward_sync(active_document)
 
     def set_show_symbols_or_document_structure(self, show_symbols, show_document_structure):
         if show_symbols != self.show_symbols or show_document_structure != self.show_document_structure:

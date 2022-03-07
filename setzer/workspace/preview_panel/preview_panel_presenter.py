@@ -50,16 +50,10 @@ class PreviewPanelPresenter(object):
         self.notebook.set_current_page(0)
 
     def set_preview_document(self):
-        if self.workspace.get_active_document() == None:
+        document = self.workspace.get_root_or_active_latex_document()
+        if document == None:
             self.activate_blank_page()
         else:
-            if self.workspace.root_document != None:
-                document = self.workspace.root_document
-                self.notebook.set_current_page(self.notebook.page_num(document.preview.view))
-            elif self.workspace.active_document.is_latex_document():
-                document = self.workspace.active_document
-                self.notebook.set_current_page(self.notebook.page_num(document.preview.view))
-            else:
-                self.activate_blank_page()
+            self.notebook.set_current_page(self.notebook.page_num(document.preview.view))
 
 

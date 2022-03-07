@@ -43,10 +43,10 @@ class FilesSection(structure_widget.StructureWidget):
             item_num = max(0, min(int((event.y - 9) // self.view.line_height), len(self.includes)))
 
             if item_num == 0:
-                filename = self.data_provider.document.get_filename()
+                document = self.data_provider.document
             else:
                 filename = self.includes[item_num - 1]['filename']
-            document = self.data_provider.workspace.open_document_by_filename(filename)
+                document = self.data_provider.workspace.open_document_by_filename(filename)
             document.content.scroll_cursor_onscreen()
             self.data_provider.workspace.active_document.view.source_view.grab_focus()
 
@@ -64,7 +64,7 @@ class FilesSection(structure_widget.StructureWidget):
 
         self.draw_hover_background(ctx, 0)
         self.draw_icon(ctx, 'file-symbolic', 9, 0)
-        self.draw_text(ctx, 35, 0, os.path.basename(self.data_provider.document.get_filename()))
+        self.draw_text(ctx, 35, 0, os.path.basename(self.data_provider.document.get_displayname()))
 
         for count, include in enumerate(self.includes):
             if count + 1 >= first_line and count + 1 <= last_line:

@@ -19,7 +19,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import GObject
 
-import time
+import os.path
 import subprocess
 import _thread as thread
 
@@ -36,16 +36,14 @@ class DocumentStats(object):
 
         self.view = document_stats_section_view.DocumentStatsView()
 
-        self.request_time = None
-        self.values = None
-        self.values_changed = True
+        self.values = dict()
         self.values_lock = thread.allocate_lock()
 
         self.workspace.connect('new_active_document', self.on_new_active_document)
         self.workspace.connect('root_state_change', self.on_root_state_change)
 
-        self.update_view()
-        GObject.timeout_add(500, self.update_view)
+        GObject.timeout_add(200, self.update_view)
+        GObject.timeout_add(1000, self.update_data)
 
     def on_new_active_document(self, workspace, document):
         self.set_document()
@@ -54,32 +52,32 @@ class DocumentStats(object):
         self.set_document()
 
     def set_document(self):
-        if self.workspace.get_active_document() == None:
-            document = None
-        else:
-            if self.workspace.root_document != None:
-                document = self.workspace.root_document
-            elif self.workspace.active_document.is_latex_document():
-                document = self.workspace.active_document
-            else:
-                document = None
+        document = self.workspace.get_root_or_active_latex_document()
         if document != self.document:
-            if self.document != None:
-                self.document.content.source_buffer.disconnect('modified_changed', self.on_modified_changed)
             self.document = document
-            self.document.content.source_buffer.connect('modified_changed', self.on_modified_changed)
-            self.update_data(wait_ms=0)
+            self.update_data()
+        self.update_view()
 
     def on_modified_changed(self, buffer):
         self.update_data()
 
-    def update_data(self, wait_ms=1000):
-        self.request_time = time.time()
-        GObject.timeout_add(wait_ms, self.count_words, self.request_time)
+    #@timer
+    def update_data(self):
+        if self.document == None: return True
+        if self.document not in self.values:
+            self.values[self.document] = {'save_date': 0, 'counts': None}
+        if self.document.get_filename() == None:
+            with self.values_lock:
+                self.values[self.document]['counts'] = None
+            return True
 
-    def count_words(self, request_time):
-        if request_time < self.request_time: return False
+        save_date = os.path.getmtime(self.document.get_filename())
+        if save_date > self.values[self.document]['save_date']:
+            self.values[self.document]['save_date'] = save_date
+            self.count_words()
+        return True
 
+    def count_words(self):
         thread.start_new_thread(self.run_query, (['texcount', '-brief', self.document.get_filename()],))
         return False
 
@@ -89,30 +87,32 @@ class DocumentStats(object):
             self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         except FileNotFoundError:
             with self.values_lock:
-                self.values = None
+                self.values[self.document]['counts'] = None
             return
         self.process.wait()
 
         with self.values_lock:
-            self.values = self.process.communicate()[0].decode('utf-8').split(' ')[0].split('+')
-            self.values_changed = True
+            self.values[self.document]['counts'] = self.process.communicate()[0].decode('utf-8').split(' ')[0].split('+')
 
     #@timer
     def update_view(self):
+        if self.document == None: return True
+
         with self.values_lock:
-            if self.values_changed == False: return True
+            values = self.values[self.document]['counts']
 
-            values = self.values
-            self.values_changed = False
+        if values == None or len(values) != 3:
+            values = ['?', '?', '?']
 
-        if values != None and len(values) == 3:
-            self.view.label_words_in_text.set_text(values[0])
-            self.view.label_words_in_headers.set_text(values[1])
-            self.view.label_words_outside_text.set_text(values[2])
-        else:
-            self.view.label_words_in_text.set_text('?')
-            self.view.label_words_in_headers.set_text('?')
-            self.view.label_words_outside_text.set_text('?')
+        markup = os.path.basename(self.document.get_displayname())
+        markup += ' has <b>'
+        markup += values[0]
+        markup += '</b> words in text, <b>'
+        markup += values[1]
+        markup += '</b> words in headers and <b>'
+        markup += values[2]
+        markup += '</b> words outside text (captions, ...).'
+        self.view.label_current_file.set_markup(markup)
 
         return True
 

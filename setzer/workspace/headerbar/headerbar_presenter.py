@@ -122,16 +122,13 @@ class HeaderbarPresenter(object):
         self.main_window.headerbar.document_structure_toggle.set_sensitive(False)
 
     def set_build_button_state(self):
-        if self.workspace.root_document != None:
-            document = self.workspace.root_document
-        else:
-            document = self.workspace.active_document
+        document = self.workspace.get_root_or_active_latex_document()
 
         headerbar = self.main_window.headerbar
         prev_widget = headerbar.build_wrapper.get_center_widget()
         if prev_widget != None:
             headerbar.build_wrapper.remove(prev_widget)
-        if document != None and document.is_latex_document():
+        if document != None:
             headerbar.build_wrapper.set_center_widget(document.build_widget.view)
             if document.build_widget.view.has_result():
                 document.build_widget.view.hide_timer(1600)
