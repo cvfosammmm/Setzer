@@ -33,6 +33,13 @@ class DocumentStatsView(Gtk.VBox):
         description.get_style_context().add_class('description')
         self.pack_start(description, False, False, 0)
 
+        self.label_whole_document = Gtk.Label()
+        self.label_whole_document.set_line_wrap(True)
+        self.label_whole_document.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.label_whole_document.set_xalign(0)
+        self.label_whole_document.get_style_context().add_class('stats-paragraph')
+        self.pack_start(self.label_whole_document, False, False, 0)
+
         self.label_current_file = Gtk.Label()
         self.label_current_file.set_line_wrap(True)
         self.label_current_file.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)

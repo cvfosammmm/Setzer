@@ -24,6 +24,7 @@ import subprocess
 import _thread as thread
 
 import setzer.workspace.sidebar.document_stats.document_stats_viewgtk as document_stats_section_view
+import setzer.helpers.path as path_helpers
 from setzer.helpers.timer import timer
 
 
@@ -37,6 +38,7 @@ class DocumentStats(object):
         self.view = document_stats_section_view.DocumentStatsView()
 
         self.values = dict()
+        self.values[None] = {'save_date': 0, 'counts': None}
         self.values_lock = thread.allocate_lock()
 
         self.workspace.connect('new_active_document', self.on_new_active_document)
@@ -64,47 +66,86 @@ class DocumentStats(object):
     #@timer
     def update_data(self):
         if self.document == None: return True
-        if self.document not in self.values:
-            self.values[self.document] = {'save_date': 0, 'counts': None}
-        if self.document.get_filename() == None:
-            with self.values_lock:
-                self.values[self.document]['counts'] = None
-            return True
 
-        save_date = os.path.getmtime(self.document.get_filename())
-        if save_date > self.values[self.document]['save_date']:
-            self.values[self.document]['save_date'] = save_date
-            self.count_words()
+        filenames = {self.document.get_filename(), self.workspace.get_active_document().get_filename()}
+        for filename, _ in self.document.get_included_latex_files():
+            filenames |= {path_helpers.get_abspath(filename, self.document.get_dirname())}
+
+        for filename in filenames:
+            if filename not in self.values:
+                self.values[filename] = {'save_date': 0, 'counts': None}
+
+            if filename == None:
+                with self.values_lock:
+                    self.values[filename]['counts'] = None
+
+            else:
+                save_date = os.path.getmtime(filename)
+                if save_date > self.values[filename]['save_date']:
+                    self.values[filename]['save_date'] = save_date
+                    self.count_words(filename)
         return True
 
-    def count_words(self):
-        thread.start_new_thread(self.run_query, (['texcount', '-brief', self.document.get_filename()],))
+    def count_words(self, filename):
+        thread.start_new_thread(self.run_query, (['texcount', '-brief', filename], filename))
         return False
 
     #@timer
-    def run_query(self, arguments):
+    def run_query(self, arguments, filename):
         try:
-            self.process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         except FileNotFoundError:
             with self.values_lock:
-                self.values[self.document]['counts'] = None
+                self.values[filename]['counts'] = None
             return
-        self.process.wait()
+        process.wait()
 
         with self.values_lock:
-            self.values[self.document]['counts'] = self.process.communicate()[0].decode('utf-8').split(' ')[0].split('+')
+            self.values[filename]['counts'] = process.communicate()[0].decode('utf-8').split(' ')[0].split('+')
 
     #@timer
     def update_view(self):
-        if self.document == None: return True
+        if self.document != None and self.document.get_is_root():
+            with self.values_lock:
+                values = self.values[self.document.get_filename()]['counts']
+
+            if values == None or len(values) != 3:
+                values = ['?', '?', '?']
+
+            else:
+                values = [int(value) for value in values]
+                for filename, _ in self.document.get_included_latex_files():
+                    filename = path_helpers.get_abspath(filename, self.document.get_dirname())
+                    with self.values_lock:
+                        if filename in self.values:
+                            values_include = self.values[filename]['counts']
+                            if values_include != None and len(values_include) == 3:
+                                values[0] += int(values_include[0])
+                                values[1] += int(values_include[1])
+                                values[2] += int(values_include[2])
+
+            markup = 'The whole document has <b>'
+            markup += str(values[0])
+            markup += '</b> words in text, <b>'
+            markup += str(values[1])
+            markup += '</b> words in headers and <b>'
+            markup += str(values[2])
+            markup += '</b> words outside text (captions, ...).'
+            self.view.label_whole_document.set_markup(markup)
+            self.view.label_whole_document.show()
+        else:
+            self.view.label_whole_document.hide()
+
+        document = self.workspace.get_active_document()
+        if document == None: return True
 
         with self.values_lock:
-            values = self.values[self.document]['counts']
+            values = self.values[document.get_filename()]['counts']
 
         if values == None or len(values) != 3:
             values = ['?', '?', '?']
 
-        markup = os.path.basename(self.document.get_displayname())
+        markup = os.path.basename(document.get_displayname())
         markup += ' has <b>'
         markup += values[0]
         markup += '</b> words in text, <b>'
