@@ -40,6 +40,7 @@ class DocumentStats(object):
         self.values = dict()
         self.values[None] = {'save_date': 0, 'counts': None}
         self.values_lock = thread.allocate_lock()
+        self.texcount_missing = False
 
         self.workspace.connect('new_active_document', self.on_new_active_document)
         self.workspace.connect('root_state_change', self.on_root_state_change)
@@ -96,15 +97,21 @@ class DocumentStats(object):
             process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         except FileNotFoundError:
             with self.values_lock:
+                self.texcount_missing = True
                 self.values[filename]['counts'] = None
             return
         process.wait()
 
         with self.values_lock:
             self.values[filename]['counts'] = process.communicate()[0].decode('utf-8').split(' ')[0].split('+')
+            self.texcount_missing = False
 
     #@timer
     def update_view(self):
+        with self.values_lock:
+            if self.texcount_missing:
+                self.hide_view()
+
         if self.document != None and self.document.get_is_root():
             with self.values_lock:
                 values = self.values[self.document.get_filename()]['counts']
@@ -156,5 +163,10 @@ class DocumentStats(object):
         self.view.label_current_file.set_markup(markup)
 
         return True
+
+    def hide_view(self):
+        self.view.hide()
+        self.headline_labels['inline'].hide()
+        self.headline_labels['overlay'].hide()
 
 
