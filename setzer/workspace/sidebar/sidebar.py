@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import setzer.workspace.sidebar.symbols_page.symbols_page as symbols_page
 import setzer.workspace.sidebar.document_structure_page.document_structure_page as document_structure_page
+import setzer.workspace.sidebar.symbols_page.symbols_page as symbols_page
 import setzer.workspace.sidebar.document_structure_page.data_provider as data_provider
 import setzer.workspace.sidebar.document_structure_page.files as files_section
 import setzer.workspace.sidebar.document_structure_page.structure as structure_section
@@ -29,10 +29,22 @@ class Sidebar(object):
 
     def __init__(self, workspace):
         self.view = ServiceLocator.get_main_window().sidebar
+        self.workspace = workspace
 
         self.data_provider = data_provider.DataProvider(self, workspace)
 
+        self.create_document_structure_page()
+        self.create_symbols_page()
+
+        self.view.add_named(self.document_structure_page, 'document_structure')
+        self.view.add_named(self.symbols_page.view, 'symbols')
+
+        self.view.queue_draw()
+
+    def create_document_structure_page(self):
         self.document_structure_page = document_structure_page.DocumentStructurePage()
+        self.document_structure_page.set_size_request(252, -1)
+        self.document_structure_page.get_style_context().add_class('sidebar-document-structure')
 
         self.files_section = files_section.FilesSection(self.data_provider)
         self.document_structure_page.add_content_widget('files', self.files_section.view)
@@ -46,14 +58,10 @@ class Sidebar(object):
         self.document_structure_page.add_content_widget('labels', self.labels_section.view)
 
         self.document_structure_page.add_label('stats', _('Document Stats'))
-        self.document_stats_section = document_stats_section.DocumentStats(workspace, self.document_structure_page.labels['stats'])
+        self.document_stats_section = document_stats_section.DocumentStats(self.workspace, self.document_structure_page.labels['stats'])
         self.document_structure_page.add_content_widget('stats', self.document_stats_section.view)
 
-        self.view.add_named(self.document_structure_page, 'document_structure')
-
-        self.symbols_page = symbols_page.SymbolsPage(workspace)
-        self.view.add_named(self.symbols_page.view, 'symbols')
-
-        self.view.queue_draw()
+    def create_symbols_page(self):
+        self.symbols_page = symbols_page.SymbolsPage(self.workspace)
 
 

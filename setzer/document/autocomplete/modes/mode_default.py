@@ -23,7 +23,7 @@ from gi.repository import Gtk
 from setzer.app.service_locator import ServiceLocator
 
 
-class SessionDefault(object):
+class ModeDefault(object):
 
     def __init__(self, autocomplete, document):
         self.autocomplete = autocomplete
@@ -129,16 +129,15 @@ class SessionDefault(object):
             i += 1
         return i
 
-    def update(self, can_show=False):
+    def update(self):
         if not self.current_word_changed_or_is_none():
             self.current_word = self.document.content.get_latex_command_at_cursor()
             self.autocomplete.items = self.autocomplete.provider.get_items_for_completion_window(self.current_word, self.last_tabbed_command)
             if len(self.autocomplete.items) > 0:
-                if self.autocomplete.cursor_moved():
-                    for item in self.autocomplete.items:
-                        item['command'] = item['command']
-                    self.autocomplete.populate(len(self.current_word))
-                self.autocomplete.update_visibility()
+                self.autocomplete.populate(len(self.current_word))
+                self.autocomplete.view.update_position()
+                self.autocomplete.view.update_visibility()
+                self.autocomplete.view.update_margins()
             else:
                 self.cancel()
         else:
@@ -155,7 +154,7 @@ class SessionDefault(object):
         return (current_word_offset == None)
 
     def submit(self):
-        self.autocomplete.end_session()
+        self.autocomplete.end_mode()
 
         row = self.autocomplete.view.list.get_selected_row()
         command = row.get_child().command
@@ -323,7 +322,7 @@ class SessionDefault(object):
         self.document.content.replace_range_by_offset_and_length(offset, length, text, indent_lines=True, select_dot=True)
 
     def cancel(self):
-        self.autocomplete.end_session()
+        self.autocomplete.end_mode()
 
     def is_active(self):
         return True

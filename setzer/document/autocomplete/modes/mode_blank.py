@@ -21,7 +21,7 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 
 
-class SessionBlank(object):
+class ModeBlank(object):
 
     def __init__(self, autocomplete, document):
         self.autocomplete = autocomplete
@@ -47,7 +47,7 @@ class SessionBlank(object):
         if event.keyval == Gdk.keyval_from_name('backslash') and event.state & modifiers == 0:
             char = self.document.content.get_char_at_cursor()
             if char.isalpha():
-                self.document.content.add_backslash_with_space()
+                self.add_backslash_with_space()
                 return True
             return False
 
@@ -65,15 +65,32 @@ class SessionBlank(object):
 
     def on_tab_press(self):
         if self.autocomplete.document.cursor_inside_latex_command_or_at_end():
-            self.autocomplete.update(True)
-            if self.autocomplete.document.cursor_at_latex_command_end():
+            self.autocomplete.activate_if_possible()
+            self.autocomplete.update()
+            if self.cursor_at_latex_command_end():
                 return self.autocomplete.is_active()
             else:
                 return True
         return False
 
-    def update(self, can_show=False):
-        self.autocomplete.update_visibility()
+    def cursor_at_latex_command_end(self):
+        content = self.autocomplete.document.content
+        current_word = content.get_latex_command_at_cursor()
+        if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
+            return content.cursor_ends_word()
+        return False
+
+    def add_backslash_with_space(self):
+        buffer = self.document.content.source_buffer
+        buffer.insert_at_cursor('\\ ')
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        insert_iter.backward_char()
+        buffer.place_cursor(insert_iter)
+
+    def update(self):
+        self.autocomplete.view.update_position()
+        self.autocomplete.view.update_visibility()
+        self.autocomplete.view.update_margins()
 
     def get_offset(self):
         return 0

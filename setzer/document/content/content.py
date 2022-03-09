@@ -386,12 +386,6 @@ class Content(Observable):
 
         self.source_buffer.end_user_action()
 
-    def add_backslash_with_space(self):
-        self.source_buffer.insert_at_cursor('\\ ')
-        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        insert_iter.backward_char()
-        self.source_buffer.place_cursor(insert_iter)
-
     def autoadd_latex_brackets(self, char):
         if self.get_char_before_cursor() == '\\':
             add_char = '\\'
@@ -676,6 +670,23 @@ class Content(Observable):
 
     def get_line_number_at_offset(self, offset):
         return self.source_buffer.get_iter_at_offset(offset).get_line()
+
+    def get_screen_offsets_by_iter(self, text_iter):
+        line_height = self.font_manager.get_line_height()
+        iter_location = self.source_view.get_iter_location(text_iter)
+        gutter = self.source_view.get_window(Gtk.TextWindowType.LEFT)
+
+        if gutter != None:
+            gutter_width = gutter.get_width()
+        else:
+            gutter_width = 0
+
+        x_offset = - self.document.view.scrolled_window.get_hadjustment().get_value()
+        y_offset = - self.document.view.scrolled_window.get_vadjustment().get_value()
+        x_position = x_offset + iter_location.x - 2 + gutter_width
+        y_position = y_offset + iter_location.y + line_height
+
+        return x_position, y_position
 
     def cursor_ends_word(self):
         return self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).ends_word()

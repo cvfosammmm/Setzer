@@ -24,7 +24,7 @@ from gi.repository import Gtk
 from setzer.app.service_locator import ServiceLocator
 
 
-class SessionBeginEnd(object):
+class ModeBeginEnd(object):
 
     def __init__(self, autocomplete, word_offset, word_len):
         self.autocomplete = autocomplete
@@ -188,7 +188,7 @@ class SessionBeginEnd(object):
             i += 1
         return i
 
-    def update(self, can_activate=False):
+    def update(self):
         line = self.autocomplete.document.content.get_line_at_cursor()
         offset = self.autocomplete.document.content.get_cursor_line_offset()
         line = line[:offset] + '%•%' + line[offset:]
@@ -218,7 +218,9 @@ class SessionBeginEnd(object):
             items_cond = len(self.autocomplete.items) > 0 and len(self.current_word) != len(self.autocomplete.items[0]['command'])
             self.will_show = self.will_show or (can_activate and items_cond)
         self.autocomplete.populate(len(self.current_word))
-        self.autocomplete.update_visibility()
+        self.autocomplete.view.update_position()
+        self.autocomplete.view.update_visibility()
+        self.autocomplete.view.update_margins()
 
     def get_items(self, word=None):
         if word == None:
@@ -251,7 +253,7 @@ class SessionBeginEnd(object):
 
     def cancel(self):
         self.delete_marks()
-        self.autocomplete.end_session()
+        self.autocomplete.end_mode()
 
     def delete_marks(self):
         if not self.autocomplete.mark_start.get_deleted():

@@ -27,7 +27,6 @@ class DocumentStructurePage(Gtk.Overlay):
 
     def __init__(self):
         Gtk.Overlay.__init__(self)
-        self.get_style_context().add_class('sidebar-document-structure')
         self.labels = dict()
 
         self.vbox = Gtk.VBox()
@@ -169,11 +168,5 @@ class DocumentStructurePage(Gtk.Overlay):
         return False
 
     def ease(self, time): return (time - 1)**3 + 1
-
-    def do_get_request_mode(self):
-        return Gtk.SizeRequestMode.CONSTANT_SIZE
-                     
-    def do_get_preferred_width(self):
-        return 252, 300
 
 

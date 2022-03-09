@@ -188,12 +188,6 @@ class Document(Observable):
             return True
         return False
 
-    def cursor_at_latex_command_end(self):
-        current_word = self.content.get_latex_command_at_cursor()
-        if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
-            return self.content.cursor_ends_word()
-        return False
-
     def set_root_state(self, is_root, root_is_set):
         self.is_root = is_root
         self.root_is_set = root_is_set
