@@ -420,6 +420,15 @@ class Content(Observable):
             return word_start_iter.get_offset()
         return None
 
+    def overwrite_char_at_cursor(self, text):
+        start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        end_iter = start_iter.copy()
+        end_iter.forward_char()
+        self.source_buffer.begin_user_action()
+        self.source_buffer.delete(start_iter, end_iter)
+        self.source_buffer.insert_at_cursor(text)
+        self.source_buffer.end_user_action()
+
     def replace_latex_command_at_cursor(self, text, dotlabels, is_full_command=False):
         insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         current_word = self.get_latex_command_at_cursor()
