@@ -32,7 +32,7 @@ class ModeBeginEnd(object):
 
         self.last_tabbed_command = None
         self.current_word = ""
-        self.source_buffer = self.autocomplete.document.content.source_buffer
+        self.source_buffer = self.autocomplete.content.source_buffer
         self.delete_marks()
         start_iter = self.source_buffer.get_iter_at_offset(word_offset)
         end_iter = self.source_buffer.get_iter_at_offset(word_offset + word_len)
@@ -78,6 +78,12 @@ class ModeBeginEnd(object):
             self.cancel()
         elif delete_end_offset >= start_offset and delete_end_offset <= end_offset:
             self.cancel()
+
+    def on_buffer_changed(self):
+        self.update()
+
+    def on_cursor_changed(self):
+        self.update()
 
     def on_keypress(self, event):
         ''' returns whether the keypress has been handled. '''
@@ -127,7 +133,7 @@ class ModeBeginEnd(object):
             end_iter = self.source_buffer.get_iter_at_offset(end_offset)
             matching_word = self.source_buffer.get_text(start_iter, end_iter, False)
             if matching_word != full_word:
-                self.autocomplete.document.content.replace_range_no_user_action(start_iter, end_iter, full_word, indent_lines=False, select_dot=False)
+                self.autocomplete.content.replace_range_no_user_action(start_iter, end_iter, full_word, indent_lines=False, select_dot=False)
         self.source_buffer.end_user_action()
 
     def on_tab_press(self):
@@ -152,8 +158,8 @@ class ModeBeginEnd(object):
                 if i >= 1:
                     text = (command['command'])[len(self.current_word):len(self.current_word) + i]
                     self.last_tabbed_command = command['command'][1:]
-                    self.autocomplete.document.content.insert_text_at_cursor(text, indent_lines=False, select_dot=False)
-                    self.autocomplete.document.content.scroll_cursor_onscreen()
+                    self.autocomplete.content.insert_text_at_cursor(text, indent_lines=False, select_dot=False)
+                    self.autocomplete.content.scroll_cursor_onscreen()
                     return True
                 else:
                     current_word = (command['command'])[:len(self.current_word) + 1]
@@ -166,8 +172,8 @@ class ModeBeginEnd(object):
                     else:
                         text = (command['command'])[len(self.current_word):len(current_word) + i]
                         self.last_tabbed_command = command['command']
-                        self.autocomplete.document.content.insert_text_at_cursor(text, indent_lines=False, select_dot=False)
-                        self.autocomplete.document.content.scroll_cursor_onscreen()
+                        self.autocomplete.content.insert_text_at_cursor(text, indent_lines=False, select_dot=False)
+                        self.autocomplete.content.scroll_cursor_onscreen()
                         return True
 
     def get_number_of_matching_letters_on_tabpress(self, current_word, offset):
@@ -189,8 +195,8 @@ class ModeBeginEnd(object):
         return i
 
     def update(self):
-        line = self.autocomplete.document.content.get_line_at_cursor()
-        offset = self.autocomplete.document.content.get_cursor_line_offset()
+        line = self.autocomplete.content.get_line_at_cursor()
+        offset = self.autocomplete.content.get_cursor_line_offset()
         line = line[:offset] + '%•%' + line[offset:]
         match = ServiceLocator.get_regex_object(r'.*\\(begin|end)\{((?:[^\{\[\(])*)%•%((?:[^\{\[\(])*)\}.*').match(line)
         if not match:
@@ -200,7 +206,7 @@ class ModeBeginEnd(object):
         if self.autocomplete.matching_mark_start.get_deleted() or self.autocomplete.matching_mark_end.get_deleted():
             self.has_matching_block = False
 
-        cursor_offset = self.autocomplete.document.content.get_cursor_offset()
+        cursor_offset = self.autocomplete.content.get_cursor_offset()
         start_offset = self.source_buffer.get_iter_at_mark(self.autocomplete.mark_start).get_offset()
         end_offset = self.source_buffer.get_iter_at_mark(self.autocomplete.mark_end).get_offset()
         if cursor_offset < start_offset:
@@ -216,7 +222,7 @@ class ModeBeginEnd(object):
             self.will_show = False
         else:
             items_cond = len(self.autocomplete.items) > 0 and len(self.current_word) != len(self.autocomplete.items[0]['command'])
-            self.will_show = self.will_show or (can_activate and items_cond)
+            self.will_show = self.will_show or (self.autocomplete.is_active() and items_cond)
         self.autocomplete.populate(len(self.current_word))
         self.autocomplete.view.update_position()
         self.autocomplete.view.update_visibility()
@@ -232,7 +238,7 @@ class ModeBeginEnd(object):
         return len(self.current_word)
 
     def update_current_word(self):
-        cursor_offset = self.autocomplete.document.content.get_cursor_offset()
+        cursor_offset = self.autocomplete.content.get_cursor_offset()
         start_offset = self.source_buffer.get_iter_at_mark(self.autocomplete.mark_start).get_offset()
         start_iter = self.source_buffer.get_iter_at_offset(start_offset)
         cursor_iter = self.source_buffer.get_iter_at_offset(cursor_offset)
@@ -246,7 +252,7 @@ class ModeBeginEnd(object):
 
         start_offset = self.source_buffer.get_iter_at_mark(self.autocomplete.mark_start).get_offset()
         end_offset = self.source_buffer.get_iter_at_mark(self.autocomplete.mark_end).get_offset()
-        self.autocomplete.document.content.replace_range_by_offset_and_length(start_offset, end_offset - start_offset, text, indent_lines=False, select_dot=False)
+        self.autocomplete.content.replace_range_by_offset_and_length(start_offset, end_offset - start_offset, text, indent_lines=False, select_dot=False)
 
         self.will_show = False
         self.update()

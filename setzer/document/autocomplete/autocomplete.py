@@ -31,8 +31,8 @@ class Autocomplete(object):
 
     def __init__(self, document, document_view):
         self.document = document
+        self.content = document.content
         self.document_view = document_view
-        self.main_window = ServiceLocator.get_main_window()
 
         self.view = view.DocumentAutocompleteView(self)
         self.mark_start = Gtk.TextMark.new('ac_session_start', True)
@@ -42,17 +42,17 @@ class Autocomplete(object):
 
         self.provider = ServiceLocator.get_autocomplete_provider()
 
-        self.blank_mode = mode_blank.ModeBlank(self, self.document)
+        self.blank_mode = mode_blank.ModeBlank(self)
         self.mode = self.blank_mode
 
         self.items = list()
 
         self.view.list.connect('row-activated', self.on_row_activated)
 
-        self.document.content.connect('text_inserted', self.on_text_inserted)
-        self.document.content.connect('text_deleted', self.on_text_deleted)
-        self.document.content.connect('buffer_changed', self.on_buffer_changed)
-        self.document.content.connect('cursor_changed', self.on_cursor_changed)
+        self.content.connect('text_inserted', self.on_text_inserted)
+        self.content.connect('text_deleted', self.on_text_deleted)
+        self.content.connect('buffer_changed', self.on_buffer_changed)
+        self.content.connect('cursor_changed', self.on_cursor_changed)
 
     def on_text_inserted(self, content, parameter):
         buffer, location_iter, text, text_length = parameter
@@ -64,10 +64,10 @@ class Autocomplete(object):
 
     def on_buffer_changed(self, content, buffer):
         self.activate_if_possible()
-        self.update()
+        self.mode.on_buffer_changed()
 
     def on_cursor_changed(self, content):
-        self.update()
+        self.mode.on_cursor_changed()
 
     def on_row_activated(self, box, row, user_data=None):
         self.document_view.source_view.grab_focus()
@@ -86,16 +86,16 @@ class Autocomplete(object):
             self.mode.update()
 
     def activate_if_possible(self):
-        line = self.document.content.get_line_at_cursor()
-        offset = self.document.content.get_cursor_line_offset()
+        line = self.content.get_line_at_cursor()
+        offset = self.content.get_cursor_line_offset()
         line = line[:offset] + '%•%' + line[offset:]
         match = ServiceLocator.get_regex_object(r'.*\\(begin|end)\{((?:[^\{\[\(])*)%•%((?:[^\{\[\(])*)\}.*').match(line)
         if match:
-            word_offset = self.document.content.get_cursor_offset() - len(match.group(2))
+            word_offset = self.content.get_cursor_offset() - len(match.group(2))
             word_len = len(match.group(2)) + len(match.group(3))
             self.start_mode(mode_begin_end.ModeBeginEnd(self, word_offset, word_len))
         else:
-            current_word = self.document.content.get_latex_command_at_cursor()
+            current_word = self.content.get_latex_command_at_cursor()
             items = self.provider.get_items(current_word)
             if not items: return
             for item in items:

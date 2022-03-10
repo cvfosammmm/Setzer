@@ -28,6 +28,7 @@ class DocumentAutocompleteView(Gtk.VBox):
         Gtk.VBox.__init__(self)
         self.get_style_context().add_class('autocomplete')
 
+        self.main_window = ServiceLocator.get_main_window()
         self.model = model
         self.content = self.model.document.content
 
@@ -149,7 +150,7 @@ class DocumentAutocompleteView(Gtk.VBox):
 
     def update_margins(self):
         vertical_cutoff = self.model.document_view.scrolled_window.get_allocated_height() - self.full_height - self.line_height
-        horizontal_cutoff = self.model.main_window.preview_paned.get_allocated_width() - self.get_width()
+        horizontal_cutoff = self.main_window.preview_paned.get_allocated_width() - self.get_width()
 
         if self.y_position >= self.line_height - 1 and self.y_position <= vertical_cutoff:
             self.set_margin_top(self.y_position + self.shortcutsbar_height)
@@ -159,7 +160,7 @@ class DocumentAutocompleteView(Gtk.VBox):
         if self.x_position >= 0 and self.x_position <= horizontal_cutoff:
             self.set_margin_left(self.x_position)
         else:
-            self.set_margin_left(self.model.main_window.preview_paned.get_allocated_width() - self.get_width())
+            self.set_margin_left(self.main_window.preview_paned.get_allocated_width() - self.get_width())
         self.scrolled_window.set_min_content_width(self.get_width())
 
     def update_sizes(self):
@@ -178,7 +179,7 @@ class DocumentAutocompleteView(Gtk.VBox):
         return ((self.y_position >= self.line_height - 1) and
             (self.y_position <= self.model.document_view.scrolled_window.get_allocated_height()) and
             (self.x_position >= 0) and
-            (self.x_position <= self.model.main_window.preview_paned.get_allocated_width()))
+            (self.x_position <= self.main_window.preview_paned.get_allocated_width()))
 
     def get_height(self):
         return min(len(self.model.items), 5) * self.line_height + 20
@@ -186,7 +187,7 @@ class DocumentAutocompleteView(Gtk.VBox):
     def get_width(self):
         width = 25 * self.char_width
         max_width = 35 * self.char_width
-        while self.x_position <= self.model.main_window.preview_paned.get_allocated_width() - width - self.char_width:
+        while self.x_position <= self.main_window.preview_paned.get_allocated_width() - width - self.char_width:
             width += self.char_width
             if width == max_width:
                 break

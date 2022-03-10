@@ -20,18 +20,27 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk
 from gi.repository import Gtk
 
+from setzer.app.service_locator import ServiceLocator
+
 
 class ModeBlank(object):
 
-    def __init__(self, autocomplete, document):
+    def __init__(self, autocomplete):
         self.autocomplete = autocomplete
-        self.document = document
         self.will_show = False
+
+        self.autoclosed_bracket_behind_cursor = False
 
     def on_insert_text(self, buffer, location_iter, text, text_length):
         pass
 
     def on_delete_range(self, buffer, start_iter, end_iter):
+        pass
+
+    def on_buffer_changed(self):
+        pass
+
+    def on_cursor_changed(self):
         pass
 
     def on_keypress(self, event):
@@ -45,7 +54,7 @@ class ModeBlank(object):
                 return self.on_tab_press()
 
         bracket_vals = [Gdk.keyval_from_name('parenleft'), Gdk.keyval_from_name('bracketleft'), Gdk.keyval_from_name('braceleft')]
-        if event.keyval in bracket_vals and not self.document.autocomplete.is_active():
+        if event.keyval in bracket_vals and not self.autocomplete.is_active():
             if event.keyval == Gdk.keyval_from_name('bracketleft'):
                 self.autoadd_latex_brackets('[')
             if event.keyval == Gdk.keyval_from_name('braceleft'):
@@ -59,7 +68,6 @@ class ModeBlank(object):
     def on_tab_press(self):
         if self.autocomplete.document.cursor_inside_latex_command_or_at_end():
             self.autocomplete.activate_if_possible()
-            self.autocomplete.update()
             if self.cursor_at_latex_command_end():
                 return self.autocomplete.is_active()
             else:
@@ -67,16 +75,16 @@ class ModeBlank(object):
         return False
 
     def cursor_at_latex_command_end(self):
-        content = self.autocomplete.document.content
+        content = self.autocomplete.content
         current_word = content.get_latex_command_at_cursor()
         if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
             return content.cursor_ends_word()
         return False
 
     def autoadd_latex_brackets(self, char):
-        buffer = self.document.content.source_buffer
+        buffer = self.autocomplete.content.source_buffer
 
-        if self.document.content.get_char_before_cursor() == '\\':
+        if self.autocomplete.content.get_char_before_cursor() == '\\':
             add_char = '\\'
         else:
             add_char = ''

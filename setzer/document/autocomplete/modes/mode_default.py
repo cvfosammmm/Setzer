@@ -40,6 +40,12 @@ class ModeDefault(object):
     def on_delete_range(self, buffer, start_iter, end_iter):
         pass
 
+    def on_buffer_changed(self):
+        pass
+
+    def on_cursor_changed(self):
+        self.update()
+
     def on_keypress(self, event):
         ''' returns whether the keypress has been handled. '''
 
