@@ -54,7 +54,7 @@ class ModeBlank(object):
                 return self.on_tab_press()
 
         left_bracket_vals = [Gdk.keyval_from_name('parenleft'), Gdk.keyval_from_name('bracketleft'), Gdk.keyval_from_name('braceleft')]
-        right_bracket_vals = [Gdk.keyval_from_name('parenright'), Gdk.keyval_from_name('bracketright'), Gdk.keyval_from_name('braceright')]
+        right_bracket_vals = [Gdk.keyval_from_name('parenright'), Gdk.keyval_from_name('bracketright'), Gdk.keyval_from_name('braceright'), Gdk.keyval_from_name('backslash')]
         if event.keyval in left_bracket_vals:
             if event.keyval == Gdk.keyval_from_name('bracketleft'):
                 self.autoadd_latex_brackets('[')
@@ -71,6 +71,8 @@ class ModeBlank(object):
                 self.handle_autoclosing_bracket_overwrite('}')
             if event.keyval == Gdk.keyval_from_name('parenright'):
                 self.handle_autoclosing_bracket_overwrite(')')
+            if event.keyval == Gdk.keyval_from_name('backslash'):
+                self.handle_autoclosing_bracket_overwrite('\\')
             return True
 
         return False
@@ -121,9 +123,12 @@ class ModeBlank(object):
         self.cursor_unchanged_after_autoclosing_bracket = True
 
     def handle_autoclosing_bracket_overwrite(self, char):
-        char_at_cursor = self.autocomplete.content.get_char_at_cursor()
-        if char_at_cursor == char:
-            self.autocomplete.content.overwrite_char_at_cursor(char)
+        chars_at_cursor = self.autocomplete.content.get_chars_at_cursor(2)
+
+        if chars_at_cursor.startswith(char):
+            self.autocomplete.content.overwrite_chars_at_cursor(char)
+            if char != '\\':
+                self.cursor_unchanged_after_autoclosing_bracket = False
         else:
             self.autocomplete.content.source_buffer.insert_at_cursor(char)
 

@@ -387,9 +387,12 @@ class Content(Observable):
         self.source_buffer.end_user_action()
 
     def get_char_at_cursor(self):
+        return self.get_chars_at_cursor(1)
+
+    def get_chars_at_cursor(self, number_of_chars):
         start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         end_iter = start_iter.copy()
-        end_iter.forward_char()
+        end_iter.forward_chars(number_of_chars)
         return self.source_buffer.get_text(start_iter, end_iter, False)
 
     def get_char_before_cursor(self):
@@ -420,10 +423,10 @@ class Content(Observable):
             return word_start_iter.get_offset()
         return None
 
-    def overwrite_char_at_cursor(self, text):
+    def overwrite_chars_at_cursor(self, text):
         start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         end_iter = start_iter.copy()
-        end_iter.forward_char()
+        end_iter.forward_chars(len(text))
         self.source_buffer.begin_user_action()
         self.source_buffer.delete(start_iter, end_iter)
         self.source_buffer.insert_at_cursor(text)
