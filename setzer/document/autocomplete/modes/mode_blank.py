@@ -57,11 +57,11 @@ class ModeBlank(object):
         right_bracket_vals = [Gdk.keyval_from_name('parenright'), Gdk.keyval_from_name('bracketright'), Gdk.keyval_from_name('braceright'), Gdk.keyval_from_name('backslash')]
         if event.keyval in left_bracket_vals:
             if event.keyval == Gdk.keyval_from_name('bracketleft'):
-                self.autoadd_latex_brackets('[')
+                self.autoclose_brackets('[')
             if event.keyval == Gdk.keyval_from_name('braceleft'):
-                self.autoadd_latex_brackets('{')
+                self.autoclose_brackets('{')
             if event.keyval == Gdk.keyval_from_name('parenleft'):
-                self.autoadd_latex_brackets('(')
+                self.autoclose_brackets('(')
             return True
 
         if self.cursor_unchanged_after_autoclosing_bracket and event.keyval in right_bracket_vals:
@@ -78,6 +78,23 @@ class ModeBlank(object):
         return False
 
     def on_tab_press(self):
+        buffer = self.autocomplete.content.source_buffer
+
+        if self.cursor_unchanged_after_autoclosing_bracket:
+            char_at_cursor = self.autocomplete.content.get_chars_at_cursor(1)
+            if char_at_cursor == '\\':
+                insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+                insert_iter.forward_chars(2)
+                buffer.place_cursor(insert_iter)
+                self.cursor_unchanged_after_autoclosing_bracket = False
+                return True
+            elif char_at_cursor in ['}', ')', ']']:
+                insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+                insert_iter.forward_chars(1)
+                buffer.place_cursor(insert_iter)
+                self.cursor_unchanged_after_autoclosing_bracket = False
+                return True
+
         if self.autocomplete.document.cursor_inside_latex_command_or_at_end():
             self.autocomplete.activate_if_possible()
             if self.cursor_at_latex_command_end():
@@ -93,39 +110,29 @@ class ModeBlank(object):
             return content.cursor_ends_word()
         return False
 
-    def autoadd_latex_brackets(self, char):
+    def autoclose_brackets(self, char):
         buffer = self.autocomplete.content.source_buffer
 
+        closing_char = {'[': ']', '{': '}', '(': ')'}[char]
         if self.autocomplete.content.get_char_before_cursor() == '\\':
-            add_char = '\\'
-        else:
-            add_char = ''
-        if char == '[':
-            buffer.begin_user_action()
-            buffer.delete_selection(True, True)
-            buffer.insert_at_cursor('[' + add_char + ']')
-            buffer.end_user_action()
-        if char == '{':
-            buffer.begin_user_action()
-            buffer.delete_selection(True, True)
-            buffer.insert_at_cursor('{' + add_char + '}')
-            buffer.end_user_action()
-        if char == '(':
-            buffer.begin_user_action()
-            buffer.delete_selection(True, True)
-            buffer.insert_at_cursor('(' + add_char + ')')
-            buffer.end_user_action()
+            closing_char = '\\' + closing_char
+
+        buffer.begin_user_action()
+        buffer.delete_selection(True, True)
+        buffer.insert_at_cursor(char + closing_char)
+        buffer.end_user_action()
+
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         insert_iter.backward_char()
-        if add_char == '\\':
+        if closing_char.startswith('\\'):
             insert_iter.backward_char()
         buffer.place_cursor(insert_iter)
         self.cursor_unchanged_after_autoclosing_bracket = True
 
     def handle_autoclosing_bracket_overwrite(self, char):
-        chars_at_cursor = self.autocomplete.content.get_chars_at_cursor(2)
+        char_at_cursor = self.autocomplete.content.get_chars_at_cursor(1)
 
-        if chars_at_cursor.startswith(char):
+        if char_at_cursor == char:
             self.autocomplete.content.overwrite_chars_at_cursor(char)
             if char != '\\':
                 self.cursor_unchanged_after_autoclosing_bracket = False
