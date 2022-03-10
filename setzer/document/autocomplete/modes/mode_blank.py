@@ -44,13 +44,6 @@ class ModeBlank(object):
             if event.state & modifiers == 0:
                 return self.on_tab_press()
 
-        if event.keyval == Gdk.keyval_from_name('backslash') and event.state & modifiers == 0:
-            char = self.document.content.get_char_at_cursor()
-            if char.isalpha():
-                self.add_backslash_with_space()
-                return True
-            return False
-
         bracket_vals = [Gdk.keyval_from_name('parenleft'), Gdk.keyval_from_name('bracketleft'), Gdk.keyval_from_name('braceleft')]
         if event.keyval in bracket_vals and not self.document.autocomplete.is_active():
             if event.keyval == Gdk.keyval_from_name('bracketleft'):
@@ -79,13 +72,6 @@ class ModeBlank(object):
         if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
             return content.cursor_ends_word()
         return False
-
-    def add_backslash_with_space(self):
-        buffer = self.document.content.source_buffer
-        buffer.insert_at_cursor('\\ ')
-        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
-        insert_iter.backward_char()
-        buffer.place_cursor(insert_iter)
 
     def autoadd_latex_brackets(self, char):
         buffer = self.document.content.source_buffer
