@@ -48,13 +48,11 @@ class Autocomplete(object):
         self.items = list()
 
         self.view.list.connect('row-activated', self.on_row_activated)
-        self.view.list.connect('row-selected', self.on_row_selected)
 
         self.document.content.connect('text_inserted', self.on_text_inserted)
         self.document.content.connect('text_deleted', self.on_text_deleted)
         self.document.content.connect('buffer_changed', self.on_buffer_changed)
-        self.document.content.connect('insert_mark_set', self.on_insert_mark_set)
-        self.document.content.connect('insert_mark_deleted', self.on_insert_mark_deleted)
+        self.document.content.connect('cursor_changed', self.on_cursor_changed)
 
     def on_text_inserted(self, content, parameter):
         buffer, location_iter, text, text_length = parameter
@@ -68,29 +66,12 @@ class Autocomplete(object):
         self.activate_if_possible()
         self.update()
 
-    def on_insert_mark_set(self, content):
-        self.update()
-
-    def on_insert_mark_deleted(self, content):
+    def on_cursor_changed(self, content):
         self.update()
 
     def on_row_activated(self, box, row, user_data=None):
         self.document_view.source_view.grab_focus()
         self.submit()
-
-    def on_row_selected(self, box, row, user_data=None):
-        char_width, line_height = self.view.font_manager.get_char_dimensions()
-
-        if row != None:
-            command = row.get_child().command
-            scroll_min = row.get_index() * line_height
-            scroll_max = scroll_min - 4 * line_height
-            current_offset = self.view.scrolled_window.get_vadjustment().get_value()
-            if scroll_min < current_offset:
-                self.view.scrolled_window.get_vadjustment().set_value(scroll_min)
-            elif scroll_max > current_offset:
-                self.view.scrolled_window.get_vadjustment().set_value(scroll_max)
-            self.view.infobox.set_text(command['description'])
 
     def on_keypress(self, event):
         ''' returns whether the keypress has been handled. '''

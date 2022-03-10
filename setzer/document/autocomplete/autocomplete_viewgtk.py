@@ -70,6 +70,7 @@ class DocumentAutocompleteView(Gtk.VBox):
         self.model.document_view.scrolled_window.get_hadjustment().connect('value-changed', self.on_adjustment_value_changed)
         self.model.document_view.source_view.connect('focus-out-event', self.on_focus_out)
         self.model.document_view.source_view.connect('focus-in-event', self.on_focus_in)
+        self.list.connect('row-selected', self.on_row_selected)
 
     def on_adjustment_value_changed(self, adjustment, user_data=None):
         self.update_position()
@@ -88,6 +89,18 @@ class DocumentAutocompleteView(Gtk.VBox):
         self.update_position()
         self.update_visibility()
         self.update_margins()
+
+    def on_row_selected(self, box, row, user_data=None):
+        if row != None:
+            command = row.get_child().command
+            scroll_min = row.get_index() * self.line_height
+            scroll_max = scroll_min - 4 * self.line_height
+            current_offset = self.scrolled_window.get_vadjustment().get_value()
+            if scroll_min < current_offset:
+                self.scrolled_window.get_vadjustment().set_value(scroll_min)
+            elif scroll_max > current_offset:
+                self.scrolled_window.get_vadjustment().set_value(scroll_max)
+            self.infobox.set_text(command['description'])
 
     def on_font_string_changed(self, font_manager):
         self.update_sizes()

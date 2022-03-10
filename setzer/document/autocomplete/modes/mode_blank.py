@@ -54,11 +54,11 @@ class ModeBlank(object):
         bracket_vals = [Gdk.keyval_from_name('parenleft'), Gdk.keyval_from_name('bracketleft'), Gdk.keyval_from_name('braceleft')]
         if event.keyval in bracket_vals and not self.document.autocomplete.is_active():
             if event.keyval == Gdk.keyval_from_name('bracketleft'):
-                self.document.content.autoadd_latex_brackets('[')
+                self.autoadd_latex_brackets('[')
             if event.keyval == Gdk.keyval_from_name('braceleft'):
-                self.document.content.autoadd_latex_brackets('{')
+                self.autoadd_latex_brackets('{')
             if event.keyval == Gdk.keyval_from_name('parenleft'):
-                self.document.content.autoadd_latex_brackets('(')
+                self.autoadd_latex_brackets('(')
             return True
 
         return False
@@ -85,6 +85,34 @@ class ModeBlank(object):
         buffer.insert_at_cursor('\\ ')
         insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
         insert_iter.backward_char()
+        buffer.place_cursor(insert_iter)
+
+    def autoadd_latex_brackets(self, char):
+        buffer = self.document.content.source_buffer
+
+        if self.document.content.get_char_before_cursor() == '\\':
+            add_char = '\\'
+        else:
+            add_char = ''
+        if char == '[':
+            buffer.begin_user_action()
+            buffer.delete_selection(True, True)
+            buffer.insert_at_cursor('[' + add_char + ']')
+            buffer.end_user_action()
+        if char == '{':
+            buffer.begin_user_action()
+            buffer.delete_selection(True, True)
+            buffer.insert_at_cursor('{' + add_char + '}')
+            buffer.end_user_action()
+        if char == '(':
+            buffer.begin_user_action()
+            buffer.delete_selection(True, True)
+            buffer.insert_at_cursor('(' + add_char + ')')
+            buffer.end_user_action()
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        insert_iter.backward_char()
+        if add_char == '\\':
+            insert_iter.backward_char()
         buffer.place_cursor(insert_iter)
 
     def update(self):

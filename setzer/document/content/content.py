@@ -129,12 +129,12 @@ class Content(Observable):
     def on_mark_set(self, buffer, insert, mark, user_data=None):
         if mark.get_name() == 'insert':
             self.update_placeholder_selection()
-            self.add_change_code('insert_mark_set')
+            self.add_change_code('cursor_changed')
         self.update_selection_state()
 
     def on_mark_deleted(self, buffer, mark, user_data=None):
         if mark.get_name() == 'insert':
-            self.add_change_code('insert_mark_deleted')
+            self.add_change_code('cursor_changed')
         self.update_selection_state()
 
     def initially_set_text(self, text):
@@ -385,32 +385,6 @@ class Content(Observable):
                 self.source_buffer.delete(start, end)
 
         self.source_buffer.end_user_action()
-
-    def autoadd_latex_brackets(self, char):
-        if self.get_char_before_cursor() == '\\':
-            add_char = '\\'
-        else:
-            add_char = ''
-        if char == '[':
-            self.source_buffer.begin_user_action()
-            self.source_buffer.delete_selection(True, True)
-            self.source_buffer.insert_at_cursor('[' + add_char + ']')
-            self.source_buffer.end_user_action()
-        if char == '{':
-            self.source_buffer.begin_user_action()
-            self.source_buffer.delete_selection(True, True)
-            self.source_buffer.insert_at_cursor('{' + add_char + '}')
-            self.source_buffer.end_user_action()
-        if char == '(':
-            self.source_buffer.begin_user_action()
-            self.source_buffer.delete_selection(True, True)
-            self.source_buffer.insert_at_cursor('(' + add_char + ')')
-            self.source_buffer.end_user_action()
-        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        insert_iter.backward_char()
-        if add_char == '\\':
-            insert_iter.backward_char()
-        self.source_buffer.place_cursor(insert_iter)
 
     def get_char_at_cursor(self):
         start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
