@@ -95,7 +95,7 @@ class ModeBlank(object):
                 self.cursor_unchanged_after_autoclosing_bracket = False
                 return True
 
-        if self.autocomplete.document.cursor_inside_latex_command_or_at_end():
+        if self.cursor_inside_latex_command_or_at_end():
             self.autocomplete.activate_if_possible()
             if self.cursor_at_latex_command_end():
                 return self.autocomplete.is_active()
@@ -108,6 +108,12 @@ class ModeBlank(object):
         current_word = content.get_latex_command_at_cursor()
         if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
             return content.cursor_ends_word()
+        return False
+
+    def cursor_inside_latex_command_or_at_end(self):
+        current_word = self.autocomplete.content.get_latex_command_at_cursor()
+        if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
+            return True
         return False
 
     def autoclose_brackets(self, char):

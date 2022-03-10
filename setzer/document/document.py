@@ -182,12 +182,6 @@ class Document(Observable):
     def get_deleted_on_disk(self):
         return not os.path.isfile(self.filename)
 
-    def cursor_inside_latex_command_or_at_end(self):
-        current_word = self.content.get_latex_command_at_cursor()
-        if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
-            return True
-        return False
-
     def set_root_state(self, is_root, root_is_set):
         self.is_root = is_root
         self.root_is_set = root_is_set
