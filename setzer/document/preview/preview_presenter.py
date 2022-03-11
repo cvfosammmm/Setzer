@@ -31,9 +31,8 @@ from setzer.helpers.timer import timer
 
 class PreviewPresenter(object):
 
-    def __init__(self, preview, layouter, page_renderer, view):
+    def __init__(self, preview, page_renderer, view):
         self.preview = preview
-        self.layouter = layouter
         self.page_renderer = page_renderer
         self.view = view
 
@@ -48,7 +47,7 @@ class PreviewPresenter(object):
 
         self.preview.connect('pdf_changed', self.on_pdf_changed)
         self.preview.connect('invert_pdf_changed', self.on_invert_pdf_changed)
-        self.layouter.connect('layout_changed', self.on_layout_changed)
+        self.preview.connect('layout_changed', self.on_layout_changed)
         self.page_renderer.connect('rendered_pages_changed', self.on_rendered_pages_changed)
 
         self.show_blank_slate()
@@ -62,9 +61,9 @@ class PreviewPresenter(object):
     def on_invert_pdf_changed(self, preview):
         self.view.drawing_area.queue_draw()
 
-    def on_layout_changed(self, layouter):
-        if self.layouter.has_layout:
-            self.view.drawing_area.set_size_request(self.layouter.canvas_width, self.layouter.canvas_height)
+    def on_layout_changed(self, preview):
+        if self.preview.layout != None:
+            self.view.drawing_area.set_size_request(self.preview.layout.canvas_width, self.preview.layout.canvas_height)
 
     def on_rendered_pages_changed(self, page_renderer):
         self.view.drawing_area.queue_draw()
@@ -91,14 +90,15 @@ class PreviewPresenter(object):
         GObject.timeout_add(15, draw)
 
     def scroll_to_position(self, position):
-        if self.layouter.has_layout:
-            yoffset = max((self.layouter.page_gap + self.layouter.page_height) * (position['page'] - 1) + position['y'] * self.layouter.scale_factor, 0)
-            xoffset = self.layouter.get_horizontal_margin() + position['x'] * self.layouter.scale_factor
+        if self.preview.layout != None:
+            window_width = self.view.get_allocated_width()
+            yoffset = max((self.preview.layout.page_gap + self.preview.layout.page_height) * (position['page'] - 1) + position['y'] * self.preview.layout.scale_factor, 0)
+            xoffset = self.preview.layout.get_horizontal_margin(window_width) + position['x'] * self.preview.layout.scale_factor
             self.scrolling_queue.put((xoffset, yoffset))
 
     def scrolling_loop(self, widget=None, allocation=None):
         allocated_height = int(self.view.drawing_area.get_allocated_height())
-        if self.layouter.has_layout and allocated_height >= int(self.layouter.canvas_height):
+        if self.preview.layout != None and allocated_height >= int(self.preview.layout.canvas_height):
             while self.scrolling_queue.empty() == False:
                 todo = self.scrolling_queue.get(block=False)
                 if self.scrolling_queue.empty():
@@ -111,29 +111,30 @@ class PreviewPresenter(object):
 
     #@timer
     def draw(self, drawing_area, ctx, data = None):
-        if self.layouter.has_layout:
+        if self.preview.layout != None:
             bg_color = self.color_manager.get_theme_color('theme_bg_color')
             border_color = self.color_manager.get_theme_color('borders')
             self.draw_background(ctx, drawing_area, bg_color)
 
-            ctx.transform(cairo.Matrix(1, 0, 0, 1, self.layouter.get_horizontal_margin(), 0))
+            window_width = self.view.get_allocated_width()
+            ctx.transform(cairo.Matrix(1, 0, 0, 1, self.preview.layout.get_horizontal_margin(window_width), 0))
 
             offset = self.view.scrolled_window.get_vadjustment().get_value()
             view_width = self.view.scrolled_window.get_allocated_width()
             view_height = self.view.scrolled_window.get_allocated_height()
             additional_height = ctx.get_target().get_height() - view_height
-            additional_pages = additional_height // self.layouter.page_height + 2
+            additional_pages = additional_height // self.preview.layout.page_height + 2
 
-            first_page = max(int(offset // self.layouter.page_height) - additional_pages, 0)
-            last_page = min(int((offset + view_height) // self.layouter.page_height) + additional_pages, self.preview.poppler_document.get_n_pages())
-            ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, first_page * (self.layouter.page_height + self.layouter.page_gap)))
+            first_page = max(int(offset // self.preview.layout.page_height) - additional_pages, 0)
+            last_page = min(int((offset + view_height) // self.preview.layout.page_height) + additional_pages, self.preview.poppler_document.get_n_pages())
+            ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, first_page * (self.preview.layout.page_height + self.preview.layout.page_gap)))
 
             for page_number in range(first_page, last_page):
                 self.draw_page_background_and_outline(ctx, border_color)
                 self.draw_rendered_page(ctx, page_number)
                 self.draw_synctex_rectangles(ctx, page_number)
 
-                ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, self.layouter.page_height + self.layouter.page_gap))
+                ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, self.preview.layout.page_height + self.preview.layout.page_gap))
 
     def draw_background(self, ctx, drawing_area, bg_color):
         ctx.rectangle(0, 0, drawing_area.get_allocated_width(), drawing_area.get_allocated_height())
@@ -143,10 +144,10 @@ class PreviewPresenter(object):
     #@timer
     def draw_page_background_and_outline(self, ctx, border_color):
         ctx.set_source_rgba(border_color.red, border_color.green, border_color.blue, border_color.alpha)
-        ctx.rectangle(- self.layouter.border_width, - self.layouter.border_width, self.layouter.page_width + 2 * self.layouter.border_width, self.layouter.page_height + 2 * self.layouter.border_width)
+        ctx.rectangle(- self.preview.layout.border_width, - self.preview.layout.border_width, self.preview.layout.page_width + 2 * self.preview.layout.border_width, self.preview.layout.page_height + 2 * self.preview.layout.border_width)
         ctx.fill()
         ctx.set_source_rgba(1, 1, 1, 1)
-        ctx.rectangle(0, 0, self.layouter.page_width, self.layouter.page_height)
+        ctx.rectangle(0, 0, self.preview.layout.page_width, self.preview.layout.page_height)
         ctx.fill()
 
     def draw_rendered_page(self, ctx, page_number):
@@ -154,27 +155,27 @@ class PreviewPresenter(object):
 
         rendered_page_data = self.page_renderer.rendered_pages[page_number]
         surface = rendered_page_data[0]
-        page_width = rendered_page_data[1] * self.layouter.hidpi_factor
+        page_width = rendered_page_data[1] * self.preview.layout.hidpi_factor
 
         if not isinstance(surface, cairo.ImageSurface): return
 
         matrix = ctx.get_matrix()
-        factor = self.layouter.page_width / page_width
+        factor = self.preview.layout.page_width / page_width
         ctx.scale(factor, factor)
         ctx.set_source_surface(surface, 0, 0)
-        ctx.rectangle(0, 0, self.layouter.page_width / factor, self.layouter.page_height / factor)
+        ctx.rectangle(0, 0, self.preview.layout.page_width / factor, self.preview.layout.page_height / factor)
         ctx.fill()
         if self.preview.invert_pdf:
             ctx.set_operator(cairo.Operator.DIFFERENCE)
             ctx.set_source_rgb(1, 1, 1)
-            ctx.rectangle(0, 0, self.layouter.page_width / factor, self.layouter.page_height / factor)
+            ctx.rectangle(0, 0, self.preview.layout.page_width / factor, self.preview.layout.page_height / factor)
             ctx.fill()
             ctx.set_operator(cairo.Operator.OVER)
         ctx.set_matrix(matrix)
 
     def draw_synctex_rectangles(self, ctx, page_number):
         try:
-            rectangles = self.layouter.visible_synctex_rectangles[page_number]
+            rectangles = self.preview.layout.visible_synctex_rectangles[page_number]
         except KeyError: pass
         else:
             time_factor = self.ease(min(self.highlight_duration + 0.25 - (time.time() - self.preview.visible_synctex_rectangles_time), 0.25) * 4)

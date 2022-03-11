@@ -149,7 +149,10 @@ class DocumentStats(object):
         if document == None: return True
 
         with self.values_lock:
-            values = self.values[document.get_filename()]['counts']
+            if document.get_filename() not in self.values:
+                values = None
+            else:
+                values = self.values[document.get_filename()]['counts']
 
         if values == None or len(values) != 3:
             values = ['?', '?', '?']

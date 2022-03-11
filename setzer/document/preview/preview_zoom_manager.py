@@ -25,10 +25,9 @@ from setzer.helpers.observable import Observable
 
 class PreviewZoomManager(Observable):
 
-    def __init__(self, preview, layouter, view):
+    def __init__(self, preview, view):
         Observable.__init__(self)
         self.preview = preview
-        self.layouter = layouter
         self.view = view
 
         self.zoom_level_fit_to_width = None
@@ -38,7 +37,7 @@ class PreviewZoomManager(Observable):
         self.zoom_set = False
 
     def update_dynamic_zoom_levels(self):
-        if not self.layouter.has_layout: return
+        if self.preview.layout == None: return
         if self.view.get_allocated_width() < 300: return
 
         old_level = self.zoom_level_fit_to_width
@@ -55,13 +54,13 @@ class PreviewZoomManager(Observable):
             self.set_zoom_fit_to_width()
 
     def update_fit_to_width(self):
-        self.zoom_level_fit_to_width = self.view.get_allocated_width() / (self.preview.page_width * self.layouter.hidpi_factor)
+        self.zoom_level_fit_to_width = self.view.get_allocated_width() / (self.preview.page_width * self.preview.layout.hidpi_factor)
 
     def update_fit_to_text_width(self):
         self.zoom_level_fit_to_text_width = self.zoom_level_fit_to_width * (self.preview.page_width / (self.preview.page_width - 2 * self.preview.vertical_margin))
 
     def update_fit_to_height(self):
-        self.zoom_level_fit_to_height = (self.view.stack.get_allocated_height() + self.layouter.border_width) / (self.preview.page_height * self.layouter.hidpi_factor)
+        self.zoom_level_fit_to_height = (self.view.stack.get_allocated_height() + self.preview.layout.border_width) / (self.preview.page_height * self.preview.layout.hidpi_factor)
 
     def set_zoom_fit_to_height(self):
         self.set_zoom_level_auto_offset(self.zoom_level_fit_to_height)
@@ -110,7 +109,7 @@ class PreviewZoomManager(Observable):
 
     def set_zoom_level_auto_offset(self, zoom_level):
         x = self.view.get_allocated_width() / 2
-        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.layouter.hidpi_factor)
+        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.preview.layout.hidpi_factor)
         self.set_zoom_level(zoom_level)
         self.preview.scroll_by_offsets(xoffset, 0)
 
@@ -122,7 +121,8 @@ class PreviewZoomManager(Observable):
 
         self.zoom_level = level
 
-        self.layouter.update_layout()
+        self.preview.layout = self.preview.layouter.create_layout()
+        self.preview.add_change_code('layout_changed')
         self.update_dynamic_zoom_levels()
 
         self.zoom_set = True

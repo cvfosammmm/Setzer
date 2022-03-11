@@ -69,6 +69,8 @@ class BuildSystem(Observable):
         self.builders['forward_sync'] = builder_forward_sync.BuilderForwardSync()
         self.builders['backward_sync'] = builder_backward_sync.BuilderBackwardSync()
 
+        self.document.preview.connect('pdf_changed', self.update_can_sync)
+
         GObject.timeout_add(50, self.results_loop)
 
     def change_build_state(self, state):
@@ -99,7 +101,7 @@ class BuildSystem(Observable):
         self.has_synctex_file = has_synctex_file
         self.update_can_sync()
 
-    def update_can_sync(self):
+    def update_can_sync(self, *params):
         if self.has_synctex_file and self.document.preview.poppler_document != None:
             self.can_sync = True
         else:

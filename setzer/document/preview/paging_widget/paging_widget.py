@@ -22,9 +22,8 @@ from gi.repository import Gtk
 
 class PagingWidget(object):
 
-    def __init__(self, preview, layouter):
+    def __init__(self, preview):
         self.preview = preview
-        self.layouter = layouter
         self.view = PagingWidgetView()
 
         self.preview.view.action_bar.pack_start(self.view, False, False, 0)
@@ -52,8 +51,9 @@ class PagingWidget(object):
             self.view.label_number_of_pages.set_text("0")
 
     def update_current_page(self):
-        if self.layouter.has_layout:
-            self.view.label_current_page.set_text(str(self.layouter.get_current_page()))
+        if self.preview.layout != None:
+            offset = self.preview.view.scrolled_window.get_vadjustment().get_value()
+            self.view.label_current_page.set_text(str(self.preview.layout.get_page_by_offset(offset)))
         else:
             self.view.label_current_page.set_text("0")
 

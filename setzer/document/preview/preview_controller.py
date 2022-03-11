@@ -29,9 +29,8 @@ import _thread as thread
 
 class PreviewController(object):
 
-    def __init__(self, preview, layouter, view):
+    def __init__(self, preview, view):
         self.preview = preview
-        self.layouter = layouter
         self.view = view
 
         self.zoom_momentum = 0
@@ -80,8 +79,8 @@ class PreviewController(object):
                 self.zoom_momentum += event.delta_y - event.delta_x
                 if(self.preview.presenter.scrolling_queue.empty()):
                     zoom_level = min(max(self.preview.zoom_manager.get_zoom_level() * (1 - 0.1 * self.zoom_momentum), 0.25), 4)
-                    xoffset = (-event.x + event.x * zoom_level / self.preview.zoom_manager.get_zoom_level()) / (zoom_level * self.layouter.hidpi_factor)
-                    yoffset = (-event.y + event.y * zoom_level / self.preview.zoom_manager.get_zoom_level()) / (zoom_level * self.layouter.hidpi_factor)
+                    xoffset = (-event.x + event.x * zoom_level / self.preview.zoom_manager.get_zoom_level()) / (zoom_level * self.preview.layout.hidpi_factor)
+                    yoffset = (-event.y + event.y * zoom_level / self.preview.zoom_manager.get_zoom_level()) / (zoom_level * self.preview.layout.hidpi_factor)
                     self.preview.zoom_manager.set_zoom_level(zoom_level)
                     self.preview.scroll_by_offsets(xoffset, yoffset)
                     self.zoom_momentum = 0
@@ -98,10 +97,13 @@ class PreviewController(object):
         self.update_cursor(event)
 
     def update_cursor(self, event):
+        if self.preview.layout == None: return True
+
         x_offset = event.x + self.view.scrolled_window.get_hadjustment().get_value()
         y_offset = event.y + self.view.scrolled_window.get_vadjustment().get_value()
 
-        data = self.layouter.get_page_number_and_offsets_by_document_offsets(x_offset, y_offset)
+        window_width = self.view.get_allocated_width()
+        data = self.preview.layout.get_page_number_and_offsets_by_document_offsets(x_offset, y_offset, window_width)
         if data == None: return True
 
         page_number, x_offset, y_offset = data
@@ -139,7 +141,8 @@ class PreviewController(object):
         elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & modifiers == 0:
             x_offset = event.x
             y_offset = event.y
-            data = self.layouter.get_page_number_and_offsets_by_document_offsets(x_offset, y_offset)
+            window_width = self.view.get_allocated_width()
+            data = self.preview.layout.get_page_number_and_offsets_by_document_offsets(x_offset, y_offset, window_width)
             if data == None: return True
 
             page_number, x_offset, y_offset = data
@@ -159,13 +162,15 @@ class PreviewController(object):
         self.preview.open_external_viewer()
 
     def init_backward_sync(self, event):
-        if not self.layouter.has_layout: return False
-        y_total_pixels = min(max(event.y, 0), (self.layouter.page_height + self.layouter.page_gap) * self.preview.poppler_document.get_n_pages() - self.layouter.page_gap)
-        x_pixels = min(max(event.x - self.layouter.get_horizontal_margin(), 0), self.layouter.page_width)
-        page = math.floor(y_total_pixels / (self.layouter.page_height + self.layouter.page_gap))
-        y_pixels = min(max(y_total_pixels - page * (self.layouter.page_height + self.layouter.page_gap), 0), self.layouter.page_height)
-        x = x_pixels / self.layouter.scale_factor
-        y = y_pixels / self.layouter.scale_factor
+        if self.preview.layout == None: return False
+
+        window_width = self.view.get_allocated_width()
+        y_total_pixels = min(max(event.y, 0), (self.preview.layout.page_height + self.preview.layout.page_gap) * self.preview.poppler_document.get_n_pages() - self.preview.layout.page_gap)
+        x_pixels = min(max(event.x - self.preview.layout.get_horizontal_margin(window_width), 0), self.preview.layout.page_width)
+        page = math.floor(y_total_pixels / (self.preview.layout.page_height + self.preview.layout.page_gap))
+        y_pixels = min(max(y_total_pixels - page * (self.preview.layout.page_height + self.preview.layout.page_gap), 0), self.preview.layout.page_height)
+        x = x_pixels / self.preview.layout.scale_factor
+        y = y_pixels / self.preview.layout.scale_factor
         page += 1
 
         poppler_page = self.preview.poppler_document.get_page(page - 1)

@@ -29,10 +29,9 @@ from setzer.helpers.observable import Observable
 
 class PreviewPageRenderer(Observable):
 
-    def __init__(self, preview, layouter):
+    def __init__(self, preview):
         Observable.__init__(self)
         self.preview = preview
-        self.layouter = layouter
         self.maximum_rendered_pixels = 20000000
 
         self.visible_pages_lock = thread.allocate_lock()
@@ -44,7 +43,7 @@ class PreviewPageRenderer(Observable):
         self.is_active = False
 
         self.preview.connect('position_changed', self.on_layout_or_position_changed)
-        self.layouter.connect('layout_changed', self.on_layout_or_position_changed)
+        self.preview.connect('layout_changed', self.on_layout_or_position_changed)
 
         self.page_render_count_lock = thread.allocate_lock()
         self.page_render_count = dict()
@@ -55,7 +54,7 @@ class PreviewPageRenderer(Observable):
         GObject.timeout_add(50, self.rendered_pages_loop)
 
     def on_layout_or_position_changed(self, notifying_object):
-        if self.layouter.has_layout:
+        if self.preview.layout != None:
             self.update_rendered_pages()
         else:
             self.rendered_pages = dict()
@@ -123,13 +122,14 @@ class PreviewPageRenderer(Observable):
         with self.is_active_lock:
             is_active = self.is_active
         if not is_active: return
-        if not self.layouter.has_layout: return
+        if self.preview.layout == None: return
 
-        hidpi_factor = self.layouter.hidpi_factor
-        page_width = self.layouter.page_width
-        page_height = self.layouter.page_height
+        hidpi_factor = self.preview.layout.hidpi_factor
+        page_width = self.preview.layout.page_width
+        page_height = self.preview.layout.page_height
 
-        current_page = self.layouter.get_current_page() - 1
+        offset = self.preview.view.scrolled_window.get_vadjustment().get_value()
+        current_page = self.preview.layout.get_page_by_offset(offset) - 1
 
         visible_pages = [current_page, min(current_page + math.floor(self.preview.view.get_allocated_height() / page_height) + 1, self.preview.poppler_document.get_n_pages() - 1)]
 
@@ -157,7 +157,7 @@ class PreviewPageRenderer(Observable):
         if changed:
             self.add_change_code('rendered_pages_changed')
 
-        scale_factor = self.layouter.scale_factor
+        scale_factor = self.preview.layout.scale_factor
 
         for page_number in range(0, self.preview.poppler_document.get_n_pages()):
             if page_number not in self.rendered_pages or self.rendered_pages[page_number][1] != page_width or self.rendered_pages[page_number][2] != pdf_date:

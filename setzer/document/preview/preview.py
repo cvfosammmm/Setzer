@@ -53,18 +53,19 @@ class Preview(Observable):
         self.page_height = None
         self.xoffset = 0
         self.yoffset = 0
+        self.layout = None
 
         self.visible_synctex_rectangles = list()
         self.visible_synctex_rectangles_time = None
 
         self.view = preview_view.PreviewView()
         self.layouter = preview_layouter.PreviewLayouter(self, self.view)
-        self.zoom_manager = preview_zoom_manager.PreviewZoomManager(self, self.layouter, self.view)
-        self.controller = preview_controller.PreviewController(self, self.layouter, self.view)
-        self.page_renderer = preview_page_renderer.PreviewPageRenderer(self, self.layouter)
+        self.zoom_manager = preview_zoom_manager.PreviewZoomManager(self, self.view)
+        self.controller = preview_controller.PreviewController(self, self.view)
+        self.page_renderer = preview_page_renderer.PreviewPageRenderer(self)
         self.links_parser = preview_links_parser.PreviewLinksParser(self)
-        self.presenter = preview_presenter.PreviewPresenter(self, self.layouter, self.page_renderer, self.view)
-        self.paging_widget = paging_widget.PagingWidget(self, self.layouter)
+        self.presenter = preview_presenter.PreviewPresenter(self, self.page_renderer, self.view)
+        self.paging_widget = paging_widget.PagingWidget(self)
         self.zoom_widget = zoom_widget.ZoomWidget(self)
 
         self.document.connect('filename_change', self.on_filename_change)
@@ -89,15 +90,16 @@ class Preview(Observable):
         self.add_change_code('invert_pdf_changed')
 
     def update_position(self):
-        if not self.layouter.has_layout: return
+        if self.layout == None: return
         if not self.presenter.scrolling_queue.empty(): return
 
-        xoffset = max((self.view.scrolled_window.get_hadjustment().get_value() - self.layouter.get_horizontal_margin()) / self.layouter.scale_factor, 0)
+        window_width = self.view.get_allocated_width()
+        xoffset = max((self.view.scrolled_window.get_hadjustment().get_value() - self.layout.get_horizontal_margin(window_width)) / self.layout.scale_factor, 0)
 
         offset = self.view.scrolled_window.get_vadjustment().get_value()
-        current_page = int(1 + offset // (self.layouter.page_height + self.layouter.page_gap))
+        current_page = int(1 + offset // (self.layout.page_height + self.layout.page_gap))
         yoffset = max(current_page - 1, 0) * self.page_height
-        yoffset += min(max(offset - max(current_page - 1, 0) * (self.layouter.page_height + self.layouter.page_gap), 0), self.layouter.page_height) / self.layouter.scale_factor
+        yoffset += min(max(offset - max(current_page - 1, 0) * (self.layout.page_height + self.layout.page_gap), 0), self.layout.page_height) / self.layout.scale_factor
 
         value_changed = False
         if xoffset != self.xoffset or yoffset != self.yoffset:
@@ -106,7 +108,7 @@ class Preview(Observable):
             self.add_change_code('position_changed')
 
     def scroll_to_position_from_offsets(self, xoffset=0, yoffset=0):
-        if self.layouter.has_layout:
+        if self.layout != None:
             page = math.floor(yoffset / self.page_height) + 1
             self.presenter.scroll_to_position({'page': page, 'x': xoffset, 'y': yoffset - (page - 1) * self.page_height})
 
@@ -125,13 +127,14 @@ class Preview(Observable):
             self.presenter.scroll_to_position(position)
 
     def set_synctex_rectangles(self, rectangles):
-        if self.layouter.has_layout:
+        if self.layout != None:
             self.visible_synctex_rectangles = rectangles
-            self.layouter.update_synctex_rectangles()
+            self.layouter.update_synctex_rectangles(self.layout)
             self.visible_synctex_rectangles_time = time.time()
             if len(rectangles) > 0:
                 position = rectangles[0]
-                self.presenter.scroll_to_position({'page': position['page'], 'x': max((self.layouter.page_width / 2 + self.layouter.get_horizontal_margin() - self.view.stack.get_allocated_width() / 2) / self.layouter.scale_factor, 0), 'y': max(((position['v'] - position['height'] / 2) * self.layouter.scale_factor - self.view.stack.get_allocated_height() / 2) / self.layouter.scale_factor, 0)})
+                window_width = self.view.get_allocated_width()
+                self.presenter.scroll_to_position({'page': position['page'], 'x': max((self.layout.page_width / 2 + self.layout.get_horizontal_margin(window_width) - self.view.stack.get_allocated_width() / 2) / self.layout.scale_factor, 0), 'y': max(((position['v'] - position['height'] / 2) * self.layout.scale_factor - self.view.stack.get_allocated_height() / 2) / self.layout.scale_factor, 0)})
                 self.presenter.start_fade_loop()
 
     def get_pdf_date(self):
@@ -153,9 +156,9 @@ class Preview(Observable):
             self.page_height = page_size.height
             self.update_vertical_margin()
             self.zoom_manager.update_dynamic_zoom_levels()
-            self.layouter.update_layout()
+            self.layout = self.layouter.create_layout()
+            self.add_change_code('layout_changed')
             self.add_change_code('pdf_changed')
-            self.document.build_system.update_can_sync()
             if self.zoom_manager.get_zoom_level() == None:
                 self.zoom_manager.set_zoom_fit_to_width()
 
@@ -166,10 +169,9 @@ class Preview(Observable):
         self.page_height = None
         self.xoffset = 0
         self.yoffset = 0
-        self.layouter.update_layout()
+        self.layout = None
         self.zoom_manager.update_dynamic_zoom_levels()
         self.add_change_code('pdf_changed')
-        self.document.build_system.update_can_sync()
 
     def update_vertical_margin(self):
         current_min = self.page_width
