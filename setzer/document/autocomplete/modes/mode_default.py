@@ -41,7 +41,7 @@ class ModeDefault(object):
         pass
 
     def on_buffer_changed(self):
-        pass
+        self.update()
 
     def on_cursor_changed(self):
         self.update()
@@ -113,7 +113,9 @@ class ModeDefault(object):
         return i
 
     def update(self):
-        if not self.current_word_changed_or_is_none():
+        if self.current_word_changed_or_is_none():
+            self.cancel()
+        else:
             self.current_word = self.document.content.get_latex_command_at_cursor()
             self.autocomplete.items = self.autocomplete.provider.get_items_for_completion_window(self.current_word, self.last_tabbed_command)
             if len(self.autocomplete.items) > 0:
@@ -123,8 +125,6 @@ class ModeDefault(object):
                 self.autocomplete.view.update_margins()
             else:
                 self.cancel()
-        else:
-            self.cancel()
 
     def get_offset(self):
         self.current_word = self.document.content.get_latex_command_at_cursor()

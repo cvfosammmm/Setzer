@@ -18,6 +18,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from gi.repository import Gdk
 
 import setzer.document.autocomplete.autocomplete_viewgtk as view
 import setzer.document.autocomplete.modes.mode_blank as mode_blank
