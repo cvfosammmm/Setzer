@@ -36,7 +36,6 @@ class ZoomWidget(object):
         self.view.zoom_out_button.connect('clicked', self.on_zoom_button_clicked, 'out')
 
         self.update_zoom_level()
-        self.view.hide()
 
         model_button = Gtk.ModelButton()
         model_button.set_label(_('Fit to Width'))
