@@ -144,7 +144,13 @@ class StructureSection(structure_widget.StructureWidget):
             if count >= first_line and count <= last_line:
                 self.draw_hover_background(ctx, count)
                 self.draw_icon(ctx, node['item'][2], 9 + level * 18, count)
-                self.draw_text(ctx, 35 + level * 18, count, node['item'][3])
+
+                if node['item'][2] == 'file-symbolic':
+                    text = os.path.basename(node['item'][3])
+                else:
+                    text = node['item'][3]
+
+                self.draw_text(ctx, 35 + level * 18, count, text)
             count += 1
             count = self.draw_nodes(node['children'], first_line, last_line, level + 1, count, drawing_area, ctx)
         return count
