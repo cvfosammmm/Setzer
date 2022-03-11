@@ -68,7 +68,9 @@ class DocumentStats(object):
     def update_data(self):
         if self.document == None: return True
 
-        filenames = {self.document.get_filename(), self.workspace.get_active_document().get_filename()}
+        filenames = {self.document.get_filename()}
+        if self.workspace.get_active_document() != None:
+            filenames |= {self.workspace.get_active_document().get_filename()}
         for filename, _ in self.document.get_included_latex_files():
             filenames |= {path_helpers.get_abspath(filename, self.document.get_dirname())}
 
