@@ -127,7 +127,7 @@ class StateManager():
         document_data['has_synctex_file'] = self.document.build_system.has_synctex_file
 
         document_data['pdf_filename'] = self.document.preview.pdf_filename
-        document_data['pdf_date'] = self.document.preview.pdf_date
+        document_data['pdf_date'] = self.document.preview.get_pdf_date()
         document_data['xoffset'] = self.document.preview.xoffset
         document_data['yoffset'] = self.document.preview.yoffset
         document_data['zoom_level'] = self.document.preview.zoom_manager.zoom_level

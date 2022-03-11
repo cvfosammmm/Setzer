@@ -37,7 +37,7 @@ class PreviewLinksParser(Observable):
         self.preview.connect('pdf_changed', self.on_pdf_changed)
 
     def on_pdf_changed(self, notifying_object):
-        if self.preview.pdf_loaded:
+        if self.preview.poppler_document != None:
             with self.links_lock:
                 self.links = dict()
             self.links_parsed = False

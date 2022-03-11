@@ -131,12 +131,12 @@ class PreviewPageRenderer(Observable):
 
         current_page = self.layouter.get_current_page() - 1
 
-        visible_pages = [current_page, min(current_page + math.floor(self.preview.view.get_allocated_height() / page_height) + 1, self.preview.number_of_pages - 1)]
+        visible_pages = [current_page, min(current_page + math.floor(self.preview.view.get_allocated_height() / page_height) + 1, self.preview.poppler_document.get_n_pages() - 1)]
 
         max_additional_pages = max(math.floor(self.maximum_rendered_pixels / (page_width * page_height * hidpi_factor * hidpi_factor) - visible_pages[1] + visible_pages[0]), 0)
-        visible_pages_additional = [max(int(visible_pages[0] - max_additional_pages / 2), 0), min(int(visible_pages[1] + max_additional_pages / 2), self.preview.number_of_pages - 1)]
+        visible_pages_additional = [max(int(visible_pages[0] - max_additional_pages / 2), 0), min(int(visible_pages[1] + max_additional_pages / 2), self.preview.poppler_document.get_n_pages() - 1)]
 
-        pdf_date = self.preview.pdf_date
+        pdf_date = self.preview.get_pdf_date()
         with self.visible_pages_lock:
             if pdf_date == self.pdf_date and visible_pages == self.visible_pages and visible_pages_additional == self.visible_pages_additional and page_width == self.page_width:
                 do_return = True
@@ -159,7 +159,7 @@ class PreviewPageRenderer(Observable):
 
         scale_factor = self.layouter.scale_factor
 
-        for page_number in range(0, self.preview.number_of_pages):
+        for page_number in range(0, self.preview.poppler_document.get_n_pages()):
             if page_number not in self.rendered_pages or self.rendered_pages[page_number][1] != page_width or self.rendered_pages[page_number][2] != pdf_date:
                 with self.page_render_count_lock:
                     try:

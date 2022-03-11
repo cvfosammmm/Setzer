@@ -160,7 +160,7 @@ class PreviewController(object):
 
     def init_backward_sync(self, event):
         if not self.layouter.has_layout: return False
-        y_total_pixels = min(max(event.y, 0), (self.layouter.page_height + self.layouter.page_gap) * self.preview.number_of_pages - self.layouter.page_gap)
+        y_total_pixels = min(max(event.y, 0), (self.layouter.page_height + self.layouter.page_gap) * self.preview.poppler_document.get_n_pages() - self.layouter.page_gap)
         x_pixels = min(max(event.x - self.layouter.get_horizontal_margin(), 0), self.layouter.page_width)
         page = math.floor(y_total_pixels / (self.layouter.page_height + self.layouter.page_gap))
         y_pixels = min(max(y_total_pixels - page * (self.layouter.page_height + self.layouter.page_gap), 0), self.layouter.page_height)

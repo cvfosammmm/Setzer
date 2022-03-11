@@ -76,6 +76,29 @@ class Autocomplete(object):
     def on_keypress(self, event):
         ''' returns whether the keypress has been handled. '''
 
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if self.is_visible():
+            if event.keyval == Gdk.keyval_from_name('Down'):
+                if event.state & modifiers == 0:
+                    self.view.select_next()
+                    return True
+
+            if event.keyval == Gdk.keyval_from_name('Up'):
+                if event.state & modifiers == 0:
+                    self.view.select_previous()
+                    return True
+
+            if event.keyval == Gdk.keyval_from_name('Escape'):
+                if event.state & modifiers == 0:
+                    self.mode.cancel()
+                    return True
+
+            if event.keyval == Gdk.keyval_from_name('Return'):
+                if event.state & modifiers == 0:
+                    self.mode.submit()
+                    return True
+
         return self.mode.on_keypress(event)
 
     def submit(self):

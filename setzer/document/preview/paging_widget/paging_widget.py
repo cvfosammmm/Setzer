@@ -47,7 +47,7 @@ class PagingWidget(object):
 
     def update_number_of_pages(self):
         if self.preview.pdf_filename != None:
-            self.view.label_number_of_pages.set_text(str(self.preview.number_of_pages))
+            self.view.label_number_of_pages.set_text(str(self.preview.poppler_document.get_n_pages()))
         else:
             self.view.label_number_of_pages.set_text("0")
 

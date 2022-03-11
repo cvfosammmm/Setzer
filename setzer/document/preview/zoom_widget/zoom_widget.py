@@ -64,7 +64,7 @@ class ZoomWidget(object):
         self.view.zoom_button_box.show_all()
 
     def on_pdf_changed(self, preview):
-        if self.preview.pdf_loaded:
+        if self.preview.poppler_document != None:
             self.view.set_reveal_child(True)
         else:
             self.view.set_reveal_child(False)

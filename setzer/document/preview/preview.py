@@ -46,16 +46,13 @@ class Preview(Observable):
         self.document = document
 
         self.pdf_filename = None
-        self.pdf_date = None
         self.invert_pdf = False
 
         self.poppler_document = None
-        self.number_of_pages = 0
         self.page_width = None
         self.page_height = None
         self.xoffset = 0
         self.yoffset = 0
-        self.pdf_loaded = False
 
         self.visible_synctex_rectangles = list()
         self.visible_synctex_rectangles_time = None
@@ -74,22 +71,14 @@ class Preview(Observable):
         self.document.connect('pdf_updated', self.on_pdf_updated)
 
     def on_filename_change(self, document, filename=None):
-        self.set_pdf_filename_from_tex_filename(filename)
-        self.set_pdf_date()
+        if filename != None:
+            pdf_filename = os.path.splitext(filename)[0] + '.pdf'
+            if os.path.exists(pdf_filename):
+                self.set_pdf_filename(pdf_filename)
         self.load_pdf()
 
     def on_pdf_updated(self, document):
-        self.set_pdf_date()
         self.load_pdf()
-
-    def get_pdf_filename(self):
-        return self.pdf_filename
-        
-    def set_pdf_filename_from_tex_filename(self, tex_filename):
-        if tex_filename != None:
-            pdf_filename = os.path.splitext(self.document.filename)[0] + '.pdf'
-            if os.path.exists(pdf_filename):
-                self.set_pdf_filename(pdf_filename)
 
     def set_pdf_filename(self, pdf_filename):
         if pdf_filename != self.pdf_filename:
@@ -145,12 +134,11 @@ class Preview(Observable):
                 self.presenter.scroll_to_position({'page': position['page'], 'x': max((self.layouter.page_width / 2 + self.layouter.get_horizontal_margin() - self.view.stack.get_allocated_width() / 2) / self.layouter.scale_factor, 0), 'y': max(((position['v'] - position['height'] / 2) * self.layouter.scale_factor - self.view.stack.get_allocated_height() / 2) / self.layouter.scale_factor, 0)})
                 self.presenter.start_fade_loop()
 
-    def set_pdf_date(self):
-        if self.pdf_filename != None:
-            self.pdf_date = os.path.getmtime(self.pdf_filename)
-
     def get_pdf_date(self):
-        return self.pdf_date
+        if self.pdf_filename != None:
+            return os.path.getmtime(self.pdf_filename)
+        else:
+            return None
 
     def load_pdf(self):
         try:
@@ -160,20 +148,10 @@ class Preview(Observable):
         except gi.repository.GLib.Error:
             self.reset_pdf_data()
         else:
-            self.number_of_pages = self.poppler_document.get_n_pages()
             page_size = self.poppler_document.get_page(0).get_size()
             self.page_width = page_size.width
             self.page_height = page_size.height
-            current_min = self.page_width
-            for page_number in range(0, min(self.number_of_pages, 3)):
-                page = self.poppler_document.get_page(page_number)
-                layout = page.get_text_layout()
-                for rect in layout[1]:
-                    if rect.x1 < current_min:
-                        current_min = rect.x1
-            current_min -= 20
-            self.vertical_margin = current_min
-            self.pdf_loaded = True
+            self.update_vertical_margin()
             self.zoom_manager.update_dynamic_zoom_levels()
             self.layouter.update_layout()
             self.add_change_code('pdf_changed')
@@ -182,11 +160,8 @@ class Preview(Observable):
                 self.zoom_manager.set_zoom_fit_to_width()
 
     def reset_pdf_data(self):
-        self.pdf_loaded = False
         self.pdf_filename = None
-        self.pdf_date = None
         self.poppler_document = None
-        self.number_of_pages = 0
         self.page_width = None
         self.page_height = None
         self.xoffset = 0
@@ -195,6 +170,17 @@ class Preview(Observable):
         self.zoom_manager.update_dynamic_zoom_levels()
         self.add_change_code('pdf_changed')
         self.document.build_system.update_can_sync()
+
+    def update_vertical_margin(self):
+        current_min = self.page_width
+        for page_number in range(0, min(self.poppler_document.get_n_pages(), 3)):
+            page = self.poppler_document.get_page(page_number)
+            layout = page.get_text_layout()
+            for rect in layout[1]:
+                if rect.x1 < current_min:
+                    current_min = rect.x1
+        current_min -= 20
+        self.vertical_margin = current_min
 
     def open_external_viewer(self):
         if self.pdf_filename != None:

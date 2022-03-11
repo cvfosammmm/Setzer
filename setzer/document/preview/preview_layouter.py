@@ -37,7 +37,7 @@ class PreviewLayouter(Observable):
         self.has_layout = False
 
     def update_layout(self):
-        if self.preview.zoom_manager.get_zoom_level() == None or not self.preview.pdf_loaded:
+        if self.preview.zoom_manager.get_zoom_level() == None or not self.preview.poppler_document != None:
             self.has_layout = False
             self.page_width = None
             self.page_height = None
@@ -53,7 +53,7 @@ class PreviewLayouter(Observable):
             self.page_gap = int(self.hidpi_factor * 10)
             self.border_width = 1
             self.canvas_width = self.page_width + 2 * self.get_horizontal_margin()
-            self.canvas_height = self.preview.number_of_pages * (self.page_height + self.page_gap) - self.page_gap
+            self.canvas_height = self.preview.poppler_document.get_n_pages() * (self.page_height + self.page_gap) - self.page_gap
             self.has_layout = True
             self.update_synctex_rectangles()
         self.add_change_code('layout_changed')

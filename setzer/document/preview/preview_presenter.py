@@ -54,7 +54,7 @@ class PreviewPresenter(object):
         self.show_blank_slate()
 
     def on_pdf_changed(self, preview):
-        if self.preview.pdf_loaded:
+        if self.preview.poppler_document != None:
             self.show_pdf()
         else:
             self.show_blank_slate()
@@ -125,7 +125,7 @@ class PreviewPresenter(object):
             additional_pages = additional_height // self.layouter.page_height + 2
 
             first_page = max(int(offset // self.layouter.page_height) - additional_pages, 0)
-            last_page = min(int((offset + view_height) // self.layouter.page_height) + additional_pages, self.preview.number_of_pages)
+            last_page = min(int((offset + view_height) // self.layouter.page_height) + additional_pages, self.preview.poppler_document.get_n_pages())
             ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, first_page * (self.layouter.page_height + self.layouter.page_gap)))
 
             for page_number in range(first_page, last_page):

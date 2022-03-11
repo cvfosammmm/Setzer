@@ -95,29 +95,6 @@ class ModeBeginEnd(object):
             if event.state & modifiers == 0:
                 return self.on_tab_press()
 
-        if not self.autocomplete.is_visible():
-            return False
-
-        if event.keyval == Gdk.keyval_from_name('Down'):
-            if event.state & modifiers == 0:
-                self.autocomplete.view.select_next()
-                return True
-
-        if event.keyval == Gdk.keyval_from_name('Up'):
-            if event.state & modifiers == 0:
-                self.autocomplete.view.select_previous()
-                return True
-
-        if event.keyval == Gdk.keyval_from_name('Escape'):
-            if event.state & modifiers == 0:
-                self.cancel()
-                return True
-
-        if event.keyval == Gdk.keyval_from_name('Return'):
-            if event.state & modifiers == 0:
-                self.submit()
-                return True
-
         return False
 
     def update_matching_block(self):

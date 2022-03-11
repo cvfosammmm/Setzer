@@ -100,7 +100,7 @@ class BuildSystem(Observable):
         self.update_can_sync()
 
     def update_can_sync(self):
-        if self.has_synctex_file and self.document.preview.pdf_loaded:
+        if self.has_synctex_file and self.document.preview.poppler_document != None:
             self.can_sync = True
         else:
             self.can_sync = False
