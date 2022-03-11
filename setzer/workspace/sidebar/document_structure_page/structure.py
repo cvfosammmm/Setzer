@@ -50,6 +50,9 @@ class StructureSection(structure_widget.StructureWidget):
 
             document = item[0]
             line_number = item[1]
+            if document == None:
+                filename = self.nodes_in_line[item_num]['item'][3]
+                document = self.data_provider.workspace.open_document_by_filename(filename)
             self.data_provider.workspace.set_active_document(document)
             document.content.place_cursor(line_number)
             document.content.scroll_cursor_onscreen()

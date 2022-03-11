@@ -39,12 +39,10 @@ class DataProvider(Observable):
         self.workspace.connect('root_state_change', self.on_root_state_change)
 
     def on_new_document(self, workspace, document):
-        if document in self.integrated_includes:
-            self.update_data()
+        self.update_data()
 
     def on_document_removed(self, workspace, document):
-        if document in self.integrated_includes:
-            self.update_data()
+        self.update_data()
 
     def on_new_active_document(self, workspace, document):
         self.set_document()
@@ -74,6 +72,8 @@ class DataProvider(Observable):
             self.update_data()
 
     def update_data(self, *params):
+        if self.document == None: return
+
         self.update_integrated_includes()
         self.add_change_code('data_updated')
 

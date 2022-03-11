@@ -44,6 +44,7 @@ class FilesSection(structure_widget.StructureWidget):
 
             if item_num == 0:
                 document = self.data_provider.document
+                self.data_provider.workspace.set_active_document(document)
             else:
                 filename = self.includes[item_num - 1]['filename']
                 document = self.data_provider.workspace.open_document_by_filename(filename)
