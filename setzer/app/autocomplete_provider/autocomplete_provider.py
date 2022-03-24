@@ -75,7 +75,7 @@ class AutocompleteProvider(object):
         self.parse_included_files()
         GObject.timeout_add(2000, self.parse_included_files)
 
-    def get_items_for_completion_window(self, current_word, last_tabbed_command):
+    def get_items_for_completion_window(self, current_word, last_tabbed_command=None):
         items = list()
 
         items_all = self.get_items(current_word)
@@ -98,7 +98,7 @@ class AutocompleteProvider(object):
 
         return items
 
-    def get_begin_end_items(self, word, last_tabbed_command):
+    def get_begin_end_items(self, word, last_tabbed_command=None):
         try: items_all = self.static_begin_end_proposals[word.lower()]
         except KeyError: items = list()
         else:

@@ -145,7 +145,7 @@ class DocumentAutocompleteView(Gtk.VBox):
 
     def update_position(self):
         start_iter = self.content.source_buffer.get_iter_at_mark(self.content.source_buffer.get_insert())
-        start_iter.backward_chars(self.model.mode.get_offset())
+        start_iter.backward_chars(self.model.get_current_word_len())
         self.x_position, self.y_position = self.content.get_screen_offsets_by_iter(start_iter)
 
     def update_margins(self):
@@ -170,7 +170,7 @@ class DocumentAutocompleteView(Gtk.VBox):
         self.scrolled_window.set_min_content_width(35 * self.char_width)
 
     def update_visibility(self):
-        if self.model.mode.will_show and self.position_is_visible() and not self.focus_hide and len(self.model.items) > 0:
+        if self.model.is_visible():
             self.show_all()
         else:
             self.hide()

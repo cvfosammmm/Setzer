@@ -120,7 +120,6 @@ class PreviewPresenter(object):
             ctx.transform(cairo.Matrix(1, 0, 0, 1, self.preview.layout.get_horizontal_margin(window_width), 0))
 
             offset = self.view.scrolled_window.get_vadjustment().get_value()
-            view_width = self.view.scrolled_window.get_allocated_width()
             view_height = self.view.scrolled_window.get_allocated_height()
             additional_height = ctx.get_target().get_height() - view_height
             additional_pages = additional_height // self.preview.layout.page_height + 2
