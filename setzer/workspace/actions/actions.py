@@ -405,7 +405,7 @@ class Actions(object):
 
     @_assert_has_active_document
     def insert_symbol(self, action, parameter):
-        self.workspace.get_active_document().content.insert_text_at_cursor(parameter[0])
+        self.workspace.get_active_document().content.insert_text_at_cursor_indent_and_select_dot(parameter[0])
         self.workspace.get_active_document().content.scroll_cursor_onscreen()
 
     @_assert_has_active_document

@@ -84,46 +84,6 @@ class DocumentController(object):
                 self.document.content.paste()
                 return True
 
-        if not keypress_handled and event.keyval in tab_keyvals:
-            if event.state & modifiers == 0:
-                buffer = self.document.content.source_buffer
-                insert = buffer.get_iter_at_mark(buffer.get_insert())
-                insert.forward_chars(1)
-                limit_iter = insert.copy()
-                limit_iter.forward_lines(3)
-                limit_iter.backward_chars(1)
-                result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
-                if result != None:
-                    buffer.place_cursor(result[0])
-                    buffer.select_range(result[0], result[1])
-                    self.document.content.scroll_cursor_onscreen()
-                    return True
-                
-                insert.backward_chars(1)
-                result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
-                if result != None:
-                    buffer.select_range(result[0], result[1])
-                    self.document.content.scroll_cursor_onscreen()
-                    return True
-            elif event.state & modifiers == Gdk.ModifierType.SHIFT_MASK:
-                buffer = self.document.content.source_buffer
-                insert = buffer.get_iter_at_mark(buffer.get_insert())
-                limit_iter = insert.copy()
-                limit_iter.backward_lines(3)
-                result = insert.backward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
-                if result != None:
-                    buffer.select_range(result[0], result[1])
-                    self.document.content.scroll_cursor_onscreen()
-                    return True
-
-                insert.forward_chars(1)
-                result = insert.backward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
-                if result != None:
-                    buffer.select_range(result[0], result[1])
-                    self.document.content.scroll_cursor_onscreen()
-                    return True
-        return False
-
     def save_date_loop(self):
         if self.document.filename == None: return True
         if self.document.deleted_on_disk_dialog_shown_after_last_save: return True

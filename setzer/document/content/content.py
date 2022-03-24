@@ -30,7 +30,6 @@ import math
 
 from setzer.app.service_locator import ServiceLocator
 from setzer.helpers.observable import Observable
-import setzer.helpers.timer as timer
 
 
 class Content(Observable):
@@ -45,22 +44,12 @@ class Content(Observable):
         self.source_view = GtkSource.View.new_with_buffer(self.source_buffer)
         self.source_language_manager = ServiceLocator.get_source_language_manager()
         self.source_style_scheme_manager = ServiceLocator.get_source_style_scheme_manager()
-
         if language == 'bibtex': self.source_language = self.source_language_manager.get_language('bibtex')
         else: self.source_language = self.source_language_manager.get_language('latex')
-
         self.source_buffer.set_language(self.source_language)
         self.update_syntax_scheme()
 
-        self.color_manager = ServiceLocator.get_color_manager()
-        self.font_manager = ServiceLocator.get_font_manager()
-
-        options = self.settings.get_source_buffer_options()
-        self.tab_width = options['tab_width']
-        self.spaces_instead_of_tabs = options['spaces_instead_of_tabs']
-
         self.scroll_to = None
-
         self.insert_position = 0
 
         self.synctex_tag_count = 0
@@ -82,15 +71,10 @@ class Content(Observable):
         self.undo_manager = self.source_buffer.get_undo_manager()
         self.undo_manager.connect('can-undo-changed', self.on_can_undo_changed)
         self.undo_manager.connect('can-redo-changed', self.on_can_redo_changed)
-
         self.settings.connect('settings_changed', self.on_settings_changed)
 
     def on_settings_changed(self, settings, parameter):
         section, item, value = parameter
-        if (section, item) == ('preferences', 'tab_width'):
-            self.tab_width = self.settings.get_value('preferences', 'tab_width')
-        if (section, item) == ('preferences', 'spaces_instead_of_tabs'):
-            self.spaces_instead_of_tabs = self.settings.get_value('preferences', 'spaces_instead_of_tabs')
 
         if (section, item) in [('preferences', 'syntax_scheme'), ('preferences', 'syntax_scheme_dark_mode')]:
             self.update_syntax_scheme()
@@ -166,7 +150,6 @@ class Content(Observable):
     def get_can_redo(self):
         return self.undo_manager.can_redo()
 
-    #@timer.timer
     def update_indentation_tags(self):
         if self.indentation_update != None:
             start_iter = self.source_buffer.get_iter_at_line(self.indentation_update['line_start'])
@@ -178,7 +161,7 @@ class Content(Observable):
             for count, line in enumerate(text.splitlines()):
                 for tag in start_iter.get_tags():
                     self.source_buffer.remove_tag(tag, start_iter, end_iter)
-                number_of_characters = len(line.replace('\t', ' ' * self.tab_width)) - len(line.lstrip())
+                number_of_characters = len(line.replace('\t', ' ' * self.settings.get_value('preferences', 'tab_width'))) - len(line.lstrip())
                 if number_of_characters > 0:
                     end_iter = start_iter.copy()
                     end_iter.forward_chars(1)
@@ -192,7 +175,8 @@ class Content(Observable):
             tag = self.indentation_tags[number_of_characters]
         except KeyError:
             tag = self.source_buffer.create_tag('indentation-' + str(number_of_characters))
-            tag.set_property('indent', -1 * number_of_characters * self.font_manager.get_char_width(' '))
+            font_manager = ServiceLocator.get_font_manager()
+            tag.set_property('indent', -1 * number_of_characters * font_manager.get_char_width(' '))
             self.indentation_tags[number_of_characters] = tag
         return tag
 
@@ -200,29 +184,56 @@ class Content(Observable):
         end_iter = self.source_buffer.get_end_iter()
         result = end_iter.backward_search('\\end{document}', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
         if result != None:
-            self.insert_text_at_iter(result[0], '''
+            self.source_buffer.place_cursor(result[0])
+            self.insert_text_at_cursor_and_select_dot('''
 ''' + text + '''
 
-''', False)
+''')
         else:
-            self.insert_text_at_cursor(text)
+            self.insert_text_at_cursor_indent_and_select_dot(text)
 
-    def insert_text(self, line_number, offset, text, indent_lines=True):
-        insert_iter = self.source_buffer.get_iter_at_line_offset(line_number, offset)
-        self.insert_text_at_iter(insert_iter, text, indent_lines)
-
-    def insert_text_at_iter(self, insert_iter, text, indent_lines=True):
-        self.source_buffer.place_cursor(insert_iter)
-        self.insert_text_at_cursor(text, indent_lines)
-
-    def insert_text_at_cursor(self, text, indent_lines=True, select_dot=True):
+    def insert_text_at_cursor_indent_and_select_dot(self, text):
         self.source_buffer.begin_user_action()
+        text = self.replace_tabs_with_spaces_if_set(text)
+        text = self.replace_first_dot_with_selection(text)
+        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        text = self.indent_text_with_whitespace_at_iter(text, insert_iter)
 
-        # replace tabs with spaces, if set in preferences
-        if self.spaces_instead_of_tabs:
-            number_of_spaces = self.tab_width
+        self.insert_text_at_cursor_no_user_action(text)
+        self.select_nth_dot_before_cursor_for_n_dots_in_text(text)
+        self.source_buffer.end_user_action()
+
+    def select_nth_dot_before_cursor_for_n_dots_in_text(self, text):
+        dotindex = text.find('•')
+        if dotindex > -1:
+            start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+            start_iter.backward_chars(abs(dotindex - len(text)))
+            bound = start_iter.copy()
+            bound.forward_chars(1)
+            self.source_buffer.select_range(start_iter, bound)
+
+    def insert_text_at_cursor_and_select_dot(self, text):
+        self.source_buffer.begin_user_action()
+        text = self.replace_tabs_with_spaces_if_set(text)
+        text = self.replace_first_dot_with_selection(text)
+        self.insert_text_at_cursor_no_user_action(text)
+        self.select_nth_dot_before_cursor_for_n_dots_in_text(text)
+        self.source_buffer.end_user_action()
+
+    def insert_text_at_cursor(self, text):
+        self.source_buffer.begin_user_action()
+        text = self.replace_tabs_with_spaces_if_set(text)
+        text = self.replace_first_dot_with_selection(text)
+        self.insert_text_at_cursor_no_user_action(text)
+        self.source_buffer.end_user_action()
+
+    def replace_tabs_with_spaces_if_set(self, text):
+        if self.settings.get_value('preferences', 'spaces_instead_of_tabs'):
+            number_of_spaces = self.settings.get_value('preferences', 'tab_width')
             text = text.replace('\t', ' ' * number_of_spaces)
+        return text
 
+    def replace_first_dot_with_selection(self, text):
         dotcount = text.count('•')
         insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         bounds = self.source_buffer.get_selection_bounds()
@@ -233,126 +244,44 @@ class Content(Observable):
                 selection = self.source_buffer.get_text(bounds[0], bounds[1], True)
                 if len(selection) > 0:
                     text = text.replace('•', selection, 1)
+        return text
 
-        if indent_lines:
-            line_iter = self.source_buffer.get_iter_at_line(insert_iter.get_line())
-            ws_line = self.source_buffer.get_text(line_iter, insert_iter, False)
-            lines = text.split('\n')
-            ws_number = len(ws_line) - len(ws_line.lstrip())
-            whitespace = ws_line[:ws_number]
-            final_text = ''
-            for no, line in enumerate(lines):
-                if no != 0:
-                    final_text += '\n' + whitespace
-                final_text += line
-        else:
-            final_text = text
-
+    def insert_text_at_cursor_no_user_action(self, text):
         self.source_buffer.delete_selection(False, False)
-        self.source_buffer.insert_at_cursor(final_text)
+        self.source_buffer.insert_at_cursor(text)
 
-        if select_dot:
-            dotindex = final_text.find('•')
-            if dotcount > 0:
-                selection_len = len(selection) if dotcount == 1 else 0
-                start = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-                start.backward_chars(abs(dotindex + selection_len - len(final_text)))
-                self.source_buffer.place_cursor(start)
-                end = start.copy()
-                end.forward_char()
-                self.source_buffer.select_range(start, end)
-
-        self.source_buffer.end_user_action()
-
-    def insert_template(self, template_start, template_end):
+    def replace_range_and_select_dot(self, start_iter, end_iter, text):
         self.source_buffer.begin_user_action()
-
-        bounds = self.source_buffer.get_bounds()
-        text = self.source_buffer.get_text(bounds[0], bounds[1], True)
-        line_count_before_insert = self.source_buffer.get_line_count()
-
-        # replace tabs with spaces, if set in preferences
-        if self.settings.get_value('preferences', 'spaces_instead_of_tabs'):
-            number_of_spaces = self.settings.get_value('preferences', 'tab_width')
-            template_start = template_start.replace('\t', ' ' * number_of_spaces)
-            template_end = template_end.replace('\t', ' ' * number_of_spaces)
-
-        bounds = self.source_buffer.get_bounds()
-        self.source_buffer.insert(bounds[0], template_start)
-        bounds = self.source_buffer.get_bounds()
-        self.source_buffer.insert(bounds[1], template_end)
-
-        bounds = self.source_buffer.get_bounds()
-        bounds[0].forward_chars(len(template_start))
-        self.source_buffer.place_cursor(bounds[0])
-
-        self.source_buffer.end_user_action()
-        self.source_buffer.begin_user_action()
-
-        if len(text.strip()) > 0:
-            note = _('''% NOTE: The content of your document has been commented out
-% by the wizard. Just do a CTRL+Z (undo) to put it back in
-% or remove the "%" before each line you want to keep.
-% You can remove this note as well.
-% 
-''')
-            note_len = len(note)
-            note_number_of_lines = note.count('\n')
-            offset = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_line()
-            self.source_buffer.insert(self.source_buffer.get_iter_at_line(offset), note)
-            for line_number in range(offset + note_number_of_lines, line_count_before_insert + offset + note_number_of_lines):
-                self.source_buffer.insert(self.source_buffer.get_iter_at_line(line_number), '% ')
-            insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-            insert_iter.backward_chars(note_len + 2)
-            self.source_buffer.place_cursor(insert_iter)
-
+        self.replace_range_no_user_action(start_iter, end_iter, text)
+        self.select_nth_dot_before_cursor_for_n_dots_in_text(text)
         self.source_buffer.end_user_action()
 
-    def replace_range_by_offset_and_length(self, offset, length, text, indent_lines=True, select_dot=True):
-        start_iter = self.source_buffer.get_iter_at_offset(offset)
-        end_iter = self.source_buffer.get_iter_at_offset(offset + length)
-        self.replace_range(start_iter, end_iter, text, indent_lines, select_dot)
-
-    def replace_range(self, start_iter, end_iter, text, indent_lines=True, select_dot=True):
-        self.source_buffer.begin_user_action()
-        self.replace_range_no_user_action(start_iter, end_iter, text, indent_lines, select_dot)
-        self.source_buffer.end_user_action()
-
-    def replace_range_no_user_action(self, start_iter, end_iter, text, indent_lines=True, select_dot=True):
-        if indent_lines:
-            line_iter = self.source_buffer.get_iter_at_line(start_iter.get_line())
-            ws_line = self.source_buffer.get_text(line_iter, start_iter, False)
-            lines = text.split('\n')
-            ws_number = len(ws_line) - len(ws_line.lstrip())
-            whitespace = ws_line[:ws_number]
-            final_text = ''
-            for no, line in enumerate(lines):
-                if no != 0:
-                    final_text += '\n' + whitespace
-                final_text += line
-        else:
-            final_text = text
-
+    def replace_range_no_user_action(self, start_iter, end_iter, text):
         self.source_buffer.delete(start_iter, end_iter)
-        self.source_buffer.insert(start_iter, final_text)
+        self.source_buffer.insert(start_iter, text)
 
-        if select_dot:
-            dotindex = final_text.find('•')
-            if dotindex > -1:
-                start_iter.backward_chars(abs(dotindex - len(final_text)))
-                bound = start_iter.copy()
-                bound.forward_chars(1)
-                self.source_buffer.select_range(start_iter, bound)
+    def indent_text_with_whitespace_at_iter(self, text, start_iter):
+        line_iter = self.source_buffer.get_iter_at_line(start_iter.get_line())
+        ws_line = self.source_buffer.get_text(line_iter, start_iter, False)
+        lines = text.split('\n')
+        ws_number = len(ws_line) - len(ws_line.lstrip())
+        whitespace = ws_line[:ws_number]
+        final_text = ''
+        for no, line in enumerate(lines):
+            if no != 0:
+                final_text += '\n' + whitespace
+            final_text += line
+        return final_text
 
     def insert_before_after(self, before, after):
         bounds = self.source_buffer.get_selection_bounds()
 
         if len(bounds) > 1:
             text = before + self.source_buffer.get_text(*bounds, 0) + after
-            self.replace_range(bounds[0], bounds[1], text)
+            self.replace_range_and_select_dot(bounds[0], bounds[1], text)
         else:
             text = before + '•' + after
-            self.insert_text_at_cursor(text)
+            self.insert_text_at_cursor_indent_and_select_dot(text)
 
     def comment_uncomment(self):
         self.source_buffer.begin_user_action()
@@ -401,28 +330,6 @@ class Content(Observable):
         end_iter.backward_char()
         return self.source_buffer.get_text(start_iter, end_iter, False)
 
-    def get_latex_command_at_cursor(self):
-        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        limit_iter = insert_iter.copy()
-        limit_iter.backward_chars(50)
-        word_start_iter = insert_iter.copy()
-        result = word_start_iter.backward_search('\\', Gtk.TextSearchFlags.TEXT_ONLY, limit_iter)
-        if result != None:
-            word_start_iter = result[0]
-        word = word_start_iter.get_slice(insert_iter)
-        return word
-
-    def get_latex_command_at_cursor_offset(self):
-        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        limit_iter = insert_iter.copy()
-        limit_iter.backward_chars(50)
-        word_start_iter = insert_iter.copy()
-        result = word_start_iter.backward_search('\\', Gtk.TextSearchFlags.TEXT_ONLY, limit_iter)
-        if result != None:
-            word_start_iter = result[0]
-            return word_start_iter.get_offset()
-        return None
-
     def overwrite_chars_at_cursor(self, text):
         start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
         end_iter = start_iter.copy()
@@ -431,68 +338,6 @@ class Content(Observable):
         self.source_buffer.delete(start_iter, end_iter)
         self.source_buffer.insert_at_cursor(text)
         self.source_buffer.end_user_action()
-
-    def replace_latex_command_at_cursor(self, text, dotlabels, is_full_command=False):
-        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        current_word = self.get_latex_command_at_cursor()
-        start_iter = insert_iter.copy()
-        start_iter.backward_chars(len(current_word))
-
-        if is_full_command and text.startswith('\\begin'):
-            end_command = text.replace('\\begin', '\\end')
-            end_command_bracket_position = end_command.find('}')
-            if end_command_bracket_position:
-                end_command = end_command[:end_command_bracket_position + 1]
-            text += '\n\t•\n' + end_command
-            if self.spaces_instead_of_tabs:
-                number_of_spaces = self.tab_width
-                text = text.replace('\t', ' ' * number_of_spaces)
-            dotlabels += 'content###'
-            if end_command.find('•') >= 0:
-                dotlabels += 'environment###'
-
-            line_iter = self.source_buffer.get_iter_at_line(start_iter.get_line())
-            ws_line = self.source_buffer.get_text(line_iter, start_iter, False)
-            lines = text.split('\n')
-            ws_number = len(ws_line) - len(ws_line.lstrip())
-            whitespace = ws_line[:ws_number]
-            text = ''
-            for no, line in enumerate(lines):
-                if no != 0:
-                    text += '\n' + whitespace
-                text += line
-
-        parts = text.split('•')
-        if len(parts) == 1:
-            orig_text = self.source_buffer.get_text(start_iter, insert_iter, False)
-            if parts[0].startswith(orig_text):
-                self.source_buffer.insert_at_cursor(parts[0][len(orig_text):])
-            else:
-                self.replace_range(start_iter, insert_iter, parts[0], indent_lines=True, select_dot=True)
-        else:
-            self.source_buffer.begin_user_action()
-
-            self.source_buffer.delete(start_iter, insert_iter)
-            insert_offset = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_offset()
-            count = len(parts)
-            select_dot_offset = -1
-            for part in parts:
-                insert_iter = self.source_buffer.get_iter_at_offset(insert_offset)
-                insert_offset += len(part)
-                self.source_buffer.insert(insert_iter, part)
-                if count > 1:
-                    insert_iter = self.source_buffer.get_iter_at_offset(insert_offset)
-                    self.source_buffer.insert_with_tags(insert_iter, '•', self.placeholder_tag)
-                    if select_dot_offset == -1:
-                        select_dot_offset = insert_offset
-                    insert_offset += 1
-                count -= 1
-            select_dot_iter = self.source_buffer.get_iter_at_offset(select_dot_offset)
-            bound = select_dot_iter.copy()
-            bound.forward_chars(1)
-            self.source_buffer.select_range(select_dot_iter, bound)
-
-            self.source_buffer.end_user_action()
 
     def get_line_at_cursor(self):
         return self.get_line(self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_line())
@@ -585,7 +430,8 @@ class Content(Observable):
     def add_synctex_tag(self, start_iter, end_iter):
         self.source_buffer.place_cursor(start_iter)
         self.synctex_tag_count += 1
-        self.source_buffer.create_tag('synctex_highlight-' + str(self.synctex_tag_count), background_rgba=self.color_manager.get_rgba(0.976, 0.941, 0.420, 0.6), background_full_height=True)
+        color_manager = ServiceLocator.get_color_manager()
+        self.source_buffer.create_tag('synctex_highlight-' + str(self.synctex_tag_count), background_rgba=color_manager.get_rgba(0.976, 0.941, 0.420, 0.6), background_full_height=True)
         tag = self.source_buffer.get_tag_table().lookup('synctex_highlight-' + str(self.synctex_tag_count))
         self.source_buffer.apply_tag(tag, start_iter, end_iter)
         if not self.synctex_highlight_tags:
@@ -630,7 +476,8 @@ class Content(Observable):
             if time_factor > 1.5:
                 if time_factor <= 1.75:
                     opacity_factor = int(self.ease(1 - (time_factor - 1.5) * 4) * 20)
-                    item['tag'].set_property('background-rgba', self.color_manager.get_rgba(0.976, 0.941, 0.420, opacity_factor * 0.03))
+                    color_manager = ServiceLocator.get_color_manager()
+                    item['tag'].set_property('background-rgba', color_manager.get_rgba(0.976, 0.941, 0.420, opacity_factor * 0.03))
                 else:
                     start = self.source_buffer.get_start_iter()
                     end = self.source_buffer.get_end_iter()
@@ -658,7 +505,8 @@ class Content(Observable):
         return self.source_buffer.get_iter_at_offset(offset).get_line()
 
     def get_screen_offsets_by_iter(self, text_iter):
-        line_height = self.font_manager.get_line_height()
+        font_manager = ServiceLocator.get_font_manager()
+        line_height = font_manager.get_line_height()
         iter_location = self.source_view.get_iter_location(text_iter)
         gutter = self.source_view.get_window(Gtk.TextWindowType.LEFT)
 
@@ -714,7 +562,8 @@ class Content(Observable):
         iter_position = self.source_view.get_iter_location(text_iter).y
         end_yrange = self.source_view.get_line_yrange(self.source_buffer.get_end_iter())
         buffer_height = end_yrange.y + end_yrange.height
-        line_height = self.font_manager.get_line_height()
+        font_manager = ServiceLocator.get_font_manager()
+        line_height = font_manager.get_line_height()
         window_offset = self.source_view.get_visible_rect().y
         window_height = self.source_view.get_visible_rect().height
         gap = min(math.floor(max((visible_lines - 2), 0) / 2), 5)
@@ -754,7 +603,8 @@ class Content(Observable):
     def ease(self, time): return (time - 1)**3 + 1
 
     def get_number_of_visible_lines(self):
-        line_height = self.font_manager.get_line_height()
+        font_manager = ServiceLocator.get_font_manager()
+        line_height = font_manager.get_line_height()
         return math.floor(self.source_view.get_visible_rect().height / line_height)
 
     def add_packages(self, packages):
@@ -774,15 +624,17 @@ class Content(Observable):
             insert_iter = self.source_buffer.get_iter_at_offset(max_end)
             if not insert_iter.ends_line():
                 insert_iter.forward_to_line_end()
-            self.insert_text_at_iter(insert_iter, '\n' + text)
+            self.source_buffer.place_cursor(insert_iter)
+            self.insert_text_at_cursor_indent_and_select_dot('\n' + text)
         else:
             end_iter = self.source_buffer.get_end_iter()
             result = end_iter.backward_search('\\documentclass', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
             if result != None:
                 result[0].forward_to_line_end()
-                self.insert_text_at_iter(result[0], '\n' + text)
+                self.source_buffer.place_cursor(result[0])
+                self.insert_text_at_cursor_indent_and_select_dot('\n' + text)
             else:
-                self.insert_text_at_cursor(text)
+                self.insert_text_at_cursor_indent_and_select_dot(text)
 
     def remove_packages(self, packages):
         packages_dict = self.document.get_package_details()

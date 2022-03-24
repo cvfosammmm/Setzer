@@ -20,6 +20,9 @@ import time
 import pickle
 
 from setzer.document.document import Document
+from setzer.document.document_latex import DocumentLaTeX
+from setzer.document.document_bibtex import DocumentBibTeX
+from setzer.document.document_other import DocumentOther
 from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
@@ -139,28 +142,21 @@ class Workspace(Observable):
         self.add_change_code('document_removed', document)
 
     def create_latex_document(self):
-        document = Document('latex')
-        document.add_latex_only_modules()
-        return document
+        return DocumentLaTeX()
 
     def create_bibtex_document(self):
-        return Document('bibtex')
+        return DocumentBibTeX()
 
-    def create_latex_cls_document(self):
-        return Document('latex_cls')
-
-    def create_latex_sty_document(self):
-        return Document('latex_sty')
+    def create_other_document(self):
+        return DocumentOther()
 
     def create_document_from_filename(self, filename):
         if filename[-4:] == '.tex':
             document = self.create_latex_document()
         elif filename[-4:] == '.bib':
             document = self.create_bibtex_document()
-        elif filename[-4:] == '.cls':
-            document = self.create_latex_cls_document()
-        elif filename[-4:] == '.sty':
-            document = self.create_latex_sty_document()
+        elif filename[-4:] in ['.cls', '.sty']:
+            document = self.create_other_document()
         else:
             return None
         document.set_filename(filename)

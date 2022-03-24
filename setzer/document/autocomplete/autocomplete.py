@@ -97,30 +97,6 @@ class Autocomplete(object):
 
             self.update_matching_block(offset, word_len, full_word)
 
-    def update_matching_block(self, offset, word_len, full_word):
-        self.waiting_for_block_update = True
-
-        if offset == None or word_len == None: return
-
-        self.source_buffer.begin_user_action()
-        mark1 = Gtk.TextMark.new('mark1-' + str(time.time()), True)
-        mark2 = Gtk.TextMark.new('mark2-' + str(time.time()), False)
-        start_iter = self.source_buffer.get_iter_at_offset(offset)
-        end_iter = self.source_buffer.get_iter_at_offset(offset + word_len)
-        self.source_buffer.add_mark(mark1, start_iter)
-        self.source_buffer.add_mark(mark2, end_iter)
-        GLib.idle_add(self.replace_text_between_marks, full_word, mark1, mark2)
-
-    def replace_text_between_marks(self, text, mark1, mark2):
-        self.waiting_for_block_update = False
-
-        start_iter = self.source_buffer.get_iter_at_mark(mark1)
-        end_iter = self.source_buffer.get_iter_at_mark(mark2)
-        self.content.replace_range_no_user_action(start_iter, end_iter, text, indent_lines=False, select_dot=False)
-        self.source_buffer.delete_mark(mark1)
-        self.source_buffer.delete_mark(mark2)
-        self.source_buffer.end_user_action()
-
     def on_buffer_changed(self, content, buffer):
         if self.waiting_for_block_update: return
 
@@ -137,39 +113,6 @@ class Autocomplete(object):
         self.update_state_position()
         self.update_items()
         self.update_view()
-
-    def update_items(self):
-        if self.state['position'] in ['begin_end_completable', 'begin_end_not_completable']:
-            current_word = self.get_current_word()
-            self.items = self.provider.get_begin_end_items(current_word, self.last_tabbed_command)
-            self.populate(len(current_word))
-        elif self.state['position'] == 'ends_completable_word':
-            current_word = self.content.get_latex_command_at_cursor()
-            self.items = self.provider.get_items_for_completion_window(current_word, self.last_tabbed_command)
-            self.populate(len(current_word))
-
-    def update_view(self):
-        self.view.update_position()
-        self.view.update_visibility()
-        self.view.update_margins()
-
-    def get_current_word(self):
-        if self.state['position'] in ['begin_end_completable', 'begin_end_not_completable']:
-            cursor_offset = self.content.get_cursor_offset()
-            start_iter = self.source_buffer.get_iter_at_offset(self.start_offset)
-            cursor_iter = self.source_buffer.get_iter_at_offset(cursor_offset)
-            return self.source_buffer.get_text(start_iter, cursor_iter, False)
-        elif self.state['position'] == 'ends_completable_word':
-            return self.content.get_latex_command_at_cursor()
-        else:
-            return None
-
-    def get_current_word_len(self):
-        current_word = self.get_current_word()
-        if current_word != None:
-            return len(current_word)
-        else:
-            return 0
 
     def on_keypress(self, event):
         ''' returns whether the keypress has been handled. '''
@@ -225,6 +168,65 @@ class Autocomplete(object):
         if event.keyval in tab_keyvals:
             if event.state & modifiers == 0:
                 return self.on_tab_press()
+            elif event.state & modifiers == Gdk.ModifierType.SHIFT_MASK:
+                return self.on_shift_tab_press()
+
+    def update_matching_block(self, offset, word_len, full_word):
+        self.waiting_for_block_update = True
+
+        if offset == None or word_len == None: return
+
+        self.source_buffer.begin_user_action()
+        mark1 = Gtk.TextMark.new('mark1-' + str(time.time()), True)
+        mark2 = Gtk.TextMark.new('mark2-' + str(time.time()), False)
+        start_iter = self.source_buffer.get_iter_at_offset(offset)
+        end_iter = self.source_buffer.get_iter_at_offset(offset + word_len)
+        self.source_buffer.add_mark(mark1, start_iter)
+        self.source_buffer.add_mark(mark2, end_iter)
+        GLib.idle_add(self.replace_text_between_marks, full_word, mark1, mark2)
+
+    def replace_text_between_marks(self, text, mark1, mark2):
+        self.waiting_for_block_update = False
+
+        start_iter = self.source_buffer.get_iter_at_mark(mark1)
+        end_iter = self.source_buffer.get_iter_at_mark(mark2)
+        self.content.replace_range_no_user_action(start_iter, end_iter, text)
+        self.source_buffer.delete_mark(mark1)
+        self.source_buffer.delete_mark(mark2)
+        self.source_buffer.end_user_action()
+
+    def update_items(self):
+        if self.state['position'] in ['begin_end_completable', 'begin_end_not_completable']:
+            current_word = self.get_current_word()
+            self.items = self.provider.get_begin_end_items(current_word, self.last_tabbed_command)
+            self.populate(len(current_word))
+        elif self.state['position'] == 'ends_completable_word':
+            current_word = self.get_latex_command_at_cursor()
+            self.items = self.provider.get_items_for_completion_window(current_word, self.last_tabbed_command)
+            self.populate(len(current_word))
+
+    def update_view(self):
+        self.view.update_position()
+        self.view.update_visibility()
+        self.view.update_margins()
+
+    def get_current_word(self):
+        if self.state['position'] in ['begin_end_completable', 'begin_end_not_completable']:
+            cursor_offset = self.content.get_cursor_offset()
+            start_iter = self.source_buffer.get_iter_at_offset(self.start_offset)
+            cursor_iter = self.source_buffer.get_iter_at_offset(cursor_offset)
+            return self.source_buffer.get_text(start_iter, cursor_iter, False)
+        elif self.state['position'] == 'ends_completable_word':
+            return self.get_latex_command_at_cursor()
+        else:
+            return None
+
+    def get_current_word_len(self):
+        current_word = self.get_current_word()
+        if current_word != None:
+            return len(current_word)
+        else:
+            return 0
 
     def on_tab_press(self):
         if self.state['position'] in ['begin_end_completable', 'ends_completable_word']:
@@ -248,7 +250,7 @@ class Autocomplete(object):
                         if i >= 1:
                             text = (command['command'])[len(current_word):len(current_word) + i]
                             self.last_tabbed_command = command['command'][1:]
-                            self.content.insert_text_at_cursor(text, indent_lines=False, select_dot=False)
+                            self.content.insert_text_at_cursor(text)
                             self.content.scroll_cursor_onscreen()
                             return True
                         else:
@@ -262,14 +264,14 @@ class Autocomplete(object):
                             else:
                                 text = (command['command'])[len(current_word):len(current_word_new) + i]
                                 self.last_tabbed_command = command['command']
-                                self.content.insert_text_at_cursor(text, indent_lines=False, select_dot=False)
+                                self.content.insert_text_at_cursor(text)
                                 self.content.scroll_cursor_onscreen()
                                 return True
                     if self.state['position'] == 'ends_completable_word':
                         if i >= 1:
                             text = (command['command'])[:len(current_word) + i]
                             self.last_tabbed_command = command['command'][1:]
-                            self.document.content.replace_latex_command_at_cursor(text, command['dotlabels'])
+                            self.replace_latex_command_at_cursor(text, command['dotlabels'])
                             return True
                         else:
                             current_word_new = (command['command'])[:len(current_word) + 1]
@@ -282,40 +284,83 @@ class Autocomplete(object):
                             else:
                                 text = (command['command'])[:len(current_word_new) + i]
                                 self.last_tabbed_command = command['command']
-                                self.document.content.replace_latex_command_at_cursor(text, command['dotlabels'])
+                                self.replace_latex_command_at_cursor(text, command['dotlabels'])
                                 return True
         else:
-            if self.cursor_unchanged_after_autoclosing_bracket:
-                char_at_cursor = self.content.get_chars_at_cursor(1)
-                if char_at_cursor == '\\':
-                    insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-                    insert_iter.forward_chars(2)
-                    self.source_buffer.place_cursor(insert_iter)
-                    self.cursor_unchanged_after_autoclosing_bracket = False
-                    return True
-                elif char_at_cursor in ['}', ')', ']']:
-                    insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-                    insert_iter.forward_chars(1)
-                    self.source_buffer.place_cursor(insert_iter)
-                    self.cursor_unchanged_after_autoclosing_bracket = False
-                    return True
+            insert = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+            insert.forward_chars(1)
+            limit_iter = insert.copy()
+            limit_iter.forward_lines(3)
+            limit_iter.backward_chars(1)
+            result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
+            if result != None:
+                self.source_buffer.place_cursor(result[0])
+                self.source_buffer.select_range(result[0], result[1])
+                self.content.scroll_cursor_onscreen()
+                return True
+            insert.backward_chars(1)
+            result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
+            if result != None:
+                self.source_buffer.select_range(result[0], result[1])
+                self.content.scroll_cursor_onscreen()
+                return True
 
-            if self.cursor_inside_latex_command_or_at_end():
-                self.activate_if_possible()
-                if self.cursor_at_latex_command_end():
-                    return self.is_active()
-                else:
-                    return True
-            return False
+            chars_at_cursor = self.content.get_chars_at_cursor(2)
+            if chars_at_cursor in ['\\}', '\\)', '\\]']:
+                forward_chars = 2
+            elif chars_at_cursor[0] in ['}', ')', ']']:
+                forward_chars = 1
+            else:
+                forward_chars = 0
+
+            if forward_chars > 0:
+                insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+                insert_iter.forward_chars(forward_chars)
+                self.source_buffer.place_cursor(insert_iter)
+
+                while True:
+                    chars_at_cursor = self.content.get_chars_at_cursor(2)
+                    if chars_at_cursor in ['\\{', '\\(', '\\[']:
+                        forward_chars = 2
+                    elif chars_at_cursor[0] in ['{', '(', '[']:
+                        forward_chars = 1
+                    else:
+                        forward_chars = 0
+                    if forward_chars > 0:
+                        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+                        insert_iter.forward_chars(forward_chars)
+                        self.source_buffer.place_cursor(insert_iter)
+                    else:
+                        break
+                return True
+
+        return False
+
+    def on_shift_tab_press(self):
+        insert = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        limit_iter = insert.copy()
+        limit_iter.backward_lines(3)
+        result = insert.backward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
+        if result != None:
+            self.source_buffer.select_range(result[0], result[1])
+            self.content.scroll_cursor_onscreen()
+            return True
+
+        insert.forward_chars(1)
+        result = insert.backward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
+        if result != None:
+            self.source_buffer.select_range(result[0], result[1])
+            self.content.scroll_cursor_onscreen()
+            return True
 
     def cursor_at_latex_command_end(self):
-        current_word = self.content.get_latex_command_at_cursor()
+        current_word = self.get_latex_command_at_cursor()
         if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
             return self.content.cursor_ends_word()
         return False
 
     def cursor_inside_latex_command_or_at_end(self):
-        current_word = self.content.get_latex_command_at_cursor()
+        current_word = self.get_latex_command_at_cursor()
         if ServiceLocator.get_regex_object(r'\\(\w*(?:\*){0,1})').fullmatch(current_word):
             return True
         return False
@@ -381,7 +426,7 @@ class Autocomplete(object):
             self.source_buffer.begin_user_action()
             start_iter = self.source_buffer.get_iter_at_offset(self.start_offset)
             end_iter = self.source_buffer.get_iter_at_offset(self.end_offset)
-            self.content.replace_range_no_user_action(start_iter, end_iter, text, indent_lines=False, select_dot=False)
+            self.content.replace_range_no_user_action(start_iter, end_iter, text)
             self.source_buffer.end_user_action()
             self.deactivate()
 
@@ -397,7 +442,7 @@ class Autocomplete(object):
     def insert_begin_end(self, command):
         text = command['command']
         insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        current_word = self.content.get_latex_command_at_cursor()
+        current_word = self.get_latex_command_at_cursor()
         start_iter = insert_iter.copy()
         start_iter.backward_chars(len(current_word))
 
@@ -405,7 +450,7 @@ class Autocomplete(object):
         if replace_previous_command_data[0]:
             self.insert_begin_end_replace(start_iter, insert_iter, replace_previous_command_data)
         else:
-            self.content.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
+            self.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
 
     def insert_begin_end_check_replace(self, insert_iter, text):
         line_part = self.content.get_line(insert_iter.get_line())[insert_iter.get_line_offset():]
@@ -426,7 +471,15 @@ class Autocomplete(object):
         end_iter_begin = insert_iter.copy()
         end_iter_begin.forward_chars(match_object.end())
         start_iter_offset = start_iter_begin.get_offset()
-        self.content.replace_range_no_user_action(start_iter_begin, end_iter_begin, text, indent_lines=False, select_dot=True)
+
+        self.content.replace_range_no_user_action(start_iter_begin, end_iter_begin, text)
+
+        dotindex = text.find('•')
+        if dotindex > -1:
+            start_iter_begin.backward_chars(abs(dotindex - len(text)))
+            bound = start_iter_begin.copy()
+            bound.forward_chars(1)
+            self.source_buffer.select_range(start_iter_begin, bound)
 
         end_iter_offset = start_iter_offset + len(text)
         document_text = self.content.get_text_after_offset(end_iter_offset)
@@ -443,7 +496,7 @@ class Autocomplete(object):
             end_command_bracket_position = end_command.find('}')
             if end_command_bracket_position:
                 end_command = end_command[:end_command_bracket_position + 1]
-            self.content.replace_range_no_user_action(start_iter_end, end_iter_end, end_command, indent_lines=False, select_dot=False)
+            self.content.replace_range_no_user_action(start_iter_end, end_iter_end, end_command)
 
         self.source_buffer.end_user_action()
 
@@ -466,13 +519,13 @@ class Autocomplete(object):
 
         replacement_pattern = self.get_replacement_pattern(text)
         if replacement_pattern == None:
-            self.content.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
+            self.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
         else:
             command_regex = ServiceLocator.get_regex_object(r'.*' + replacement_pattern[1])
             if command_regex.match(text):
                 self.insert_final_replace(text, replacement_pattern)
             else:
-                self.content.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
+                self.replace_latex_command_at_cursor(text, command['dotlabels'], is_full_command=True)
 
     def get_replacement_pattern(self, command):
         buffer = self.content.source_buffer
@@ -546,10 +599,14 @@ class Autocomplete(object):
                     text += '(' + inner_text + ')'
             count += 1
 
-        current_word = self.content.get_latex_command_at_cursor()
+        current_word = self.get_latex_command_at_cursor()
         offset = self.content.get_cursor_offset() - len(current_word)
         length = len(current_word) + match_object.end()
-        self.content.replace_range_by_offset_and_length(offset, length, text, indent_lines=True, select_dot=True)
+        start_iter = self.source_buffer.get_iter_at_offset(offset)
+        end_iter = self.source_buffer.get_iter_at_offset(offset + length)
+
+        text = self.content.indent_text_with_whitespace_at_iter(text, start_iter)
+        self.content.replace_range_and_select_dot(start_iter, end_iter, text)
 
     def activate_if_possible(self):
         if not self.is_active():
@@ -637,12 +694,84 @@ class Autocomplete(object):
         return True
 
     def cursor_ends_completable_word(self):
-        current_word = self.content.get_latex_command_at_cursor()
+        current_word = self.get_latex_command_at_cursor()
         items = self.provider.get_items_for_completion_window(current_word)
 
         if len(items) <= 0: return False
         if items[0]['command'] == current_word: return False
         return True
+
+    def replace_latex_command_at_cursor(self, text, dotlabels, is_full_command=False):
+        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        current_word = self.get_latex_command_at_cursor()
+        start_iter = insert_iter.copy()
+        start_iter.backward_chars(len(current_word))
+
+        if is_full_command and text.startswith('\\begin'):
+            end_command = text.replace('\\begin', '\\end')
+            end_command_bracket_position = end_command.find('}')
+            if end_command_bracket_position:
+                end_command = end_command[:end_command_bracket_position + 1]
+            text += '\n\t•\n' + end_command
+            text = self.content.replace_tabs_with_spaces_if_set(text)
+            dotlabels += 'content###'
+            if end_command.find('•') >= 0:
+                dotlabels += 'environment###'
+
+            line_iter = self.source_buffer.get_iter_at_line(start_iter.get_line())
+            ws_line = self.source_buffer.get_text(line_iter, start_iter, False)
+            lines = text.split('\n')
+            ws_number = len(ws_line) - len(ws_line.lstrip())
+            whitespace = ws_line[:ws_number]
+            text = ''
+            for no, line in enumerate(lines):
+                if no != 0:
+                    text += '\n' + whitespace
+                text += line
+
+        parts = text.split('•')
+        if len(parts) == 1:
+            orig_text = self.source_buffer.get_text(start_iter, insert_iter, False)
+            if parts[0].startswith(orig_text):
+                self.source_buffer.insert_at_cursor(parts[0][len(orig_text):])
+            else:
+                part_indented = self.content.indent_text_with_whitespace_at_iter(parts[0], start_iter)
+                self.content.replace_range_and_select_dot(start_iter, insert_iter, part_indented)
+        else:
+            self.source_buffer.begin_user_action()
+
+            self.source_buffer.delete(start_iter, insert_iter)
+            insert_offset = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_offset()
+            count = len(parts)
+            select_dot_offset = -1
+            for part in parts:
+                insert_iter = self.source_buffer.get_iter_at_offset(insert_offset)
+                insert_offset += len(part)
+                self.source_buffer.insert(insert_iter, part)
+                if count > 1:
+                    insert_iter = self.source_buffer.get_iter_at_offset(insert_offset)
+                    self.source_buffer.insert_with_tags(insert_iter, '•', self.content.placeholder_tag)
+                    if select_dot_offset == -1:
+                        select_dot_offset = insert_offset
+                    insert_offset += 1
+                count -= 1
+            select_dot_iter = self.source_buffer.get_iter_at_offset(select_dot_offset)
+            bound = select_dot_iter.copy()
+            bound.forward_chars(1)
+            self.source_buffer.select_range(select_dot_iter, bound)
+
+            self.source_buffer.end_user_action()
+
+    def get_latex_command_at_cursor(self):
+        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        limit_iter = insert_iter.copy()
+        limit_iter.backward_chars(50)
+        word_start_iter = insert_iter.copy()
+        result = word_start_iter.backward_search('\\', Gtk.TextSearchFlags.TEXT_ONLY, limit_iter)
+        if result != None:
+            word_start_iter = result[0]
+        word = word_start_iter.get_slice(insert_iter)
+        return word
 
     def is_visible(self):
         return self.is_active() and self.state['position'] in ['begin_end_completable', 'ends_completable_word'] and self.view.position_is_visible() and not self.view.focus_hide

@@ -289,7 +289,9 @@ class BibTeXWizard(Dialog):
 
         text += '\n}\n\n'
 
-        self.document.content.insert_text(0, 0, text, False)
+        insert_iter = self.document.content.source_buffer.get_iter_at_line_offset(0, 0)
+        self.document.content.source_buffer.place_cursor(insert_iter)
+        self.document.content.insert_text_at_cursor_and_select_dot(text)
         self.document.content.place_cursor(0)
         self.document.content.scroll_cursor_onscreen()
 

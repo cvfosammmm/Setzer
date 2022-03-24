@@ -17,7 +17,6 @@
 
 import os.path
 
-import setzer.document.content.content as content
 import setzer.document.state_manager.state_manager as state_manager
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
@@ -29,27 +28,17 @@ import setzer.document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_prese
 import setzer.document.spellchecker.spellchecker as spellchecker
 import setzer.document.gutter.gutter as gutter
 import setzer.document.line_numbers.line_numbers as line_numbers
-import setzer.document.preview.preview as preview
-import setzer.document.build_system.build_system as build_system
-import setzer.document.build_widget.build_widget as build_widget
-import setzer.document.autocomplete.autocomplete as autocomplete
-import setzer.document.code_folding.code_folding as code_folding
-import setzer.document.preview.preview as preview
-import setzer.document.parser.parser_dummy as parser_dummy
-import setzer.document.parser.parser_bibtex as parser_bibtex
-import setzer.document.parser.parser_latex as parser_latex
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 
 
 class Document(Observable):
 
-    def __init__(self, document_type):
+    def __init__(self):
         Observable.__init__(self)
 
         self.font_manager = ServiceLocator.get_font_manager()
 
-        self.document_type = document_type
         self.displayname = ''
         self.filename = None
         self.save_date = None
@@ -69,11 +58,7 @@ class Document(Observable):
         self.symbols['packages_detailed'] = dict()
         self.symbols['blocks'] = list()
 
-        self.content = content.Content(self.document_type, self)
-        if self.document_type == 'bibtex': self.parser = parser_bibtex.ParserBibTeX(self)
-        elif self.document_type == 'latex': self.parser = parser_latex.ParserLaTeX(self)
-        else: self.parser = parser_dummy.ParserDummy(self)
-
+    def init_default_modules(self):
         self.view = document_view.DocumentView(self)
         self.gutter = gutter.Gutter(self, self.view)
         self.search = search.Search(self, self.view, self.view.search_bar)
@@ -81,27 +66,14 @@ class Document(Observable):
         self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
         self.context_menu = context_menu.ContextMenu(self, self.view)
         self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
-
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
-
         self.line_numbers = line_numbers.LineNumbers(self, self.view)
-
         self.state_manager = state_manager.StateManager(self)
-
-    def add_latex_only_modules(self):
-        self.preview = preview.Preview(self)
-        self.autocomplete = autocomplete.Autocomplete(self, self.view)
-        self.build_system = build_system.BuildSystem(self)
-        self.build_widget = build_widget.BuildWidget(self)
-        self.code_folding = code_folding.CodeFolding(self)
 
     def set_dark_mode(self, dark_mode):
         self.dark_mode = dark_mode
         self.content.set_use_dark_scheme(dark_mode)
-
-    def get_document_type(self):
-        return self.document_type
 
     def set_filename(self, filename):
         if filename == None:
@@ -186,12 +158,6 @@ class Document(Observable):
         self.is_root = is_root
         self.root_is_set = root_is_set
         self.add_change_code('is_root_changed', is_root)
-
-    def is_latex_document(self):
-        return self.document_type == 'latex'
-
-    def is_bibtex_document(self):
-        return self.document_type == 'bibtex'
 
     def get_is_root(self):
         return self.is_root

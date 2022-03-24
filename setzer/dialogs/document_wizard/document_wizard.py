@@ -81,7 +81,7 @@ class DocumentWizard(Dialog):
 
             document_class = self.current_values['document_class']
             template_start, template_end = eval('self.get_insert_text_' + document_class + '()')
-            self.document.content.insert_template(template_start, template_end)
+            self.insert_template(template_start, template_end)
 
         self.view.dialog.hide()
 
@@ -362,5 +362,50 @@ class DocumentWizard(Dialog):
             if package_name != 'ams' and do_insert:
                 text += '\\usepackage{' + package_name + '}\n'
         return text
+
+    def insert_template(self, template_start, template_end):
+        buffer = self.document.content.source_buffer
+        buffer.begin_user_action()
+
+        bounds = buffer.get_bounds()
+        text = buffer.get_text(bounds[0], bounds[1], True)
+        line_count_before_insert = buffer.get_line_count()
+
+        # replace tabs with spaces, if set in preferences
+        if self.settings.get_value('preferences', 'spaces_instead_of_tabs'):
+            number_of_spaces = self.settings.get_value('preferences', 'tab_width')
+            template_start = template_start.replace('\t', ' ' * number_of_spaces)
+            template_end = template_end.replace('\t', ' ' * number_of_spaces)
+
+        bounds = buffer.get_bounds()
+        buffer.insert(bounds[0], template_start)
+        bounds = buffer.get_bounds()
+        buffer.insert(bounds[1], template_end)
+
+        bounds = buffer.get_bounds()
+        bounds[0].forward_chars(len(template_start))
+        buffer.place_cursor(bounds[0])
+
+        buffer.end_user_action()
+        buffer.begin_user_action()
+
+        if len(text.strip()) > 0:
+            note = _('''% NOTE: The content of your document has been commented out
+% by the wizard. Just do a CTRL+Z (undo) to put it back in
+% or remove the "%" before each line you want to keep.
+% You can remove this note as well.
+% 
+''')
+            note_len = len(note)
+            note_number_of_lines = note.count('\n')
+            offset = buffer.get_iter_at_mark(buffer.get_insert()).get_line()
+            buffer.insert(buffer.get_iter_at_line(offset), note)
+            for line_number in range(offset + note_number_of_lines, line_count_before_insert + offset + note_number_of_lines):
+                buffer.insert(buffer.get_iter_at_line(line_number), '% ')
+            insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+            insert_iter.backward_chars(note_len + 2)
+            buffer.place_cursor(insert_iter)
+
+        buffer.end_user_action()
 
 

@@ -76,7 +76,7 @@ class SymbolsPage(object):
         child = flowbox.get_child_at_pos(event.x, event.y)
 
         if child != None and self.workspace.active_document != None:
-            self.workspace.get_active_document().content.insert_text_at_cursor(self.recent_details[- child.get_index() - 1][1])
+            self.workspace.get_active_document().content.insert_text_at_cursor_indent_and_select_dot(self.recent_details[- child.get_index() - 1][1])
             self.workspace.get_active_document().content.scroll_cursor_onscreen()
             self.add_recent_symbol(self.recent[- child.get_index() - 1])
 
@@ -257,7 +257,7 @@ class SymbolsPage(object):
         child = flowbox.get_child_at_pos(event.x, event.y)
 
         if child != None and self.workspace.active_document != None:
-            self.workspace.get_active_document().content.insert_text_at_cursor(symbols_view.visible_symbols[child.get_index()][1])
+            self.workspace.get_active_document().content.insert_text_at_cursor_indent_and_select_dot(symbols_view.visible_symbols[child.get_index()][1])
             self.workspace.get_active_document().content.scroll_cursor_onscreen()
             self.add_recent_symbol((flowbox.symbol_folder, symbols_view.visible_symbols[child.get_index()][1]))
 
