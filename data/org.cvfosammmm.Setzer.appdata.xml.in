@@ -53,6 +53,11 @@
     </provides>
 
     <releases>
+        <release version="0.4.7" date="2022-3-25">
+            <description>
+                <p translatable="no">Jump over some brackets with tab, ...</p>
+            </description>
+        </release>
         <release version="0.4.6" date="2022-3-8">
             <description>
                 <p translatable="no">Document stats in the sidebar, ...</p>
