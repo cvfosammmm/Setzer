@@ -19,8 +19,6 @@ import gi
 gi.require_version('Poppler', '0.18')
 from gi.repository import Poppler
 
-import _thread as thread
-
 from setzer.helpers.observable import Observable
 from setzer.helpers.timer import timer
 
@@ -30,56 +28,34 @@ class PreviewLinksParser(Observable):
     def __init__(self, preview):
         Observable.__init__(self)
         self.preview = preview
-
-        self.links_lock = thread.allocate_lock()
-        self.links_parsed = True
-        with self.links_lock:
-            self.links = dict()
-        self.links_parser_lock = thread.allocate_lock()
+        self.links = dict()
 
         self.preview.connect('pdf_changed', self.on_pdf_changed)
 
     def on_pdf_changed(self, notifying_object):
         if self.preview.poppler_document != None:
-            with self.links_lock:
-                self.links = dict()
-            self.links_parsed = False
-            thread.start_new_thread(self.update_links, ())
+            self.links = dict()
+            for page_num in range(self.preview.poppler_document.get_n_pages()):
+                self.links[page_num] = None
         else:
-            self.links_parsed = True
             self.links = dict()
 
     def get_links_for_page(self, page_number):
-        with self.links_lock:
-            try:
-                return self.links[page_number]
-            except KeyError:
-                return list()
-
-    #@timer
-    def update_links(self):
-        with self.links_parser_lock:
-            if self.links_parsed: return
-
-            links = dict()
-
-            with open(self.preview.pdf_filename, 'rb') as file:
-                for page_num in range(self.preview.poppler_document.get_n_pages()):
-                    links[page_num] = list()
-
-                    link_mapping_list = self.preview.poppler_document.get_page(page_num).get_link_mapping()
-                    for link_mapping in link_mapping_list:
-                        action = link_mapping.action
-                        area = link_mapping.area
-                        if action.type == Poppler.ActionType.URI:
-                            links[page_num].append([area, action.uri.uri, 'uri'])
-                        elif action.type == Poppler.ActionType.GOTO_DEST:
-                            dest = self.preview.poppler_document.find_dest(action.goto_dest.dest.named_dest)
-                            links[page_num].append([area, dest, 'goto'])
-                        else:
-                            print(action.type)
-            with self.links_lock:
-                self.links = links
-                self.links_parsed = True
+        if page_number in self.links:
+            if self.links[page_number] == None:
+                links = list()
+                link_mapping_list = self.preview.poppler_document.get_page(page_number).get_link_mapping()
+                for link_mapping in link_mapping_list:
+                    action = link_mapping.action
+                    area = link_mapping.area
+                    if action.type == Poppler.ActionType.URI:
+                        links.append([area, action.uri.uri, 'uri'])
+                    elif action.type == Poppler.ActionType.GOTO_DEST:
+                        dest = self.preview.poppler_document.find_dest(action.goto_dest.dest.named_dest)
+                        links.append([area, dest, 'goto'])
+                self.links[page_number] = links
+            return self.links[page_number]
+        else:
+            return list()
 
 
