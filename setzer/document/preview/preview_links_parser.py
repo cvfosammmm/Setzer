@@ -15,11 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from pdfminer.pdfpage import PDFPage
-from pdfminer.pdftypes import PDFObjRef
-import _thread as thread, queue
+import gi
+gi.require_version('Poppler', '0.18')
+from gi.repository import Poppler
+
+import _thread as thread
 
 from setzer.helpers.observable import Observable
+from setzer.helpers.timer import timer
 
 
 class PreviewLinksParser(Observable):
@@ -53,6 +56,7 @@ class PreviewLinksParser(Observable):
             except KeyError:
                 return list()
 
+    #@timer
     def update_links(self):
         with self.links_parser_lock:
             if self.links_parsed: return
@@ -60,52 +64,22 @@ class PreviewLinksParser(Observable):
             links = dict()
 
             with open(self.preview.pdf_filename, 'rb') as file:
-                for page_num, page in enumerate(PDFPage.get_pages(file)):
+                for page_num in range(self.preview.poppler_document.get_n_pages()):
                     links[page_num] = list()
-                    annots_final = self.resolve_annots(page.annots)
-                    for annot in annots_final:
-                        try:
-                            rect = annot['Rect']
-                        except KeyError:
-                            pass
+
+                    link_mapping_list = self.preview.poppler_document.get_page(page_num).get_link_mapping()
+                    for link_mapping in link_mapping_list:
+                        action = link_mapping.action
+                        area = link_mapping.area
+                        if action.type == Poppler.ActionType.URI:
+                            links[page_num].append([area, action.uri.uri, 'uri'])
+                        elif action.type == Poppler.ActionType.GOTO_DEST:
+                            dest = self.preview.poppler_document.find_dest(action.goto_dest.dest.named_dest)
+                            links[page_num].append([area, dest, 'goto'])
                         else:
-                            try:
-                                data = annot['A']
-                            except KeyError:
-                                pass
-                            else:
-                                try:
-                                    named_dest = data['D']
-                                except KeyError:
-                                    pass
-                                else:
-                                    dest = self.preview.poppler_document.find_dest(named_dest.decode('utf-8'))
-                                    links[page_num].append([rect, dest, 'goto'])
-                                try:
-                                    uri = data['URI']
-                                except KeyError:
-                                    pass
-                                else:
-                                    links[page_num].append([rect, uri.decode('utf-8'), 'uri'])
+                            print(action.type)
             with self.links_lock:
                 self.links = links
                 self.links_parsed = True
-
-    def resolve_annots(self, annots):
-        if annots == None: return []
-
-        if type(annots) is PDFObjRef:
-            annots = annots.resolve()
-
-        if type(annots) is dict:
-            return [annots]
-        else:
-            return_value = list()
-            for annot in annots:
-                if type(annots) is dict:
-                    return_value.append(annot)
-                else:
-                    return_value += self.resolve_annots(annot)
-            return return_value
 
 

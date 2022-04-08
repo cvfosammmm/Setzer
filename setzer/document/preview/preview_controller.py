@@ -111,7 +111,7 @@ class PreviewController(object):
         links = self.preview.links_parser.get_links_for_page(page_number)
         y_offset = (self.preview.page_height - y_offset)
         for link in links:
-            if x_offset > link[0][0] and x_offset < link[0][2] and y_offset > link[0][1] and y_offset < link[0][3]:
+            if x_offset > link[0].x1 and x_offset < link[0].x2 and y_offset > link[0].y1 and y_offset < link[0].y2:
                 cursor = self.cursor_pointer
                 break
 
@@ -149,7 +149,7 @@ class PreviewController(object):
             links = self.preview.links_parser.get_links_for_page(page_number)
             y_offset = (self.preview.page_height - y_offset)
             for link in links:
-                if x_offset > link[0][0] and x_offset < link[0][2] and y_offset > link[0][1] and y_offset < link[0][3]:
+                if x_offset > link[0].x1 and x_offset < link[0].x2 and y_offset > link[0].y1 and y_offset < link[0].y2:
                     if link[2] == 'goto':
                         self.preview.scroll_dest_on_screen(link[1])
                         return True
