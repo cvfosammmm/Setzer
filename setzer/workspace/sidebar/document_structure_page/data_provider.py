@@ -67,8 +67,9 @@ class DataProvider(Observable):
                 self.document.content.disconnect('buffer_changed', self.on_buffer_changed)
                 self.document.disconnect('is_root_changed', self.on_is_root_changed)
             self.document = document
-            self.document.content.connect('buffer_changed', self.on_buffer_changed)
-            self.document.connect('is_root_changed', self.on_is_root_changed)
+            if self.document != None:
+                self.document.content.connect('buffer_changed', self.on_buffer_changed)
+                self.document.connect('is_root_changed', self.on_is_root_changed)
             self.update_data()
 
     def update_data(self, *params):
