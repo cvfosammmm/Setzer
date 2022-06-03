@@ -247,6 +247,8 @@ class LaTeXLogParser():
                 filename = self.doc_regex.match(match).group(2).strip()
                 if not filename.startswith('/'):
                     filename = path_helpers.get_abspath(filename, os.path.dirname(tex_filename))
+                else:
+                    filename = os.path.normpath(filename)
                 if not filename == tex_filename:
                     open_brackets = 0
                     char_count = 0
