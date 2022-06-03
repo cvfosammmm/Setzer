@@ -169,7 +169,7 @@ class Workspace(Observable):
 
     def get_document_by_filename(self, filename):
         for document in self.open_documents:
-            if filename == document.get_filename():
+            if os.path.normpath(filename) == os.path.normpath(document.get_filename()):
                 return document
         return None
 
