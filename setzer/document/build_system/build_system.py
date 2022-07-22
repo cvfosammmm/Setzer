@@ -22,6 +22,7 @@ import _thread as thread, queue
 import time
 
 from setzer.app.service_locator import ServiceLocator
+from setzer.dialogs.dialog_locator import DialogLocator
 import setzer.document.build_system.builder.builder_build_latex as builder_build_latex
 import setzer.document.build_system.builder.builder_build_bibtex as builder_build_bibtex
 import setzer.document.build_system.builder.builder_build_biber as builder_build_biber
