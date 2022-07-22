@@ -55,7 +55,7 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
         arguments.append(query.tex_filename)
         try:
             self.process = pexpect.spawn(build_command + ' -output-directory="' + os.path.dirname(query.tex_filename) + '" "' + query.tex_filename + '"', cwd=os.path.dirname(query.tex_filename))
-        except FileNotFoundError:
+        except pexpect.exceptions.ExceptionPexpect:
             self.cleanup_files(query)
             self.throw_build_error(query, 'interpreter_missing', arguments[0])
             return
