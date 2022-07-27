@@ -50,9 +50,9 @@ class MainApplicationController(Gtk.Application):
         self.settings.gtksettings.set_property('gtk-application-prefer-dark-theme', dm_default)
 
         # init static variables
-        ServiceLocator.init_setzer_version('@setzer_version@')
-        ServiceLocator.init_resources_path('@resources_path@')
-        ServiceLocator.init_app_icons_path('@app_icons_path@')
+        ServiceLocator.set_setzer_version('@setzer_version@')
+        ServiceLocator.set_resources_path('@resources_path@')
+        ServiceLocator.set_app_icons_path('@app_icons_path@')
         resources_path = ServiceLocator.get_resources_path()
         app_icons_path = ServiceLocator.get_app_icons_path()
         Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'icons'))
@@ -63,7 +63,7 @@ class MainApplicationController(Gtk.Application):
 
         # init main window, model, dialogs
         self.main_window = view.MainWindow(self)
-        ServiceLocator.init_main_window(self.main_window)
+        ServiceLocator.set_main_window(self.main_window)
 
     def do_open(self, files, number_of_files, hint=""):
         if not self.is_active:
@@ -105,7 +105,7 @@ class MainApplicationController(Gtk.Application):
 
     def activate(self):
         self.workspace = Workspace()
-        ServiceLocator.init_workspace(self.workspace)
+        ServiceLocator.set_workspace(self.workspace)
         ServiceLocator.init_autocomplete_provider(self.workspace)
         DialogLocator.init_dialogs(self.main_window, self.workspace)
 

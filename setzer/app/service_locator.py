@@ -48,13 +48,13 @@ class ServiceLocator(object):
     color_manager = None
     font_manager = None
 
-    def init_main_window(main_window):
+    def set_main_window(main_window):
         ServiceLocator.main_window = main_window
 
     def get_main_window():
         return ServiceLocator.main_window
 
-    def init_workspace(workspace):
+    def set_workspace(workspace):
         ServiceLocator.workspace = workspace
 
     def get_workspace():
@@ -134,19 +134,19 @@ class ServiceLocator(object):
     def get_config_folder():
         return os.path.join(GLib.get_user_config_dir(), 'setzer')
 
-    def init_setzer_version(setzer_version):
+    def set_setzer_version(setzer_version):
         ServiceLocator.setzer_version = setzer_version
 
     def get_setzer_version():
         return ServiceLocator.setzer_version
 
-    def init_resources_path(resources_path):
+    def set_resources_path(resources_path):
         ServiceLocator.resources_path = resources_path
 
     def get_resources_path():
         return ServiceLocator.resources_path
 
-    def init_app_icons_path(app_icons_path):
+    def set_app_icons_path(app_icons_path):
         ServiceLocator.app_icons_path = app_icons_path
 
     def get_app_icons_path():
