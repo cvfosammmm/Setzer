@@ -26,7 +26,7 @@ import time
 import setzer.document.autocomplete.autocomplete_viewgtk as view
 from setzer.app.service_locator import ServiceLocator
 import setzer.helpers.timer as timer
-
+from .autocomplete_provider import AutocompleteProvider
 
 class Autocomplete(object):
 
@@ -43,7 +43,11 @@ class Autocomplete(object):
         self.waiting_for_block_update = False
         self.cursor_unchanged_after_autoclosing_bracket = False
 
-        self.provider = ServiceLocator.get_autocomplete_provider()
+        # set up Autocomplete provider
+        path = ServiceLocator.get_resources_path()
+        workspace = ServiceLocator.get_workspace()
+        pkgs = ServiceLocator.get_packages_dict()
+        self.provider = AutocompleteProvider(path, workspace, pkgs)
 
         self.state = dict()
         self.state['position'] = 'outside'

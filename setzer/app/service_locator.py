@@ -25,7 +25,6 @@ import os, os.path
 import xml.etree.ElementTree as ET
 
 import setzer.app.settings as settingscontroller
-import setzer.app.autocomplete_provider.autocomplete_provider as autocomplete_provider
 import setzer.app.color_manager as color_manager
 import setzer.app.font_manager as font_manager
 import setzer.helpers.popover_menu_builder as popover_menu_builder
@@ -109,15 +108,6 @@ class ServiceLocator(object):
         if ServiceLocator.popover_menu_builder == None:
             ServiceLocator.popover_menu_builder = popover_menu_builder.PopoverMenuBuilder()
         return ServiceLocator.popover_menu_builder
-
-    def init_autocomplete_provider(workspace):
-        path = ServiceLocator.get_resources_path()
-        latex_parser_regex = ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource)\{((?:\s|\w|\:|\.|,)*)\}|\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}')
-        bibtex_parser_regex = ServiceLocator.get_regex_object(r'@(\w+)\{(\w+)')
-        ServiceLocator.autocomplete_provider = autocomplete_provider.AutocompleteProvider(path, workspace, latex_parser_regex, bibtex_parser_regex, ServiceLocator.get_packages_dict())
-
-    def get_autocomplete_provider():
-        return ServiceLocator.autocomplete_provider
 
     def get_packages_dict():
         if ServiceLocator.packages_dict == None:

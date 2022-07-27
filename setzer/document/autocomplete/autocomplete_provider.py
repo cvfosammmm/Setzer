@@ -6,12 +6,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
@@ -30,11 +30,12 @@ import setzer.helpers.timer as timer
 
 class AutocompleteProvider(object):
 
-    def __init__(self, resources_path, workspace, latex_parser_regex, bibtex_parser_regex, packages_dict):
+    latex_parser_regex = re.compile(r'\\(label|include|input|bibliography|addbibresource)\{((?:\s|\w|\:|\.|,)*)\}|\\(usepackage)(?:\[.*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}')
+    bibtex_parser_regex = re.compile(r'@(\w+)\{(\w+)')
+
+    def __init__(self, resources_path, workspace, packages_dict):
         self.workspace = workspace
         self.resources_path = resources_path
-        self.latex_parser_regex = latex_parser_regex
-        self.bibtex_parser_regex = bibtex_parser_regex
         self.packages_dict = packages_dict
 
         self.static_proposals = dict()
