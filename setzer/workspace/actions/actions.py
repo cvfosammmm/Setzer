@@ -51,6 +51,7 @@ class Actions(object):
         self.insert_before_after_action = Gio.SimpleAction.new('insert-before-after', GLib.VariantType('as'))
         self.insert_symbol_action = Gio.SimpleAction.new('insert-symbol', GLib.VariantType('as'))
         self.insert_before_document_end_action = Gio.SimpleAction.new('insert-before-document-end', GLib.VariantType('as'))
+        self.insert_after_packages_action = Gio.SimpleAction.new('insert-after-packages', GLib.VariantType('as'))
         self.document_wizard_action = Gio.SimpleAction.new('show-document-wizard', None)
         self.create_new_bibtex_entry_action = Gio.SimpleAction.new('create-new-bibtex-entry', None)
         self.show_previous_bibtex_entries_action = Gio.SimpleAction.new('show-previous-bibtex-entries', None)
@@ -97,6 +98,7 @@ class Actions(object):
         main_window.add_action(self.insert_before_after_action)
         main_window.add_action(self.insert_symbol_action)
         main_window.add_action(self.insert_before_document_end_action)
+        main_window.add_action(self.insert_after_packages_action)
         main_window.add_action(self.document_wizard_action)
         main_window.add_action(self.create_new_bibtex_entry_action)
         main_window.add_action(self.show_previous_bibtex_entries_action)
@@ -140,6 +142,7 @@ class Actions(object):
         self.insert_before_after_action.connect('activate', self.insert_before_after)
         self.insert_symbol_action.connect('activate', self.insert_symbol)
         self.insert_before_document_end_action.connect('activate', self.insert_before_document_end)
+        self.insert_after_packages_action.connect('activate', self.insert_after_packages)
         self.document_wizard_action.connect('activate', self.start_wizard)
         self.include_bibtex_file_action.connect('activate', self.start_include_bibtex_file_dialog)
         self.include_latex_file_action.connect('activate', self.start_include_latex_file_dialog)
@@ -412,6 +415,12 @@ class Actions(object):
     def insert_before_document_end(self, action, parameter):
         document = self.workspace.get_active_document()
         document.content.insert_before_document_end(parameter[0])
+        document.content.scroll_cursor_onscreen()
+
+    @_assert_has_active_document
+    def insert_after_packages(self, action, parameter):
+        document = self.workspace.get_active_document()
+        document.content.insert_text_after_packages_if_possible(parameter[0])
         document.content.scroll_cursor_onscreen()
 
     @_assert_has_active_document

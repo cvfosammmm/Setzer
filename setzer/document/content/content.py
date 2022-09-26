@@ -614,13 +614,16 @@ class Content(Observable):
             if not first_package: text += '\n'
             text += '\\usepackage{' + packagename + '}'
             first_package = False
-        
+        self.insert_text_after_packages_if_possible(text)
+
+    def insert_text_after_packages_if_possible(self, text):
         package_data = self.document.get_package_details()
         if package_data:
             max_end = 0
-            for package in package_data.items():
-                if package[1].end() > max_end:
-                    max_end = package[1].end()
+            for package in package_data.values():
+                offset, match_obj = package
+                if offset > max_end:
+                    max_end = offset + match_obj.end() - match_obj.start()
             insert_iter = self.source_buffer.get_iter_at_offset(max_end)
             if not insert_iter.ends_line():
                 insert_iter.forward_to_line_end()
@@ -640,10 +643,10 @@ class Content(Observable):
         packages_dict = self.document.get_package_details()
         for package in packages:
             try:
-                match_obj = packages_dict[package]
+                offset, match_obj = packages_dict[package]
             except KeyError: return
-            start_iter = self.source_buffer.get_iter_at_offset(match_obj.start())
-            end_iter = self.source_buffer.get_iter_at_offset(match_obj.end())
+            start_iter = self.source_buffer.get_iter_at_offset(offset)
+            end_iter = self.source_buffer.get_iter_at_offset(offset + match_obj.end() - match_obj.start())
             text = self.source_buffer.get_text(start_iter, end_iter, False)
             if text == match_obj.group(0):  
                 if start_iter.get_line_offset() == 0:

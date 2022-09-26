@@ -252,7 +252,7 @@ class ParserLaTeX(object):
                     bibliographies = bibliographies | {entry.strip()}
             elif match.group(3) == 'usepackage':
                 packages = packages | {match.group(4).strip()}
-                packages_detailed[match.group(4).strip()] = match
+                packages_detailed[match.group(4).strip()] = [offset, match]
             elif match.group(5) == 'bibitem':
                 bibitems = bibitems | {match.group(6).strip()}
 

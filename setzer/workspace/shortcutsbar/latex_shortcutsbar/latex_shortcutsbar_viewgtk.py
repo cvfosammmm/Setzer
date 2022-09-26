@@ -79,7 +79,9 @@ class LaTeXShortcutsbar(Gtk.HBox):
         self.insert_math_button()
         self.insert_text_button()
         self.insert_object_button()
+
         self.insert_bibliography_button()
+        self.insert_beamer_button()
         self.insert_document_button()
 
     def insert_document_button(self):
@@ -124,6 +126,38 @@ class LaTeXShortcutsbar(Gtk.HBox):
         self.pmb.add_action_button(box, _('Date'), 'win.insert-symbol', ['\\date{•}'])
         self.pmb.add_action_button(box, _('Date Today'), 'win.insert-symbol', ['\\date{\\today}'])
         stack.add_named(box, 'document_info')
+        box.show_all()
+
+    def insert_beamer_button(self):
+        popover = Gtk.PopoverMenu()
+
+        self.beamer_button = Gtk.MenuButton()
+        self.beamer_button.set_image(Gtk.Image.new_from_icon_name('view-list-bullet-symbolic', Gtk.IconSize.MENU))
+        self.beamer_button.set_can_focus(False)
+        self.beamer_button.set_tooltip_text(_('Beamer'))
+        self.beamer_button.get_style_context().add_class('flat')
+        self.beamer_button.set_popover(popover)
+
+        button_wrapper = Gtk.ToolItem()
+        button_wrapper.add(self.beamer_button)
+        self.top_icons.insert(button_wrapper, 0)
+        GLib.idle_add(self.populate_beamer_menu, priority=GLib.PRIORITY_LOW)
+
+    def populate_beamer_menu(self):
+        popover = self.beamer_button.get_popover()
+        stack = popover.get_child()
+
+        box = Gtk.VBox()
+        self.pmb.set_box_margin(box)
+        self.pmb.add_action_button(box, '\\usetheme', 'win.insert-after-packages', ['\\usetheme{•}'])
+        self.pmb.add_action_button(box, 'Hide Navigation', 'win.insert-after-packages', ['\\beamertemplatenavigationsymbolsempty'])
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, _('Title Page'), 'win.insert-symbol', ['\\begin{frame}\n\t\\titlepage\n\\end{frame}'])
+        self.pmb.add_action_button(box, _('Table of Contents'), 'win.insert-symbol', ['\\begin{frame}\n\t\\tableofcontents\n\\end{frame}'])
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, _('Frame'), 'win.insert-before-after', ['\\begin{frame}\n\t', '\n\\end{frame}'])
+        self.pmb.add_action_button(box, _('Frame with Title'), 'win.insert-before-after', ['\\begin{frame}{•}\n\t', '\n\\end{frame}'])
+        stack.add_named(box, 'main')
         box.show_all()
 
     def insert_bibliography_button(self):
