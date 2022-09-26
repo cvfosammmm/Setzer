@@ -229,12 +229,8 @@ class Autocomplete(object):
             return 0
 
     def on_tab_press(self):
-        if self.state['position'] in ['begin_end_completable', 'ends_completable_word']:
-            if not self.is_active():
-                self.activate_if_possible()
-                if self.is_active():
-                    return True
-            elif len(self.items) == 1:
+        if self.state['position'] in ['begin_end_completable', 'ends_completable_word'] and self.is_active():
+            if len(self.items) == 1:
                 self.submit()
                 return True
             elif len(self.items) > 1:
@@ -286,53 +282,57 @@ class Autocomplete(object):
                                 self.last_tabbed_command = command['command']
                                 self.replace_latex_command_at_cursor(text, command['dotlabels'])
                                 return True
+
+        insert = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        insert.forward_chars(1)
+        limit_iter = insert.copy()
+        limit_iter.forward_lines(3)
+        limit_iter.backward_chars(1)
+        result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
+        if result != None:
+            self.source_buffer.place_cursor(result[0])
+            self.source_buffer.select_range(result[0], result[1])
+            self.content.scroll_cursor_onscreen()
+            return True
+        insert.backward_chars(1)
+        result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
+        if result != None:
+            self.source_buffer.select_range(result[0], result[1])
+            self.content.scroll_cursor_onscreen()
+            return True
+
+        chars_at_cursor = self.content.get_chars_at_cursor(2)
+        if chars_at_cursor in ['\\}', '\\)', '\\]']:
+            forward_chars = 2
+        elif chars_at_cursor[0] in ['}', ')', ']']:
+            forward_chars = 1
         else:
-            insert = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-            insert.forward_chars(1)
-            limit_iter = insert.copy()
-            limit_iter.forward_lines(3)
-            limit_iter.backward_chars(1)
-            result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
-            if result != None:
-                self.source_buffer.place_cursor(result[0])
-                self.source_buffer.select_range(result[0], result[1])
-                self.content.scroll_cursor_onscreen()
-                return True
-            insert.backward_chars(1)
-            result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
-            if result != None:
-                self.source_buffer.select_range(result[0], result[1])
-                self.content.scroll_cursor_onscreen()
-                return True
+            forward_chars = 0
 
-            chars_at_cursor = self.content.get_chars_at_cursor(2)
-            if chars_at_cursor in ['\\}', '\\)', '\\]']:
-                forward_chars = 2
-            elif chars_at_cursor[0] in ['}', ')', ']']:
-                forward_chars = 1
-            else:
-                forward_chars = 0
+        if forward_chars > 0:
+            insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+            insert_iter.forward_chars(forward_chars)
+            self.source_buffer.place_cursor(insert_iter)
 
-            if forward_chars > 0:
-                insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-                insert_iter.forward_chars(forward_chars)
-                self.source_buffer.place_cursor(insert_iter)
+            while True:
+                chars_at_cursor = self.content.get_chars_at_cursor(2)
+                if chars_at_cursor in ['\\{', '\\(', '\\[']:
+                    forward_chars = 2
+                elif chars_at_cursor[0] in ['{', '(', '[']:
+                    forward_chars = 1
+                else:
+                    forward_chars = 0
+                if forward_chars > 0:
+                    insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+                    insert_iter.forward_chars(forward_chars)
+                    self.source_buffer.place_cursor(insert_iter)
+                else:
+                    break
+            return True
 
-                while True:
-                    chars_at_cursor = self.content.get_chars_at_cursor(2)
-                    if chars_at_cursor in ['\\{', '\\(', '\\[']:
-                        forward_chars = 2
-                    elif chars_at_cursor[0] in ['{', '(', '[']:
-                        forward_chars = 1
-                    else:
-                        forward_chars = 0
-                    if forward_chars > 0:
-                        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-                        insert_iter.forward_chars(forward_chars)
-                        self.source_buffer.place_cursor(insert_iter)
-                    else:
-                        break
-                return True
+        if self.state['position'] in ['begin_end_completable', 'ends_completable_word'] and not self.is_active():
+            self.activate_if_possible()
+            return self.is_active()
 
         return False
 
@@ -428,7 +428,6 @@ class Autocomplete(object):
             end_iter = self.source_buffer.get_iter_at_offset(self.end_offset)
             self.content.replace_range_no_user_action(start_iter, end_iter, text)
             self.source_buffer.end_user_action()
-            self.deactivate()
 
         elif self.state['position'] == 'ends_completable_word' and self.is_active():
             row = self.view.list.get_selected_row()
@@ -437,7 +436,8 @@ class Autocomplete(object):
                 self.insert_begin_end(command)
             else:
                 self.insert_normal_command(command)
-            self.deactivate()
+
+        self.deactivate()
 
     def insert_begin_end(self, command):
         text = command['command']
