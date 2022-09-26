@@ -38,7 +38,7 @@ class HeaderBar(Gtk.HeaderBar):
         # sidebar toggles
         box = Gtk.HBox()
         self.document_structure_toggle = Gtk.ToggleButton()
-        self.document_structure_toggle.set_image(Gtk.Image.new_from_icon_name('view-list-bullet-symbolic', Gtk.IconSize.MENU))
+        self.document_structure_toggle.set_image(Gtk.Image.new_from_icon_name('document-structure-symbolic', Gtk.IconSize.MENU))
         self.document_structure_toggle.set_can_focus(False)
         self.document_structure_toggle.set_tooltip_text(_('Toggle document structure') + ' (F2)')
         box.pack_start(self.document_structure_toggle, False, False, 0)
