@@ -59,7 +59,7 @@ class Autocomplete(object):
     def on_text_inserted(self, content, parameter):
         buffer, location_iter, text, text_length = parameter
 
-        if self.state['position'] in ['begin_end_completable', 'begin_end_not_completable']:
+        if self.cursor_inside_begin_or_end():
             location_offset = location_iter.get_offset()
 
             if self.matching_env_offset == None: return
@@ -79,7 +79,7 @@ class Autocomplete(object):
     def on_text_deleted(self, content, parameter):
         buffer, start_iter, end_iter = parameter
 
-        if self.state['position'] in ['begin_end_completable', 'begin_end_not_completable']:
+        if self.cursor_inside_begin_or_end():
             delete_start_offset = start_iter.get_offset()
             delete_end_offset = end_iter.get_offset()
 
@@ -101,6 +101,7 @@ class Autocomplete(object):
         if self.waiting_for_block_update: return
 
         self.update_state_position()
+        self.deactivate_if_cursor_not_in_completable_position()
         self.activate_if_possible()
         self.update_items()
         self.update_view()
@@ -111,6 +112,7 @@ class Autocomplete(object):
         self.cursor_unchanged_after_autoclosing_bracket = False
 
         self.update_state_position()
+        self.deactivate_if_cursor_not_in_completable_position()
         self.update_items()
         self.update_view()
 
@@ -196,7 +198,7 @@ class Autocomplete(object):
         self.source_buffer.end_user_action()
 
     def update_items(self):
-        if self.state['position'] in ['begin_end_completable', 'begin_end_not_completable']:
+        if self.cursor_inside_begin_or_end():
             current_word = self.get_current_word()
             self.items = self.provider.get_begin_end_items(current_word, self.last_tabbed_command)
             self.populate(len(current_word))
@@ -211,7 +213,7 @@ class Autocomplete(object):
         self.view.update_margins()
 
     def get_current_word(self):
-        if self.state['position'] in ['begin_end_completable', 'begin_end_not_completable']:
+        if self.cursor_inside_begin_or_end():
             cursor_offset = self.content.get_cursor_offset()
             start_iter = self.source_buffer.get_iter_at_offset(self.start_offset)
             cursor_iter = self.source_buffer.get_iter_at_offset(cursor_offset)
@@ -229,7 +231,7 @@ class Autocomplete(object):
             return 0
 
     def on_tab_press(self):
-        if self.state['position'] in ['begin_end_completable', 'ends_completable_word'] and self.is_active():
+        if self.cursor_in_completable_position() and self.is_active():
             if len(self.items) == 1:
                 self.submit()
                 return True
@@ -330,7 +332,7 @@ class Autocomplete(object):
                     break
             return True
 
-        if self.state['position'] in ['begin_end_completable', 'ends_completable_word'] and not self.is_active():
+        if self.cursor_in_completable_position() and not self.is_active():
             self.activate_if_possible()
             return self.is_active()
 
@@ -610,7 +612,7 @@ class Autocomplete(object):
 
     def activate_if_possible(self):
         if not self.is_active():
-            if self.state['position'] in ['begin_end_completable', 'ends_completable_word']:
+            if self.cursor_in_completable_position():
                 self.state['is_active'] = True
 
             self.update_items()
@@ -622,6 +624,10 @@ class Autocomplete(object):
 
             self.update_items()
             self.update_view()
+
+    def deactivate_if_cursor_not_in_completable_position(self):
+        if not self.cursor_in_completable_position():
+            self.deactivate()
 
     def is_active(self):
         return self.state['is_active']
@@ -653,8 +659,8 @@ class Autocomplete(object):
         else:
             self.state['position'] = 'outside'
 
-        if not self.state['position'] in ['begin_end_completable', 'ends_completable_word']:
-            self.deactivate()
+    def cursor_in_completable_position(self):
+        return self.state['position'] in ['begin_end_completable', 'ends_completable_word']
 
     def get_begin_end_offset_word_len(self):
         line = self.content.get_line_at_cursor()
@@ -774,6 +780,6 @@ class Autocomplete(object):
         return word
 
     def is_visible(self):
-        return self.is_active() and self.state['position'] in ['begin_end_completable', 'ends_completable_word'] and self.view.position_is_visible() and not self.view.focus_hide
+        return self.is_active() and self.cursor_in_completable_position() and self.view.position_is_visible() and not self.view.focus_hide
 
 
