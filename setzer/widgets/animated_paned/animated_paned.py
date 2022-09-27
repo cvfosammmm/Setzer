@@ -91,7 +91,7 @@ class AnimatedPaned(object):
         if frame_clock != None and animate:
             if self.get_position() != end:
                 if self.show_widget:
-                    self.animated_widget.show_all()
+                    self.animated_widget.show()
                 start = self.get_position()
                 start_time = frame_clock.get_frame_time()
                 end_time = start_time + 1000 * duration
@@ -101,7 +101,7 @@ class AnimatedPaned(object):
         else:
             if self.show_widget:
                 self.child_set_property(self.animated_widget, 'shrink', False)
-                self.animated_widget.show_all()
+                self.animated_widget.show()
                 self.set_is_visible(True)
             else:
                 self.child_set_property(self.animated_widget, 'shrink', True)
