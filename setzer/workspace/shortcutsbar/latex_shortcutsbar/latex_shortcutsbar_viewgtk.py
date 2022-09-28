@@ -157,6 +157,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         self.pmb.add_separator(box)
         self.pmb.add_action_button(box, _('Frame'), 'win.insert-before-after', ['\\begin{frame}\n\t', '\n\\end{frame}'])
         self.pmb.add_action_button(box, _('Frame with Title'), 'win.insert-before-after', ['\\begin{frame}\n\t\\frametitle{•}\n\n\t', '\n\\end{frame}'])
+        self.pmb.add_action_button(box, _('\\frametitle'), 'win.insert-before-after', ['\\frametitle{', '}'])
         stack.add_named(box, 'main')
         box.show_all()
 
