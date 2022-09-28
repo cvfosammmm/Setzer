@@ -58,7 +58,7 @@ class Shortcuts(object):
         self.accel_group.connect(Gdk.keyval_from_name('F2'), 0, flags, self.shortcut_document_structure)
         self.accel_group.connect(Gdk.keyval_from_name('F3'), 0, flags, self.shortcut_symbols)
         self.accel_group.connect(Gdk.keyval_from_name('F8'), 0, flags, self.shortcut_build_log)
-        self.accel_group.connect(Gdk.keyval_from_name('F10'), 0, flags, self.shortcut_preview)
+        self.accel_group.connect(Gdk.keyval_from_name('F9'), 0, flags, self.shortcut_preview)
         self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask | s_mask, flags, self.shortcut_switch_document)
         self.accel_group.connect(Gdk.keyval_from_name('j'), c_mask | a_mask, flags, self.shortcut_forward_sync)
         self.main_window.app.set_accels_for_action('win.new-latex-document', ['<Control>n'])

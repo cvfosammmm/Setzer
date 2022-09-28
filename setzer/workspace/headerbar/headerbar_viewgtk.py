@@ -109,7 +109,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.preview_toggle = Gtk.ToggleButton()
         self.preview_toggle.set_image(Gtk.Image.new_from_icon_name('view-paged-symbolic', Gtk.IconSize.MENU))
         self.preview_toggle.set_can_focus(False)
-        self.preview_toggle.set_tooltip_text(_('Toggle preview') + ' (F10)')
+        self.preview_toggle.set_tooltip_text(_('Toggle preview') + ' (F9)')
         box.pack_start(self.preview_toggle, False, False, 0)
         self.help_toggle = Gtk.ToggleButton()
         self.help_toggle.set_image(Gtk.Image.new_from_icon_name('help-browser-symbolic', Gtk.IconSize.MENU))
