@@ -37,7 +37,7 @@ folders = [
 
 def generate_tex(border_h, border_v):
         tex_file = '''\\documentclass[12pt, border={ ''' + str(border_h) + 'pt ' + str(border_v) + '''pt }]{standalone}\n
-%\\usepackage[T1]{fontenc}\n
+\\usepackage[T1]{fontenc}\n
 '''
 
         try: tex_file += '\\usepackage{' + attrib['package'] + '}\n'
@@ -61,7 +61,7 @@ def generate_tex(border_h, border_v):
     
 
 for folder in folders:
-    tree = ET.parse('../setzer/resources/symbols/' + folder + '.xml')
+    tree = ET.parse('../data/resources/symbols/' + folder + '.xml')
     root = tree.getroot()
 
     for child in root:
@@ -97,27 +97,27 @@ for folder in folders:
         process.kill()
 
         # make svg
-        try: os.mkdir('../setzer/resources/symbols')
+        try: os.mkdir('../data/resources/symbols')
         except FileExistsError: pass
-        try: os.mkdir('../setzer/resources/symbols/' + folder)
+        try: os.mkdir('../data/resources/symbols/' + folder)
         except FileExistsError: pass
 
-        arguments = ['pdf2svg', 'temp.pdf', '../setzer/resources/symbols/' + folder + '/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
+        arguments = ['pdf2svg', 'temp.pdf', '../data/resources/symbols/' + folder + '/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
         process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         process.wait()
 
         # get image size
-        arguments = ['inkscape', '--export-png=temp.png', '../setzer/resources/symbols/' + folder + '/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
+        arguments = ['inkscape', '--export-filename=temp.png', '../data/resources/symbols/' + folder + '/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
         process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         process.wait()
         output = process.communicate()
-        output = output[0].decode('utf8')
+        output = output[1].decode('utf8')
         width_match = width_regex.search(output)
         
         process.kill()
         child.set('original_width', width_match.group(1))
         child.set('original_height', width_match.group(2))
-        tree.write('../setzer/resources/symbols/' + folder + '.xml')
+        tree.write('../data/resources/symbols/' + folder + '.xml')
 
         # delete helper files
         os.remove('temp.tex')
