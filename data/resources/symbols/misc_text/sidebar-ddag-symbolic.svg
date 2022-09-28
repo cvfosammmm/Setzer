@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12.85pt" height="12.87pt" viewBox="0 0 12.85 12.87" version="1.1">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12.6pt" height="12.62pt" viewBox="0 0 12.6 12.62" version="1.1">
 <defs>
 <g>
 <symbol overflow="visible" id="glyph0-0">
@@ -12,7 +12,7 @@
 </defs>
 <g id="surface1">
 <g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
-  <use xlink:href="#glyph0-1" x="3.771" y="9.423"/>
+  <use xlink:href="#glyph0-1" x="3.641" y="9.299"/>
 </g>
 </g>
 </svg>

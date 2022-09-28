@@ -81,8 +81,8 @@
   <symbol command="\breve{&#8226;}" file="breve.png" gencommand="\breve{a}" math="1" original_height="14" original_width="14" />
   <symbol command="\dot{&#8226;}" file="dot.png" gencommand="\dot{a}" math="1" original_height="13" original_width="13" />
   <symbol command="\ddot{&#8226;}" file="ddot.png" gencommand="\ddot{a}" math="1" original_height="13" original_width="13" />
-  <symbol command="\dddot{&#8226;}" file="dddot.png" gencommand="\dddot{a}" math="1" original_height="16" original_width="16" package="amsmath" />
-  <symbol command="\ddddot{&#8226;}" file="ddddot.png" gencommand="\ddddot{a}" math="1" original_height="20" original_width="20" package="amsmath" />
+  <symbol command="\dddot{&#8226;}" file="dddot.png" gencommand="\dddot{a}" math="1" original_height="18" original_width="18" package="amsmath" />
+  <symbol command="\ddddot{&#8226;}" file="ddddot.png" gencommand="\ddddot{a}" math="1" original_height="23" original_width="23" package="amsmath" />
   <symbol command="\mathring{&#8226;}" file="mathring.png" gencommand="\mathring{a}" math="1" original_height="14" original_width="14" />
   <symbol command="\widetilde{&#8226;}" file="widetilde.png" gencommand="\widetilde{abc}" math="1" original_height="24" original_width="24" />
   <symbol command="\widehat{&#8226;}" file="widehat.png" gencommand="\widehat{abc}" math="1" original_height="24" original_width="24" />

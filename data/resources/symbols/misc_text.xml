@@ -1,8 +1,8 @@
 <symbols>
-  <symbol command="\dots" file="dots.png" original_height="13" original_width="13" />
-  <symbol command="\texttildelow" file="texttildelow.png" original_height="7" original_width="7" package="textcomp" />
+  <symbol command="\dots" file="dots.png" original_height="23" original_width="23" />
+  <symbol command="\texttildelow" file="texttildelow.png" original_height="12" original_width="12" package="textcomp" />
   <symbol command="\textasciicircum" file="textasciicircum.png" original_height="15" original_width="15" />
-  <symbol command="\textasciimacron" file="textasciimacron.png" original_height="13" original_width="13" package="textcomp" />
+  <symbol command="\textasciimacron" file="textasciimacron.png" original_height="15" original_width="15" package="textcomp" />
   <symbol command="\textasciiacute" file="textasciiacute.png" original_height="14" original_width="14" package="textcomp" />
   <symbol command="\textasciidieresis" file="textasciidieresis.png" original_height="13" original_width="13" package="textcomp" />
   <symbol command="\textasciitilde" file="textasciitilde.png" original_height="12" original_width="12" />
@@ -10,7 +10,7 @@
   <symbol command="\textasciibreve" file="textasciibreve.png" original_height="14" original_width="14" package="textcomp" />
   <symbol command="\textasciicaron" file="textasciicaron.png" original_height="14" original_width="14" package="textcomp" />
   <symbol command="\textacutedbl" file="textacutedbl.png" original_height="14" original_width="14" package="textcomp" />
-  <symbol command="\textgravedbl" file="textgravedbl.png" original_height="7" original_width="7" package="textcomp" />
+  <symbol command="\textgravedbl" file="textgravedbl.png" original_height="14" original_width="14" package="textcomp" />
   <symbol command="\textquotedblleft" file="textquotedblleft.png" original_height="14" original_width="14" />
   <symbol command="\textquotedblright" file="textquotedblright.png" original_height="14" original_width="14" />
   <symbol command="\textquoteleft" file="textquoteleft.png" original_height="14" original_width="14" />
@@ -45,7 +45,7 @@
   <symbol command="\textperiodcentered" file="textperiodcentered.png" original_height="15" original_width="15" />
   <symbol command="\textquestiondown" file="textquestiondown.png" original_height="14" original_width="14" />
   <symbol command="\textinterrobang" file="textinterrobang.png" original_height="15" original_width="15" package="textcomp" />
-  <symbol command="\textinterrobangdown" file="textinterrobangdown.png" original_height="7" original_width="7" package="textcomp" />
+  <symbol command="\textinterrobangdown" file="textinterrobangdown.png" original_height="15" original_width="14" package="textcomp" />
   <symbol command="\textexclamdown" file="textexclamdown.png" original_height="14" original_width="14" />
   <symbol command="\texttwelveudash" file="texttwelveudash.png" original_height="13" original_width="13" package="textcomp" />
   <symbol command="\textemdash" file="textemdash.png" original_height="18" original_width="18" />
@@ -73,7 +73,7 @@
   <symbol command="\textpeso" file="textpeso.png" original_height="14" original_width="14" package="textcomp" />
   <symbol command="\pounds" file="pounds.png" original_height="14" original_width="14" />
   <symbol command="\textflorin" file="textflorin.png" original_height="14" original_width="14" package="textcomp" />
-  <symbol command="\texteuro" file="texteuro.png" original_height="14" original_width="14" package="textcomp" />
+  <symbol command="\texteuro" file="texteuro.png" original_height="13" original_width="13" package="textcomp" />
   <symbol command="\geneuro" file="geneuro.png" original_height="15" original_width="15" package="eurosym" />
   <symbol command="\geneuronarrow" file="geneuronarrow.png" original_height="15" original_width="15" package="eurosym" />
   <symbol command="\geneurowide" file="geneurowide.png" original_height="15" original_width="15" package="eurosym" />
@@ -88,10 +88,10 @@
   <symbol command="\oldstylenums{1}" file="oldstylenums1.png" original_height="10" original_width="10" />
   <symbol command="\oldstylenums{2}" file="oldstylenums2.png" original_height="10" original_width="10" />
   <symbol command="\oldstylenums{3}" file="oldstylenums3.png" original_height="13" original_width="13" />
-  <symbol command="\oldstylenums{4}" file="oldstylenums4.png" original_height="13" original_width="13" />
+  <symbol command="\oldstylenums{4}" file="oldstylenums4.png" original_height="14" original_width="14" />
   <symbol command="\oldstylenums{5}" file="oldstylenums5.png" original_height="13" original_width="13" />
   <symbol command="\oldstylenums{6}" file="oldstylenums6.png" original_height="13" original_width="13" />
-  <symbol command="\oldstylenums{7}" file="oldstylenums7.png" original_height="13" original_width="13" />
+  <symbol command="\oldstylenums{7}" file="oldstylenums7.png" original_height="14" original_width="14" />
   <symbol command="\oldstylenums{8}" file="oldstylenums8.png" original_height="13" original_width="13" />
   <symbol command="\oldstylenums{9}" file="oldstylenums9.png" original_height="13" original_width="13" />
   <symbol command="\textonehalf" file="textonehalf.png" original_height="16" original_width="16" package="textcomp" />
@@ -123,7 +123,7 @@
   <symbol command="\CheckedBox" file="CheckedBox.png" original_height="14" original_width="14" package="wasysym" />
   <symbol command="\Square" file="Square.png" original_height="15" original_width="15" package="wasysym" />
   <symbol command="\XBox" file="XBox.png" original_height="15" original_width="15" package="wasysym" />
-  <symbol command="\textbigcircle" file="textbigcircle.png" original_height="7" original_width="7" package="textcomp" />
+  <symbol command="\textbigcircle" file="textbigcircle.png" original_height="14" original_width="14" package="textcomp" />
   <symbol command="\textopenbullet" file="textopenbullet.png" original_height="15" original_width="15" package="textcomp" />
   <symbol command="\textbullet" file="textbullet.png" original_height="15" original_width="15" />
   <symbol command="\checkmark" file="checkmark.png" original_height="16" original_width="16" package="amssymb" />
@@ -143,7 +143,7 @@
   <symbol command="\textbar" file="textbar.png" original_height="19" original_width="19" />
   <symbol command="\textbrokenbar" file="textbrokenbar.png" original_height="19" original_width="19" package="textcomp" />
   <symbol command="\textbardbl" file="textbardbl.png" original_height="19" original_width="19" />
-  <symbol command="\textfractionsolidus" file="textfractionsolidus.png" original_height="14" original_width="13" package="textcomp" />
+  <symbol command="\textfractionsolidus" file="textfractionsolidus.png" original_height="14" original_width="14" package="textcomp" />
   <symbol command="\textlangle" file="textlangle.png" original_height="19" original_width="19" package="textcomp" />
   <symbol command="\textlnot" file="textlnot.png" original_height="15" original_width="15" package="textcomp" />
   <symbol command="\textminus" file="textminus.png" original_height="15" original_width="15" package="textcomp" />
@@ -159,4 +159,5 @@
   <symbol command="\textsurd" file="textsurd.png" original_height="16" original_width="16" package="textcomp" />
   <symbol command="\texttimes" file="texttimes.png" original_height="15" original_width="15" package="textcomp" />
   <symbol command="\textdiv" file="textdiv.png" original_height="15" original_width="15" package="textcomp" />
+  <symbol command="\#" file="textsharp.png" original_height="17" original_width="17" />
 </symbols>

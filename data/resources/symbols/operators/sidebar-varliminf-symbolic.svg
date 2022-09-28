@@ -19,8 +19,8 @@
 <g id="surface1">
 <g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
   <use xlink:href="#glyph0-1" x="0.996" y="8.633"/>
-  <use xlink:href="#glyph0-2" x="3.347977" y="8.633"/>
-  <use xlink:href="#glyph0-3" x="5.699953" y="8.633"/>
+  <use xlink:href="#glyph0-2" x="3.347179" y="8.633"/>
+  <use xlink:href="#glyph0-3" x="5.698359" y="8.633"/>
 </g>
 <path style="fill:none;stroke-width:0.3587;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M -71.003906 61.886625 L -59.242188 61.886625 " transform="matrix(1,0,0,-1,72,71.996)"/>
 </g>
