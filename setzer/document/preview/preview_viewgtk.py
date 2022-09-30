@@ -20,6 +20,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import Gio
+from gi.repository import Pango
 
 
 class PreviewView(Gtk.VBox):
@@ -76,6 +77,7 @@ class PreviewView(Gtk.VBox):
         self.pack_start(self.overlay, True, True, 0)
 
         self.target_label = Gtk.Label()
+        self.target_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
         self.target_label.set_halign(Gtk.Align.START)
         self.target_label.set_valign(Gtk.Align.END)
         self.target_label.get_style_context().add_class('target-label')
