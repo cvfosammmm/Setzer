@@ -1,0 +1,61 @@
+<commands>
+  <command name="\Acrobatmenu{•}{•}" text="\Acrobatmenu{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="menuoption###text###" />
+  <command name="\autopageref{•}" text="\autopageref{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###" />
+  <command name="\autopageref*{•}" text="\autopageref*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###" />
+  <command name="\autoref{•}" text="\autoref{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###" />
+  <command name="\autoref*{•}" text="\autoref*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###" />
+  <command name="\begin{Form}" text="\begin{Form}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\begin{Form}[•]" text="\begin{Form}[•]" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="options###" />
+  <command name="\belowpdfbookmark{•}{•}" text="\belowpdfbookmark{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###name###" />
+  <command name="\CheckBox[•]{•}" text="\CheckBox[•]{•}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="parameters###label###" />
+  <command name="\ChoiceMenu[•]{•}{•}" text="\ChoiceMenu[•]{•}{•}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="parameters###label###choices###" />
+  <command name="\currentpdfbookmark{•}{•}" text="\currentpdfbookmark{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###name###" />
+  <command name="\DefaultHeightofCheckBox" text="\DefaultHeightofCheckBox" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="\DefaultHeightofChoiceMenu" text="\DefaultHeightofChoiceMenu" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="\DefaultHeightofReset" text="\DefaultHeightofReset" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="\DefaultHeightofSubmit" text="\DefaultHeightofSubmit" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="\DefaultHeightofText" text="\DefaultHeightofText" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="\DefaultHeightofTextMultiline" text="\DefaultHeightofTextMultiline" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="\DefaultWidthofCheckBox" text="\DefaultWidthofCheckBox" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="\DefaultWidthofChoiceMenu" text="\DefaultWidthofChoiceMenu" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="\DefaultWidthofReset" text="\DefaultWidthofReset" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="\DefaultWidthofSubmit" text="\DefaultWidthofSubmit" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="\DefaultWidthofText" text="\DefaultWidthofText" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="" />
+  <command name="\end{Form}" text="\end{Form}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\href{•}{•}" text="\href{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="URL###text###" />
+  <command name="\href[•]{•}{•}" text="\href[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="options###URL###text###" />
+  <command name="\hyperbaseurl{•}" text="\hyperbaseurl{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="URL###" />
+  <command name="\hypercalcbp{•}" text="\hypercalcbp{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="dimen specification###" />
+  <command name="\hyperdef{•}{•}{•}" text="\hyperdef{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="category###name###text###" />
+  <command name="\hyperimage{•}{•}" text="\hyperimage{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="imageURL###text###" />
+  <command name="\hyperlink{•}{•}" text="\hyperlink{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="target name###link text###" />
+  <command name="\hyperref{•}" text="\hyperref{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###" />
+  <command name="\hyperref{•}{•}{•}{•}" text="\hyperref{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="URL###category###name###text###" />
+  <command name="\hyperref[•]{•}" text="\hyperref[•]{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label%ref###text###" />
+  <command name="\hyperref[•]{•}{•}{•}{•}" text="\hyperref[•]{•}{•}{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label%ref###URL###category###name###text###" />
+  <command name="\hypersetup{•}" text="\hypersetup{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keyvals###" />
+  <command name="\hypertarget{•}{•}" text="\hypertarget{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="target name###anchor text###" />
+  <command name="\LayoutCheckField{•}{•}" text="\LayoutCheckField{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="label###field###" />
+  <command name="\LayoutChoiceField{•}{•}" text="\LayoutChoiceField{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="label###field###" />
+  <command name="\LayoutTextField{•}{•}" text="\LayoutTextField{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="label###field###" />
+  <command name="\MakeButtonField{•}" text="\MakeButtonField{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="text###" />
+  <command name="\MakeCheckField{•}{•}" text="\MakeCheckField{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="width###height###" />
+  <command name="\MakeChoiceField{•}{•}" text="\MakeChoiceField{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="width###height###" />
+  <command name="\MakeRadioField{•}{•}" text="\MakeRadioField{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="width###height###" />
+  <command name="\MakeTextField{•}{•}" text="\MakeTextField{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="True" description="" dotlabels="width###height###" />
+  <command name="\nolinkurl{•}" text="\nolinkurl{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="URL###" />
+  <command name="\pageref*{•}" text="\pageref*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###" />
+  <command name="\pdfbookmark[•]{•}{•}" text="\pdfbookmark[•]{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="level###text###name###" />
+  <command name="\pdfstringdef{•}{•}" text="\pdfstringdef{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="macroname###TEXstring###" />
+  <command name="\pdfstringdefDisableCommands{•}" text="\pdfstringdefDisableCommands{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="hooks###" />
+  <command name="\phantomsection" text="\phantomsection" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\PushButton[•]{•}" text="\PushButton[•]{•}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="parameters###label###" />
+  <command name="\ref*{•}" text="\ref*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="label###" />
+  <command name="\Reset[•]{•}" text="\Reset[•]{•}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="parameters###label###" />
+  <command name="\Submit[•]{•}" text="\Submit[•]{•}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="parameters###label###" />
+  <command name="\subpdfbookmark{•}{•}" text="\subpdfbookmark{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="text###name###" />
+  <command name="\texorpdfstring{•}{•}" text="\texorpdfstring{•}{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="TEXstring###PDFstring###" />
+  <command name="\TextField[•]{•}" text="\TextField[•]{•}" onlymath="True" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="parameters###label###" />
+  <command name="\thispdfpagelabel" text="\thispdfpagelabel" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="" />
+  <command name="\url{•}" text="\url{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="URL###" />
+</commands>
