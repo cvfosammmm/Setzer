@@ -496,6 +496,9 @@ class LaTeXShortcutsbar(Gtk.HBox):
         self.pmb.add_action_button(box, _('Figure (image inside freestanding block)'), 'win.insert-symbol', ['\\begin{figure}\n\t\\begin{center}\n\t\t\\includegraphics[scale=1]{•}\n\t\t\\caption{•}\n\t\\end{center}\n\\end{figure}'])
         self.pmb.add_action_button(box, _('Inline Image'), 'win.insert-symbol', ['\\includegraphics[scale=1]{•}'])
         self.pmb.add_menu_button(box, _('Code Listing'), 'code_listing')
+        self.pmb.add_separator(box)
+        self.pmb.add_action_button(box, _('Url (\\url)'), 'win.insert-before-after', ['\\url{', '}'])
+        self.pmb.add_action_button(box, _('Hyperlink (\\href)'), 'win.insert-before-after', ['\\href{•}{', '}'])
         stack.add_named(box, 'main')
         box.show_all()
 
