@@ -114,7 +114,9 @@ class PreviewController(object):
         for link in links:
             if x_offset > link[0].x1 and x_offset < link[0].x2 and y_offset > link[0].y1 and y_offset < link[0].y2:
                 cursor = self.cursor_pointer
-                if link[2] == 'uri':
+                if self.view.scrolled_window.get_allocated_height() - event.y <= self.view.target_label.get_allocated_height():
+                    link_target = ''
+                elif link[2] == 'uri':
                     link_target = link[1]
                 elif link[2] == 'goto':
                     link_target = _('Go to page ') + str(link[1].page_num)
