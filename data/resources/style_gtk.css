@@ -408,6 +408,13 @@ box.preview > box button.zoom_level_button label {
     border: 1px solid @borders;
     border-radius: 3px;
 }
+label.target-label {
+    border-top: 1px solid @borders;
+    border-right: 1px solid @borders;
+    border-top-right-radius: 3px;
+    padding: 3px 6px 3px 6px;
+    background-color: @theme_base_color;
+}
 box.preview_blank {
     background-color: @theme_bg_color;
     background-color: mix(@theme_base_color, @theme_bg_color, 0.5);

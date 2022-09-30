@@ -108,15 +108,21 @@ class PreviewController(object):
 
         page_number, x_offset, y_offset = data
         cursor = self.cursor_default
+        link_target = ''
         links = self.preview.links_parser.get_links_for_page(page_number)
         y_offset = (self.preview.page_height - y_offset)
         for link in links:
             if x_offset > link[0].x1 and x_offset < link[0].x2 and y_offset > link[0].y1 and y_offset < link[0].y2:
                 cursor = self.cursor_pointer
+                if link[2] == 'uri':
+                    link_target = link[1]
+                elif link[2] == 'goto':
+                    link_target = _('Go to page ') + str(link[1].page_num)
                 break
 
         window = self.view.scrolled_window.get_window()
         window.set_cursor(cursor)
+        self.view.set_link_target_string(link_target)
 
     def on_size_allocate(self, view=None, allocation=None):
         self.preview.zoom_manager.update_dynamic_zoom_levels()

@@ -68,15 +68,29 @@ class PreviewView(Gtk.VBox):
 
         self.blank_slate = BlankSlateView()
 
+        self.overlay = Gtk.Overlay()
         self.stack = Gtk.Stack()
         self.stack.add_named(self.blank_slate, 'blank_slate')
         self.stack.add_named(self.scrolled_window, 'pdf')
-        self.pack_start(self.stack, True, True, 0)
+        self.overlay.add(self.stack)
+        self.pack_start(self.overlay, True, True, 0)
+
+        self.target_label = Gtk.Label()
+        self.target_label.set_halign(Gtk.Align.START)
+        self.target_label.set_valign(Gtk.Align.END)
+        self.target_label.get_style_context().add_class('target-label')
+        self.overlay.add_overlay(self.target_label)
+        self.overlay.set_overlay_pass_through(self.target_label, True)
 
         self.show_all()
 
     def set_layout_data(self, layout_data):
         self.layout_data = layout_data
+
+    def set_link_target_string(self, target_string):
+        self.target_label.set_text(target_string)
+        if target_string: self.target_label.show_all()
+        else: self.target_label.hide()
 
 
 class BlankSlateView(Gtk.VBox):
