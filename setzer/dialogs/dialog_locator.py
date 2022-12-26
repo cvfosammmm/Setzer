@@ -21,6 +21,7 @@ import setzer.dialogs.bibtex_wizard.bibtex_wizard as bibtex_wizard
 import setzer.dialogs.build_save.build_save as build_save_dialog
 import setzer.dialogs.building_failed.building_failed as building_failed_dialog
 import setzer.dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
+import setzer.dialogs.display_errors.display_errors as display_errors
 import setzer.dialogs.document_wizard.document_wizard as document_wizard
 import setzer.dialogs.document_changed_on_disk.document_changed_on_disk as document_changed_on_disk_dialog
 import setzer.dialogs.document_deleted_on_disk.document_deleted_on_disk as document_deleted_on_disk_dialog
@@ -49,6 +50,7 @@ class DialogLocator(object):
         dialogs['bibtex_wizard'] = bibtex_wizard.BibTeXWizard(main_window, workspace)
         dialogs['building_failed'] = building_failed_dialog.BuildingFailedDialog(main_window)
         dialogs['build_save'] = build_save_dialog.BuildSaveDialog(main_window)
+        dialogs['display_errors'] = display_errors.DisplayErrors(main_window)
         dialogs['document_wizard'] = document_wizard.DocumentWizard(main_window, workspace)
         dialogs['document_changed_on_disk'] = document_changed_on_disk_dialog.DocumentChangedOnDiskDialog(main_window)
         dialogs['document_deleted_on_disk'] = document_deleted_on_disk_dialog.DocumentDeletedOnDiskDialog(main_window)

@@ -35,6 +35,7 @@ import setzer.document.preview.preview_links_parser as preview_links_parser
 import setzer.document.preview.preview_zoom_manager as preview_zoom_manager
 import setzer.document.preview.zoom_widget.zoom_widget as zoom_widget
 import setzer.document.preview.paging_widget.paging_widget as paging_widget
+from setzer.dialogs.dialog_locator import DialogLocator
 from setzer.helpers.observable import Observable
 from setzer.helpers.timer import timer
 
@@ -148,7 +149,8 @@ class Preview(Observable):
             self.poppler_document = Poppler.Document.new_from_file('file:' + self.pdf_filename)
         except TypeError:
             self.reset_pdf_data()
-        except gi.repository.GLib.Error:
+        except gi.repository.GLib.Error as err:
+            DialogLocator.get_dialog('display_errors').run(err)
             self.reset_pdf_data()
         else:
             page_size = self.poppler_document.get_page(0).get_size()
