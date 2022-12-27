@@ -32,13 +32,11 @@ class DisplayErrors(Dialog):
         self.main_window = main_window
 
     def run(self, err: gi.repository.GLib.Error):
-        print("test_run")
         self.setup(err.message)
         response = self.view.run()
         self.close()
 
     def setup(self, error_message: str):
-        print(type(error_message))
         self.view = Gtk.MessageDialog(
             transient_for=self.main_window,
             flags=0,
