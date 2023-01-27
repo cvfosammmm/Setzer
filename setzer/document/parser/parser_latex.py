@@ -144,7 +144,7 @@ class ParserLaTeX(object):
     def parse_for_blocks(self, text, line_start, offset_line_start):
         block_symbol_matches = {'begin_or_end': list(), 'others': list()}
         counter = line_start
-        for match in ServiceLocator.get_regex_object(r'\n|\\(begin|end)\{((?:\w|•|\*)+)\}|\\(part|chapter|section|subsection|subsubsection|paragraph|subparagraph)(?:\*){0,1}\{([^\{\[]*)\}').finditer(text):
+        for match in ServiceLocator.get_regex_object(r'\n|\\(begin|end)\{((?:\w|•|\*)+)\}|\\(part|chapter|section|subsection|subsubsection|paragraph|subparagraph)(?:\*){0,1}\{([^\{]*)\}').finditer(text):
             if match.group(1) != None:
                 block_symbol_matches['begin_or_end'].append((match, counter, match.start() + offset_line_start))
             elif match.group(3) != None:
