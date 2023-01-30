@@ -66,7 +66,7 @@ class ParserLaTeX(object):
         additional_matches = self.parse_for_blocks(text, line_start, offset_line_start)
         block_symbol_matches['begin_or_end'] += additional_matches['begin_or_end']
         block_symbol_matches['others'] += additional_matches['others']
-        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource)\{((?:\s|\w|\:|\.|,|\/|\\|\'|-|\")*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text):
+        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource|todo)\{((?:\s|\w|\:|\.|,|\/|\\|\'|-|\"|\(|\))*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text):
             other_symbols.append((match, match.start() + offset_line_start))
 
         for match in self.block_symbol_matches['begin_or_end']:
@@ -120,7 +120,7 @@ class ParserLaTeX(object):
         additional_matches = self.parse_for_blocks(text_parse, line_start, offset_line_start)
         block_symbol_matches['begin_or_end'] += additional_matches['begin_or_end']
         block_symbol_matches['others'] += additional_matches['others']
-        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource)\{((?:\s|\w|\:|\.|,|\/|\\|\'|-|\")*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text_parse):
+        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource|todo)\{((?:\s|\w|\:|\.|,|\/|\\|\'|-|\"|\(|\))*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text_parse):
             other_symbols.append((match, match.start() + offset_line_start))
 
         for match in self.block_symbol_matches['begin_or_end']:
@@ -226,6 +226,8 @@ class ParserLaTeX(object):
     def parse_symbols(self):
         labels = set()
         labels_with_offset = list()
+        todos = set()
+        todos_with_offset = list()
         included_latex_files = list()
         bibliographies = set()
         bibitems = set()
@@ -250,6 +252,9 @@ class ParserLaTeX(object):
                 bibfiles = match.group(2).strip().split(',')
                 for entry in bibfiles:
                     bibliographies = bibliographies | {entry.strip()}
+            elif match.group(1) == 'todo':
+                todos = todos | {match.group(2).strip()}
+                todos_with_offset.append([match.group(2).strip(), offset])
             elif match.group(3) == 'usepackage':
                 packages = packages | {match.group(4).strip()}
                 packages_detailed[match.group(4).strip()] = [offset, match]
@@ -259,6 +264,8 @@ class ParserLaTeX(object):
         self.document.symbols['labels'] = labels
         self.document.symbols['labels_with_offset'] = labels_with_offset
         self.document.symbols['included_latex_files'] = included_latex_files
+        self.document.symbols['todos'] = todos
+        self.document.symbols['todos_with_offset'] = todos_with_offset
         self.document.symbols['bibliographies'] = bibliographies
         self.document.symbols['bibitems'] = bibitems
         self.document.symbols['packages'] = packages
