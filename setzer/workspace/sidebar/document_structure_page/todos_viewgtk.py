@@ -33,7 +33,7 @@ class TodosSectionView(Gtk.DrawingArea):
         self.icon_infos = dict()
         self.icons = dict()
 
-        self.icon_infos['tag'] = Gtk.IconTheme.get_default().lookup_icon('tag-symbolic', 16 * self.get_scale_factor(), 0)
+        self.icon_infos['tag'] = Gtk.IconTheme.get_default().lookup_icon('starred-symbolic', 16 * self.get_scale_factor(), 0)
 
         self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
