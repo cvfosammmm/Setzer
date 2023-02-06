@@ -145,7 +145,7 @@ class Preview(Observable):
 
     def load_pdf(self):
         try:
-            self.poppler_document = Poppler.Document.new_from_file('file:' + self.pdf_filename)
+            self.poppler_document = Poppler.Document.new_from_file(GLib.filename_to_uri(self.pdf_filename))
         except TypeError:
             self.reset_pdf_data()
         except gi.repository.GLib.Error:
