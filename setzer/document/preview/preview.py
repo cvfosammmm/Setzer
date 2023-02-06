@@ -186,6 +186,6 @@ class Preview(Observable):
 
     def open_external_viewer(self):
         if self.pdf_filename != None:
-            Gio.AppInfo.launch_default_for_uri('file:' + self.pdf_filename)
+            Gio.AppInfo.launch_default_for_uri(GLib.filename_to_uri(self.pdf_filename))
 
 
