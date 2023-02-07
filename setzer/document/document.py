@@ -52,6 +52,8 @@ class Document(Observable):
         self.symbols['bibitems'] = set()
         self.symbols['labels'] = set()
         self.symbols['labels_with_offset'] = list()
+        self.symbols['todos'] = set()
+        self.symbols['todos_with_offset'] = set()
         self.symbols['included_latex_files'] = set()
         self.symbols['bibliographies'] = set()
         self.symbols['packages'] = set()
@@ -188,5 +190,11 @@ class Document(Observable):
 
     def get_labels_with_offset(self):
         return self.symbols['labels_with_offset']
+
+    def get_todos(self):
+        return self.symbols['todos']
+
+    def get_todos_with_offset(self):
+        return self.symbols['todos_with_offset']
 
 
