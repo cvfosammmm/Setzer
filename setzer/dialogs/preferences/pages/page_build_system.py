@@ -130,7 +130,7 @@ class PageBuildSystemView(Gtk.VBox):
 
         label = Gtk.Label()
         label.set_line_wrap(True)
-        label.set_markup(_('Warning: if using Tectonic, make sure you do not require any shell escape features, as these are unsupported by the Tectonic command-line interface'))
+        label.set_markup(_('Warning: if using Tectonic, make sure you do not require any shell escape features, as these are unsupported by the Tectonic command-line interface. Note also that this uses the V1 Tectonic interface, so Tectonic.toml configuration files will NOT be respected.'))
         label.set_xalign(0)
         label.set_margin_bottom(9)
         label.get_style_context().add_class('description')
