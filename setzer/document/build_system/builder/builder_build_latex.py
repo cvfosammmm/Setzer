@@ -41,6 +41,8 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
         build_command_defaults['pdflatex'] = 'pdflatex -synctex=1 -interaction=nonstopmode'
         build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode'
         build_command_defaults['lualatex'] = 'lualatex --synctex=1 --interaction=nonstopmode'
+        build_command_defaults['tectonic'] = 'tectonic --synctex --keep-logs'
+        
         if query.build_data['use_latexmk']:
             if query.build_data['latex_interpreter'] == 'pdflatex':
                 interpreter_option = 'pdf'
@@ -49,16 +51,27 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
             build_command = 'latexmk -' + interpreter_option + ' -synctex=1 -interaction=nonstopmode' + query.build_data['additional_arguments']
         else:
             build_command = build_command_defaults[query.build_data['latex_interpreter']] + query.build_data['additional_arguments']
-
-        arguments = build_command.split()
-        arguments.append('-output-directory=' + os.path.dirname(query.tex_filename))
-        arguments.append(query.tex_filename)
-        try:
-            self.process = pexpect.spawn(build_command + ' -output-directory="' + os.path.dirname(query.tex_filename) + '" "' + query.tex_filename + '"', cwd=os.path.dirname(query.tex_filename))
-        except pexpect.exceptions.ExceptionPexpect:
-            self.cleanup_files(query)
-            self.throw_build_error(query, 'interpreter_missing', arguments[0])
-            return
+        
+        if query.build_data['latex_interpreter'] == 'tectonic':
+            arguments = build_command.split()
+            arguments.append('--outdir ' + os.path.dirname(query.tex_filename))
+            arguments.append(query.tex_filename)
+            try:
+                self.process = pexpect.spawn(build_command + ' --outdir "' + os.path.dirname(query.tex_filename) + '" "' + query.tex_filename + '"', cwd=os.path.dirname(query.tex_filename))
+            except pexpect.exceptions.ExceptionPexpect:
+                self.cleanup_files(query)
+                self.throw_build_error(query, 'interpreter_missing', arguments[0])
+                return
+        else:
+            arguments = build_command.split()
+            arguments.append('-output-directory=' + os.path.dirname(query.tex_filename))
+            arguments.append(query.tex_filename)
+            try:
+                self.process = pexpect.spawn(build_command + ' -output-directory="' + os.path.dirname(query.tex_filename) + '" "' + query.tex_filename + '"', cwd=os.path.dirname(query.tex_filename))
+            except pexpect.exceptions.ExceptionPexpect:
+                self.cleanup_files(query)
+                self.throw_build_error(query, 'interpreter_missing', arguments[0])
+                return
 
         while True:
             try:

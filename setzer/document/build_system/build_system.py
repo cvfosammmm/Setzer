@@ -275,13 +275,16 @@ class BuildSystem(Observable):
             build_option_system_commands = self.settings.get_value('preferences', 'build_option_system_commands')
             additional_arguments = ''
 
-            lualatex_prefix = ' -' if interpreter == 'lualatex' else ' '
-            if build_option_system_commands == 'disable':
-                additional_arguments += lualatex_prefix + '-no-shell-escape'
-            elif build_option_system_commands == 'restricted':
-                additional_arguments += lualatex_prefix + '-shell-restricted'
-            elif build_option_system_commands == 'enable':
-                additional_arguments += lualatex_prefix + '-shell-escape'
+            if interpreter == 'tectonic':
+                pass
+            else:
+                lualatex_prefix = ' -' if interpreter == 'lualatex' else ' '
+                if build_option_system_commands == 'disable':
+                    additional_arguments += lualatex_prefix + '-no-shell-escape'
+                elif build_option_system_commands == 'restricted':
+                    additional_arguments += lualatex_prefix + '-shell-restricted'
+                elif build_option_system_commands == 'enable':
+                    additional_arguments += lualatex_prefix + '-shell-escape'
 
             text = self.document.content.get_all_text()
             do_cleanup = self.settings.get_value('preferences', 'cleanup_build_files')
