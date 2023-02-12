@@ -102,6 +102,7 @@ class PageBuildSystem(object):
             self.view.option_latex_interpreter['tectonic'].connect('toggled', self.on_use_tectonic_toggled)
             self.view.latexmk_enable_revealer.set_reveal_child(not self.view.option_latex_interpreter['tectonic'].get_active())
             self.view.shell_escape_revealer.set_reveal_child(not self.view.option_latex_interpreter['tectonic'].get_active())
+            self.view.tectonic_warning_revealer.set_reveal_child(self.view.option_latex_interpreter['tectonic'].get_active())
 
     def on_use_tectonic_toggled(self, button):
         self.view.latexmk_enable_revealer.set_reveal_child(not button.get_active())
@@ -110,6 +111,7 @@ class PageBuildSystem(object):
         self.view.shell_escape_revealer.set_reveal_child(not button.get_active())
         if (button.get_active()):
             self.settings.set_value('preferences', 'build_option_system_commands', 'disable')
+        self.view.tectonic_warning_revealer.set_reveal_child(button.get_active())
 
 class PageBuildSystemView(Gtk.VBox):
 
@@ -127,15 +129,6 @@ class PageBuildSystemView(Gtk.VBox):
         label.set_xalign(0)
         label.set_margin_bottom(6)
         self.pack_start(label, False, False, 0)
-
-        label = Gtk.Label()
-        label.set_line_wrap(True)
-        label.set_markup(_('Warning: if using Tectonic, make sure you do not require any shell escape features, as these are unsupported by the Tectonic command-line interface. Note also that this uses the V1 Tectonic interface, so Tectonic.toml configuration files will NOT be respected.'))
-        label.set_xalign(0)
-        label.set_margin_bottom(9)
-        label.get_style_context().add_class('description')
-        self.pack_start(label, False, False, 0)
-
 
         self.no_interpreter_label = Gtk.Label()
         self.no_interpreter_label.set_line_wrap(True)
@@ -160,6 +153,18 @@ class PageBuildSystemView(Gtk.VBox):
         self.hbox1.pack_start(self.option_latex_interpreter['lualatex'], False, False, 0)
         self.hbox1.pack_start(self.option_latex_interpreter['tectonic'], False, False, 0)
         self.pack_start(self.hbox1, False, False, 0)
+
+        self.tectonic_warning_revealer = Gtk.Revealer()
+        self.tectonic_warning_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
+        label = Gtk.Label()
+        label.set_line_wrap(True)
+        label.set_markup(_('Warning: When using Tectonic, only the V1 command-line interface is used. Tectonic.toml configuration files will therefore NOT be respected.'))
+        label.set_xalign(0)
+        label.set_margin_bottom(9)
+        label.get_style_context().add_class('description')
+        self.tectonic_warning_revealer.add(label)
+        self.pack_start(self.tectonic_warning_revealer, False, False, 0)
+
 
         label = Gtk.Label()
         label.set_markup('<b>' + _('Options') + '</b>')
