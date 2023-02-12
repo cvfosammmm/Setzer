@@ -171,7 +171,7 @@ class PageBuildSystemView(Gtk.VBox):
         self.pack_start(self.option_cleanup_build_files, False, False, 0)
 
         self.latexmk_enable_revealer = Gtk.Revealer()
-        self.latexmk_enable_revealer.set_transition_type(Gtk.RevealerTransitionType(0))
+        self.latexmk_enable_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
         self.option_use_latexmk = Gtk.CheckButton(_('Use Latexmk'))
         self.latexmk_enable_revealer.add(self.option_use_latexmk)
         self.pack_start(self.latexmk_enable_revealer, False, False, 0)
@@ -190,7 +190,7 @@ class PageBuildSystemView(Gtk.VBox):
         self.pack_start(self.option_autoshow_build_log_all, False, False, 0)
     
         self.shell_escape_revealer = Gtk.Revealer()
-        self.shell_escape_revealer.set_transition_type(Gtk.RevealerTransitionType(0))
+        self.shell_escape_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
         self.vbox1 = Gtk.VBox()
         label = Gtk.Label()
         label.set_markup('<b>' + _('Embedded system commands') + '</b>')
