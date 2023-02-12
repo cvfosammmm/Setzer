@@ -106,11 +106,7 @@ class PageBuildSystem(object):
 
     def on_use_tectonic_toggled(self, button):
         self.view.latexmk_enable_revealer.set_reveal_child(not button.get_active())
-        self.settings.set_value('preferences', 'use_latexmk', not button.get_active())
-
         self.view.shell_escape_revealer.set_reveal_child(not button.get_active())
-        if (button.get_active()):
-            self.settings.set_value('preferences', 'build_option_system_commands', 'disable')
         self.view.tectonic_warning_revealer.set_reveal_child(button.get_active())
 
 class PageBuildSystemView(Gtk.VBox):
