@@ -66,7 +66,7 @@ class ParserLaTeX(object):
         additional_matches = self.parse_for_blocks(text, line_start, offset_line_start)
         block_symbol_matches['begin_or_end'] += additional_matches['begin_or_end']
         block_symbol_matches['others'] += additional_matches['others']
-        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource|todo)\{((?:\s|\w|\:|\.|,|\/|\\|\'|-|\"|\(|\))*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text):
+        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|subfile|subimport|bibliography|addbibresource|todo)\{((?:\s|\w|\:|\.|,|\/|\\|\'|-|\"|\(|\))*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text):
             other_symbols.append((match, match.start() + offset_line_start))
 
         for match in self.block_symbol_matches['begin_or_end']:
@@ -120,7 +120,7 @@ class ParserLaTeX(object):
         additional_matches = self.parse_for_blocks(text_parse, line_start, offset_line_start)
         block_symbol_matches['begin_or_end'] += additional_matches['begin_or_end']
         block_symbol_matches['others'] += additional_matches['others']
-        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource|todo)\{((?:\s|\w|\:|\.|,|\/|\\|\'|-|\"|\(|\))*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text_parse):
+        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|subfile|subimport|bibliography|addbibresource|todo)\{((?:\s|\w|\:|\.|,|\/|\\|\'|-|\"|\(|\))*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text_parse):
             other_symbols.append((match, match.start() + offset_line_start))
 
         for match in self.block_symbol_matches['begin_or_end']:
@@ -239,7 +239,7 @@ class ParserLaTeX(object):
             if match.group(1) == 'label':
                 labels = labels | {match.group(2).strip()}
                 labels_with_offset.append([match.group(2).strip(), offset])
-            elif match.group(1) == 'include' or match.group(1) == 'input':
+            elif match.group(1) == 'include' or match.group(1) == 'input' or match.group(1) == 'subfile' or match.group(1) == 'subimport':
                 filename = match.group(2).strip()
                 if not filename.endswith('.tex'):
                     filename += '.tex'
