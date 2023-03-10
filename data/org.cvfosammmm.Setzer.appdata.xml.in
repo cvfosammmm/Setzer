@@ -53,6 +53,11 @@
     </provides>
 
     <releases>
+        <release version="54" date="2023-3-10">
+            <description>
+                <p translatable="no">Tectonic support, parser improvements, todo items in the sidebar, show link targets in .pdf-preview, change version numbering ...</p>
+            </description>
+        </release>
         <release version="0.4.8" date="2022-7-28">
             <description>
                 <p translatable="no">Bug fix</p>
