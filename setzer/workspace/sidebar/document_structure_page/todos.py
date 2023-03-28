@@ -56,7 +56,7 @@ class TodosSection(structure_widget.StructureWidget):
             todo.append(document)
             todos.append(todo)
         for document in self.data_provider.integrated_includes:
-            for todo in document.get_todo_with_offset():
+            for todo in document.get_todos_with_offset():
                 todo.append(document)
                 todos.append(todo)
         todos.sort(key=lambda todo: todo[0].lower())
