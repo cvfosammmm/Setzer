@@ -1,25 +1,23 @@
 {
     "app-id": "org.cvfosammmm.Setzer",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.38",
+    "runtime-version": "42",
     "sdk": "org.gnome.Sdk",
-    "sdk-extensions": ["org.freedesktop.Sdk.Extension.texlive"],
+    "sdk-extensions": [
+        "org.freedesktop.Sdk.Extension.texlive"
+    ],
     "command": "setzer",
     "finish-args": [
         "--share=ipc",
-        "--socket=x11",
         "--socket=fallback-x11",
         "--socket=wayland",
+        "--device=dri",
         "--socket=pulseaudio",
         "--filesystem=host",
-        "--filesystem=xdg-run/dconf",
-        "--filesystem=~/.config/dconf:ro",
-        "--env=PATH=/app/bin:/usr/bin:/app/bin/x86_64-linux",
+        "--env=PATH=/app/bin:/usr/bin:/app/bin/x86_64-linux:/app/bin/aarch64-linux",
         "--env=TEXMFCACHE=$XDG_CACHE_HOME",
-        "--env=LC_ALL=C",
         "--env=TEXINPUTS=.:~/texmf/:",
-        "--talk-name=ca.desrt.dconf",
-        "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
+        "--metadata=X-DConf=migrate-path=/org/cvfosammmm/Setzer/"
     ],
     "modules": [
         {
@@ -32,7 +30,8 @@
         {
             "name": "gspell",
             "cleanup": [
-                "/bin"
+                "/bin",
+                "/include"
             ],
             "sources": [
                 {
@@ -62,10 +61,8 @@
         },
         {
             "name": "popplerdata",
-            "no-autogen": true,
-            "make-install-args": [
-                "prefix=/app"
-            ],
+            "buildsystem": "cmake-ninja",
+            "builddir": true,
             "sources": [
                 {
                     "type": "archive",
@@ -78,48 +75,52 @@
             "name": "poppler",
             "buildsystem": "cmake-ninja",
             "config-opts": [
-                "-DCMAKE_BUILD_TYPE=release",
-                "-DENABLE_QT5:BOOL=true",
-                "-DCMAKE_INSTALL_LIBDIR:PATH=/app/lib"
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DENABLE_QT5:BOOL=true"
+            ],
+            "cleanup": [
+                "/include"
             ],
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://poppler.freedesktop.org/poppler-21.11.0.tar.xz",
-                    "sha256": "31b76b5cac0a48612fdd154c02d9eca01fd38fb8eaa77c1196840ecdeb53a584"
+                    "url": "https://poppler.freedesktop.org/poppler-22.09.0.tar.xz",
+                    "sha256": "d7a8f748211359cadb774ba3e18ecda6464b34027045c0648eb30d5852a41e2e"
                 }
             ]
         },
         {
             "name": "perl",
             "no-autogen": true,
-            "config-opts": ["-des", "-Duseshrplib"],
-            "build-options": {"cflags": "-fPIC", "ldflags": "-fpic", "no-debuginfo": true},
-            "cleanup": ["/man", "*.pod", "*.h"],
+            "config-opts": [
+                "-des",
+                "-Duseshrplib"
+            ],
+            "build-options": {
+                "cflags": "-fPIC",
+                "ldflags": "-fpic",
+                "no-debuginfo": true
+            },
+            "cleanup": [
+                "/man",
+                "*.pod",
+                "*.h"
+            ],
+            "ensure-writable": [
+                "/lib/perl5/5.36.0"
+            ],
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://www.cpan.org/src/5.0/perl-5.32.0.tar.gz",
-                    "sha256": "efeb1ce1f10824190ad1cadbcccf6fdb8a5d37007d0100d2d9ae5f2b5900c0b4"
+                    "url": "https://www.cpan.org/src/5.0/perl-5.36.0.tar.gz",
+                    "sha256": "e26085af8ac396f62add8a533c3a0ea8c8497d836f0689347ac5abd7b7a4e00a"
                 },
                 {
                     "type": "script",
                     "dest-filename": "configure",
-                    "commands": ["exec ./configure.gnu $@"]
-                }
-            ]
-        },
-        {
-            "name": "python3-pycairo",
-            "buildsystem": "simple",
-            "build-commands": [
-                "pip3 install --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"pycairo\""
-            ],
-            "sources": [
-                {
-                    "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/9d/6e/499d6a6db416eb3cdf0e57762a269908e4ab6638a75a90972afc34885b91/pycairo-1.20.0.tar.gz",
-                    "sha256": "5695a10cb7f9ae0d01f665b56602a845b0a8cb17e2123bfece10c2e58552468c"
+                    "commands": [
+                        "exec ./configure.gnu $@"
+                    ]
                 }
             ]
         },

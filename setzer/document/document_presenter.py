@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-# Copyright (C) 2017, 2018 Robert Griesel
+# Copyright (C) 2017-present Robert Griesel
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -42,7 +42,7 @@ class DocumentPresenter(object):
             self.view.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
         else:
             self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
-        self.view.source_view.set_left_margin(self.font_manager.get_char_width() - 1)
+        self.view.source_view.set_left_margin(self.font_manager.get_char_width() - 2)
 
         self.settings.connect('settings_changed', self.on_settings_changed)
         self.font_manager.connect('font_string_changed', self.on_font_string_changed)
@@ -64,6 +64,6 @@ class DocumentPresenter(object):
                 self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
 
     def on_font_string_changed(self, font_manager):
-        self.view.source_view.set_left_margin(self.font_manager.get_char_width() - 1)
+        self.view.source_view.set_left_margin(self.font_manager.get_char_width() - 2)
 
 

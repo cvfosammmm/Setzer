@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-# Copyright (C) 2017, 2018 Robert Griesel
+# Copyright (C) 2017-present Robert Griesel
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -40,7 +40,7 @@ class AboutDialog(Dialog):
         self.view.set_modal(True)
         self.view.set_program_name('Setzer')
         self.view.set_version(ServiceLocator.get_setzer_version())
-        self.view.set_copyright('Copyright © 2018-2020')
+        self.view.set_copyright('Copyright © 2018-present')
         self.view.set_comments(_('Setzer is a LaTeX editor.'))
         self.view.set_license_type(Gtk.License.GPL_3_0)
         self.view.set_website('https://www.cvfosammmm.org/setzer/')

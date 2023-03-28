@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-# Copyright (C) 2017, 2018 Robert Griesel
+# Copyright (C) 2017-present Robert Griesel
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -100,7 +100,7 @@ class Gutter(object):
             ctx.rectangle(0, self.current_line[1], self.total_size, self.current_line[2])
             ctx.set_source_rgba(self.cl_color.red, self.cl_color.green, self.cl_color.blue, self.cl_color.alpha)
             ctx.fill()
-        ctx.rectangle(self.total_size - 1, 0, self.total_size, drawing_area.get_allocated_height())
+        ctx.rectangle(self.total_size - 2, 0, 1, drawing_area.get_allocated_height())
         ctx.set_source_rgba(self.border_color.red, self.border_color.green, self.border_color.blue, self.border_color.alpha)
         ctx.fill()
 
@@ -128,6 +128,7 @@ class Gutter(object):
             self.cl_color = self.color_manager.get_theme_color('theme_base_color')
 
         self.border_color = self.color_manager.get_theme_color_mix('theme_base_color', 'borders', 0.5)
+        self.border_color_bold = self.color_manager.get_theme_color_mix('theme_base_color', 'borders', 0.25)
 
         for widget in self.widgets:
             widget.update_colors()
@@ -178,11 +179,12 @@ class Gutter(object):
         if event.window == self.source_view.get_window(Gtk.TextWindowType.LEFT):
             x += self.total_size
             total_size = 3
-            for widget in self.widgets:
+
+            for i, widget in enumerate(self.widgets):
                 if widget.is_visible():
                     widget_size = widget.get_size()
                     total_size += widget_size
-                    if x <= total_size and x > total_size - widget_size:
+                    if (x <= total_size and x > total_size - widget_size) or i == len(self.widgets) - 1:
                         return widget.on_click(event)
         return False
 
@@ -213,7 +215,7 @@ class Gutter(object):
                 total_size += widget.get_size()
 
         if total_size != 0:
-            total_size += 4
+            total_size += self.char_width + 5
 
         if total_size != self.total_size:
             self.total_size = total_size
