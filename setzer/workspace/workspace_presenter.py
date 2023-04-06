@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Handy', '1')
+from gi.repository import Handy
+
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -117,8 +121,10 @@ class WorkspacePresenter(object):
         self.main_window.build_log_paned.animate(True)
 
     def on_set_dark_mode(self, workspace, darkmode_enabled):
-        settings = ServiceLocator.get_settings()
-        settings.gtksettings.get_default().set_property('gtk-application-prefer-dark-theme', darkmode_enabled)
+        if darkmode_enabled:
+            Handy.StyleManager.get_default().set_color_scheme(Handy.ColorScheme.FORCE_DARK)
+        else:
+            Handy.StyleManager.get_default().set_color_scheme(Handy.ColorScheme.FORCE_LIGHT)
 
     def activate_welcome_screen_mode(self):
         self.workspace.welcome_screen.activate()

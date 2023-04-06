@@ -17,9 +17,11 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
+gi.require_version('Handy', '1')
 from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
+from gi.repository import Handy
 
 import sys
 import gettext
@@ -46,8 +48,14 @@ class MainApplicationController(Gtk.Application):
 
         # get settings
         self.settings = ServiceLocator.get_settings()
-        dm_default = GLib.Variant.new_boolean(self.settings.get_value('preferences', 'prefer_dark_mode'))
-        self.settings.gtksettings.set_property('gtk-application-prefer-dark-theme', dm_default)
+        cs_default = self.settings.get_value('preferences', 'color_scheme')
+        if cs_default == 'force_light':
+            cs_default = Handy.ColorScheme.FORCE_LIGHT
+        elif cs_default == 'force_dark':
+            cs_default = Handy.ColorScheme.FORCE_DARK
+        else:
+            cs_default = Handy.ColorScheme.PREFER_LIGHT
+        Handy.StyleManager.get_default().set_color_scheme(cs_default)
 
         # init static variables
         ServiceLocator.set_setzer_version('@setzer_version@')

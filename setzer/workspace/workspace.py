@@ -15,9 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
 import os.path
 import time
 import pickle
+gi.require_version('Handy', '1')
+from gi.repository import Handy
 
 from setzer.document.document import Document
 from setzer.document.document_latex import DocumentLaTeX
@@ -65,7 +68,7 @@ class Workspace(Observable):
         self.settings = ServiceLocator.get_settings()
         self.inline_spellchecking = self.settings.get_value('preferences', 'inline_spellchecking')
         self.spellchecking_language_code = self.settings.get_value('preferences', 'spellchecking_language_code')
-        self.dark_mode = self.settings.get_value('preferences', 'prefer_dark_mode')
+        self.color_scheme = self.settings.get_value('preferences', 'color_scheme')
         self.invert_pdf = self.settings.get_value('preferences', 'invert_pdf')
 
         self.sidebar = sidebar.Sidebar(self)
@@ -484,11 +487,18 @@ class Workspace(Observable):
         else:
             return False
 
-    def set_dark_mode(self, value):
-        if self.dark_mode != value:
-            self.dark_mode = value
-            self.settings.set_value('preferences', 'prefer_dark_mode', self.dark_mode)
-            self.add_change_code('set_dark_mode', value)
+    def set_color_scheme(self, value):
+        if self.color_scheme != value:
+            self.color_scheme = value
+            self.settings.set_value('preferences', 'color_scheme', self.color_scheme)
+            self.add_change_code('set_color_scheme', value)
+            if value == 'force_light':
+                value = Handy.ColorScheme.FORCE_LIGHT
+            elif value == 'force_dark':
+                value = Handy.ColorScheme.FORCE_DARK
+            else:
+                value = Handy.ColorScheme.PREFER_LIGHT
+            Handy.StyleManager.get_default().set_color_scheme(value)
 
     def set_invert_pdf(self, value):
         if self.invert_pdf != value:

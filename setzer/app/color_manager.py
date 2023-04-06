@@ -18,8 +18,10 @@
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('GtkSource', '4')
+gi.require_version('Handy', '1')
 from gi.repository import Gdk
 from gi.repository import GtkSource
+from gi.repository import Handy
 
 
 class ColorManager(object):
@@ -42,7 +44,7 @@ class ColorManager(object):
         self.mix_cache = dict()
 
     def update_syntax_scheme(self):
-        if self.settings.get_value('preferences', 'prefer_dark_mode'):
+        if Handy.StyleManager.get_default().get_dark():
             name = self.settings.get_value('preferences', 'syntax_scheme_dark_mode')
         else:
             name = self.settings.get_value('preferences', 'syntax_scheme')

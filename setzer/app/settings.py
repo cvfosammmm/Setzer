@@ -76,7 +76,7 @@ class Settings(Observable):
         self.defaults['preferences']['autoshow_build_log'] = 'errors_warnings'
         self.defaults['preferences']['latex_interpreter'] = 'xelatex'
         self.defaults['preferences']['use_latexmk'] = False
-        self.defaults['preferences']['prefer_dark_mode'] = False
+        self.defaults['preferences']['color_scheme'] = 'default'
         self.defaults['preferences']['invert_pdf'] = False
         self.defaults['preferences']['spaces_instead_of_tabs'] = True
         self.defaults['preferences']['tab_width'] = 4

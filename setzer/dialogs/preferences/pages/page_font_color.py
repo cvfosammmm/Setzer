@@ -18,10 +18,12 @@
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('GtkSource', '4')
+gi.require_version('Handy', '1')
 from gi.repository import Gtk
 from gi.repository import GLib
 from gi.repository import Pango
 from gi.repository import GtkSource
+from gi.repository import Handy
 
 import os, os.path
 import shutil
@@ -45,10 +47,15 @@ class PageFontColor(object):
         self.view.style_switcher_dark_mode.set_active_id(self.settings.get_value('preferences', 'syntax_scheme_dark_mode'))
         self.view.style_switcher_dark_mode.connect('changed', self.on_style_switcher_changed, True)
 
-        dark_mode_state = self.settings.get_value('preferences', 'prefer_dark_mode')
-        self.view.option_dark_mode.set_active(dark_mode_state)
-        self.view.option_dark_mode.connect('toggled', self.on_dark_mode_toggle_toggled)
-        self.view.style_switcher_stack.set_visible_child_name('dark' if dark_mode_state else 'light')
+        color_scheme = self.settings.get_value('preferences', 'color_scheme')
+        if color_scheme == 'force_light':
+            self.view.scheme_switcher.set_active(1)
+        elif color_scheme == 'force_dark':
+            self.view.scheme_switcher.set_active(2)
+        else:
+            self.view.scheme_switcher.set_active(0)
+        self.view.scheme_switcher.connect('changed', self.on_color_scheme_switcher_changed)
+        self.view.style_switcher_stack.set_visible_child_name('dark' if Handy.StyleManager.get_default().get_dark() else 'light')
         self.update_font_color_preview()
         self.update_remove_button()
 
@@ -133,11 +140,12 @@ class PageFontColor(object):
                 os.remove(filename)
                 self.update_switchers()
 
-    def on_dark_mode_toggle_toggled(self, button):
+    def on_color_scheme_switcher_changed(self, switcher):
         workspace = ServiceLocator.get_workspace()
-        new_state = not workspace.actions.toggle_dark_mode_action.get_state().get_boolean()
-        workspace.actions.toggle_dark_mode_action.set_state(GLib.Variant.new_boolean(new_state))
-        workspace.set_dark_mode(new_state)
+        workspace.set_color_scheme(switcher.get_active_id())
+
+        new_state = Handy.StyleManager.get_default().get_dark()
+        workspace.actions.change_color_scheme_action.set_state(GLib.Variant.new_boolean(new_state))
 
         self.view.style_switcher_stack.set_visible_child_name('dark' if new_state else 'light')
         self.update_font_color_preview()
@@ -256,8 +264,22 @@ class PageFontColorView(Gtk.VBox):
         label.set_margin_bottom(6)
         self.pack_start(label, False, False, 0)
 
-        self.option_dark_mode = Gtk.CheckButton(_('Dark Mode'))
-        self.pack_start(self.option_dark_mode, False, False, 0)
+        vbox = Gtk.VBox()
+        box = Gtk.HBox()
+        box.set_margin_bottom(6)
+        label = Gtk.Label()
+        label.set_markup(_('Theme:'))
+        label.set_xalign(0)
+        label.set_margin_bottom(6)
+        self.scheme_switcher = Gtk.ComboBoxText()
+        self.scheme_switcher.append('default', _('Follow System'))
+        self.scheme_switcher.append('force_light', _('Light'))
+        self.scheme_switcher.append('force_dark', _('Dark'))
+        vbox.pack_start(label, False, False, 0)
+        box.pack_start(self.scheme_switcher, False, False, 0)
+        self.pack_start(vbox, False, False, 0)
+        self.pack_start(box, False, False, 0)
+
         self.option_invert_preview = Gtk.CheckButton(_('Invert Colors in .pdf-Preview'))
         self.pack_start(self.option_invert_preview, False, False, 0)
 
