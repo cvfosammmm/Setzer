@@ -34,7 +34,7 @@ class OpenSessionDialog(Dialog):
     def run(self):
         self.setup()
         response = self.view.run()
-        if response == Gtk.ResponseType.OK:
+        if response == Gtk.ResponseType.ACCEPT:
             return_value = self.view.get_filename()
         else:
             return_value = None
@@ -43,16 +43,7 @@ class OpenSessionDialog(Dialog):
 
     def setup(self):
         self.action = Gtk.FileChooserAction.OPEN
-        self.buttons = (_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Open'), Gtk.ResponseType.OK)
-        self.view = Gtk.FileChooserDialog(_('Load Session'), self.main_window, self.action, self.buttons)
-
-        headerbar = self.view.get_header_bar()
-        if headerbar != None:
-            for widget in headerbar.get_children():
-                if isinstance(widget, Gtk.Button) and widget.get_label() == _('_Open'):
-                    widget.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
-                    widget.set_can_default(True)
-                    widget.grab_default()
+        self.view = Gtk.FileChooserNative.new(_('Load Session'), self.main_window, self.action, _('_Open'), _('_Cancel'))
 
         file_filter1 = Gtk.FileFilter()
         file_filter1.add_pattern('*.stzs')

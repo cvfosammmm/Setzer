@@ -72,27 +72,19 @@ class FilechooserButton(Observable):
 
     def on_button_clicked(self, button):
         action = Gtk.FileChooserAction.OPEN
-        buttons = (_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Select'), Gtk.ResponseType.APPLY)
-        dialog = Gtk.FileChooserDialog(self.title, self.main_window, action, buttons)
+        dialog = Gtk.FileChooserNative.new(self.title, self.main_window, action, _('_Select'), _('_Cancel'))
 
         for file_filter in self.filters:
             dialog.add_filter(file_filter)
-
-        for widget in dialog.get_header_bar().get_children():
-            if isinstance(widget, Gtk.Button) and widget.get_label() == _('_Select'):
-                widget.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
-                widget.set_can_default(True)
-                widget.grab_default()
 
         if self.default_folder != None:
             dialog.set_current_folder(self.default_folder)
 
         response = dialog.run()
-        if response == Gtk.ResponseType.APPLY:
+        if response == Gtk.ResponseType.ACCEPT:
             self.filename = dialog.get_filename()
             self.view.button_label.set_text(os.path.basename(self.filename))
             self.add_change_code('file-set')
         dialog.hide()
         del(dialog)
-
 
