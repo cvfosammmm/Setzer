@@ -17,20 +17,22 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
+gi.require_version('Handy', '1')
 from gi.repository import Gtk
 from gi.repository import GLib
 from gi.repository import Gio
+from gi.repository import Handy
 
 import setzer.workspace.document_switcher.document_switcher_viewgtk as document_switcher_viewgtk
 import setzer.workspace.document_chooser.document_chooser_viewgtk as document_chooser_viewgtk
 from setzer.app.service_locator import ServiceLocator
 
 
-class HeaderBar(Gtk.HeaderBar):
+class HeaderBar(Handy.HeaderBar):
     ''' Title bar of the app, contains global controls '''
 
     def __init__(self):
-        Gtk.HeaderBar.__init__(self)
+        Handy.HeaderBar.__init__(self)
         self.pmb = ServiceLocator.get_popover_menu_builder()
 
         self.set_show_close_button(True)
