@@ -17,10 +17,12 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
+gi.require_version('Handy', '1')
 from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import GLib
+from gi.repository import Handy
 
 import setzer.workspace.build_log.build_log_viewgtk as build_log_view
 import setzer.workspace.headerbar.headerbar_viewgtk as headerbar_view
@@ -37,13 +39,15 @@ from setzer.app.service_locator import ServiceLocator
 import os.path
 
 
-class MainWindow(Gtk.ApplicationWindow):
+class MainWindow(Handy.ApplicationWindow):
 
     def __init__(self, app):
         Gtk.Window.__init__(self, application=app)
         self.app = app
         self.set_size_request(-1, 550)
         self.add_events(Gdk.EventMask.KEY_PRESS_MASK)
+        self.main_box = Gtk.Box()
+        self.main_box.props.orientation = Gtk.Orientation.VERTICAL
 
         # window state variables
         self.current_width = 0
@@ -52,7 +56,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # headerbar
         self.headerbar = headerbar_view.HeaderBar()
-        self.set_titlebar(self.headerbar)
+        self.main_box.add(self.headerbar)
 
         # latex notebook
         self.latex_notebook = Gtk.Notebook()
@@ -119,11 +123,13 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # mode stack
         self.mode_stack = Gtk.Stack()
+        self.mode_stack.props.expand = True
         self.mode_stack.add_named(self.welcome_screen, 'welcome_screen')
         self.mode_stack.add_named(self.sidebar_paned, 'latex_documents')
         self.mode_stack.add_named(self.bibtex_notebook_wrapper, 'bibtex_documents')
         self.mode_stack.add_named(self.others_notebook_wrapper, 'other_documents')
-        self.add(self.mode_stack)
+        self.main_box.add(self.mode_stack)
+        self.add(self.main_box)
 
         self.css_provider = Gtk.CssProvider()
         resources_path = ServiceLocator.get_resources_path()
@@ -133,4 +139,5 @@ class MainWindow(Gtk.ApplicationWindow):
         self.css_provider_font_size = Gtk.CssProvider()
         Gtk.StyleContext.add_provider_for_screen(self.get_screen(), self.css_provider_font_size, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
+        Handy.init()
 

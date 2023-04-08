@@ -18,8 +18,10 @@
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gspell', '1')
+gi.require_version('Handy', '1')
 from gi.repository import Gspell
 from gi.repository import GLib, Gio
+from gi.repository import Handy
 
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
@@ -71,8 +73,8 @@ class Actions(object):
         self.toggle_spellchecking_action = Gio.SimpleAction.new_stateful('toggle-spellchecking', None, sc_default)
         self.set_spellchecking_language_action = Gio.SimpleAction.new('set-spellchecking-language', None)
         self.spellchecking_action = Gio.SimpleAction.new('spellchecking', None)
-        dm_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'prefer_dark_mode'))
-        self.toggle_dark_mode_action = Gio.SimpleAction.new_stateful('toggle-dark-mode', None, dm_default)
+        cs_default = GLib.Variant.new_boolean(Handy.StyleManager.get_default().get_dark())
+        self.change_color_scheme_action = Gio.SimpleAction.new_stateful('toggle-dark-mode', None, cs_default)
         ip_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'invert_pdf'))
         self.toggle_invert_pdf_action = Gio.SimpleAction.new_stateful('toggle-invert-pdf', None, ip_default)
         self.zoom_out_action = Gio.SimpleAction.new('zoom-out', None)
@@ -117,7 +119,7 @@ class Actions(object):
         main_window.add_action(self.toggle_spellchecking_action)
         main_window.add_action(self.set_spellchecking_language_action)
         main_window.add_action(self.spellchecking_action)
-        main_window.add_action(self.toggle_dark_mode_action)
+        main_window.add_action(self.change_color_scheme_action)
         main_window.add_action(self.toggle_invert_pdf_action)
         main_window.add_action(self.zoom_out_action)
         main_window.add_action(self.zoom_in_action)
@@ -160,7 +162,7 @@ class Actions(object):
         self.toggle_spellchecking_action.connect('activate', self.on_spellchecking_toggle_toggled)
         self.set_spellchecking_language_action.connect('activate', self.start_spellchecking_language_dialog)
         self.spellchecking_action.connect('activate', self.start_spellchecking_dialog)
-        self.toggle_dark_mode_action.connect('activate', self.on_dark_mode_toggle_toggled)
+        self.change_color_scheme_action.connect('activate', self.on_color_scheme_change_changed)
         self.toggle_invert_pdf_action.connect('activate', self.on_invert_pdf_toggle_toggled)
         self.zoom_out_action.connect('activate', self.on_zoom_out)
         self.zoom_in_action.connect('activate', self.on_zoom_in)
@@ -497,10 +499,13 @@ class Actions(object):
     def start_spellchecking_dialog(self, action, parameter=None):
         DialogLocator.get_dialog('spellchecking').run()
 
-    def on_dark_mode_toggle_toggled(self, action, parameter=None):
+    def on_color_scheme_change_changed(self, action, parameter=None):
         new_state = not action.get_state().get_boolean()
         action.set_state(GLib.Variant.new_boolean(new_state))
-        self.workspace.set_dark_mode(new_state)
+        if new_state:
+            self.workspace.set_color_scheme('force_dark')
+        else:
+            self.workspace.set_color_scheme('prefer_light')
 
     def on_invert_pdf_toggle_toggled(self, action, parameter=None):
         new_state = not action.get_state().get_boolean()

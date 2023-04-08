@@ -33,11 +33,14 @@ class Preferences(object):
         self.dialog.set_modal(True)
         self.dialog.set_transient_for(main_window)
         self.dialog.set_can_focus(False)
-        self.dialog.set_size_request(400, 250)
-        self.dialog.set_default_size(400, 250)
-        
+        self.dialog.set_size_request(400, 400)
+        self.dialog.set_default_size(400, 400)
+
         self.headerbar = self.dialog.get_header_bar()
         self.headerbar.set_title(_('Preferences'))
+
+        self.scrolled_window = Gtk.ScrolledWindow()
+        self.scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
         self.topbox = self.dialog.get_content_area()
         self.topbox.set_border_width(0)
@@ -45,7 +48,8 @@ class Preferences(object):
         self.notebook = Gtk.Notebook()
         self.notebook.set_show_tabs(True)
         self.notebook.set_show_border(False)
-        self.topbox.pack_start(self.notebook, True, True, 0)
+        self.scrolled_window.add(self.notebook)
+        self.topbox.pack_start(self.scrolled_window, True, True, 0)
 
     def run(self):
         return self.dialog.run()
@@ -55,6 +59,4 @@ class Preferences(object):
         
     def __del__(self):
         self.dialog.destroy()
-        
-
 
