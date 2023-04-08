@@ -39,17 +39,13 @@ class Preferences(object):
         self.headerbar = self.dialog.get_header_bar()
         self.headerbar.set_title(_('Preferences'))
 
-        self.scrolled_window = Gtk.ScrolledWindow()
-        self.scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-
         self.topbox = self.dialog.get_content_area()
         self.topbox.set_border_width(0)
 
         self.notebook = Gtk.Notebook()
         self.notebook.set_show_tabs(True)
         self.notebook.set_show_border(False)
-        self.scrolled_window.add(self.notebook)
-        self.topbox.pack_start(self.scrolled_window, True, True, 0)
+        self.topbox.pack_start(self.notebook, True, True, 0)
 
     def run(self):
         return self.dialog.run()

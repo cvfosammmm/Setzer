@@ -219,28 +219,34 @@ class PageFontColor(object):
                 self.view.preview_wrapper.get_style_context().add_class('dark-bg')
 
 
-class PageFontColorView(Gtk.VBox):
+class PageFontColorView(Gtk.ScrolledWindow):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.ScrolledWindow.__init__(self)
+        self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
-        self.set_margin_start(18)
-        self.set_margin_end(18)
-        self.set_margin_top(18)
-        self.set_margin_bottom(18)
-        self.get_style_context().add_class('preferences-page')
+        self.set_size_request(-1, 500)
+
+        self.box = Gtk.VBox()
+        self.add(self.box)
+
+        self.box.set_margin_start(18)
+        self.box.set_margin_end(18)
+        self.box.set_margin_top(18)
+        self.box.set_margin_bottom(18)
+        self.box.get_style_context().add_class('preferences-page')
 
         label = Gtk.Label()
         label.set_markup('<b>' + _('Font') + '</b>')
         label.set_xalign(0)
         label.set_margin_bottom(6)
-        self.pack_start(label, False, False, 0)
+        self.box.pack_start(label, False, False, 0)
 
         font_manager = ServiceLocator.get_font_manager()
         font_string = font_manager.get_system_font()
         self.option_use_system_font = Gtk.CheckButton(_('Use the system fixed width font (' + font_string + ')'))
         self.option_use_system_font.set_margin_bottom(18)
-        self.pack_start(self.option_use_system_font, False, False, 0)
+        self.box.pack_start(self.option_use_system_font, False, False, 0)
 
         self.font_chooser_revealer = Gtk.Revealer()
         vbox = Gtk.VBox()
@@ -256,13 +262,13 @@ class PageFontColorView(Gtk.VBox):
         hbox.pack_start(self.font_chooser_button, False, False, 0)
         vbox.pack_start(hbox, False, False, 0)
         self.font_chooser_revealer.add(vbox)
-        self.pack_start(self.font_chooser_revealer, False, False, 0)
+        self.box.pack_start(self.font_chooser_revealer, False, False, 0)
 
         label = Gtk.Label()
         label.set_markup('<b>' + _('Colors') + '</b>')
         label.set_xalign(0)
         label.set_margin_bottom(6)
-        self.pack_start(label, False, False, 0)
+        self.box.pack_start(label, False, False, 0)
 
         vbox = Gtk.VBox()
         box = Gtk.HBox()
@@ -277,18 +283,18 @@ class PageFontColorView(Gtk.VBox):
         self.scheme_switcher.append('force_dark', _('Dark'))
         vbox.pack_start(label, False, False, 0)
         box.pack_start(self.scheme_switcher, False, False, 0)
-        self.pack_start(vbox, False, False, 0)
-        self.pack_start(box, False, False, 0)
+        self.box.pack_start(vbox, False, False, 0)
+        self.box.pack_start(box, False, False, 0)
 
         self.option_invert_preview = Gtk.CheckButton(_('Invert Colors in .pdf-Preview'))
-        self.pack_start(self.option_invert_preview, False, False, 0)
+        self.box.pack_start(self.option_invert_preview, False, False, 0)
 
         label = Gtk.Label()
         label.set_markup(_('Editor Color Scheme:'))
         label.set_xalign(0)
         label.set_margin_top(18)
         label.set_margin_bottom(6)
-        self.pack_start(label, False, False, 0)
+        self.box.pack_start(label, False, False, 0)
 
         self.style_switcher = Gtk.ComboBoxText()
         self.style_switcher_dark_mode = Gtk.ComboBoxText()
@@ -299,7 +305,7 @@ class PageFontColorView(Gtk.VBox):
         box = Gtk.HBox()
         box.set_margin_bottom(18)
         box.pack_start(self.style_switcher_stack, False, False, 0)
-        self.pack_start(box, False, False, 0)
+        self.box.pack_start(box, False, False, 0)
 
         box = Gtk.HBox()
         box.set_margin_bottom(18)
@@ -309,13 +315,13 @@ class PageFontColorView(Gtk.VBox):
         self.add_scheme_button = Gtk.Button()
         self.add_scheme_button.set_label('Add from file...')
         box.pack_start(self.add_scheme_button, False, False, 0)
-        self.pack_start(box, False, False, 0)
+        self.box.pack_start(box, False, False, 0)
 
         label = Gtk.Label()
         label.set_markup('<b>' + _('Preview') + '</b>')
         label.set_xalign(0)
         label.set_margin_bottom(6)
-        self.pack_start(label, False, False, 0)
+        self.box.pack_start(label, False, False, 0)
 
         self.preview_wrapper = Gtk.VBox()
         self.preview_wrapper.get_style_context().add_class('preview')
@@ -341,7 +347,7 @@ This is a \\textit{preview}, for $x, y \in \mathbb{R}: x \leq y$ or $x > y$.
 \\end{document}''')
         self.source_buffer.place_cursor(self.source_buffer.get_start_iter())
         self.preview_wrapper.pack_start(scrolled_window, True, True, 0)
-        self.pack_start(self.preview_wrapper, True, True, 0)
+        self.box.pack_start(self.preview_wrapper, True, True, 0)
 
 
 class AddSchemeDialog(object):
