@@ -84,6 +84,7 @@ class Workspace(Observable):
         self.build_log_position = self.settings.get_value('window_state', 'build_log_paned_position')
         self.shortcutsbar = shortcutsbar.Shortcutsbar(self)
         self.shortcuts = shortcuts.Shortcuts(self)
+        self.propagate_color_scheme()
 
     def init_workspace_controller(self):
         self.actions = actions.Actions(self)
@@ -491,14 +492,11 @@ class Workspace(Observable):
         if self.color_scheme != value:
             self.color_scheme = value
             self.settings.set_value('preferences', 'color_scheme', self.color_scheme)
-            self.add_change_code('set_color_scheme', value)
-            if value == 'force_light':
-                value = Handy.ColorScheme.FORCE_LIGHT
-            elif value == 'force_dark':
-                value = Handy.ColorScheme.FORCE_DARK
-            else:
-                value = Handy.ColorScheme.PREFER_LIGHT
-            Handy.StyleManager.get_default().set_color_scheme(value)
+            self.propagate_color_scheme()
+
+    def propagate_color_scheme(self):
+        handy_color_modes = {'force_light': Handy.ColorScheme.FORCE_LIGHT, 'force_dark': Handy.ColorScheme.FORCE_DARK, 'default': Handy.ColorScheme.PREFER_LIGHT}
+        Handy.StyleManager.get_default().set_color_scheme(handy_color_modes[self.color_scheme])
 
     def set_invert_pdf(self, value):
         if self.invert_pdf != value:

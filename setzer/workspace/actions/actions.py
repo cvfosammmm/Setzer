@@ -505,7 +505,7 @@ class Actions(object):
         if new_state:
             self.workspace.set_color_scheme('force_dark')
         else:
-            self.workspace.set_color_scheme('prefer_light')
+            self.workspace.set_color_scheme('default')
 
     def on_invert_pdf_toggle_toggled(self, action, parameter=None):
         new_state = not action.get_state().get_boolean()
