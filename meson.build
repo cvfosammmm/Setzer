@@ -1,6 +1,6 @@
 project(
   'Setzer',
-  version: '0.4.9',
+  version: '55',
   license: 'GPL-3.0-or-later',
 )
 
