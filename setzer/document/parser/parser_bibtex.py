@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import bibtexparser
+
 from setzer.app.service_locator import ServiceLocator
 from setzer.helpers.timer import timer
 
@@ -40,10 +42,10 @@ class ParserBibTeX(object):
 
     #@timer
     def parse_symbols(self, text):
+        db = bibtexparser.loads(text)
         bibitems = set()
-        for match in ServiceLocator.get_regex_object(r'@(\w+)\{(\w+)').finditer(text):
-            bibitems = bibitems | {match.group(2).strip()}
-
+        for match in db.entries:
+            bibitems = bibitems | {match['ID']}
         self.document.symbols['bibitems'] = bibitems
 
 

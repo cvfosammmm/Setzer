@@ -23,6 +23,7 @@ import os.path
 import re
 import time
 import xml.etree.ElementTree as ET
+import bibtexparser
 
 import setzer.helpers.path as path_helpers
 import setzer.helpers.timer as timer
@@ -30,11 +31,10 @@ import setzer.helpers.timer as timer
 
 class AutocompleteProvider(object):
 
-    def __init__(self, resources_path, workspace, latex_parser_regex, bibtex_parser_regex, packages_dict):
+    def __init__(self, resources_path, workspace, latex_parser_regex, packages_dict):
         self.workspace = workspace
         self.resources_path = resources_path
         self.latex_parser_regex = latex_parser_regex
-        self.bibtex_parser_regex = bibtex_parser_regex
         self.packages_dict = packages_dict
 
         self.static_proposals = dict()
@@ -345,10 +345,10 @@ class AutocompleteProvider(object):
 
     def parse_bibtex_file(self, pathname):
         with open(pathname, 'r') as f:
-            text = f.read()
+            db = bibtexparser.load(f)
         bibitems = set()
-        for match in self.bibtex_parser_regex.finditer(text):
-            bibitems = bibitems | {match.group(2).strip()}
+        for match in db.entries:
+            bibitems = bibitems | {match['ID']}
         return {'last_parse_time': time.time(), 'labels': {'bibitems': bibitems}}
 
     def generate_dynamic_word_beginnings(self):
