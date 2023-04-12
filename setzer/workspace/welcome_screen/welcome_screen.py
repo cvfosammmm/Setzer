@@ -17,8 +17,10 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
+gi.require_version('PangoCairo', '1.0')
 from gi.repository import GObject
 from gi.repository import Pango
+from gi.repository import PangoCairo
 import cairo
 
 import time
@@ -67,8 +69,9 @@ class WelcomeScreen(object):
         self.font_desc = Pango.FontDescription.from_string('cmr10')
         self.angle = 0.18
         self.alpha = 0.065
-        self.font_size = 40
+        self.font_size = 36
         self.line_height = 70
+        self.font_desc.set_size(self.font_size * Pango.SCALE)
 
         self.is_active = False
         self.lines_per_second = 0.25
@@ -102,7 +105,7 @@ class WelcomeScreen(object):
         self.view.drawing_area.queue_draw()
         return self.is_active
 
-    #@timer
+    @timer
     def draw(self, drawing_area, ctx):
         self.view_width = self.view.get_allocated_width()
         self.view_height = self.view.get_allocated_height()
@@ -110,15 +113,14 @@ class WelcomeScreen(object):
         ctx.rotate(-self.angle)
         ctx.set_source_rgba(self.fg_color.red, self.fg_color.green, self.fg_color.blue, self.fg_color.alpha)
 
-        ctx.set_font_size(self.font_size)
-        font_family = self.font_desc.get_family()
-        ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
+        layout = Pango.Layout(drawing_area.get_pango_context())
+        layout.set_font_description(self.font_desc)
 
         if self.animate:
             y = -self.line_height - int(time.time() * self.line_height * self.lines_per_second) % self.line_height
             line = int(int(time.time() * self.lines_per_second) % self.lines_per_second) + int(self.lines_per_second * (int(time.time()) % int(20 // self.lines_per_second)))
         else:
-            y = 0
+            y = -70
             line = 0
 
         text = self.text[line:] + self.text[:line]
@@ -127,7 +129,10 @@ class WelcomeScreen(object):
             y += self.line_height
             ctx.move_to(-50, y)
             ctx.rotate(-self.angle)
-            ctx.show_text(paragraph)
+
+            layout.set_text(paragraph)
+            PangoCairo.show_layout(ctx, layout)
+
             if y > (self.view_height + self.view_width / 3): break
 
         ctx.rotate(self.angle)
