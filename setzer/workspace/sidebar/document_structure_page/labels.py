@@ -76,7 +76,6 @@ class LabelsSection(structure_widget.StructureWidget):
         self.set_hover_item(None)
         self.view.queue_draw()
 
-    #@timer
     def draw(self, drawing_area, ctx):
         if len(self.labels) == 0:
             return True
