@@ -72,7 +72,7 @@ class StructureSection(structure_widget.StructureWidget):
                             block_included.append(includes[0]['document'])
                         blocks.append(block_included)
                 else:
-                    file_block = [0, 0, 0, 0, 'file', os.path.basename(includes[0]['filename']), includes[0]['document']]
+                    file_block = [0, 0, 0, 0, 'file', includes[0]['filename'], includes[0]['document']]
                     blocks.append(file_block)
                 del(includes[0])
             if len(block) < 7:
