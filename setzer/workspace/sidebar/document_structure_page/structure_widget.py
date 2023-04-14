@@ -18,9 +18,9 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk
+from gi.repository import Pango
+from gi.repository import PangoCairo
 from gi.repository import cairo
-
-import setzer.helpers.drawing as drawing_helper
 
 
 class StructureWidget(object):
@@ -33,6 +33,9 @@ class StructureWidget(object):
         self.hover_item = None
 
     def init_view(self):
+        self.layout = Pango.Layout(self.view.get_pango_context())
+        self.layout.set_ellipsize(Pango.EllipsizeMode.END)
+
         self.view.connect('enter-notify-event', self.on_enter)
         self.view.connect('motion-notify-event', self.on_hover)
         self.view.connect('leave-notify-event', self.on_leave)
@@ -74,16 +77,16 @@ class StructureWidget(object):
         ctx.fill()
 
     def draw_text(self, ctx, voffset, item_num, text):
-        text = drawing_helper.ellipsize_back(ctx, text, self.view_width - (voffset + 18))
         ctx.set_source_rgba(self.view.fg_color.red, self.view.fg_color.green, self.view.fg_color.blue, self.view.fg_color.alpha)
-        ctx.move_to(voffset, (item_num + 1) * self.view.line_height + 2)
-        ctx.show_text(text)
+        ctx.move_to(voffset, (item_num) * self.view.line_height + 12)
+
+        self.layout.set_width((self.view_width - (voffset + 18)) * Pango.SCALE)
+        self.layout.set_text(text)
+
+        PangoCairo.show_layout(ctx, self.layout)
 
     def drawing_setup(self, ctx):
         style_context = self.view.get_style_context()
-
-        ctx.set_font_size(self.view.font_size)
-        ctx.select_font_face(self.view.font.get_family(), cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
 
         self.view_width = self.view.get_allocated_width()
 
