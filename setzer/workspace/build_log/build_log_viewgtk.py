@@ -40,6 +40,9 @@ class BuildLogView(Gtk.VBox):
         self.font = self.list.get_style_context().get_font(style_context.get_state())
         self.font_size = (self.font.get_size() * 4) / (3 * Pango.SCALE)
         self.line_height = int(self.font_size) + 11
+        self.layout = Pango.Layout(self.list.get_pango_context())
+        self.layout.set_ellipsize(Pango.EllipsizeMode.START)
+        self.fg_color = style_context.lookup_color('theme_fg_color')[1]
 
         self.header = Gtk.HBox()
         self.close_button = Gtk.Button.new_from_icon_name('window-close-symbolic', Gtk.IconSize.MENU)

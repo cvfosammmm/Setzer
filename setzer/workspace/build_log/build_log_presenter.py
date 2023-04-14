@@ -18,10 +18,11 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from gi.repository import cairo
 from gi.repository import Pango
+from gi.repository import PangoCairo
 
 import os.path
+import cairo
 
 import setzer.workspace.build_log.build_log_viewgtk as build_log_view
 import setzer.helpers.drawing as drawing_helper
@@ -35,6 +36,8 @@ class BuildLogPresenter(object):
         self.build_log = build_log
         self.view = build_log_view
 
+        self.line_cache = dict()
+
         self.set_header_data(0, 0, False)
         self.view.list.connect('draw', self.draw)
 
@@ -45,6 +48,7 @@ class BuildLogPresenter(object):
         self.height = -1
 
     def on_build_log_finished_adding(self, build_log, has_been_built):
+        self.line_cache = dict()
         num_errors = self.build_log.count_items('errors')
         num_others = self.build_log.count_items('warnings') + self.build_log.count_items('badboxes')
         num_items = self.build_log.count_items('all')
@@ -65,18 +69,15 @@ class BuildLogPresenter(object):
 
         style_context = drawing_area.get_style_context()
 
-        ctx.set_font_size(self.view.font_size)
-        ctx.select_font_face(self.view.font.get_family(), cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
-
         offset = self.view.scrolled_window.get_vadjustment().get_value()
-        view_width = self.view.scrolled_window.get_allocated_width()
+        view_width = drawing_area.get_allocated_width()
         view_height = self.view.scrolled_window.get_allocated_height()
         additional_height = ctx.get_target().get_height() - view_height
         additional_lines = additional_height // self.view.line_height + 2
 
         bg_color = style_context.lookup_color('theme_base_color')[1]
         hover_color = style_context.lookup_color('theme_bg_color')[1]
-        fg_color = style_context.lookup_color('theme_fg_color')[1]
+        self.view.fg_color = style_context.lookup_color('theme_fg_color')[1]
 
         ctx.set_source_rgba(bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha)
         ctx.rectangle(0, max(0, offset - additional_height), view_width, max(len(self.build_log.items) * self.view.line_height, view_height + 2 * additional_height))
@@ -87,42 +88,60 @@ class BuildLogPresenter(object):
         items = self.build_log.items[first_line:last_line]
 
         count = first_line
-        ctx.set_source_rgba(fg_color.red, fg_color.green, fg_color.blue, fg_color.alpha)
-        glyphs = list()
+        ctx.set_source_rgba(self.view.fg_color.red, self.view.fg_color.green, self.view.fg_color.blue, self.view.fg_color.alpha)
         for item in items:
             if count == self.build_log.hover_item:
                 ctx.set_source_rgba(hover_color.red, hover_color.green, hover_color.blue, hover_color.alpha)
-                ctx.rectangle(0, count * self.view.line_height, view_width, self.view.line_height)
+                ctx.rectangle(0, count * self.view.line_height - 1, view_width, self.view.line_height - 1)
                 ctx.fill()
 
-            surface = self.view.icons[item[0]]
-            surface.set_device_offset(-12 * self.view.get_scale_factor(), -(count * self.view.line_height + 4) * self.view.get_scale_factor())
-            ctx.set_source_surface(surface)
-            ctx.rectangle(12, count * self.view.line_height + 4, 16, 16)
-            ctx.fill()
-
-            ctx.set_source_rgba(fg_color.red, fg_color.green, fg_color.blue, fg_color.alpha)
-
-            ctx.move_to(40, (count + 1) * self.view.line_height - 7)
-            ctx.show_text(item[0])
-
-            ctx.move_to(116, (count + 1) * self.view.line_height - 7)
-            text = drawing_helper.ellipsize_front(ctx, os.path.basename(item[2]), 120)
-            ctx.show_text(text)
-
-            ctx.move_to(254, (count + 1) * self.view.line_height - 7)
-            ctx.show_text(_('Line {number}').format(number=str(item[3])) if item[3] >= 0 else '')
-
-            ctx.move_to(330, (count + 1) * self.view.line_height - 7)
-            ctx.show_text(item[4])
+            self.draw_line(ctx, item, count)
             count += 1
 
-            if (342 + ctx.text_extents(item[4]).width) > self.max_width:
-                self.max_width = (342 + ctx.text_extents(item[4]).width)
+            if (342 + self.view.layout.get_extents()[1].width / Pango.SCALE) > self.max_width:
+                self.max_width = 342 + self.view.layout.get_extents()[1].width / Pango.SCALE
                 update_size = True
 
         if update_size:
             drawing_area.set_size_request(self.max_width, self.height)
+
+    def draw_line(self, da_context, item, count):
+        if count not in self.line_cache:
+            surface = cairo.ImageSurface(cairo.Format.ARGB32, 350 + len(item[4]) * self.view.line_height, self.view.line_height)
+            ctx = cairo.Context(surface)
+
+            icon_surface = self.view.icons[item[0]]
+            ctx.set_source_surface(icon_surface)
+            ctx.rectangle(0, 1, 16, 16)
+            ctx.fill()
+
+            ctx.set_source_rgba(self.view.fg_color.red, self.view.fg_color.green, self.view.fg_color.blue, self.view.fg_color.alpha)
+
+            ctx.move_to(40, -1)
+            self.view.layout.set_text(item[0])
+            PangoCairo.show_layout(ctx, self.view.layout)
+
+            ctx.move_to(116, -1)
+            self.view.layout.set_width(120 * Pango.SCALE)
+            self.view.layout.set_text(item[2])
+            PangoCairo.show_layout(ctx, self.view.layout)
+            self.view.layout.set_width(-1)
+
+            ctx.move_to(254, -1)
+            self.view.layout.set_text(_('Line {number}').format(number=str(item[3])) if item[3] >= 0 else '')
+            PangoCairo.show_layout(ctx, self.view.layout)
+
+            ctx.move_to(330, -1)
+            self.view.layout.set_text(item[4])
+            PangoCairo.show_layout(ctx, self.view.layout)
+
+            self.line_cache[count] = surface
+
+        surface = self.line_cache[count]
+        surface.set_device_offset(-12 * self.view.get_scale_factor(), -(count * self.view.line_height + 3) * self.view.get_scale_factor())
+        da_context.set_source_surface(surface)
+        da_context.rectangle(12, count * self.view.line_height + 4, 350 + len(item[4]) * self.view.line_height, self.view.line_height)
+        da_context.fill()
 
     def set_header_data(self, errors, warnings, tried_building=False):
         if tried_building:
