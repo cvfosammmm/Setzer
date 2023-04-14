@@ -117,21 +117,21 @@ class BuildLogPresenter(object):
 
             ctx.set_source_rgba(self.view.fg_color.red, self.view.fg_color.green, self.view.fg_color.blue, self.view.fg_color.alpha)
 
-            ctx.move_to(40, -1)
+            ctx.move_to(36, -1)
             self.view.layout.set_text(item[0])
             PangoCairo.show_layout(ctx, self.view.layout)
 
-            ctx.move_to(116, -1)
-            self.view.layout.set_width(120 * Pango.SCALE)
+            ctx.move_to(120, -1)
+            self.view.layout.set_width(117 * Pango.SCALE)
             self.view.layout.set_text(item[2])
             PangoCairo.show_layout(ctx, self.view.layout)
             self.view.layout.set_width(-1)
 
-            ctx.move_to(254, -1)
+            ctx.move_to(264, -1)
             self.view.layout.set_text(_('Line {number}').format(number=str(item[3])) if item[3] >= 0 else '')
             PangoCairo.show_layout(ctx, self.view.layout)
 
-            ctx.move_to(330, -1)
+            ctx.move_to(348, -1)
             self.view.layout.set_text(item[4])
             PangoCairo.show_layout(ctx, self.view.layout)
 
