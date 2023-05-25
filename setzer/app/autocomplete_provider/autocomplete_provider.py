@@ -400,7 +400,7 @@ class AutocompleteProvider(object):
             root = tree.getroot()
             for child in root:
                 attrib = child.attrib
-                commands[attrib['name']] = {'command': attrib['text'], 'description': attrib['description'], 'lowpriority': True if attrib['lowpriority'] == "True" else False, 'dotlabels': attrib['dotlabels']}
+                commands[attrib['name']] = {'command': attrib['text'], 'description': _(attrib['description']), 'lowpriority': True if attrib['lowpriority'] == "True" else False, 'dotlabels': attrib['dotlabels']}
                 match = re.match(r'\\begin\{([^\}]+)\}', attrib['name'])
                 if match:
                     name = match.group(1)
