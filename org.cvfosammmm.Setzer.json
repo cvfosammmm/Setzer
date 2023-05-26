@@ -90,41 +90,6 @@
             ]
         },
         {
-            "name": "perl",
-            "no-autogen": true,
-            "config-opts": [
-                "-des",
-                "-Duseshrplib"
-            ],
-            "build-options": {
-                "cflags": "-fPIC",
-                "ldflags": "-fpic",
-                "no-debuginfo": true
-            },
-            "cleanup": [
-                "/man",
-                "*.pod",
-                "*.h"
-            ],
-            "ensure-writable": [
-                "/lib/perl5/5.36.0"
-            ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://www.cpan.org/src/5.0/perl-5.36.0.tar.gz",
-                    "sha256": "e26085af8ac396f62add8a533c3a0ea8c8497d836f0689347ac5abd7b7a4e00a"
-                },
-                {
-                    "type": "script",
-                    "dest-filename": "configure",
-                    "commands": [
-                        "exec ./configure.gnu $@"
-                    ]
-                }
-            ]
-        },
-        {
             "name": "python3-pexpect",
             "buildsystem": "simple",
             "build-commands": [
