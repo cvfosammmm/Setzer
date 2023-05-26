@@ -6,6 +6,14 @@
     "sdk-extensions": [
         "org.freedesktop.Sdk.Extension.texlive"
     ],
+    "add-extensions": {
+        "org.freedesktop.Sdk.Extension.texlive": {
+            "directory": "texlive",
+            "subdirectories": true,
+            "autodelete": true,
+            "version": "22.08"
+        }
+    },
     "command": "setzer",
     "finish-args": [
         "--share=ipc",
@@ -14,7 +22,7 @@
         "--device=dri",
         "--socket=pulseaudio",
         "--filesystem=host",
-        "--env=PATH=/app/bin:/usr/bin:/app/bin/x86_64-linux:/app/bin/aarch64-linux",
+        "--env=PATH=/app/bin:/usr/bin:/app/texlive/bin:/app/texlive/bin/x86_64-linux:/app/texlive/bin/aarch64-linux",
         "--env=TEXMFCACHE=$XDG_CACHE_HOME",
         "--env=TEXINPUTS=.:~/texmf/:",
         "--metadata=X-DConf=migrate-path=/org/cvfosammmm/Setzer/"
@@ -24,7 +32,7 @@
             "name": "texlive",
             "buildsystem": "simple",
             "build-commands": [
-                "/usr/lib/sdk/texlive/install.sh"
+                "install -d /app/texlive"
             ]
         },
         {
