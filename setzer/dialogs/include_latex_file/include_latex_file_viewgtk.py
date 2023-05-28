@@ -44,7 +44,7 @@ class IncludeLaTeXFileView(object):
         
         self.create_headerbar()
 
-        self.content = Gtk.VBox()
+        self.content = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.content.set_margin_left(18)
         self.content.set_margin_right(18)
         label = Gtk.Label(_('LaTeX file to include'))
@@ -62,8 +62,8 @@ class IncludeLaTeXFileView(object):
         label.set_margin_top(18)
         self.content.pack_start(label, False, False, 0)
 
-        box = Gtk.HBox()
-        self.pathtype_switcher = Gtk.HBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
+        self.pathtype_switcher = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.pathtype_switcher.get_style_context().add_class('linked')
         self.pathtype_buttons = dict()
         image = Gtk.Image.new_from_icon_name('dialog-information-symbolic', Gtk.IconSize.MENU)

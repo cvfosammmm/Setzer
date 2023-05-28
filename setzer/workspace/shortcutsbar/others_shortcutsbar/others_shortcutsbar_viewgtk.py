@@ -21,10 +21,10 @@ from gi.repository import Gtk
 from gi.repository import GLib
 
 
-class OthersShortcutsbar(Gtk.HBox):
+class OthersShortcutsbar(Gtk.Box):
 
     def __init__(self):
-        Gtk.HBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.HORIZONTAL)
         self.get_style_context().add_class('shortcutsbar')
 
         self.current_bottom = None

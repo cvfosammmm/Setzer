@@ -58,10 +58,10 @@ class PagingWidget(object):
             self.view.label_current_page.set_text("0")
 
 
-class PagingWidgetView(Gtk.HBox):
+class PagingWidgetView(Gtk.Box):
 
     def __init__(self):
-        Gtk.HBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.HORIZONTAL)
         self.set_margin_left(9)
 
         self.pack_start(Gtk.Label(_('Page ')), False, False, 0)

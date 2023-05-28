@@ -92,7 +92,7 @@ class FieldsEntryPageView(Gtk.Overlay):
         self.get_style_context().add_class('bibtex-wizard-page')
 
         self.scrolled_window = Gtk.ScrolledWindow()
-        self.vbox = Gtk.VBox()
+        self.vbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.vbox.set_margin_start(18)
         self.vbox.set_margin_top(18)
         self.vbox.set_margin_bottom(18)
@@ -108,7 +108,7 @@ class FieldsEntryPageView(Gtk.Overlay):
         self.header1.set_text(_('Required fields'))
 
         self.required_entry_views = dict()
-        self.required_fields_entries = Gtk.VBox()
+        self.required_fields_entries = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.identifier_entry = FieldsEntryView('identifier')
         for field_name, attributes in fields.items():
             self.required_entry_views[field_name] = FieldsEntryView(field_name)
@@ -124,7 +124,7 @@ class FieldsEntryPageView(Gtk.Overlay):
         self.option_include_empty.set_margin_bottom(18)
 
         self.optional_entry_views = dict()
-        self.optional_fields_entries = Gtk.VBox()
+        self.optional_fields_entries = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         for field_name, attributes in fields.items():
             self.optional_entry_views[field_name] = FieldsEntryView(field_name)
 
@@ -137,10 +137,10 @@ class FieldsEntryPageView(Gtk.Overlay):
         self.show_all()
 
 
-class FieldsEntryView(Gtk.HBox):
+class FieldsEntryView(Gtk.Box):
 
     def __init__(self, field_name):
-        Gtk.HBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.HORIZONTAL)
         self.field_name = field_name
         self.label = Gtk.Label(field_name + ':')
         self.label.set_xalign(0)

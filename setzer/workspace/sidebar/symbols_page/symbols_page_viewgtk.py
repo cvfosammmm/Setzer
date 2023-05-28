@@ -26,20 +26,20 @@ import xml.etree.ElementTree as ET
 import os
 
 
-class SymbolsPageView(Gtk.VBox):
+class SymbolsPageView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
 
         self.get_style_context().add_class('sidebar-symbols')
 
         self.overlay = Gtk.Overlay()
-        self.vbox_top = Gtk.VBox()
+        self.vbox_top = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.scrolled_window = Gtk.ScrolledWindow()
-        self.vbox = Gtk.VBox()
+        self.vbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.scrolled_window.add(self.vbox)
 
-        self.tabs_box = Gtk.HBox()
+        self.tabs_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.tabs_box.set_valign(Gtk.Align.START)
         self.tabs_box.set_halign(Gtk.Align.FILL)
         self.tabs_box.get_style_context().add_class('tabs-box')
@@ -68,7 +68,7 @@ class SymbolsPageView(Gtk.VBox):
         self.tabs.insert(self.search_button, -1)
 
         self.search_revealer = Gtk.Revealer()
-        self.search_box = Gtk.HBox()
+        self.search_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.search_box.get_style_context().add_class('search_bar')
 
         self.search_entry = Gtk.SearchEntry()

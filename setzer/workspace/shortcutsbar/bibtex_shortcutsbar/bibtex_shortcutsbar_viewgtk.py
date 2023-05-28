@@ -21,10 +21,10 @@ from gi.repository import Gtk
 from gi.repository import GLib
 
 
-class BibTeXShortcutsbar(Gtk.HBox):
+class BibTeXShortcutsbar(Gtk.Box):
 
     def __init__(self):
-        Gtk.HBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.HORIZONTAL)
         self.get_style_context().add_class('shortcutsbar')
 
         self.current_bottom = None
@@ -41,7 +41,7 @@ class BibTeXShortcutsbar(Gtk.HBox):
         
     def populate_top_toolbar(self):
         self.entry_button = Gtk.ToolButton()
-        icon_widget = Gtk.HBox()
+        icon_widget = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         icon = Gtk.Image.new_from_icon_name('list-add-symbolic', Gtk.IconSize.MENU)
         icon.set_margin_left(4)
         icon_widget.pack_start(icon, False, False, 0)
@@ -61,7 +61,7 @@ class BibTeXShortcutsbar(Gtk.HBox):
         self.top_icons.insert(self.entry_button, 0)
 
         self.entry_button = Gtk.ToolButton()
-        icon_widget = Gtk.HBox()
+        icon_widget = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         icon = Gtk.Image.new_from_icon_name('media-playlist-repeat-symbolic', Gtk.IconSize.MENU)
         icon.set_margin_left(4)
         icon_widget.pack_start(icon, False, False, 0)
@@ -81,7 +81,7 @@ class BibTeXShortcutsbar(Gtk.HBox):
         #self.top_icons.insert(self.entry_button, 0)
 
         self.entry_button = Gtk.ToolButton()
-        icon_widget = Gtk.HBox()
+        icon_widget = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         icon = Gtk.Image.new_from_icon_name('globe-alt-symbolic', Gtk.IconSize.MENU)
         icon.set_margin_left(4)
         icon_widget.pack_start(icon, False, False, 0)

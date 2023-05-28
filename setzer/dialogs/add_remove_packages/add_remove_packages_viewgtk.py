@@ -52,7 +52,7 @@ class AddRemovePackagesDialogView(object):
         self.headerbar.show_all()
 
     def create_add_box(self):
-        self.add_box = Gtk.HBox()
+        self.add_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.add_box.get_style_context().add_class('add-remove-packages-add-box')
 
         self.scrolled_window = Gtk.ScrolledWindow()
@@ -65,7 +65,7 @@ class AddRemovePackagesDialogView(object):
         self.add_list.set_sort_func(self.sort_function)
         self.scrolled_window.add(self.add_list)
 
-        self.add_details = Gtk.VBox()
+        self.add_details = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.add_description = Gtk.Label('')
         self.add_description.set_yalign(0)
         self.add_description.set_xalign(0)
@@ -75,7 +75,7 @@ class AddRemovePackagesDialogView(object):
         self.add_details.pack_start(self.add_description, False, False, 0)
         self.add_button = Gtk.Button()
         self.add_button.set_label(_('Add Package'))
-        add_button_wrapper = Gtk.HBox()
+        add_button_wrapper = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         add_button_wrapper.pack_start(self.add_button, False, False, 0)
         self.add_button.get_style_context().add_class('suggested-action')
         self.add_details.pack_start(add_button_wrapper, False, False, 0)
@@ -86,7 +86,7 @@ class AddRemovePackagesDialogView(object):
         self.topbox.pack_start(self.add_box, False, False, 0)
 
     def create_remove_box(self):
-        self.remove_box = Gtk.HBox()
+        self.remove_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.remove_box.set_margin_top(18)
         self.remove_box.set_margin_bottom(18)
         self.remove_box.set_margin_left(18)
@@ -103,7 +103,7 @@ class AddRemovePackagesDialogView(object):
         self.remove_list.set_sort_func(self.sort_function)
         self.scrolled_window.add(self.remove_list)
 
-        self.remove_details = Gtk.VBox()
+        self.remove_details = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.remove_description = Gtk.Label('')
         self.remove_description.set_yalign(0)
         self.remove_description.set_xalign(0)
@@ -113,7 +113,7 @@ class AddRemovePackagesDialogView(object):
         self.remove_details.pack_start(self.remove_description, False, False, 0)
         self.remove_button = Gtk.Button()
         self.remove_button.set_label(_('Remove Package'))
-        remove_button_wrapper = Gtk.HBox()
+        remove_button_wrapper = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         remove_button_wrapper.pack_start(self.remove_button, False, False, 0)
         self.remove_details.pack_start(remove_button_wrapper, False, False, 0)
         

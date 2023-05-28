@@ -24,10 +24,10 @@ from gi.repository import Pango
 import os.path
 
 
-class BuildLogView(Gtk.VBox):
+class BuildLogView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('buildlog')
 
         self.scrolled_window = Gtk.ScrolledWindow()
@@ -44,7 +44,7 @@ class BuildLogView(Gtk.VBox):
         self.layout.set_ellipsize(Pango.EllipsizeMode.START)
         self.fg_color = style_context.lookup_color('theme_fg_color')[1]
 
-        self.header = Gtk.HBox()
+        self.header = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.close_button = Gtk.Button.new_from_icon_name('window-close-symbolic', Gtk.IconSize.MENU)
         self.close_button.get_style_context().add_class('flat')
         self.close_button.set_can_focus(False)

@@ -20,10 +20,10 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
-class ContextMenuView(Gtk.VBox):
+class ContextMenuView(Gtk.Box):
     
     def __init__(self, document):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
 
         self.set_margin_top(10)
         self.set_margin_bottom(10)
@@ -38,7 +38,7 @@ class ContextMenuView(Gtk.VBox):
         self.model_button_delete = self.get_button(_('Delete'), keyboard_shortcut=None)
         self.model_button_select_all = self.get_button(_('Select All'), keyboard_shortcut=_('Ctrl') + '+A')
 
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         box.set_margin_left(10)
         box.set_margin_right(10)
         box.pack_start(self.model_button_undo, False, False, 0)
@@ -54,7 +54,7 @@ class ContextMenuView(Gtk.VBox):
         self.pack_start(box, False, False, 0)
 
         if document.is_latex_document():
-            box = Gtk.VBox()
+            box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
             box.set_margin_left(10)
             box.set_margin_right(10)
             self.model_button_toggle_comment = self.get_button(_('Toggle Comment'), keyboard_shortcut=_('Ctrl') + '+K')
@@ -65,7 +65,7 @@ class ContextMenuView(Gtk.VBox):
             box.pack_start(Gtk.SeparatorMenuItem(), False, False, 0)
             self.pack_start(box, False, False, 0)
 
-        box = Gtk.HBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         box.set_margin_left(15)
         box.set_margin_right(7)
         zoom_label = Gtk.Label(_('Zoom'))
@@ -91,7 +91,7 @@ class ContextMenuView(Gtk.VBox):
 
     def get_button(self, label, keyboard_shortcut=None):
         model_button = Gtk.ModelButton()
-        button_box = Gtk.HBox()
+        button_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         if keyboard_shortcut != None:
             shortcut = Gtk.Label(keyboard_shortcut)
             shortcut.get_style_context().add_class('keyboard-shortcut')

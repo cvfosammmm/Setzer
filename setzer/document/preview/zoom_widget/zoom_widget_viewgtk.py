@@ -26,7 +26,7 @@ class PreviewZoomWidget(Gtk.Revealer):
         Gtk.Revealer.__init__(self)
         self.set_transition_type(Gtk.RevealerTransitionType.NONE)
 
-        self.box = Gtk.HBox()
+        self.box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.box.get_style_context().add_class('zoom_widget')
         
         self.zoom_out_button = Gtk.Button.new_from_icon_name('zoom-out-symbolic', Gtk.IconSize.MENU)
@@ -41,7 +41,7 @@ class PreviewZoomWidget(Gtk.Revealer):
         popover = Gtk.PopoverMenu()
         stack = popover.get_child()
 
-        self.zoom_button_box = Gtk.VBox()
+        self.zoom_button_box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.zoom_button_box.set_margin_top(10)
         self.zoom_button_box.set_margin_bottom(10)
         self.zoom_button_box.set_margin_left(10)

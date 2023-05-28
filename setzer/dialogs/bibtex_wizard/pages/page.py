@@ -29,10 +29,10 @@ class Page(object):
         pass
 
 
-class PageView(Gtk.VBox):
+class PageView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('bibtex-wizard-page')
 
         self.set_margin_start(18)

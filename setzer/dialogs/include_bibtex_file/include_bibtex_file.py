@@ -100,7 +100,7 @@ class IncludeBibTeXFile(Dialog):
             style = name.lower()
             self.view.style_buttons[style] = Gtk.RadioButton()
             if first_button == None: first_button = self.view.style_buttons[style]
-            box = Gtk.HBox()
+            box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
             box.pack_start(Gtk.Label(name), False, False, 0)
             box.set_margin_right(6)
             box.set_margin_left(4)
@@ -119,7 +119,7 @@ class IncludeBibTeXFile(Dialog):
             style = name.lower()
             self.view.natbib_style_buttons[style] = Gtk.RadioButton()
             if first_button == None: first_button = self.view.natbib_style_buttons[style]
-            box = Gtk.HBox()
+            box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
             box.pack_start(Gtk.Label(name), False, False, 0)
             box.set_margin_right(6)
             box.set_margin_left(4)

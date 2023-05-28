@@ -227,7 +227,7 @@ class PageFontColorView(Gtk.ScrolledWindow):
 
         self.set_size_request(-1, 500)
 
-        self.box = Gtk.VBox()
+        self.box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.add(self.box)
 
         self.box.set_margin_start(18)
@@ -249,7 +249,7 @@ class PageFontColorView(Gtk.ScrolledWindow):
         self.box.pack_start(self.option_use_system_font, False, False, 0)
 
         self.font_chooser_revealer = Gtk.Revealer()
-        vbox = Gtk.VBox()
+        vbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         label = Gtk.Label()
         label.set_markup(_('Set Editor Font:'))
         label.set_xalign(0)
@@ -258,7 +258,7 @@ class PageFontColorView(Gtk.ScrolledWindow):
 
         self.font_chooser_button = Gtk.FontButton()
         self.font_chooser_button.set_margin_bottom(18)
-        hbox = Gtk.HBox()
+        hbox = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         hbox.pack_start(self.font_chooser_button, False, False, 0)
         vbox.pack_start(hbox, False, False, 0)
         self.font_chooser_revealer.add(vbox)
@@ -270,7 +270,7 @@ class PageFontColorView(Gtk.ScrolledWindow):
         label.set_margin_bottom(6)
         self.box.pack_start(label, False, False, 0)
 
-        vbox = Gtk.HBox()
+        vbox = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.option_default_theme = Gtk.RadioButton(_('Default'))
         self.option_default_theme.set_margin_right(12)
         self.option_force_light = Gtk.RadioButton.new_with_label_from_widget(self.option_default_theme, _('Light Theme'))
@@ -298,12 +298,12 @@ class PageFontColorView(Gtk.ScrolledWindow):
         self.style_switcher_stack = Gtk.Stack()
         self.style_switcher_stack.add_named(self.style_switcher, 'light')
         self.style_switcher_stack.add_named(self.style_switcher_dark_mode, 'dark')
-        box = Gtk.HBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         box.set_margin_bottom(18)
         box.pack_start(self.style_switcher_stack, False, False, 0)
         self.box.pack_start(box, False, False, 0)
 
-        box = Gtk.HBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         box.set_margin_bottom(18)
         self.remove_scheme_button = Gtk.Button()
         self.remove_scheme_button.set_label(_('Remove active scheme'))
@@ -319,7 +319,7 @@ class PageFontColorView(Gtk.ScrolledWindow):
         label.set_margin_bottom(6)
         self.box.pack_start(label, False, False, 0)
 
-        self.preview_wrapper = Gtk.VBox()
+        self.preview_wrapper = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.preview_wrapper.get_style_context().add_class('preview')
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_min_content_height(162)

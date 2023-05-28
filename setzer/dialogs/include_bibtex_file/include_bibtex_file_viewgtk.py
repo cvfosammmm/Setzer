@@ -44,7 +44,7 @@ class IncludeBibTeXFileView(object):
         
         self.create_headerbar()
 
-        self.content = Gtk.VBox()
+        self.content = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.content.set_margin_left(18)
         self.content.set_margin_right(18)
         label = Gtk.Label(_('BibTeX file to include'))
@@ -62,12 +62,12 @@ class IncludeBibTeXFileView(object):
         label.set_margin_top(18)
         self.content.pack_start(label, False, False, 0)
 
-        self.style_switcher = Gtk.HBox()
+        self.style_switcher = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.style_switcher.get_style_context().add_class('linked')
         self.style_buttons = dict()
         self.content.pack_start(self.style_switcher, False, False, 0)
 
-        self.natbib_style_switcher = Gtk.HBox()
+        self.natbib_style_switcher = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.natbib_style_switcher.get_style_context().add_class('linked')
         self.natbib_style_buttons = dict()
         self.content.pack_start(self.natbib_style_switcher, False, False, 0)
@@ -77,8 +77,8 @@ class IncludeBibTeXFileView(object):
         self.natbib_option.set_can_focus(False)
         self.content.pack_start(self.natbib_option, False, False, 0)
 
-        self.preview_stack_wrapper_wrapper = Gtk.HBox()
-        self.preview_stack_wrapper = Gtk.HBox()
+        self.preview_stack_wrapper_wrapper = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
+        self.preview_stack_wrapper = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.preview_stack_wrapper.get_style_context().add_class('stack-wrapper')
         self.preview_stack_wrapper.set_margin_top(18)
         self.preview_stack_wrapper.set_margin_bottom(18)
@@ -88,8 +88,8 @@ class IncludeBibTeXFileView(object):
         self.preview_stack_wrapper_wrapper.pack_start(Gtk.DrawingArea(), True, True, 0)
         self.content.pack_start(self.preview_stack_wrapper_wrapper, False, False, 0)
 
-        self.natbib_preview_stack_wrapper_wrapper = Gtk.HBox()
-        self.natbib_preview_stack_wrapper = Gtk.HBox()
+        self.natbib_preview_stack_wrapper_wrapper = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
+        self.natbib_preview_stack_wrapper = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.natbib_preview_stack_wrapper.get_style_context().add_class('stack-wrapper')
         self.natbib_preview_stack_wrapper.set_margin_top(18)
         self.natbib_preview_stack_wrapper.set_margin_bottom(18)

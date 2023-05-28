@@ -39,7 +39,7 @@ class BibTeXWizardView(object):
         self.topbox = self.dialog.get_content_area()
         self.topbox.set_border_width(0)
         self.topbox.set_size_request(750, 450)
-        self.center_box = Gtk.HBox()
+        self.center_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.pages = list()
         
         self.create_headerbar()

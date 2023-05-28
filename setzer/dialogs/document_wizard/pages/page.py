@@ -29,10 +29,10 @@ class Page(object):
         pass
 
 
-class PageView(Gtk.VBox):
+class PageView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('document-wizard-page')
 
         self.set_margin_start(18)
@@ -48,9 +48,9 @@ class PageView(Gtk.VBox):
 
     def set_document_settings_page(self):
         self.headerbar_subtitle = _('Step') + ' 2'
-        self.content = Gtk.HBox()
-        self.left_content = Gtk.VBox()
-        self.right_content = Gtk.VBox()
+        self.content = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
+        self.left_content = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
+        self.right_content = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.right_content.set_margin_left(18)
 
         self.subheader_page_format = Gtk.Label(_('Page format'))
@@ -65,7 +65,7 @@ class PageView(Gtk.VBox):
         self.page_format_list.set_margin_right(0)
         self.page_format_list.set_vexpand(False)
 
-        self.orientation_box = Gtk.HBox()
+        self.orientation_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.option_portrait = Gtk.RadioButton(_('Portrait'))
         self.option_landscape = Gtk.RadioButton.new_with_label_from_widget(self.option_portrait, _('Landscape'))
         self.orientation_box.pack_start(self.option_portrait, True, True, 0)
@@ -78,7 +78,7 @@ class PageView(Gtk.VBox):
         self.subheader_margins.set_margin_top(18)
         self.option_default_margins = Gtk.CheckButton.new_with_label(_('Use default margins'))
 
-        self.margins_box = Gtk.VBox()
+        self.margins_box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.margins_button_left = Gtk.SpinButton.new_with_range(0.0, 5.0, 0.1)
         self.margins_button_left.get_style_context().add_class('left')
         self.margins_button_right = Gtk.SpinButton.new_with_range(0.0, 5.0, 0.1)
@@ -87,14 +87,14 @@ class PageView(Gtk.VBox):
         self.margins_button_top.get_style_context().add_class('top')
         self.margins_button_bottom = Gtk.SpinButton.new_with_range(0.0, 5.0, 0.1)
         self.margins_button_bottom.get_style_context().add_class('bottom')
-        self.margins_hbox1 = Gtk.HBox()
+        self.margins_hbox1 = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.margins_hbox1.pack_start(Gtk.DrawingArea(), True, True, 0)
         self.margins_hbox1.pack_start(self.margins_button_top, False, False, 0)
         self.margins_hbox1.pack_start(Gtk.DrawingArea(), True, True, 0)
-        self.margins_hbox2 = Gtk.HBox()
+        self.margins_hbox2 = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.margins_hbox2.pack_start(self.margins_button_left, False, False, 0)
         self.margins_hbox2.pack_end(self.margins_button_right, False, False, 0)
-        self.margins_hbox3 = Gtk.HBox()
+        self.margins_hbox3 = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.margins_hbox3.pack_start(Gtk.DrawingArea(), True, True, 0)
         self.margins_hbox3.pack_start(self.margins_button_bottom, False, False, 0)
         self.margins_hbox3.pack_start(Gtk.DrawingArea(), True, True, 0)

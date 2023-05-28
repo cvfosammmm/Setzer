@@ -24,10 +24,10 @@ from gi.repository import Gio
 from setzer.app.service_locator import ServiceLocator
 
 
-class LaTeXShortcutsbar(Gtk.HBox):
+class LaTeXShortcutsbar(Gtk.Box):
 
     def __init__(self):
-        Gtk.HBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.HORIZONTAL)
         self.get_style_context().add_class('shortcutsbar')
         self.pmb = ServiceLocator.get_popover_menu_builder()
 
@@ -103,7 +103,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         popover = self.document_button.get_popover()
         stack = popover.get_child()
 
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_action_button(box, '\\documentclass', 'win.insert-symbol', ['\\documentclass[•]{•}'])
         self.pmb.add_action_button(box, _('Add / Remove Packages') + '...', 'win.add-remove-packages-dialog')
@@ -118,7 +118,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # document info submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Document Info'))
         self.pmb.add_action_button(box, _('Author'), 'win.insert-symbol', ['\\author{•}'])
@@ -147,7 +147,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         popover = self.beamer_button.get_popover()
         stack = popover.get_child()
 
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_action_button(box, '\\usetheme', 'win.insert-after-packages', ['\\usetheme{•}'])
         self.pmb.add_action_button(box, _('Hide Navigation'), 'win.insert-after-packages', ['\\beamertemplatenavigationsymbolsempty'])
@@ -180,7 +180,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         popover = self.bibliography_button.get_popover()
         stack = popover.get_child()
 
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_action_button(box, _('Include BibTeX File') + '...', 'win.include-bibtex-file')
         self.pmb.add_action_button(box, _('Include \'natbib\' Package'), 'win.add-packages', ['natbib'])
@@ -193,7 +193,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # natbib submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Natbib Citations'))
         for citation_style in [(_('Abbreviated'), '\\citet{•}'), (_('Abbreviated with Brackets'), '\\citep{•}'), (_('Detailed'), '\\citet*{•}'), (_('Detailed with Brackets'), '\\citep*{•}'), (_('Alternative 1'), '\\citealt{•}'), (_('Alternative 2'), '\\citealp{•}')]:
@@ -223,7 +223,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         popover = self.text_button.get_popover()
         stack = popover.get_child()
 
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_menu_button(box, _('Font Styles'), 'font_styles')
         self.pmb.add_menu_button(box, _('Font Sizes'), 'font_sizes')
@@ -244,7 +244,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # font styles submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Font Styles'))
         for font_style in [(_('Bold') + ' (\\textbf)', 'textbf', 'format-text-bold-symbolic', _('Ctrl') + '+B'), (_('Italic') + ' (\\textit)', 'textit', 'format-text-italic-symbolic', _('Ctrl') + '+I'), (_('Underline') + ' (\\underline)', 'underline', 'format-text-underline-symbolic', _('Ctrl') + '+U'), (_('Sans Serif') + ' (\\textsf)', 'textsf', 'placeholder', None), (_('Typewriter') + ' (\\texttt)', 'texttt', 'placeholder', _('Ctrl') + '+M'), (_('Small Caps') + ' (\\textsc)', 'textsc', 'placeholder', None), (_('Slanted') + ' (\\textsl)', 'textsl', 'placeholder', None), (_('Emphasis') + ' (\\emph)', 'emph', 'placeholder', _('Shift') + '+' + _('Ctrl') + '+E')]:
@@ -254,7 +254,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # font sizes submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Font Sizes'))
         for font_size in ['tiny', 'scriptsize', 'footnotesize', 'small', 'normalsize', 'large', 'Large', 'LARGE', 'huge', 'Huge']:
@@ -263,7 +263,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # text alignment submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Alignment'))
         for command in [(_('Centered'), 'center', 'format-justify-center-symbolic'), (_('Left-aligned'), 'flushleft', 'format-justify-left-symbolic'), (_('Right-aligned'), 'flushright', 'format-justify-right-symbolic')]:
@@ -272,7 +272,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # vertical spacing submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Vertical Spacing'))
         for command in ['newpage', 'linebreak', 'pagebreak', 'bigskip', 'medskip', 'smallskip']:
@@ -283,7 +283,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # international accents submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('International Accents'))
         for command in [('\'', 'menu-accents-1-symbolic'), ('`', 'menu-accents-2-symbolic'), ('^', 'menu-accents-3-symbolic'), ('"', 'menu-accents-4-symbolic'), ('~', 'menu-accents-5-symbolic'), ('=', 'menu-accents-6-symbolic'), ('.', 'menu-accents-7-symbolic'), ('v', 'menu-accents-8-symbolic'), ('u', 'menu-accents-9-symbolic'), ('H', 'menu-accents-10-symbolic')]:
@@ -292,7 +292,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # sectioning submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Sectioning'))
         for citation_style in [(_('Part'), '\\part{•}'), (_('Chapter'), '\\chapter{•}'), (_('Section'), '\\section{•}'), (_('Subsection'), '\\subsection{•}'), (_('Subsubsection'), '\\subsubsection{•}'), (_('Paragraph'), '\\paragraph{•}'), (_('Subparagraph'), '\\subparagraph{•}')]:
@@ -304,7 +304,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # list environments submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('List Environments'))
         for list_type in [[_('Bulleted List') + ' (itemize)', 'itemize'], [_('Numbered List') + ' (enumerate)', 'enumerate'], [_('List with Bold Labels') + ' (description)', 'description']]:
@@ -315,7 +315,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # quotations submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Quotations'))
         self.pmb.add_action_button(box, _('Short Quotation') + ' (quote)', 'win.insert-before-after', ['\\begin{quote}\n\t', '\n\\end{quote}'])
@@ -325,7 +325,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # cross references submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Cross References'))
         for command in [(_('Label') + ' (\\label)', 'label'), (_('Reference') + ' (\\ref)', 'ref'), (_('Equation Reference') + ' (\\eqref)', 'eqref'), (_('Page Reference') + ' (\\pageref)', 'pageref')]:
@@ -353,7 +353,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         popover = self.quotes_button.get_popover()
         stack = popover.get_child()
 
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         for item in [(_('Primary Quotes') + ' (`` ... \'\')', ['``', '\'\'']), (_('Secondary Quotes') + ' (` ... \')', ['`', '\'']), (_('German Quotes') + ' (\\glqq ... \\grqq{})', ['\\glqq ', '\\grqq{}']), (_('German Single Quotes') + ' (\\glq ... \\grq{})', ['\\glq ', '\\grq{}']), (_('French Quotes') + ' (\\flqq ... \\frqq{})', ['\\flqq ', '\\frqq{}']), (_('French Single Quotes') + ' (\\flq ... \\frq{})', ['\\flq ', '\\frq{}']), (_('German Alt Quotes') + ' (\\frqq ... \\flqq{})', ['\\frqq ', '\\flqq{}']), (_('German Alt Single Quotes') + ' (\\frq ... \\frq{})', ['\\frq ', '\\flq{}'])]:
             self.pmb.add_action_button(box, item[0], 'win.insert-before-after', item[1])
@@ -380,7 +380,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         stack = popover.get_child()
 
         # main menu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_action_button(box, _('Include AMS Packages'), 'win.add-packages', ['amsmath', 'amssymb', 'amsfonts', 'amsthm'])
         self.pmb.add_separator(box)
@@ -404,7 +404,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # submenu: math environments
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Math Environments'))
         for environment in ['equation', 'equation*', 'align', 'align*', 'alignat', 'alignat*', 'flalign', 'flalign*', 'gather', 'gather*', 'multline', 'multline*']:
@@ -413,15 +413,15 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # submenu: math functions
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Math Functions'))
-        hbox = Gtk.HBox()
-        vbox = Gtk.VBox()
+        hbox = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
+        vbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         for math_function in ['arccos', 'arcsin', 'arctan', 'cos', 'cosh', 'cot', 'coth', 'csc', 'deg', 'det', 'dim', 'exp', 'gcd', 'hom', 'inf']:
             self.pmb.add_action_button(vbox, '\\' + math_function, 'win.insert-symbol', ['\\' + math_function + ' '])
         hbox.pack_start(vbox, True, True, 0)
-        vbox = Gtk.VBox()
+        vbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         for math_function in ['ker', 'lg', 'lim', 'liminf', 'limsup', 'ln', 'log', 'max', 'min', 'sec', 'sin', 'sinh', 'sup', 'tan', 'tanh']:
             self.pmb.add_action_button(vbox, '\\' + math_function, 'win.insert-symbol', ['\\' + math_function + ' '])
         hbox.pack_start(vbox, True, True, 0)
@@ -430,7 +430,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # submenu: math font styles
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Math Font Styles'))
         for command in [(_('Bold'), 'mathbf', 'menu-math-font-styles-1-symbolic'), (_('Italic'), 'mathit', 'menu-math-font-styles-2-symbolic'), (_('Roman'), 'mathrm', 'menu-math-font-styles-3-symbolic'), (_('Sans Serif'), 'mathsf', 'menu-math-font-styles-4-symbolic'), (_('Typewriter'), 'mathtt', 'menu-math-font-styles-5-symbolic'), (_('Calligraphic'), 'mathcal', 'menu-math-font-styles-6-symbolic'), (_('Blackboard Bold'), 'mathbb', 'menu-math-font-styles-7-symbolic'), (_('Fraktur'), 'mathfrak', 'menu-math-font-styles-8-symbolic')]:
@@ -439,7 +439,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # submenu: math stacking symbols
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Math Stacking Symbols'))
         for math_stacking_symbol in ['overline', 'underline', 'overbrace', 'underbrace', 'overleftarrow', 'overrightarrow']:
@@ -453,7 +453,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # submenu: math accents
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Math Accents'))
         for math_accent in [('dot', 'menu-math-accents-1-symbolic'), ('ddot', 'menu-math-accents-2-symbolic'), ('vec', 'menu-math-accents-3-symbolic'), ('bar', 'menu-math-accents-4-symbolic'), ('tilde', 'menu-math-accents-5-symbolic'), ('hat', 'menu-math-accents-6-symbolic'), ('check', 'menu-math-accents-7-symbolic'), ('breve', 'menu-math-accents-8-symbolic'), ('acute', 'menu-math-accents-9-symbolic'), ('grave', 'menu-math-accents-10-symbolic')]:
@@ -462,7 +462,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # submenu: math spaces
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Math Spaces'))
         for math_space in [('\\!', 'Negative'), ('\\,', 'Thin'), ('\\:', 'Medium'), ('\\;', 'Thick'), ('\\ ', 'Interword'), ('\\enspace ', 'Enspace'), ('\\quad ', 'One Quad'), ('\\qquad ', 'Two Quads')]:
@@ -491,7 +491,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         stack = popover.get_child()
 
         # main menu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_action_button(box, _('Figure (image inside freestanding block)'), 'win.insert-symbol', ['\\begin{figure}\n\t\\begin{center}\n\t\t\\includegraphics[scale=1]{•}\n\t\t\\caption{•}\n\t\\end{center}\n\\end{figure}'])
         self.pmb.add_action_button(box, _('Inline Image'), 'win.insert-symbol', ['\\includegraphics[scale=1]{•}'])
@@ -503,7 +503,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box.show_all()
 
         # code listing submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Code Listing'))
         self.pmb.add_action_button(box, _('Include \'listings\' Package'), 'win.add-packages', ['listings'])

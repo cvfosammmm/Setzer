@@ -22,10 +22,10 @@ from gi.repository import Gtk, Gio, GLib, Pango
 from setzer.app.service_locator import ServiceLocator
 
 
-class DocumentAutocompleteView(Gtk.VBox):
+class DocumentAutocompleteView(Gtk.Box):
 
     def __init__(self, model):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('autocomplete')
 
         self.main_window = ServiceLocator.get_main_window()
@@ -193,10 +193,10 @@ class DocumentAutocompleteView(Gtk.VBox):
                 break
         return width
 
-class DocumentAutocompleteItem(Gtk.HBox):
+class DocumentAutocompleteItem(Gtk.Box):
 
     def __init__(self, command, offset=0):
-        Gtk.HBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.HORIZONTAL)
 
         self.set_halign(Gtk.Align.START)
         self.set_valign(Gtk.Align.START)

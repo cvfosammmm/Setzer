@@ -111,10 +111,10 @@ class PageBuildSystem(object):
         self.view.shell_escape_revealer.set_reveal_child(not button.get_active())
         self.view.tectonic_warning_revealer.set_reveal_child(button.get_active())
 
-class PageBuildSystemView(Gtk.VBox):
+class PageBuildSystemView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
 
         self.set_margin_start(18)
         self.set_margin_end(18)
@@ -150,7 +150,7 @@ class PageBuildSystemView(Gtk.VBox):
         self.option_latex_interpreter['tectonic'] = Gtk.RadioButton.new_with_label_from_widget(self.option_latex_interpreter['xelatex'], 'Tectonic')
         self.option_latex_interpreter['tectonic'].set_margin_right(12)
 
-        self.hbox1 = Gtk.HBox()
+        self.hbox1 = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.hbox1.pack_start(self.option_latex_interpreter['xelatex'], False, False, 0)
         self.hbox1.pack_start(self.option_latex_interpreter['pdflatex'], False, False, 0)
         self.hbox1.pack_start(self.option_latex_interpreter['lualatex'], False, False, 0)
@@ -199,7 +199,7 @@ class PageBuildSystemView(Gtk.VBox):
     
         self.shell_escape_revealer = Gtk.Revealer()
         self.shell_escape_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
-        self.vbox1 = Gtk.VBox()
+        self.vbox1 = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         label = Gtk.Label()
         label.set_markup('<b>' + _('Embedded system commands') + '</b>')
         label.set_xalign(0)

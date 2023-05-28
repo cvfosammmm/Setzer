@@ -50,10 +50,10 @@ class PageEditor(object):
         self.view.option_highlight_matching_brackets.connect('toggled', self.preferences.on_check_button_toggle, 'highlight_matching_brackets')
 
 
-class PageEditorView(Gtk.VBox):
+class PageEditorView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
 
         self.set_margin_start(18)
         self.set_margin_end(18)
@@ -76,7 +76,7 @@ class PageEditorView(Gtk.VBox):
         label.set_margin_top(18)
         label.set_margin_bottom(6)
         self.pack_start(label, False, False, 0)
-        box = Gtk.HBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.tab_width_spinbutton = Gtk.SpinButton.new_with_range(1, 8, 1)
         box.pack_start(self.tab_width_spinbutton, False, False, 0)
         self.pack_start(box, False, False, 0)

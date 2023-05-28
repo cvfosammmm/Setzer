@@ -59,7 +59,7 @@ class DocumentClassPageView(PageView):
             
         self.header.set_text(_('Choose a document class'))
         self.headerbar_subtitle = _('Step') + ' 1: ' + _('Choose a document class')
-        self.content = Gtk.HBox()
+        self.content = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         
         self.list = Gtk.ListBox()
         self.list.set_can_focus(True)
@@ -85,7 +85,7 @@ class DocumentClassPageView(PageView):
         self.preview_data.append({'name': 'letter', 'image': 'letter1.svg', 'text': _('<b>Letter:</b>  For writing letters.')})
         self.preview_data.append({'name': 'beamer', 'image': 'beamer1.svg', 'text': _('<b>Beamer:</b>  A class for making presentation slides with LaTeX.\n\nThere are many predefined presentation styles.')})
         for item in self.preview_data:
-            box = Gtk.VBox()
+            box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
             image = async_svg.AsyncSvg(os.path.join(ServiceLocator.get_resources_path(), 'document_wizard', item['image']), 374, 262)
             image.set_margin_bottom(6)
             label = Gtk.Label()

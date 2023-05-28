@@ -20,10 +20,10 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
-class PreviewPanelView(Gtk.VBox):
+class PreviewPanelView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('preview')
 
         self.notebook = Gtk.Notebook()

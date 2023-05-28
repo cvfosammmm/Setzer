@@ -45,15 +45,15 @@ class DocumentChooser(Gtk.Popover):
         self.scrolled_window.set_max_content_height(295)
         self.scrolled_window.set_max_content_width(398)
         
-        self.not_found_slate = Gtk.HBox()
+        self.not_found_slate = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.not_found_slate.get_style_context().add_class('not_found')
         self.not_found_slate.get_style_context().add_class('frame')
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         image = Gtk.Image.new_from_icon_name('system-search-symbolic', Gtk.IconSize.MENU)
         image.set_pixel_size(64)
         box.pack_start(image, True, True, 0)
         box.pack_start(Gtk.Label(_('No results')), False, False, 0)
-        outer_box = Gtk.VBox()
+        outer_box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         outer_box.set_center_widget(box)
         self.not_found_slate.set_center_widget(outer_box)
         
@@ -67,7 +67,7 @@ class DocumentChooser(Gtk.Popover):
         self.notebook.insert_page(self.not_found_slate, None, 1)
         self.notebook.set_current_page(0)
 
-        self.box = Gtk.VBox()
+        self.box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.box.pack_start(self.search_entry, False, False, 0)
         self.box.pack_start(self.notebook, True, True, 0)
         self.box.pack_start(self.other_documents_button, False, False, 0)
@@ -132,7 +132,7 @@ class DocumentChooserEntry(Gtk.ListBoxRow):
         self.folder_label.set_xalign(0)
         self.folder_label.get_style_context().add_class('folder')
         
-        self.box = Gtk.VBox()
+        self.box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.add(self.box)
         
         self.box.pack_start(self.filename_label, False, False, 0)

@@ -38,7 +38,7 @@ class HeaderBar(Handy.HeaderBar):
         self.set_show_close_button(True)
 
         # sidebar toggles
-        box = Gtk.HBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.document_structure_toggle = Gtk.ToggleButton()
         self.document_structure_toggle.set_image(Gtk.Image.new_from_icon_name('document-structure-symbolic', Gtk.IconSize.MENU))
         self.document_structure_toggle.set_can_focus(False)
@@ -54,7 +54,7 @@ class HeaderBar(Handy.HeaderBar):
 
         # open documents button
         self.document_chooser = document_chooser_viewgtk.DocumentChooser()
-        self.open_document_button_label = Gtk.HBox()
+        self.open_document_button_label = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.open_document_button_label.pack_start(Gtk.Label(_('Open')), False, False, 0)
         self.open_document_button_label.pack_start(Gtk.Image.new_from_icon_name('pan-down-symbolic', Gtk.IconSize.MENU), False, False, 0)
         self.open_document_button = Gtk.MenuButton()
@@ -73,14 +73,14 @@ class HeaderBar(Handy.HeaderBar):
 
         popover = Gtk.PopoverMenu()
         stack = popover.get_child()
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_action_button(box, _('New LaTeX Document'), 'win.new-latex-document', keyboard_shortcut=_('Ctrl') + '+N')
         self.pmb.add_action_button(box, _('New BibTeX Document'), 'win.new-bibtex-document')
         stack.add_named(box, 'main')
         box.show_all()
 
-        box = Gtk.HBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         box.pack_start(Gtk.Image.new_from_icon_name('document-new-symbolic', Gtk.IconSize.MENU), False, False, 0)
         box.pack_end(Gtk.Image.new_from_icon_name('pan-down-symbolic', Gtk.IconSize.MENU), False, False, 0)
         box.set_size_request(40, -1)
@@ -107,7 +107,7 @@ class HeaderBar(Handy.HeaderBar):
         self.pack_end(self.save_document_button)
 
         # help and preview toggles
-        box = Gtk.HBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.preview_toggle = Gtk.ToggleButton()
         self.preview_toggle.set_image(Gtk.Image.new_from_icon_name('view-paged-symbolic', Gtk.IconSize.MENU))
         self.preview_toggle.set_can_focus(False)
@@ -122,7 +122,7 @@ class HeaderBar(Handy.HeaderBar):
         self.pack_end(box)
         
         # build button wrapper
-        self.build_wrapper = Gtk.VBox()
+        self.build_wrapper = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pack_end(self.build_wrapper)
 
         # title / open documents popover
@@ -140,7 +140,7 @@ class HeaderBar(Handy.HeaderBar):
         self.pack_end(self.menu_button)
 
         # session submenu
-        self.session_box = Gtk.VBox()
+        self.session_box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(self.session_box)
         self.pmb.add_header_button(self.session_box, _('Session'))
         self.session_explaination = Gtk.Label(_('Save the list of open documents in a session file\nand restore it later, a convenient way to work\non multiple projects.'))
@@ -161,7 +161,7 @@ class HeaderBar(Handy.HeaderBar):
         popover = self.menu_button.get_popover()
         stack = popover.get_child()
 
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_action_button(box, _('Save Document As') + '...', 'win.save-as', keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+S')
         self.pmb.add_action_button(box, _('Save All Documents'), 'win.save-all')
@@ -183,7 +183,7 @@ class HeaderBar(Handy.HeaderBar):
         box.show_all()
 
         # view submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('View'))
         self.pmb.add_action_button(box, _('Dark Mode'), 'win.toggle-dark-mode')
@@ -195,7 +195,7 @@ class HeaderBar(Handy.HeaderBar):
         stack.add_named(self.session_box, 'session')
 
         # tools submenu
-        box = Gtk.VBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.pmb.set_box_margin(box)
         self.pmb.add_header_button(box, _('Tools'))
         self.pmb.add_action_button(box, _('Check Spelling') + '...', 'win.spellchecking')

@@ -20,13 +20,13 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
-class HelpPanelView(Gtk.VBox):
+class HelpPanelView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('help')
 
-        self.action_bar = Gtk.HBox()
+        self.action_bar = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.action_bar.set_size_request(-1, 37)
 
         self.home_button = Gtk.Button.new_from_icon_name('go-home-symbolic', Gtk.IconSize.MENU)
@@ -62,8 +62,8 @@ class HelpPanelView(Gtk.VBox):
 
         self.pack_start(self.action_bar, False, False, 0)
 
-        self.search_widget = Gtk.HBox()
-        self.search_vbox = Gtk.VBox()
+        self.search_widget = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
+        self.search_vbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.search_vbox.set_margin_left(18)
         self.search_vbox.set_margin_right(18)
         self.search_entry = Gtk.SearchEntry()
@@ -76,7 +76,7 @@ class HelpPanelView(Gtk.VBox):
         self.search_results.set_selection_mode(Gtk.SelectionMode.NONE)
         self.search_results.set_margin_left(26)
         self.search_results.set_margin_right(26)
-        self.search_content_box = Gtk.VBox()
+        self.search_content_box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.search_content_box.pack_start(self.search_entry, False, False, 0)
         self.search_content_box.pack_start(self.search_results, False, False, 0)
         self.search_vbox.set_center_widget(self.search_content_box)
@@ -103,7 +103,7 @@ class SearchResultView(Gtk.ListBoxRow):
         Gtk.ListBoxRow.__init__(self)
         self.set_can_focus(False)
         self.uri_ending = data[0]
-        self.box = Gtk.VBox()
+        self.box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.box.set_margin_left(3)
         self.box.set_margin_right(3)
         self.text_label = Gtk.Label()

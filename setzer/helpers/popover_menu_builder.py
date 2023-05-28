@@ -40,7 +40,7 @@ class PopoverMenuBuilder(object):
         else:
             model_button.set_action_name(action_name)
         if keyboard_shortcut != None or icon_name != None:
-            button_box = Gtk.HBox()
+            button_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
             if keyboard_shortcut != None:
                 shortcut = Gtk.Label(keyboard_shortcut)
                 shortcut.get_style_context().add_class('keyboard-shortcut')

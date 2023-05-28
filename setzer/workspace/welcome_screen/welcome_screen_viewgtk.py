@@ -26,7 +26,7 @@ class WelcomeScreenView(Gtk.Overlay):
         Gtk.Overlay.__init__(self)
 
         self.drawing_area = Gtk.DrawingArea()
-        self.overlay = Gtk.VBox()
+        self.overlay = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.overlay.get_style_context().add_class('welcome')
         self.header = Gtk.Label(_('Write beautiful LaTeX documents with ease!'))
         self.header.set_line_wrap(True)
@@ -38,7 +38,7 @@ class WelcomeScreenView(Gtk.Overlay):
         self.overlay.pack_start(self.description, False, False, 0)
         self.overlay.set_valign(Gtk.Align.CENTER)
 
-        self.hbox = Gtk.HBox()
+        self.hbox = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.hbox.set_center_widget(self.overlay)
 
         self.add(self.drawing_area)

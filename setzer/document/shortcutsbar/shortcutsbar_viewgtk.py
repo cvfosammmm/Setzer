@@ -61,7 +61,7 @@ class WizardButton(Gtk.ToolButton):
 
     def __init__(self):
         Gtk.ToolButton.__init__(self)
-        self.icon_widget = Gtk.HBox()
+        self.icon_widget = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         icon = Gtk.Image.new_from_icon_name('own-wizard-symbolic', Gtk.IconSize.MENU)
         icon.set_margin_left(4)
         self.icon_widget.pack_start(icon, False, False, 0)

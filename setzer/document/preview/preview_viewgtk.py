@@ -23,13 +23,13 @@ from gi.repository import Gio
 from gi.repository import Pango
 
 
-class PreviewView(Gtk.VBox):
+class PreviewView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('preview')
 
-        self.action_bar = Gtk.HBox()
+        self.action_bar = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.action_bar.set_size_request(-1, 37)
 
         self.external_viewer_button = Gtk.Button.new_from_icon_name('external-viewer-symbolic', Gtk.IconSize.MENU)
@@ -38,7 +38,7 @@ class PreviewView(Gtk.VBox):
         self.external_viewer_button.set_can_focus(False)
         self.external_viewer_button_revealer = Gtk.Revealer()
         self.external_viewer_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
-        box = Gtk.HBox()
+        box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         box.pack_start(self.external_viewer_button, False, False, 0)
         self.external_viewer_button_revealer.add(box)
         self.action_bar.pack_end(self.external_viewer_button_revealer, False, False, 0)
@@ -95,10 +95,10 @@ class PreviewView(Gtk.VBox):
         else: self.target_label.hide()
 
 
-class BlankSlateView(Gtk.VBox):
+class BlankSlateView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('preview_blank')
 
         self.pack_start(Gtk.DrawingArea(), True, True, 0)

@@ -25,12 +25,12 @@ import setzer.document.shortcutsbar.shortcutsbar_viewgtk as shortcutsbar_view
 import setzer.document.search.search_viewgtk as search_view
 
 
-class DocumentView(Gtk.HBox):
+class DocumentView(Gtk.Box):
     
     def __init__(self, document):
-        Gtk.HBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.HORIZONTAL)
 
-        self.vbox = Gtk.VBox()
+        self.vbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.overlay = Gtk.Overlay()
         self.scrolled_window = Gtk.ScrolledWindow()
         

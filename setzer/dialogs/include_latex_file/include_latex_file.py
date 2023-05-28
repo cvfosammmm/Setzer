@@ -72,7 +72,7 @@ class IncludeLaTeXFile(Dialog):
         for pathtype in self.pathtypes:
             self.view.pathtype_buttons[pathtype] = Gtk.RadioButton()
             if first_button == None: first_button = self.view.pathtype_buttons[pathtype]
-            box = Gtk.HBox()
+            box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
             box.pack_start(Gtk.Label(self.pathtypes[pathtype]), False, False, 0)
             box.set_margin_right(6)
             box.set_margin_left(4)

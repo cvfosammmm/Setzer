@@ -46,8 +46,7 @@ class MainWindow(Handy.ApplicationWindow):
         self.app = app
         self.set_size_request(-1, 550)
         self.add_events(Gdk.EventMask.KEY_PRESS_MASK)
-        self.main_box = Gtk.Box()
-        self.main_box.props.orientation = Gtk.Orientation.VERTICAL
+        self.main_box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
 
         # window state variables
         self.current_width = 0
@@ -65,7 +64,7 @@ class MainWindow(Handy.ApplicationWindow):
         self.latex_notebook.set_scrollable(True)
         self.latex_notebook.set_size_request(550, -1)
         self.latex_shortcutsbar = latex_shortcutsbar_view.LaTeXShortcutsbar()
-        self.latex_notebook_wrapper = Gtk.VBox()
+        self.latex_notebook_wrapper = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.latex_notebook_wrapper.pack_start(self.latex_shortcutsbar, False, False, 0)
         self.latex_notebook_wrapper.pack_start(self.latex_notebook, True, True, 0)
 
@@ -76,7 +75,7 @@ class MainWindow(Handy.ApplicationWindow):
         self.bibtex_notebook.set_scrollable(True)
         self.bibtex_notebook.set_size_request(550, -1)
         self.bibtex_shortcutsbar = bibtex_shortcutsbar_view.BibTeXShortcutsbar()
-        self.bibtex_notebook_wrapper = Gtk.VBox()
+        self.bibtex_notebook_wrapper = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.bibtex_notebook_wrapper.pack_start(self.bibtex_shortcutsbar, False, False, 0)
         self.bibtex_notebook_wrapper.pack_start(self.bibtex_notebook, True, True, 0)
 
@@ -87,7 +86,7 @@ class MainWindow(Handy.ApplicationWindow):
         self.others_notebook.set_scrollable(True)
         self.others_notebook.set_size_request(550, -1)
         self.others_shortcutsbar = others_shortcutsbar_view.OthersShortcutsbar()
-        self.others_notebook_wrapper = Gtk.VBox()
+        self.others_notebook_wrapper = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.others_notebook_wrapper.pack_start(self.others_shortcutsbar, False, False, 0)
         self.others_notebook_wrapper.pack_start(self.others_notebook, True, True, 0)
 

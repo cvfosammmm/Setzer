@@ -21,10 +21,10 @@ from gi.repository import Gtk
 from gi.repository import Pango
 
 
-class DocumentStatsView(Gtk.VBox):
+class DocumentStatsView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('document-stats')
 
         description = Gtk.Label(_('These counts are updated after the document is saved.'))

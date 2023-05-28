@@ -26,13 +26,13 @@ class SearchBar(Gtk.Revealer):
     def __init__(self):
         Gtk.Revealer.__init__(self)
         
-        self.super_box = Gtk.VBox()
-        self.box = Gtk.HBox()
+        self.super_box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
+        self.box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.super_box.pack_start(self.box, False, False, 0)
         self.super_box.get_style_context().add_class('search_bar')
 
-        self.left_box = Gtk.HBox()
-        self.replace_wrapper = Gtk.HBox()
+        self.left_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
+        self.replace_wrapper = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
 
         self.entry = Gtk.SearchEntry()
         self.entry.get_style_context().add_class('search_entry')

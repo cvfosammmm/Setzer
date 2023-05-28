@@ -61,7 +61,7 @@ class CreateNewEntryPageView(PageView):
             
         self.header.set_text(_('Choose a document type'))
         self.headerbar_subtitle = _('Step') + ' 1: ' + _('Choose a document type')
-        self.content = Gtk.HBox()
+        self.content = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
 
         self.list_wrapper = Gtk.ScrolledWindow()
         self.list_wrapper.set_size_request(350, 350)
@@ -82,7 +82,7 @@ class CreateNewEntryPageView(PageView):
         self.preview_container.set_size_request(348, -1)
         self.preview_container.set_margin_right(18)
         for document_type, attributes in self.document_types.items():
-            box = Gtk.VBox()
+            box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
             label = Gtk.Label()
             label.set_line_wrap(True)
             markup = '<b>@' + document_type + '</b>\n\n'

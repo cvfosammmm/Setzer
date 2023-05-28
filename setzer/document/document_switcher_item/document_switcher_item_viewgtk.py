@@ -29,8 +29,8 @@ class OpenDocsPopoverItem(Gtk.ListBoxRow):
         self.set_selectable(False)
         self.document = document
 
-        self.box = Gtk.HBox()
-        self.icon_box = Gtk.HBox()
+        self.box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
+        self.icon_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         if document.is_latex_document():
             self.icon = Gtk.Image.new_from_icon_name('text-x-generic-symbolic', Gtk.IconSize.MENU)
         else:

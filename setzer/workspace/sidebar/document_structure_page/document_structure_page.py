@@ -29,8 +29,8 @@ class DocumentStructurePage(Gtk.Overlay):
         Gtk.Overlay.__init__(self)
         self.labels = dict()
 
-        self.vbox = Gtk.VBox()
-        self.content_vbox = Gtk.VBox()
+        self.vbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
+        self.content_vbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
 
         self.scroll_to = None
 
@@ -66,7 +66,7 @@ class DocumentStructurePage(Gtk.Overlay):
         self.labels[name] = {'inline': label_inline, 'overlay': label_overlay}
 
     def add_buttons(self):
-        self.tabs_box = Gtk.HBox()
+        self.tabs_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         self.tabs_box.get_style_context().add_class('tabs-box')
         self.tabs_box.pack_start(Gtk.Label('Files'), False, False, 0)
         self.vbox.pack_start(self.tabs_box, False, False, 0)

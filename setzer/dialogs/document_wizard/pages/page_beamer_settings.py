@@ -120,8 +120,8 @@ class BeamerSettingsPageView(PageView):
             
         self.header.set_text(_('Beamer settings'))
         self.headerbar_subtitle = _('Step') + ' 2: ' + _('Beamer settings')
-        self.content = Gtk.HBox()
-        self.form = Gtk.VBox()
+        self.content = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
+        self.form = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         
         self.theme_names = ['Warsaw', 'Malmoe', 'Luebeck', 'Copenhagen', 'Szeged', 'Singapore', 'Frankfurt', 'Darmstadt', 'Dresden', 'Ilmenau', 'Berlin', 'Hannover', 'Marburg', 'Goettingen', 'PaloAlto', 'Berkeley', 'Montpellier', 'JuanLesPins', 'Antibes', 'Rochester', 'Pittsburgh', 'EastLansing', 'CambridgeUS', 'AnnArbor', 'Madrid', 'Boadilla', 'Bergen', 'default']
 
@@ -159,8 +159,8 @@ class BeamerSettingsPageView(PageView):
         self.option_top_align_desc.get_style_context().add_class('document-wizard-option-desc')
         self.option_top_align_desc.set_xalign(0)
         
-        self.preview = Gtk.VBox()
-        self.preview_stack_wrapper = Gtk.VBox()
+        self.preview = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
+        self.preview_stack_wrapper = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         self.preview_stack_wrapper.get_style_context().add_class('document-wizard-beamer-preview-stack-wrapper')
         self.preview_stack = Gtk.Stack()
         self.preview_button_stack = Gtk.Stack()
@@ -174,12 +174,12 @@ class BeamerSettingsPageView(PageView):
             self.preview_images[name] = list()
             self.preview_image_boxes[name] = list()
             self.preview_buttons[name] = list()
-            button_box =  Gtk.HBox()
+            button_box =  Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
             button_box.get_style_context().add_class('document-wizard-beamer-preview-buttons')
             self.preview_button_widgets[name] = button_box
             self.preview_button_stack.add_named(button_box, name)
             for i in range(0, 2):
-                image_box = Gtk.HBox()
+                image_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
                 self.preview_image_boxes[name].append(image_box)
                 self.preview_stack.add_named(image_box, name + '_' + str(i))
                 button = Gtk.Button()
