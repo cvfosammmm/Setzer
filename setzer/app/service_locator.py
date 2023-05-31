@@ -127,7 +127,7 @@ class ServiceLocator(object):
             root = tree.getroot()
             for child in root:
                 attrib = child.attrib
-                ServiceLocator.packages_dict[attrib['name']] = {'command': attrib['text'], 'description': attrib['description']}
+                ServiceLocator.packages_dict[attrib['name']] = {'command': attrib['text'], 'description': _(attrib['description'])}
         return ServiceLocator.packages_dict
 
     def get_config_folder():
