@@ -42,6 +42,7 @@ class ServiceLocator(object):
     regexes = dict()
     popover_menu_builder = None
     autocomplete_provider = None
+    languages_dict = None
     packages_dict = None
     source_language_manager = None
     source_style_scheme_manager = None
@@ -117,6 +118,19 @@ class ServiceLocator(object):
 
     def get_autocomplete_provider():
         return ServiceLocator.autocomplete_provider
+
+    def get_languages_dict():
+        if ServiceLocator.languages_dict == None:
+            ServiceLocator.languages_dict = dict()
+
+            resources_path = ServiceLocator.get_resources_path()
+            tree = ET.parse(os.path.join(resources_path, 'document_wizard', 'languages.xml'))
+            root = tree.getroot()
+            for child in root:
+                attrib = child.attrib
+                ServiceLocator.languages_dict[attrib['code']] = _(attrib['name'])
+
+        return ServiceLocator.languages_dict
 
     def get_packages_dict():
         if ServiceLocator.packages_dict == None:

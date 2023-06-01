@@ -7,7 +7,7 @@ Run: (replace `lang` with the language code)
 rm -Rf builddir
 meson builddir --prefix=/tmp/usr
 ninja setzer-pot -C builddir
-xgettext data/resources/latexdb/*/*.xml -o po/setzer.pot --from-code=UTF-8 --join-existing --its=po/setzer.its
+xgettext data/resources/latexdb/*/*.xml data/resources/document_wizard/languages.xml -o po/setzer.pot --from-code=UTF-8 --join-existing --its=po/setzer.its
 cp po/setzer.pot po/lang.po
 ```
 Now translate the strings in `lang.po` and add `lang` to the `LINGUAS` file.
@@ -19,7 +19,7 @@ Run:
 rm -Rf builddir
 meson builddir --prefix=/tmp/usr
 ninja setzer-update-po -C builddir
-xgettext data/resources/latexdb/*/*.xml -o po/setzer.pot --from-code=UTF-8 --join-existing --its=po/setzer.its
+xgettext data/resources/latexdb/*/*.xml data/resources/document_wizard/languages.xml -o po/setzer.pot --from-code=UTF-8 --join-existing --its=po/setzer.its
 msgmerge -U po/lang.po po/setzer.pot
 ```
 Now translate the fuzzy strings in `lang.po` (remove the `#,fuzzy` lines).

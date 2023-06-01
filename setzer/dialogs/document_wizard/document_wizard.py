@@ -90,6 +90,7 @@ class DocumentWizard(Dialog):
         self.current_values['title'] = ''
         self.current_values['author'] = ''
         self.current_values['date'] = '\\today'
+        self.current_values['languages'] = ServiceLocator.get_languages_dict()
         self.current_values['packages'] = dict()
         self.current_values['packages']['ams'] = True
         self.current_values['packages']['graphicx'] = True
@@ -225,6 +226,7 @@ class DocumentWizard(Dialog):
 ('''\\usepackage[top=''' + str(self.current_values['article']['margin_top']) + '''cm, bottom=''' + str(self.current_values['article']['margin_bottom']) + '''cm, left=''' + str(self.current_values['article']['margin_left']) + '''cm, right=''' + str(self.current_values['article']['margin_right']) + '''cm]{geometry}''' if not self.current_values['article']['option_default_margins'] else '')
 + '''\\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
+\\usepackage[''' + next(iter(self.current_values['languages'])) + ''']{babel}
 \\usepackage{lmodern}
 ''' + self.get_insert_packages() + '''
 \\title{''' + self.current_values['title'] + '''}
@@ -251,6 +253,7 @@ class DocumentWizard(Dialog):
 ('''\\usepackage[top=''' + str(self.current_values['report']['margin_top']) + '''cm, bottom=''' + str(self.current_values['report']['margin_bottom']) + '''cm, left=''' + str(self.current_values['report']['margin_left']) + '''cm, right=''' + str(self.current_values['report']['margin_right']) + '''cm]{geometry}''' if not self.current_values['report']['option_default_margins'] else '')
 + '''\\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
+\\usepackage[''' + next(iter(self.current_values['languages'])) + ''']{babel}
 \\usepackage{lmodern}
 ''' + self.get_insert_packages() + '''
 \\title{''' + self.current_values['title'] + '''}
@@ -277,6 +280,7 @@ class DocumentWizard(Dialog):
 ('''\\usepackage[top=''' + str(self.current_values['book']['margin_top']) + '''cm, bottom=''' + str(self.current_values['book']['margin_bottom']) + '''cm, left=''' + str(self.current_values['book']['margin_left']) + '''cm, right=''' + str(self.current_values['book']['margin_right']) + '''cm]{geometry}''' if not self.current_values['book']['option_default_margins'] else '')
 + '''\\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
+\\usepackage[''' + next(iter(self.current_values['languages'])) + ''']{babel}
 \\usepackage{lmodern}
 ''' + self.get_insert_packages() + '''
 \\title{''' + self.current_values['title'] + '''}
@@ -300,6 +304,7 @@ class DocumentWizard(Dialog):
 ('''\\usepackage[top=''' + str(self.current_values['letter']['margin_top']) + '''cm, bottom=''' + str(self.current_values['letter']['margin_bottom']) + '''cm, left=''' + str(self.current_values['letter']['margin_left']) + '''cm, right=''' + str(self.current_values['letter']['margin_right']) + '''cm]{geometry}''' if not self.current_values['letter']['option_default_margins'] else '')
 + '''\\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
+\\usepackage[''' + next(iter(self.current_values['languages'])) + ''']{babel}
 \\usepackage{lmodern}
 ''' + self.get_insert_packages() + '''
 \\address{Your name\\\\Your address\\\\Your phone number}
@@ -333,6 +338,7 @@ class DocumentWizard(Dialog):
         return ('''\\documentclass''' + top_align + '''{beamer}
 \\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
+\\usepackage[''' + next(iter(self.current_values['languages'])) + ''']{babel}
 \\usepackage{lmodern}
 ''' + self.get_insert_packages() + '''\\usetheme{''' + theme + '''}''' + show_navigation + '''
 
