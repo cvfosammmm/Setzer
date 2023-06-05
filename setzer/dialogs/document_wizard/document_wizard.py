@@ -307,23 +307,23 @@ class DocumentWizard(Dialog):
 \\usepackage[''' + next(iter(self.current_values['languages'])) + ''']{babel}
 \\usepackage{lmodern}
 ''' + self.get_insert_packages() + '''
-\\address{Your name\\\\Your address\\\\Your phone number}
+\\address{''' + _('Your name') + '''\\\\''' + _('Your address') + '''\\\\''' + _('Your phone number') + '''}
 \\date{''' + self.current_values['date'] + '''}
 \\signature{''' + self.current_values['author'] + '''}
 
 \\begin{document}
 
-\\begin{letter}{Destination\\\\Address of the destination\\\\Phone number of the destination''' + ('''\\\\~\\\\\\textbf{''' + self.current_values['title'] + '''}''' if len(self.current_values['title']) > 0 else '') + '''}
+\\begin{letter}{''' + _('Destination') + '''\\\\''' + _('Address of the destination') + '''\\\\''' + _('Phone number of the destination') + ('''\\\\~\\\\\\textbf{''' + self.current_values['title'] + '''}''' if len(self.current_values['title']) > 0 else '') + '''}
 
-\\opening{Dear addressee,}
+\\opening{''' + _('Dear addressee,') + '''}
 
 ''', '''
 
-\\closing{Yours sincerely,}
+\\closing{''' + _('Yours sincerely,') + '''}
 
-%\\cc{Other destination}
-%\\ps{PS: PostScriptum}
-%\\encl{Enclosures}
+%\\cc{''' + _('Other destination') + '''}
+%\\ps{''' + _('PS: PostScriptum') + '''}
+%\\encl{''' + _('Enclosures') + '''}
 
 \\end{letter}
 \\end{document}''')

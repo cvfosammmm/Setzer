@@ -306,10 +306,10 @@ class PageFontColorView(Gtk.ScrolledWindow):
         box = Gtk.HBox()
         box.set_margin_bottom(18)
         self.remove_scheme_button = Gtk.Button()
-        self.remove_scheme_button.set_label('Remove active scheme')
+        self.remove_scheme_button.set_label(_('Remove active scheme'))
         box.pack_end(self.remove_scheme_button, False, False, 0)
         self.add_scheme_button = Gtk.Button()
-        self.add_scheme_button.set_label('Add from file...')
+        self.add_scheme_button.set_label(_('Add from file...'))
         box.pack_start(self.add_scheme_button, False, False, 0)
         self.box.pack_start(box, False, False, 0)
 
