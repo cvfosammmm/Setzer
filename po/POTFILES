@@ -1,6 +1,6 @@
 # generated on Mon 11 Jan 2021 01:35:19 PM UTC
 
-./data/org.cvfosammmm.Setzer.appdata.xml.in
+./data/org.cvfosammmm.Setzer.metainfo.xml.in
 
 ./setzer/app/autocomplete_provider/autocomplete_provider.py
 ./setzer/app/autocomplete_provider/__init__.py
