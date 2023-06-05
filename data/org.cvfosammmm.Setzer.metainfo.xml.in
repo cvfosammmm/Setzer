@@ -52,6 +52,16 @@
         <id>org.cvfosammmm.Setzer.desktop</id>
     </provides>
 
+    <supports>
+      <control>pointing</control>
+      <control>keyboard</control>
+      <control>touch</control>
+    </supports>
+
+    <requires>
+      <display_length compare="ge">768</display_length>
+    </requires>
+
     <releases>
         <release version="55" date="2023-4-8">
             <description>
