@@ -19,8 +19,8 @@ install_data(
 
 # metainfo
 metainfo_file = i18n.merge_file(
-  input:  files('org.cvfosammmm.Setzer.appdata.xml.in'),
-  output: 'org.cvfosammmm.Setzer.appdata.xml',
+  input:  files('org.cvfosammmm.Setzer.metainfo.xml.in'),
+  output: 'org.cvfosammmm.Setzer.metainfo.xml',
   type: 'xml',
   po_dir: join_paths(meson.source_root(), 'po'),
   install: true,
