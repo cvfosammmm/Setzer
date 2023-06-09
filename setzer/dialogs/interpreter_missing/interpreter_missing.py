@@ -18,7 +18,8 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+gi.require_version('Xdp', '1.0')
+from gi.repository import Gtk, Xdp
 
 from setzer.dialogs.dialog import Dialog
 
@@ -44,7 +45,16 @@ class InterpreterMissingDialog(Dialog):
         self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
 
         self.view.set_property('text', _('LateX Interpreter is missing.'))
-        self.view.format_secondary_markup(_('''Setzer is configured to use »{interpreter}« which seems to be missing on this system.
+        if Xdp.Portal().running_under_flatpak():
+            self.view.format_secondary_markup(_('''Setzer is configured to use »{interpreter}« which seems to be missing on this system.
+
+To choose a different interpreter go to Preferences.
+
+To install interpreters in Flatpak, open a terminal and run the following command:
+
+    flatpak install org.freedesktop.Sdk.Extension.texlive''').format(interpreter=interpreter_name))
+        else:
+            self.view.format_secondary_markup(_('''Setzer is configured to use »{interpreter}« which seems to be missing on this system.
 
 To choose a different interpreter go to Preferences.
 
