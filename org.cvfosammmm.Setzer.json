@@ -171,6 +171,22 @@
             ]
         },
         {
+            "name": "libportal",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Ddocs=false",
+                "-Dvapi=false",
+                "-Dbackends=gtk3"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/flatpak/libportal.git",
+                    "tag": "0.6"
+                }
+            ]
+        },
+        {
             "name": "setzer",
             "buildsystem": "meson",
             "config-opts": [
