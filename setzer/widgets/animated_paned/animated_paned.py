@@ -132,10 +132,10 @@ class AnimatedPaned(object):
         return (time - 1)**3 + 1;
 
 
-class AnimatedHPaned(Gtk.HPaned, AnimatedPaned):
+class AnimatedHPaned(Gtk.Paned, AnimatedPaned):
 
     def __init__(self, widget1, widget2, animate_first_widget=True):
-        Gtk.HPaned.__init__(self)
+        Gtk.Paned.__init__(self, orientation = Gtk.Orientation.HORIZONTAL)
         AnimatedPaned.__init__(self, widget1, widget2, animate_first_widget)
 
         self.original_size_request = self.animated_widget.get_size_request()[0]
@@ -153,10 +153,10 @@ class AnimatedHPaned(Gtk.HPaned, AnimatedPaned):
         return self.get_allocated_width()
 
 
-class AnimatedVPaned(Gtk.VPaned, AnimatedPaned):
+class AnimatedVPaned(Gtk.Paned, AnimatedPaned):
 
     def __init__(self, widget1, widget2, animate_first_widget=True):
-        Gtk.VPaned.__init__(self)
+        Gtk.Paned.__init__(self, orientation = Gtk.Orientation.VERTICAL)
         AnimatedPaned.__init__(self, widget1, widget2, animate_first_widget)
 
         self.original_size_request = self.animated_widget.get_size_request()[1]
