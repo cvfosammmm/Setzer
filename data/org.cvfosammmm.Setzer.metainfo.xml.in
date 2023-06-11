@@ -63,6 +63,11 @@
     </requires>
 
     <releases>
+        <release version="56" date="2023-6-11">
+            <description>
+                <p translatable="no">Language chooser in document wizard, ...</p>
+            </description>
+        </release>
         <release version="55" date="2023-4-8">
             <description>
                 <p translatable="no">Better dark / light mode support, ...</p>
