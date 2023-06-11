@@ -43,46 +43,44 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.pack_end(self.right_icons, False, False, 0)
 
     def create_toolbar(self):
-        toolbar = Gtk.Toolbar()
-        toolbar.set_style(Gtk.ToolbarStyle.ICONS)
-        toolbar.set_orientation(Gtk.Orientation.HORIZONTAL)
-        toolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
+        toolbar = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         return toolbar
 
     def populate_right_toolbar(self):
-        self.button_build_log = Gtk.ToggleToolButton()
-        self.button_build_log.set_icon_name('build-log-symbolic')
+        self.button_build_log = Gtk.ToggleButton()
+        self.button_build_log.set_image(Gtk.Image.new_from_icon_name('build-log-symbolic', Gtk.IconSize.MENU))
         self.button_build_log.set_tooltip_text(_('Build log') + ' (F8)')
         self.button_build_log.get_child().set_can_focus(False)
-        self.right_icons.insert(self.button_build_log, 0)
+        self.button_build_log.get_style_context().add_class('flat')
+        self.right_icons.pack_end(self.button_build_log, False, False, 0)
 
     def populate_top_toolbar(self):
-        self.italic_button = Gtk.ToolButton()
-        self.italic_button.set_icon_name('format-text-italic-symbolic')
-        self.italic_button.set_label(_('Italic Text'))
+        self.insert_document_button()
+        self.insert_beamer_button()
+        self.insert_bibliography_button()
+
+        self.insert_object_button()
+        self.insert_text_button()
+        self.insert_math_button()
+        self.insert_quotes_button()
+
+        self.italic_button = Gtk.Button()
+        self.italic_button.set_image(Gtk.Image.new_from_icon_name('format-text-italic-symbolic', Gtk.IconSize.MENU))
         self.italic_button.set_action_name('win.insert-before-after')
         self.italic_button.set_action_target_value(GLib.Variant('as', ['\\textit{', '}']))
         self.italic_button.get_child().set_can_focus(False)
         self.italic_button.set_tooltip_text(_('Italic') + ' (' + _('Ctrl') + '+I)')
-        self.top_icons.insert(self.italic_button, 0)
+        self.italic_button.get_style_context().add_class('flat')
+        self.top_icons.pack_start(self.italic_button, False, False, 0)
 
-        self.bold_button = Gtk.ToolButton()
-        self.bold_button.set_icon_name('format-text-bold-symbolic')
-        self.bold_button.set_label(_('Bold Text'))
+        self.bold_button = Gtk.Button()
+        self.bold_button.set_image(Gtk.Image.new_from_icon_name('format-text-bold-symbolic', Gtk.IconSize.MENU))
         self.bold_button.set_action_name('win.insert-before-after')
         self.bold_button.set_action_target_value(GLib.Variant('as', ['\\textbf{', '}']))
         self.bold_button.get_child().set_can_focus(False)
         self.bold_button.set_tooltip_text(_('Bold') + ' (' + _('Ctrl') + '+B)')
-        self.top_icons.insert(self.bold_button, 0)
-
-        self.insert_quotes_button()
-        self.insert_math_button()
-        self.insert_text_button()
-        self.insert_object_button()
-
-        self.insert_bibliography_button()
-        self.insert_beamer_button()
-        self.insert_document_button()
+        self.bold_button.get_style_context().add_class('flat')
+        self.top_icons.pack_start(self.bold_button, False, False, 0)
 
     def insert_document_button(self):
         popover = Gtk.PopoverMenu()
@@ -94,9 +92,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.document_button.get_style_context().add_class('flat')
         self.document_button.set_popover(popover)
 
-        button_wrapper = Gtk.ToolItem()
-        button_wrapper.add(self.document_button)
-        self.top_icons.insert(button_wrapper, 0)
+        self.top_icons.pack_start(self.document_button, False, False, 0)
         GLib.idle_add(self.populate_document_menu, priority=GLib.PRIORITY_LOW)
 
     def populate_document_menu(self):
@@ -138,9 +134,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.beamer_button.get_style_context().add_class('flat')
         self.beamer_button.set_popover(popover)
 
-        button_wrapper = Gtk.ToolItem()
-        button_wrapper.add(self.beamer_button)
-        self.top_icons.insert(button_wrapper, 0)
+        self.top_icons.pack_start(self.beamer_button, False, False, 0)
         GLib.idle_add(self.populate_beamer_menu, priority=GLib.PRIORITY_LOW)
 
     def populate_beamer_menu(self):
@@ -171,9 +165,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.bibliography_button.get_style_context().add_class('flat')
         self.bibliography_button.set_popover(popover)
 
-        button_wrapper = Gtk.ToolItem()
-        button_wrapper.add(self.bibliography_button)
-        self.top_icons.insert(button_wrapper, 0)
+        self.top_icons.pack_start(self.bibliography_button, False, False, 0)
         GLib.idle_add(self.populate_bibliography_menu, priority=GLib.PRIORITY_LOW)
 
     def populate_bibliography_menu(self):
@@ -214,9 +206,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.text_button.get_style_context().add_class('flat')
         self.text_button.set_popover(popover)
 
-        button_wrapper = Gtk.ToolItem()
-        button_wrapper.add(self.text_button)
-        self.top_icons.insert(button_wrapper, 0)
+        self.top_icons.pack_start(self.text_button, False, False, 0)
         GLib.idle_add(self.populate_text_menu, priority=GLib.PRIORITY_LOW)
 
     def populate_text_menu(self):
@@ -336,7 +326,6 @@ class LaTeXShortcutsbar(Gtk.Box):
     def insert_quotes_button(self):
         popover = Gtk.PopoverMenu()
 
-        button_wrapper = Gtk.ToolItem()
         self.quotes_button = Gtk.MenuButton()
         self.quotes_button.set_direction(Gtk.ArrowType.DOWN)
         self.quotes_button.set_image(Gtk.Image.new_from_icon_name('own-quotes-symbolic', Gtk.IconSize.MENU))
@@ -344,9 +333,8 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.quotes_button.set_can_focus(False)
         self.quotes_button.set_tooltip_text(_('Quotes') + ' (' + _('Ctrl') + '+")')
         self.quotes_button.get_style_context().add_class('flat')
-        button_wrapper.add(self.quotes_button)
         self.quotes_button.get_popover().get_style_context().add_class('menu-own-quotes-symbolic')
-        self.top_icons.insert(button_wrapper, 0)
+        self.top_icons.pack_start(self.quotes_button, False, False, 0)
         GLib.idle_add(self.populate_quotes_menu, priority=GLib.PRIORITY_LOW)
 
     def populate_quotes_menu(self):
@@ -370,9 +358,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.math_button.get_style_context().add_class('flat')
         self.math_button.set_popover(popover)
 
-        button_wrapper = Gtk.ToolItem()
-        button_wrapper.add(self.math_button)
-        self.top_icons.insert(button_wrapper, 0)
+        self.top_icons.pack_start(self.math_button, False, False, 0)
         GLib.idle_add(self.populate_math_menu, priority=GLib.PRIORITY_LOW)
 
     def populate_math_menu(self):
@@ -473,7 +459,6 @@ class LaTeXShortcutsbar(Gtk.Box):
     def insert_object_button(self):
         popover = Gtk.PopoverMenu()
 
-        button_wrapper = Gtk.ToolItem()
         self.insert_object_button = Gtk.MenuButton()
         self.insert_object_button.set_direction(Gtk.ArrowType.DOWN)
         self.insert_object_button.set_image(Gtk.Image.new_from_icon_name('own-insert-object-symbolic', Gtk.IconSize.MENU))
@@ -481,9 +466,8 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.insert_object_button.set_can_focus(False)
         self.insert_object_button.set_tooltip_text(_('Objects'))
         self.insert_object_button.get_style_context().add_class('flat')
-        button_wrapper.add(self.insert_object_button)
         self.insert_object_button.get_popover().get_style_context().add_class('menu-insert-object-symbolic')
-        self.top_icons.insert(button_wrapper, 0)
+        self.top_icons.pack_start(self.insert_object_button, False, False, 0)
         GLib.idle_add(self.populate_insert_object_menu, priority=GLib.PRIORITY_LOW)
 
     def populate_insert_object_menu(self):

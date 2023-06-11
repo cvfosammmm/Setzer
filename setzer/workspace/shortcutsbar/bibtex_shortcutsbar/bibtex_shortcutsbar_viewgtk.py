@@ -34,13 +34,10 @@ class BibTeXShortcutsbar(Gtk.Box):
         self.pack_start(self.top_icons, True, True, 0)
 
     def create_top_toolbar(self):
-        self.top_icons = Gtk.Toolbar()
-        self.top_icons.set_style(Gtk.ToolbarStyle.ICONS)
-        self.top_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
-        self.top_icons.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
+        self.top_icons = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         
     def populate_top_toolbar(self):
-        self.entry_button = Gtk.ToolButton()
+        self.entry_button = Gtk.Button()
         icon_widget = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         icon = Gtk.Image.new_from_icon_name('list-add-symbolic', Gtk.IconSize.MENU)
         icon.set_margin_left(4)
@@ -54,13 +51,14 @@ class BibTeXShortcutsbar(Gtk.Box):
         label_revealer.set_reveal_child(True)
         icon_widget.pack_start(label_revealer, False, False, 0)
 
-        self.entry_button.set_icon_widget(icon_widget)
+        self.entry_button.add(icon_widget)
         self.entry_button.set_action_name('win.create-new-bibtex-entry')
         self.entry_button.set_focus_on_click(False)
         self.entry_button.set_tooltip_text(_('Create a New BibTeX Entry'))
-        self.top_icons.insert(self.entry_button, 0)
+        self.entry_button.get_style_context().add_class('flat')
+        self.top_icons.pack_start(self.entry_button, False, False, 0)
 
-        self.entry_button = Gtk.ToolButton()
+        self.entry_button = Gtk.Button()
         icon_widget = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         icon = Gtk.Image.new_from_icon_name('media-playlist-repeat-symbolic', Gtk.IconSize.MENU)
         icon.set_margin_left(4)
@@ -74,13 +72,14 @@ class BibTeXShortcutsbar(Gtk.Box):
         label_revealer.set_reveal_child(True)
         icon_widget.pack_start(label_revealer, False, False, 0)
 
-        self.entry_button.set_icon_widget(icon_widget)
+        self.entry_button.add(icon_widget)
         self.entry_button.set_action_name('win.show-previous-bibtex-entries')
         self.entry_button.set_focus_on_click(False)
         self.entry_button.set_tooltip_text(_('Add a Previously Used BibTeX Entry'))
-        #self.top_icons.insert(self.entry_button, 0)
+        self.entry_button.get_style_context().add_class('flat')
+        #self.top_icons.pack_start(self.entry_button, False, False, 0)
 
-        self.entry_button = Gtk.ToolButton()
+        self.entry_button = Gtk.Button()
         icon_widget = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         icon = Gtk.Image.new_from_icon_name('globe-alt-symbolic', Gtk.IconSize.MENU)
         icon.set_margin_left(4)
@@ -94,10 +93,11 @@ class BibTeXShortcutsbar(Gtk.Box):
         label_revealer.set_reveal_child(True)
         icon_widget.pack_start(label_revealer, False, False, 0)
 
-        self.entry_button.set_icon_widget(icon_widget)
+        self.entry_button.add(icon_widget)
         self.entry_button.set_action_name('win.search-online-for-bibtex-entries')
         self.entry_button.set_focus_on_click(False)
         self.entry_button.set_tooltip_text(_('Add a BibTeX Entry from an Online Database'))
-        #self.top_icons.insert(self.entry_button, 0)
+        self.entry_button.get_style_context().add_class('flat')
+        #self.top_icons.pack_start(self.entry_button, False, False, 0)
 
 

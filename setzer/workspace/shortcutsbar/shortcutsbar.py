@@ -40,7 +40,8 @@ class Shortcutsbar(object):
     def on_new_active_document(self, workspace, document):
         if document.is_latex_document():
             self.update_shortcutsbar(self.main_window.latex_shortcutsbar)
-            self.main_window.latex_shortcutsbar.top_icons.insert(document.view.wizard_button, 0)
+            self.main_window.latex_shortcutsbar.top_icons.pack_start(document.view.wizard_button, False, False, 0)
+            self.main_window.latex_shortcutsbar.top_icons.reorder_child(document.view.wizard_button, 0)
             self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(True)
         elif document.is_bibtex_document():
             self.update_shortcutsbar(self.main_window.bibtex_shortcutsbar)

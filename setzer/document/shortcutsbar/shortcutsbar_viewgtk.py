@@ -20,18 +20,16 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
-class ShortcutsbarBottom(Gtk.Toolbar):
+class ShortcutsbarBottom(Gtk.Box):
 
     def __init__(self):
-        Gtk.Toolbar.__init__(self)
+        Gtk.Box.__init__(self, orientation = Gtk.Orientation.HORIZONTAL)
 
-        self.set_style(Gtk.ToolbarStyle.ICONS)
-        self.set_orientation(Gtk.Orientation.HORIZONTAL)
-        self.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
+        self.get_style_context().add_class('toolbar')
         self.get_style_context().add_class('bottom')
+        self.get_style_context().add_class('toolbar-box')
 
         self.more_actions_popover = Gtk.PopoverMenu()
-        button_wrapper = Gtk.ToolItem()
         self.button_more = Gtk.MenuButton()
         self.button_more.set_direction(Gtk.ArrowType.DOWN)
         self.button_more.set_image(Gtk.Image.new_from_icon_name('view-more-symbolic', Gtk.IconSize.MENU))
@@ -39,28 +37,29 @@ class ShortcutsbarBottom(Gtk.Toolbar):
         self.button_more.set_can_focus(False)
         self.button_more.set_popover(self.more_actions_popover)
         self.button_more.get_style_context().add_class('flat')
-        button_wrapper.add(self.button_more)
-        self.insert(button_wrapper, 0)
+        self.pack_end(self.button_more, False, False, 0)
 
-        self.button_find_and_replace = Gtk.ToggleToolButton()
-        self.button_find_and_replace.set_icon_name('edit-find-replace-symbolic')
+        self.button_find_and_replace = Gtk.ToggleButton()
+        self.button_find_and_replace.set_image(Gtk.Image.new_from_icon_name('edit-find-replace-symbolic', Gtk.IconSize.MENU))
         self.button_find_and_replace.set_tooltip_text(_('Find and Replace (Ctrl+H)'))
         self.button_find_and_replace.get_child().set_can_focus(False)
-        self.insert(self.button_find_and_replace, 0)
+        self.button_find_and_replace.get_style_context().add_class('flat')
+        self.pack_end(self.button_find_and_replace, False, False, 0)
         
-        self.button_find = Gtk.ToggleToolButton()
-        self.button_find.set_icon_name('edit-find-symbolic')
+        self.button_find = Gtk.ToggleButton()
+        self.button_find.set_image(Gtk.Image.new_from_icon_name('edit-find-symbolic', Gtk.IconSize.MENU))
         self.button_find.set_tooltip_text(_('Find (Ctrl+F)'))
         self.button_find.get_child().set_can_focus(False)
-        self.insert(self.button_find, 0)
+        self.button_find.get_style_context().add_class('flat')
+        self.pack_end(self.button_find, False, False, 0)
 
         self.show_all()
 
 
-class WizardButton(Gtk.ToolButton):
+class WizardButton(Gtk.Button):
 
     def __init__(self):
-        Gtk.ToolButton.__init__(self)
+        Gtk.Button.__init__(self)
         self.icon_widget = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
         icon = Gtk.Image.new_from_icon_name('own-wizard-symbolic', Gtk.IconSize.MENU)
         icon.set_margin_left(4)
@@ -74,10 +73,11 @@ class WizardButton(Gtk.ToolButton):
         self.label_revealer.set_reveal_child(True)
         self.icon_widget.pack_start(self.label_revealer, False, False, 0)
 
-        self.set_icon_widget(self.icon_widget)
+        self.add(self.icon_widget)
         self.set_action_name('win.show-document-wizard')
         self.get_child().set_can_focus(False)
         self.set_tooltip_text(_('Create a template document'))
+        self.get_style_context().add_class('flat')
         self.show_all()
 
 

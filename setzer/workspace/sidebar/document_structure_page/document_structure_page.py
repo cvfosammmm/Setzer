@@ -71,23 +71,23 @@ class DocumentStructurePage(Gtk.Overlay):
         self.tabs_box.pack_start(Gtk.Label('Files'), False, False, 0)
         self.vbox.pack_start(self.tabs_box, False, False, 0)
 
-        self.tabs = Gtk.Toolbar()
-        self.tabs.set_style(Gtk.ToolbarStyle.ICONS)
-        self.tabs.set_orientation(Gtk.Orientation.HORIZONTAL)
-        self.tabs.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
+        self.tabs = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
+        self.tabs.get_style_context().add_class('toolbar')
         self.tabs_box.pack_end(self.tabs, False, False, 0)
 
-        self.prev_button = Gtk.ToolButton()
-        self.prev_button.set_icon_name('go-up-symbolic')
+        self.prev_button = Gtk.Button()
+        self.prev_button.set_image(Gtk.Image.new_from_icon_name('go-up-symbolic', Gtk.IconSize.MENU))
         self.prev_button.set_focus_on_click(False)
         self.prev_button.set_tooltip_text(_('Back'))
-        self.tabs.insert(self.prev_button, -1)
+        self.prev_button.get_style_context().add_class('flat')
+        self.tabs.pack_start(self.prev_button, False, False, 0)
 
-        self.next_button = Gtk.ToolButton()
-        self.next_button.set_icon_name('go-down-symbolic')
+        self.next_button = Gtk.Button()
+        self.next_button.set_image(Gtk.Image.new_from_icon_name('go-down-symbolic', Gtk.IconSize.MENU))
         self.next_button.set_focus_on_click(False)
         self.next_button.set_tooltip_text(_('Forward'))
-        self.tabs.insert(self.next_button, -1)
+        self.next_button.get_style_context().add_class('flat')
+        self.tabs.pack_start(self.next_button, False, False, 0)
 
     def add_scrolled_window(self):
         self.scrolled_window = Gtk.ScrolledWindow()
