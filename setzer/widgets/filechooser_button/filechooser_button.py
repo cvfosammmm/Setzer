@@ -80,7 +80,7 @@ class FilechooserButton(Observable):
 
         for widget in dialog.get_header_bar().get_children():
             if isinstance(widget, Gtk.Button) and widget.get_label() == _('_Select'):
-                widget.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
+                widget.get_style_context().add_class('suggested-action')
                 widget.set_can_default(True)
                 widget.grab_default()
 

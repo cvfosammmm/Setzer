@@ -50,7 +50,7 @@ class OpenSessionDialog(Dialog):
         if headerbar != None:
             for widget in headerbar.get_children():
                 if isinstance(widget, Gtk.Button) and widget.get_label() == _('_Open'):
-                    widget.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
+                    widget.get_style_context().add_class('suggested-action')
                     widget.set_can_default(True)
                     widget.grab_default()
 
