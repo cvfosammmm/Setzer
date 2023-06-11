@@ -17,8 +17,10 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+gi.require_version('Xdp', '1.0')
+from gi.repository import Gtk, Xdp
 
+import os
 import subprocess
 
 
@@ -128,7 +130,12 @@ class PageBuildSystemView(Gtk.VBox):
 
         self.no_interpreter_label = Gtk.Label()
         self.no_interpreter_label.set_line_wrap(True)
-        self.no_interpreter_label.set_markup(_('No LaTeX interpreter found. For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibooks.org/wiki/LaTeX/Installation</a>'))
+        if Xdp.Portal().running_under_flatpak():
+            self.no_interpreter_label.set_markup(_('''No LaTeX interpreter found. To install interpreters in Flatpak, open a terminal and run the following command:
+
+    flatpak install org.freedesktop.Sdk.Extension.texlive'''))
+        else:
+            self.no_interpreter_label.set_markup(_('No LaTeX interpreter found. For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibooks.org/wiki/LaTeX/Installation</a>'))
         self.no_interpreter_label.set_xalign(0)
         self.no_interpreter_label.set_margin_bottom(6)
         self.pack_start(self.no_interpreter_label, False, False, 0)

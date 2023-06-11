@@ -6,6 +6,14 @@
     "sdk-extensions": [
         "org.freedesktop.Sdk.Extension.texlive"
     ],
+    "add-extensions": {
+        "org.freedesktop.Sdk.Extension.texlive": {
+            "directory": "texlive",
+            "subdirectories": true,
+            "autodelete": true,
+            "version": "22.08"
+        }
+    },
     "command": "setzer",
     "finish-args": [
         "--share=ipc",
@@ -14,7 +22,7 @@
         "--device=dri",
         "--socket=pulseaudio",
         "--filesystem=host",
-        "--env=PATH=/app/bin:/usr/bin:/app/bin/x86_64-linux:/app/bin/aarch64-linux",
+        "--env=PATH=/app/bin:/usr/bin:/app/texlive/bin:/app/texlive/bin/x86_64-linux:/app/texlive/bin/aarch64-linux",
         "--env=TEXMFCACHE=$XDG_CACHE_HOME",
         "--env=TEXINPUTS=.:~/texmf/:",
         "--metadata=X-DConf=migrate-path=/org/cvfosammmm/Setzer/"
@@ -24,7 +32,7 @@
             "name": "texlive",
             "buildsystem": "simple",
             "build-commands": [
-                "/usr/lib/sdk/texlive/install.sh"
+                "install -d /app/texlive"
             ]
         },
         {
@@ -159,6 +167,22 @@
                     "type": "file",
                     "url": "https://files.pythonhosted.org/packages/6c/10/a7d0fa5baea8fe7b50f448ab742f26f52b80bfca85ac2be9d35cdd9a3246/pyparsing-3.0.9-py3-none-any.whl",
                     "sha256": "5026bae9a10eeaefb61dab2f09052b9f4307d44aee4eda64b309723d8d206bbc"
+                }
+            ]
+        },
+        {
+            "name": "libportal",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Ddocs=false",
+                "-Dvapi=false",
+                "-Dbackends=gtk3"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/flatpak/libportal.git",
+                    "tag": "0.6"
                 }
             ]
         },
