@@ -1,0 +1,57 @@
+<languages>
+    <language code="english" name="English"/>
+    <language code="spanish" name="Spanish"/>
+    <language code="french" name="French"/>
+    <language code="russian" name="Russian"/>
+    <language code="brazilian" name="Portuguese"/>
+    <language code="portuguese" name="Portuguese"/>
+    <language code="ngerman" name="German"/>
+    <language code="italian" name="Italian"/>
+    <language code="afrikaans" name="Afrikaans"/>
+    <language code="azerbaijani" name="Azerbaijani"/>
+    <language code="basque" name="Basque"/>
+    <language code="breton" name="Breton"/>
+    <language code="bulgarian" name="Bulgarian"/>
+    <language code="catalan" name="Catalan"/>
+    <language code="croatian" name="Croatian"/>
+    <language code="czech" name="Czech"/>
+    <language code="danish" name="Danish"/>
+    <language code="dutch" name="Dutch"/>
+    <language code="american" name="English"/>
+    <language code="british" name="English"/>
+    <language code="canadian" name="English"/>
+    <language code="australian" name="English"/>
+    <language code="newzealand" name="English"/>
+    <language code="esperanto" name="Esperanto"/>
+    <language code="estonian" name="Estonian"/>
+    <language code="finnish" name="Finnish"/>
+    <language code="acadian" name="French"/>
+    <language code="galician" name="Galician"/>
+    <language code="naustrian" name="German"/>
+    <language code="german" name="German"/>
+    <language code="austrian" name="German"/>
+    <language code="greek" name="Greek"/>
+    <language code="polutonikogreek" name="Greek"/>
+    <language code="hebrew" name="Hebrew"/>
+    <language code="icelandic" name="Icelandic"/>
+    <language code="indonesian" name="Indonesian"/>
+    <language code="interlingua" name="Interlingua"/>
+    <language code="irish" name="Irish Gaelic"/>
+    <language code="latin" name="Latin"/>
+    <language code="lowersorbian" name="Lower Sorbian"/>
+    <language code="malay" name="Malay"/>
+    <language code="northernsami" name="Northern Sami"/>
+    <language code="norsk" name="Norwegian"/>
+    <language code="nynorsk" name="Norwegian"/>
+    <language code="polish" name="Polish"/>
+    <language code="romanian" name="Romanian"/>
+    <language code="scottishgaelic" name="Scottish Gaelic"/>
+    <language code="slovak" name="Slovakian"/>
+    <language code="slovene" name="Slovenian"/>
+    <language code="swedish" name="Swedish"/>
+    <language code="serbian" name="Serbian"/>
+    <language code="turkish" name="Turkish"/>
+    <language code="ukrainian" name="Ukrainian"/>
+    <language code="uppersorbian" name="Upper Sorbian"/>
+    <language code="welsh" name="Welsh"/>
+</languages>

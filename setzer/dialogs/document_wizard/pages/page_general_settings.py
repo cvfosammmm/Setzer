@@ -21,8 +21,10 @@ from gi.repository import Gtk
 from gi.repository import GLib
 
 from setzer.dialogs.document_wizard.pages.page import Page, PageView
+from setzer.app.service_locator import ServiceLocator
 
 import os
+import re
 
 
 class GeneralSettingsPage(Page):
@@ -37,6 +39,19 @@ class GeneralSettingsPage(Page):
 
         def text_inserted(buffer, position, chars, n_chars, field_name):
             self.current_values[field_name] = buffer.get_text()
+
+        def language_toggled(button):
+            if button.get_active():
+                for btn in self.view.language_buttons:
+                    if btn is not button:
+                        btn.set_active(False)
+                    else:
+                        self.update_languages_list(re.search(r'\((.*?)\)', btn.get_label()).group(1))
+
+        def language_changed(combobox):
+            code = combobox.get_active_id()
+            if code != 0:
+                self.update_languages_list(code)
 
         def option_toggled(button, package_name):
             self.current_values['packages'][package_name] = button.get_active()
@@ -54,6 +69,11 @@ class GeneralSettingsPage(Page):
         self.view.author_entry.get_buffer().connect('inserted-text', text_inserted, 'author')
         self.view.date_entry.get_buffer().connect('deleted-text', text_deleted, 'date')
         self.view.date_entry.get_buffer().connect('inserted-text', text_inserted, 'date')
+
+        for btn in self.view.language_buttons:
+            btn.connect('toggled', language_toggled)
+        self.view.language_combobox.connect('changed', language_changed)
+
         for name, checkbox in self.view.option_packages.items():
             checkbox.connect('toggled', option_toggled, name)
             checkbox.connect('enter-notify-event', package_hover_start, name)
@@ -68,6 +88,13 @@ class GeneralSettingsPage(Page):
         self.view.title_entry.set_text('')
         self.view.date_entry.set_text('\\today')
 
+        try:
+            langs = presets['languages']
+        except (TypeError, KeyError):
+            langs = self.current_values['languages']
+        self.current_values['languages'] = langs
+        self.add_languages_list(langs)
+
         for name, option in self.view.option_packages.items():
             try:
                 is_active = presets['packages'][name]
@@ -77,6 +104,28 @@ class GeneralSettingsPage(Page):
 
     def on_activation(self):
         GLib.idle_add(self.view.title_entry.grab_focus)
+
+    def add_languages_list(self, langs):
+        self.view.language_combobox.remove_all()
+        for index, (code, language) in enumerate(langs.items()):
+            label = '{} ({})'.format(language, code)
+            if index < len(self.view.language_buttons):
+                self.view.language_buttons[index].set_label(label)
+            else:
+                self.view.language_combobox.append(code, label)
+        self.view.language_combobox.prepend_text(_('Others...'))
+        self.view.language_combobox.set_active(0)
+        self.view.language_buttons[0].set_active(True)
+
+    def update_languages_list(self, lang):
+        dictionary = self.current_values['languages']
+
+        if lang in dictionary:
+            value = dictionary.pop(lang)
+            dictionary = {lang: value, **dictionary}
+
+            self.current_values['languages'] = dictionary
+            self.add_languages_list(dictionary)
 
 
 class GeneralSettingsPageView(PageView):
@@ -112,6 +161,24 @@ class GeneralSettingsPageView(PageView):
         self.date_box.pack_start(self.subheader_date, False, False, 0)
         self.date_box.pack_start(self.date_entry, False, False, 0)
         self.date_box.set_size_request(348, -1)
+        self.subheader_language = Gtk.Label(_('Language'))
+        self.subheader_language.get_style_context().add_class('document-wizard-subheader')
+        self.subheader_language.set_xalign(0)
+        self.subheader_language.set_margin_top(18)
+        self.language_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
+        self.language_box.get_style_context().add_class('linked')
+        self.language_buttons = []
+        self.language_buttons.append(Gtk.ToggleButton.new())
+        self.language_buttons.append(Gtk.ToggleButton.new())
+        self.language_combobox = Gtk.ComboBoxText()
+        self.language_combobox.set_can_focus(True)
+        self.language_box.add(self.language_buttons[0])
+        self.language_box.add(self.language_buttons[1])
+        self.language_box.add(self.language_combobox)
+        self.language_description = Gtk.Label(_('The main language for this document. This is used to apply rules for hyphenation and other purposes.'))
+        self.language_description.set_xalign(0)
+        self.language_description.set_margin_top(6)
+        self.language_description.get_style_context().add_class('document-wizard-desc')
         self.document_properties_hbox = Gtk.HBox()
         self.document_properties_hbox.set_margin_top(18)
         self.document_properties_hbox.pack_start(self.author_box, False, False, 0)
@@ -177,6 +244,9 @@ class GeneralSettingsPageView(PageView):
         self.form.pack_start(self.subheader_title, False, False, 0)
         self.form.pack_start(self.title_entry, False, False, 0)
         self.form.pack_start(self.document_properties_hbox, False, False, 0)
+        self.form.pack_start(self.subheader_language, False, False, 0)
+        self.form.pack_start(self.language_box, False, False, 0)
+        self.form.pack_start(self.language_description, False, False, 0)
         self.form.pack_start(self.subheader_packages, False, False, 0)
         self.form.pack_start(self.packages_box, False, False, 0)
         self.form.pack_start(self.packages_tooltip, False, False, 0)
