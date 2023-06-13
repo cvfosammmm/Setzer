@@ -103,7 +103,7 @@ class ArticleSettingsPageView(PageView):
         self.header.set_text(_('Article settings'))
         self.headerbar_subtitle = _('Step') + ' 2: ' + _('Article settings')
 
-        self.subheader_options = Gtk.Label('Options')
+        self.subheader_options = Gtk.Label(_('Options'))
         self.subheader_options.get_style_context().add_class('document-wizard-subheader')
         self.subheader_options.set_xalign(0)
         self.subheader_options.set_margin_top(18)

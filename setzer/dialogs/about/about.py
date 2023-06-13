@@ -47,5 +47,7 @@ class AboutDialog(Dialog):
         self.view.set_website_label('https://www.cvfosammmm.org/setzer/')
         self.view.set_authors(('Robert Griesel',))
         self.view.set_logo_icon_name('org.cvfosammmm.Setzer')
-        
+        # TRANSLATORS: 'Name <email@domain.com>' or 'Name https://website.example'
+        self.view.set_translator_credits(_('translator-credits'))
+
 

@@ -150,7 +150,7 @@ class LaTeXShortcutsbar(Gtk.HBox):
         box = Gtk.VBox()
         self.pmb.set_box_margin(box)
         self.pmb.add_action_button(box, '\\usetheme', 'win.insert-after-packages', ['\\usetheme{•}'])
-        self.pmb.add_action_button(box, 'Hide Navigation', 'win.insert-after-packages', ['\\beamertemplatenavigationsymbolsempty'])
+        self.pmb.add_action_button(box, _('Hide Navigation'), 'win.insert-after-packages', ['\\beamertemplatenavigationsymbolsempty'])
         self.pmb.add_separator(box)
         self.pmb.add_action_button(box, _('Title Page'), 'win.insert-symbol', ['\\begin{frame}\n\t\\titlepage\n\\end{frame}'])
         self.pmb.add_action_button(box, _('Table of Contents'), 'win.insert-symbol', ['\\begin{frame}\n\t\\tableofcontents\n\\end{frame}'])
