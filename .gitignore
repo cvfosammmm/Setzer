@@ -3,5 +3,4 @@ builddir
 **/__pycache__/
 .flatpak-builder/
 flatpak/
-po/setzer.pot
 ignore

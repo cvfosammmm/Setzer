@@ -1,6 +1,13 @@
 # i18n
 
-## Creating a new translation
+## Weblate
+<a href="https://hosted.weblate.org/engage/Setzer/">
+<img src="https://hosted.weblate.org/widgets/Setzer/-/287x66-white.png" alt="Translation status" />
+</a>
+
+## Manually
+
+### Creating a new translation
 
 Run: (replace `lang` with the language code)
 ```bash
@@ -12,7 +19,7 @@ cp po/setzer.pot po/lang.po
 ```
 Now translate the strings in `lang.po` and add `lang` to the `LINGUAS` file.
 
-## Updating a translation
+### Updating a translation
 
 Run:
 ```bash
@@ -24,12 +31,12 @@ msgmerge -U po/lang.po po/setzer.pot
 ```
 Now translate the fuzzy strings in `lang.po` (remove the `#,fuzzy` lines).
 
-## Testing a translation
+### Testing a translation
 
 Currently it's not possible to test a translation without an installation in `usr`. Hopefully this will be fixed in a new version of meson (see [mesonbuild/meson#6973](https://github.com/mesonbuild/meson/issues/6973)).
 As a workaround, you can install Setzer with the prefix `/tmp/usr` and run the normal `setzer.dev` script. If you want to test Setzer in a certain language, you can set the `LANGUAGE=lang` environment variable.
 
-## Before opening a PR
+### Before opening a PR
 
 - Please don't add any copyright in the first lines in the `.po` file (for copyright simplifications).
 - Check that the `POTFILES` file is up-to-date, you can check this by running `generate-potfiles.sh`.
