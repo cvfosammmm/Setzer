@@ -1263,9 +1263,9 @@ msgstr ""
 "\n"
 "Per selezionare un altro interprete andare in impostazioni.\n"
 "\n"
-"Per ulteriori informazioni sull'installazione di LaTeX visitare <a "
-"href=\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en."
-"wikibooks.org/wiki/LaTeX/Installation</a>"
+"Per ulteriori informazioni sull'installazione di LaTeX visitare <a href="
+"\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en.wikibooks."
+"org/wiki/LaTeX/Installation</a>"
 
 #: setzer/dialogs/interpreter_missing/interpreter_missing.py:57
 #, python-brace-format
@@ -1284,9 +1284,9 @@ msgstr ""
 "\n"
 "Per selezionare un altro interprete andare in impostazioni.\n"
 "\n"
-"Per ulteriori informazioni sull'installazione di LaTeX visitare <a "
-"href=\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en."
-"wikibooks.org/wiki/LaTeX/Installation</a>"
+"Per ulteriori informazioni sull'installazione di LaTeX visitare <a href="
+"\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en.wikibooks."
+"org/wiki/LaTeX/Installation</a>"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:35
 msgid "Documents"
@@ -1608,9 +1608,9 @@ msgstr ""
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:138
 msgid ""
-"No LaTeX interpreter found. For instructions on installing LaTeX see <a "
-"href=\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en."
-"wikibooks.org/wiki/LaTeX/Installation</a>"
+"No LaTeX interpreter found. For instructions on installing LaTeX see <a href="
+"\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en.wikibooks."
+"org/wiki/LaTeX/Installation</a>"
 msgstr ""
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:164

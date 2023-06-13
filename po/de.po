@@ -1523,13 +1523,13 @@ msgstr ""
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:138
 msgid ""
-"No LaTeX interpreter found. For instructions on installing LaTeX see <a "
-"href=\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en."
-"wikibooks.org/wiki/LaTeX/Installation</a>"
+"No LaTeX interpreter found. For instructions on installing LaTeX see <a href="
+"\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en.wikibooks."
+"org/wiki/LaTeX/Installation</a>"
 msgstr ""
 "Kein LaTeX-Interpreter gefunden. Informationen zur Installation von LaTeX "
-"finden Sie auf <a href=\"https://en.wikibooks.org/wiki/LaTeX/"
-"Installation\">https://en.wikibooks.org/wiki/LaTeX/Installation</a>"
+"finden Sie auf <a href=\"https://en.wikibooks.org/wiki/LaTeX/Installation"
+"\">https://en.wikibooks.org/wiki/LaTeX/Installation</a>"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:164
 msgid ""
