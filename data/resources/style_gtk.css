@@ -243,10 +243,6 @@ box.buildlog > box button {
     margin: 0px;
     background-color: @theme_base_color;
 }
-.sidebar toolbar toolbutton {
-    padding: 0px;
-    margin: 0px;
-}
 .sidebar toolbar button {
     margin: 0px;
     padding: 6px;
@@ -346,10 +342,6 @@ box.shortcutsbar toolbar {
     padding: 0px;
     margin: 0px;
     background-color: @theme_base_color;
-}
-box.shortcutsbar toolbar toolbutton {
-    padding: 0px;
-    margin: 0px;
 }
 box.shortcutsbar toolbar button {
     margin: 0px;
