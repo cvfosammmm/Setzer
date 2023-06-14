@@ -79,7 +79,7 @@ class DocumentClassPageView(PageView):
         self.preview_container = Gtk.Stack()
         self.preview_container.set_size_request(366, -1)
         self.preview_data = list()
-        self.preview_data.append({'name': 'article', 'image': 'article1.svg', 'text': _('<b>Article:</b>  For articles in scientific journals, term papers, handouts, short reports, ...\n\nThis class on its own is pretty simplistic and is often used as a starting point for more custom layouts.')})
+        self.preview_data.append({'name': 'article', 'image': 'article1.svg', 'text': _('<b>Article:</b>  For articles in scientific journals, term papers, handouts, short reports, …\n\nThis class on its own is pretty simplistic and is often used as a starting point for more custom layouts.')})
         self.preview_data.append({'name': 'book', 'image': 'book1.svg', 'text': _('<b>Book:</b>  For actual books containing many chapters and sections.')})
         self.preview_data.append({'name': 'report', 'image': 'report1.svg', 'text': _('<b>Report:</b>  For longer reports and articles containing more than one chapter, small books, thesis.')})
         self.preview_data.append({'name': 'letter', 'image': 'letter1.svg', 'text': _('<b>Letter:</b>  For writing letters.')})
