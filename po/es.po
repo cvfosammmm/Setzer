@@ -9,7 +9,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 15:33+0200\n"
 "PO-Revision-Date: 2023-06-15 22:09+0000\n"
-"Last-Translator: Daniel Darias <dariasteam94@gmail.com>\n"
+"Last-Translator: Óscar Fernández Díaz <oscfdezdz@users.noreply.hosted.weblate"
+".org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/setzer/"
 "application/es/>\n"
 "Language: es\n"
@@ -225,7 +226,7 @@ msgstr "Setzer es un editor de LaTeX."
 
 #: setzer/dialogs/about/about.py:51
 msgid "translator-credits"
-msgstr ""
+msgstr "Daniel Darias Sánchez <dariasteam94@gmail.com>"
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages_viewgtk.py:51
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:109
