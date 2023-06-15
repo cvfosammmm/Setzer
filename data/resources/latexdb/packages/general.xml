@@ -20,7 +20,7 @@
   <package name="parskip" text="parskip" description="paragraphs without indentation." />
   <package name="pgfplots" text="pgfplots" description="create plots in two and three dimensions." />
   <package name="textcomp" text="textcomp" description="contains symbols to be used in textmode." />
-  <package name="theorem" text="theorem" description="define theorem environments (like &quot;definition&quot;, &quot;lemma&quot;, ...) with custom styling." />
+  <package name="theorem" text="theorem" description="define theorem environments (like &quot;definition&quot;, &quot;lemma&quot;, …) with custom styling." />
   <package name="tikz" text="tikz" description="graphics and plotting." />
   <package name="transparent" text="transparent" description="set transparency for sections in your document." />
   <package name="url" text="url" description="type urls with the \\url{..} command without escaping them." />

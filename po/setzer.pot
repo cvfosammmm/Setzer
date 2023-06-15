@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-13 18:30+0200\n"
+"POT-Creation-Date: 2023-06-14 15:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -848,7 +848,7 @@ msgstr ""
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:82
 msgid ""
 "<b>Article:</b>  For articles in scientific journals, term papers, handouts, "
-"short reports, ...\n"
+"short reports, …\n"
 "\n"
 "This class on its own is pretty simplistic and is often used as a starting "
 "point for more custom layouts."
@@ -876,7 +876,7 @@ msgid ""
 msgstr ""
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:116
-msgid "Others..."
+msgid "Others…"
 msgstr ""
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:136
@@ -920,7 +920,7 @@ msgstr ""
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:225
 msgid ""
 "<b>AMS packages:</b> provide mathematical symbols, math-related "
-"environments, ..."
+"environments, …"
 msgstr ""
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:225
@@ -964,8 +964,8 @@ msgstr ""
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:232
 msgid ""
-"define theorem environments (like \"definition\", \"lemma\", ...) with "
-"custom styling."
+"define theorem environments (like \"definition\", \"lemma\", …) with custom "
+"styling."
 msgstr ""
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:233
@@ -1451,8 +1451,7 @@ msgid ""
 msgstr ""
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:178
-msgid ""
-"Automatically remove helper files (.log, .dvi, ...) after building .pdf."
+msgid "Automatically remove helper files (.log, .dvi, …) after building .pdf."
 msgstr ""
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:183
@@ -1587,7 +1586,7 @@ msgid "Remove active scheme"
 msgstr ""
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:312
-msgid "Add from file..."
+msgid "Add from file…"
 msgstr ""
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:317
@@ -2656,8 +2655,8 @@ msgstr ""
 
 #: data/resources/latexdb/packages/general.xml:23
 msgid ""
-"define theorem environments (like &quot;definition&quot;, &quot;"
-"lemma&quot;, ...) with custom styling."
+"define theorem environments (like &quot;definition&quot;, &quot;lemma&quot;, "
+"…) with custom styling."
 msgstr ""
 
 #: data/resources/latexdb/packages/general.xml:24

@@ -175,7 +175,7 @@ class PageBuildSystemView(Gtk.VBox):
         label.set_margin_top(18)
         label.set_margin_bottom(6)
         self.pack_start(label, False, False, 0)
-        self.option_cleanup_build_files = Gtk.CheckButton(_('Automatically remove helper files (.log, .dvi, ...) after building .pdf.'))
+        self.option_cleanup_build_files = Gtk.CheckButton(_('Automatically remove helper files (.log, .dvi, …) after building .pdf.'))
         self.pack_start(self.option_cleanup_build_files, False, False, 0)
 
         self.latexmk_enable_revealer = Gtk.Revealer()
