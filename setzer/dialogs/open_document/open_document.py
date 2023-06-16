@@ -35,7 +35,7 @@ class OpenDocumentDialog(Dialog):
         self.setup()
         response = self.view.run()
         if response == Gtk.ResponseType.OK:
-            return_value = self.view.get_filename()
+            return_value = self.view.get_filenames()
         else:
             return_value = None
         self.close()
@@ -62,7 +62,7 @@ class OpenDocumentDialog(Dialog):
         file_filter1.set_name(_('LaTeX and BibTeX Files'))
         self.view.add_filter(file_filter1)
 
-        self.view.set_select_multiple(False)
+        self.view.set_select_multiple(True)
 
         self.main_window.headerbar.document_chooser.popdown()
 

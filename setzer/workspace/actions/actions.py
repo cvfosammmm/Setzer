@@ -285,8 +285,10 @@ class Actions(object):
         self.workspace.set_active_document(document)
 
     def on_open_document_dialog_action_activated(self, action=None, parameter=None):
-        filename = DialogLocator.get_dialog('open_document').run()
-        self.workspace.open_document_by_filename(filename)
+        filenames = DialogLocator.get_dialog('open_document').run()
+        if filenames is not None:
+            for filename in filenames:
+                self.workspace.open_document_by_filename(filename)
 
     @_assert_has_active_document
     def on_save_and_build_action_activated(self, action=None, parameter=None):
