@@ -17,21 +17,20 @@
 
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
-from setzer.dialogs.dialog import Dialog
 from setzer.app.service_locator import ServiceLocator
 
 
-class AboutDialog(Dialog):
+class AboutDialog(object):
 
     def __init__(self, main_window):
         self.main_window = main_window
 
     def run(self):
         self.setup()
-        self.view.show_all()
+        self.view.show()
         del(self.view)
 
     def setup(self):

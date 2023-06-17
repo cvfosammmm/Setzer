@@ -16,13 +16,13 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 from gi.repository import GLib
 from gi.repository import Gio
 
 import setzer.workspace.document_switcher.document_switcher_viewgtk as document_switcher_viewgtk
-from setzer.app.service_locator import ServiceLocator
+from setzer.helpers.popover_menu_builder import MenuBuilder
 
 
 class HeaderBar(Gtk.HeaderBar):
@@ -30,38 +30,34 @@ class HeaderBar(Gtk.HeaderBar):
 
     def __init__(self):
         Gtk.HeaderBar.__init__(self)
-        self.pmb = ServiceLocator.get_popover_menu_builder()
-
-        self.set_show_close_button(True)
 
         # open documents button
         self.open_document_blank_button = Gtk.Button.new_with_label(_('Open') + '...')
         self.open_document_blank_button.set_tooltip_text(_('Open a document') + ' (' + _('Ctrl') + '+O)')
         self.open_document_blank_button.set_action_name('win.open-document-dialog')
-        self.pack_start(self.open_document_blank_button)
 
-        popover = Gtk.PopoverMenu()
-        stack = popover.get_child()
-        box = Gtk.VBox()
-        self.pmb.set_box_margin(box)
-        self.pmb.add_action_button(box, _('New LaTeX Document'), 'win.new-latex-document', keyboard_shortcut=_('Ctrl') + '+N')
-        self.pmb.add_action_button(box, _('New BibTeX Document'), 'win.new-bibtex-document')
-        stack.add_named(box, 'main')
-        box.show_all()
+        self.button_latex = MenuBuilder.create_action_button(_('New LaTeX Document'), _('Ctrl') + '+N')
+        self.button_bibtex = MenuBuilder.create_action_button(_('New BibTeX Document'))
 
-        box = Gtk.HBox()
-        box.pack_start(Gtk.Image.new_from_icon_name('document-new-symbolic', Gtk.IconSize.MENU), False, False, 0)
-        box.pack_end(Gtk.Image.new_from_icon_name('pan-down-symbolic', Gtk.IconSize.MENU), False, False, 0)
+        self.new_document_popover = MenuBuilder.create_menu()
+        box = self.new_document_popover.get_child()
+
+        MenuBuilder.add_button(box, self.button_latex)
+        MenuBuilder.add_button(box, self.button_bibtex)
+
+        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        box.append(Gtk.Image.new_from_icon_name('document-new-symbolic'))
+        box.append(Gtk.Image.new_from_icon_name('pan-down-symbolic'))
         box.set_size_request(40, -1)
 
         self.new_document_button = Gtk.MenuButton()
-        self.new_document_button.add(box)
-        self.new_document_button.set_use_popover(True)
+        self.new_document_button.set_child(box)
         self.new_document_button.set_can_focus(False)
         self.new_document_button.set_tooltip_text(_('Create a new document'))
         self.new_document_button.get_style_context().add_class('new-document-menu-button')
-        self.new_document_button.set_popover(popover)
+        self.new_document_button.set_popover(self.new_document_popover)
 
+        self.pack_start(self.open_document_blank_button)
         self.pack_start(self.new_document_button)
 
         # workspace menu
@@ -77,56 +73,76 @@ class HeaderBar(Gtk.HeaderBar):
 
         # title / open documents popover
         self.center_widget = document_switcher_viewgtk.OpenDocsButton()
-        self.set_custom_title(self.center_widget)
+        self.set_title_widget(self.center_widget)
 
     def insert_workspace_menu(self):
-        popover = Gtk.PopoverMenu()
+        box_main = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        box_session = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+
+        self.button_save_as = MenuBuilder.create_action_button(_('Save Document As') + '...', _('Shift') + '+' + _('Ctrl') + '+S')
+        self.button_save_all = MenuBuilder.create_action_button(_('Save All Documents'))
+        self.button_session = MenuBuilder.create_menu_button(_('Session'))
+        self.button_about = MenuBuilder.create_action_button(_('About'))
+        self.button_close_all = MenuBuilder.create_action_button(_('Close All Documents'))
+        self.button_close_active = MenuBuilder.create_action_button(_('Close Document'), _('Ctrl') + '+W')
+        self.button_quit = MenuBuilder.create_action_button(_('Quit'), _('Ctrl') + '+Q')
+
+        MenuBuilder.add_button(box_main, self.button_save_as)
+        MenuBuilder.add_button(box_main, self.button_save_all)
+        MenuBuilder.add_separator(box_main)
+        MenuBuilder.add_button(box_main, self.button_session)
+        MenuBuilder.add_separator(box_main)
+        MenuBuilder.add_button(box_main, self.button_about)
+        MenuBuilder.add_separator(box_main)
+        MenuBuilder.add_button(box_main, self.button_close_all)
+        MenuBuilder.add_button(box_main, self.button_close_active)
+        MenuBuilder.add_button(box_main, self.button_quit)
+
+        stack = Gtk.Stack()
+        stack.set_vhomogeneous(False)
+        stack.add_named(box_main, 'main')
+        stack.add_named(box_session, 'session')
+
+        self.hamburger_popover = Gtk.Popover()
+        self.hamburger_popover.set_child(stack)
 
         self.menu_button = Gtk.MenuButton()
-        image = Gtk.Image.new_from_icon_name('open-menu-symbolic', Gtk.IconSize.BUTTON)
-        self.menu_button.set_image(image)
+        image = Gtk.Image.new_from_icon_name('open-menu-symbolic')
+        self.menu_button.set_child(image)
         self.menu_button.set_can_focus(False)
-        self.menu_button.set_popover(popover)
+        self.menu_button.set_popover(self.hamburger_popover)
         self.pack_end(self.menu_button)
 
         # session submenu
-        self.session_box = Gtk.VBox()
-        self.pmb.set_box_margin(self.session_box)
-        self.pmb.add_header_button(self.session_box, _('Session'))
-        self.session_explaination = Gtk.Label(_('Save the list of open documents in a session file\nand restore it later, a convenient way to work\non multiple projects.'))
+        self.button_session_header = MenuBuilder.create_header_button(_('Session'))
+
+        MenuBuilder.add_button(box_session, self.button_session_header)
+
+        self.session_explaination = Gtk.Label.new(_('Save the list of open documents in a session file\nand restore it later, a convenient way to work\non multiple projects.'))
         self.session_explaination.set_xalign(0)
         self.session_explaination.get_style_context().add_class('explaination')
         self.session_explaination.set_margin_top(8)
         self.session_explaination.set_margin_bottom(11)
-        self.session_box.pack_start(self.session_explaination, False, False, 0)
-        self.pmb.add_action_button(self.session_box, _('Restore Previous Session') + '...', 'win.restore-session', [''])
-        self.pmb.add_action_button(self.session_box, _('Save Current Session') + '...', 'win.save-session')
-        self.session_box_separator = Gtk.SeparatorMenuItem()
-        self.session_box_separator.show_all()
-        self.session_box.show_all()
+        box_session.append(self.session_explaination)
 
-        GLib.idle_add(self.populate_workspace_menu, priority=GLib.PRIORITY_LOW)
+        self.button_restore_session = MenuBuilder.create_action_button(_('Restore Previous Session') + '...')
+        self.button_save_session = MenuBuilder.create_action_button(_('Save Current Session') + '...')
 
-    def populate_workspace_menu(self):
-        popover = self.menu_button.get_popover()
-        stack = popover.get_child()
+        MenuBuilder.add_button(box_session, self.button_restore_session)
+        MenuBuilder.add_button(box_session, self.button_save_session)
 
-        box = Gtk.VBox()
-        self.pmb.set_box_margin(box)
-        self.pmb.add_action_button(box, _('Save Document As') + '...', 'win.save-as', keyboard_shortcut=_('Shift') + '+' + _('Ctrl') + '+S')
-        self.pmb.add_action_button(box, _('Save All Documents'), 'win.save-all')
-        self.pmb.add_separator(box)
-        self.pmb.add_menu_button(box, _('Session'), 'session')
-        self.pmb.add_separator(box)
-        self.pmb.add_action_button(box, _('About'), 'win.show-about-dialog')
-        self.pmb.add_separator(box)
-        self.pmb.add_action_button(box, _('Close All Documents'), 'win.close-all-documents')
-        self.pmb.add_action_button(box, _('Close Document'), 'win.close-active-document', keyboard_shortcut=_('Ctrl') + '+W')
-        self.pmb.add_action_button(box, _('Quit'), 'win.quit', keyboard_shortcut=_('Ctrl') + '+Q')
-        stack.add_named(box, 'main')
-        box.show_all()
+        self.session_box_separator = Gtk.Separator()
+        box_session.append(self.session_box_separator)
+        self.session_box_separator.hide()
 
-        # session submenu
-        stack.add_named(self.session_box, 'session')
+        self.prev_sessions_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        box_session.append(self.prev_sessions_box)
+
+        def show_page(button, page_name, transition_type):
+            self.hamburger_popover.get_child().set_transition_type(transition_type)
+            self.hamburger_popover.get_child().set_visible_child_name(page_name)
+
+        self.button_session.connect('clicked', show_page, 'session', Gtk.StackTransitionType.SLIDE_RIGHT)
+        self.button_session_header.connect('clicked', show_page, 'main', Gtk.StackTransitionType.SLIDE_LEFT)
 
 

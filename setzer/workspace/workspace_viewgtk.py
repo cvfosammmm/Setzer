@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gdk
 from gi.repository import Gtk
 
@@ -31,10 +31,10 @@ import os.path
 class MainWindow(Gtk.ApplicationWindow):
 
     def __init__(self, app):
-        Gtk.Window.__init__(self, application=app)
+        Gtk.ApplicationWindow.__init__(self, application=app)
+
         self.app = app
         self.set_size_request(-1, 550)
-        self.add_events(Gdk.EventMask.KEY_PRESS_MASK)
 
         # window state variables
         self.current_width = 0
@@ -51,8 +51,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.latex_notebook.set_show_border(False)
         self.latex_notebook.set_scrollable(True)
         self.latex_notebook.set_size_request(550, -1)
-        self.latex_notebook_wrapper = Gtk.VBox()
-        self.latex_notebook_wrapper.pack_start(self.latex_notebook, True, True, 0)
+        self.latex_notebook.set_vexpand(True)
+        self.latex_notebook_wrapper = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.latex_notebook_wrapper.append(self.latex_notebook)
 
         # bibtex notebook
         self.bibtex_notebook = Gtk.Notebook()
@@ -60,8 +61,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.bibtex_notebook.set_show_border(False)
         self.bibtex_notebook.set_scrollable(True)
         self.bibtex_notebook.set_size_request(550, -1)
-        self.bibtex_notebook_wrapper = Gtk.VBox()
-        self.bibtex_notebook_wrapper.pack_start(self.bibtex_notebook, True, True, 0)
+        self.bibtex_notebook.set_vexpand(True)
+        self.bibtex_notebook_wrapper = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.bibtex_notebook_wrapper.append(self.bibtex_notebook)
 
         # others notebook
         self.others_notebook = Gtk.Notebook()
@@ -69,20 +71,21 @@ class MainWindow(Gtk.ApplicationWindow):
         self.others_notebook.set_show_border(False)
         self.others_notebook.set_scrollable(True)
         self.others_notebook.set_size_request(550, -1)
-        self.others_notebook_wrapper = Gtk.VBox()
-        self.others_notebook_wrapper.pack_start(self.others_notebook, True, True, 0)
+        self.others_notebook.set_vexpand(True)
+        self.others_notebook_wrapper = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.others_notebook_wrapper.append(self.others_notebook)
 
         # build log
-        self.build_log = Gtk.Label('build log placeholder')
+        self.build_log = Gtk.Label.new('build log placeholder')
         self.build_log_paned = animated_paned.AnimatedVPaned(self.latex_notebook_wrapper, self.build_log, False)
         self.build_log_visible = None
 
         # preview
-        self.preview_panel = Gtk.Label('preview placeholder')
+        self.preview_panel = Gtk.Label.new('preview placeholder')
         self.preview_visible = None
 
         # help
-        self.help_panel = Gtk.Label('help panel placeholder')
+        self.help_panel = Gtk.Label.new('help panel placeholder')
         self.help_visible = None
 
         # paneds
@@ -92,8 +95,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self.preview_help_stack.add_named(self.preview_panel, 'preview')
         self.preview_help_stack.add_named(self.help_panel, 'help')
         self.preview_paned = animated_paned.AnimatedHPaned(self.build_log_paned, self.preview_help_stack, False)
-        self.preview_paned_overlay.add(self.preview_paned)
-        self.sidebar_paned = animated_paned.AnimatedHPaned(Gtk.Label('sidebar placeholder'), self.preview_paned_overlay, True)
+        self.preview_paned_overlay.set_child(self.preview_paned)
+        self.sidebar_paned = animated_paned.AnimatedHPaned(Gtk.Label.new('sidebar placeholder'), self.preview_paned_overlay, True)
         self.sidebar_paned.get_style_context().add_class('sidebar_paned')
 
         # welcome screen
@@ -101,19 +104,15 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # mode stack
         self.mode_stack = Gtk.Stack()
-        self.mode_stack.props.expand = True
         self.mode_stack.add_named(self.welcome_screen, 'welcome_screen')
         self.mode_stack.add_named(self.sidebar_paned, 'latex_documents')
         self.mode_stack.add_named(self.bibtex_notebook_wrapper, 'bibtex_documents')
         self.mode_stack.add_named(self.others_notebook_wrapper, 'other_documents')
-        self.add(self.mode_stack)
+        self.set_child(self.mode_stack)
 
         self.css_provider = Gtk.CssProvider()
         resources_path = ServiceLocator.get_resources_path()
         self.css_provider.load_from_path(os.path.join(resources_path, 'style_gtk.css'))
-        Gtk.StyleContext.add_provider_for_screen(self.get_screen(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
-
-        self.css_provider_font_size = Gtk.CssProvider()
-        Gtk.StyleContext.add_provider_for_screen(self.get_screen(), self.css_provider_font_size, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+        Gtk.StyleContext.add_provider_for_display(self.get_display(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
 

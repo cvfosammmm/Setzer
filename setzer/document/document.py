@@ -19,7 +19,6 @@ import os.path
 
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
-import setzer.document.document_switcher_item.document_switcher_item as document_switcher_item
 import setzer.document.document_viewgtk as document_view
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
@@ -33,7 +32,6 @@ class Document(Observable):
         self.displayname = ''
         self.filename = None
         self.save_date = None
-        self.deleted_on_disk_dialog_shown_after_last_save = False
         self.last_activated = 0
         self.is_root = False
         self.root_is_set = False
@@ -52,7 +50,6 @@ class Document(Observable):
 
     def init_default_modules(self):
         self.view = document_view.DocumentView(self)
-        self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
 
@@ -122,7 +119,7 @@ class Document(Observable):
         with open(self.filename, 'w') as f:
             f.write(text)
         self.update_save_date()
-        self.deleted_on_disk_dialog_shown_after_last_save = False
+        self.controller.deleted_on_disk_dialog_shown_after_last_save = False
         self.content.set_modified(False)
 
     def update_save_date(self):

@@ -40,11 +40,13 @@ class WorkspacePresenter(object):
 
     def on_document_removed(self, workspace, document):
         if document.is_latex_document():
-            self.main_window.latex_notebook.remove(document.view)
+            notebook = self.main_window.latex_notebook
         elif document.is_bibtex_document():
-            self.main_window.bibtex_notebook.remove(document.view)
+            notebook = self.main_window.bibtex_notebook
         else:
-            self.main_window.others_notebook.remove(document.view)
+            notebook = self.main_window.others_notebook
+        
+        notebook.remove_page(notebook.page_num(document.view))
 
         if self.workspace.active_document == None:
             self.activate_welcome_screen_mode()

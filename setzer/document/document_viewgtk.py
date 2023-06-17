@@ -16,19 +16,22 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-gi.require_version('GtkSource', '4')
+gi.require_version('Gtk', '4.0')
+gi.require_version('GtkSource', '5')
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
 
-class DocumentView(Gtk.HBox):
+class DocumentView(Gtk.Box):
     
     def __init__(self, document):
-        Gtk.HBox.__init__(self)
+        Gtk.Box.__init__(self)
+        self.set_orientation(Gtk.Orientation.HORIZONTAL)
 
-        self.vbox = Gtk.VBox()
+        self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.vbox.set_hexpand(True)
         self.overlay = Gtk.Overlay()
+        self.overlay.set_vexpand(True)
         self.scrolled_window = Gtk.ScrolledWindow()
 
         self.source_view = document.content.source_view
@@ -38,13 +41,11 @@ class DocumentView(Gtk.HBox):
         self.source_view.set_bottom_margin(120)
         self.source_view.set_right_margin(12)
 
-        self.scrolled_window.add(self.source_view)
-        self.overlay.add(self.scrolled_window)
+        self.scrolled_window.set_child(self.source_view)
+        self.overlay.set_child(self.scrolled_window)
 
-        self.vbox.pack_start(self.overlay, True, True, 0)
-        self.pack_start(self.vbox, True, True, 0)
-
-        self.show_all()
+        self.vbox.append(self.overlay)
+        self.append(self.vbox)
 
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE

@@ -28,7 +28,7 @@ from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
 import setzer.workspace.welcome_screen.welcome_screen as welcome_screen
-import setzer.workspace.headerbar.headerbar_presenter as headerbar_presenter
+import setzer.workspace.headerbar.headerbar as headerbar
 import setzer.workspace.keyboard_shortcuts.shortcuts as shortcuts
 import setzer.workspace.document_switcher.document_switcher as document_switcher
 import setzer.workspace.actions.actions as actions
@@ -56,12 +56,12 @@ class Workspace(Observable):
         self.settings = ServiceLocator.get_settings()
 
         self.welcome_screen = welcome_screen.WelcomeScreen()
-        self.shortcuts = shortcuts.Shortcuts(self)
 
     def init_workspace_controller(self):
         self.actions = actions.Actions(self)
+        self.shortcuts = shortcuts.Shortcuts(self)
         self.presenter = workspace_presenter.WorkspacePresenter(self)
-        self.headerbar = headerbar_presenter.HeaderbarPresenter(self)
+        self.headerbar = headerbar.Headerbar(self)
         self.document_switcher = document_switcher.DocumentSwitcher(self)
         self.controller = workspace_controller.WorkspaceController(self)
 
@@ -137,8 +137,9 @@ class Workspace(Observable):
 
     def get_document_by_filename(self, filename):
         for document in self.open_documents:
-            if os.path.normpath(filename) == os.path.normpath(document.get_filename()):
-                return document
+            if document.get_filename() != None:
+                if os.path.normpath(filename) == os.path.normpath(document.get_filename()):
+                    return document
         return None
 
     def get_active_document(self):

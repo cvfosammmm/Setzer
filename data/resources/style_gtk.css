@@ -112,36 +112,41 @@ popover.documentchooser box.not_found label {
 */
 
 .open-docs-popover-button {
-    padding: 0px 10px;
-    padding-left: 2px;
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: 22px;
-    border-radius: 0;
-    border-top-width: 0px;
-    border-bottom-width: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+.open-docs-popover-button > button {
+    margin: 0px;
+    padding-left: 8px;
+    padding-right: 18px;
+    border-radius: 0px;
     box-shadow: none;
     transition: none;
-}
-.open-docs-popover-button:hover:not(:active) {
-    background: none;
     text-shadow: none;
 }
-.open-docs-popover,
+.open-docs-popover-button > button:hover:not(:checked):not(:active) {
+    background: none;
+    border-left: 1px solid @borders;
+    border-right: 1px solid @borders;
+}
+.open-docs-popover-button > button:checked, .open-docs-popover-button > button:active {
+    background: @borders;
+    border-left: 1px solid @borders;
+    border-right: 1px solid @borders;
+}
 .open-docs-popover list,
 .open-docs-popover row:not(:hover):not(:selected) {
     background-color: @theme_bg_color;
 }
+.open-docs-popover row:hover:not(:active):not(:selected) {
+    background-color: mix(@theme_bg_color, @borders, 0.5);
+}
 .open-docs-popover scrollbar slider {
     min-height: 12px;
 }
-.open-docs-popover .frame {
-    border-width: 0px;
-    outline: none;
-}
 .open-docs-popover row {
-    border-radius: 4px;
-    padding: 2px 1px 2px 4px;
+    border-radius: 6px;
+    padding: 5px 5px 5px 8px;
     color: @theme_fg_color;
 }
 .open-docs-popover list {
@@ -165,19 +170,8 @@ popover.documentchooser box.not_found label {
     border-style: none;
     border-width: 0px;
 }
-popover label.explaination {
-    margin-left: 5px;
-    margin-right: 5px;
-    color: mix(@theme_fg_color, @theme_bg_color, 0.3);
-    font-size: 13px;
-}
 .open-docs-popover label.root-label {
     opacity: 0.3;
-}
-popover label.explaination-header {
-    margin-left: 5px;
-    margin-right: 5px;
-    font-weight: bold;
 }
 button.like-model {
     border-width: 0px;
@@ -229,6 +223,40 @@ box.buildlog > box label {
 }
 box.buildlog > box button {
     margin: 6px;
+}
+
+/*
+** popover menus
+*/
+
+popover contents {
+    background: @theme_bg_color;
+}
+popover button.action, popover button.menu, popover button.header {
+    background: none;
+    font-weight: normal;
+}
+popover button.action:hover, popover button.menu:hover, popover button.header:hover {
+    background: mix(@theme_bg_color, @borders, 0.5);
+}
+popover button.action:active, popover button.action:focus, popover button.menu:active, popover button.menu:focus, popover button.header:active, popover button.header:focus {
+    background: @borders;
+}
+popover button label.shortcut {
+    color: mix(@theme_base_color, @theme_fg_color, 0.6);
+    margin-left: 18px;
+}
+popover separator {
+    margin: 6px 0px;
+}
+popover label.explaination {
+    margin: 0px 10px;
+    color: mix(@theme_fg_color, @theme_bg_color, 0.3);
+    font-size: 13px;
+}
+popover label.explaination-header {
+    margin: 0px 10px;
+    font-weight: bold;
 }
 
 /*
@@ -370,10 +398,6 @@ box.shortcutsbar toolbar button:active {
 popover.menu-own-quotes-symbolic {
     margin-left: 0px;
 }
-popover label.keyboard-shortcut {
-    color: mix(@theme_base_color, @theme_fg_color, 0.6);
-    margin-left: 18px;
-}
 
 /*
 ** preview
@@ -488,7 +512,7 @@ box.search_bar {
 }
 box.search_bar button.close {
     background: @theme_base_color;
-    border-width: 0px
+    border-width: 0px;
 }
 box.search_bar button.text-button {
     padding-left: 11px;

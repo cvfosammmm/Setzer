@@ -16,16 +16,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('GtkSource', '4')
+gi.require_version('GtkSource', '5')
 from gi.repository import GtkSource
 from gi.repository import GLib
 
 import re
 import os, os.path
-import xml.etree.ElementTree as ET
 
 import setzer.app.settings as settingscontroller
-import setzer.helpers.popover_menu_builder as popover_menu_builder
 
 
 class ServiceLocator(object):
@@ -37,7 +35,6 @@ class ServiceLocator(object):
     resources_path = None
     app_icons_path = None
     regexes = dict()
-    popover_menu_builder = None
 
     def set_main_window(main_window):
         ServiceLocator.main_window = main_window
@@ -63,11 +60,6 @@ class ServiceLocator(object):
         if ServiceLocator.settings == None:
             ServiceLocator.settings = settingscontroller.Settings(ServiceLocator.get_config_folder())
         return ServiceLocator.settings
-
-    def get_popover_menu_builder():
-        if ServiceLocator.popover_menu_builder == None:
-            ServiceLocator.popover_menu_builder = popover_menu_builder.PopoverMenuBuilder()
-        return ServiceLocator.popover_menu_builder
 
     def get_config_folder():
         return os.path.join(GLib.get_user_config_dir(), 'setzer')

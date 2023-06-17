@@ -16,71 +16,66 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 from gi.repository import GLib
 from gi.repository import Gio
 
 
-class PopoverMenuBuilder(object):
+class MenuBuilder():
 
-    def __init__(self):
-        pass
+    def create_menu():
+        menu = Gtk.Popover()
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        menu.set_child(box)
 
-    def set_box_margin(self, box):
-        box.set_margin_top(10)
-        box.set_margin_bottom(10)
-        box.set_margin_left(10)
-        box.set_margin_right(10)
+        return menu
 
-    def add_action_button(self, box, label, action_name, action_parameter=None, icon_name=None, keyboard_shortcut=None):
-        model_button = Gtk.ModelButton()
-        if action_parameter:
-            model_button.set_detailed_action_name(Gio.Action.print_detailed_name(action_name, GLib.Variant('as', action_parameter)))
-        else:
-            model_button.set_action_name(action_name)
-        if keyboard_shortcut != None or icon_name != None:
-            button_box = Gtk.HBox()
-            if keyboard_shortcut != None:
-                shortcut = Gtk.Label(keyboard_shortcut)
-                shortcut.get_style_context().add_class('keyboard-shortcut')
-                button_box.pack_end(shortcut, False, False, 0)
-            if icon_name != None:
-                if icon_name == 'placeholder':
-                    placeholder = Gtk.DrawingArea()
-                    placeholder.set_size_request(24, 16)
-                    button_box.pack_start(placeholder, False, False, 0)
-                else:
-                    icon = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
-                    icon.set_margin_right(8)
-                    button_box.pack_start(icon, False, False, 0)
-            description = Gtk.Label(label)
-            description.set_halign(Gtk.Align.START)
-            button_box.pack_start(description, True, True, 0)
-            model_button.remove(model_button.get_child())
-            model_button.add(button_box)
-        else:
-            model_button.set_label(label)
-            model_button.get_child().set_halign(Gtk.Align.START)
-        box.pack_start(model_button, False, False, 0)
+    def create_action_button(label, shortcut=None):
+        button = Gtk.Button()
+        button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        button.set_child(button_box)
+        button.get_style_context().add_class('action')
 
-    def add_menu_button(self, box, label, menu_name):
-        model_button = Gtk.ModelButton()
-        model_button.set_property('menu-name', menu_name)
-        model_button.set_label(label)
-        model_button.get_child().set_halign(Gtk.Align.START)
-        box.pack_start(model_button, False, False, 0)
+        button_box.append(Gtk.Label.new(label))
 
-    def add_header_button(self, box, label):
-        model_button = Gtk.ModelButton()
-        model_button.set_property('centered', True)
-        model_button.set_property('menu-name', 'main')
-        model_button.set_label(label)
-        model_button.set_property('inverted', True)
-        box.pack_start(model_button, False, False, 0)
+        if shortcut != None:
+            shortcut_label = Gtk.Label.new(shortcut)
+            shortcut_label.get_style_context().add_class('shortcut')
+            shortcut_label.set_xalign(1)
+            shortcut_label.set_hexpand(True)
+            button_box.append(shortcut_label)
 
-    def add_separator(self, box):
-        separator = Gtk.SeparatorMenuItem()
-        box.pack_start(separator, False, False, 0)
+        return button
+
+    def create_menu_button(label):
+        button = Gtk.Button()
+        button_box = Gtk.CenterBox()
+        button_box.set_orientation(Gtk.Orientation.HORIZONTAL)
+        button.set_child(button_box)
+        button.get_style_context().add_class('menu')
+
+        button_box.set_start_widget(Gtk.Label.new(label))
+        button_box.set_end_widget(Gtk.Image.new_from_icon_name('pan-end-symbolic'))
+
+        return button
+
+    def create_header_button(label):
+        button = Gtk.Button()
+        button_box = Gtk.CenterBox()
+        button_box.set_orientation(Gtk.Orientation.HORIZONTAL)
+        button.set_child(button_box)
+        button.get_style_context().add_class('header')
+
+        button_box.set_center_widget(Gtk.Label.new(label))
+        button_box.set_start_widget(Gtk.Image.new_from_icon_name('pan-start-symbolic'))
+
+        return button
+
+    def add_button(box, button):
+        box.append(button)
+
+    def add_separator(box):
+        box.append(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
 
 

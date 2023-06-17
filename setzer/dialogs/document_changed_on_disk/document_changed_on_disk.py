@@ -17,40 +17,56 @@
 
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
-
-from setzer.dialogs.dialog import Dialog
 
 import os.path
 
 
-class DocumentChangedOnDiskDialog(Dialog):
-    ''' This dialog is asking whether a file that changed on disk should be reloaded. '''
+class DocumentChangedOnDiskDialog(object):
 
     def __init__(self, main_window):
         self.main_window = main_window
+        self.parameters = None
+        self.callback = None
 
-    def run(self, document):
-        view = self.setup(document)
+    def run(self, parameters, callback):
+        if parameters['document'] == None: return
 
-        response = view.run()
-        if response == Gtk.ResponseType.YES:
+        self.parameters = parameters
+        self.callback = callback
+
+        self.setup(self.parameters['document'])
+
+        self.view.show()
+        self.signal_connection_id = self.view.connect('response', self.process_response)
+
+    def process_response(self, view, response_id):
+        document = self.parameters['document']
+
+        if response_id == Gtk.ResponseType.YES:
             value = True
         else:
             value = False
 
-        view.hide()
-        return value
+        self.close()
+        self.callback(value)
+
+    def close(self):
+        self.view.hide()
+        self.view.disconnect(self.signal_connection_id)
+        del(self.view)
 
     def setup(self, document):
-        view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
+        self.view = Gtk.MessageDialog()
+        self.view.set_transient_for(self.main_window)
+        self.view.set_modal(True)
+        self.view.set_property('message-type', Gtk.MessageType.QUESTION)
 
-        view.set_property('text', _('Document »{document}« has changed on disk.').format(document=document.get_displayname()))
-        view.format_secondary_markup(_('Should Setzer reload it now?'))
+        self.view.set_property('text', _('Document »{document}« has changed on disk.').format(document=document.get_displayname()))
+        self.view.set_property('secondary-text', _('Should Setzer reload it now?'))
 
-        view.add_buttons(_('_Keep the current Version'), Gtk.ResponseType.CANCEL, _('_Reload from Disk'), Gtk.ResponseType.YES)
-        view.set_default_response(Gtk.ResponseType.YES)
-        return view
+        self.view.add_buttons(_('_Keep the current Version'), Gtk.ResponseType.CANCEL, _('_Reload from Disk'), Gtk.ResponseType.YES)
+        self.view.set_default_response(Gtk.ResponseType.YES)
 
 

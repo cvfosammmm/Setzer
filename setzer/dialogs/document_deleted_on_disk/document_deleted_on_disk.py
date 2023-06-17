@@ -15,36 +15,47 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
-
-from setzer.dialogs.dialog import Dialog
 
 import os.path
 
 
-class DocumentDeletedOnDiskDialog(Dialog):
-    ''' This dialog is warning the user that a file was deleted. '''
+class DocumentDeletedOnDiskDialog(object):
 
     def __init__(self, main_window):
         self.main_window = main_window
+        self.parameters = None
 
-    def run(self, document):
-        view = self.setup(document)
+    def run(self, parameters):
+        if parameters['document'] == None: return
 
-        view.run()
-        view.hide()
+        self.parameters = parameters
+
+        self.setup(self.parameters['document'])
+
+        self.view.show()
+        self.signal_connection_id = self.view.connect('response', self.process_response)
+
+    def process_response(self, view, response_id):
+        self.close()
+
+    def close(self):
+        self.view.hide()
+        self.view.disconnect(self.signal_connection_id)
+        del(self.view)
 
     def setup(self, document):
-        view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.WARNING)
+        self.view = Gtk.MessageDialog()
+        self.view.set_transient_for(self.main_window)
+        self.view.set_modal(True)
+        self.view.set_property('message-type', Gtk.MessageType.WARNING)
 
-        view.set_property('text', _('Document »{document}« was deleted from disk or moved.').format(document=document.get_displayname()))
-        view.format_secondary_markup(_('If you close it or close Setzer without saving, this document will be lost.'))
+        self.view.set_property('text', _('Document »{document}« was deleted from disk or moved.').format(document=document.get_displayname()))
+        self.view.set_property('secondary-text', _('If you close it or close Setzer without saving, this document will be lost.'))
 
-        view.add_buttons(_('Ok'), Gtk.ResponseType.YES)
-        view.set_default_response(Gtk.ResponseType.YES)
-        return view
+        self.view.add_buttons(_('Ok'), Gtk.ResponseType.YES)
+        self.view.set_default_response(Gtk.ResponseType.YES)
 
 

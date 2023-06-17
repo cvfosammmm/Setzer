@@ -18,7 +18,7 @@
 import os.path
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import Gtk
@@ -37,8 +37,13 @@ class DocumentController(object):
 
         self.workspace = ServiceLocator.get_workspace()
 
-        self.view.source_view.connect('key-press-event', self.on_keypress)
-        self.view.source_view.connect('button-press-event', self.on_buttonpress)
+        self.key_controller = Gtk.EventControllerKey()
+        self.key_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.key_controller.connect('key-pressed', self.on_keypress)
+        self.view.source_view.add_controller(self.key_controller)
+
+        self.deleted_on_disk_dialog_shown_after_last_save = False
+        self.changed_on_disk_dialog_shown_after_last_change = False
         self.continue_save_date_loop = True
         GObject.timeout_add(500, self.save_date_loop)
 
@@ -46,58 +51,49 @@ class DocumentController(object):
     *** signal handlers: changes in documents
     '''
 
-    def on_buttonpress(self, widget, event, data=None):
+    def on_keypress(self, controller, keyval, keycode, state):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if event.type == Gdk.EventType.BUTTON_PRESS:
-            if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-                if self.workspace.can_sync:
-                    GLib.idle_add(self.workspace.forward_sync, self.document)
-        return False
+        if keyval == Gdk.keyval_from_name('c') and state & modifiers == Gdk.ModifierType.CONTROL_MASK:
+            self.document.content.copy()
+            controller.reset()
 
-    def on_keypress(self, widget, event, data=None):
-        modifiers = Gtk.accelerator_get_default_mod_mask()
-        tab_keyvals = [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]
-        keypress_handled = False
+        elif keyval == Gdk.keyval_from_name('x')and state & modifiers == Gdk.ModifierType.CONTROL_MASK:
+            self.document.content.cut()
+            controller.reset()
 
-        try: autocomplete = self.document.autocomplete
-        except AttributeError: pass
+        elif keyval == Gdk.keyval_from_name('v') and state & modifiers == Gdk.ModifierType.CONTROL_MASK:
+            self.document.content.paste()
+            controller.reset()
+
         else:
-            if not keypress_handled:
-                keypress_handled = self.document.autocomplete.on_keypress(event)
-                if keypress_handled:
-                    return True
+            return False
 
-        if not keypress_handled and event.keyval == Gdk.keyval_from_name('c'):
-            if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-                self.document.content.copy()
-                return True
-
-        if not keypress_handled and event.keyval == Gdk.keyval_from_name('x'):
-            if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-                self.document.content.cut()
-                return True
-
-        if not keypress_handled and event.keyval == Gdk.keyval_from_name('v'):
-            if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-                self.document.content.paste()
-                return True
+        return True
 
     def save_date_loop(self):
         if self.document.filename == None: return True
-        if self.document.deleted_on_disk_dialog_shown_after_last_save: return True
-        if self.document.get_deleted_on_disk():
-            DialogLocator.get_dialog('document_deleted_on_disk').run(self.document)
-            self.document.deleted_on_disk_dialog_shown_after_last_save = True
-            self.document.content.set_modified(True)
+        if self.deleted_on_disk_dialog_shown_after_last_save: return True
+        if self.changed_on_disk_dialog_shown_after_last_change:
             return True
-        if self.document.get_changed_on_disk():
-            if DialogLocator.get_dialog('document_changed_on_disk').run(self.document):
-                self.document.populate_from_filename()
-                self.document.content.set_modified(False)
-            else:
-                self.document.content.set_modified(True)
-            self.document.update_save_date()
+
+        if self.document.get_deleted_on_disk():
+            self.deleted_on_disk_dialog_shown_after_last_save = True
+            self.document.content.set_modified(True)
+            DialogLocator.get_dialog('document_deleted_on_disk').run({'document': self.document})
+        elif self.document.get_changed_on_disk():
+            self.changed_on_disk_dialog_shown_after_last_change = True
+            DialogLocator.get_dialog('document_changed_on_disk').run({'document': self.document}, self.changed_on_disk_cb)
+
         return self.continue_save_date_loop
+
+    def changed_on_disk_cb(self, do_reload):
+        if do_reload:
+            self.document.populate_from_filename()
+            self.document.content.set_modified(False)
+        else:
+            self.document.content.set_modified(True)
+        self.changed_on_disk_dialog_shown_after_last_change = False
+        self.document.update_save_date()
 
 

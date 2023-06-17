@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import GLib, Gio
 
 from setzer.app.service_locator import ServiceLocator
@@ -37,7 +37,6 @@ class Actions(object):
         self.save_as_action = Gio.SimpleAction.new('save-as', None)
         self.save_all_action = Gio.SimpleAction.new('save-all', None)
         self.save_session_action = Gio.SimpleAction.new('save-session', None)
-        self.restore_session_action = Gio.SimpleAction.new('restore-session', GLib.VariantType('as'))
         self.close_all_action = Gio.SimpleAction.new('close-all-documents', None)
         self.close_document_action = Gio.SimpleAction.new('close-active-document', None)
         self.show_about_action = Gio.SimpleAction.new('show-about-dialog', None)
@@ -50,7 +49,6 @@ class Actions(object):
         main_window.add_action(self.save_as_action)
         main_window.add_action(self.save_all_action)
         main_window.add_action(self.save_session_action)
-        main_window.add_action(self.restore_session_action)
         main_window.add_action(self.close_all_action)
         main_window.add_action(self.close_document_action)
         main_window.add_action(self.show_about_action)
@@ -63,7 +61,6 @@ class Actions(object):
         self.save_as_action.connect('activate', self.on_save_as_clicked)
         self.save_all_action.connect('activate', self.on_save_all_clicked)
         self.save_session_action.connect('activate', self.on_save_session_clicked)
-        self.restore_session_action.connect('activate', self.on_restore_session_clicked)
         self.close_all_action.connect('activate', self.on_close_all_clicked)
         self.close_document_action.connect('activate', self.on_close_document_clicked)
         self.show_about_action.connect('activate', self.show_about_dialog)
@@ -146,10 +143,7 @@ class Actions(object):
         self.workspace.set_active_document(document)
 
     def on_open_document_dialog_action_activated(self, action=None, parameter=None):
-        filenames = DialogLocator.get_dialog('open_document').run()
-        if filenames is not None:
-            for filename in filenames:
-                self.workspace.open_document_by_filename(filename)
+        DialogLocator.get_dialog('open_document').run()
 
     @_assert_has_active_document
     def on_save_button_click(self, action=None, parameter=None):
@@ -163,7 +157,7 @@ class Actions(object):
     def on_save_as_clicked(self, action=None, parameter=None):
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('save_document').run(document)
-        
+
     @_assert_has_active_document
     def on_save_all_clicked(self, action=None, parameter=None):
         active_document = self.workspace.get_active_document()
@@ -184,35 +178,16 @@ class Actions(object):
     def on_save_session_clicked(self, action=None, parameter=None):
         DialogLocator.get_dialog('save_session').run()
 
-    def on_restore_session_clicked(self, action=None, parameter=None):
-        parameter = parameter.unpack()[0]
-        if parameter == '':
-            filename = DialogLocator.get_dialog('open_session').run()
-            if filename == None: return
-        else:
-            filename = parameter
-
-        active_document = self.workspace.get_active_document()
-        documents = self.workspace.get_all_documents()
-        unsaved_documents = self.workspace.get_unsaved_documents()
-        dialog = DialogLocator.get_dialog('close_confirmation')
-        not_save_to_close_documents = dialog.run(unsaved_documents)['not_save_to_close_documents']
-
-        if len(not_save_to_close_documents) == 0:
-            if documents != None:
-                for document in documents:
-                    self.workspace.remove_document(document)
-            self.workspace.load_documents_from_session_file(filename)
-
     @_assert_has_active_document
     def on_close_all_clicked(self, action=None, parameter=None):
-        active_document = self.workspace.get_active_document()
         documents = self.workspace.get_all_documents()
         unsaved_documents = self.workspace.get_unsaved_documents()
         dialog = DialogLocator.get_dialog('close_confirmation')
-        not_save_to_close_documents = dialog.run(unsaved_documents)['not_save_to_close_documents']
+        dialog.run({'unsaved_documents': unsaved_documents, 'documents': documents}, self.on_close_all_callback)
 
-        for document in documents:
+    def on_close_all_callback(self, parameters, response):
+        not_save_to_close_documents = response['not_save_to_close_documents']
+        for document in parameters['documents']:
             if document not in not_save_to_close_documents:
                 self.workspace.remove_document(document)
 
@@ -220,11 +195,14 @@ class Actions(object):
         document = self.workspace.get_active_document()
         if document.content.get_modified():
             dialog = DialogLocator.get_dialog('close_confirmation')
-            not_save_to_close = dialog.run([document])['not_save_to_close_documents']
-            if document not in not_save_to_close:
-                self.workspace.remove_document(document)
+            dialog.run({'unsaved_documents': [document], 'document': document}, self.on_close_document_callback)
         else:
             self.workspace.remove_document(document)
+
+    def on_close_document_callback(self, parameters, response):
+        not_save_to_close = response['not_save_to_close_documents']
+        if parameters['document'] not in not_save_to_close:
+            self.workspace.remove_document(parameters['document'])
 
     def show_about_dialog(self, action, parameter=''):
         DialogLocator.get_dialog('about').run()

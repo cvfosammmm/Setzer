@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import Gio
@@ -25,53 +25,49 @@ from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 
 
+class Shortcut(Gtk.Shortcut):
+
+    def __init__(self, trigger_string, callback):
+        Gtk.Shortcut.__init__(self)
+
+        self.set_action(Gtk.CallbackAction.new(self.action, callback))
+        self.set_trigger(Gtk.ShortcutTrigger.parse_string(trigger_string))
+
+    def action(self, a, b, callback):
+        callback()
+
+
 class Shortcuts(object):
     ''' Handle Keyboard shortcuts. '''
     
     def __init__(self, workspace):
         self.main_window = ServiceLocator.get_main_window()
         self.workspace = workspace
-        
-        self.setup_shortcuts()
 
-    def set_accels_for_insert_before_after_action(self, parameter, accels):
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-before-after', GLib.Variant('as', parameter)), accels)
+        self.shortcut_controller = Gtk.ShortcutController()
+        self.shortcut_controller.set_scope(Gtk.ShortcutScope.GLOBAL)
+        self.main_window.add_controller(self.shortcut_controller)
 
-    def set_accels_for_insert_symbol_action(self, parameter, accels):
-        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.insert-symbol', GLib.Variant('as', parameter)), accels)
+        actions = self.workspace.actions
+        self.shortcut_controller.add_shortcut(Shortcut('<Control>n', actions.new_latex_document_action.activate))
+        self.shortcut_controller.add_shortcut(Shortcut('<Control>o', actions.open_document_dialog_action.activate))
+        self.shortcut_controller.add_shortcut(Shortcut('<Control>s', actions.save_action.activate))
+        self.shortcut_controller.add_shortcut(Shortcut('<Control><Shift>s', actions.save_as_action.activate))
+        self.shortcut_controller.add_shortcut(Shortcut('<Control>w', actions.close_document_action.activate))
+        self.shortcut_controller.add_shortcut(Shortcut('<Control>q', actions.quit_action.activate))
+        self.shortcut_controller.add_shortcut(Shortcut('F10', self.shortcut_workspace_menu))
+        self.shortcut_controller.add_shortcut(Shortcut('<Control>t', self.shortcut_show_open_docs))
+        self.shortcut_controller.add_shortcut(Shortcut('<Control><Shift>t', self.shortcut_switch_document))
 
-    def setup_shortcuts(self):
-        self.accel_group = Gtk.AccelGroup()
-        self.main_window.add_accel_group(self.accel_group)
-
-        c_mask = Gdk.ModifierType.CONTROL_MASK
-        s_mask = Gdk.ModifierType.SHIFT_MASK
-        a_mask = Gdk.ModifierType.MOD1_MASK
-        m_mask = Gdk.ModifierType.META_MASK
-        all_mask = Gdk.ModifierType.MODIFIER_MASK
-        flags = Gtk.AccelFlags.MASK
-
-        self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask, flags, self.shortcut_show_open_docs)
-        self.accel_group.connect(Gdk.keyval_from_name('F10'), 0, flags, self.shortcut_workspace_menu)
-        self.accel_group.connect(Gdk.keyval_from_name('t'), c_mask | s_mask, flags, self.shortcut_switch_document)
-        self.main_window.app.set_accels_for_action('win.new-latex-document', ['<Control>n'])
-
-        # text search
-        self.main_window.app.set_accels_for_action('win.open-document-dialog', ['<Control>o'])
-        self.main_window.app.set_accels_for_action('win.save', ['<Control>s'])
-        self.main_window.app.set_accels_for_action('win.save-as', ['<Control><Shift>s'])
-        self.main_window.app.set_accels_for_action('win.close-active-document', ['<Control>w'])
-        self.main_window.app.set_accels_for_action('win.quit', ['<Control>q'])
-
-    def shortcut_show_open_docs(self, accel_group=None, window=None, key=None, mask=None):
+    def shortcut_show_open_docs(self):
         if self.main_window.headerbar.center_widget.center_button.get_sensitive():
-            self.main_window.headerbar.center_widget.center_button.clicked()
+            self.main_window.headerbar.center_widget.center_button.activate()
 
-    def shortcut_workspace_menu(self, accel_group=None, window=None, key=None, mask=None):
+    def shortcut_workspace_menu(self):
         if self.main_window.headerbar.menu_button.get_sensitive():
-            self.main_window.headerbar.menu_button.clicked()
+            self.main_window.headerbar.menu_button.activate()
 
-    def shortcut_switch_document(self, accel_group=None, window=None, key=None, mask=None):
+    def shortcut_switch_document(self):
         self.workspace.switch_to_earliest_open_document()
 
 

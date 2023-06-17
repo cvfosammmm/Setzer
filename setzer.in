@@ -16,54 +16,32 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
+gi.require_version('Adw', '1')
 from gi.repository import Gtk
 from gi.repository import Gio
+from gi.repository import Adw
 
-import sys
-import gettext
-import argparse
-import os.path
+import sys, gettext, argparse, os.path
 
 from setzer.workspace.workspace import Workspace
 import setzer.workspace.workspace_viewgtk as view
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
+from setzer.helpers.timer import timer
 
 
-class MainApplicationController(Gtk.Application):
+class MainApplicationController(Adw.Application):
 
     def __init__(self):
-        Gtk.Application.__init__(self, application_id='org.cvfosammmm.Setzer', flags=Gio.ApplicationFlags.HANDLES_OPEN)
+        Adw.Application.__init__(self, application_id='org.cvfosammmm.Setzer', flags=Gio.ApplicationFlags.HANDLES_OPEN)
 
-    def do_startup(self):
-        Gtk.Application.do_startup(self)
         self.is_active = False
-
-        # setup gettext
-        gettext.install('setzer', names=('ngettext',), localedir='@localedir_path@')
-
-        # get settings
-        self.settings = ServiceLocator.get_settings()
-
-        # init static variables
-        ServiceLocator.set_setzer_version('@setzer_version@')
-        ServiceLocator.set_resources_path('@resources_path@')
-        ServiceLocator.set_app_icons_path('@app_icons_path@')
-        resources_path = ServiceLocator.get_resources_path()
-        app_icons_path = ServiceLocator.get_app_icons_path()
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'icons'))
-        for folder in ['arrows', 'greek_letters', 'misc_math', 'misc_text', 'operators', 'relations']:
-            path = os.path.join(resources_path, 'symbols', folder)
-            Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), path)
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), app_icons_path)
-
-        # init main window, model, dialogs
-        self.main_window = view.MainWindow(self)
-        ServiceLocator.set_main_window(self.main_window)
 
     def do_open(self, files, number_of_files, hint=""):
         if not self.is_active:
+            Adw.Application.do_activate(self)
+
             self.activate()
             self.is_active = True
 
@@ -97,10 +75,37 @@ class MainApplicationController(Gtk.Application):
 
     def do_activate(self):
         if not self.is_active:
+            Adw.Application.do_activate(self)
+
             self.activate()
             self.is_active = True
 
+    @timer
     def activate(self):
+        # setup gettext
+        gettext.install('setzer', names=('ngettext',), localedir='@localedir_path@')
+
+        # get settings
+        self.settings = ServiceLocator.get_settings()
+
+        # init static variables
+        ServiceLocator.set_setzer_version('@setzer_version@')
+        ServiceLocator.set_resources_path('@resources_path@')
+        ServiceLocator.set_app_icons_path('@app_icons_path@')
+        resources_path = ServiceLocator.get_resources_path()
+        app_icons_path = ServiceLocator.get_app_icons_path()
+
+        # init main window, model, dialogs
+        self.main_window = view.MainWindow(self)
+
+        icon_theme = Gtk.IconTheme.get_for_display(self.main_window.get_display())
+        icon_theme.add_search_path(os.path.join(resources_path, 'icons'))
+        icon_theme.add_search_path(app_icons_path)
+        for folder in ['arrows', 'greek_letters', 'misc_math', 'misc_text', 'operators', 'relations']:
+            icon_theme.add_search_path(os.path.join(resources_path, 'symbols', folder))
+
+        ServiceLocator.set_main_window(self.main_window)
+
         self.workspace = Workspace()
         ServiceLocator.set_workspace(self.workspace)
         DialogLocator.init_dialogs(self.main_window, self.workspace)
@@ -115,33 +120,19 @@ class MainApplicationController(Gtk.Application):
         self.main_window.current_width = self.settings.get_value('window_state', 'width')
         self.main_window.current_height = self.settings.get_value('window_state', 'height')
         self.first_window_state_event = True
-        self.main_window.show_all()
+        self.main_window.show()
 
-        self.main_window.connect('size-allocate', self.on_window_size_allocate)
-        self.main_window.connect('notify::is-maximized', self.on_window_maximize_event)
-        self.main_window.connect('delete-event', self.on_window_close)
+        self.main_window.connect('close-request', self.on_window_close)
 
         # init controller
         self.workspace.init_workspace_controller()
         self.workspace.actions.quit_action.connect('activate', self.on_quit_action)
 
-    def on_window_size_allocate(self, main_window, window_size):
-        ''' signal handler, update window size variables '''
-
-        if not main_window.ismaximized:
-            main_window.current_width, main_window.current_height = main_window.get_size()
-
-    def on_window_maximize_event(self, main_window, state_event):
-        ''' signal handler, update window state variables '''
-
-        main_window.ismaximized = main_window.is_maximized()
-        return False
-    
     def save_window_state(self):
         main_window = self.main_window
-        self.settings.set_value('window_state', 'width', main_window.current_width)
-        self.settings.set_value('window_state', 'height', main_window.current_height)
-        self.settings.set_value('window_state', 'is_maximized', main_window.ismaximized)
+        self.settings.set_value('window_state', 'width', main_window.get_property('default-width'))
+        self.settings.set_value('window_state', 'height', main_window.get_property('default-height'))
+        self.settings.set_value('window_state', 'is_maximized', main_window.get_property('maximized'))
         self.settings.pickle()
 
     def on_window_close(self, window=None, parameter=None):
@@ -154,11 +145,19 @@ class MainApplicationController(Gtk.Application):
     def save_quit(self):
         documents = self.workspace.get_unsaved_documents()
         active_document = self.workspace.get_active_document()
+        if documents == None or active_document == None:
+            self.save_state_and_quit()
 
-        if documents == None or active_document == None or DialogLocator.get_dialog('close_confirmation').run(documents)['all_save_to_close']:
-            self.save_window_state()
-            self.workspace.save_to_disk()
-            self.quit()
+        DialogLocator.get_dialog('close_confirmation').run({'unsaved_documents': documents}, self.save_quit_callback)
+
+    def save_quit_callback(self, parameters, response):
+        if response['all_save_to_close']:
+            self.save_state_and_quit()
+
+    def save_state_and_quit(self):
+        self.save_window_state()
+        self.workspace.save_to_disk()
+        self.quit()
 
 
 argparser = argparse.ArgumentParser(usage='%(prog)s [OPTION...] [FILE...]')

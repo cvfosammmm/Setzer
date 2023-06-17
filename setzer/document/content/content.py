@@ -16,8 +16,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-gi.require_version('GtkSource', '4')
+gi.require_version('Gtk', '4.0')
+gi.require_version('GtkSource', '5')
 from gi.repository import Gdk
 from gi.repository import GtkSource
 
@@ -39,9 +39,9 @@ class Content(Observable):
         self.add_change_code('modified_changed')
 
     def initially_set_text(self, text):
-        self.source_buffer.begin_not_undoable_action()
+        self.source_buffer.begin_irreversible_action()
         self.source_buffer.set_text(text)
-        self.source_buffer.end_not_undoable_action()
+        self.source_buffer.end_irreversible_action()
         self.source_buffer.set_modified(False)
 
     def get_all_text(self):
@@ -55,7 +55,7 @@ class Content(Observable):
             return None
 
     def place_cursor(self, line_number, offset=0):
-        text_iter = self.source_buffer.get_iter_at_line_offset(line_number, offset)
+        _, text_iter = self.source_buffer.get_iter_at_line_offset(line_number, offset)
         self.source_buffer.place_cursor(text_iter)
 
     def cut(self):
@@ -82,6 +82,7 @@ class Content(Observable):
 
     def set_modified(self, modified):
         self.source_buffer.set_modified(modified)
+        self.add_change_code('modified_changed')
 
     def undo(self):
         self.source_buffer.undo()
