@@ -77,13 +77,17 @@ class FontManager(Observable):
         self.add_change_code('font_string_changed')
 
     def zoom_in(self):
+        if self.get_font_size() * 1.1 > 24 * Pango.SCALE: return
+
         font_desc = Pango.FontDescription.from_string(self.font_string)
-        font_desc.set_size(min(self.get_font_size() * 1.1, 24 * Pango.SCALE))
+        font_desc.set_size(self.get_font_size() * 1.1)
         self.set_font_string(font_desc.to_string())
 
     def zoom_out(self):
+        if self.get_font_size() / 1.1 < 6 * Pango.SCALE: return
+
         font_desc = Pango.FontDescription.from_string(self.font_string)
-        font_desc.set_size(max(self.get_font_size() / 1.1, 6 * Pango.SCALE))
+        font_desc.set_size(self.get_font_size() / 1.1)
         self.set_font_string(font_desc.to_string())
 
     def reset_zoom(self):
