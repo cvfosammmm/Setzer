@@ -17,10 +17,8 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-gi.require_version('Gspell', '1')
 from gi.repository import Gtk
 from gi.repository import Pango
-from gi.repository import Gspell
 import os.path
 import pickle
 
@@ -86,22 +84,12 @@ class Settings(Observable):
         self.defaults['preferences']['highlight_current_line'] = False
         self.defaults['preferences']['highlight_matching_brackets'] = True
         self.defaults['preferences']['build_option_system_commands'] = 'disable'
-        self.defaults['preferences']['syntax_scheme'] = 'default'
-        self.defaults['preferences']['syntax_scheme_dark_mode'] = 'default-dark'
 
         self.defaults['preferences']['use_system_font'] = True
         textview = Gtk.TextView()
         textview.set_monospace(True)
         font_string = textview.get_pango_context().get_font_description().to_string()
         self.defaults['preferences']['font_string'] = font_string
-
-        default_language = Gspell.Language.get_default()
-        if default_language != None:
-            self.defaults['preferences']['inline_spellchecking'] = False
-            self.defaults['preferences']['spellchecking_language_code'] = Gspell.Language.get_default().get_code()
-        else:
-            self.defaults['preferences']['inline_spellchecking'] = False
-            self.defaults['preferences']['spellchecking_language_code'] = None
 
     def get_value(self, section, item):
         try: value = self.data[section][item]

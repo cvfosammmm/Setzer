@@ -17,11 +17,8 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-gi.require_version('Handy', '1')
 from gi.repository import Gtk
 from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import Handy
 
 import sys
 import gettext
@@ -48,14 +45,6 @@ class MainApplicationController(Gtk.Application):
 
         # get settings
         self.settings = ServiceLocator.get_settings()
-        cs_default = self.settings.get_value('preferences', 'color_scheme')
-        if cs_default == 'force_light':
-            cs_default = Handy.ColorScheme.FORCE_LIGHT
-        elif cs_default == 'force_dark':
-            cs_default = Handy.ColorScheme.FORCE_DARK
-        else:
-            cs_default = Handy.ColorScheme.PREFER_LIGHT
-        Handy.StyleManager.get_default().set_color_scheme(cs_default)
 
         # init static variables
         ServiceLocator.set_setzer_version('@setzer_version@')
@@ -114,7 +103,6 @@ class MainApplicationController(Gtk.Application):
     def activate(self):
         self.workspace = Workspace()
         ServiceLocator.set_workspace(self.workspace)
-        ServiceLocator.init_autocomplete_provider(self.workspace)
         DialogLocator.init_dialogs(self.main_window, self.workspace)
 
         # init view
@@ -129,14 +117,9 @@ class MainApplicationController(Gtk.Application):
         self.first_window_state_event = True
         self.main_window.show_all()
 
-        self.color_manager = ServiceLocator.get_color_manager()
-        self.fg_color = self.color_manager.get_theme_color('theme_fg_color')
-        self.bg_color = self.color_manager.get_theme_color('theme_bg_color')
-
         self.main_window.connect('size-allocate', self.on_window_size_allocate)
         self.main_window.connect('notify::is-maximized', self.on_window_maximize_event)
         self.main_window.connect('delete-event', self.on_window_close)
-        self.main_window.connect('draw', self.on_window_draw)
 
         # init controller
         self.workspace.init_workspace_controller()
@@ -154,36 +137,11 @@ class MainApplicationController(Gtk.Application):
         main_window.ismaximized = main_window.is_maximized()
         return False
     
-    def on_window_draw(self, main_window, context):
-        ''' check for theme changes, update sidebar, textviews '''
-
-        fg_color = self.color_manager.get_theme_color('theme_fg_color')
-        bg_color = self.color_manager.get_theme_color('theme_bg_color')
-        if self.fg_color.red != fg_color.red or self.bg_color.red != bg_color.red:
-            self.fg_color = fg_color
-            self.bg_color = bg_color
-            
-            try: documents = self.workspace.open_documents
-            except AttributeError: pass
-            else:
-                is_dark_mode = ServiceLocator.get_is_dark_mode()
-                for document in documents:
-                    document.set_dark_mode(is_dark_mode)
-        return False
-
     def save_window_state(self):
         main_window = self.main_window
         self.settings.set_value('window_state', 'width', main_window.current_width)
         self.settings.set_value('window_state', 'height', main_window.current_height)
         self.settings.set_value('window_state', 'is_maximized', main_window.ismaximized)
-        self.settings.set_value('window_state', 'show_symbols', self.workspace.show_symbols)
-        self.settings.set_value('window_state', 'show_document_structure', self.workspace.show_document_structure)
-        self.settings.set_value('window_state', 'sidebar_paned_position', main_window.sidebar_paned.target_position)
-        self.settings.set_value('window_state', 'show_help', self.workspace.show_help)
-        self.settings.set_value('window_state', 'show_preview', self.workspace.show_preview)
-        self.settings.set_value('window_state', 'preview_paned_position', main_window.preview_paned.target_position)
-        self.settings.set_value('window_state', 'show_build_log', self.workspace.show_build_log)
-        self.settings.set_value('window_state', 'build_log_paned_position', main_window.build_log_paned.target_position)
         self.settings.pickle()
 
     def on_window_close(self, window=None, parameter=None):
@@ -194,8 +152,6 @@ class MainApplicationController(Gtk.Application):
         self.save_quit()
 
     def save_quit(self):
-        for document in self.workspace.open_documents: document.state_manager.save_document_state()
-
         documents = self.workspace.get_unsaved_documents()
         active_document = self.workspace.get_active_document()
 

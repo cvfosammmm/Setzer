@@ -17,7 +17,6 @@
 
 from setzer.document.document import Document
 import setzer.document.content.content as content
-import setzer.document.parser.parser_dummy as parser_dummy
 
 
 class DocumentOther(Document):
@@ -26,7 +25,6 @@ class DocumentOther(Document):
         Document.__init__(self)
 
         self.content = content.Content('other', self)
-        self.parser = parser_dummy.ParserDummy(self)
         self.init_default_modules()
 
     def is_latex_document(self):

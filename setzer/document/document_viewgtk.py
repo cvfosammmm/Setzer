@@ -21,9 +21,6 @@ gi.require_version('GtkSource', '4')
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
-import setzer.document.shortcutsbar.shortcutsbar_viewgtk as shortcutsbar_view
-import setzer.document.search.search_viewgtk as search_view
-
 
 class DocumentView(Gtk.HBox):
     
@@ -33,10 +30,6 @@ class DocumentView(Gtk.HBox):
         self.vbox = Gtk.VBox()
         self.overlay = Gtk.Overlay()
         self.scrolled_window = Gtk.ScrolledWindow()
-        
-        self.search_bar = search_view.SearchBar()
-        self.shortcutsbar_bottom = shortcutsbar_view.ShortcutsbarBottom()
-        self.wizard_button = shortcutsbar_view.WizardButton()
 
         self.source_view = document.content.source_view
         self.source_view.set_monospace(True)
@@ -49,7 +42,6 @@ class DocumentView(Gtk.HBox):
         self.overlay.add(self.scrolled_window)
 
         self.vbox.pack_start(self.overlay, True, True, 0)
-        self.vbox.pack_start(self.search_bar, False, False, 0)
         self.pack_start(self.vbox, True, True, 0)
 
         self.show_all()

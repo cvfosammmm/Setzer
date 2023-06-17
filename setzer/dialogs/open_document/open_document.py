@@ -64,6 +64,4 @@ class OpenDocumentDialog(Dialog):
 
         self.view.set_select_multiple(True)
 
-        self.main_window.headerbar.document_chooser.popdown()
-
 

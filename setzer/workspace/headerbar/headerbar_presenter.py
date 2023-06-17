@@ -47,7 +47,6 @@ class HeaderbarPresenter(object):
             self.activate_welcome_screen_mode()
 
     def on_new_active_document(self, workspace, document):
-        self.set_build_button_state()
         self.main_window.headerbar.save_document_button.show_all()
         if document.is_latex_document():
             self.activate_latex_document_mode()
@@ -56,14 +55,7 @@ class HeaderbarPresenter(object):
 
     def on_update_recently_opened_documents(self, workspace, recently_opened_documents):
         data = recently_opened_documents.values()
-        if len(data) > 0:
-            self.main_window.headerbar.open_document_button.set_sensitive(True)
-            self.main_window.headerbar.open_document_button.show_all()
-            self.main_window.headerbar.open_document_blank_button.hide()
-        else:
-            self.main_window.headerbar.open_document_button.hide()
-            self.main_window.headerbar.open_document_button.set_sensitive(False)
-            self.main_window.headerbar.open_document_blank_button.show_all()
+        self.main_window.headerbar.open_document_blank_button.show_all()
 
     def on_update_recently_opened_session_files(self, workspace, recently_opened_session_files):
         items = list()
@@ -87,50 +79,15 @@ class HeaderbarPresenter(object):
             self.main_window.headerbar.session_file_buttons.append(button)
 
     def on_root_state_change(self, workspace, state):
-        self.set_build_button_state()
+        pass
 
     def activate_welcome_screen_mode(self):
-        self.set_build_button_state()
         self.main_window.headerbar.save_document_button.hide()
-        self.main_window.headerbar.preview_toggle.hide()
-        self.main_window.headerbar.preview_toggle.set_sensitive(False)
-        self.main_window.headerbar.help_toggle.hide()
-        self.main_window.headerbar.help_toggle.set_sensitive(False)
-        self.main_window.headerbar.symbols_toggle.hide()
-        self.main_window.headerbar.symbols_toggle.set_sensitive(False)
-        self.main_window.headerbar.document_structure_toggle.hide()
-        self.main_window.headerbar.document_structure_toggle.set_sensitive(False)
 
     def activate_latex_document_mode(self):
-        self.main_window.headerbar.preview_toggle.show_all()
-        self.main_window.headerbar.preview_toggle.set_sensitive(True)
-        self.main_window.headerbar.help_toggle.show_all()
-        self.main_window.headerbar.help_toggle.set_sensitive(True)
-        self.main_window.headerbar.symbols_toggle.show_all()
-        self.main_window.headerbar.symbols_toggle.set_sensitive(True)
-        self.main_window.headerbar.document_structure_toggle.show_all()
-        self.main_window.headerbar.document_structure_toggle.set_sensitive(True)
+        pass
 
     def activate_other_document_mode(self):
-        self.main_window.headerbar.preview_toggle.hide()
-        self.main_window.headerbar.preview_toggle.set_sensitive(False)
-        self.main_window.headerbar.help_toggle.hide()
-        self.main_window.headerbar.help_toggle.set_sensitive(False)
-        self.main_window.headerbar.symbols_toggle.hide()
-        self.main_window.headerbar.symbols_toggle.set_sensitive(False)
-        self.main_window.headerbar.document_structure_toggle.hide()
-        self.main_window.headerbar.document_structure_toggle.set_sensitive(False)
-
-    def set_build_button_state(self):
-        document = self.workspace.get_root_or_active_latex_document()
-
-        headerbar = self.main_window.headerbar
-        prev_widget = headerbar.build_wrapper.get_center_widget()
-        if prev_widget != None:
-            headerbar.build_wrapper.remove(prev_widget)
-        if document != None:
-            headerbar.build_wrapper.set_center_widget(document.build_widget.view)
-            if document.build_widget.view.has_result():
-                document.build_widget.view.hide_timer(1600)
+        pass
 
 

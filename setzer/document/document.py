@@ -17,17 +17,10 @@
 
 import os.path
 
-import setzer.document.state_manager.state_manager as state_manager
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
-import setzer.document.context_menu.context_menu as context_menu
 import setzer.document.document_switcher_item.document_switcher_item as document_switcher_item
 import setzer.document.document_viewgtk as document_view
-import setzer.document.search.search as search
-import setzer.document.shortcutsbar.shortcutsbar_presenter as shortcutsbar_presenter
-import setzer.document.spellchecker.spellchecker as spellchecker
-import setzer.document.gutter.gutter as gutter
-import setzer.document.line_numbers.line_numbers as line_numbers
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 
@@ -37,14 +30,11 @@ class Document(Observable):
     def __init__(self):
         Observable.__init__(self)
 
-        self.font_manager = ServiceLocator.get_font_manager()
-
         self.displayname = ''
         self.filename = None
         self.save_date = None
         self.deleted_on_disk_dialog_shown_after_last_save = False
         self.last_activated = 0
-        self.dark_mode = False
         self.is_root = False
         self.root_is_set = False
 
@@ -62,20 +52,9 @@ class Document(Observable):
 
     def init_default_modules(self):
         self.view = document_view.DocumentView(self)
-        self.gutter = gutter.Gutter(self, self.view)
-        self.search = search.Search(self, self.view, self.view.search_bar)
-        self.spellchecker = spellchecker.Spellchecker(self.view.source_view)
         self.document_switcher_item = document_switcher_item.DocumentSwitcherItem(self)
-        self.context_menu = context_menu.ContextMenu(self, self.view)
-        self.shortcutsbar = shortcutsbar_presenter.ShortcutsbarPresenter(self, self.view)
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
-        self.line_numbers = line_numbers.LineNumbers(self, self.view)
-        self.state_manager = state_manager.StateManager(self)
-
-    def set_dark_mode(self, dark_mode):
-        self.dark_mode = dark_mode
-        self.content.set_use_dark_scheme(dark_mode)
 
     def set_filename(self, filename):
         if filename == None:
@@ -126,7 +105,6 @@ class Document(Observable):
             text = f.read()
         self.content.initially_set_text(text)
         self.content.place_cursor(0, 0)
-        self.content.scroll_cursor_onscreen()
         self.update_save_date()
         return True
                 

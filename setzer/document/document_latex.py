@@ -17,12 +17,6 @@
 
 from setzer.document.document import Document
 import setzer.document.content.content as content
-import setzer.document.parser.parser_latex as parser_latex
-import setzer.document.autocomplete.autocomplete as autocomplete
-import setzer.document.build_system.build_system as build_system
-import setzer.document.build_widget.build_widget as build_widget
-import setzer.document.code_folding.code_folding as code_folding
-import setzer.document.preview.preview as preview
 
 
 class DocumentLaTeX(Document):
@@ -31,14 +25,7 @@ class DocumentLaTeX(Document):
         Document.__init__(self)
 
         self.content = content.Content('latex', self)
-        self.parser = parser_latex.ParserLaTeX(self)
         self.init_default_modules()
-
-        self.preview = preview.Preview(self)
-        self.autocomplete = autocomplete.Autocomplete(self, self.view)
-        self.build_system = build_system.BuildSystem(self)
-        self.build_widget = build_widget.BuildWidget(self)
-        self.code_folding = code_folding.CodeFolding(self)
 
     def is_latex_document(self):
         return True

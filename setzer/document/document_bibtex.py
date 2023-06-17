@@ -17,7 +17,6 @@
 
 from setzer.document.document import Document
 import setzer.document.content.content as content
-import setzer.document.parser.parser_bibtex as parser_bibtex
 
 
 class DocumentBibTeX(Document):
@@ -26,7 +25,6 @@ class DocumentBibTeX(Document):
         Document.__init__(self)
 
         self.content = content.Content('bibtex', self)
-        self.parser = parser_bibtex.ParserBibTeX(self)
         self.init_default_modules()
 
     def is_latex_document(self):
