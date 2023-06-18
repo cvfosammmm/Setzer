@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-13 18:30+0200\n"
+"POT-Creation-Date: 2023-06-14 15:33+0200\n"
 "PO-Revision-Date: 2021-01-11 14:48+0100\n"
 "Last-Translator: Stephan Lachnit <stephanlachnit@protonmail.com>\n"
 "Language-Team: German <>\n"
@@ -895,9 +895,16 @@ msgid "Choose a document class"
 msgstr "Dokumentenklasse wählen"
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:82
+#, fuzzy
+#| msgid ""
+#| "<b>Article:</b>  For articles in scientific journals, term papers, "
+#| "handouts, short reports, ...\n"
+#| "\n"
+#| "This class on its own is pretty simplistic and is often used as a "
+#| "starting point for more custom layouts."
 msgid ""
 "<b>Article:</b>  For articles in scientific journals, term papers, handouts, "
-"short reports, ...\n"
+"short reports, …\n"
 "\n"
 "This class on its own is pretty simplistic and is often used as a starting "
 "point for more custom layouts."
@@ -936,7 +943,7 @@ msgstr ""
 "Sie können aus vielen vordefinierten Stilen auswählen."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:116
-msgid "Others..."
+msgid "Others…"
 msgstr ""
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:136
@@ -979,9 +986,13 @@ msgid "AMS math packages"
 msgstr "AMS Pakete"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:225
+#, fuzzy
+#| msgid ""
+#| "<b>AMS packages:</b> provide mathematical symbols, math-related "
+#| "environments, ..."
 msgid ""
 "<b>AMS packages:</b> provide mathematical symbols, math-related "
-"environments, ..."
+"environments, …"
 msgstr "<b>AMS Pakete:</b> mathematische Symbole, Umgebungen, ..."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:225
@@ -1024,9 +1035,13 @@ msgid "create hyperlinks within your document."
 msgstr "Hyperlinks einfügen."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:232
+#, fuzzy
+#| msgid ""
+#| "define theorem environments (like \"definition\", \"lemma\", ...) with "
+#| "custom styling."
 msgid ""
-"define theorem environments (like \"definition\", \"lemma\", ...) with "
-"custom styling."
+"define theorem environments (like \"definition\", \"lemma\", …) with custom "
+"styling."
 msgstr ""
 "mathematische Satztypen definieren (wie \"Definition\", \"Lemma\", ...) und "
 "deren Aussehen festlegen."
@@ -1523,13 +1538,13 @@ msgstr ""
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:138
 msgid ""
-"No LaTeX interpreter found. For instructions on installing LaTeX see <a "
-"href=\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en."
-"wikibooks.org/wiki/LaTeX/Installation</a>"
+"No LaTeX interpreter found. For instructions on installing LaTeX see <a href="
+"\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en.wikibooks."
+"org/wiki/LaTeX/Installation</a>"
 msgstr ""
 "Kein LaTeX-Interpreter gefunden. Informationen zur Installation von LaTeX "
-"finden Sie auf <a href=\"https://en.wikibooks.org/wiki/LaTeX/"
-"Installation\">https://en.wikibooks.org/wiki/LaTeX/Installation</a>"
+"finden Sie auf <a href=\"https://en.wikibooks.org/wiki/LaTeX/Installation"
+"\">https://en.wikibooks.org/wiki/LaTeX/Installation</a>"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:164
 msgid ""
@@ -1538,8 +1553,10 @@ msgid ""
 msgstr ""
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:178
-msgid ""
-"Automatically remove helper files (.log, .dvi, ...) after building .pdf."
+#, fuzzy
+#| msgid ""
+#| "Automatically remove helper files (.log, .dvi, ...) after building .pdf."
+msgid "Automatically remove helper files (.log, .dvi, …) after building .pdf."
 msgstr ""
 "Hilfsdateien (.log, .dvi, ...) nach der .pdf-Erstellung automatisch "
 "entfernen."
@@ -1680,7 +1697,7 @@ msgid "Remove active scheme"
 msgstr ""
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:312
-msgid "Add from file..."
+msgid "Add from file…"
 msgstr ""
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:317
@@ -2771,8 +2788,8 @@ msgstr "2- und 3-dimensionale Plots."
 #: data/resources/latexdb/packages/general.xml:23
 #, fuzzy
 msgid ""
-"define theorem environments (like &quot;definition&quot;, &quot;"
-"lemma&quot;, ...) with custom styling."
+"define theorem environments (like &quot;definition&quot;, &quot;lemma&quot;, "
+"…) with custom styling."
 msgstr ""
 "mathematische Satztypen definieren (wie \"Definition\", \"Lemma\", ...) und "
 "deren Aussehen festlegen."
