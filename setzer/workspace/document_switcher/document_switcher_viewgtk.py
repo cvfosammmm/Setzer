@@ -70,13 +70,15 @@ class OpenDocsButton(Gtk.Stack):
 
 
 class OpenDocsPopover(Gtk.Popover):
-    ''' Shows open documents. '''
     
     def __init__(self):
         Gtk.Popover.__init__(self)
         self.get_style_context().add_class('open-docs-popover')
 
         self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.stack = Gtk.Stack()
+        self.stack.add_named(self.vbox, 'main')
+        self.set_child(self.stack)
 
         self.document_list = Gtk.ListBox()
         self.document_list.set_sort_func(self.sort_function)
@@ -115,11 +117,9 @@ class OpenDocsPopover(Gtk.Popover):
         self.vbox.append(self.root_explaination_revealer)
         self.vbox.append(self.scrolled_window)
 
-        MenuBuilder.add_separator(self.vbox)
-        MenuBuilder.add_button(self.vbox, self.set_root_document_button)
-        MenuBuilder.add_button(self.vbox, self.unset_root_document_button)
-
-        self.set_child(self.vbox)
+        MenuBuilder.add_separator(self)
+        MenuBuilder.add_widget(self, self.set_root_document_button)
+        MenuBuilder.add_widget(self, self.unset_root_document_button)
 
     def sort_function(self, row1, row2, user_data=None):
         date1 = row1.document.get_last_activated()

@@ -49,7 +49,7 @@ class HeaderbarPresenter(object):
         for item in items:
             button = MenuBuilder.create_action_button(item)
             button.connect('clicked', self.model.on_restore_session_click, item)
-            MenuBuilder.add_button(self.view.prev_sessions_box, button)
+            self.view.prev_sessions_box.append(button)
             self.view.session_file_buttons.append(button)
 
     def activate_welcome_screen_mode(self):

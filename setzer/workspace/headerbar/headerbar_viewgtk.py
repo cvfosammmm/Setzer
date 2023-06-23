@@ -40,10 +40,9 @@ class HeaderBar(Gtk.HeaderBar):
         self.button_bibtex = MenuBuilder.create_action_button(_('New BibTeX Document'))
 
         self.new_document_popover = MenuBuilder.create_menu()
-        box = self.new_document_popover.get_child()
 
-        MenuBuilder.add_button(box, self.button_latex)
-        MenuBuilder.add_button(box, self.button_bibtex)
+        MenuBuilder.add_widget(self.new_document_popover, self.button_latex)
+        MenuBuilder.add_widget(self.new_document_popover, self.button_bibtex)
 
         box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         box.append(Gtk.Image.new_from_icon_name('document-new-symbolic'))
@@ -76,35 +75,29 @@ class HeaderBar(Gtk.HeaderBar):
         self.set_title_widget(self.center_widget)
 
     def insert_workspace_menu(self):
-        box_main = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
-        box_session = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.hamburger_popover = MenuBuilder.create_menu()
 
         self.button_save_as = MenuBuilder.create_action_button(_('Save Document As') + '...', _('Shift') + '+' + _('Ctrl') + '+S')
         self.button_save_all = MenuBuilder.create_action_button(_('Save All Documents'))
         self.button_session = MenuBuilder.create_menu_button(_('Session'))
+        self.button_session.connect('clicked', self.hamburger_popover.show_page, 'session', Gtk.StackTransitionType.SLIDE_RIGHT)
         self.button_about = MenuBuilder.create_action_button(_('About'))
         self.button_close_all = MenuBuilder.create_action_button(_('Close All Documents'))
         self.button_close_active = MenuBuilder.create_action_button(_('Close Document'), _('Ctrl') + '+W')
         self.button_quit = MenuBuilder.create_action_button(_('Quit'), _('Ctrl') + '+Q')
 
-        MenuBuilder.add_button(box_main, self.button_save_as)
-        MenuBuilder.add_button(box_main, self.button_save_all)
-        MenuBuilder.add_separator(box_main)
-        MenuBuilder.add_button(box_main, self.button_session)
-        MenuBuilder.add_separator(box_main)
-        MenuBuilder.add_button(box_main, self.button_about)
-        MenuBuilder.add_separator(box_main)
-        MenuBuilder.add_button(box_main, self.button_close_all)
-        MenuBuilder.add_button(box_main, self.button_close_active)
-        MenuBuilder.add_button(box_main, self.button_quit)
+        MenuBuilder.add_widget(self.hamburger_popover, self.button_save_as)
+        MenuBuilder.add_widget(self.hamburger_popover, self.button_save_all)
+        MenuBuilder.add_separator(self.hamburger_popover)
+        MenuBuilder.add_widget(self.hamburger_popover, self.button_session)
+        MenuBuilder.add_separator(self.hamburger_popover)
+        MenuBuilder.add_widget(self.hamburger_popover, self.button_about)
+        MenuBuilder.add_separator(self.hamburger_popover)
+        MenuBuilder.add_widget(self.hamburger_popover, self.button_close_all)
+        MenuBuilder.add_widget(self.hamburger_popover, self.button_close_active)
+        MenuBuilder.add_widget(self.hamburger_popover, self.button_quit)
 
-        stack = Gtk.Stack()
-        stack.set_vhomogeneous(False)
-        stack.add_named(box_main, 'main')
-        stack.add_named(box_session, 'session')
-
-        self.hamburger_popover = Gtk.Popover()
-        self.hamburger_popover.set_child(stack)
+        box_session = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         self.menu_button = Gtk.MenuButton()
         image = Gtk.Image.new_from_icon_name('open-menu-symbolic')
@@ -114,35 +107,26 @@ class HeaderBar(Gtk.HeaderBar):
         self.pack_end(self.menu_button)
 
         # session submenu
-        self.button_session_header = MenuBuilder.create_header_button(_('Session'))
-
-        MenuBuilder.add_button(box_session, self.button_session_header)
+        MenuBuilder.add_page(self.hamburger_popover, 'session', _('Session'))
 
         self.session_explaination = Gtk.Label.new(_('Save the list of open documents in a session file\nand restore it later, a convenient way to work\non multiple projects.'))
         self.session_explaination.set_xalign(0)
         self.session_explaination.get_style_context().add_class('explaination')
         self.session_explaination.set_margin_top(8)
         self.session_explaination.set_margin_bottom(11)
-        box_session.append(self.session_explaination)
 
         self.button_restore_session = MenuBuilder.create_action_button(_('Restore Previous Session') + '...')
         self.button_save_session = MenuBuilder.create_action_button(_('Save Current Session') + '...')
 
-        MenuBuilder.add_button(box_session, self.button_restore_session)
-        MenuBuilder.add_button(box_session, self.button_save_session)
-
         self.session_box_separator = Gtk.Separator()
-        box_session.append(self.session_box_separator)
         self.session_box_separator.hide()
 
         self.prev_sessions_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
-        box_session.append(self.prev_sessions_box)
 
-        def show_page(button, page_name, transition_type):
-            self.hamburger_popover.get_child().set_transition_type(transition_type)
-            self.hamburger_popover.get_child().set_visible_child_name(page_name)
-
-        self.button_session.connect('clicked', show_page, 'session', Gtk.StackTransitionType.SLIDE_RIGHT)
-        self.button_session_header.connect('clicked', show_page, 'main', Gtk.StackTransitionType.SLIDE_LEFT)
+        MenuBuilder.add_widget(self.hamburger_popover, self.session_explaination, pagename='session')
+        MenuBuilder.add_widget(self.hamburger_popover, self.button_restore_session, pagename='session')
+        MenuBuilder.add_widget(self.hamburger_popover, self.button_save_session, pagename='session')
+        MenuBuilder.add_widget(self.hamburger_popover, self.session_box_separator, pagename='session')
+        MenuBuilder.add_widget(self.hamburger_popover, self.prev_sessions_box, pagename='session')
 
 
