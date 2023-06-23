@@ -44,10 +44,9 @@ class HeaderBar(Gtk.HeaderBar):
         MenuBuilder.add_widget(self.new_document_popover, self.button_latex)
         MenuBuilder.add_widget(self.new_document_popover, self.button_bibtex)
 
-        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 12)
         box.append(Gtk.Image.new_from_icon_name('document-new-symbolic'))
         box.append(Gtk.Image.new_from_icon_name('pan-down-symbolic'))
-        box.set_size_request(40, -1)
 
         self.new_document_button = Gtk.MenuButton()
         self.new_document_button.set_child(box)
