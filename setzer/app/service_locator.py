@@ -24,6 +24,7 @@ import re
 import os, os.path
 
 import setzer.app.settings as settingscontroller
+from setzer.app.color_manager import ColorManager
 
 
 class ServiceLocator(object):
@@ -35,6 +36,8 @@ class ServiceLocator(object):
     resources_path = None
     app_icons_path = None
     regexes = dict()
+    source_language_manager = None
+    source_style_scheme_manager = None
 
     def set_main_window(main_window):
         ServiceLocator.main_window = main_window
@@ -81,5 +84,39 @@ class ServiceLocator(object):
 
     def get_app_icons_path():
         return ServiceLocator.app_icons_path
+
+    def get_is_dark_mode():
+        fg_color = ColorManager.get_ui_color('theme_fg_color')
+        bg_color = ColorManager.get_ui_color('theme_bg_color')
+        return (fg_color.red + fg_color.green + fg_color.blue) * fg_color.alpha > (bg_color.red + bg_color.green + bg_color.blue) * bg_color.alpha
+
+    def get_source_language_manager():
+        if ServiceLocator.source_language_manager == None:
+            ServiceLocator.source_language_manager = GtkSource.LanguageManager()
+            path = os.path.join(ServiceLocator.get_resources_path(), 'gtksourceview', 'language-specs')
+            ServiceLocator.source_language_manager.set_search_path((path,))
+        return ServiceLocator.source_language_manager
+
+    def get_source_style_scheme_manager():
+        if ServiceLocator.source_style_scheme_manager == None:
+            ServiceLocator.source_style_scheme_manager = GtkSource.StyleSchemeManager()
+            path1 = os.path.join(ServiceLocator.get_resources_path(), 'gtksourceview', 'styles')
+            if not os.path.isdir(os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes')):
+                os.mkdir(os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes'))
+            path2 = os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes')
+            ServiceLocator.source_style_scheme_manager.set_search_path((path1, path2))
+        return ServiceLocator.source_style_scheme_manager
+
+    def get_source_language(language):
+        source_language_manager = ServiceLocator.get_source_language_manager()
+        if language == 'bibtex': return source_language_manager.get_language('bibtex')
+        else: return source_language_manager.get_language('latex')
+
+    def get_style_scheme():
+        if ServiceLocator.get_is_dark_mode():
+            name = ServiceLocator.get_settings().get_value('preferences', 'syntax_scheme_dark_mode')
+        else:
+            name = ServiceLocator.get_settings().get_value('preferences', 'syntax_scheme')
+        return ServiceLocator.get_source_style_scheme_manager().get_scheme(name)
 
 

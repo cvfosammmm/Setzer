@@ -29,10 +29,35 @@ class WorkspaceController(object):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
 
+        self.main_window.headerbar.preview_toggle.connect('toggled', self.on_preview_toggle_toggled)
+        self.main_window.headerbar.help_toggle.connect('toggled', self.on_help_toggle_toggled)
+
         # populate workspace
         self.workspace.populate_from_disk()
         open_documents = self.workspace.open_documents
         if len(open_documents) > 0:
             self.workspace.set_active_document(open_documents[-1])
+
+    def on_preview_toggle_toggled(self, toggle_button, parameter=None):
+        show_preview = toggle_button.get_active()
+        if show_preview:
+            show_help = False
+        else:
+            show_help = self.workspace.show_help
+        self.workspace.set_show_preview_or_help(show_preview, show_help)
+
+        if show_preview:
+            self.main_window.headerbar.help_toggle.set_active(False)
+
+    def on_help_toggle_toggled(self, toggle_button, parameter=None):
+        show_help = toggle_button.get_active()
+        if show_help:
+            show_preview = False
+        else:
+            show_preview = self.workspace.show_preview
+        self.workspace.set_show_preview_or_help(show_preview, show_help)
+
+        if show_help:
+            self.main_window.headerbar.preview_toggle.set_active(False)
 
 

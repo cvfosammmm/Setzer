@@ -81,6 +81,26 @@ class HeaderBar(Gtk.HeaderBar):
         self.save_document_button.set_action_name('win.save')
         self.pack_end(self.save_document_button)
 
+        # help and preview toggles
+        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.preview_toggle = Gtk.ToggleButton()
+        self.preview_toggle.set_child(Gtk.Image.new_from_icon_name('view-paged-symbolic'))
+        self.preview_toggle.set_can_focus(False)
+        self.preview_toggle.set_tooltip_text(_('Toggle preview') + ' (F9)')
+        box.append(self.preview_toggle)
+        self.help_toggle = Gtk.ToggleButton()
+        self.help_toggle.set_child(Gtk.Image.new_from_icon_name('help-browser-symbolic'))
+        self.help_toggle.set_can_focus(False)
+        self.help_toggle.set_tooltip_text(_('Toggle help') + ' (F1)')
+        box.append(self.help_toggle)
+        box.get_style_context().add_class('linked')
+        self.pack_end(box)
+
+        # build button wrapper
+        self.build_wrapper = Gtk.CenterBox()
+        self.build_wrapper.set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.pack_end(self.build_wrapper)
+
         # title / open documents popover
         self.center_widget = document_switcher_viewgtk.OpenDocsButton()
         self.set_title_widget(self.center_widget)

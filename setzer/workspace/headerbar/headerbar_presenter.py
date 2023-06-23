@@ -60,15 +60,40 @@ class HeaderbarPresenter(object):
             self.view.session_file_buttons.append(button)
 
     def activate_welcome_screen_mode(self):
+        self.hide_pane_toggles()
         self.view.save_document_button.hide()
         self.view.get_style_context().add_class('welcome')
 
     def activate_latex_document_mode(self):
+        self.show_pane_toggles()
         self.view.save_document_button.show()
         self.view.get_style_context().remove_class('welcome')
 
     def activate_other_document_mode(self):
+        self.hide_pane_toggles()
         self.view.save_document_button.show()
         self.view.get_style_context().remove_class('welcome')
+
+    def hide_pane_toggles(self):
+        self.view.preview_toggle.hide()
+        self.view.preview_toggle.set_sensitive(False)
+        self.view.help_toggle.hide()
+        self.view.help_toggle.set_sensitive(False)
+
+    def show_pane_toggles(self):
+        self.view.preview_toggle.show()
+        self.view.preview_toggle.set_sensitive(True)
+        self.view.help_toggle.show()
+        self.view.help_toggle.set_sensitive(True)
+
+    def set_build_button_state(self):
+        document = self.model.workspace.get_root_or_active_latex_document()
+
+        if document != None:
+            self.view.build_wrapper.set_end_widget(document.build_widget.view)
+            if document.build_widget.view.has_result():
+                document.build_widget.view.hide_timer(1600)
+        else:
+            self.view.build_wrapper.set_end_widget(None)
 
 

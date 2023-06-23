@@ -45,6 +45,7 @@ class DocumentChooser(object):
 
         event_controller = Gtk.GestureClick()
         event_controller.connect('pressed', self.on_button_press)
+        event_controller.connect('released', self.on_button_release)
         event_controller.set_button(1)
         self.view.auto_suggest_list.add_controller(event_controller)
 
@@ -61,11 +62,16 @@ class DocumentChooser(object):
         self.view.auto_suggest_list.queue_draw()
 
     def on_button_press(self, event_controller, n_press, x, y):
-        if self.view.auto_suggest_list.hover_item != None:
+        self.view.auto_suggest_list.selected_index = self.view.auto_suggest_list.hover_item
+        self.view.auto_suggest_list.queue_draw()
+
+    def on_button_release(self, event_controller, n_press, x, y):
+        if self.view.auto_suggest_list.hover_item != None and self.view.auto_suggest_list.hover_item == self.view.auto_suggest_list.selected_index:
             item = self.view.auto_suggest_list.items[self.view.auto_suggest_list.hover_item]
             self.view.popdown()
             filename = item.folder + '/' + item.filename
             self.workspace.open_document_by_filename(filename)
+        self.view.auto_suggest_list.selected_index = None
 
     def update_hover_state(self, y):
         item_num = int((y) // (25 + 2 * self.view.auto_suggest_list.line_height))

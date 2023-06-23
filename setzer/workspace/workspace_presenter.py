@@ -27,8 +27,11 @@ class WorkspacePresenter(object):
         self.workspace.connect('new_document', self.on_new_document)
         self.workspace.connect('document_removed', self.on_document_removed)
         self.workspace.connect('new_active_document', self.on_new_active_document)
+        self.workspace.connect('set_show_preview_or_help', self.on_set_show_preview_or_help)
+        self.workspace.connect('show_build_log_state_change', self.on_show_build_log_state_change)
 
         self.activate_welcome_screen_mode()
+        self.setup_paneds()
 
     def on_new_document(self, workspace, document):
         if document.is_latex_document():
@@ -68,6 +71,26 @@ class WorkspacePresenter(object):
             document.view.source_view.grab_focus()
             self.activate_other_documents_mode()
 
+    def on_set_show_preview_or_help(self, workspace):
+        if self.workspace.show_preview:
+            self.main_window.preview_help_stack.set_visible_child_name('preview')
+            self.focus_active_document()
+        elif self.workspace.show_help:
+            self.main_window.preview_help_stack.set_visible_child_name('help')
+            if self.main_window.help_panel.stack.get_visible_child_name() == 'search':
+                self.main_window.help_panel.search_entry.set_text('')
+                self.main_window.help_panel.search_entry.grab_focus()
+            else:
+                self.focus_active_document()
+        else:
+            self.focus_active_document()
+        self.main_window.preview_paned.set_show_widget(self.workspace.show_preview or self.workspace.show_help)
+        self.main_window.preview_paned.animate(True)
+
+    def on_show_build_log_state_change(self, workspace, show_build_log):
+        self.main_window.build_log_paned.set_show_widget(self.workspace.show_build_log)
+        self.main_window.build_log_paned.animate(True)
+
     def activate_welcome_screen_mode(self):
         self.main_window.mode_stack.set_visible_child_name('welcome_screen')
 
@@ -84,5 +107,21 @@ class WorkspacePresenter(object):
         active_document = self.workspace.get_active_document()
         if active_document != None:
             active_document.view.source_view.grab_focus()
+
+    def setup_paneds(self):
+        if self.workspace.show_preview:
+            self.main_window.preview_help_stack.set_visible_child_name('preview')
+        elif self.workspace.show_help:
+            self.main_window.preview_help_stack.set_visible_child_name('help')
+        self.main_window.preview_paned.set_show_widget(self.workspace.show_preview or self.workspace.show_help)
+        preview_position = self.workspace.settings.get_value('window_state', 'preview_paned_position')
+        self.main_window.preview_paned.set_target_position(preview_position)
+
+        self.main_window.headerbar.preview_toggle.set_active(self.workspace.show_preview)
+        self.main_window.headerbar.help_toggle.set_active(self.workspace.show_help)
+
+        build_log_position = self.workspace.settings.get_value('window_state', 'build_log_paned_position')
+        self.main_window.build_log_paned.set_show_widget(self.workspace.get_show_build_log())
+        self.main_window.build_log_paned.set_target_position(build_log_position)
 
 

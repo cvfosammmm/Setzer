@@ -15,12 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import gi
-gi.require_version('Gtk', '4.0')
-from gi.repository import Gdk
-
-import json
-
 
 class ColorManager(object):
 
@@ -32,5 +26,13 @@ class ColorManager(object):
     def get_ui_color(name):
         rgba = ColorManager.main_window.get_style_context().lookup_color(name)[1]
         return rgba
+
+    def get_ui_color_string(name):
+        color_rgba = ColorManager.get_ui_color(name)
+        color_string = '#'
+        color_string += format(int(color_rgba.red * 255), '02x')
+        color_string += format(int(color_rgba.green * 255), '02x')
+        color_string += format(int(color_rgba.blue * 255), '02x')
+        return color_string
 
 

@@ -33,6 +33,10 @@ class Actions(object):
         self.new_latex_document_action = Gio.SimpleAction.new('new-latex-document', None)
         self.new_bibtex_document_action = Gio.SimpleAction.new('new-bibtex-document', None)
         self.open_document_dialog_action = Gio.SimpleAction.new('open-document-dialog', None)
+        self.build_action = Gio.SimpleAction.new('build', None)
+        self.save_and_build_action = Gio.SimpleAction.new('save-and-build', None)
+        self.show_build_log_action = Gio.SimpleAction.new('show-build-log', None)
+        self.close_build_log_action = Gio.SimpleAction.new('close-build-log', None)
         self.save_action = Gio.SimpleAction.new('save', None)
         self.save_as_action = Gio.SimpleAction.new('save-as', None)
         self.save_all_action = Gio.SimpleAction.new('save-all', None)
@@ -45,6 +49,10 @@ class Actions(object):
         main_window.add_action(self.new_latex_document_action)
         main_window.add_action(self.new_bibtex_document_action)
         main_window.add_action(self.open_document_dialog_action)
+        main_window.add_action(self.build_action)
+        main_window.add_action(self.save_and_build_action)
+        main_window.add_action(self.show_build_log_action)
+        main_window.add_action(self.close_build_log_action)
         main_window.add_action(self.save_action)
         main_window.add_action(self.save_as_action)
         main_window.add_action(self.save_all_action)
@@ -57,6 +65,10 @@ class Actions(object):
         self.new_latex_document_action.connect('activate', self.on_new_latex_document_action_activated)
         self.new_bibtex_document_action.connect('activate', self.on_new_bibtex_document_action_activated)
         self.open_document_dialog_action.connect('activate', self.on_open_document_dialog_action_activated)
+        self.build_action.connect('activate', self.on_build_action_activated)
+        self.save_and_build_action.connect('activate', self.on_save_and_build_action_activated)
+        self.show_build_log_action.connect('activate', self.show_build_log)
+        self.close_build_log_action.connect('activate', self.close_build_log)
         self.save_action.connect('activate', self.on_save_button_click)
         self.save_as_action.connect('activate', self.on_save_as_clicked)
         self.save_all_action.connect('activate', self.on_save_all_clicked)
@@ -144,6 +156,23 @@ class Actions(object):
 
     def on_open_document_dialog_action_activated(self, action=None, parameter=None):
         DialogLocator.get_dialog('open_document').run()
+
+    @_assert_has_active_document
+    def on_save_and_build_action_activated(self, action=None, parameter=None):
+        self.on_save_button_click()
+        self.on_build_action_activated()
+
+    @_assert_has_active_document
+    def on_build_action_activated(self, action=None, parameter=None):
+        document = self.workspace.get_root_or_active_latex_document()
+        if document != None:
+            document.build_widget.build_document_request()
+
+    def show_build_log(self, action, parameter=''):
+        self.workspace.set_show_build_log(True)
+
+    def close_build_log(self, action, parameter=''):
+        self.workspace.set_show_build_log(False)
 
     @_assert_has_active_document
     def on_save_button_click(self, action=None, parameter=None):

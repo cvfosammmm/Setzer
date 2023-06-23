@@ -135,6 +135,11 @@ class MainApplicationController(Adw.Application):
         self.settings.set_value('window_state', 'width', main_window.get_property('default-width'))
         self.settings.set_value('window_state', 'height', main_window.get_property('default-height'))
         self.settings.set_value('window_state', 'is_maximized', main_window.get_property('maximized'))
+        self.settings.set_value('window_state', 'show_help', self.workspace.show_help)
+        self.settings.set_value('window_state', 'show_preview', self.workspace.show_preview)
+        self.settings.set_value('window_state', 'preview_paned_position', main_window.preview_paned.target_position)
+        self.settings.set_value('window_state', 'show_build_log', self.workspace.show_build_log)
+        self.settings.set_value('window_state', 'build_log_paned_position', main_window.build_log_paned.target_position)
         self.settings.pickle()
 
     def on_window_close(self, window=None, parameter=None):

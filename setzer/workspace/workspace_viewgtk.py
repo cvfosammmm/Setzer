@@ -20,7 +20,10 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Adw, Gdk, Gtk
 
+import setzer.workspace.build_log.build_log_viewgtk as build_log_view
 import setzer.workspace.headerbar.headerbar_viewgtk as headerbar_view
+import setzer.workspace.preview_panel.preview_panel_viewgtk as preview_panel_view
+import setzer.workspace.help_panel.help_panel_viewgtk as help_panel_view
 import setzer.workspace.welcome_screen.welcome_screen_viewgtk as welcome_screen_view
 import setzer.widgets.animated_paned.animated_paned as animated_paned
 from setzer.app.service_locator import ServiceLocator
@@ -72,17 +75,14 @@ class MainWindow(Adw.ApplicationWindow):
         self.others_notebook_wrapper.append(self.others_notebook)
 
         # build log
-        self.build_log = Gtk.Label.new('build log placeholder')
+        self.build_log = build_log_view.BuildLogView()
         self.build_log_paned = animated_paned.AnimatedVPaned(self.latex_notebook_wrapper, self.build_log, False)
-        self.build_log_visible = None
 
         # preview
-        self.preview_panel = Gtk.Label.new('preview placeholder')
-        self.preview_visible = None
+        self.preview_panel = preview_panel_view.PreviewPanelView()
 
         # help
-        self.help_panel = Gtk.Label.new('help panel placeholder')
-        self.help_visible = None
+        self.help_panel = help_panel_view.HelpPanelView()
 
         # paneds
         self.preview_paned_overlay = Gtk.Overlay()
@@ -110,11 +110,11 @@ class MainWindow(Adw.ApplicationWindow):
         self.headerbar.set_vexpand(False)
         self.headerbar.set_valign(Gtk.Align.START)
 
-        # overlay
-        self.overlay = Gtk.Overlay()
-        self.overlay.set_child(self.mode_stack)
-        self.overlay.add_overlay(self.headerbar)
-        self.set_content(self.overlay)
+        # main box
+        self.main_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.main_box.append(self.headerbar)
+        self.main_box.append(self.mode_stack)
+        self.set_content(self.main_box)
 
         self.css_provider = Gtk.CssProvider()
         resources_path = ServiceLocator.get_resources_path()

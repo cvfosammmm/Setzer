@@ -22,6 +22,7 @@ from gi.repository import Gdk
 from gi.repository import GtkSource
 
 from setzer.helpers.observable import Observable
+from setzer.app.service_locator import ServiceLocator
 
 
 class Content(Observable):
@@ -29,11 +30,16 @@ class Content(Observable):
     def __init__(self, language, document):
         Observable.__init__(self)
         self.document = document
+        self.settings = ServiceLocator.get_settings()
 
         self.source_buffer = GtkSource.Buffer()
+        self.source_buffer.set_language(ServiceLocator.get_source_language(language))
         self.source_view = GtkSource.View.new_with_buffer(self.source_buffer)
+        self.source_buffer.set_style_scheme(ServiceLocator.get_style_scheme())
 
         self.source_buffer.connect('modified-changed', self.on_modified_changed)
+
+        self.scroll_to = None
 
     def on_modified_changed(self, buffer):
         self.add_change_code('modified_changed')
@@ -89,5 +95,51 @@ class Content(Observable):
 
     def redo(self):
         self.source_buffer.redo()
+
+    def scroll_cursor_onscreen(self):
+        text_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        iter_position = self.source_view.get_iter_location(text_iter).y
+        end_yrange = self.source_view.get_line_yrange(self.source_buffer.get_end_iter())
+        buffer_height = end_yrange.y + end_yrange.height
+        font_manager = ServiceLocator.get_font_manager()
+        line_height = font_manager.get_line_height()
+        visible_lines = math.floor(self.source_view.get_visible_rect().height / line_height)
+        window_offset = self.source_view.get_visible_rect().y
+        window_height = self.source_view.get_visible_rect().height
+        gap = min(math.floor(max((visible_lines - 2), 0) / 2), 5)
+        if iter_position < window_offset + gap * line_height:
+            self.scroll_view(max(iter_position - gap * line_height, 0))
+            return
+        gap = min(math.floor(max((visible_lines - 2), 0) / 2), 8)
+        if iter_position > (window_offset + window_height - (gap + 1) * line_height):
+            self.scroll_view(min(iter_position + gap * line_height - window_height, buffer_height))
+
+    def scroll_view(self, position, duration=0.2):
+        view = self.document.view.scrolled_window
+        adjustment = view.get_vadjustment()
+        self.scroll_to = {'position_start': adjustment.get_value(), 'position_end': position, 'time_start': time.time(), 'duration': duration}
+        view.set_kinetic_scrolling(False)
+        GObject.timeout_add(15, self.do_scroll)
+
+    def do_scroll(self):
+        view = self.document.view.scrolled_window
+        if self.scroll_to != None:
+            adjustment = view.get_vadjustment()
+            time_elapsed = time.time() - self.scroll_to['time_start']
+            if self.scroll_to['duration'] == 0:
+                time_elapsed_percent = 1
+            else:
+                time_elapsed_percent = time_elapsed / self.scroll_to['duration']
+            if time_elapsed_percent >= 1:
+                adjustment.set_value(self.scroll_to['position_end'])
+                self.scroll_to = None
+                view.set_kinetic_scrolling(True)
+                return False
+            else:
+                adjustment.set_value(self.scroll_to['position_start'] * (1 - self.ease(time_elapsed_percent)) + self.scroll_to['position_end'] * self.ease(time_elapsed_percent))
+                return True
+        return False
+
+    def ease(self, time): return (time - 1)**3 + 1
 
 

@@ -38,14 +38,14 @@ class Shortcut(Gtk.Shortcut):
 
 
 class Shortcuts(object):
-    ''' Handle Keyboard shortcuts. '''
-    
+
     def __init__(self, workspace):
         self.main_window = ServiceLocator.get_main_window()
         self.workspace = workspace
 
         self.shortcut_controller = Gtk.ShortcutController()
         self.shortcut_controller.set_scope(Gtk.ShortcutScope.GLOBAL)
+        self.shortcut_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.main_window.add_controller(self.shortcut_controller)
 
         actions = self.workspace.actions
@@ -59,6 +59,11 @@ class Shortcuts(object):
         self.shortcut_controller.add_shortcut(Shortcut('<Control>t', self.shortcut_show_open_docs))
         self.shortcut_controller.add_shortcut(Shortcut('<Control><Shift>t', self.shortcut_switch_document))
         self.shortcut_controller.add_shortcut(Shortcut('<Control><Shift>o', self.shortcut_show_document_chooser))
+        self.shortcut_controller.add_shortcut(Shortcut('F1', self.shortcut_help))
+        self.shortcut_controller.add_shortcut(Shortcut('F5', actions.save_and_build_action.activate))
+        self.shortcut_controller.add_shortcut(Shortcut('F6', actions.build_action.activate))
+        self.shortcut_controller.add_shortcut(Shortcut('F8', self.shortcut_build_log))
+        self.shortcut_controller.add_shortcut(Shortcut('F9', self.shortcut_preview))
 
     def shortcut_show_document_chooser(self):
         if self.main_window.headerbar.open_document_button.get_sensitive():
@@ -74,5 +79,21 @@ class Shortcuts(object):
 
     def shortcut_switch_document(self):
         self.workspace.switch_to_earliest_open_document()
+
+    def shortcut_build_log(self):
+        show_build_log = not self.workspace.get_show_build_log()
+        self.workspace.set_show_build_log(show_build_log)
+
+    def shortcut_preview(self):
+        toggle = self.main_window.headerbar.preview_toggle
+        if toggle.get_sensitive():
+            toggle.set_active(not toggle.get_active())
+        return True
+
+    def shortcut_help(self, accel_group=None, window=None, key=None, mask=None):
+        toggle = self.main_window.headerbar.help_toggle
+        if toggle.get_sensitive():
+            toggle.set_active(not toggle.get_active())
+        return True
 
 

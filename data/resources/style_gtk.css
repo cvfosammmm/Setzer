@@ -1,6 +1,6 @@
 @define-color fg_color_light mix(@theme_fg_color, transparent, 0.5);
 @define-color list_hover mix(@theme_fg_color, transparent, 0.9);
-@define-color list_active mix(@theme_fg_color, transparent, 0.9);
+@define-color list_active mix(@theme_fg_color, transparent, 0.8);
 
 /*
 ** main_window
@@ -12,6 +12,9 @@ paned.sidebar_paned {
 button.new-document-menu-button {
     padding-left: 8px;
     padding-right: 8px;
+}
+scrollbar.hidden slider {
+    opacity: 0;
 }
 
 /*
@@ -225,6 +228,9 @@ box.buildlog > box button {
 ** popover menus
 */
 
+popover arrow {
+    background: @theme_bg_color;
+}
 popover contents {
     background: @theme_bg_color;
 }
@@ -366,31 +372,6 @@ box.shortcutsbar {
     background-color: @theme_base_color;
     border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
-box.shortcutsbar toolbar {
-    padding: 0px;
-    margin: 0px;
-    background-color: @theme_base_color;
-}
-box.shortcutsbar toolbar toolbutton {
-    padding: 0px;
-    margin: 0px;
-}
-box.shortcutsbar toolbar button {
-    margin: 0px;
-    padding: 6px;
-    border-width: 0px;
-    border-radius: 0px;
-    box-shadow: none;
-}
-box.shortcutsbar toolbar button label {
-    text-decoration: underline;
-}
-box.shortcutsbar toolbar button:checked {
-    background: mix(@theme_base_color, @borders, 0.45);
-}
-box.shortcutsbar toolbar button:active {
-    background: mix(@theme_base_color, @borders, 0.45);
-}
 popover.menu-own-quotes-symbolic {
     margin-left: 0px;
 }
@@ -406,27 +387,28 @@ box.preview > box {
     background-color: @theme_base_color;
     border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
-box.preview > box button {
+box.preview button.scbar, box.preview .scbar > button {
     border-width: 0px;
     margin: 0px;
     box-shadow: none;
     border-radius: 0px;
     padding: 6px;
 }
-box.preview > box button:checked {
+box.preview button.scbar:checked, box.preview .scbar > button:checked {
     background: mix(@theme_base_color, @borders, 0.45);
 }
-box.preview > box button:active {
+box.preview button.scbar:active, box.preview .scbar > button:active {
     background: mix(@theme_base_color, @borders, 0.45);
 }
-box.preview > box button.zoom_level_button {
-    padding: 6px 5px;
-}
-box.preview > box button.zoom_level_button label {
-    padding: 1px 4px;
+.zoom-level-button {
+    padding-top: 3px;
     background: @theme_base_color;
     border: 1px solid @borders;
     border-radius: 3px;
+    font-weight: normal;
+}
+.paging-widget {
+    padding-top: 10px;
 }
 label.target-label {
     border-top: 1px solid @borders;

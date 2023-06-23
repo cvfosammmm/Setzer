@@ -27,8 +27,11 @@ from setzer.document.document_other import DocumentOther
 from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
+import setzer.workspace.preview_panel.preview_panel_presenter as preview_panel_presenter
+import setzer.workspace.help_panel.help_panel as help_panel
 import setzer.workspace.welcome_screen.welcome_screen as welcome_screen
 import setzer.workspace.headerbar.headerbar as headerbar
+import setzer.workspace.build_log.build_log as build_log
 import setzer.workspace.keyboard_shortcuts.shortcuts as shortcuts
 import setzer.workspace.document_switcher.document_switcher as document_switcher
 import setzer.workspace.document_chooser.document_chooser as document_chooser
@@ -56,6 +59,10 @@ class Workspace(Observable):
 
         self.settings = ServiceLocator.get_settings()
 
+        self.show_build_log = self.settings.get_value('window_state', 'show_build_log')
+        self.show_preview = self.settings.get_value('window_state', 'show_preview')
+        self.show_help = self.settings.get_value('window_state', 'show_help')
+
         self.welcome_screen = welcome_screen.WelcomeScreen()
 
     def init_workspace_controller(self):
@@ -63,6 +70,9 @@ class Workspace(Observable):
         self.shortcuts = shortcuts.Shortcuts(self)
         self.presenter = workspace_presenter.WorkspacePresenter(self)
         self.headerbar = headerbar.Headerbar(self)
+        self.preview_panel = preview_panel_presenter.PreviewPanelPresenter(self)
+        self.help_panel = help_panel.HelpPanel(self)
+        self.build_log = build_log.BuildLog(self)
         self.document_chooser = document_chooser.DocumentChooser(self)
         self.document_switcher = document_switcher.DocumentSwitcher(self)
         self.controller = workspace_controller.WorkspaceController(self)
@@ -152,12 +162,20 @@ class Workspace(Observable):
             self.add_change_code('new_inactive_document', self.active_document)
             previously_active_document = self.active_document
             self.active_document = document
+            self.update_preview_visibility(previously_active_document)
         else:
             self.active_document = document
 
         if self.active_document != None:
             self.active_document.set_last_activated(time.time())
+            self.update_preview_visibility(self.active_document)
             self.add_change_code('new_active_document', document)
+            self.set_build_log()
+
+    def set_build_log(self):
+        document = self.get_root_or_active_latex_document()
+        if document != None:
+            self.build_log.set_document(document)
 
     def get_last_active_document(self):
         for document in sorted(self.open_documents, key=lambda val: -val.last_activated):
@@ -230,6 +248,10 @@ class Workspace(Observable):
                 for item in data['recently_opened_documents'].values():
                     self.update_recently_opened_document(item['filename'], item['date'], notify=False)
                 try:
+                    self.help_panel.search_results_blank = data['recent_help_searches']
+                except KeyError:
+                    pass
+                try:
                     recently_opened_session_files = data['recently_opened_session_files'].values()
                 except KeyError:
                     recently_opened_session_files = []
@@ -276,6 +298,7 @@ class Workspace(Observable):
                 'open_documents': open_documents,
                 'recently_opened_documents': self.recently_opened_documents,
                 'recently_opened_session_files': self.recently_opened_session_files,
+                'recent_help_searches': self.help_panel.search_results_blank
             }
             if self.root_document != None:
                 data['root_document_filename'] = self.root_document.get_filename()
@@ -319,13 +342,18 @@ class Workspace(Observable):
                     document.set_root_state(True, True)
                 else:
                     document.set_root_state(False, True)
+                self.update_preview_visibility(document)
             self.add_change_code('root_state_change', 'one_document')
+            self.set_build_log()
 
     def unset_root_document(self):
         for document in self.open_latex_documents:
             document.set_root_state(False, False)
+            self.update_preview_visibility(document)
         self.root_document = None
+        self.update_preview_visibility(self.active_document)
         self.add_change_code('root_state_change', 'no_root_document')
+        self.set_build_log()
 
     def get_root_document(self):
         return self.root_document
@@ -340,5 +368,31 @@ class Workspace(Observable):
                 return self.active_document
             else:
                 return None
+
+    def update_preview_visibility(self, document):
+        if document != None and document.is_latex_document():
+            if document == self.root_document:
+                document.preview.page_renderer.activate()
+            elif document == self.active_document and self.root_document == None:
+                document.preview.page_renderer.activate()
+            else:
+                document.preview.page_renderer.deactivate()
+
+    def set_show_preview_or_help(self, show_preview, show_help):
+        if show_preview != self.show_preview or show_help != self.show_help:
+            self.show_preview = show_preview
+            self.show_help = show_help
+            self.add_change_code('set_show_preview_or_help')
+
+    def set_show_build_log(self, show_build_log):
+        if show_build_log != self.show_build_log:
+            self.show_build_log = show_build_log
+            self.add_change_code('show_build_log_state_change', show_build_log)
+
+    def get_show_build_log(self):
+        if self.show_build_log != None:
+            return self.show_build_log
+        else:
+            return False
 
 

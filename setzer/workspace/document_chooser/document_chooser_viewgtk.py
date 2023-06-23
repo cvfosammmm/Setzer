@@ -127,6 +127,7 @@ class DocumentChooserList(Gtk.Widget):
 
         self.items = []
         self.hover_item = None
+        self.selected_index = None
         self.offset_start = 0
         self.offset_end = 0
 
@@ -156,11 +157,18 @@ class DocumentChooserList(Gtk.Widget):
         fg_color_light = ColorManager.get_ui_color('fg_color_light')
         bg_color = ColorManager.get_ui_color('theme_base_color')
         hover_color = ColorManager.get_ui_color('list_hover')
+        active_color = ColorManager.get_ui_color('list_active')
         border_color = ColorManager.get_ui_color('borders')
 
         snapshot.append_color(bg_color, Graphene.Rect().init(0, 0, self.get_allocated_width(), self.get_allocated_height()))
+        
         if self.hover_item != None:
-            snapshot.append_color(hover_color, Graphene.Rect().init(0, self.hover_item * (25 + 2 * self.line_height), self.get_allocated_width(), 25 + 2 * self.line_height))
+            if self.selected_index == self.hover_item:
+                highlight_color = active_color
+            else:
+                highlight_color = hover_color
+            snapshot.append_color(highlight_color, Graphene.Rect().init(0, self.hover_item * (25 + 2 * self.line_height), self.get_allocated_width(), 25 + 2 * self.line_height))
+
         filename_text = ''
         folder_text = ''
         for item in self.items:

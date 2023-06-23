@@ -39,18 +39,24 @@ class Headerbar(object):
         self.workspace.connect('new_active_document', self.on_new_active_document)
         self.workspace.connect('update_recently_opened_documents', self.on_update_recently_opened_documents)
         self.workspace.connect('update_recently_opened_session_files', self.on_update_recently_opened_session_files)
+        self.workspace.connect('root_state_change', self.on_root_state_change)
 
         self.presenter.activate_welcome_screen_mode()
 
     def on_document_removed(self, workspace, document):
         if self.workspace.active_document == None:
+            self.presenter.set_build_button_state()
             self.presenter.activate_welcome_screen_mode()
 
     def on_new_active_document(self, workspace, document):
+        self.presenter.set_build_button_state()
         if document.is_latex_document():
             self.presenter.activate_latex_document_mode()
         else:
             self.presenter.activate_other_document_mode()
+
+    def on_root_state_change(self, workspace, state):
+        self.presenter.set_build_button_state()
 
     def on_update_recently_opened_documents(self, workspace, recently_opened_documents):
         self.presenter.update_recently_opened_documents(recently_opened_documents)
