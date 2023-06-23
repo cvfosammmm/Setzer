@@ -1,3 +1,7 @@
+@define-color fg_color_light mix(@theme_fg_color, transparent, 0.5);
+@define-color list_hover mix(@theme_fg_color, transparent, 0.9);
+@define-color list_active mix(@theme_fg_color, transparent, 0.9);
+
 /*
 ** main_window
 */
@@ -59,9 +63,12 @@ box.autocomplete label.infobox {
 */
 
 box.welcome {
+    padding-top: 75px;
+    padding-bottom: 75px;
     margin-left: 150px;
     margin-right: 150px;
-    margin-bottom: 50px;
+    margin-bottom: 150px;
+    background: radial-gradient(@theme_bg_color 10%, @theme_bg_color 30%, transparent 50%) -75px 0px, radial-gradient(@theme_bg_color 10%, @theme_bg_color 30%, transparent 50%) 75px 0px;
 }
 label.welcome-header {
     font-size: 32pt;
@@ -69,6 +76,8 @@ label.welcome-header {
     font-weight: 200;
 }
 label.welcome-description {
+}
+headerbar.welcome {
 }
 
 /*
@@ -83,19 +92,6 @@ popover.documentchooser entry {
 }
 popover.documentchooser scrolledwindow {
     margin-bottom: 12px;
-}
-popover.documentchooser list row {
-}
-popover.documentchooser list row label {
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-top: 3px;
-    margin-bottom: 5px;
-}
-popover.documentchooser list row label.folder {
-    margin-top: 5px;
-    font-size: 9pt;
-    opacity: 0.5;
 }
 popover.documentchooser box.not_found {
     margin-bottom: 12px;

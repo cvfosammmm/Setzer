@@ -17,8 +17,8 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gdk
-from gi.repository import Gtk
+gi.require_version('Adw', '1')
+from gi.repository import Adw, Gdk, Gtk
 
 import setzer.workspace.headerbar.headerbar_viewgtk as headerbar_view
 import setzer.workspace.welcome_screen.welcome_screen_viewgtk as welcome_screen_view
@@ -28,10 +28,10 @@ from setzer.app.service_locator import ServiceLocator
 import os.path
 
 
-class MainWindow(Gtk.ApplicationWindow):
+class MainWindow(Adw.ApplicationWindow):
 
     def __init__(self, app):
-        Gtk.ApplicationWindow.__init__(self, application=app)
+        Adw.ApplicationWindow.__init__(self, application=app)
 
         self.app = app
         self.set_size_request(-1, 550)
@@ -40,10 +40,6 @@ class MainWindow(Gtk.ApplicationWindow):
         self.current_width = 0
         self.current_height = 0
         self.ismaximized = False
-
-        # headerbar
-        self.headerbar = headerbar_view.HeaderBar()
-        self.set_titlebar(self.headerbar)
 
         # latex notebook
         self.latex_notebook = Gtk.Notebook()
@@ -108,7 +104,17 @@ class MainWindow(Gtk.ApplicationWindow):
         self.mode_stack.add_named(self.sidebar_paned, 'latex_documents')
         self.mode_stack.add_named(self.bibtex_notebook_wrapper, 'bibtex_documents')
         self.mode_stack.add_named(self.others_notebook_wrapper, 'other_documents')
-        self.set_child(self.mode_stack)
+
+        # headerbar
+        self.headerbar = headerbar_view.HeaderBar()
+        self.headerbar.set_vexpand(False)
+        self.headerbar.set_valign(Gtk.Align.START)
+
+        # overlay
+        self.overlay = Gtk.Overlay()
+        self.overlay.set_child(self.mode_stack)
+        self.overlay.add_overlay(self.headerbar)
+        self.set_content(self.overlay)
 
         self.css_provider = Gtk.CssProvider()
         resources_path = ServiceLocator.get_resources_path()

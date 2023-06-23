@@ -58,6 +58,11 @@ class Shortcuts(object):
         self.shortcut_controller.add_shortcut(Shortcut('F10', self.shortcut_workspace_menu))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>t', self.shortcut_show_open_docs))
         self.shortcut_controller.add_shortcut(Shortcut('<Control><Shift>t', self.shortcut_switch_document))
+        self.shortcut_controller.add_shortcut(Shortcut('<Control><Shift>o', self.shortcut_show_document_chooser))
+
+    def shortcut_show_document_chooser(self):
+        if self.main_window.headerbar.open_document_button.get_sensitive():
+            self.main_window.headerbar.open_document_button.popup()
 
     def shortcut_show_open_docs(self):
         if self.main_window.headerbar.center_widget.center_button.get_sensitive():

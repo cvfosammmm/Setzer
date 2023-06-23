@@ -22,6 +22,7 @@ from gi.repository import GLib
 from gi.repository import Gio
 
 import setzer.workspace.document_switcher.document_switcher_viewgtk as document_switcher_viewgtk
+import setzer.workspace.document_chooser.document_chooser_viewgtk as document_chooser_viewgtk
 from setzer.helpers.popover_menu_builder import MenuBuilder
 
 
@@ -31,11 +32,21 @@ class HeaderBar(Gtk.HeaderBar):
     def __init__(self):
         Gtk.HeaderBar.__init__(self)
 
-        # open documents button
+        # open document buttons
         self.open_document_blank_button = Gtk.Button.new_with_label(_('Open') + '...')
         self.open_document_blank_button.set_tooltip_text(_('Open a document') + ' (' + _('Ctrl') + '+O)')
         self.open_document_blank_button.set_action_name('win.open-document-dialog')
 
+        self.document_chooser = document_chooser_viewgtk.DocumentChooser()
+        self.open_document_button_label = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 12)
+        self.open_document_button_label.append(Gtk.Label.new(_('Open')))
+        self.open_document_button_label.append(Gtk.Image.new_from_icon_name('pan-down-symbolic'))
+        self.open_document_button = Gtk.MenuButton()
+        self.open_document_button.set_tooltip_text(_('Open a document') + ' (' + _('Shift') + '+' + _('Ctrl') + '+O)')
+        self.open_document_button.set_child(self.open_document_button_label)
+        self.open_document_button.set_popover(self.document_chooser)
+
+        # new document buttons
         self.button_latex = MenuBuilder.create_action_button(_('New LaTeX Document'), _('Ctrl') + '+N')
         self.button_bibtex = MenuBuilder.create_action_button(_('New BibTeX Document'))
 
@@ -55,6 +66,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.new_document_button.get_style_context().add_class('new-document-menu-button')
         self.new_document_button.set_popover(self.new_document_popover)
 
+        self.pack_start(self.open_document_button)
         self.pack_start(self.open_document_blank_button)
         self.pack_start(self.new_document_button)
 

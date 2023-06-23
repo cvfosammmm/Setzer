@@ -28,6 +28,7 @@ from setzer.workspace.workspace import Workspace
 import setzer.workspace.workspace_viewgtk as view
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
+from setzer.app.color_manager import ColorManager
 from setzer.helpers.timer import timer
 
 
@@ -105,6 +106,7 @@ class MainApplicationController(Adw.Application):
             icon_theme.add_search_path(os.path.join(resources_path, 'symbols', folder))
 
         ServiceLocator.set_main_window(self.main_window)
+        ColorManager.init(self.main_window)
 
         self.workspace = Workspace()
         ServiceLocator.set_workspace(self.workspace)

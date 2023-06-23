@@ -33,7 +33,14 @@ class HeaderbarPresenter(object):
 
     def update_recently_opened_documents(self, recently_opened_documents):
         data = recently_opened_documents.values()
-        self.view.open_document_blank_button.show()
+        if len(data) > 0:
+            self.view.open_document_button.set_sensitive(True)
+            self.view.open_document_button.show()
+            self.view.open_document_blank_button.hide()
+        else:
+            self.view.open_document_button.set_sensitive(False)
+            self.view.open_document_button.hide()
+            self.view.open_document_blank_button.show()
 
     def update_recently_opened_session_files(self, recently_opened_session_files):
         items = list()
@@ -54,11 +61,14 @@ class HeaderbarPresenter(object):
 
     def activate_welcome_screen_mode(self):
         self.view.save_document_button.hide()
+        self.view.get_style_context().add_class('welcome')
 
     def activate_latex_document_mode(self):
         self.view.save_document_button.show()
+        self.view.get_style_context().remove_class('welcome')
 
     def activate_other_document_mode(self):
         self.view.save_document_button.show()
+        self.view.get_style_context().remove_class('welcome')
 
 

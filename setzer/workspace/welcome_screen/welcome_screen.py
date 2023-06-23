@@ -15,12 +15,83 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gdk, GObject, Pango
+import cairo
+
+import time
+
 from setzer.app.service_locator import ServiceLocator
+from setzer.app.color_manager import ColorManager
+from setzer.helpers.timer import timer
 
 
 class WelcomeScreen(object):
 
     def __init__(self):
         self.view = ServiceLocator.get_main_window().welcome_screen
+
+        self.font_desc = Pango.FontDescription.from_string('cmr10')
+        self.angle = 0.15
+        self.alpha = 0.065
+        self.font_size = 40
+        self.line_height = 70
+
+        self.is_active = False
+        self.lines_per_second = 0.25
+        self.animate = False
+
+        self.activate()
+
+        self.gradient_size = None
+        self.gradient_surface = None
+        self.full_gradient_surface = None
+
+        self.view.drawing_area.set_draw_func(self.draw)
+        self.do_draw()
+
+    def activate(self):
+        self.is_active = True
+        self.do_draw()
+        if self.animate:
+            GObject.timeout_add(15, self.do_draw)
+
+    def deactivate(self):
+        self.is_active = False
+
+    def do_draw(self):
+        self.view.drawing_area.queue_draw()
+        return self.is_active
+
+    def draw(self, drawing_area, ctx, width, height, data=None):
+        self.fg_color = ColorManager.get_ui_color('theme_fg_color')
+        self.fg_color.alpha = self.alpha
+        self.bg_color = ColorManager.get_ui_color('theme_bg_color')
+
+        ctx.rotate(-self.angle)
+        Gdk.cairo_set_source_rgba(ctx, self.fg_color)
+
+        ctx.set_font_size(self.font_size)
+        font_family = self.font_desc.get_family()
+        ctx.select_font_face(font_family, cairo.FontSlant.NORMAL, cairo.FontWeight.NORMAL)
+
+        if self.animate:
+            y = -self.line_height - int(time.time() * self.line_height * self.lines_per_second) % self.line_height
+            line = int(int(time.time() * self.lines_per_second) % self.lines_per_second) + int(self.lines_per_second * (int(time.time()) % int(20 // self.lines_per_second)))
+        else:
+            y = 0
+            line = 0
+
+        text = self.view.text[line:] + self.view.text[:line]
+        for paragraph in text:
+            ctx.rotate(self.angle)
+            y += self.line_height
+            ctx.move_to(-50, y)
+            ctx.rotate(-self.angle)
+            ctx.show_text(paragraph)
+            if y > (height + width / 3): break
+
+        ctx.rotate(self.angle)
 
 
