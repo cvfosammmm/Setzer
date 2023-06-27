@@ -47,6 +47,7 @@
     <url type="homepage">https://www.cvfosammmm.org/setzer/</url>
     <url type="bugtracker">https://github.com/cvfosammmm/Setzer/issues</url>
     <url type="donation">https://www.patreon.com/cvfosammmm</url>
+    <url type="translate">https://hosted.weblate.org/engage/setzer/</url>
 
     <provides>
         <id>org.cvfosammmm.Setzer.desktop</id>
