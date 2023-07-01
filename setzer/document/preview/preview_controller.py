@@ -55,7 +55,6 @@ class PreviewController(object):
         layout = self.preview.layout
         manager = self.preview.zoom_manager
 
-        speed = 0.005
         gap = 1.25
         stopping_points = []
         if manager.zoom_level_fit_to_width != None:
@@ -68,15 +67,15 @@ class PreviewController(object):
         prev_zoom_level = manager.get_zoom_level()
         if prev_zoom_level in stopping_points:
             if amount <= 0:
-                self.zoom_buffer *= (1 - speed * amount)
+                self.zoom_buffer *= (1 - amount)
                 amount = max(1, self.zoom_buffer / gap)
                 zoom_level = min(max(prev_zoom_level * amount, 0.25), 4)
             elif amount > 0:
-                self.zoom_buffer *= (1 - speed * amount)
+                self.zoom_buffer *= (1 - amount)
                 amount = min(1, self.zoom_buffer * gap)
                 zoom_level = min(max(prev_zoom_level * amount, 0.25), 4)
         else:
-            zoom_level = min(max(prev_zoom_level * (1 - speed * amount), 0.25), 4)
+            zoom_level = min(max(prev_zoom_level * (1 - amount), 0.25), 4)
             if amount <= 0:
                 for level in stopping_points:
                     if prev_zoom_level < level and zoom_level >= level:

@@ -29,6 +29,8 @@ class ScrollingWidget(Observable):
     def __init__(self):
         Observable.__init__(self)
 
+        self.zoom_multiplier = 0.005
+
         self.scrolling_offset_x, self.scrolling_offset_y = 0, 0
         self.width, self.height = 0, 0
         self.cursor_x, self.cursor_y = None, None
@@ -59,7 +61,7 @@ class ScrollingWidget(Observable):
         self.scrolling_controller.set_flags(Gtk.EventControllerScrollFlags.BOTH_AXES | Gtk.EventControllerScrollFlags.KINETIC)
         self.scrolling_controller.connect('scroll', self.on_scroll)
         self.scrolling_controller.connect('decelerate', self.on_decelerate)
-        self.view.add_controller(self.scrolling_controller)
+        self.content.add_controller(self.scrolling_controller)
 
         self.adjustment_x.connect('changed', self.on_adjustment_changed)
         self.adjustment_x.connect('value-changed', self.on_adjustment_changed)
@@ -109,12 +111,16 @@ class ScrollingWidget(Observable):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
         if controller.get_current_event_state() & modifiers == 0:
+            sigmoid = 10 / (1 + 2.71828**(-0.1 * abs(dy) + 2.3))
+            dy *= sigmoid
+            dx *= sigmoid
+
             self.adjustment_x.set_value(self.adjustment_x.get_value() + dx)
             self.adjustment_y.set_value(self.adjustment_y.get_value() + dy)
         if controller.get_current_event_state() & modifiers == Gdk.ModifierType.CONTROL_MASK:
             self.zoom_momentum += dy + dx
             if(self.scrolling_queue.empty()):
-                self.add_change_code('zoom_request', self.zoom_momentum)
+                self.add_change_code('zoom_request', self.zoom_momentum * self.zoom_multiplier)
                 self.zoom_momentum = 0
 
     def on_decelerate(self, controller, vel_x, vel_y):
