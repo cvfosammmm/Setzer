@@ -111,7 +111,7 @@ class PreviewZoomManager(Observable):
         y = (1 - factor) * prev_pages * layout.page_gap + factor * self.view.content.scrolling_offset_y
 
         self.set_zoom_level(zoom_level)
-        self.preview.scroll_to_position(x, y, do_it_now=True)
+        self.preview.scroll_to_position(x, y)
 
     def set_zoom_level(self, level):
         if level == None: return

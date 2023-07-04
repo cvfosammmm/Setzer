@@ -92,7 +92,7 @@ class PreviewController(object):
         prev_pages = self.view.content.scrolling_offset_y // (layout.page_height + layout.page_gap)
         y = (1 - factor) * prev_pages * layout.page_gap + factor * self.view.content.scrolling_offset_y + (factor - 1) * self.view.content.cursor_y
         manager.set_zoom_level(zoom_level)
-        self.preview.scroll_to_position(x, y, do_it_now=True)
+        self.preview.scroll_to_position(x, y)
 
     def on_hover_state_change(self, *arguments):
         self.update_cursor()

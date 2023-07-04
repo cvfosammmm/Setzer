@@ -19,7 +19,7 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import GObject, Gdk, Gtk
 
-import time, queue
+import time
 
 from setzer.helpers.observable import Observable
 
@@ -37,8 +37,6 @@ class ScrollingWidget(Observable):
         self.zoom_momentum = 0
         self.sigmoid = 1
         self.last_cursor_scrolling_change = time.time()
-        self.scrolling_queue = queue.Queue()
-        GObject.timeout_add(50, self.scrolling_loop)
 
         self.view = Gtk.Overlay()
         self.content = Gtk.DrawingArea()
@@ -85,24 +83,11 @@ class ScrollingWidget(Observable):
     def queue_draw(self):
         self.content.queue_draw()
 
-    def scroll_to_position(self, position, do_it_now):
+    def scroll_to_position(self, position):
         window_width = self.width
         yoffset = max(position[1], 0)
         xoffset = max(position[0], 0)
-
-        if do_it_now:
-            while self.scrolling_queue.empty() == False:
-                self.scrolling_queue.get(block=False)
-            self.scroll_now([xoffset, yoffset])
-        else:
-            self.scrolling_queue.put([xoffset, yoffset])
-
-    def scrolling_loop(self, widget=None, allocation=None):
-        while self.scrolling_queue.empty() == False:
-            todo = self.scrolling_queue.get(block=False)
-            if self.scrolling_queue.empty():
-                self.scroll_now(todo)
-        return True
+        self.scroll_now([xoffset, yoffset])
 
     def scroll_now(self, position):
         self.adjustment_x.set_value(position[0])
@@ -120,9 +105,8 @@ class ScrollingWidget(Observable):
             self.adjustment_y.set_value(self.adjustment_y.get_value() + dy)
         if controller.get_current_event_state() & modifiers == Gdk.ModifierType.CONTROL_MASK:
             self.zoom_momentum += dy + dx
-            if(self.scrolling_queue.empty()):
-                self.add_change_code('zoom_request', self.zoom_momentum * self.zoom_multiplier)
-                self.zoom_momentum = 0
+            self.add_change_code('zoom_request', self.zoom_momentum * self.zoom_multiplier)
+            self.zoom_momentum = 0
 
     def on_decelerate(self, controller, vel_x, vel_y):
         data = {'starting_time': time.time(), 'initial_position': self.scrolling_offset_y, 'position': self.scrolling_offset_y, 'vel_y': vel_y * self.sigmoid}

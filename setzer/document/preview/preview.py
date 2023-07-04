@@ -136,12 +136,12 @@ class Preview(Observable):
         if self.pdf_filename != None:
             Gio.AppInfo.launch_default_for_uri('file:' + self.pdf_filename)
 
-    def scroll_to_position(self, x, y, do_it_now=False):
+    def scroll_to_position(self, x, y):
         if self.layout == None: return
 
-        self.view.content.scroll_to_position([x, y], do_it_now)
+        self.view.content.scroll_to_position([x, y])
 
-    def scroll_dest_on_screen(self, dest, do_it_now=False):
+    def scroll_dest_on_screen(self, dest):
         if self.layout == None: return
 
         page_number = dest.page_num
@@ -151,11 +151,10 @@ class Preview(Observable):
         x = max(min(left, content.scrolling_offset_x), content.scrolling_offset_x + content.width)
         y = (self.layout.page_height + self.layout.page_gap) * (page_number) - top - self.layout.page_gap
 
-        self.view.content.scroll_to_position([x, y], do_it_now)
+        self.view.content.scroll_to_position([x, y])
 
     def update_position(self):
         if self.layout == None: return
-        if not self.view.content.scrolling_queue.empty(): return
 
         self.add_change_code('position_changed')
 
