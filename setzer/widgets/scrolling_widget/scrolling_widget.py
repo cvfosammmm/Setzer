@@ -35,6 +35,7 @@ class ScrollingWidget(Observable):
         self.width, self.height = 0, 0
         self.cursor_x, self.cursor_y = None, None
         self.zoom_momentum = 0
+        self.sigmoid = 1
         self.last_cursor_scrolling_change = time.time()
         self.scrolling_queue = queue.Queue()
         GObject.timeout_add(50, self.scrolling_loop)
@@ -111,9 +112,9 @@ class ScrollingWidget(Observable):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
         if controller.get_current_event_state() & modifiers == 0:
-            sigmoid = 10 / (1 + 2.71828**(-0.1 * abs(dy) + 2.3))
-            dy *= sigmoid
-            dx *= sigmoid
+            self.sigmoid = min(10, 15 / (1 + 2.71828**(-0.1 * abs(dy) + 2.3)))
+            dy *= self.sigmoid
+            dx *= self.sigmoid
 
             self.adjustment_x.set_value(self.adjustment_x.get_value() + dx)
             self.adjustment_y.set_value(self.adjustment_y.get_value() + dy)
@@ -124,7 +125,27 @@ class ScrollingWidget(Observable):
                 self.zoom_momentum = 0
 
     def on_decelerate(self, controller, vel_x, vel_y):
-        pass
+        data = {'starting_time': time.time(), 'initial_position': self.scrolling_offset_y, 'position': self.scrolling_offset_y, 'vel_y': vel_y * self.sigmoid}
+        self.deceleration(data)
+
+    def deceleration(self, data):
+        if data['position'] != self.scrolling_offset_y: return False
+
+        time_elapsed = time.time() - data['starting_time']
+
+        exponential_factor = 2.71828 ** (-4 * time_elapsed)
+        position = data['initial_position'] + (1 - exponential_factor) * (data['vel_y'] / 4)
+        velocity = data['vel_y'] * exponential_factor
+
+        if abs(velocity) < 0.1: return False
+
+        x = self.scrolling_offset_x
+        y = position
+        self.scroll_now([x, y])
+        data['position'] = y
+        GObject.timeout_add(15, self.deceleration, data)
+
+        return False
 
     def on_resize(self, drawing_area, width, height):
         self.width, self.height = width, height
