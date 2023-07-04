@@ -35,6 +35,7 @@ class Shortcut(Gtk.Shortcut):
 
     def action(self, a, b, callback):
         callback()
+        return True
 
 
 class Shortcuts(object):
