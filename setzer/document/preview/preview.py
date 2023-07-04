@@ -158,4 +158,27 @@ class Preview(Observable):
 
         self.add_change_code('position_changed')
 
+    def set_synctex_rectangles(self, rectangles):
+        if self.layout == None: return
+
+        self.visible_synctex_rectangles = rectangles
+        self.layouter.update_synctex_rectangles(self.layout)
+        self.visible_synctex_rectangles_time = time.time()
+
+        if len(rectangles) > 0:
+            content = self.view.content
+            position = rectangles[0]
+            window_width = self.view.get_allocated_width()
+            page_number = position['page']
+            left = position['h'] * self.layout.scale_factor
+            top = position['v'] * self.layout.scale_factor
+            width = position['width'] * self.layout.scale_factor
+            height = position['height'] * self.layout.scale_factor
+
+            x = max(min(left - 18, content.scrolling_offset_x), left + width - content.width + 18)
+            y = (self.layout.page_height + self.layout.page_gap) * (page_number - 1) + max(0, top - height / 2 - content.height * 0.3)
+
+            content.scroll_to_position([x, y])
+            self.presenter.start_fade_loop()
+
 

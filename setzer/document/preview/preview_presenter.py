@@ -104,6 +104,7 @@ class PreviewPresenter(object):
         for page_number in range(first_page, last_page + 1):
             self.draw_page_background_and_outline(ctx, border_color)
             self.draw_rendered_page(ctx, page_number)
+            self.draw_synctex_rectangles(ctx, page_number)
 
             ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, page_height + self.preview.layout.page_gap))
 
@@ -143,5 +144,23 @@ class PreviewPresenter(object):
             ctx.fill()
             ctx.set_operator(cairo.Operator.OVER)
         ctx.set_matrix(matrix)
+
+    def draw_synctex_rectangles(self, ctx, page_number):
+        try:
+            rectangles = self.preview.layout.visible_synctex_rectangles[page_number]
+        except KeyError: pass
+        else:
+            time_factor = self.ease(min(self.highlight_duration + 0.25 - (time.time() - self.preview.visible_synctex_rectangles_time), 0.25) * 4)
+            if time_factor < 0:
+                self.preview.set_synctex_rectangles(list())
+            else:
+                ctx.set_source_rgba(0.976, 0.941, 0.420, 0.6 * time_factor)
+                ctx.set_operator(cairo.Operator.MULTIPLY)
+                for rectangle in rectangles:
+                    ctx.rectangle(rectangle['x'], rectangle['y'], rectangle['width'], rectangle['height'])
+                ctx.fill()
+                ctx.set_operator(cairo.Operator.OVER)
+
+    def ease(self, factor): return (factor - 1)**3 + 1
 
 

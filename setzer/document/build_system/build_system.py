@@ -104,7 +104,6 @@ class BuildSystem(Observable):
 
     def update_can_sync(self, *params):
         self.can_sync = False
-        return #TODO
         if self.has_synctex_file and self.document.preview.poppler_document != None:
             self.can_sync = True
         else:
@@ -195,7 +194,7 @@ class BuildSystem(Observable):
                 self.document.add_change_code('pdf_updated')
 
             if result_blob['forward_sync'] != None:
-                #TODO self.document.preview.set_synctex_rectangles(result_blob['forward_sync'])
+                self.document.preview.set_synctex_rectangles(result_blob['forward_sync'])
                 self.show_build_state('')
 
             if result_blob['build'] != None:
