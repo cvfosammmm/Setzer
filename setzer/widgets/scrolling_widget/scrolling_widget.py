@@ -29,12 +29,9 @@ class ScrollingWidget(Observable):
     def __init__(self):
         Observable.__init__(self)
 
-        self.zoom_multiplier = 0.005
-
         self.scrolling_offset_x, self.scrolling_offset_y = 0, 0
         self.width, self.height = 0, 0
         self.cursor_x, self.cursor_y = None, None
-        self.zoom_momentum = 0
         self.sigmoid = 1
         self.last_cursor_scrolling_change = time.time()
 
@@ -97,16 +94,23 @@ class ScrollingWidget(Observable):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
         if controller.get_current_event_state() & modifiers == 0:
-            self.sigmoid = min(10, 15 / (1 + 2.71828**(-0.1 * abs(dy) + 2.3)))
-            dy *= self.sigmoid
-            dx *= self.sigmoid
+            if controller.get_unit() == Gdk.ScrollUnit.WHEEL:
+                dx *= self.adjustment_x.get_page_size() ** (2/3)
+                dy *= self.adjustment_y.get_page_size() ** (2/3)
+            else:
+                self.sigmoid = min(10, 15 / (1 + 2.71828**(-0.1 * abs(dy) + 2.3)))
+                dy *= self.sigmoid
+                dx *= self.sigmoid
 
             self.adjustment_x.set_value(self.adjustment_x.get_value() + dx)
             self.adjustment_y.set_value(self.adjustment_y.get_value() + dy)
+
         if controller.get_current_event_state() & modifiers == Gdk.ModifierType.CONTROL_MASK:
-            self.zoom_momentum += dy + dx
-            self.add_change_code('zoom_request', self.zoom_momentum * self.zoom_multiplier)
-            self.zoom_momentum = 0
+            if controller.get_unit() == Gdk.ScrollUnit.WHEEL:
+                zoom_amount = dy * 0.1
+            else:
+                zoom_amount = (dy + dx) * 0.005
+            self.add_change_code('zoom_request', zoom_amount)
 
     def on_decelerate(self, controller, vel_x, vel_y):
         data = {'starting_time': time.time(), 'initial_position': self.scrolling_offset_y, 'position': self.scrolling_offset_y, 'vel_y': vel_y * self.sigmoid}
