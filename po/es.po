@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 15:33+0200\n"
-"PO-Revision-Date: 2023-06-27 22:54+0000\n"
+"PO-Revision-Date: 2023-06-28 06:49+0000\n"
 "Last-Translator: Óscar Fernández Díaz <oscfdezdz@users.noreply.hosted.weblate"
 ".org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/setzer/"
@@ -89,7 +89,7 @@ msgstr "Referencia a la página de '{label}'"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:49
 msgid "Page reference"
-msgstr "Página de referencia"
+msgstr "Referencia de página"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:50
 #, python-brace-format
@@ -103,7 +103,7 @@ msgstr "Referencia entre paréntesis"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:52
 #, python-brace-format
 msgid "Cite '{label}'"
-msgstr "Cita '{label}'"
+msgstr "Citar '{label}'"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:52
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:188
@@ -113,7 +113,7 @@ msgstr "Cita"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:53
 #, python-brace-format
 msgid "Cite '{label}' (abbreviated)"
-msgstr "Cita '{label}' (abreviada)"
+msgstr "Citar '{label}' (abreviada)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:53
 msgid "Citation (abbreviated)"
@@ -122,7 +122,7 @@ msgstr "Cita (abreviada)"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:54
 #, python-brace-format
 msgid "Cite '{label}' (abbreviated with brackets)"
-msgstr "Cita '{label}' (abreviada entre paréntesis)"
+msgstr "Citar '{label}' (abreviada entre paréntesis)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:54
 msgid "Citation (abbreviated with brackets)"
@@ -131,7 +131,7 @@ msgstr "Cita (abreviada entre paréntesis)"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:55
 #, python-brace-format
 msgid "Cite '{label}' (detailed)"
-msgstr "Cita '{label}' (detallada)"
+msgstr "Citar '{label}' (detallada)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:55
 msgid "Citation (detailed)"
@@ -140,7 +140,7 @@ msgstr "Cita (detallada)"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:56
 #, python-brace-format
 msgid "Cite '{label}' (detailed with brackets)"
-msgstr "Cita '{label}' (detallada entre paréntesis)"
+msgstr "Citar '{label}' (detallada entre paréntesis)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:56
 msgid "Citation (detailed with brackets)"
@@ -149,7 +149,7 @@ msgstr "Cita (detallada entre paréntesis)"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:57
 #, python-brace-format
 msgid "Cite '{label}' (alternative style 1)"
-msgstr "Cita '{label}' (estilo alternativo 1)"
+msgstr "Citar '{label}' (estilo alternativo 1)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:57
 msgid "Citation (alternative style 1)"
@@ -158,7 +158,7 @@ msgstr "Cita (estilo alternativo 1)"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:58
 #, python-brace-format
 msgid "Cite '{label}' (alternative style 2)"
-msgstr "Cita '{label}' (estilo alternativo 2)"
+msgstr "Citar '{label}' (estilo alternativo 2)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:58
 msgid "Citation (alternative style 2)"
@@ -167,7 +167,7 @@ msgstr "Cita (estilo alternativo 2)"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:59
 #, python-brace-format
 msgid "Cite '{label}' (author)"
-msgstr "Cita '{label}' (autor)"
+msgstr "Citar '{label}' (autor)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:59
 msgid "Citation (author)"
@@ -176,7 +176,7 @@ msgstr "Cita (autor)"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:60
 #, python-brace-format
 msgid "Cite '{label}' (author detailed)"
-msgstr "Cita '{label}' (autor detallado)"
+msgstr "Citar '{label}' (autor detallado)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:60
 msgid "Citation (author detailed)"
@@ -185,7 +185,7 @@ msgstr "Cita (autor detallado)"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:61
 #, python-brace-format
 msgid "Cite '{label}' (year)"
-msgstr "Cita '{label}' (año)"
+msgstr "Citar '{label}' (año)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:61
 msgid "Citation (year)"
@@ -194,7 +194,7 @@ msgstr "Cita (año)"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:62
 #, python-brace-format
 msgid "Cite '{label}' (year with brackets)"
-msgstr "Cita '{label}' (año entre paréntesis)"
+msgstr "Citar '{label}' (año entre paréntesis)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:62
 msgid "Citation (year with brackets)"
@@ -204,7 +204,7 @@ msgstr "Cita (año entre paréntesis)"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:65
 #, python-brace-format
 msgid "Cite '{label}' (BibLaTeX)"
-msgstr "Cita '{label}' (BibLaTeX)"
+msgstr "Citar '{label}' (BibLaTeX)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:63
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:65
@@ -214,7 +214,7 @@ msgstr "Cita BibLaTeX"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:64
 #, python-brace-format
 msgid "Cite '{label}' (BibLaTeX, with brackets)"
-msgstr "Cita '{label}' (BibLaTeX, entre paréntesis)"
+msgstr "Citar '{label}' (BibLaTeX, entre paréntesis)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:64
 msgid "BibLaTeX citation (with brackets)"
@@ -1163,7 +1163,7 @@ msgstr "Todos los valores están en cm (1 pulgada ≅ 2.54 cm)."
 
 #: setzer/dialogs/document_wizard/pages/page.py:112
 msgid "Font size"
-msgstr "Tamaño de letra"
+msgstr "Tamaño de tipografía"
 
 #: setzer/dialogs/document_wizard/pages/page_report_settings.py:103
 #: setzer/dialogs/document_wizard/pages/page_report_settings.py:104
@@ -1735,7 +1735,7 @@ msgstr "Tipografía"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:247
 msgid "Use the system fixed width font ("
-msgstr "Usar la tipografía de anchura fija del sistema ("
+msgstr "Usar la tipografía de monoespaciada del sistema ("
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:254
 msgid "Set Editor Font:"
@@ -2205,7 +2205,7 @@ msgstr "Guardar todos los documentos"
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:171
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:188
 msgid "View"
-msgstr "Ver"
+msgstr "Vista"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:176
 msgid "Keyboard Shortcuts"
@@ -2451,7 +2451,7 @@ msgstr "Espaciado vertical"
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:232
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:288
 msgid "International Accents"
-msgstr "Acentos Internacionales"
+msgstr "Acentos internacionales"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:234
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:297
