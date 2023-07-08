@@ -35,16 +35,19 @@ class PreviewController(object):
 
         self.zoom_momentum = 0
         self.context_menu_popup_button_event = None
+        self.panning_start_pos = None
 
         display = self.view.scrolled_window.get_display()
         self.cursor_default = Gdk.Cursor.new_from_name(display, 'default')
         self.cursor_pointer = Gdk.Cursor.new_from_name(display, 'pointer')
+        self.cursor_move = Gdk.Cursor.new_from_name(display, 'move')
 
         self.view.connect('size-allocate', self.on_size_allocate)
         self.view.scrolled_window.get_hadjustment().connect('value-changed', self.on_hadjustment_changed)
         self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_vadjustment_changed)
         self.view.scrolled_window.connect('scroll-event', self.on_scroll)
         self.view.drawing_area.connect('button-press-event', self.on_button_press)
+        self.view.drawing_area.connect('button-release-event', self.on_button_release)
         self.view.scrolled_window.connect('enter-notify-event', self.on_enter)
         self.view.scrolled_window.connect('motion-notify-event', self.on_hover)
         self.view.scrolled_window.connect('leave-notify-event', self.on_leave)
@@ -122,6 +125,13 @@ class PreviewController(object):
                     link_target = _('Go to page ') + str(link[1].page_num)
                 break
 
+        if self.panning_start_pos is not None:
+            cursor = self.cursor_move
+            adj = self.view.scrolled_window.get_hadjustment()
+            adj.set_value(adj.get_value() + self.panning_start_pos[0] - event.x)
+            adj = self.view.scrolled_window.get_vadjustment()
+            adj.set_value(adj.get_value() + self.panning_start_pos[1] - event.y)
+
         window = self.view.scrolled_window.get_window()
         window.set_cursor(cursor)
         self.view.set_link_target_string(link_target)
@@ -142,6 +152,10 @@ class PreviewController(object):
             self.view.context_menu.show_all()
             self.view.context_menu.popup_at_pointer(event)
             self.context_menu_popup_button_event = event
+            return True
+        elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 2:
+            self.panning_start_pos = (event.x, event.y)
+            self.update_cursor(event)
             return True
         elif event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
             self.init_backward_sync(event)
@@ -165,6 +179,10 @@ class PreviewController(object):
                         thread.start_new_thread(webbrowser.open_new_tab, (link[1],))
 
             return True
+
+    def on_button_release(self, widget, event):
+        self.panning_start_pos = None
+        self.update_cursor(event)
 
     def on_external_viewer_button_clicked(self, button):
         self.preview.open_external_viewer()

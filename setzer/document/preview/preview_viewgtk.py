@@ -48,6 +48,7 @@ class PreviewView(Gtk.VBox):
         self.drawing_area = Gtk.DrawingArea()
         self.drawing_area.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self.drawing_area.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
+        self.drawing_area.add_events(Gdk.EventMask.BUTTON2_MOTION_MASK)
 
         self.menu_item_backward_sync = Gtk.MenuItem.new_with_label(_('Show Source'))
         self.menu_item_zoom_in = Gtk.MenuItem.new_with_label(_('Zoom In'))
