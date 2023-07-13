@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 15:33+0200\n"
-"PO-Revision-Date: 2023-07-05 23:52+0000\n"
+"PO-Revision-Date: 2023-07-14 07:40+0000\n"
 "Last-Translator: Norwid Behrnd <nbehrnd@yahoo.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/setzer/"
 "application/de/>\n"
@@ -27,7 +27,7 @@ msgid ""
 "Setzer lets you Write LaTeX documents with an easy to use yet full-featured "
 "editor."
 msgstr ""
-"Schreiben Sie LaTeX-Dokumente in einem einfach zu bedienendem Editor, die "
+"Schreiben Sie LaTeX-Dokumente in einem einfach zu bedienenden Editor, der "
 "viele nützliche Funktionen hat."
 
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:13
@@ -224,7 +224,9 @@ msgstr "Setzer ist ein LaTeX-Editor."
 
 #: setzer/dialogs/about/about.py:51
 msgid "translator-credits"
-msgstr "Stephan Lachnit <stephanlachnit@protonmail.com>"
+msgstr ""
+"Stephan Lachnit <stephanlachnit@protonmail.com>\n"
+"Norwid Behrnd <nbehrnd@yahoo.com>"
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages_viewgtk.py:51
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:109
