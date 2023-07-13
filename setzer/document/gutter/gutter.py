@@ -125,7 +125,7 @@ class Gutter(object):
         fg_color = ColorManager.get_ui_color('theme_fg_color')
         Gdk.cairo_set_source_rgba(ctx, fg_color)
 
-        if self.current_line == 0: layout = self.layout_current_line
+        if self.current_line == self.lines[0]: layout = self.layout_current_line
         else: layout = self.layout_normal
 
         if self.lines[0] == self.lines[1]:
