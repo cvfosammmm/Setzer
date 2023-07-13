@@ -225,7 +225,9 @@ msgstr "Setzer ist ein LaTeX-Editor."
 
 #: setzer/dialogs/about/about.py:51
 msgid "translator-credits"
-msgstr "Stephan Lachnit <stephanlachnit@protonmail.com>"
+msgstr ""
+msgstr "Stephan Lachnit <stephanlachnit@protonmail.com>\n"
+msgstr "Norwid Behrnd <nbehrnd@yahoo.com>"
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages_viewgtk.py:51
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:109
