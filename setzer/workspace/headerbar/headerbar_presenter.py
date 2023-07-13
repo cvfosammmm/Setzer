@@ -54,7 +54,7 @@ class HeaderbarPresenter(object):
         if len(items) > 0:
             self.view.session_box_separator.show()
         for item in items:
-            button = MenuBuilder.create_action_button(item)
+            button = MenuBuilder.create_button(item)
             button.connect('clicked', self.model.on_restore_session_click, item)
             self.view.prev_sessions_box.append(button)
             self.view.session_file_buttons.append(button)

@@ -17,9 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-gi.require_version('GtkSource', '5')
 from gi.repository import Gtk
-from gi.repository import GtkSource
 
 
 class DocumentView(Gtk.Box):
@@ -34,7 +32,7 @@ class DocumentView(Gtk.Box):
         self.overlay.set_vexpand(True)
         self.scrolled_window = Gtk.ScrolledWindow()
 
-        self.source_view = document.content.source_view
+        self.source_view = document.source_view
         self.source_view.set_monospace(True)
         self.source_view.set_smart_home_end(True)
         self.source_view.set_auto_indent(True)

@@ -114,9 +114,9 @@ class ServiceLocator(object):
 
     def get_style_scheme():
         if ServiceLocator.get_is_dark_mode():
-            name = ServiceLocator.get_settings().get_value('preferences', 'syntax_scheme_dark_mode')
+            name = ServiceLocator.get_settings().get_value('preferences', 'color_scheme_dark_mode')
         else:
-            name = ServiceLocator.get_settings().get_value('preferences', 'syntax_scheme')
+            name = ServiceLocator.get_settings().get_value('preferences', 'color_scheme')
         return ServiceLocator.get_source_style_scheme_manager().get_scheme(name)
 
 

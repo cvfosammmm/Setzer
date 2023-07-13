@@ -72,9 +72,9 @@ class BuildLogController(object):
         line_number = item[3] - 1
         if line_number < 0: return True
 
-        self.build_log.workspace.active_document.content.place_cursor(item[3] - 1)
-        self.build_log.workspace.active_document.content.scroll_cursor_onscreen()
-        self.build_log.workspace.active_document.view.source_view.grab_focus()
+        self.build_log.workspace.active_document.place_cursor(item[3] - 1)
+        self.build_log.workspace.active_document.scroll_cursor_onscreen()
+        self.build_log.workspace.active_document.source_view.grab_focus()
         return True
 
 

@@ -22,6 +22,9 @@ from gi.repository import Adw, Gdk, Gtk
 
 import setzer.workspace.build_log.build_log_viewgtk as build_log_view
 import setzer.workspace.headerbar.headerbar_viewgtk as headerbar_view
+import setzer.workspace.shortcutsbar.latex_shortcutsbar.latex_shortcutsbar_viewgtk as latex_shortcutsbar_view
+import setzer.workspace.shortcutsbar.bibtex_shortcutsbar.bibtex_shortcutsbar_viewgtk as bibtex_shortcutsbar_view
+import setzer.workspace.shortcutsbar.others_shortcutsbar.others_shortcutsbar_viewgtk as others_shortcutsbar_view
 import setzer.workspace.preview_panel.preview_panel_viewgtk as preview_panel_view
 import setzer.workspace.help_panel.help_panel_viewgtk as help_panel_view
 import setzer.workspace.welcome_screen.welcome_screen_viewgtk as welcome_screen_view
@@ -51,7 +54,9 @@ class MainWindow(Adw.ApplicationWindow):
         self.latex_notebook.set_scrollable(True)
         self.latex_notebook.set_size_request(550, -1)
         self.latex_notebook.set_vexpand(True)
+        self.latex_shortcutsbar = latex_shortcutsbar_view.LaTeXShortcutsbar()
         self.latex_notebook_wrapper = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.latex_notebook_wrapper.append(self.latex_shortcutsbar)
         self.latex_notebook_wrapper.append(self.latex_notebook)
 
         # bibtex notebook
@@ -61,7 +66,9 @@ class MainWindow(Adw.ApplicationWindow):
         self.bibtex_notebook.set_scrollable(True)
         self.bibtex_notebook.set_size_request(550, -1)
         self.bibtex_notebook.set_vexpand(True)
+        self.bibtex_shortcutsbar = bibtex_shortcutsbar_view.BibTeXShortcutsbar()
         self.bibtex_notebook_wrapper = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.bibtex_notebook_wrapper.append(self.bibtex_shortcutsbar)
         self.bibtex_notebook_wrapper.append(self.bibtex_notebook)
 
         # others notebook
@@ -71,7 +78,9 @@ class MainWindow(Adw.ApplicationWindow):
         self.others_notebook.set_scrollable(True)
         self.others_notebook.set_size_request(550, -1)
         self.others_notebook.set_vexpand(True)
+        self.others_shortcutsbar = others_shortcutsbar_view.OthersShortcutsbar()
         self.others_notebook_wrapper = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.others_notebook_wrapper.append(self.others_shortcutsbar)
         self.others_notebook_wrapper.append(self.others_notebook)
 
         # build log
@@ -91,8 +100,10 @@ class MainWindow(Adw.ApplicationWindow):
         self.preview_help_stack.add_named(self.preview_panel, 'preview')
         self.preview_help_stack.add_named(self.help_panel, 'help')
         self.preview_paned = animated_paned.AnimatedHPaned(self.build_log_paned, self.preview_help_stack, False)
+        self.preview_paned.set_wide_handle(True)
         self.preview_paned_overlay.set_child(self.preview_paned)
         self.sidebar_paned = animated_paned.AnimatedHPaned(Gtk.Label.new('sidebar placeholder'), self.preview_paned_overlay, True)
+        self.sidebar_paned.set_wide_handle(True)
         self.sidebar_paned.get_style_context().add_class('sidebar_paned')
 
         # welcome screen

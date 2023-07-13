@@ -45,17 +45,17 @@ class PreviewZoomWidget(Gtk.Revealer):
 
         self.popover = MenuBuilder.create_menu()
 
-        self.button_fit_to_width = MenuBuilder.create_action_button(_('Fit to Width'))
+        self.button_fit_to_width = MenuBuilder.create_button(_('Fit to Width'))
         MenuBuilder.add_widget(self.popover, self.button_fit_to_width)
-        self.button_fit_to_text_width = MenuBuilder.create_action_button(_('Fit to Text Width'))
+        self.button_fit_to_text_width = MenuBuilder.create_button(_('Fit to Text Width'))
         MenuBuilder.add_widget(self.popover, self.button_fit_to_text_width)
-        self.button_fit_to_height = MenuBuilder.create_action_button(_('Fit to Height'))
+        self.button_fit_to_height = MenuBuilder.create_button(_('Fit to Height'))
         MenuBuilder.add_widget(self.popover, self.button_fit_to_height)
         MenuBuilder.add_separator(self.popover)
 
         self.zoom_level_buttons = dict()
         for level in model.preview.zoom_manager.get_list_of_zoom_levels():
-            self.zoom_level_buttons[level] = MenuBuilder.create_action_button('{0:.0f}%'.format(level * 100))
+            self.zoom_level_buttons[level] = MenuBuilder.create_button('{0:.0f}%'.format(level * 100))
             MenuBuilder.add_widget(self.popover, self.zoom_level_buttons[level])
 
         self.label = FixedWidthLabel(66)

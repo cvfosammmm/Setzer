@@ -22,19 +22,19 @@ class HeaderbarController(object):
         self.model = model
         self.view = view
 
-        actions = self.model.workspace.actions
-        self.view.button_latex.connect('clicked', self.on_new_document_button_click, actions.new_latex_document_action)
-        self.view.button_bibtex.connect('clicked', self.on_new_document_button_click, actions.new_bibtex_document_action)
+        actions = self.model.workspace.actions.actions
+        self.view.button_latex.connect('clicked', self.on_new_document_button_click, actions['new-latex-document'])
+        self.view.button_bibtex.connect('clicked', self.on_new_document_button_click, actions['new-bibtex-document'])
 
         self.view.button_restore_session.connect('clicked', self.model.on_restore_session_click, None)
-        self.view.button_save_session.connect('clicked', self.on_hamburger_button_click, actions.save_session_action)
+        self.view.button_save_session.connect('clicked', self.on_hamburger_button_click, actions['save-session'])
 
-        self.view.button_save_as.connect('clicked', self.on_hamburger_button_click, actions.save_as_action)
-        self.view.button_save_all.connect('clicked', self.on_hamburger_button_click, actions.save_all_action)
-        self.view.button_about.connect('clicked', self.on_hamburger_button_click, actions.show_about_action)
-        self.view.button_close_all.connect('clicked', self.on_hamburger_button_click, actions.close_all_action)
-        self.view.button_close_active.connect('clicked', self.on_hamburger_button_click, actions.close_document_action)
-        self.view.button_quit.connect('clicked', self.on_hamburger_button_click, actions.quit_action)
+        self.view.button_save_as.connect('clicked', self.on_hamburger_button_click, actions['save-as'])
+        self.view.button_save_all.connect('clicked', self.on_hamburger_button_click, actions['save-all'])
+        self.view.button_about.connect('clicked', self.on_hamburger_button_click, actions['show-about-dialog'])
+        self.view.button_close_all.connect('clicked', self.on_hamburger_button_click, actions['close-all-documents'])
+        self.view.button_close_active.connect('clicked', self.on_hamburger_button_click, actions['close-active-document'])
+        self.view.button_quit.connect('clicked', self.on_hamburger_button_click, actions['quit'])
 
     def on_new_document_button_click(self, button, action):
         self.view.new_document_popover.popdown()

@@ -52,24 +52,22 @@ class AnimatedPaned(object):
         self.is_initialized = False
         self.animation_id = None
         self.is_visible = None
+        self.visible_before = False
         self.show_widget = False
         self.target_position = None
+        self.center_on_first_show = False
+        self.end_on_first_show = False
 
-        self.connect('realize', self.on_realize)
-        self.connect('notify', self.on_property_changed)
+        self.connect('notify::position', self.on_position_changed)
 
-    def on_realize(self, paned):
+    def on_position_changed(self, widget, position):
+        if self.animation_id != None: return
+
         if not self.is_initialized:
             self.animate(False)
             self.is_initialized = True
 
-    def on_property_changed(self, widget, pspec):
-        if not pspec.name == 'position': return
-        if not self.is_initialized: return
         if not self.show_widget: return
-        if self.animation_id != None: return
-
-        new_extent = self.get_animated_widget_extent()
 
         if self.animate_first_widget:
             self.set_target_position(self.get_position())
@@ -79,11 +77,28 @@ class AnimatedPaned(object):
     def set_target_position(self, position):
         self.target_position = position
 
+    def first_set_show_widget(self, show_widget):
+        self.set_show_widget(show_widget)
+        if show_widget:
+            self.animated_widget.show()
+        else:
+            self.animated_widget.hide()
+
     def set_show_widget(self, show_widget):
         self.show_widget = show_widget
 
+    def set_center_on_first_show(self):
+        self.center_on_first_show = True
+        self.end_on_first_show = False
+
+    def set_end_on_first_show(self):
+        self.center_on_first_show = False
+        self.end_on_first_show = True
+
     def set_is_visible(self, is_visible):
         self.is_visible = is_visible
+        if is_visible:
+            self.visible_before = True
 
     def set_shrink_animated_widget(self, shrink):
         if self.animate_first_widget:
@@ -97,6 +112,12 @@ class AnimatedPaned(object):
 
         frame_clock = self.get_frame_clock()
         duration = 200
+
+        if not self.visible_before:
+            if self.center_on_first_show:
+                self.set_target_position(self.get_paned_extent() / 2)
+            elif self.end_on_first_show:
+                self.set_target_position(self.get_paned_extent() - self.original_size_request)
 
         if self.show_widget:
             end = self.target_position
@@ -125,8 +146,8 @@ class AnimatedPaned(object):
                 self.animation_id = self.add_tick_callback(self.set_position_on_tick, (self.show_widget, start_time, end_time, start, end))
         else:
             if self.show_widget:
-                self.set_shrink_animated_widget(False)
                 self.animated_widget.show()
+                self.set_shrink_animated_widget(False)
                 self.set_is_visible(True)
             else:
                 self.set_shrink_animated_widget(True)

@@ -96,8 +96,8 @@ class OpenDocsPopover(Gtk.Popover):
         self.scrolled_window.set_propagate_natural_height(True)
         self.scrolled_window.set_propagate_natural_width(True)
 
-        self.set_root_document_button = MenuBuilder.create_action_button(_('Set one Document as Root'))
-        self.unset_root_document_button = MenuBuilder.create_action_button(_('Unset Root Document'))
+        self.set_root_document_button = MenuBuilder.create_button(_('Set one Document as Root'))
+        self.unset_root_document_button = MenuBuilder.create_button(_('Unset Root Document'))
 
         self.root_explaination1 = Gtk.Label.new(_('Click on a document in the list below to set it as root.'))
         self.root_explaination1.set_margin_top(6)

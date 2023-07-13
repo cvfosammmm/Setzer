@@ -52,7 +52,7 @@ class DocumentSwitcher(Observable):
         self.add_change_code('new_item', item)
         document.connect('filename_change', self.on_name_change)
         document.connect('displayname_change', self.on_name_change)
-        document.content.connect('modified_changed', self.on_modified_changed)
+        document.connect('modified_changed', self.on_modified_changed)
         document.connect('is_root_changed', self.on_is_root_changed)
 
     def on_document_removed(self, workspace, document):
@@ -61,7 +61,7 @@ class DocumentSwitcher(Observable):
         self.add_change_code('item_removed', item)
         document.disconnect('filename_change', self.on_name_change)
         document.disconnect('displayname_change', self.on_name_change)
-        document.content.disconnect('modified_changed', self.on_modified_changed)
+        document.disconnect('modified_changed', self.on_modified_changed)
         document.disconnect('is_root_changed', self.on_is_root_changed)
 
     def on_new_active_document(self, workspace, document):
@@ -77,16 +77,16 @@ class DocumentSwitcher(Observable):
     def on_root_state_changed(self, workspace, state):
         self.add_change_code('root_state_changed')
 
-    def on_modified_changed(self, content):
-        self.update_item(content.document)
+    def on_modified_changed(self, document):
+        self.update_item(document)
 
     def update_item(self, document):
-        self.items[document].view.set_name(document.get_displayname(), document.content.get_modified())
+        self.items[document].view.set_name(document.get_displayname(), document.source_buffer.get_modified())
         if document == self.workspace.get_active_document():
             self.presenter.show_document_name(document)
 
     def on_close_clicked(self, button, document):
-        if document.content.get_modified():
+        if document.source_buffer.get_modified():
             active_document = self.workspace.get_active_document()
             if document != active_document:
                 previously_active_document = active_document

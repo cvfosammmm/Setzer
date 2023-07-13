@@ -130,7 +130,7 @@ class BuildSystem(Observable):
         self.start_building()
 
     def set_forward_sync_arguments(self, active_document):
-        sb = active_document.content.source_buffer
+        sb = active_document.source_buffer
         self.forward_sync_arguments = dict()
         self.forward_sync_arguments['filename'] = active_document.get_filename()
         self.forward_sync_arguments['line'] = sb.get_iter_at_mark(sb.get_insert()).get_line() + 1
@@ -230,14 +230,14 @@ class BuildSystem(Observable):
         elif result_blob['backward_sync'] != None:
             if not self.document.root_is_set:
                 if result_blob['backward_sync']['filename'] == self.document.get_filename():
-                    #TODO self.document.content.set_synctex_position(result_blob['backward_sync'])
-                    self.document.content.scroll_cursor_onscreen()
+                    #TODO self.document.set_synctex_position(result_blob['backward_sync'])
+                    self.document.scroll_cursor_onscreen()
             elif self.document.is_root:
                 workspace = ServiceLocator.get_workspace()
                 document = workspace.open_document_by_filename(result_blob['backward_sync']['filename'])
                 if document != None:
-                    #TODO document.content.set_synctex_position(result_blob['backward_sync'])
-                    document.content.scroll_cursor_onscreen()
+                    #TODO document.set_synctex_position(result_blob['backward_sync'])
+                    document.scroll_cursor_onscreen()
 
         self.change_build_state('idle')
 
@@ -283,7 +283,7 @@ class BuildSystem(Observable):
             elif build_option_system_commands == 'enable':
                 additional_arguments += lualatex_prefix + '-shell-escape'
 
-            text = self.document.content.get_all_text()
+            text = self.document.get_all_text()
             do_cleanup = self.settings.get_value('preferences', 'cleanup_build_files')
 
         if mode == 'build':

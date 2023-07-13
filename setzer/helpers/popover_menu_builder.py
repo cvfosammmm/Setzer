@@ -51,11 +51,20 @@ class MenuBuilder():
         menu = PopoverMenu()
         return menu
 
-    def create_action_button(label, shortcut=None):
+    def create_button(label, icon_name=None, shortcut=None):
         button = Gtk.Button()
         button_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         button.set_child(button_box)
         button.get_style_context().add_class('action')
+
+        if icon_name == 'placeholder':
+            icon = Gtk.DrawingArea()
+            icon.set_size_request(24, 16)
+            button_box.append(icon)
+        elif icon_name != None:
+            icon = Gtk.Image.new_from_icon_name(icon_name)
+            icon.get_style_context().add_class('icon')
+            button_box.append(icon)
 
         button_box.append(Gtk.Label.new(label))
 

@@ -17,7 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, Pango
 
 from setzer.widgets.fixed_width_label.fixed_width_label import FixedWidthLabel
 
@@ -26,7 +26,8 @@ class PagingWidget(object):
 
     def __init__(self, preview):
         self.preview = preview
-        self.view = FixedWidthLabel(100)
+        self.view = FixedWidthLabel(160)
+        self.view.layout.set_alignment(Pango.Alignment.LEFT)
         self.view.get_style_context().add_class('paging-widget')
 
         self.preview.view.action_bar_left.append(self.view)

@@ -21,9 +21,9 @@ import time
 import pickle
 
 from setzer.document.document import Document
-from setzer.document.document_latex import DocumentLaTeX
-from setzer.document.document_bibtex import DocumentBibTeX
-from setzer.document.document_other import DocumentOther
+import setzer.document.build_system.build_system as build_system
+import setzer.document.build_widget.build_widget as build_widget
+import setzer.document.preview.preview as preview
 from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
@@ -31,6 +31,7 @@ import setzer.workspace.preview_panel.preview_panel_presenter as preview_panel_p
 import setzer.workspace.help_panel.help_panel as help_panel
 import setzer.workspace.welcome_screen.welcome_screen as welcome_screen
 import setzer.workspace.headerbar.headerbar as headerbar
+import setzer.workspace.shortcutsbar.shortcutsbar as shortcutsbar
 import setzer.workspace.build_log.build_log as build_log
 import setzer.workspace.keyboard_shortcuts.shortcuts as shortcuts
 import setzer.workspace.document_switcher.document_switcher as document_switcher
@@ -67,6 +68,7 @@ class Workspace(Observable):
 
     def init_workspace_controller(self):
         self.actions = actions.Actions(self)
+        self.shortcutsbar = shortcutsbar.Shortcutsbar(self)
         self.shortcuts = shortcuts.Shortcuts(self)
         self.presenter = workspace_presenter.WorkspacePresenter(self)
         self.headerbar = headerbar.Headerbar(self)
@@ -122,13 +124,19 @@ class Workspace(Observable):
         self.add_change_code('document_removed', document)
 
     def create_latex_document(self):
-        return DocumentLaTeX()
+        document = Document('latex')
+        document.preview = preview.Preview(document)
+        document.build_system = build_system.BuildSystem(document)
+        document.build_widget = build_widget.BuildWidget(document)
+        return document
 
     def create_bibtex_document(self):
-        return DocumentBibTeX()
+        document = Document('bibtex')
+        return document
 
     def create_other_document(self):
-        return DocumentOther()
+        document = Document('other')
+        return document
 
     def create_document_from_filename(self, filename):
         if filename[-4:] == '.tex':
@@ -170,6 +178,7 @@ class Workspace(Observable):
             self.active_document.set_last_activated(time.time())
             self.update_preview_visibility(self.active_document)
             self.add_change_code('new_active_document', document)
+            self.shortcuts.set_document_type(self.active_document.get_document_type())
             self.set_build_log()
 
     def set_build_log(self):
@@ -326,7 +335,7 @@ class Workspace(Observable):
     def get_unsaved_documents(self):
         unsaved_documents = list()
         for document in self.open_documents:
-            if document.content.get_modified():
+            if document.source_buffer.get_modified():
                 unsaved_documents.append(document)
 
         return unsaved_documents if len(unsaved_documents) >= 1 else None

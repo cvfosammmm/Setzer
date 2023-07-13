@@ -15,19 +15,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('GtkSource', '5')
+from gi.repository import GtkSource
 import os.path
 
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
 import setzer.document.document_viewgtk as document_view
+import setzer.document.gutter.gutter as gutter
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
+from setzer.app.font_manager import FontManager
 
 
 class Document(Observable):
 
-    def __init__(self):
+    def __init__(self, language):
         Observable.__init__(self)
+        self.language = language
 
         self.displayname = ''
         self.filename = None
@@ -48,8 +54,18 @@ class Document(Observable):
         self.symbols['packages_detailed'] = dict()
         self.symbols['blocks'] = list()
 
-    def init_default_modules(self):
+        self.settings = ServiceLocator.get_settings()
+
+        self.source_buffer = GtkSource.Buffer()
+        self.source_buffer.set_language(ServiceLocator.get_source_language(language))
+        self.source_view = GtkSource.View.new_with_buffer(self.source_buffer)
+        self.source_buffer.set_style_scheme(ServiceLocator.get_style_scheme())
+        self.source_buffer.connect('modified-changed', self.on_modified_change)
+        self.source_buffer.connect('changed', self.on_change)
+        self.source_buffer.connect('notify::cursor-position', self.on_cursor_position_change)
+
         self.view = document_view.DocumentView(self)
+        self.gutter = gutter.Gutter(self, self.view)
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
 
@@ -96,20 +112,22 @@ class Document(Observable):
         if not os.path.isfile(self.filename):
             self.set_filename(None)
             return False
-        if self.content == None: return False
 
         with open(self.filename) as f:
             text = f.read()
-        self.content.initially_set_text(text)
-        self.content.place_cursor(0, 0)
+
+        self.source_buffer.begin_irreversible_action()
+        self.source_buffer.set_text(text)
+        self.source_buffer.end_irreversible_action()
+        self.source_buffer.set_modified(False)
+        self.place_cursor(0, 0)
         self.update_save_date()
         return True
                 
     def save_to_disk(self):
         if self.filename == None: return False
-        if self.content == None: return False
 
-        text = self.content.get_all_text()
+        text = self.get_all_text()
         if text == None: return False
 
         dirname = os.path.dirname(self.filename)
@@ -120,7 +138,7 @@ class Document(Observable):
             f.write(text)
         self.update_save_date()
         self.controller.deleted_on_disk_dialog_shown_after_last_save = False
-        self.content.set_modified(False)
+        self.source_buffer.set_modified(False)
 
     def update_save_date(self):
         self.save_date = os.path.getmtime(self.filename)
@@ -171,5 +189,64 @@ class Document(Observable):
 
     def get_todos_with_offset(self):
         return self.symbols['todos_with_offset']
+
+    def is_latex_document(self):
+        return self.language == 'latex'
+
+    def is_bibtex_document(self):
+        return self.language == 'bibtex'
+
+    def get_document_type(self):
+        return self.language
+
+    def get_all_text(self):
+        return self.source_buffer.get_text(self.source_buffer.get_start_iter(), self.source_buffer.get_end_iter(), True)
+
+    def get_selected_text(self):
+        bounds = self.source_buffer.get_selection_bounds()
+        if len(bounds) == 2:
+            return self.source_buffer.get_text(bounds[0], bounds[1], True)
+        else:
+            return None
+
+    def place_cursor(self, line_number, offset=0):
+        _, text_iter = self.source_buffer.get_iter_at_line_offset(line_number, offset)
+        self.source_buffer.place_cursor(text_iter)
+
+    def delete_selection(self):
+        self.source_buffer.delete_selection(True, True)
+
+    def select_all(self, widget=None):
+        self.source_buffer.select_range(self.source_buffer.get_start_iter(), self.source_buffer.get_end_iter())
+
+    def on_modified_change(self, buffer):
+        self.add_change_code('modified_changed')
+
+    def on_change(self, buffer):
+        self.add_change_code('changed')
+        self.scroll_cursor_onscreen(margin_lines=0)
+
+    def on_cursor_position_change(self, buffer, location):
+        self.add_change_code('cursor_position_changed')
+        self.scroll_cursor_onscreen(margin_lines=0)
+        return True
+
+    def select_first_dot_around_cursor(self, offset_before, offset_after):
+        end_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        start_iter = end_iter.copy()
+        start_iter.backward_chars(offset_before)
+        end_iter.forward_chars(offset_after)
+        result = start_iter.forward_search('•', 0, end_iter)
+        if result != None:
+            self.source_buffer.select_range(result[0], result[1])
+
+    def scroll_cursor_onscreen(self, margin_lines=5):
+        height = self.view.scrolled_window.get_allocated_height()
+        if height > 0:
+            margin = margin_lines / (height / FontManager.get_line_height())
+
+            self.view.scrolled_window.set_kinetic_scrolling(False)
+            self.source_view.scroll_to_mark(self.source_buffer.get_insert(), margin, False, 0, 0)
+            self.view.scrolled_window.set_kinetic_scrolling(True)
 
 

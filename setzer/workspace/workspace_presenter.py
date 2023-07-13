@@ -109,19 +109,28 @@ class WorkspacePresenter(object):
             active_document.view.source_view.grab_focus()
 
     def setup_paneds(self):
-        if self.workspace.show_preview:
-            self.main_window.preview_help_stack.set_visible_child_name('preview')
-        elif self.workspace.show_help:
-            self.main_window.preview_help_stack.set_visible_child_name('help')
-        self.main_window.preview_paned.set_show_widget(self.workspace.show_preview or self.workspace.show_help)
+        show_sidebar = False#TODO(self.workspace.show_symbols or self.workspace.show_document_structure)
+        show_preview_help = (self.workspace.show_preview or self.workspace.show_help)
+        show_build_log = self.workspace.get_show_build_log()
+
+        sidebar_position = self.workspace.settings.get_value('window_state', 'sidebar_paned_position')
         preview_position = self.workspace.settings.get_value('window_state', 'preview_paned_position')
+        build_log_position = self.workspace.settings.get_value('window_state', 'build_log_paned_position')
+
+        if preview_position in [None, -1]: self.main_window.preview_paned.set_center_on_first_show()
+        if build_log_position in [None, -1]: self.main_window.build_log_paned.set_end_on_first_show()
+
+        if self.workspace.show_preview: self.main_window.preview_help_stack.set_visible_child_name('preview')
+        elif self.workspace.show_help: self.main_window.preview_help_stack.set_visible_child_name('help')
+
+        self.main_window.sidebar_paned.first_set_show_widget(show_sidebar)
+        self.main_window.preview_paned.first_set_show_widget(show_preview_help)
+        self.main_window.build_log_paned.first_set_show_widget(show_build_log)
+
         self.main_window.preview_paned.set_target_position(preview_position)
+        self.main_window.build_log_paned.set_target_position(build_log_position)
 
         self.main_window.headerbar.preview_toggle.set_active(self.workspace.show_preview)
         self.main_window.headerbar.help_toggle.set_active(self.workspace.show_help)
-
-        build_log_position = self.workspace.settings.get_value('window_state', 'build_log_paned_position')
-        self.main_window.build_log_paned.set_show_widget(self.workspace.get_show_build_log())
-        self.main_window.build_log_paned.set_target_position(build_log_position)
 
 

@@ -372,6 +372,17 @@ box.shortcutsbar {
     background-color: @theme_base_color;
     border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
+box.shortcutsbar button.scbar, box.shortcutsbar menubutton.scbar > button {
+    border-width: 0px;
+    margin: 0px;
+    box-shadow: none;
+    border-radius: 0px;
+    padding: 6px;
+}
+popover button image.icon {
+    padding-top: 2px;
+    padding-right: 8px;
+}
 popover.menu-own-quotes-symbolic {
     margin-left: 0px;
 }
@@ -408,7 +419,8 @@ box.preview button.scbar:active, box.preview .scbar > button:active {
     font-weight: normal;
 }
 .paging-widget {
-    padding-top: 10px;
+    padding-top: 9px;
+    padding-left: 9px;
 }
 label.target-label {
     border-top: 1px solid @borders;

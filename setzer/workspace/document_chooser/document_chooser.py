@@ -102,7 +102,7 @@ class DocumentChooser(object):
         self.view.popdown()
 
     def on_other_docs_clicked(self, button):
-        self.workspace.actions.open_document_dialog_action.activate()
+        self.workspace.actions.actions['open-document-dialog'].activate()
         self.view.popdown()
 
 
