@@ -40,6 +40,19 @@ class DocumentController(object):
         self.continue_save_date_loop = True
         GObject.timeout_add(500, self.save_date_loop)
 
+        self.secondary_click_controller = Gtk.GestureClick()
+        self.secondary_click_controller.set_button(3)
+        self.secondary_click_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
+        self.secondary_click_controller.connect('pressed', self.on_secondary_buttonpress)
+        self.view.source_view.add_controller(self.secondary_click_controller)
+
+    def on_secondary_buttonpress(self, controller, n_press, x, y):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if n_press == 1:
+            self.document.context_menu.popup_at_cursor(x, y)
+        controller.reset()
+
     def save_date_loop(self):
         if self.document.filename == None: return True
         if self.deleted_on_disk_dialog_shown_after_last_save: return True

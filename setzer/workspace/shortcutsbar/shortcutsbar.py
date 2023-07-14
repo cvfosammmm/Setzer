@@ -52,6 +52,9 @@ class Shortcutsbar(object):
                 self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(False)
             else:
                 self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(True)
+            self.latex_shortcutsbar.button_more.set_popover(self.document.context_menu.popover_more)
+        else:
+            self.latex_shortcutsbar.button_more.set_popover(None)
 
         show_build_log = self.workspace.get_show_build_log()
         self.latex_shortcutsbar.button_build_log.set_active(show_build_log)

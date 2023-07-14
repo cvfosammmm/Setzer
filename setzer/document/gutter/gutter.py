@@ -41,14 +41,14 @@ class Gutter(object):
         self.document_view.overlay.add_overlay(self.drawing_area)
         self.drawing_area.set_draw_func(self.draw)
 
-        self.total_size = 0
+        self.total_width = 0
         self.lines = [0]
         self.first_line_offset = 0
         self.current_line = 0
-
-        self.line_numbers_visible = True
         self.line_height = FontManager.get_line_height()
         self.char_width = FontManager.get_char_width()
+
+        self.line_numbers_visible = True
         self.layout_normal = Pango.Layout(self.source_view.get_pango_context())
         self.layout_normal.set_alignment(Pango.Alignment.RIGHT)
         self.layout_current_line = Pango.Layout(self.source_view.get_pango_context())
@@ -56,6 +56,8 @@ class Gutter(object):
         font_description = FontManager.get_font_desc()
         font_description.set_weight(Pango.Weight.BOLD)
         self.layout_current_line.set_font_description(font_description)
+
+        self.code_folding_visible = False
 
         self.update_size()
 
@@ -84,23 +86,35 @@ class Gutter(object):
 
     def on_button_press(self, event_controller, n_press, x, y):
         if n_press != 1: return False
+        if x > self.total_width: return False
 
-        offset = self.adjustment.get_value()
-        target = self.source_view.get_line_at_y(offset + y).target_iter
-        self.source_buffer.place_cursor(target)
+        if self.line_numbers_visible and x <= self.line_numbers_width:
+            offset = self.adjustment.get_value()
+            target = self.source_view.get_line_at_y(offset + y).target_iter
+            self.source_buffer.place_cursor(target)
+        else:
+            pass
         return True
 
-    def update_size(self):
-        total_size = 0
-        if self.line_numbers_visible:
-            total_size += int(math.log10(self.source_buffer.get_line_count()) + 3) * self.char_width
+    def on_scroll(self, event_controller, x, y):
+        return False
 
-        if total_size != self.total_size:
-            self.total_size = total_size
-            self.layout_normal.set_width((total_size - self.char_width) * Pango.SCALE)
-            self.layout_current_line.set_width((total_size - self.char_width) * Pango.SCALE)
-            self.source_view.set_left_margin(total_size + self.char_width)
-            self.drawing_area.set_size_request(total_size + 1, -1)
+    def update_size(self):
+        total_width = 0
+        line_numbers_width = 0
+        if self.line_numbers_visible:
+            total_width += int(math.log10(self.source_buffer.get_line_count()) + 3) * self.char_width
+            line_numbers_width = total_width - self.char_width
+        if self.code_folding_visible:
+            total_width += 3 * self.char_width
+
+        if total_width != self.total_width or line_numbers_width != self.line_numbers_width:
+            self.total_width = total_width
+            self.line_numbers_width = line_numbers_width
+            self.layout_normal.set_width(line_numbers_width * Pango.SCALE)
+            self.layout_current_line.set_width(line_numbers_width * Pango.SCALE)
+            self.source_view.set_left_margin(total_width + self.char_width)
+            self.drawing_area.set_size_request(total_width + 1, -1)
 
     #@timer
     def update_lines(self):
@@ -117,7 +131,7 @@ class Gutter(object):
 
     #@timer
     def draw(self, drawing_area, ctx, width, height, data=None):
-        if self.total_size == 0: return
+        if self.total_width == 0: return
         self.update_lines()
 
         self.draw_background_and_border(ctx, width, height)

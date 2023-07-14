@@ -85,7 +85,6 @@ class BuildLogList(Gtk.Widget):
             self.layouts.append(layout)
 
         self.line_height = self.layouts[0].get_extents()[0].height / Pango.SCALE
-        print(self.line_height)
 
     def do_snapshot(self, snapshot):
         self.setup_icons()

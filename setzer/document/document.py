@@ -24,6 +24,10 @@ import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
 import setzer.document.document_viewgtk as document_view
 import setzer.document.gutter.gutter as gutter
+import setzer.document.context_menu.context_menu as context_menu
+import setzer.document.parser.parser_latex as parser_latex
+import setzer.document.parser.parser_bibtex as parser_bibtex
+import setzer.document.parser.parser_dummy as parser_dummy
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 from setzer.app.font_manager import FontManager
@@ -42,20 +46,6 @@ class Document(Observable):
         self.is_root = False
         self.root_is_set = False
 
-        self.symbols = dict()
-        self.symbols['bibitems'] = set()
-        self.symbols['labels'] = set()
-        self.symbols['labels_with_offset'] = list()
-        self.symbols['todos'] = set()
-        self.symbols['todos_with_offset'] = set()
-        self.symbols['included_latex_files'] = set()
-        self.symbols['bibliographies'] = set()
-        self.symbols['packages'] = set()
-        self.symbols['packages_detailed'] = dict()
-        self.symbols['blocks'] = list()
-
-        self.settings = ServiceLocator.get_settings()
-
         self.source_buffer = GtkSource.Buffer()
         self.source_buffer.set_language(ServiceLocator.get_source_language(language))
         self.source_view = GtkSource.View.new_with_buffer(self.source_buffer)
@@ -66,8 +56,13 @@ class Document(Observable):
 
         self.view = document_view.DocumentView(self)
         self.gutter = gutter.Gutter(self, self.view)
+        self.context_menu = context_menu.ContextMenu(self, self.view)
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
+
+        if self.is_latex_document(): self.parser = parser_latex.ParserLaTeX(self)
+        elif self.is_bibtex_document(): self.parser = parser_bibtex.ParserBibTeX(self)
+        else: self.parser = parser_dummy.ParserDummy(self)
 
     def set_filename(self, filename):
         if filename == None:
@@ -157,39 +152,6 @@ class Document(Observable):
     def get_is_root(self):
         return self.is_root
 
-    def get_bibitems(self):
-        return self.symbols['bibitems']
-
-    def get_packages(self):
-        return self.symbols['packages']
-
-    def get_package_details(self):
-        return self.symbols['packages_detailed']
-
-    def get_blocks(self):
-        return self.symbols['blocks']
-
-    def set_blocks(self, blocks):
-        self.symbols['blocks'] = blocks
-
-    def get_included_latex_files(self):
-        return self.symbols['included_latex_files']
-
-    def get_bibliography_files(self):
-        return self.symbols['bibliographies']
-
-    def get_labels(self):
-        return self.symbols['labels']
-
-    def get_labels_with_offset(self):
-        return self.symbols['labels_with_offset']
-
-    def get_todos(self):
-        return self.symbols['todos']
-
-    def get_todos_with_offset(self):
-        return self.symbols['todos_with_offset']
-
     def is_latex_document(self):
         return self.language == 'latex'
 
@@ -208,6 +170,13 @@ class Document(Observable):
             return self.source_buffer.get_text(bounds[0], bounds[1], True)
         else:
             return None
+
+    def get_line(self, line_number):
+        found, start_iter = self.source_buffer.get_iter_at_line(line_number)
+        end_iter = start_iter.copy()
+        if not end_iter.ends_line():
+            end_iter.forward_to_line_end()
+        return self.source_buffer.get_slice(start_iter, end_iter, False)
 
     def place_cursor(self, line_number, offset=0):
         _, text_iter = self.source_buffer.get_iter_at_line_offset(line_number, offset)

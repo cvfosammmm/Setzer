@@ -50,6 +50,13 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.append(self.right_icons)
 
     def populate_right_toolbar(self):
+        self.button_more = Gtk.MenuButton()
+        self.button_more.set_icon_name('view-more-symbolic')
+        self.button_more.get_style_context().add_class('flat')
+        self.button_more.get_style_context().add_class('scbar')
+        self.button_more.set_tooltip_text(_('Document'))
+        self.right_icons.append(self.button_more)
+
         self.button_build_log = Gtk.ToggleButton()
         self.button_build_log.set_icon_name('build-log-symbolic')
         self.button_build_log.set_tooltip_text(_('Build log') + ' (F8)')

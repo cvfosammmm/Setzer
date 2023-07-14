@@ -53,10 +53,13 @@ class Actions(object):
         self.add_action('include-bibtex-file', self.start_include_bibtex_file_dialog, None)
         self.add_action('include-latex-file', self.start_include_latex_file_dialog, None)
         self.add_action('add-remove-packages-dialog', self.start_add_remove_packages_dialog, None)
+        self.add_action('toggle-comment', self.toggle_comment)
 
         self.add_action('cut', self.cut)
         self.add_action('copy', self.copy)
         self.add_action('paste', self.paste)
+        self.add_action('delete-selection', self.delete_selection)
+        self.add_action('select-all', self.select_all)
         self.add_action('undo', self.undo)
         self.add_action('redo', self.redo)
         self.add_action('show-about-dialog', self.show_about_dialog)
@@ -75,12 +78,6 @@ class Actions(object):
         self.main_window.add_action(self.actions[name])
         self.actions[name].connect('activate', callback)
 
-    def _assert_has_active_document(original_function):
-        def new_function(self, *args, **kwargs):
-            if self.workspace.get_active_document() != None:
-                return original_function(self, *args, **kwargs)
-        return new_function    
-
     def on_document_removed(self, workspace, document):
         if self.workspace.active_document == None:
             self.activate_welcome_screen_mode()
@@ -88,14 +85,27 @@ class Actions(object):
 
     def on_new_inactive_document(self, workspace, document):
         document.disconnect('modified_changed', self.on_modified_changed)
+        document.source_buffer.connect('notify::can-undo', self.on_undo_changed)
+        document.source_buffer.connect('notify::has-selection', self.on_has_selection_changed)
 
     def on_new_active_document(self, workspace, document):
         self.activate_document_mode()
         self.update_actions()
         document.connect('modified_changed', self.on_modified_changed)
+        document.source_buffer.connect('notify::can-undo', self.on_undo_changed)
+        document.source_buffer.connect('notify::has-selection', self.on_has_selection_changed)
 
     def on_modified_changed(self, document):
         self.update_actions()
+
+    def on_undo_changed(self, buffer, can_undo):
+        self.update_undo_redo()
+
+    def on_redo_changed(self, buffer, can_redo):
+        self.update_undo_redo()
+
+    def on_has_selection_changed(self, buffer, has_selection):
+        self.update_has_selection()
 
     def activate_welcome_screen_mode(self):
         self.actions['save-all'].set_enabled(False)
@@ -115,6 +125,27 @@ class Actions(object):
         self.actions['save'].set_enabled(enable_save)
         self.actions['save-all'].set_enabled(self.workspace.get_unsaved_documents() != None)
 
+        self.update_undo_redo()
+        self.update_has_selection()
+
+    def update_undo_redo(self):
+        document = self.workspace.get_active_document()
+        document_active = document != None
+
+        self.actions['redo'].set_enabled(document_active and document.source_buffer.get_can_redo())
+        self.actions['undo'].set_enabled(document_active and document.source_buffer.get_can_undo())
+
+    def update_has_selection(self):
+        document = self.workspace.get_active_document()
+        if document == None:
+            has_selection = False
+        else:
+            has_selection = self.workspace.get_active_document().source_buffer.get_has_selection()
+
+        self.actions['cut'].set_enabled(has_selection)
+        self.actions['copy'].set_enabled(has_selection)
+        self.actions['delete-selection'].set_enabled(has_selection)
+
     def new_latex_document(self, action=None, parameter=None):
         document = self.workspace.create_latex_document()
         self.workspace.add_document(document)
@@ -128,13 +159,15 @@ class Actions(object):
     def open_document_dialog(self, action=None, parameter=None):
         DialogLocator.get_dialog('open_document').run()
 
-    @_assert_has_active_document
     def save_and_build(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         self.save()
         self.build()
 
-    @_assert_has_active_document
     def build(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         document = self.workspace.get_root_or_active_latex_document()
         if document != None:
             document.build_widget.build_document_request()
@@ -145,21 +178,24 @@ class Actions(object):
     def close_build_log(self, action=None, parameter=''):
         self.workspace.set_show_build_log(False)
 
-    @_assert_has_active_document
     def save(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         active_document = self.workspace.get_active_document()
         if active_document.filename == None:
             self.save_as()
         else:
             active_document.save_to_disk()
 
-    @_assert_has_active_document
     def save_as(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('save_document').run(document)
 
-    @_assert_has_active_document
     def save_all(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         active_document = self.workspace.get_active_document()
         return_to_active_document = False
         documents = self.workspace.get_unsaved_documents()
@@ -174,12 +210,14 @@ class Actions(object):
             if return_to_active_document == True:
                 self.workspace.set_active_document(document)
 
-    @_assert_has_active_document
     def save_session(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         DialogLocator.get_dialog('save_session').run()
 
-    @_assert_has_active_document
     def close_all(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         documents = self.workspace.get_all_documents()
         unsaved_documents = self.workspace.get_unsaved_documents()
         dialog = DialogLocator.get_dialog('close_confirmation')
@@ -191,8 +229,9 @@ class Actions(object):
             if document not in not_save_to_close_documents:
                 self.workspace.remove_document(document)
 
-    @_assert_has_active_document
     def close_active_document(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         document = self.workspace.get_active_document()
         if document.source_buffer.get_modified():
             dialog = DialogLocator.get_dialog('close_confirmation')
@@ -205,15 +244,15 @@ class Actions(object):
         if parameters['document'] not in not_save_to_close:
             self.workspace.remove_document(parameters['document'])
 
-    @_assert_has_active_document
-    def start_wizard(self, action, parameter=None):
-        print("ad")
+    def start_wizard(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         return #TODO
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('document_wizard').run(document)
 
-    @_assert_has_active_document
     def insert_before_after(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
         if parameter == None: return
 
         document = self.workspace.get_active_document()
@@ -232,8 +271,8 @@ class Actions(object):
         document.select_first_dot_around_cursor(offset_before=len(text), offset_after=0)
         document.source_buffer.end_user_action()
 
-    @_assert_has_active_document
     def insert_symbol(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
         if parameter == None: return
 
         document = self.workspace.get_active_document()
@@ -249,21 +288,24 @@ class Actions(object):
         document.select_first_dot_around_cursor(offset_before=len(text), offset_after=0)
         document.source_buffer.end_user_action()
 
-    @_assert_has_active_document
     def insert_after_packages(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         return #TODO
         document.insert_text_after_packages_if_possible(parameter[0])
         document.scroll_cursor_onscreen()
 
-    @_assert_has_active_document
     def insert_before_document_end(self, action, parameter):
+        if self.workspace.get_active_document() == None: return
+
         return #TODO
         document = self.workspace.get_active_document()
         document.insert_before_document_end(parameter[0])
         document.scroll_cursor_onscreen()
 
-    @_assert_has_active_document
     def add_packages(self, action, parameter):
+        if self.workspace.get_active_document() == None: return
+
         return #TODO
         if parameter == None: return
         document = self.workspace.get_active_document()
@@ -271,43 +313,97 @@ class Actions(object):
             document.add_packages(parameter)
             document.scroll_cursor_onscreen()
 
-    @_assert_has_active_document
-    def start_include_bibtex_file_dialog(self, action, parameter=None):
+    def start_include_bibtex_file_dialog(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         return #TODO
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('include_bibtex_file').run(document)
 
-    @_assert_has_active_document
-    def start_include_latex_file_dialog(self, action, parameter=None):
+    def start_include_latex_file_dialog(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         return #TODO
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('include_latex_file').run(document)
 
-    @_assert_has_active_document
-    def start_add_remove_packages_dialog(self, action, parameter=None):
+    def start_add_remove_packages_dialog(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         return #TODO
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('add_remove_packages').run(document)
 
-    @_assert_has_active_document
-    def cut(self):
+    def toggle_comment(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
+        document = self.workspace.get_active_document()
+        document.source_buffer.begin_user_action()
+
+        bounds = document.source_buffer.get_selection_bounds()
+
+        if len(bounds) > 1:
+            end = (bounds[1].get_line() + 1) if (bounds[1].get_line_index() > 0) else bounds[1].get_line()
+            line_numbers = list(range(bounds[0].get_line(), end))
+        else:
+            line_numbers = [document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert()).get_line()]
+
+        do_comment = False
+        for line_number in line_numbers:
+            line = document.get_line(line_number)
+            if not line.lstrip().startswith('%'):
+                do_comment = True
+
+        if do_comment:
+            for line_number in line_numbers:
+                found, line_iter = document.source_buffer.get_iter_at_line(line_number)
+                document.source_buffer.insert(line_iter, '%')
+        else:
+            for line_number in line_numbers:
+                line = document.get_line(line_number)
+                offset = len(line) - len(line.lstrip())
+                found, start = document.source_buffer.get_iter_at_line(line_number)
+                start.forward_chars(offset)
+                end = start.copy()
+                end.forward_char()
+                document.source_buffer.delete(start, end)
+
+        document.source_buffer.end_user_action()
+
+    def cut(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         self.copy()
         self.workspace.get_active_document().delete_selection()
 
-    @_assert_has_active_document
-    def copy(self):
+    def copy(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         self.workspace.get_active_document().source_view.emit('copy-clipboard')
 
-    @_assert_has_active_document
-    def paste(self):
+    def paste(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         self.workspace.get_active_document().source_view.emit('paste-clipboard')
 
-    @_assert_has_active_document
+    def delete_selection(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
+        self.workspace.get_active_document().delete_selection()
+
+    def select_all(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
+        self.workspace.get_active_document().select_all()
+
     def undo(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         self.workspace.get_active_document().source_buffer.undo()
 
-    @_assert_has_active_document
     def redo(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         self.workspace.get_active_document().source_buffer.redo()
 
     def show_about_dialog(self, action=None, parameter=''):

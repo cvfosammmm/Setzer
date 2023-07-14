@@ -47,7 +47,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.open_document_button.set_popover(self.document_chooser)
 
         # new document buttons
-        self.button_latex = MenuBuilder.create_button(_('New LaTeX Document'), _('Ctrl') + '+N')
+        self.button_latex = MenuBuilder.create_button(_('New LaTeX Document'), shortcut=_('Ctrl') + '+N')
         self.button_bibtex = MenuBuilder.create_button(_('New BibTeX Document'))
 
         self.new_document_popover = MenuBuilder.create_menu()
@@ -108,14 +108,14 @@ class HeaderBar(Gtk.HeaderBar):
     def insert_workspace_menu(self):
         self.hamburger_popover = MenuBuilder.create_menu()
 
-        self.button_save_as = MenuBuilder.create_button(_('Save Document As') + '...', _('Shift') + '+' + _('Ctrl') + '+S')
+        self.button_save_as = MenuBuilder.create_button(_('Save Document As') + '...', shortcut=_('Shift') + '+' + _('Ctrl') + '+S')
         self.button_save_all = MenuBuilder.create_button(_('Save All Documents'))
         self.button_session = MenuBuilder.create_menu_button(_('Session'))
         self.button_session.connect('clicked', self.hamburger_popover.show_page, 'session', Gtk.StackTransitionType.SLIDE_RIGHT)
         self.button_about = MenuBuilder.create_button(_('About'))
         self.button_close_all = MenuBuilder.create_button(_('Close All Documents'))
-        self.button_close_active = MenuBuilder.create_button(_('Close Document'), _('Ctrl') + '+W')
-        self.button_quit = MenuBuilder.create_button(_('Quit'), _('Ctrl') + '+Q')
+        self.button_close_active = MenuBuilder.create_button(_('Close Document'), shortcut=_('Ctrl') + '+W')
+        self.button_quit = MenuBuilder.create_button(_('Quit'), shortcut=_('Ctrl') + '+Q')
 
         MenuBuilder.add_widget(self.hamburger_popover, self.button_save_as)
         MenuBuilder.add_widget(self.hamburger_popover, self.button_save_all)

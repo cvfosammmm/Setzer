@@ -70,6 +70,7 @@ class Shortcuts(object):
         self.shortcut_controller.add_shortcut(Shortcut('F9', self.shortcut_preview))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>z', actions.undo))
         self.shortcut_controller.add_shortcut(Shortcut('<Control><Shift>z', actions.redo))
+        self.shortcut_controller.add_shortcut(Shortcut('<Control>k', actions.toggle_comment))
 
     def set_document_type(self, document_type):
         if document_type == 'latex':
