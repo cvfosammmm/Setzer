@@ -16,12 +16,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 from setzer.app.service_locator import ServiceLocator
+from setzer.helpers.observable import Observable
 from setzer.helpers.timer import timer
 
 
-class ParserBibTeX(object):
+class ParserBibTeX(Observable):
 
     def __init__(self, document):
+        Observable.__init__(self)
         self.document = document
         self.text = ''
 

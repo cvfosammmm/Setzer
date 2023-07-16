@@ -16,12 +16,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 from setzer.app.service_locator import ServiceLocator
+from setzer.helpers.observable import Observable
 from setzer.helpers.timer import timer
 
 
-class ParserLaTeX(object):
+class ParserLaTeX(Observable):
 
     def __init__(self, document):
+        Observable.__init__(self)
         self.document = document
         self.text_length = 0
         self.number_of_lines = 0
@@ -40,11 +42,15 @@ class ParserLaTeX(object):
         self.symbols['packages_detailed'] = dict()
         self.symbols['blocks'] = list()
 
+        self.last_edit = None
+
         self.document.source_buffer.connect('insert-text', self.on_insert_text)
         self.document.source_buffer.connect('delete-range', self.on_text_deleted)
 
     #@timer
     def on_text_deleted(self, buffer, start_iter, end_iter):
+        self.last_edit = ('delete', start_iter, end_iter)
+
         offset_start = start_iter.get_offset()
         offset_end = end_iter.get_offset()
         line_start = start_iter.get_line()
@@ -101,8 +107,12 @@ class ParserLaTeX(object):
         self.other_symbols = other_symbols
         self.parse_symbols()
 
+        self.add_change_code('updated')
+
     #@timer
     def on_insert_text(self, buffer, location_iter, text, text_length):
+        self.last_edit = ('insert', location_iter, text, text_length)
+
         text_length = len(text)
         offset = location_iter.get_offset()
         new_line_count = text.count('\n')
@@ -154,6 +164,8 @@ class ParserLaTeX(object):
 
         self.other_symbols = other_symbols
         self.parse_symbols()
+
+        self.add_change_code('updated')
 
     #@timer
     def parse_for_blocks(self, text, line_start, offset_line_start):

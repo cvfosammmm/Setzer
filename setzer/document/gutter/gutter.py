@@ -41,14 +41,21 @@ class Gutter(object):
         self.document_view.overlay.add_overlay(self.drawing_area)
         self.drawing_area.set_draw_func(self.draw)
 
+        self.line_numbers_visible = True
+        self.line_numbers_width = 0
+
+        self.code_folding_visible = True
+        self.code_folding_width = 0
+
         self.total_width = 0
         self.lines = [0]
         self.first_line_offset = 0
         self.current_line = 0
         self.line_height = FontManager.get_line_height()
         self.char_width = FontManager.get_char_width()
+        self.cursor_x, self.cursor_y = None, None
+        self.hovered_folding_region = None
 
-        self.line_numbers_visible = True
         self.layout_normal = Pango.Layout(self.source_view.get_pango_context())
         self.layout_normal.set_alignment(Pango.Alignment.RIGHT)
         self.layout_current_line = Pango.Layout(self.source_view.get_pango_context())
@@ -56,8 +63,6 @@ class Gutter(object):
         font_description = FontManager.get_font_desc()
         font_description.set_weight(Pango.Weight.BOLD)
         self.layout_current_line.set_font_description(font_description)
-
-        self.code_folding_visible = False
 
         self.update_size()
 
@@ -71,50 +76,91 @@ class Gutter(object):
         event_controller.set_button(1)
         self.drawing_area.add_controller(event_controller)
 
+        event_controller = Gtk.EventControllerMotion()
+        event_controller.connect('enter', self.on_enter)
+        event_controller.connect('motion', self.on_hover)
+        event_controller.connect('leave', self.on_leave)
+        self.drawing_area.add_controller(event_controller)
+
     def on_document_change(self, document):
         self.update_size()
+        self.update_hovered_folding_region()
         self.drawing_area.queue_draw()
 
     def on_cursor_change(self, document):
+        self.update_hovered_folding_region()
         self.drawing_area.queue_draw()
 
     def on_adjustment_value_changed(self, adjustment):
+        self.update_hovered_folding_region()
         self.drawing_area.queue_draw()
 
     def on_adjustment_changed(self, adjustment):
+        self.update_hovered_folding_region()
         self.drawing_area.queue_draw()
 
     def on_button_press(self, event_controller, n_press, x, y):
-        if n_press != 1: return False
-        if x > self.total_width: return False
-
-        if self.line_numbers_visible and x <= self.line_numbers_width:
+        if self.hovered_folding_region != None:
+            if self.hovered_folding_region['is_folded']:
+                self.document.code_folding.unfold(self.hovered_folding_region)
+            else:
+                self.document.code_folding.fold(self.hovered_folding_region)
+        else:
             offset = self.adjustment.get_value()
             target = self.source_view.get_line_at_y(offset + y).target_iter
             self.source_buffer.place_cursor(target)
-        else:
-            pass
         return True
 
-    def on_scroll(self, event_controller, x, y):
-        return False
+    def on_enter(self, controller, x, y):
+        self.set_cursor_position(x, y)
+
+    def on_hover(self, controller, x, y):
+        self.set_cursor_position(x, y)
+
+    def on_leave(self, controller):
+        self.set_cursor_position(None, None)
+
+    def set_cursor_position(self, x, y):
+        if x != self.cursor_x or y != self.cursor_y:
+            self.cursor_x, self.cursor_y = x, y
+            self.drawing_area.queue_draw()
+        if self.cursor_x != None and self.cursor_x > self.total_width + 1:
+            self.drawing_area.set_cursor_from_name('text')
+        else:
+            self.drawing_area.set_cursor_from_name('default')
+        self.update_hovered_folding_region()
+
+    def update_hovered_folding_region(self):
+        self.hovered_folding_region = None
+        if self.get_cursor_area() == 'code_folding':
+            line_index = int((self.cursor_y + self.first_line_offset) // self.line_height)
+            if self.lines[0] == self.lines[1] and self.cursor_y <= self.line_height: line_index = 0
+            line = self.lines[line_index]
+            folding_regions = self.document.code_folding.folding_regions
+
+            if line_index != 0 and self.lines[line_index] == self.lines[line_index - 1]: return
+            if line not in folding_regions: return
+            self.hovered_folding_region = folding_regions[line]
 
     def update_size(self):
         total_width = 0
         line_numbers_width = 0
         if self.line_numbers_visible:
             total_width += int(math.log10(self.source_buffer.get_line_count()) + 3) * self.char_width
-            line_numbers_width = total_width - self.char_width
+            line_numbers_width = total_width
         if self.code_folding_visible:
             total_width += 3 * self.char_width
+            self.code_folding_width = 3 * self.char_width
+        else:
+            self.code_folding_width = 0
 
         if total_width != self.total_width or line_numbers_width != self.line_numbers_width:
             self.total_width = total_width
             self.line_numbers_width = line_numbers_width
-            self.layout_normal.set_width(line_numbers_width * Pango.SCALE)
-            self.layout_current_line.set_width(line_numbers_width * Pango.SCALE)
+            self.layout_normal.set_width((line_numbers_width - self.char_width) * Pango.SCALE)
+            self.layout_current_line.set_width((line_numbers_width - self.char_width) * Pango.SCALE)
             self.source_view.set_left_margin(total_width + self.char_width)
-            self.drawing_area.set_size_request(total_width + 1, -1)
+            self.drawing_area.set_size_request(total_width + 2, -1)
 
     #@timer
     def update_lines(self):
@@ -139,37 +185,97 @@ class Gutter(object):
         fg_color = ColorManager.get_ui_color('theme_fg_color')
         Gdk.cairo_set_source_rgba(ctx, fg_color)
 
-        if self.current_line == self.lines[0]: layout = self.layout_current_line
-        else: layout = self.layout_normal
-
         if self.lines[0] == self.lines[1]:
-            ctx.move_to(0, 0)
+            self.draw_line(ctx, self.lines[0], 0)
         else:
-            ctx.move_to(0, -self.first_line_offset)
-        layout.set_text(str(self.lines[0] + 1))
-        PangoCairo.show_layout(ctx, layout)
-        last_line = self.lines[0]
+            self.draw_line(ctx, self.lines[0], -self.first_line_offset)
 
+        prev_line = self.lines[0]
         for i, line in enumerate(self.lines[1:]):
-            if self.current_line == line: layout = self.layout_current_line
-            else: layout = self.layout_normal
+            if line != prev_line:
+                self.draw_line(ctx, line, -self.first_line_offset + (i + 1) * self.line_height)
+            prev_line = line
 
-            if line != last_line:
-                ctx.move_to(0, -self.first_line_offset + (i + 1) * self.line_height)
-                layout.set_text(str(line + 1))
-                PangoCairo.show_layout(ctx, layout)
-            last_line = line
+        self.draw_hovered_folding_region(ctx)
 
     def draw_background_and_border(self, ctx, width, height):
         bg_color = ColorManager.get_ui_color('theme_base_color')
         border_color = ColorManager.get_ui_color('borders')
 
         Gdk.cairo_set_source_rgba(ctx, bg_color)
-        ctx.rectangle(0, 0, width, height)
+        ctx.rectangle(0, 0, self.total_width, height)
         ctx.fill()
 
         Gdk.cairo_set_source_rgba(ctx, border_color)
-        ctx.rectangle(width - 1, 0, 1, height)
+        ctx.rectangle(self.total_width, 0, 1, height)
         ctx.fill()
+
+    def draw_line(self, ctx, line, offset):
+        if self.current_line == line: layout = self.layout_current_line
+        else: layout = self.layout_normal
+
+        ctx.move_to(0, offset)
+        layout.set_text(str(line + 1))
+        PangoCairo.show_layout(ctx, layout)
+
+        folding_regions = self.document.code_folding.folding_regions
+        if line in folding_regions:
+            ctx.set_line_width(0)
+            xoff1 = 6.5 * self.char_width / 6
+            xoff2 = 9.5 * self.char_width / 6
+            xoff3 = 2 * self.char_width / 11
+            xoff4 = 10 * self.char_width / 11
+            xoff5 = 18 * self.char_width / 11
+            xoff6 = 6 * self.char_width / 8
+            xoff7 = 11 * self.char_width / 8
+            xoff8 = 16 * self.char_width / 8
+            xoff9 = 26 * self.char_width / 11
+            yoff1 = 1.75 * self.line_height / 8
+            yoff2 = 4.25 * self.line_height / 8
+            yoff3 = 6.75 * self.line_height / 8
+            yoff4 = 2.5 * self.line_height / 6
+            yoff5 = 4 * self.line_height / 6
+            len1 = 4 * self.char_width / 11
+
+            if folding_regions[line]['is_folded']:
+                ctx.move_to(self.line_numbers_width + xoff1, int(offset + yoff1))
+                ctx.line_to(self.line_numbers_width + xoff2, int(offset + yoff2))
+                ctx.line_to(self.line_numbers_width + xoff1, int(offset + yoff3))
+                ctx.line_to(self.line_numbers_width + xoff1, int(offset + yoff1))
+                ctx.fill()
+                for i in range(4):
+                    ctx.rectangle(self.line_numbers_width + (i + 0.5) * self.char_width, int(offset + self.line_height), self.char_width / 2, 1)
+                    ctx.fill()
+            else:
+                ctx.move_to(self.line_numbers_width + xoff6, int(offset + yoff4 + 0.5))
+                ctx.line_to(self.line_numbers_width + xoff7, int(offset + yoff5 + 0.5))
+                ctx.line_to(self.line_numbers_width + xoff8, int(offset + yoff4 + 0.5))
+                ctx.line_to(self.line_numbers_width + xoff6, int(offset + yoff4 + 0.5))
+                ctx.fill()
+
+    def draw_hovered_folding_region(self, ctx):
+        if self.hovered_folding_region != None:
+            hover_start = -self.first_line_offset + self.lines.index(self.hovered_folding_region['starting_line']) * self.line_height
+
+            starting_line = self.hovered_folding_region['starting_line']
+            ending_line = self.hovered_folding_region['ending_line']
+            i = len([line for line in self.lines if line >= starting_line and line <= ending_line])
+
+            ctx.rectangle(self.total_width - 1, hover_start, 3, i * self.line_height)
+            ctx.fill()
+
+    def get_cursor_area(self):
+        if self.cursor_x == None: return None
+        offset = 0
+
+        if self.line_numbers_visible:
+            offset += self.line_numbers_width
+        if self.cursor_x <= offset: return 'line_numbers'
+
+        if self.code_folding_visible:
+            offset += self.code_folding_width
+        if self.cursor_x <= offset: return 'code_folding'
+
+        return None
 
 

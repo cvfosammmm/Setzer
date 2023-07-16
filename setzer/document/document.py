@@ -28,6 +28,7 @@ import setzer.document.context_menu.context_menu as context_menu
 import setzer.document.parser.parser_latex as parser_latex
 import setzer.document.parser.parser_bibtex as parser_bibtex
 import setzer.document.parser.parser_dummy as parser_dummy
+import setzer.document.code_folding.code_folding as code_folding
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 from setzer.app.font_manager import FontManager
@@ -55,7 +56,6 @@ class Document(Observable):
         self.source_buffer.connect('notify::cursor-position', self.on_cursor_position_change)
 
         self.view = document_view.DocumentView(self)
-        self.gutter = gutter.Gutter(self, self.view)
         self.context_menu = context_menu.ContextMenu(self, self.view)
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
@@ -63,6 +63,8 @@ class Document(Observable):
         if self.is_latex_document(): self.parser = parser_latex.ParserLaTeX(self)
         elif self.is_bibtex_document(): self.parser = parser_bibtex.ParserBibTeX(self)
         else: self.parser = parser_dummy.ParserDummy(self)
+        self.code_folding = code_folding.CodeFolding(self)
+        self.gutter = gutter.Gutter(self, self.view)
 
     def set_filename(self, filename):
         if filename == None:
