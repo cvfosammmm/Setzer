@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 15:33+0200\n"
-"PO-Revision-Date: 2023-07-14 07:40+0000\n"
+"PO-Revision-Date: 2023-07-18 00:06+0000\n"
 "Last-Translator: Norwid Behrnd <nbehrnd@yahoo.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/setzer/"
 "application/de/>\n"
@@ -397,6 +397,10 @@ msgid ""
 "the <tt>editor</tt> to the <tt>booktitle</tt>, i. e., the title of the "
 "collection."
 msgstr ""
+"Ein Beitrag in einer Sammelpublikation, der eine eigenständige Einheit mit "
+"eigenem Autoren und Titel bildet. Das Feld<tt>author</tt> bezieht sich auf "
+"<tt>title</tt>, der <tt>editor</tt> auf <tt>booktitle</tt>, d. h. den Titel "
+"des Sammelbandes."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:52
 msgid "Supplemental Material in a Collection"
@@ -408,6 +412,10 @@ msgid ""
 "but related to the @collection entry type. The standard styles will treat "
 "this entry type as an alias for @incollection."
 msgstr ""
+"Ergänzungsmaterial eines Sammelbandes (@collection). Dieser Eintragstyp "
+"verhält sich analog zu @suppbook gegenüber @book, nun aber gegenüber @"
+"collection. Standardstile werden diesen Eintragstyp als Platzhalter für @"
+"incollection bearbeiten."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:53
 msgid "Data Set"
@@ -541,6 +549,10 @@ msgid ""
 "proceedings are also supported by the entry type @proceedings. However, it "
 "is advisable to make use of the dedicated entry type @mvproceedings."
 msgstr ""
+"Ein mehrbändiger Eintrag vom Typ @proceedings. Um mit bisherigen "
+"Bibliographien vereinbar zu sein, werden mehrbändige Konferenzbände auch vom "
+"Typ @proceedings unterstützt. Es ist aber empfehlenswert, den speziellen "
+"Eintragstyp @mvproceedings zu benutzen."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:62
 msgid "Article in Conference Proceedings"
@@ -551,6 +563,8 @@ msgid ""
 "An article in a conference proceedings. This type is similar to "
 "@incollection. It supports an optional <tt>organization</tt> field."
 msgstr ""
+"Ein Artikel in einem Konferenzband. Dieser Eintragstyp ähnelt @incollection. "
+"Das optionale Feld <tt>organization</tt> wird unterstützt."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:63
 msgid ""
@@ -558,6 +572,10 @@ msgid ""
 "This is a more specific variant of the generic @collection entry type. The "
 "standard styles will treat this entry type as an alias for @collection."
 msgstr ""
+"Eine einbändige Referenz wie etwa eine Enzyklopädie, ein Lexikon, oder ein "
+"Wörterbuch. Das ist ein Spezialfall für den allgemeineren Eintrag vom Typ @"
+"collection. Die Standardstile werden diesen Eintragstyp als einen "
+"Platzhalter von @collection bearbeiten."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:64
 msgid "Multi-volume Reference Entry"
@@ -570,6 +588,11 @@ msgid ""
 "volume references are also supported by the entry type @reference. However, "
 "it is advisable to make use of the dedicated entry type @mvreference."
 msgstr ""
+"Ein mehrbändiger Eintrag vom Typ @reference. Die Standardstile werden diesen "
+"Eintragstyp als Platzhalter für @mvcollection auswerten. Um mit bisherigen "
+"Bibliographien vereinbar zu sein, werden mehrbändige Quellen auch vom "
+"Eintragstyp @reference unterstützt. Es ist aber empfehlenswert, den "
+"speziellen Eingangstyp @mvreference zu benutzen."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:65
 msgid "Article in a Reference"
@@ -1322,7 +1345,7 @@ msgstr "Hilfe anzeigen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:54
 msgid "Show document structure panel"
-msgstr ""
+msgstr "Zeige die Übersicht der Dokumentgliederung"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:55
 msgid "Show symbols panel"
@@ -1621,9 +1644,8 @@ msgid ".. on errors, warnings and badboxes."
 msgstr ".. bei Fehlern, Warnungen und Badboxen."
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:204
-#, fuzzy
 msgid "Embedded system commands"
-msgstr "Systembefehle einbetten"
+msgstr "Zugriff auf Kommandozeilenbefehle des Betriebssystems"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:211
 msgid ""
@@ -2102,9 +2124,8 @@ msgstr ""
 "Hauptdokument typischerweise mehrere Subdokumente einbindet."
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:45
-#, fuzzy
 msgid "Toggle document structure"
-msgstr "Aus- / Entkommentieren"
+msgstr "Zeige/Verberge die Gliederung"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:50
 msgid "Toggle symbols"
@@ -2709,7 +2730,7 @@ msgstr "Paket"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:95
 msgid "Recent"
-msgstr ""
+msgstr "kürzlich benutzt"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:112
 msgid "Greek Letters"
@@ -2743,6 +2764,8 @@ msgstr "Schreibe ansprechende LaTeX Dokumente mit Leichtigkeit!"
 msgid ""
 "Click the open or create buttons in the headerbar above to start editing."
 msgstr ""
+"Klicke auf Öffnen oder Erstellen in der Titelleiste oben um mit der Arbeit "
+"zu beginnen."
 
 #: setzer/workspace/workspace.py:120
 #, python-brace-format
@@ -2830,9 +2853,9 @@ msgid "set transparency for sections in your document."
 msgstr "transparente Abschnitte."
 
 #: data/resources/latexdb/packages/general.xml:26
-#, fuzzy
 msgid "type urls with the \\\\url{..} command without escaping them."
-msgstr "URLs schreiben mit dem \\url{..} Befehl."
+msgstr ""
+"URLs direkt mit dem \\url{..} Befehl schreiben (ohne Codeumschaltung/Escape)."
 
 #: data/resources/document_wizard/languages.xml:2
 #: data/resources/document_wizard/languages.xml:20
