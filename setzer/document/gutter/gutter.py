@@ -182,14 +182,11 @@ class Gutter(object):
 
         self.draw_background_and_border(ctx, width, height)
 
-        fg_color = ColorManager.get_ui_color('theme_fg_color')
-        Gdk.cairo_set_source_rgba(ctx, fg_color)
-
+        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('theme_fg_color'))
         if self.lines[0] == self.lines[1]:
             self.draw_line(ctx, self.lines[0], 0)
         else:
             self.draw_line(ctx, self.lines[0], -self.first_line_offset)
-
         prev_line = self.lines[0]
         for i, line in enumerate(self.lines[1:]):
             if line != prev_line:
@@ -199,14 +196,11 @@ class Gutter(object):
         self.draw_hovered_folding_region(ctx)
 
     def draw_background_and_border(self, ctx, width, height):
-        bg_color = ColorManager.get_ui_color('theme_base_color')
-        border_color = ColorManager.get_ui_color('borders')
-
-        Gdk.cairo_set_source_rgba(ctx, bg_color)
+        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('theme_base_color'))
         ctx.rectangle(0, 0, self.total_width, height)
         ctx.fill()
 
-        Gdk.cairo_set_source_rgba(ctx, border_color)
+        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('borders'))
         ctx.rectangle(self.total_width, 0, 1, height)
         ctx.fill()
 
@@ -254,6 +248,7 @@ class Gutter(object):
                 ctx.fill()
 
     def draw_hovered_folding_region(self, ctx):
+        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('code_folding_hover'))
         if self.hovered_folding_region != None:
             hover_start = -self.first_line_offset + self.lines.index(self.hovered_folding_region['starting_line']) * self.line_height
 

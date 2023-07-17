@@ -1,6 +1,7 @@
 @define-color fg_color_light mix(@theme_fg_color, transparent, 0.5);
 @define-color list_hover mix(@theme_fg_color, transparent, 0.9);
 @define-color list_active mix(@theme_fg_color, transparent, 0.8);
+@define-color code_folding_hover #c7c7c7;
 
 /*
 ** main_window
