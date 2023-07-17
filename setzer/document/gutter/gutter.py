@@ -259,9 +259,18 @@ class Gutter(object):
 
             starting_line = self.hovered_folding_region['starting_line']
             ending_line = self.hovered_folding_region['ending_line']
+
             i = len([line for line in self.lines if line >= starting_line and line <= ending_line])
 
-            ctx.rectangle(self.total_width - 1, hover_start, 3, i * self.line_height)
+            if ending_line + 1 == self.source_buffer.get_line_count():
+                last_line_height = self.source_view.get_line_yrange(self.source_buffer.get_end_iter()).height
+                i = len([line for line in self.lines if line >= starting_line and line < ending_line])
+                height = i * self.line_height + last_line_height
+            else:
+                i = len([line for line in self.lines if line >= starting_line and line <= ending_line])
+                height = i * self.line_height
+
+            ctx.rectangle(self.total_width - 1, hover_start, 3, height)
             ctx.fill()
 
     def get_cursor_area(self):
