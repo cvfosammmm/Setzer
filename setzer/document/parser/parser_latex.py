@@ -107,7 +107,7 @@ class ParserLaTeX(Observable):
         self.other_symbols = other_symbols
         self.parse_symbols()
 
-        self.add_change_code('updated')
+        self.add_change_code('finished_parsing')
 
     #@timer
     def on_insert_text(self, buffer, location_iter, text, text_length):
@@ -165,7 +165,7 @@ class ParserLaTeX(Observable):
         self.other_symbols = other_symbols
         self.parse_symbols()
 
-        self.add_change_code('updated')
+        self.add_change_code('finished_parsing')
 
     #@timer
     def parse_for_blocks(self, text, line_start, offset_line_start):

@@ -26,75 +26,63 @@ class CodeFolding(Observable):
         self.document = document
         self.source_buffer = self.document.source_buffer
         self.tag = self.source_buffer.create_tag('invisible_region', invisible=1)
-
-        self.region_offsets = dict()
         self.folding_regions = dict()
-        self.folding_regions_by_region_id = dict()
-        self.maximum_region_id = 0
 
-        self.document.parser.connect('updated', self.on_parser_update)
+        self.document.parser.connect('finished_parsing', self.on_parser_update)
 
     def on_parser_update(self, parser):
-        region_offsets = dict()
+        # update offsets of previous regions (they will be used
+        # in the algorithm below).
 
+        folding_regions = dict()
         if parser.last_edit[0] == 'insert':
             _, location_iter, text, text_length = parser.last_edit
-
             length = len(text)
             offset_start = location_iter.get_offset() + length - 1
             offset_end = offset_start + 1
-
         elif parser.last_edit[0] == 'delete':
             _, start_iter, end_iter = parser.last_edit
-
             offset_start = start_iter.get_offset()
             offset_end = end_iter.get_offset()
             length = offset_start - offset_end
-
-        for index, region_id in self.region_offsets.items():
+        for index, region in self.folding_regions.items():
             if index <= offset_start:
-                region_offsets[index] = region_id
+                folding_regions[index] = region
             elif index >= offset_end:
-                index2 = index + length
-                region = self.folding_regions_by_region_id[region_id]
-                region['offset_start'] = index2
-                region_offsets[index2] = region_id
+                folding_regions[index + length] = region
 
-        self.region_offsets = region_offsets
+        # update regions from the new parsing results.
+        # if the offset of a region matches a previously included region,
+        # that region is assumed to be the same as the previous one.
 
-        folding_regions = dict()
-        folding_regions_by_region_id = dict()
         last_line = -1
-
+        self.folding_regions = dict()
         for block in parser.symbols['blocks']:
             if block[1] != None:
                 if block[2] != last_line:
-                    if block[0] in self.region_offsets:
-                        region_id = self.region_offsets[block[0]]
-                        region_dict = self.folding_regions_by_region_id[region_id]
-                        region_dict['starting_line'] = block[2]
-                        region_dict['ending_line'] = block[3]
-                        region_dict['offset_end'] = block[1]
-                        folding_regions_by_region_id[region_id] = region_dict
+                    if block[0] in folding_regions:
+                        region = folding_regions[block[0]]
+                        del(folding_regions[block[0]])
                     else:
-                        self.region_offsets[block[0]] = self.maximum_region_id
-                        region_dict = {'offset_start': block[0], 'offset_end': block[1], 'is_folded': False, 'starting_line': block[2], 'ending_line': block[3], 'id': self.maximum_region_id}
-                        folding_regions_by_region_id[self.maximum_region_id] = region_dict
-                        self.maximum_region_id += 1
-                    folding_regions[block[2]] = region_dict
+                        region = {'is_folded': False}
+                    region['offset_start'] = block[0]
+                    region['offset_end'] = block[1]
+                    region['starting_line'] = block[2]
+                    region['ending_line'] = block[3]
+                    self.folding_regions[block[0]] = region
                 last_line = block[2]
 
-        self.delete_invalid_regions(folding_regions_by_region_id)
+        # in a last step, the regions that are no longer
+        # included, but were previously, are unfolded.
 
-        self.folding_regions = folding_regions
-        self.folding_regions_by_region_id = folding_regions_by_region_id
-
-    def delete_invalid_regions(self, folding_regions_by_region_id):
-        regions_to_delete = [region_id for region_id in self.folding_regions_by_region_id if region_id not in folding_regions_by_region_id]
-        for region_id in regions_to_delete:
-            region = self.folding_regions_by_region_id[region_id]
+        for region in folding_regions.values():
             self.unfold(region)
-            del(self.region_offsets[region['offset_start']])
+
+    def get_region_by_line(self, line):
+        offset = self.source_buffer.get_iter_at_line(line).iter.get_offset()
+        if offset in self.folding_regions:
+            return self.folding_regions[offset]
+        return None
 
     def fold(self, region):
         region['is_folded'] = True

@@ -136,11 +136,9 @@ class Gutter(object):
             line_index = int((self.cursor_y + self.first_line_offset) // self.line_height)
             if self.lines[0] == self.lines[1] and self.cursor_y <= self.line_height: line_index = 0
             line = self.lines[line_index]
-            folding_regions = self.document.code_folding.folding_regions
 
             if line_index != 0 and self.lines[line_index] == self.lines[line_index - 1]: return
-            if line not in folding_regions: return
-            self.hovered_folding_region = folding_regions[line]
+            self.hovered_folding_region = self.document.code_folding.get_region_by_line(line)
 
     def update_size(self):
         total_width = 0
@@ -212,8 +210,8 @@ class Gutter(object):
         layout.set_text(str(line + 1))
         PangoCairo.show_layout(ctx, layout)
 
-        folding_regions = self.document.code_folding.folding_regions
-        if line in folding_regions:
+        folding_region = self.document.code_folding.get_region_by_line(line)
+        if folding_region != None:
             ctx.set_line_width(0)
             xoff1 = 6.5 * self.char_width / 6
             xoff2 = 9.5 * self.char_width / 6
@@ -231,7 +229,7 @@ class Gutter(object):
             yoff5 = 4 * self.line_height / 6
             len1 = 4 * self.char_width / 11
 
-            if folding_regions[line]['is_folded']:
+            if folding_region['is_folded']:
                 ctx.move_to(self.line_numbers_width + xoff1, int(offset + yoff1))
                 ctx.line_to(self.line_numbers_width + xoff2, int(offset + yoff2))
                 ctx.line_to(self.line_numbers_width + xoff1, int(offset + yoff3))
