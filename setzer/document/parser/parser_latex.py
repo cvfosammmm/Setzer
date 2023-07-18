@@ -241,7 +241,7 @@ class ParserLaTeX(Observable):
             block.append(match.group(3))
             block.append(match.group(4))
             blocks_list.append(block)
-            for i in range(level, 5):
+            for i in range(level, 7):
                 relevant_following_blocks[i].append(block)
 
         if add_preamble_folding and begin_document_offset and begin_document_line:
