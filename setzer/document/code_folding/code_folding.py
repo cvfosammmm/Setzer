@@ -53,7 +53,13 @@ class CodeFolding(Observable):
 
         # update regions from the new parsing results.
         # if the offset of a region matches a previously included region,
-        # that region is assumed to be the same as the previous one.
+        # that region is assumed to be the same as the previous one:
+        # it will match if it's in the same place, after the above
+        # relocations are taken into account.
+        # this step is important, because we want to keep track of
+        # which regions are folded, so we have to transfer that
+        # state to the new regions, by identifying them with previous
+        # ones.
 
         last_line = -1
         self.folding_regions = dict()
