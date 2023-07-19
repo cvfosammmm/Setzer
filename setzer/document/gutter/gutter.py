@@ -242,6 +242,8 @@ class Gutter(object):
         if self.current_line == line: layout = self.layout_current_line
         else: layout = self.layout_normal
 
+        if offset < 0: offset -= 1
+        offset = int(offset)
         ctx.move_to(0, offset)
         layout.set_text(str(line + 1))
         PangoCairo.show_layout(ctx, layout)
@@ -266,19 +268,19 @@ class Gutter(object):
             len1 = 4 * self.char_width / 11
 
             if folding_region['is_folded']:
-                ctx.move_to(self.line_numbers_width + xoff1, int(offset + yoff1))
-                ctx.line_to(self.line_numbers_width + xoff2, int(offset + yoff2))
-                ctx.line_to(self.line_numbers_width + xoff1, int(offset + yoff3))
-                ctx.line_to(self.line_numbers_width + xoff1, int(offset + yoff1))
+                ctx.move_to(self.line_numbers_width + xoff1, offset + yoff1)
+                ctx.line_to(self.line_numbers_width + xoff2, offset + yoff2)
+                ctx.line_to(self.line_numbers_width + xoff1, offset + yoff3)
+                ctx.line_to(self.line_numbers_width + xoff1, offset + yoff1)
                 ctx.fill()
                 for i in range(4):
-                    ctx.rectangle(self.line_numbers_width + (i + 0.5) * self.char_width, int(offset + self.line_height), self.char_width / 2, 1)
+                    ctx.rectangle(self.line_numbers_width + (i + 0.5) * self.char_width, offset + self.line_height, self.char_width / 2, 1)
                     ctx.fill()
             else:
-                ctx.move_to(self.line_numbers_width + xoff6, int(offset + yoff4 + 0.5))
-                ctx.line_to(self.line_numbers_width + xoff7, int(offset + yoff5 + 0.5))
-                ctx.line_to(self.line_numbers_width + xoff8, int(offset + yoff4 + 0.5))
-                ctx.line_to(self.line_numbers_width + xoff6, int(offset + yoff4 + 0.5))
+                ctx.move_to(self.line_numbers_width + xoff6, offset + yoff4 + 0.5)
+                ctx.line_to(self.line_numbers_width + xoff7, offset + yoff5 + 0.5)
+                ctx.line_to(self.line_numbers_width + xoff8, offset + yoff4 + 0.5)
+                ctx.line_to(self.line_numbers_width + xoff6, offset + yoff4 + 0.5)
                 ctx.fill()
 
     def draw_hovered_folding_region(self, ctx):
