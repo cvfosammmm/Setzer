@@ -31,8 +31,12 @@ class CodeFolding(Observable):
         self.document.parser.connect('finished_parsing', self.on_parser_update)
 
     def on_parser_update(self, parser):
-        # update offsets of previous regions (they will be used
-        # in the algorithm below).
+        # this method updates the dict of folding regions after the
+        # main text changed and the parser has updated the blocks (potential
+        # folding regions). the first step is to update the offsets of
+        # previous folding regions (update their positions w.r.t. the
+        # amount of text inserted or deleted). these updated positions
+        # will be used in the algorithm further below.
 
         folding_regions = dict()
         if parser.last_edit[0] == 'insert':
@@ -51,7 +55,7 @@ class CodeFolding(Observable):
             elif index >= offset_end:
                 folding_regions[index + length] = region
 
-        # update regions from the new parsing results.
+        # now update the folding regions w.r.t. the new parsing results.
         # if the offset of a region matches a previously included region,
         # that region is assumed to be the same as the previous one:
         # it will match if it's in the same place, after the above

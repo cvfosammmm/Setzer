@@ -17,9 +17,9 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk, Gdk, Pango, PangoCairo
+from gi.repository import Gtk, Gdk, GObject, Pango, PangoCairo
 
-import math
+import math, time
 
 from setzer.helpers.timer import timer
 from setzer.app.service_locator import ServiceLocator
@@ -71,6 +71,12 @@ class Gutter(object):
         self.document_view.scrolled_window.get_vadjustment().connect('changed', self.on_adjustment_changed)
         self.document_view.scrolled_window.get_vadjustment().connect('value-changed', self.on_adjustment_value_changed)
 
+        scrolling_controller = Gtk.EventControllerScroll()
+        scrolling_controller.set_flags(Gtk.EventControllerScrollFlags.BOTH_AXES | Gtk.EventControllerScrollFlags.KINETIC)
+        scrolling_controller.connect('scroll', self.on_scroll)
+        scrolling_controller.connect('decelerate', self.on_decelerate)
+        self.drawing_area.add_controller(scrolling_controller)
+
         event_controller = Gtk.GestureClick()
         event_controller.connect('pressed', self.on_button_press)
         event_controller.set_button(1)
@@ -110,6 +116,34 @@ class Gutter(object):
             target = self.source_view.get_line_at_y(offset + y).target_iter
             self.source_buffer.place_cursor(target)
         return True
+
+    def on_scroll(self, controller, dx, dy):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if controller.get_current_event_state() & modifiers == 0:
+            if controller.get_unit() == Gdk.ScrollUnit.WHEEL:
+                dy *= self.adjustment.get_page_size() ** (2/3)
+            else:
+                dy *= 2.5
+            self.adjustment.set_value(self.adjustment.get_value() + dy)
+
+    def on_decelerate(self, controller, vel_x, vel_y):
+        data = {'starting_time': time.time(), 'initial_position': self.adjustment.get_value(), 'position': self.adjustment.get_value(), 'vel_y': vel_y * 2.5}
+        self.deceleration(data)
+
+    def deceleration(self, data):
+        if data['position'] != self.adjustment.get_value(): return False
+
+        time_elapsed = time.time() - data['starting_time']
+        exponential_factor = 2.71828 ** (-4 * time_elapsed)
+        position = data['initial_position'] + (1 - exponential_factor) * (data['vel_y'] / 4)
+        velocity = data['vel_y'] * exponential_factor
+        if abs(velocity) >= 0.1:
+            self.adjustment.set_value(position)
+            data['position'] = position
+            GObject.timeout_add(15, self.deceleration, data)
+
+        return False
 
     def on_enter(self, controller, x, y):
         self.set_cursor_position(x, y)
