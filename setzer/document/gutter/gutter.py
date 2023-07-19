@@ -125,7 +125,9 @@ class Gutter(object):
                 dy *= self.adjustment.get_page_size() ** (2/3)
             else:
                 dy *= 2.5
+            self.document_view.scrolled_window.set_kinetic_scrolling(False)
             self.adjustment.set_value(self.adjustment.get_value() + dy)
+            self.document_view.scrolled_window.set_kinetic_scrolling(True)
 
     def on_decelerate(self, controller, vel_x, vel_y):
         data = {'starting_time': time.time(), 'initial_position': self.adjustment.get_value(), 'position': self.adjustment.get_value(), 'vel_y': vel_y * 2.5}
