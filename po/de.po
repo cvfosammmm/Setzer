@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: setzer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 15:33+0200\n"
-"PO-Revision-Date: 2023-07-18 00:06+0000\n"
+"PO-Revision-Date: 2023-07-21 20:06+0000\n"
 "Last-Translator: Norwid Behrnd <nbehrnd@yahoo.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/setzer/"
 "application/de/>\n"
@@ -1365,7 +1365,7 @@ msgstr "Vorschau anzeigen"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:59
 msgid "Show global menu"
-msgstr ""
+msgstr "zeige allgemeine Befehlsübersicht"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:60
 msgid "Show keyboard shortcuts"
