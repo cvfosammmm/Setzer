@@ -23,7 +23,7 @@ from gi.repository import GLib
 import re
 import os, os.path
 
-import setzer.app.settings as settingscontroller
+import setzer.settings.settings as settingscontroller
 from setzer.app.color_manager import ColorManager
 
 

@@ -27,6 +27,7 @@ class CodeFolding(Observable):
         self.source_buffer = self.document.source_buffer
         self.tag = self.source_buffer.create_tag('invisible_region', invisible=1)
         self.folding_regions = dict()
+        self.initial_folded_regions = None
 
         self.document.parser.connect('finished_parsing', self.on_parser_update)
 
@@ -88,6 +89,8 @@ class CodeFolding(Observable):
         for region in folding_regions.values():
             self.unfold(region)
 
+        self.initial_folding()
+
     def get_region_by_line(self, line):
         offset = self.source_buffer.get_iter_at_line(line).iter.get_offset()
         if offset in self.folding_regions:
@@ -129,5 +132,24 @@ class CodeFolding(Observable):
         end_iter.forward_char()
         self.source_buffer.apply_tag(self.tag, start_iter, end_iter)
         self.add_change_code('folding_state_changed', region)
+
+    def get_folded_regions(self):
+        folded_regions = list()
+        for region in self.folding_regions.values():
+            if region['is_folded']:
+                folded_regions.append({'starting_line': region['starting_line'], 'ending_line': region['ending_line']})
+        return folded_regions
+
+    def set_initial_folded_regions(self, folded_regions):
+        self.initial_folded_regions = folded_regions
+        self.initial_folding()
+
+    def initial_folding(self):
+        if self.initial_folded_regions != None:
+            for line_range in self.initial_folded_regions:
+                region = self.get_region_by_line(line_range['starting_line'])
+                if region != None and line_range['ending_line'] == region['ending_line']:
+                    self.fold(region)
+        self.initial_folded_regions = None
 
 

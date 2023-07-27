@@ -38,6 +38,7 @@ import setzer.workspace.document_switcher.document_switcher as document_switcher
 import setzer.workspace.document_chooser.document_chooser as document_chooser
 import setzer.workspace.actions.actions as actions
 from setzer.app.service_locator import ServiceLocator
+from setzer.settings.document_settings import DocumentSettings
 
 
 class Workspace(Observable):
@@ -105,12 +106,14 @@ class Workspace(Observable):
         self.open_documents.append(document)
         if document.is_latex_document():
             self.open_latex_documents.append(document)
+        DocumentSettings.load_document_state(document)
         self.add_change_code('new_document', document)
         self.update_recently_opened_document(document.get_filename(), notify=True)
 
     def remove_document(self, document):
         if document == self.root_document:
             self.unset_root_document()
+        DocumentSettings.save_document_state(document)
         document.controller.continue_save_date_loop = False
         self.open_documents.remove(document)
         if document.is_latex_document():

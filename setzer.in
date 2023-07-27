@@ -30,6 +30,7 @@ from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 from setzer.app.color_manager import ColorManager
 from setzer.app.font_manager import FontManager
+from setzer.settings.document_settings import DocumentSettings
 from setzer.helpers.timer import timer
 
 
@@ -152,6 +153,8 @@ class MainApplicationController(Adw.Application):
         self.save_quit()
 
     def save_quit(self):
+        for document in self.workspace.open_documents: DocumentSettings.save_document_state(document)
+
         documents = self.workspace.get_unsaved_documents()
         active_document = self.workspace.get_active_document()
         if documents == None or active_document == None:
