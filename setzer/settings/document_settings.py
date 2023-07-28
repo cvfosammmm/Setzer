@@ -62,6 +62,7 @@ class DocumentSettings():
         document.preview.scroll_to_position(xoffset, yoffset)
 
     def save_document_state(document):
+        if document.filename == None: return
         if not document.is_latex_document(): return
 
         document_data = dict()
