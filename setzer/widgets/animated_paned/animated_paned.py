@@ -62,17 +62,13 @@ class AnimatedPaned(object):
 
     def on_position_changed(self, widget, position):
         if self.animation_id != None: return
+        if not self.show_widget: return
 
         if not self.is_initialized:
             self.animate(False)
             self.is_initialized = True
 
-        if not self.show_widget: return
-
-        if self.animate_first_widget:
-            self.set_target_position(self.get_position())
-        else:
-            self.set_target_position(self.get_position() - 1)
+        self.set_target_position(self.get_position())
 
     def set_target_position(self, position):
         self.target_position = position
