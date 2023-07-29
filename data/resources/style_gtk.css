@@ -511,7 +511,8 @@ box.search_bar button.text-button {
 }
 box.search_bar entry.search_entry {
 }
-box.search_bar label.search_match_counter {
+.search_match_counter {
+    color: mix(@theme_fg_color, @theme_bg_color, 0.3);
 }
 
 /*

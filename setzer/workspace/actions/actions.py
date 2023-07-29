@@ -55,6 +55,12 @@ class Actions(object):
         self.add_action('add-remove-packages-dialog', self.start_add_remove_packages_dialog, None)
         self.add_action('toggle-comment', self.toggle_comment)
 
+        self.add_action('start-search', self.start_search)
+        self.add_action('start-search-and-replace', self.start_search_and_replace)
+        self.add_action('find-next', self.find_next)
+        self.add_action('find-previous', self.find_previous)
+        self.add_action('stop-search', self.stop_search)
+
         self.add_action('cut', self.cut)
         self.add_action('copy', self.copy)
         self.add_action('paste', self.paste)
@@ -369,6 +375,36 @@ class Actions(object):
                 document.source_buffer.delete(start, end)
 
         document.source_buffer.end_user_action()
+
+    def start_search(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+        if not self.workspace.get_active_document().is_latex_document(): return
+
+        self.workspace.get_active_document().search.set_mode_search()
+
+    def start_search_and_replace(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+        if not self.workspace.get_active_document().is_latex_document(): return
+
+        self.workspace.get_active_document().search.set_mode_replace()
+
+    def find_next(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+        if not self.workspace.get_active_document().is_latex_document(): return
+
+        self.workspace.get_active_document().search.on_search_next_match()
+
+    def find_previous(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+        if not self.workspace.get_active_document().is_latex_document(): return
+
+        self.workspace.get_active_document().search.on_search_previous_match()
+
+    def stop_search(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+        if not self.workspace.get_active_document().is_latex_document(): return
+
+        self.workspace.get_active_document().search.hide_search_bar()
 
     def cut(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return

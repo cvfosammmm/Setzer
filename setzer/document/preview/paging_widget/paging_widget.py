@@ -26,7 +26,7 @@ class PagingWidget(object):
 
     def __init__(self, preview):
         self.preview = preview
-        self.view = FixedWidthLabel(160)
+        self.view = FixedWidthLabel(100)
         self.view.layout.set_alignment(Pango.Alignment.LEFT)
         self.view.get_style_context().add_class('paging-widget')
 

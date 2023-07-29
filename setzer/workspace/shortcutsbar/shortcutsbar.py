@@ -29,6 +29,8 @@ class Shortcutsbar(object):
         self.latex_shortcutsbar.button_build_log.set_active(self.workspace.get_show_build_log())
         self.latex_shortcutsbar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
         self.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
+        self.latex_shortcutsbar.button_search.connect('clicked', self.on_find_button_clicked)
+        self.latex_shortcutsbar.button_replace.connect('clicked', self.on_find_replace_button_clicked)
 
         self.workspace.connect('document_removed', self.update_document)
         self.workspace.connect('new_active_document', self.update_document)
@@ -38,9 +40,14 @@ class Shortcutsbar(object):
         self.update_document()
 
     def update_document(self, workspace=None, parameter=None):
-        if self.document != None: self.document.disconnect('changed', self.update_buttons)
+        if self.document != None:
+            self.document.disconnect('changed', self.update_buttons)
+            self.document.search.disconnect('mode_changed', self.update_buttons)
+
         self.document = self.workspace.active_document
-        if self.document != None: self.document.connect('changed', self.update_buttons)
+        if self.document != None:
+            self.document.connect('changed', self.update_buttons)
+            self.document.search.connect('mode_changed', self.update_buttons)
 
         self.update_buttons()
 
@@ -52,7 +59,10 @@ class Shortcutsbar(object):
                 self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(False)
             else:
                 self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(True)
+
             self.latex_shortcutsbar.button_more.set_popover(self.document.context_menu.popover_more)
+            self.latex_shortcutsbar.button_search.set_active(self.document.search.search_bar_mode == 'search')
+            self.latex_shortcutsbar.button_replace.set_active(self.document.search.search_bar_mode == 'replace')
         else:
             self.latex_shortcutsbar.button_more.set_popover(None)
 
@@ -61,5 +71,17 @@ class Shortcutsbar(object):
 
     def on_build_log_button_clicked(self, toggle_button, parameter=None):
         self.workspace.set_show_build_log(toggle_button.get_active())
+
+    def on_find_button_clicked(self, button=None):
+        if button.get_active():
+            self.workspace.actions.start_search()
+        else:
+            self.workspace.actions.stop_search()
+
+    def on_find_replace_button_clicked(self, button=None):
+        if button.get_active():
+            self.workspace.actions.start_search_and_replace()
+        else:
+            self.workspace.actions.stop_search()
 
 

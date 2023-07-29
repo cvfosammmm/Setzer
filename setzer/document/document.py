@@ -23,6 +23,7 @@ import os.path
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
 import setzer.document.document_viewgtk as document_view
+import setzer.document.search.search as search
 import setzer.document.gutter.gutter as gutter
 import setzer.document.context_menu.context_menu as context_menu
 import setzer.document.parser.parser_latex as parser_latex
@@ -65,6 +66,7 @@ class Document(Observable):
         else: self.parser = parser_dummy.ParserDummy(self)
         self.code_folding = code_folding.CodeFolding(self)
         self.gutter = gutter.Gutter(self, self.view)
+        self.search = search.Search(self, self.view)
 
     def set_filename(self, filename):
         if filename == None:

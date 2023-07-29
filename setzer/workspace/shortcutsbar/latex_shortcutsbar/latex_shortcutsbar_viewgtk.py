@@ -50,6 +50,20 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.append(self.right_icons)
 
     def populate_right_toolbar(self):
+        self.button_search = Gtk.ToggleButton()
+        self.button_search.set_icon_name('edit-find-symbolic')
+        self.button_search.set_tooltip_text(_('Find') + ' (' + _('Ctrl') + '+F)')
+        self.button_search.get_style_context().add_class('flat')
+        self.button_search.get_style_context().add_class('scbar')
+        self.right_icons.append(self.button_search)
+
+        self.button_replace = Gtk.ToggleButton()
+        self.button_replace.set_icon_name('edit-find-replace-symbolic')
+        self.button_replace.set_tooltip_text(_('Find and Replace') + ' (' + _('Ctrl') + '+H)')
+        self.button_replace.get_style_context().add_class('flat')
+        self.button_replace.get_style_context().add_class('scbar')
+        self.right_icons.append(self.button_replace)
+
         self.button_more = Gtk.MenuButton()
         self.button_more.set_icon_name('view-more-symbolic')
         self.button_more.get_style_context().add_class('flat')
