@@ -17,10 +17,10 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gdk
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk, Pango
 
 from setzer.app.service_locator import ServiceLocator
+from setzer.app.font_manager import FontManager
 from setzer.helpers.popover_menu_builder import MenuBuilder
 
 
@@ -29,11 +29,13 @@ class ContextMenu(object):
     def __init__(self, document, document_view):
         self.document = document
         self.document_view = document_view
+        self.dynamic_buttons = {}
 
         self.popover_more = MenuBuilder.create_menu()
         self.popover_more.set_can_focus(False)
         self.popover_more.connect('closed', self.on_popover_close)
         self.popover_more.set_size_request(260, -1)
+        self.dynamic_buttons[self.popover_more] = {}
         self.build_popover(self.popover_more)
 
         self.popover_pointer = MenuBuilder.create_menu()
@@ -44,7 +46,29 @@ class ContextMenu(object):
         self.popover_pointer.set_offset(130, 0)
         self.popover_pointer.set_can_focus(False)
         self.popover_pointer.connect('closed', self.on_popover_close)
+        self.dynamic_buttons[self.popover_pointer] = {}
         self.build_popover(self.popover_pointer)
+
+        self.document_view.scrolled_window.get_vadjustment().connect('changed', self.on_adjustment_changed)
+
+    def on_adjustment_changed(self, adjustment):
+        settings = ServiceLocator.get_settings()
+        if settings.get_value('preferences', 'use_system_font'):
+            font_string = FontManager.default_font_string
+        else:
+            font_string = settings.get_value('preferences', 'font_string')
+        font_desc = Pango.FontDescription.from_string(font_string)
+        zoom_level = FontManager.get_font_desc().get_size() / font_desc.get_size()
+
+        self.dynamic_buttons[self.popover_more]['reset_zoom'].set_label("{:.0%}".format(zoom_level))
+        self.dynamic_buttons[self.popover_pointer]['reset_zoom'].set_label("{:.0%}".format(zoom_level))
+
+        self.dynamic_buttons[self.popover_more]['reset_zoom'].set_sensitive(round(zoom_level * 100) != 100)
+        self.dynamic_buttons[self.popover_pointer]['reset_zoom'].set_sensitive(round(zoom_level * 100) != 100)
+        self.dynamic_buttons[self.popover_more]['zoom_in'].set_sensitive(FontManager.get_font_desc().get_size() * 1.1 <= 24 * Pango.SCALE)
+        self.dynamic_buttons[self.popover_pointer]['zoom_in'].set_sensitive(FontManager.get_font_desc().get_size() * 1.1 <= 24 * Pango.SCALE)
+        self.dynamic_buttons[self.popover_more]['zoom_out'].set_sensitive(FontManager.get_font_desc().get_size() / 1.1 >= 6 * Pango.SCALE)
+        self.dynamic_buttons[self.popover_pointer]['zoom_out'].set_sensitive(FontManager.get_font_desc().get_size() / 1.1 >= 6 * Pango.SCALE)
 
     def build_popover(self, popover):
         self.current_popover = popover
@@ -68,6 +92,29 @@ class ContextMenu(object):
         MenuBuilder.add_separator(self.current_popover)
         button_toggle_comment = self.create_button(_('Toggle Comment'), 'win.toggle-comment', shortcut=_('Ctrl') + '+K')
         MenuBuilder.add_widget(self.current_popover, button_toggle_comment)
+        MenuBuilder.add_separator(self.current_popover)
+        box = Gtk.CenterBox()
+        box.set_orientation(Gtk.Orientation.HORIZONTAL)
+        zoom_label = Gtk.Label.new(_('Zoom'))
+        zoom_label.set_margin_start(10)
+        box.set_start_widget(zoom_label)
+        inner_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        
+        self.dynamic_buttons[popover]['zoom_out'] = MenuBuilder.create_button('', shortcut=None)
+        self.dynamic_buttons[popover]['zoom_out'].set_icon_name('value-decrease-symbolic')
+        self.dynamic_buttons[popover]['zoom_out'].set_action_name('win.zoom-out')
+        inner_box.append(self.dynamic_buttons[popover]['zoom_out'])
+        self.dynamic_buttons[popover]['reset_zoom'] = MenuBuilder.create_button('', shortcut=None)
+        self.dynamic_buttons[popover]['reset_zoom'].set_label('100%')
+        self.dynamic_buttons[popover]['reset_zoom'].set_action_name('win.reset-zoom')
+        self.dynamic_buttons[popover]['reset_zoom'].set_size_request(53, -1)
+        inner_box.append(self.dynamic_buttons[popover]['reset_zoom'])
+        self.dynamic_buttons[popover]['zoom_in'] = MenuBuilder.create_button('', shortcut=None)
+        self.dynamic_buttons[popover]['zoom_in'].set_icon_name('value-increase-symbolic')
+        self.dynamic_buttons[popover]['zoom_in'].set_action_name('win.zoom-in')
+        inner_box.append(self.dynamic_buttons[popover]['zoom_in'])
+        box.set_end_widget(inner_box)
+        MenuBuilder.add_widget(self.current_popover, box)
 
     def create_button(self, label, action_name, shortcut=None):
         button = MenuBuilder.create_button(label, shortcut=shortcut)

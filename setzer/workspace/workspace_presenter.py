@@ -16,6 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 from setzer.app.service_locator import ServiceLocator
+from setzer.app.font_manager import FontManager
 
 
 class WorkspacePresenter(object):
@@ -23,15 +24,23 @@ class WorkspacePresenter(object):
     def __init__(self, workspace):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
+        self.settings = ServiceLocator.get_settings()
 
         self.workspace.connect('new_document', self.on_new_document)
         self.workspace.connect('document_removed', self.on_document_removed)
         self.workspace.connect('new_active_document', self.on_new_active_document)
         self.workspace.connect('set_show_preview_or_help', self.on_set_show_preview_or_help)
         self.workspace.connect('show_build_log_state_change', self.on_show_build_log_state_change)
+        self.settings.connect('settings_changed', self.on_settings_changed)
 
         self.activate_welcome_screen_mode()
+        self.update_font()
         self.setup_paneds()
+
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+        if item in ['font_string', 'use_system_font']:
+            self.update_font()
 
     def on_new_document(self, workspace, document):
         if document.is_latex_document():
@@ -107,6 +116,13 @@ class WorkspacePresenter(object):
         active_document = self.workspace.get_active_document()
         if active_document != None:
             active_document.view.source_view.grab_focus()
+
+    def update_font(self):
+        if self.settings.get_value('preferences', 'use_system_font'):
+            FontManager.font_string = FontManager.default_font_string
+        else:
+            FontManager.font_string = self.settings.get_value('preferences', 'font_string')
+        FontManager.propagate_font_setting()
 
     def setup_paneds(self):
         show_sidebar = False#TODO(self.workspace.show_symbols or self.workspace.show_document_structure)

@@ -21,6 +21,7 @@ import setzer.dialogs.document_changed_on_disk.document_changed_on_disk as docum
 import setzer.dialogs.document_deleted_on_disk.document_deleted_on_disk as document_deleted_on_disk_dialog
 import setzer.dialogs.open_document.open_document as open_document_dialog
 import setzer.dialogs.open_session.open_session as open_session_dialog
+import setzer.dialogs.preferences.preferences as preferences_dialog
 import setzer.dialogs.replace_confirmation.replace_confirmation as replace_confirmation_dialog
 import setzer.dialogs.save_document.save_document as save_document_dialog
 import setzer.dialogs.save_session.save_session as save_session_dialog
@@ -37,6 +38,7 @@ class DialogLocator(object):
         dialogs['document_deleted_on_disk'] = document_deleted_on_disk_dialog.DocumentDeletedOnDiskDialog(main_window)
         dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(main_window, workspace)
         dialogs['open_session'] = open_session_dialog.OpenSessionDialog(main_window, workspace)
+        dialogs['preferences'] = preferences_dialog.PreferencesDialog(main_window)
         dialogs['replace_confirmation'] = replace_confirmation_dialog.ReplaceConfirmationDialog(main_window)
         dialogs['save_document'] = save_document_dialog.SaveDocumentDialog(main_window, workspace)
         dialogs['save_session'] = save_session_dialog.SaveSessionDialog(main_window, workspace)

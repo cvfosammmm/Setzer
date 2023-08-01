@@ -216,7 +216,7 @@ class Document(Observable):
     def scroll_cursor_onscreen(self, margin_lines=5):
         height = self.view.scrolled_window.get_allocated_height()
         if height > 0:
-            margin = margin_lines / (height / FontManager.get_line_height())
+            margin = margin_lines / (height / FontManager.get_line_height(self.source_view))
 
             self.view.scrolled_window.set_kinetic_scrolling(False)
             self.source_view.scroll_to_mark(self.source_buffer.get_insert(), margin, False, 0, 0)

@@ -85,11 +85,6 @@ class ServiceLocator(object):
     def get_app_icons_path():
         return ServiceLocator.app_icons_path
 
-    def get_is_dark_mode():
-        fg_color = ColorManager.get_ui_color('theme_fg_color')
-        bg_color = ColorManager.get_ui_color('theme_bg_color')
-        return (fg_color.red + fg_color.green + fg_color.blue) * fg_color.alpha > (bg_color.red + bg_color.green + bg_color.blue) * bg_color.alpha
-
     def get_source_language_manager():
         if ServiceLocator.source_language_manager == None:
             ServiceLocator.source_language_manager = GtkSource.LanguageManager()
@@ -113,10 +108,7 @@ class ServiceLocator(object):
         else: return source_language_manager.get_language('latex')
 
     def get_style_scheme():
-        if ServiceLocator.get_is_dark_mode():
-            name = ServiceLocator.get_settings().get_value('preferences', 'color_scheme_dark_mode')
-        else:
-            name = ServiceLocator.get_settings().get_value('preferences', 'color_scheme')
+        name = ServiceLocator.get_settings().get_value('preferences', 'color_scheme')
         return ServiceLocator.get_source_style_scheme_manager().get_scheme(name)
 
 

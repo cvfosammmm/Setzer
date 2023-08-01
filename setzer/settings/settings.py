@@ -75,8 +75,6 @@ class Settings(Observable):
         self.defaults['preferences']['latex_interpreter'] = 'xelatex'
         self.defaults['preferences']['use_latexmk'] = False
         self.defaults['preferences']['color_scheme'] = 'default'
-        self.defaults['preferences']['color_scheme_dark_mode'] = 'default'
-        self.defaults['preferences']['invert_pdf'] = False
         self.defaults['preferences']['spaces_instead_of_tabs'] = True
         self.defaults['preferences']['tab_width'] = 4
         self.defaults['preferences']['show_line_numbers'] = True

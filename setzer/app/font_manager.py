@@ -24,33 +24,44 @@ from gi.repository import Gtk
 class FontManager(object):
 
     main_window = None
-    text_view = None
+    default_font_string = None
     font_string = None
 
     def init(main_window):
         FontManager.main_window = main_window
 
-        FontManager.text_view = Gtk.TextView()
-        FontManager.text_view.set_monospace(True)
-        FontManager.font_string = FontManager.text_view.get_pango_context().get_font_description().to_string()
+        FontManager.default_font_string = 'monospace 11'
+        FontManager.font_string = 'monospace 11'
 
-    def get_line_height():
-        char_width, line_height = FontManager.get_char_dimensions()
-        return line_height
+    def propagate_font_setting():
+        font_string = FontManager.font_string
 
-    def get_char_width(char='A'):
-        char_width, line_height = FontManager.get_char_dimensions(char)
+        font_desc = Pango.FontDescription.from_string(font_string)
+        font_size = font_desc.get_size() / Pango.SCALE
+        font_family = font_desc.get_family()
+
+        FontManager.main_window.css_provider_font_size.load_from_data(('textview { font-size: ' + str(font_size) + 'pt; font-family: ' + font_family + '; }\nbox.autocomplete list row { font-size: ' + str(font_size) + 'pt; }\nbox.autocomplete list row label { font-family: ' + font_family + '; }').encode('utf-8'))
+
+    def get_char_width(text_view):
+        context = text_view.get_pango_context()
+        layout = Pango.Layout.new(context)
+        layout.set_text('A', -1)
+        char_width, line_height_1 = layout.get_pixel_size()
         return char_width
 
-    def get_char_dimensions(char='A'):
-        context = FontManager.text_view.get_pango_context()
-        font_desc = Pango.FontDescription.from_string(FontManager.font_string)
+    def get_line_height(text_view):
+        context = text_view.get_pango_context()
         layout = Pango.Layout.new(context)
-        layout.set_text(char, -1)
-        layout.set_font_description(font_desc)
-        return layout.get_pixel_size()
+        layout.set_text('A', -1)
+        char_width, line_height_1 = layout.get_pixel_size()
+        layout.set_text('A\nA', -1)
+        char_width, line_height_2 = layout.get_pixel_size()
+        return line_height_2 - line_height_1
 
     def get_font_desc():
         return Pango.FontDescription.from_string(FontManager.font_string)
+
+    def get_system_font():
+        return FontManager.default_font_string
 
 

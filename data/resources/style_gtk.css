@@ -519,11 +519,14 @@ box.search_bar entry.search_entry {
 ** preferences
 */
 
+box.preferences-page checkbutton {
+    padding-left: 0px;
+}
 box.preferences-page checkbutton check {
     margin-left: 1px;
     margin-right: 6px;
 }
-box.preferences-page radiobutton radio {
+box.preferences-page checkbutton radio {
     margin-left: 1px;
     margin-right: 6px;
 }

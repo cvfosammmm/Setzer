@@ -17,10 +17,11 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import GLib, Gio, Gdk
+from gi.repository import GLib, Gio, Gdk, Pango
 
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
+from setzer.app.font_manager import FontManager
 
 
 class Actions(object):
@@ -28,6 +29,7 @@ class Actions(object):
     def __init__(self, workspace):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
+        self.settings = ServiceLocator.get_settings()
 
         self.actions = dict()
         self.add_action('new-latex-document', self.new_latex_document)
@@ -68,6 +70,11 @@ class Actions(object):
         self.add_action('select-all', self.select_all)
         self.add_action('undo', self.undo)
         self.add_action('redo', self.redo)
+
+        self.add_action('zoom-in', self.zoom_in)
+        self.add_action('zoom-out', self.zoom_out)
+        self.add_action('reset-zoom', self.reset_zoom)
+        self.add_action('show-preferences-dialog', self.show_preferences_dialog)
         self.add_action('show-about-dialog', self.show_about_dialog)
 
         self.actions['quit'] = Gio.SimpleAction.new('quit', None)
@@ -441,6 +448,28 @@ class Actions(object):
         if self.workspace.get_active_document() == None: return
 
         self.workspace.get_active_document().source_buffer.redo()
+
+    def zoom_in(self, action=None, parameter=''):
+        font_desc = Pango.FontDescription.from_string(FontManager.font_string)
+        font_desc.set_size(min(font_desc.get_size() * 1.1, 24 * Pango.SCALE))
+        FontManager.font_string = font_desc.to_string()
+        FontManager.propagate_font_setting()
+
+    def zoom_out(self, action=None, parameter=''):
+        font_desc = Pango.FontDescription.from_string(FontManager.font_string)
+        font_desc.set_size(max(font_desc.get_size() / 1.1, 6 * Pango.SCALE))
+        FontManager.font_string = font_desc.to_string()
+        FontManager.propagate_font_setting()
+
+    def reset_zoom(self, action=None, parameter=''):
+        if self.settings.get_value('preferences', 'use_system_font'):
+            FontManager.font_string = FontManager.default_font_string
+        else:
+            FontManager.font_string = self.settings.get_value('preferences', 'font_string')
+        FontManager.propagate_font_setting()
+
+    def show_preferences_dialog(self, action=None, parameter=''):
+        DialogLocator.get_dialog('preferences').run()
 
     def show_about_dialog(self, action=None, parameter=''):
         DialogLocator.get_dialog('about').run()

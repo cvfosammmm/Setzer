@@ -16,6 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 from setzer.helpers.observable import Observable
+from setzer.app.service_locator import ServiceLocator
 from setzer.helpers.timer import timer
 
 
@@ -25,11 +26,20 @@ class CodeFolding(Observable):
         Observable.__init__(self)
         self.document = document
         self.source_buffer = self.document.source_buffer
+        self.settings = ServiceLocator.get_settings()
         self.tag = self.source_buffer.create_tag('invisible_region', invisible=1)
+
         self.folding_regions = dict()
         self.initial_folded_regions = None
 
         self.document.parser.connect('finished_parsing', self.on_parser_update)
+        self.settings.connect('settings_changed', self.on_settings_changed)
+
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+        if item == 'enable_code_folding' and value == False:
+            for region in self.folding_regions.values():
+                self.unfold(region)
 
     def on_parser_update(self, parser):
         # this method updates the dict of folding regions after the
@@ -141,8 +151,9 @@ class CodeFolding(Observable):
         return folded_regions
 
     def set_initial_folded_regions(self, folded_regions):
-        self.initial_folded_regions = folded_regions
-        self.initial_folding()
+        if self.settings.get_value('preferences', 'enable_code_folding'):
+            self.initial_folded_regions = folded_regions
+            self.initial_folding()
 
     def initial_folding(self):
         if self.initial_folded_regions != None:
