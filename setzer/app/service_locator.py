@@ -22,6 +22,7 @@ from gi.repository import GLib
 
 import re
 import os, os.path
+import xml.etree.ElementTree as ET
 
 import setzer.settings.settings as settingscontroller
 from setzer.app.color_manager import ColorManager
@@ -36,6 +37,7 @@ class ServiceLocator(object):
     resources_path = None
     app_icons_path = None
     regexes = dict()
+    packages_dict = None
     source_language_manager = None
     source_style_scheme_manager = None
 
@@ -110,5 +112,17 @@ class ServiceLocator(object):
     def get_style_scheme():
         name = ServiceLocator.get_settings().get_value('preferences', 'color_scheme')
         return ServiceLocator.get_source_style_scheme_manager().get_scheme(name)
+
+    def get_packages_dict():
+        if ServiceLocator.packages_dict == None:
+            ServiceLocator.packages_dict = dict()
+
+            resources_path = ServiceLocator.get_resources_path()
+            tree = ET.parse(os.path.join(resources_path, 'latexdb', 'packages', 'general.xml'))
+            root = tree.getroot()
+            for child in root:
+                attrib = child.attrib
+                ServiceLocator.packages_dict[attrib['name']] = {'command': attrib['text'], 'description': _(attrib['description'])}
+        return ServiceLocator.packages_dict
 
 

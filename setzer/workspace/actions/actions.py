@@ -318,9 +318,8 @@ class Actions(object):
 
     def add_packages(self, action, parameter):
         if self.workspace.get_active_document() == None: return
-
-        return #TODO
         if parameter == None: return
+
         document = self.workspace.get_active_document()
         if document.is_latex_document():
             document.add_packages(parameter)
@@ -343,7 +342,6 @@ class Actions(object):
     def start_add_remove_packages_dialog(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
 
-        return #TODO
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('add_remove_packages').run(document)
 

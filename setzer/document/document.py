@@ -192,6 +192,54 @@ class Document(Observable):
     def select_all(self, widget=None):
         self.source_buffer.select_range(self.source_buffer.get_start_iter(), self.source_buffer.get_end_iter())
 
+    def add_packages(self, packages):
+        self.source_buffer.begin_user_action()
+
+        first_package = True
+        text = ''
+        for packagename in packages:
+            if not first_package: text += '\n'
+            text += '\\usepackage{' + packagename + '}'
+            first_package = False
+
+        package_data = self.parser.symbols['packages_detailed']
+        if package_data:
+            max_end = 0
+            for package in package_data.values():
+                offset, match_obj = package
+                if offset > max_end:
+                    max_end = offset + match_obj.end() - match_obj.start()
+            insert_iter = self.source_buffer.get_iter_at_offset(max_end)
+            if not insert_iter.ends_line():
+                insert_iter.forward_to_line_end()
+            self.source_buffer.place_cursor(insert_iter)
+            text = '\n' + text
+        else:
+            end_iter = self.source_buffer.get_end_iter()
+            result = end_iter.backward_search('\\documentclass', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
+            if result != None:
+                result[0].forward_to_line_end()
+                self.source_buffer.place_cursor(result[0])
+                text = '\n' + text
+
+        self.source_buffer.delete_selection(False, False)
+        self.source_buffer.insert_at_cursor(text)
+        self.source_buffer.end_user_action()
+
+    def remove_packages(self, packages):
+        packages_data = self.parser.symbols['packages_detailed']
+        for package in packages:
+            try:
+                offset, match_obj = packages_data[package]
+            except KeyError: return
+            start_iter = self.source_buffer.get_iter_at_offset(offset)
+            end_iter = self.source_buffer.get_iter_at_offset(offset + match_obj.end() - match_obj.start())
+            text = self.source_buffer.get_text(start_iter, end_iter, False)
+            if text == match_obj.group(0):  
+                if start_iter.get_line_offset() == 0:
+                    start_iter.backward_char()
+                self.source_buffer.delete(start_iter, end_iter)
+
     def on_modified_change(self, buffer):
         self.add_change_code('modified_changed')
 

@@ -36,7 +36,7 @@ class ParserDummy(Observable):
         self.symbols['packages_detailed'] = dict()
         self.symbols['blocks'] = list()
 
-        self.document.source_buffer.connect('insert-text', self.on_insert_text)
+        self.document.source_buffer.connect('insert-text', self.on_text_inserted)
         self.document.source_buffer.connect('delete-range', self.on_text_deleted)
 
     def on_text_deleted(self, buffer, start_iter, end_iter):

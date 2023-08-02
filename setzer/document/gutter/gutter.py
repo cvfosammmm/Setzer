@@ -45,7 +45,7 @@ class Gutter(object):
         self.line_numbers_visible = self.settings.get_value('preferences', 'show_line_numbers')
         self.line_numbers_width = None
 
-        self.code_folding_visible = self.settings.get_value('preferences', 'enable_code_folding')
+        self.code_folding_visible = self.document.is_latex_document() and self.settings.get_value('preferences', 'enable_code_folding')
         self.code_folding_width = None
 
         self.char_width = FontManager.get_char_width(self.source_view)
@@ -91,7 +91,7 @@ class Gutter(object):
             self.drawing_area.queue_draw()
 
         if item == 'enable_code_folding':
-            self.code_folding_visible = self.settings.get_value('preferences', 'enable_code_folding')
+            self.code_folding_visible = self.document.is_latex_document() and self.settings.get_value('preferences', 'enable_code_folding')
             self.update_hovered_folding_region()
             self.drawing_area.queue_draw()
 

@@ -16,6 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import setzer.dialogs.about.about as about_dialog
+import setzer.dialogs.add_remove_packages.add_remove_packages as add_remove_packages
 import setzer.dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
 import setzer.dialogs.document_changed_on_disk.document_changed_on_disk as document_changed_on_disk_dialog
 import setzer.dialogs.document_deleted_on_disk.document_deleted_on_disk as document_deleted_on_disk_dialog
@@ -34,6 +35,7 @@ class DialogLocator(object):
     def init_dialogs(main_window, workspace):
         dialogs = dict()
         dialogs['about'] = about_dialog.AboutDialog(main_window)
+        dialogs['add_remove_packages'] = add_remove_packages.AddRemovePackagesDialog(main_window)
         dialogs['document_changed_on_disk'] = document_changed_on_disk_dialog.DocumentChangedOnDiskDialog(main_window)
         dialogs['document_deleted_on_disk'] = document_deleted_on_disk_dialog.DocumentDeletedOnDiskDialog(main_window)
         dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(main_window, workspace)
