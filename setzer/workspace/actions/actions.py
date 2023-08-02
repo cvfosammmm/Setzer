@@ -17,7 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import GLib, Gio, Gdk, Pango
+from gi.repository import GLib, Gio, Gtk, Gdk, Pango
 
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
@@ -175,15 +175,33 @@ class Actions(object):
     def save_and_build(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
 
-        self.save()
-        self.build()
+        document = self.workspace.get_root_or_active_latex_document()
+        active_document = ServiceLocator.get_workspace().get_active_document()
+        if document == None or active_document == None: return
+
+        if document.filename == None:
+            dialog = DialogLocator.get_dialog('build_save')
+            dialog.run(document, self.build_save_cb)
+        else:
+            self.save()
+            document.build_system.build_and_forward_sync(active_document)
 
     def build(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
 
         document = self.workspace.get_root_or_active_latex_document()
-        if document != None:
-            document.build_widget.build_document_request()
+        active_document = ServiceLocator.get_workspace().get_active_document()
+        if document == None or active_document == None: return
+
+        if document.filename == None:
+            dialog = DialogLocator.get_dialog('build_save')
+            dialog.run(document, self.build_save_cb)
+        else:
+            document.build_system.build_and_forward_sync(active_document)
+
+    def build_save_cb(self, response_id):
+        if response_id == Gtk.ResponseType.YES:
+            self.save_as()
 
     def show_build_log(self, action=None, parameter=''):
         self.workspace.set_show_build_log(True)

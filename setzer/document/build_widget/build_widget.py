@@ -106,17 +106,6 @@ class BuildWidget(Observable):
         if self.view.get_parent() != None:
             self.view.hide_timer(1600)
 
-    def build_document_request(self, button_object=None):
-        if self.document.filename == None:
-            if DialogLocator.get_dialog('build_save').run(self.document):
-                DialogLocator.get_dialog('save_document').run(self.document)
-            else:
-                return False
-        if self.document.filename != None:
-            active_document = ServiceLocator.get_workspace().get_active_document()
-            if active_document != None:
-                self.document.build_system.build_and_forward_sync(active_document)
-
     def on_stop_build_button_click(self, button_object=None):
         document = self.document
         if document != None:
