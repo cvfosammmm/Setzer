@@ -205,10 +205,11 @@ class Document(Observable):
         package_data = self.parser.symbols['packages_detailed']
         if package_data:
             max_end = 0
-            for package in package_data.values():
-                offset, match_obj = package
-                if offset > max_end:
-                    max_end = offset + match_obj.end() - match_obj.start()
+            for package_match_list in package_data.values():
+                for package_match in package_match_list:
+                    offset, match_obj = package_match
+                    if offset > max_end:
+                        max_end = offset + match_obj.end() - match_obj.start()
             insert_iter = self.source_buffer.get_iter_at_offset(max_end)
             if not insert_iter.ends_line():
                 insert_iter.forward_to_line_end()
@@ -229,16 +230,20 @@ class Document(Observable):
     def remove_packages(self, packages):
         packages_data = self.parser.symbols['packages_detailed']
         for package in packages:
-            try:
-                offset, match_obj = packages_data[package]
-            except KeyError: return
-            start_iter = self.source_buffer.get_iter_at_offset(offset)
-            end_iter = self.source_buffer.get_iter_at_offset(offset + match_obj.end() - match_obj.start())
-            text = self.source_buffer.get_text(start_iter, end_iter, False)
-            if text == match_obj.group(0):  
-                if start_iter.get_line_offset() == 0:
-                    start_iter.backward_char()
-                self.source_buffer.delete(start_iter, end_iter)
+            if package in packages_data:
+                self.source_buffer.begin_user_action()
+
+                for package_match in reversed(packages_data[package]):
+                    offset, match_obj = package_match
+                    start_iter = self.source_buffer.get_iter_at_offset(offset)
+                    end_iter = self.source_buffer.get_iter_at_offset(offset + match_obj.end() - match_obj.start())
+                    text = self.source_buffer.get_text(start_iter, end_iter, False)
+                    if text == match_obj.group(0):  
+                        if start_iter.get_line_offset() == 0:
+                            start_iter.backward_char()
+                        self.source_buffer.delete(start_iter, end_iter)
+
+                self.source_buffer.end_user_action()
 
     def on_modified_change(self, buffer):
         self.add_change_code('modified_changed')

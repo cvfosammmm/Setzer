@@ -279,7 +279,9 @@ class ParserLaTeX(Observable):
                     bibliographies = bibliographies | {entry.strip()}
             elif match.group(3) == 'usepackage':
                 packages = packages | {match.group(4).strip()}
-                packages_detailed[match.group(4).strip()] = [offset, match]
+                if match.group(4).strip() not in packages_detailed:
+                    packages_detailed[match.group(4).strip()] = []
+                packages_detailed[match.group(4).strip()].append([offset, match])
             elif match.group(5) == 'bibitem':
                 bibitems = bibitems | {match.group(6).strip()}
 
