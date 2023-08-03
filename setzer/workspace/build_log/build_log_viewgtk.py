@@ -36,7 +36,7 @@ class BuildLogView(Gtk.Box):
         self.set_orientation(Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('buildlog')
 
-        self.list = BuildLogList()
+        self.list = BuildLogList(self)
 
         self.scrolled_window = Gtk.ScrolledWindow()
         self.scrolled_window.set_vexpand(True)
@@ -64,8 +64,9 @@ class BuildLogView(Gtk.Box):
 
 class BuildLogList(Gtk.Widget):
 
-    def __init__(self):
+    def __init__(self, parent):
         Gtk.Widget.__init__(self)
+        self.parent = parent
         self.icons = list()
 
         self.items = []
@@ -87,6 +88,9 @@ class BuildLogList(Gtk.Widget):
         self.line_height = self.layouts[0].get_extents()[0].height / Pango.SCALE
 
     def do_snapshot(self, snapshot):
+        self.offset_start = self.parent.scrolled_window.get_vadjustment().get_value()
+        self.offset_end = self.offset_start + self.parent.scrolled_window.get_vadjustment().get_page_size()
+
         self.setup_icons()
 
         fg_color = ColorManager.get_ui_color('theme_fg_color')
@@ -96,10 +100,6 @@ class BuildLogList(Gtk.Widget):
         snapshot.append_color(bg_color, Graphene.Rect().init(0, self.offset_start, self.get_allocated_width(), self.offset_end + 2000))
         if self.hover_item != None:
             snapshot.append_color(hover_color, Graphene.Rect().init(0, self.hover_item * self.line_height, self.get_allocated_width(), self.line_height))
-
-        first_item = min(max(int(self.offset_start // self.line_height) - 5, 0), len(self.items))
-        last_item = min(int(self.offset_end // self.line_height) + 7, len(self.items))
-        snapshot.translate(Graphene.Point().init(0, first_item * self.line_height + 3))
 
         snapshot.translate(Graphene.Point().init(40, 0))
         snapshot.append_layout(self.layouts[0], fg_color)
@@ -112,7 +112,7 @@ class BuildLogList(Gtk.Widget):
 
         snapshot.translate(Graphene.Point().init(- (40 + 76 + 138 + 76), 0))
         snapshot.translate(Graphene.Point().init(12, 2))
-        for i, item in enumerate(self.items[first_item:last_item]):
+        for i, item in enumerate(self.items):
             self.icons[item[0]].snapshot_symbolic(snapshot, 16, 16, [fg_color])
             snapshot.translate(Graphene.Point().init(0, self.line_height))
 
@@ -124,7 +124,7 @@ class BuildLogList(Gtk.Widget):
         file_text = ''
         line_text = ''
         desc_text = ''
-        for i, item in enumerate(self.items[first_item:last_item]):
+        for i, item in enumerate(self.items):
             type_text += item[0] + '\n'
             file_text += os.path.basename(item[2]) + '\n'
             line_text += _('Line {number}').format(number=str(item[3])) + "\n" if item[3] >= 0 else '' + '\n'
@@ -143,18 +143,6 @@ class BuildLogList(Gtk.Widget):
 
         self.layouts[3].set_text(desc_text)
         self.layouts[3].set_width(-1)
-
-    def set_data(self, items, offset_start, offset_end):
-        self.items = items
-        self.offset_start = offset_start
-        self.offset_end = offset_end
-        self.generate_layouts()
-
-        self.height = len(items) * self.line_height + 24
-        self.max_width = -1
-        self.set_size_request(354 + self.layouts[3].get_extents()[0].width / Pango.SCALE, self.height)
-
-        self.queue_draw()
 
     def setup_icons(self, widget=None):
         icon_theme = Gtk.IconTheme.get_for_display(ServiceLocator.get_main_window().get_display())

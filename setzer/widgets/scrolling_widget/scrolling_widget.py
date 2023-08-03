@@ -142,6 +142,7 @@ class ScrollingWidget(Observable):
         self.add_change_code('size_changed')
         self.last_cursor_scrolling_change = time.time()
         self.update_scrollbars()
+        self.content.queue_draw()
 
     def on_adjustment_changed(self, adjustment):
         self.scrolling_offset_y = self.adjustment_y.get_value()

@@ -41,9 +41,6 @@ class BuildLogPresenter(object):
         self.build_log.connect('hover_item_changed', self.on_hover_item_changed)
         self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_scroll)
 
-        self.max_width = -1
-        self.height = -1
-
     def on_scroll(self, adjustment, *arguments):
         self.update_list()
 
@@ -53,17 +50,18 @@ class BuildLogPresenter(object):
         self.set_header_data(num_errors, num_others, has_been_built)
         self.view.scrolled_window.get_vadjustment().set_value(0)
         self.view.scrolled_window.get_hadjustment().set_value(0)
+        self.view.list.items = self.build_log.items
+        self.view.list.generate_layouts()
+        height = len(self.view.list.items) * self.view.list.line_height + 24
+        self.view.list.set_size_request(354 + self.view.list.layouts[3].get_extents()[0].width / Pango.SCALE, height)
         self.update_list()
 
     def on_hover_item_changed(self, build_log):
         self.view.list.hover_item = build_log.hover_item
         self.update_list()
 
-    #@timer
     def update_list(self):
-        value = self.view.scrolled_window.get_vadjustment().get_value()
-        page_size = self.view.scrolled_window.get_vadjustment().get_page_size()
-        self.view.list.set_data(self.build_log.items, value, value + page_size)
+        self.view.list.queue_draw()
 
     def set_header_data(self, errors, warnings, tried_building=False):
         if tried_building:
