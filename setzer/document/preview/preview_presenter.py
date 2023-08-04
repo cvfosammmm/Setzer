@@ -86,7 +86,9 @@ class PreviewPresenter(object):
 
     #@timer
     def draw(self, drawing_area, ctx, width, height):
-        if self.preview.layout == None: return
+        if self.preview.layout == None:
+            self.preview.setup_layout_and_zoom_levels()
+            return
 
         bg_color = ColorManager.get_ui_color('theme_bg_color')
         border_color = ColorManager.get_ui_color('borders')

@@ -96,30 +96,32 @@ class Preview(Observable):
     def load_pdf(self):
         try:
             self.poppler_document = Poppler.Document.new_from_file('file:' + self.pdf_filename)
-        except TypeError:
+        except Exception:
             self.reset_pdf_data()
-        except gi.repository.GLib.Error:
-            self.reset_pdf_data()
-        else:
-            page_size = self.poppler_document.get_page(0).get_size()
-            self.page_width = page_size.width
-            self.page_height = page_size.height
-            self.update_vertical_margin()
-            self.zoom_manager.update_dynamic_zoom_levels()
-            self.layout = self.layouter.create_layout()
-            self.add_change_code('layout_changed')
-            self.add_change_code('pdf_changed')
-            if self.zoom_manager.get_zoom_level() == None:
-                self.zoom_manager.set_zoom_fit_to_width()
+            return
+
+        page_size = self.poppler_document.get_page(0).get_size()
+        self.page_width = page_size.width
+        self.page_height = page_size.height
+        self.update_vertical_margin()
+        self.add_change_code('pdf_changed')
 
     def reset_pdf_data(self):
         self.pdf_filename = None
         self.poppler_document = None
         self.page_width = None
         self.page_height = None
-        self.layout = None
-        self.zoom_manager.update_dynamic_zoom_levels()
         self.add_change_code('pdf_changed')
+        self.layout = None
+        self.add_change_code('layout_changed')
+
+    def setup_layout_and_zoom_levels(self):
+        self.zoom_manager.update_dynamic_zoom_levels()
+        if self.zoom_manager.get_zoom_level() == None:
+            self.zoom_manager.set_zoom_fit_to_width()
+
+        self.layout = self.layouter.create_layout()
+        self.add_change_code('layout_changed')
 
     def update_vertical_margin(self):
         current_min = self.page_width
