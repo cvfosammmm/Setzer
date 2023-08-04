@@ -203,15 +203,13 @@ class BuildSystem(Observable):
                 if build_blob['error'] == 'interpreter_missing':
                     self.show_build_state('')
                     self.change_build_state('idle')
-                    if DialogLocator.get_dialog('interpreter_missing').run(build_blob['error_arg']):
-                        DialogLocator.get_dialog('preferences').run()
+                    DialogLocator.get_dialog('interpreter_missing').run(build_blob['error_arg'])
                     return
 
                 if build_blob['error'] == 'interpreter_not_working':
                     self.show_build_state('')
                     self.change_build_state('idle')
-                    if DialogLocator.get_dialog('building_failed').run(build_blob['error_arg']):
-                        DialogLocator.get_dialog('preferences').run()
+                    DialogLocator.get_dialog('building_failed').run(build_blob['error_arg'])
                     return
 
                 build_blob['log_messages']['BibTeX'] = build_blob['bibtex_log_messages']

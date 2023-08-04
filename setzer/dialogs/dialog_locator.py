@@ -18,9 +18,11 @@
 import setzer.dialogs.about.about as about_dialog
 import setzer.dialogs.add_remove_packages.add_remove_packages as add_remove_packages
 import setzer.dialogs.build_save.build_save as build_save_dialog
+import setzer.dialogs.building_failed.building_failed as building_failed_dialog
 import setzer.dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
 import setzer.dialogs.document_changed_on_disk.document_changed_on_disk as document_changed_on_disk_dialog
 import setzer.dialogs.document_deleted_on_disk.document_deleted_on_disk as document_deleted_on_disk_dialog
+import setzer.dialogs.interpreter_missing.interpreter_missing as interpreter_missing_dialog
 import setzer.dialogs.open_document.open_document as open_document_dialog
 import setzer.dialogs.open_session.open_session as open_session_dialog
 import setzer.dialogs.preferences.preferences as preferences_dialog
@@ -47,6 +49,8 @@ class DialogLocator(object):
         dialogs['save_document'] = save_document_dialog.SaveDocumentDialog(main_window, workspace)
         dialogs['save_session'] = save_session_dialog.SaveSessionDialog(main_window, workspace)
         dialogs['close_confirmation'] = close_confirmation_dialog.CloseConfirmationDialog(main_window, workspace, dialogs['save_document'])
+        dialogs['building_failed'] = building_failed_dialog.BuildingFailedDialog(main_window, dialogs['preferences'])
+        dialogs['interpreter_missing'] = interpreter_missing_dialog.InterpreterMissingDialog(main_window, dialogs['preferences'])
         DialogLocator.dialogs = dialogs
     
     def get_dialog(dialog_type):
