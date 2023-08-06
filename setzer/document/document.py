@@ -17,7 +17,8 @@
 
 import gi
 gi.require_version('GtkSource', '5')
-from gi.repository import GtkSource
+gi.require_version('Gtk', '4.0')
+from gi.repository import GtkSource, Gtk
 import os.path
 
 import setzer.document.document_controller as document_controller
@@ -244,6 +245,20 @@ class Document(Observable):
                         self.source_buffer.delete(start_iter, end_iter)
 
                 self.source_buffer.end_user_action()
+
+    def insert_before_document_end(self, text):
+        end_iter = self.source_buffer.get_end_iter()
+        result = end_iter.backward_search('\\end{document}', Gtk.TextSearchFlags.VISIBLE_ONLY, None)
+        if result != None:
+            self.source_buffer.begin_user_action()
+            self.source_buffer.place_cursor(result[0])
+            self.source_buffer.insert_at_cursor('''
+''' + text + '''
+
+''')
+            self.source_buffer.end_user_action()
+        else:
+            self.source_buffer.insert_at_cursor(text)
 
     def on_modified_change(self, buffer):
         self.add_change_code('modified_changed')

@@ -329,7 +329,6 @@ class Actions(object):
     def insert_before_document_end(self, action, parameter):
         if self.workspace.get_active_document() == None: return
 
-        return #TODO
         document = self.workspace.get_active_document()
         document.insert_before_document_end(parameter[0])
         document.scroll_cursor_onscreen()
@@ -346,14 +345,12 @@ class Actions(object):
     def start_include_bibtex_file_dialog(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
 
-        return #TODO
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('include_bibtex_file').run(document)
 
     def start_include_latex_file_dialog(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
 
-        return #TODO
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('include_latex_file').run(document)
 

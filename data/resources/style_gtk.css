@@ -530,8 +530,6 @@ box.preferences-page checkbutton radio {
     margin-left: 1px;
     margin-right: 6px;
 }
-box.preferences-page checkbutton {
-}
 box.preferences-page .description {
     color: mix(@theme_fg_color, @theme_bg_color, 0.3);
     font-size: 13px;
@@ -571,6 +569,7 @@ box.preferences-page button.style-switcher-label.active label {
 
 box.document-wizard-page checkbutton {
     margin-bottom: 6px;
+    padding-left: 0px;
 }
 box.document-wizard-page checkbutton.has-desc {
     margin-bottom: 2px;
@@ -673,6 +672,9 @@ box.add-remove-packages-remove-box list row {
 .include-bibtex-file-dialog button {
     outline-width: 0px;
 }
+.include-bibtex-file-dialog checkbutton {
+    padding-left: 0px;
+}
 .include-bibtex-file-dialog checkbutton check {
     margin-left: 1px;
     margin-right: 6px;
@@ -683,6 +685,9 @@ box.add-remove-packages-remove-box list row {
 .bibtex-wizard-list1 row {
     border-bottom: 1px solid mix(@borders, @theme_base_color, 0.68);
     padding: 6px;
+}
+box.bibtex-wizard-page checkbutton {
+    padding-left: 0px;
 }
 box.bibtex-wizard-page checkbutton check {
     margin-left: 1px;
