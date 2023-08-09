@@ -581,6 +581,11 @@ box.document-wizard-page scale {
 box.document-wizard-page scale value {
     margin-left: 3px;
     margin-bottom: 3px;
+    color: @theme_fg_color;
+    opacity: 1;
+}
+box.document-wizard-page button {
+    font-weight: normal;
 }
 list.document-wizard-list1 {
     border: 1px solid @borders;

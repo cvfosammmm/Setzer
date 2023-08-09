@@ -32,9 +32,9 @@ class BookSettingsPage(Page):
         self.view = BookSettingsPageView()
 
     def observe_view(self):
-        def format_changed(box, user_data=None):
-            format_name = box.get_active_text()
-            self.current_values['book']['page_format'] = format_name
+        def format_button_toggled(button, format_name):
+            if button.get_active():
+                self.current_values['book']['page_format'] = format_name
 
         def scale_change_value(scale, scroll, value, user_data=None):
             self.current_values['book']['font_size'] = int(value)
@@ -48,7 +48,8 @@ class BookSettingsPage(Page):
         def on_orientation_toggle(button):
             self.current_values['book']['is_landscape'] = button.get_active()
 
-        self.view.page_format_list.connect('changed', format_changed)
+        for name, button in self.view.page_format_buttons.items():
+            button.connect('toggled', format_button_toggled, name)
         self.view.font_size_entry.connect('change-value', scale_change_value)
         self.view.option_twocolumn.connect('toggled', option_toggled, 'twocolumn')
         self.view.option_default_margins.connect('toggled', self.option_default_margins_toggled, 'default_margins')
@@ -68,7 +69,6 @@ class BookSettingsPage(Page):
 
     def load_presets(self, presets):
         for setter_function, value_name in [
-            (self.view.page_format_list.set_active_id, 'page_format'),
             (self.view.font_size_entry.set_value, 'font_size'),
             (self.view.option_twocolumn.set_active, 'option_twocolumn'),
             (self.view.margins_button_left.set_value, 'margin_left'),
@@ -84,10 +84,15 @@ class BookSettingsPage(Page):
                 value = self.current_values['book'][value_name]
             setter_function(value)
 
+        try: value = presets['book']['page_format']
+        except Exception: value = self.current_values['book']['page_format']
+        for name, button in self.view.page_format_buttons.items():
+            button.set_active(name == value)
+
         self.option_default_margins_toggled(self.view.option_default_margins)
 
     def on_activation(self):
-        self.view.page_format_list.grab_focus()
+        pass
 
 
 class BookSettingsPageView(PageView):
@@ -99,8 +104,9 @@ class BookSettingsPageView(PageView):
         self.header.set_text(_('Book settings'))
         self.headerbar_subtitle = _('Step') + ' 2: ' + _('Book settings')
 
-        self.left_content.append(self.subheader_page_format)
-        self.left_content.append(self.page_format_list)
+        self.right_content.append(self.subheader_page_format)
+        self.right_content.append(self.page_format_list)
+
         self.left_content.append(self.subheader_options)
         self.left_content.append(self.option_landscape)
         self.left_content.append(self.option_twocolumn)
@@ -114,6 +120,7 @@ class BookSettingsPageView(PageView):
         self.content.append(self.left_content)
 
         self.append(self.header)
+        self.append(self.right_content)
         self.append(self.content)
 
 

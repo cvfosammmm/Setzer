@@ -59,12 +59,21 @@ class PageView(Gtk.Box):
         self.subheader_page_format.get_style_context().add_class('document-wizard-subheader')
         self.subheader_page_format.set_xalign(0)
 
-        self.page_format_list = Gtk.ComboBoxText()
-        for name in ['US Letter', 'US Legal', 'A4', 'A5', 'B5']:
-            self.page_format_list.append(name, name)
-        self.page_format_list.set_size_request(348, -1)
+        self.page_format_list = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.page_format_list.set_margin_end(0)
-        self.page_format_list.set_vexpand(False)
+        self.page_format_list.get_style_context().add_class('linked')
+
+        self.page_format_buttons = dict()
+        first_button = None
+        for name in ['US Letter', 'US Legal', 'A4', 'A5', 'B5']:
+            button = Gtk.CheckButton.new()
+            button.set_label(name)
+            button.set_margin_end(18)
+            if first_button == None: first_button = button
+            else: button.set_group(first_button)
+
+            self.page_format_buttons[name] = button
+            self.page_format_list.append(button)
 
         self.option_landscape = Gtk.CheckButton.new_with_label(_('Landscape format'))
 

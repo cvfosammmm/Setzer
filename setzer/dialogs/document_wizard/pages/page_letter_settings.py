@@ -32,9 +32,9 @@ class LetterSettingsPage(Page):
         self.view = LetterSettingsPageView()
 
     def observe_view(self):
-        def format_changed(box, user_data=None):
-            format_name = box.get_active_text()
-            self.current_values['letter']['page_format'] = format_name
+        def format_button_toggled(button, format_name):
+            if button.get_active():
+                self.current_values['letter']['page_format'] = format_name
 
         def scale_change_value(scale, scroll, value, user_data=None):
             self.current_values['letter']['font_size'] = int(value)
@@ -42,7 +42,8 @@ class LetterSettingsPage(Page):
         def margin_changed(button, side):
             self.current_values['letter']['margin_' + side] = button.get_value()
 
-        self.view.page_format_list.connect('changed', format_changed)
+        for name, button in self.view.page_format_buttons.items():
+            button.connect('toggled', format_button_toggled, name)
         self.view.font_size_entry.connect('change-value', scale_change_value)
         self.view.option_default_margins.connect('toggled', self.option_default_margins_toggled, 'default_margins')
         self.view.margins_button_left.connect('value-changed', margin_changed, 'left')
@@ -60,7 +61,6 @@ class LetterSettingsPage(Page):
 
     def load_presets(self, presets):
         for setter_function, value_name in [
-            (self.view.page_format_list.set_active_id, 'page_format'),
             (self.view.font_size_entry.set_value, 'font_size'),
             (self.view.margins_button_left.set_value, 'margin_left'),
             (self.view.margins_button_right.set_value, 'margin_right'),
@@ -74,10 +74,15 @@ class LetterSettingsPage(Page):
                 value = self.current_values['letter'][value_name]
             setter_function(value)
 
+        try: value = presets['letter']['page_format']
+        except Exception: value = self.current_values['letter']['page_format']
+        for name, button in self.view.page_format_buttons.items():
+            button.set_active(name == value)
+
         self.option_default_margins_toggled(self.view.option_default_margins)
 
     def on_activation(self):
-        self.view.page_format_list.grab_focus()
+        pass
 
 
 class LetterSettingsPageView(PageView):
@@ -89,8 +94,9 @@ class LetterSettingsPageView(PageView):
         self.header.set_text(_('Letter settings'))
         self.headerbar_subtitle = _('Step') + ' 2: ' + _('Letter settings')
 
-        self.left_content.append(self.subheader_page_format)
-        self.left_content.append(self.page_format_list)
+        self.right_content.append(self.subheader_page_format)
+        self.right_content.append(self.page_format_list)
+
         self.left_content.append(self.subheader_options)
         self.left_content.append(self.option_twocolumn)
         self.left_content.append(self.subheader_font_size)
@@ -103,6 +109,7 @@ class LetterSettingsPageView(PageView):
         self.content.append(self.left_content)
 
         self.append(self.header)
+        self.append(self.right_content)
         self.append(self.content)
 
 
