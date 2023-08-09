@@ -278,7 +278,6 @@ class Actions(object):
     def start_wizard(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
 
-        return #TODO
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('document_wizard').run(document)
 

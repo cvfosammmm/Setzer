@@ -568,15 +568,19 @@ box.preferences-page button.style-switcher-label.active label {
 */
 
 box.document-wizard-page checkbutton {
-    margin-bottom: 6px;
     padding-left: 0px;
 }
-box.document-wizard-page checkbutton.has-desc {
-    margin-bottom: 2px;
-}
-box.document-wizard-page checkbutton check {
+box.document-wizard-page checkbutton check, box.document-wizard-page checkbutton radio {
     margin-left: 1px;
     margin-right: 6px;
+}
+box.document-wizard-page scale {
+    padding: 0px;
+    padding-left: 1px;
+}
+box.document-wizard-page scale value {
+    margin-left: 3px;
+    margin-bottom: 3px;
 }
 list.document-wizard-list1 {
     border: 1px solid @borders;
@@ -618,11 +622,6 @@ box.document-wizard-beamer-preview-buttons button {
     padding: 0px;
     border-radius: 0px;
     box-shadow: none;
-    border-width: 0px;
-    outline-width: 0px;
-    text-shadow: none;
-}
-box.document-wizard-beamer-preview-buttons image {
     border: 1px solid @borders;
 }
 box.document-wizard-page box.margins-box {
