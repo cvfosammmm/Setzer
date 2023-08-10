@@ -75,6 +75,7 @@ class Actions(object):
         self.add_action('zoom-out', self.zoom_out)
         self.add_action('reset-zoom', self.reset_zoom)
         self.add_action('show-preferences-dialog', self.show_preferences_dialog)
+        self.add_action('show-shortcuts-dialog', self.show_shortcuts_dialog)
         self.add_action('show-about-dialog', self.show_about_dialog)
 
         self.actions['quit'] = Gio.SimpleAction.new('quit', None)
@@ -482,6 +483,9 @@ class Actions(object):
 
     def show_preferences_dialog(self, action=None, parameter=''):
         DialogLocator.get_dialog('preferences').run()
+
+    def show_shortcuts_dialog(self, action=None, parameter=''):
+        DialogLocator.get_dialog('keyboard_shortcuts').run()
 
     def show_about_dialog(self, action=None, parameter=''):
         DialogLocator.get_dialog('about').run()

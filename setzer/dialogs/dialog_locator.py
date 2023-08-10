@@ -26,6 +26,7 @@ import setzer.dialogs.document_wizard.document_wizard as document_wizard_dialog
 import setzer.dialogs.include_bibtex_file.include_bibtex_file as include_bibtex_file_dialog
 import setzer.dialogs.include_latex_file.include_latex_file as include_latex_file_dialog
 import setzer.dialogs.interpreter_missing.interpreter_missing as interpreter_missing_dialog
+import setzer.dialogs.keyboard_shortcuts.keyboard_shortcuts as keyboard_shortcuts_dialog
 import setzer.dialogs.open_document.open_document as open_document_dialog
 import setzer.dialogs.open_session.open_session as open_session_dialog
 import setzer.dialogs.preferences.preferences as preferences_dialog
@@ -48,6 +49,7 @@ class DialogLocator(object):
         dialogs['document_wizard'] = document_wizard_dialog.DocumentWizard(main_window)
         dialogs['include_bibtex_file'] = include_bibtex_file_dialog.IncludeBibTeXFile(main_window)
         dialogs['include_latex_file'] = include_latex_file_dialog.IncludeLaTeXFile(main_window)
+        dialogs['keyboard_shortcuts'] = keyboard_shortcuts_dialog.KeyboardShortcutsDialog(main_window)
         dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(main_window, workspace)
         dialogs['open_session'] = open_session_dialog.OpenSessionDialog(main_window, workspace)
         dialogs['preferences'] = preferences_dialog.PreferencesDialog(main_window)

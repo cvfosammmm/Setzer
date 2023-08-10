@@ -32,6 +32,7 @@ class HeaderbarController(object):
         self.view.button_save_as.connect('clicked', self.on_hamburger_button_click, actions['save-as'])
         self.view.button_save_all.connect('clicked', self.on_hamburger_button_click, actions['save-all'])
         self.view.button_preferences.connect('clicked', self.on_hamburger_button_click, actions['show-preferences-dialog'])
+        self.view.button_shortcuts.connect('clicked', self.on_hamburger_button_click, actions['show-shortcuts-dialog'])
         self.view.button_about.connect('clicked', self.on_hamburger_button_click, actions['show-about-dialog'])
         self.view.button_close_all.connect('clicked', self.on_hamburger_button_click, actions['close-all-documents'])
         self.view.button_close_active.connect('clicked', self.on_hamburger_button_click, actions['close-active-document'])
