@@ -322,8 +322,9 @@ class Actions(object):
     def insert_after_packages(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
 
-        return #TODO
+        document = self.workspace.get_active_document()
         document.insert_text_after_packages_if_possible(parameter[0])
+        document.select_first_dot_around_cursor(offset_before=len(parameter[0]), offset_after=0)
         document.scroll_cursor_onscreen()
 
     def insert_before_document_end(self, action, parameter):

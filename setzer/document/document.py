@@ -194,15 +194,16 @@ class Document(Observable):
         self.source_buffer.select_range(self.source_buffer.get_start_iter(), self.source_buffer.get_end_iter())
 
     def add_packages(self, packages):
-        self.source_buffer.begin_user_action()
-
         first_package = True
         text = ''
         for packagename in packages:
             if not first_package: text += '\n'
             text += '\\usepackage{' + packagename + '}'
             first_package = False
+        self.insert_text_after_packages_if_possible(text)
 
+    def insert_text_after_packages_if_possible(self, text):
+        self.source_buffer.begin_user_action()
         package_data = self.parser.symbols['packages_detailed']
         if package_data:
             max_end = 0
