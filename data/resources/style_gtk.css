@@ -123,6 +123,7 @@ popover.documentchooser box.not_found label {
     box-shadow: none;
     transition: none;
     text-shadow: none;
+    font-weight: normal;
 }
 .open-docs-popover-button > button:hover:not(:checked):not(:active) {
     background: none;
