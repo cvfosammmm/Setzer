@@ -436,7 +436,11 @@ class Actions(object):
     def copy(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
 
-        self.workspace.get_active_document().source_view.emit('copy-clipboard')
+        document = self.workspace.get_active_document()
+        text = document.get_selected_text()
+        if text != None:
+            clipboard = document.source_view.get_clipboard()
+            clipboard.set(text)
 
     def paste(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
