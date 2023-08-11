@@ -19,13 +19,11 @@ import os.path
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gdk
-from gi.repository import GLib
-from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import Gdk, GLib, Gtk, GObject, Pango
 
 from setzer.dialogs.dialog_locator import DialogLocator
 from setzer.app.service_locator import ServiceLocator
+from setzer.app.font_manager import FontManager
 
 
 class DocumentController(object):
@@ -34,6 +32,8 @@ class DocumentController(object):
 
         self.document = document
         self.view = document_view
+
+        self.zoom_threshold = 0
 
         self.deleted_on_disk_dialog_shown_after_last_save = False
         self.changed_on_disk_dialog_shown_after_last_change = False
@@ -46,12 +46,46 @@ class DocumentController(object):
         self.secondary_click_controller.connect('pressed', self.on_secondary_buttonpress)
         self.view.source_view.add_controller(self.secondary_click_controller)
 
+        self.scrolling_controller = Gtk.EventControllerScroll()
+        self.scrolling_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.scrolling_controller.set_flags(Gtk.EventControllerScrollFlags.BOTH_AXES | Gtk.EventControllerScrollFlags.KINETIC)
+        self.scrolling_controller.connect('scroll', self.on_scroll)
+        self.scrolling_controller.connect('decelerate', self.on_decelerate)
+        self.view.scrolled_window.add_controller(self.scrolling_controller)
+
     def on_secondary_buttonpress(self, controller, n_press, x, y):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
         if n_press == 1:
             self.document.context_menu.popup_at_cursor(x, y)
         controller.reset()
+
+    def on_scroll(self, controller, dx, dy):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if controller.get_current_event_state() & modifiers == Gdk.ModifierType.CONTROL_MASK:
+            if controller.get_unit() == Gdk.ScrollUnit.WHEEL:
+                self.zoom_threshold += dy
+            else:
+                self.zoom_threshold += dy * 0.05
+
+            if self.zoom_threshold <= -1:
+                font_desc = Pango.FontDescription.from_string(FontManager.font_string)
+                font_desc.set_size(min(font_desc.get_size() * 1.1, 24 * Pango.SCALE))
+                FontManager.font_string = font_desc.to_string()
+                FontManager.propagate_font_setting()
+                self.zoom_threshold = 0
+            elif self.zoom_threshold >= 1:
+                font_desc = Pango.FontDescription.from_string(FontManager.font_string)
+                font_desc.set_size(max(font_desc.get_size() / 1.1, 6 * Pango.SCALE))
+                FontManager.font_string = font_desc.to_string()
+                FontManager.propagate_font_setting()
+                self.zoom_threshold = 0
+            return True
+        return False
+
+    def on_decelerate(self, controller, vel_x, vel_y):
+        self.zoom_threshold = 0
 
     def save_date_loop(self):
         if self.document.filename == None: return True
