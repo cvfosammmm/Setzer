@@ -93,17 +93,14 @@ class Actions(object):
         self.actions[name].connect('activate', callback)
 
     def on_document_removed(self, workspace, document):
-        if self.workspace.active_document == None:
-            self.activate_welcome_screen_mode()
-            self.update_actions()
+        self.update_actions()
 
     def on_new_inactive_document(self, workspace, document):
         document.disconnect('modified_changed', self.on_modified_changed)
-        document.source_buffer.connect('notify::can-undo', self.on_undo_changed)
-        document.source_buffer.connect('notify::has-selection', self.on_has_selection_changed)
+        document.source_buffer.disconnect_by_func(self.on_undo_changed)
+        document.source_buffer.disconnect_by_func(self.on_has_selection_changed)
 
     def on_new_active_document(self, workspace, document):
-        self.activate_document_mode()
         self.update_actions()
         document.connect('modified_changed', self.on_modified_changed)
         document.source_buffer.connect('notify::can-undo', self.on_undo_changed)
@@ -113,52 +110,49 @@ class Actions(object):
         self.update_actions()
 
     def on_undo_changed(self, buffer, can_undo):
-        self.update_undo_redo()
+        self.update_actions()
 
     def on_redo_changed(self, buffer, can_redo):
-        self.update_undo_redo()
+        self.update_actions()
 
     def on_has_selection_changed(self, buffer, has_selection):
-        self.update_has_selection()
-
-    def activate_welcome_screen_mode(self):
-        self.actions['save-all'].set_enabled(False)
-
-    def activate_document_mode(self):
-        pass
+        self.update_actions()
 
     def update_actions(self):
         document = self.workspace.get_active_document()
-
         document_active = document != None
-        self.actions['save-as'].set_enabled(document_active)
+        document_active_is_latex = document_active and document.is_latex_document()
+        enable_save = document_active and (document.source_buffer.get_modified() or document.get_filename() == None)
+        has_selection = document_active and document.source_buffer.get_has_selection()
+
         self.actions['close-active-document'].set_enabled(document_active)
         self.actions['close-all-documents'].set_enabled(document_active)
         self.actions['save-session'].set_enabled(document_active)
-        enable_save = document_active and (document.source_buffer.get_modified() or document.get_filename() == None)
         self.actions['save'].set_enabled(enable_save)
+        self.actions['save-as'].set_enabled(document_active)
         self.actions['save-all'].set_enabled(self.workspace.get_unsaved_documents() != None)
-
-        self.update_undo_redo()
-        self.update_has_selection()
-
-    def update_undo_redo(self):
-        document = self.workspace.get_active_document()
-        document_active = document != None
-
+        self.actions['add-remove-packages-dialog'].set_enabled(document_active_is_latex)
         self.actions['redo'].set_enabled(document_active and document.source_buffer.get_can_redo())
         self.actions['undo'].set_enabled(document_active and document.source_buffer.get_can_undo())
-
-    def update_has_selection(self):
-        document = self.workspace.get_active_document()
-        if document == None:
-            has_selection = False
-        else:
-            has_selection = self.workspace.get_active_document().source_buffer.get_has_selection()
-
         self.actions['cut'].set_enabled(has_selection)
         self.actions['copy'].set_enabled(has_selection)
         self.actions['delete-selection'].set_enabled(has_selection)
+        self.actions['start-search'].set_enabled(document_active)
+        self.actions['start-search-and-replace'].set_enabled(document_active)
+        self.actions['find-next'].set_enabled(document_active)
+        self.actions['find-previous'].set_enabled(document_active)
+        self.actions['insert-before-after'].set_enabled(document_active_is_latex)
+        self.actions['insert-symbol'].set_enabled(document_active_is_latex)
+        self.actions['insert-before-document-end'].set_enabled(document_active_is_latex)
+        self.actions['insert-after-packages'].set_enabled(document_active_is_latex)
+        self.actions['add-packages'].set_enabled(document_active_is_latex)
+        self.actions['show-document-wizard'].set_enabled(document_active_is_latex)
+        self.actions['include-bibtex-file'].set_enabled(document_active_is_latex)
+        self.actions['include-latex-file'].set_enabled(document_active_is_latex)
+        self.actions['add-remove-packages-dialog'].set_enabled(document_active_is_latex)
+        self.actions['toggle-comment'].set_enabled(document_active_is_latex)
+        self.actions['show-build-log'].set_enabled(document_active_is_latex)
+        self.actions['close-build-log'].set_enabled(document_active_is_latex)
 
     def new_latex_document(self, action=None, parameter=None):
         document = self.workspace.create_latex_document()
