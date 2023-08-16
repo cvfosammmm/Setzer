@@ -285,14 +285,23 @@ class Actions(object):
 
         before, after = parameter[0], parameter[1]
         bounds = document.source_buffer.get_selection_bounds()
-
         if len(bounds) > 1:
-            text = before + document.source_buffer.get_text(*bounds, 0) + after
+            text = before + document.source_buffer.get_text(*bounds, False) + after
+            text = self.replace_tabs_with_spaces_if_set(text)
+
             document.source_buffer.delete_selection(False, False)
+
+            insert_iter = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
+            text = self.indent_text_with_whitespace_at_iter(document.source_buffer, text, insert_iter)
+
+            document.source_buffer.insert_at_cursor(text)
         else:
             text = before + '•' + after
+            text = self.replace_tabs_with_spaces_if_set(text)
+            insert_iter = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
+            text = self.indent_text_with_whitespace_at_iter(document.source_buffer, text, insert_iter)
+            document.source_buffer.insert_at_cursor(text)
 
-        document.source_buffer.insert_at_cursor(text)
         document.select_first_dot_around_cursor(offset_before=len(text), offset_after=0)
         document.source_buffer.end_user_action()
 
@@ -304,6 +313,10 @@ class Actions(object):
         document.source_buffer.begin_user_action()
 
         text = parameter[0]
+        text = self.replace_tabs_with_spaces_if_set(text)
+        insert_iter = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
+        text = self.indent_text_with_whitespace_at_iter(document.source_buffer, text, insert_iter)
+
         bounds = document.source_buffer.get_selection_bounds()
 
         if len(bounds) > 1:
@@ -312,6 +325,25 @@ class Actions(object):
         document.source_buffer.insert_at_cursor(text)
         document.select_first_dot_around_cursor(offset_before=len(text), offset_after=0)
         document.source_buffer.end_user_action()
+
+    def replace_tabs_with_spaces_if_set(self, text):
+        if self.settings.get_value('preferences', 'spaces_instead_of_tabs'):
+            number_of_spaces = self.settings.get_value('preferences', 'tab_width')
+            text = text.replace('\t', ' ' * number_of_spaces)
+        return text
+
+    def indent_text_with_whitespace_at_iter(self, source_buffer, text, start_iter):
+        found, line_iter = source_buffer.get_iter_at_line(start_iter.get_line())
+        ws_line = source_buffer.get_text(line_iter, start_iter, False)
+        lines = text.split('\n')
+        ws_number = len(ws_line) - len(ws_line.lstrip())
+        whitespace = ws_line[:ws_number]
+        final_text = ''
+        for no, line in enumerate(lines):
+            if no != 0:
+                final_text += '\n' + whitespace
+            final_text += line
+        return final_text
 
     def insert_after_packages(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
