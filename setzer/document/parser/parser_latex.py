@@ -87,7 +87,7 @@ class ParserLaTeX(Observable):
         additional_matches = self.parse_for_blocks(text, line_start, offset_line_start)
         block_symbol_matches['begin_or_end'] += additional_matches['begin_or_end']
         block_symbol_matches['others'] += additional_matches['others']
-        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource)\{((?:\s|\w|\:|\.|,|\/|\\)*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text):
+        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|subfile|subimport|bibliography|addbibresource|todo)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|\.|,|\/|\\|\'|-|\"|\(|\))*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text):
             other_symbols.append((match, match.start() + offset_line_start))
 
         for match in self.block_symbol_matches['begin_or_end']:
@@ -145,7 +145,7 @@ class ParserLaTeX(Observable):
         additional_matches = self.parse_for_blocks(text_parse, line_start, offset_line_start)
         block_symbol_matches['begin_or_end'] += additional_matches['begin_or_end']
         block_symbol_matches['others'] += additional_matches['others']
-        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|bibliography|addbibresource)\{((?:\s|\w|\:|\.|,|\/|\\)*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text_parse):
+        for match in ServiceLocator.get_regex_object(r'\\(label|include|input|subfile|subimport|bibliography|addbibresource|todo)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|\.|,|\/|\\|\'|-|\"|\(|\))*)\}|\\(usepackage)(?:\[[^\{\[]*\]){0,1}\{((?:\s|\w|\:|,)*)\}|\\(bibitem)(?:\[.*\]){0,1}\{((?:\s|\w|\:)*)\}').finditer(text_parse):
             other_symbols.append((match, match.start() + offset_line_start))
 
         for match in self.block_symbol_matches['begin_or_end']:
@@ -171,7 +171,7 @@ class ParserLaTeX(Observable):
     def parse_for_blocks(self, text, line_start, offset_line_start):
         block_symbol_matches = {'begin_or_end': list(), 'others': list()}
         counter = line_start
-        for match in ServiceLocator.get_regex_object(r'\n|\\(begin|end)\{((?:\w|•|\*)+)\}|\\(part|chapter|section|subsection|subsubsection|paragraph|subparagraph)(?:\*){0,1}\{([^\{\[]*)\}').finditer(text):
+        for match in ServiceLocator.get_regex_object(r'\n|\\(begin|end)\{((?:\w|•|\*)+)\}|\\(part|chapter|section|subsection|subsubsection|paragraph|subparagraph)(?:\*){0,1}\{([^\{]*)\}').finditer(text):
             if match.group(1) != None:
                 block_symbol_matches['begin_or_end'].append((match, counter, match.start() + offset_line_start))
             elif match.group(3) != None:
@@ -253,6 +253,8 @@ class ParserLaTeX(Observable):
     def parse_symbols(self):
         labels = set()
         labels_with_offset = list()
+        todos = set()
+        todos_with_offset = list()
         included_latex_files = list()
         bibliographies = set()
         bibitems = set()
@@ -264,7 +266,7 @@ class ParserLaTeX(Observable):
             if match.group(1) == 'label':
                 labels = labels | {match.group(2).strip()}
                 labels_with_offset.append([match.group(2).strip(), offset])
-            elif match.group(1) == 'include' or match.group(1) == 'input':
+            elif match.group(1) == 'include' or match.group(1) == 'input' or match.group(1) == 'subfile' or match.group(1) == 'subimport':
                 filename = match.group(2).strip()
                 if not filename.endswith('.tex'):
                     filename += '.tex'
@@ -277,6 +279,9 @@ class ParserLaTeX(Observable):
                 bibfiles = match.group(2).strip().split(',')
                 for entry in bibfiles:
                     bibliographies = bibliographies | {entry.strip()}
+            elif match.group(1) == 'todo':
+                todos = todos | {match.group(2).strip()}
+                todos_with_offset.append([match.group(2).strip(), offset])
             elif match.group(3) == 'usepackage':
                 packages = packages | {match.group(4).strip()}
                 if match.group(4).strip() not in packages_detailed:
@@ -288,6 +293,8 @@ class ParserLaTeX(Observable):
         self.symbols['labels'] = labels
         self.symbols['labels_with_offset'] = labels_with_offset
         self.symbols['included_latex_files'] = included_latex_files
+        self.symbols['todos'] = todos
+        self.symbols['todos_with_offset'] = todos_with_offset
         self.symbols['bibliographies'] = bibliographies
         self.symbols['bibitems'] = bibitems
         self.symbols['packages'] = packages

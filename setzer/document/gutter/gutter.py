@@ -88,27 +88,33 @@ class Gutter(object):
         if item == 'show_line_numbers':
             self.line_numbers_visible = self.settings.get_value('preferences', 'show_line_numbers')
             self.update_hovered_folding_region()
+            self.update_size()
             self.drawing_area.queue_draw()
 
         if item == 'enable_code_folding':
             self.code_folding_visible = self.document.is_latex_document() and self.settings.get_value('preferences', 'enable_code_folding')
             self.update_hovered_folding_region()
+            self.update_size()
             self.drawing_area.queue_draw()
 
     def on_document_change(self, document):
         self.update_hovered_folding_region()
+        self.update_size()
         self.drawing_area.queue_draw()
 
     def on_cursor_change(self, document):
         self.update_hovered_folding_region()
+        self.update_size()
         self.drawing_area.queue_draw()
 
     def on_adjustment_value_changed(self, adjustment):
         self.update_hovered_folding_region()
+        self.update_size()
         self.drawing_area.queue_draw()
 
     def on_adjustment_changed(self, adjustment):
         self.update_hovered_folding_region()
+        self.update_size()
         self.drawing_area.queue_draw()
 
     def on_button_press(self, event_controller, n_press, x, y):
@@ -201,7 +207,6 @@ class Gutter(object):
 
     #@timer
     def draw(self, drawing_area, ctx, width, height, data=None):
-        self.update_size()
         if self.total_width == 0: return
 
         self.draw_background_and_border(ctx, width, height)
