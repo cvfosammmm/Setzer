@@ -27,6 +27,7 @@ import setzer.workspace.shortcutsbar.bibtex_shortcutsbar.bibtex_shortcutsbar_vie
 import setzer.workspace.shortcutsbar.others_shortcutsbar.others_shortcutsbar_viewgtk as others_shortcutsbar_view
 import setzer.workspace.preview_panel.preview_panel_viewgtk as preview_panel_view
 import setzer.workspace.help_panel.help_panel_viewgtk as help_panel_view
+import setzer.workspace.sidebar.sidebar_viewgtk as sidebar_view
 import setzer.workspace.welcome_screen.welcome_screen_viewgtk as welcome_screen_view
 import setzer.widgets.animated_paned.animated_paned as animated_paned
 from setzer.app.service_locator import ServiceLocator
@@ -93,16 +94,19 @@ class MainWindow(Adw.ApplicationWindow):
         # help
         self.help_panel = help_panel_view.HelpPanelView()
 
+        # sidebar
+        self.sidebar = sidebar_view.Sidebar()
+
         # paneds
         self.preview_paned_overlay = Gtk.Overlay()
-        self.overlay_widget = None
         self.preview_help_stack = Gtk.Stack()
         self.preview_help_stack.add_named(self.preview_panel, 'preview')
         self.preview_help_stack.add_named(self.help_panel, 'help')
         self.preview_paned = animated_paned.AnimatedHPaned(self.build_log_paned, self.preview_help_stack, False)
         self.preview_paned.set_wide_handle(True)
         self.preview_paned_overlay.set_child(self.preview_paned)
-        self.sidebar_paned = animated_paned.AnimatedHPaned(Gtk.Label.new('sidebar placeholder'), self.preview_paned_overlay, True)
+
+        self.sidebar_paned = animated_paned.AnimatedHPaned(self.sidebar, self.preview_paned_overlay, True)
         self.sidebar_paned.set_wide_handle(True)
         self.sidebar_paned.get_style_context().add_class('sidebar_paned')
 

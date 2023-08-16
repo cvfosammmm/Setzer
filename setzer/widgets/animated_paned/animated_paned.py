@@ -57,6 +57,7 @@ class AnimatedPaned(object):
         self.target_position = None
         self.center_on_first_show = False
         self.end_on_first_show = False
+        self.start_on_first_show = False
 
         self.connect('notify::position', self.on_position_changed)
 
@@ -86,10 +87,17 @@ class AnimatedPaned(object):
     def set_center_on_first_show(self):
         self.center_on_first_show = True
         self.end_on_first_show = False
+        self.start_on_first_show = False
 
     def set_end_on_first_show(self):
         self.center_on_first_show = False
         self.end_on_first_show = True
+        self.start_on_first_show = False
+
+    def set_start_on_first_show(self):
+        self.center_on_first_show = False
+        self.end_on_first_show = False
+        self.start_on_first_show = True
 
     def set_is_visible(self, is_visible):
         self.is_visible = is_visible
@@ -114,6 +122,8 @@ class AnimatedPaned(object):
                 self.set_target_position(self.get_paned_extent() / 2)
             elif self.end_on_first_show:
                 self.set_target_position(self.get_paned_extent() - self.original_size_request)
+            elif self.start_on_first_show:
+                self.set_target_position(self.original_size_request)
 
         if self.show_widget:
             end = self.target_position

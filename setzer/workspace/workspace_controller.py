@@ -32,6 +32,9 @@ class WorkspaceController(object):
         self.main_window.headerbar.preview_toggle.connect('toggled', self.on_preview_toggle_toggled)
         self.main_window.headerbar.help_toggle.connect('toggled', self.on_help_toggle_toggled)
 
+        self.main_window.headerbar.document_structure_toggle.connect('toggled', self.on_document_structure_toggle_toggled)
+        self.main_window.headerbar.symbols_toggle.connect('toggled', self.on_symbols_toggle_toggled)
+
         # populate workspace
         self.workspace.populate_from_disk()
         open_documents = self.workspace.open_documents
@@ -59,5 +62,27 @@ class WorkspaceController(object):
 
         if show_help:
             self.main_window.headerbar.preview_toggle.set_active(False)
+
+    def on_document_structure_toggle_toggled(self, toggle_button, parameter=None):
+        show_document_structure = toggle_button.get_active()
+        if show_document_structure:
+            show_symbols = False
+        else:
+            show_symbols = self.workspace.show_symbols
+        self.workspace.set_show_symbols_or_document_structure(show_symbols, show_document_structure)
+
+        if show_document_structure:
+            self.main_window.headerbar.symbols_toggle.set_active(False)
+
+    def on_symbols_toggle_toggled(self, toggle_button, parameter=None):
+        show_symbols = toggle_button.get_active()
+        if show_symbols:
+            show_document_structure = False
+        else:
+            show_document_structure = self.workspace.show_document_structure
+        self.workspace.set_show_symbols_or_document_structure(show_symbols, show_document_structure)
+
+        if show_symbols:
+            self.main_window.headerbar.document_structure_toggle.set_active(False)
 
 

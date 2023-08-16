@@ -31,6 +31,7 @@ import setzer.workspace.preview_panel.preview_panel_presenter as preview_panel_p
 import setzer.workspace.help_panel.help_panel as help_panel
 import setzer.workspace.welcome_screen.welcome_screen as welcome_screen
 import setzer.workspace.headerbar.headerbar as headerbar
+import setzer.workspace.sidebar.sidebar as sidebar
 import setzer.workspace.shortcutsbar.shortcutsbar as shortcutsbar
 import setzer.workspace.build_log.build_log as build_log
 import setzer.workspace.keyboard_shortcuts.shortcuts as shortcuts
@@ -64,8 +65,11 @@ class Workspace(Observable):
         self.show_build_log = self.settings.get_value('window_state', 'show_build_log')
         self.show_preview = self.settings.get_value('window_state', 'show_preview')
         self.show_help = self.settings.get_value('window_state', 'show_help')
+        self.show_symbols = self.settings.get_value('window_state', 'show_symbols')
+        self.show_document_structure = self.settings.get_value('window_state', 'show_document_structure')
 
         self.welcome_screen = welcome_screen.WelcomeScreen()
+        self.sidebar = sidebar.Sidebar(self)
 
     def init_workspace_controller(self):
         self.actions = actions.Actions(self)
@@ -395,6 +399,12 @@ class Workspace(Observable):
             self.show_preview = show_preview
             self.show_help = show_help
             self.add_change_code('set_show_preview_or_help')
+
+    def set_show_symbols_or_document_structure(self, show_symbols, show_document_structure):
+        if show_symbols != self.show_symbols or show_document_structure != self.show_document_structure:
+            self.show_symbols = show_symbols
+            self.show_document_structure = show_document_structure
+            self.add_change_code('set_show_symbols_or_document_structure')
 
     def set_show_build_log(self, show_build_log):
         if show_build_log != self.show_build_log:

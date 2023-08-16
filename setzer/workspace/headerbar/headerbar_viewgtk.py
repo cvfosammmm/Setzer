@@ -32,6 +32,21 @@ class HeaderBar(Gtk.HeaderBar):
     def __init__(self):
         Gtk.HeaderBar.__init__(self)
 
+        # sidebar toggles
+        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.document_structure_toggle = Gtk.ToggleButton()
+        self.document_structure_toggle.set_child(Gtk.Image.new_from_icon_name('document-structure-symbolic'))
+        self.document_structure_toggle.set_can_focus(False)
+        self.document_structure_toggle.set_tooltip_text(_('Toggle document structure') + ' (F2)')
+        box.append(self.document_structure_toggle)
+        self.symbols_toggle = Gtk.ToggleButton()
+        self.symbols_toggle.set_child(Gtk.Image.new_from_icon_name('own-symbols-misc-text-symbolic'))
+        self.symbols_toggle.set_can_focus(False)
+        self.symbols_toggle.set_tooltip_text(_('Toggle symbols') + ' (F3)')
+        box.append(self.symbols_toggle)
+        box.get_style_context().add_class('linked')
+        self.pack_start(box)
+
         # open document buttons
         self.open_document_blank_button = Gtk.Button.new_with_label(_('Open') + '...')
         self.open_document_blank_button.set_tooltip_text(_('Open a document') + ' (' + _('Ctrl') + '+O)')

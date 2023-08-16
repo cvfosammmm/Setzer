@@ -72,6 +72,8 @@ class Shortcuts(object):
         self.shortcut_controller.add_shortcut(Shortcut('<Control>c', actions.copy))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>v', actions.paste))
         self.shortcut_controller.add_shortcut(Shortcut('F1', self.shortcut_help))
+        self.shortcut_controller.add_shortcut(Shortcut('F2', self.shortcut_document_structure_toggle))
+        self.shortcut_controller.add_shortcut(Shortcut('F3', self.shortcut_symbols_toggle))
         self.shortcut_controller.add_shortcut(Shortcut('F5', actions.save_and_build))
         self.shortcut_controller.add_shortcut(Shortcut('F6', actions.build))
         self.shortcut_controller.add_shortcut(Shortcut('F8', self.shortcut_build_log))
@@ -148,6 +150,18 @@ class Shortcuts(object):
 
     def shortcut_help(self, accel_group=None, window=None, key=None, mask=None):
         toggle = self.main_window.headerbar.help_toggle
+        if toggle.get_sensitive():
+            toggle.set_active(not toggle.get_active())
+        return True
+
+    def shortcut_document_structure_toggle(self, accel_group=None, window=None, key=None, mask=None):
+        toggle = self.main_window.headerbar.document_structure_toggle
+        if toggle.get_sensitive():
+            toggle.set_active(not toggle.get_active())
+        return True
+
+    def shortcut_symbols_toggle(self, accel_group=None, window=None, key=None, mask=None):
+        toggle = self.main_window.headerbar.symbols_toggle
         if toggle.get_sensitive():
             toggle.set_active(not toggle.get_active())
         return True

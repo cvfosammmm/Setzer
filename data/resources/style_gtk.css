@@ -270,28 +270,6 @@ popover label.explaination-header {
 .sidebar {
     background-color: @theme_base_color;
 }
-.sidebar toolbar {
-    padding: 0px;
-    margin: 0px;
-    background-color: @theme_base_color;
-}
-.sidebar toolbar toolbutton {
-    padding: 0px;
-    margin: 0px;
-}
-.sidebar toolbar button {
-    margin: 0px;
-    padding: 6px;
-    border-width: 0px;
-    border-radius: 0px;
-    box-shadow: none;
-}
-.sidebar toolbar button:checked {
-    background: mix(@theme_base_color, @borders, 0.45);
-}
-.sidebar toolbar button:active {
-    background: mix(@theme_base_color, @borders, 0.45);
-}
 .sidebar box.tabs-box {
     background-color: @theme_base_color;
     border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
@@ -304,6 +282,13 @@ popover label.explaination-header {
 .sidebar box.tabs-box > label {
     padding: 9px 8px 8px 9px;
     background-color: @theme_base_color;
+}
+.sidebar box.tabs-box button {
+    margin: 0px;
+    padding: 6px;
+    border-width: 0px;
+    border-radius: 0px;
+    box-shadow: none;
 }
 box.sidebar-symbols {
     background-color: mix(@theme_base_color, @theme_bg_color, 0.7);

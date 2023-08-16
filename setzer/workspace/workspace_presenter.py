@@ -29,6 +29,7 @@ class WorkspacePresenter(object):
         self.workspace.connect('new_document', self.on_new_document)
         self.workspace.connect('document_removed', self.on_document_removed)
         self.workspace.connect('new_active_document', self.on_new_active_document)
+        self.workspace.connect('set_show_symbols_or_document_structure', self.on_set_show_symbols_or_document_structure)
         self.workspace.connect('set_show_preview_or_help', self.on_set_show_preview_or_help)
         self.workspace.connect('show_build_log_state_change', self.on_show_build_log_state_change)
         self.settings.connect('settings_changed', self.on_settings_changed)
@@ -80,6 +81,15 @@ class WorkspacePresenter(object):
             document.view.source_view.grab_focus()
             self.activate_other_documents_mode()
 
+    def on_set_show_symbols_or_document_structure(self, workspace):
+        if self.workspace.show_symbols:
+            self.main_window.sidebar.set_visible_child_name('symbols')
+        elif self.workspace.show_document_structure:
+            self.main_window.sidebar.set_visible_child_name('document_structure')
+        self.focus_active_document()
+        self.main_window.sidebar_paned.set_show_widget(self.workspace.show_symbols or self.workspace.show_document_structure)
+        self.main_window.sidebar_paned.animate(True)
+
     def on_set_show_preview_or_help(self, workspace):
         if self.workspace.show_preview:
             self.main_window.preview_help_stack.set_visible_child_name('preview')
@@ -125,7 +135,7 @@ class WorkspacePresenter(object):
         FontManager.propagate_font_setting()
 
     def setup_paneds(self):
-        show_sidebar = False#TODO(self.workspace.show_symbols or self.workspace.show_document_structure)
+        show_sidebar = (self.workspace.show_symbols or self.workspace.show_document_structure)
         show_preview_help = (self.workspace.show_preview or self.workspace.show_help)
         show_build_log = self.workspace.get_show_build_log()
 
@@ -133,8 +143,12 @@ class WorkspacePresenter(object):
         preview_position = self.workspace.settings.get_value('window_state', 'preview_paned_position')
         build_log_position = self.workspace.settings.get_value('window_state', 'build_log_paned_position')
 
+        if sidebar_position in [None, -1]: self.main_window.sidebar_paned.set_start_on_first_show()
         if preview_position in [None, -1]: self.main_window.preview_paned.set_center_on_first_show()
         if build_log_position in [None, -1]: self.main_window.build_log_paned.set_end_on_first_show()
+
+        if self.workspace.show_symbols: self.main_window.sidebar.set_visible_child_name('symbols')
+        elif self.workspace.show_document_structure: self.main_window.sidebar.set_visible_child_name('document_structure')
 
         if self.workspace.show_preview: self.main_window.preview_help_stack.set_visible_child_name('preview')
         elif self.workspace.show_help: self.main_window.preview_help_stack.set_visible_child_name('help')
@@ -143,9 +157,12 @@ class WorkspacePresenter(object):
         self.main_window.preview_paned.first_set_show_widget(show_preview_help)
         self.main_window.build_log_paned.first_set_show_widget(show_build_log)
 
+        self.main_window.sidebar_paned.set_target_position(sidebar_position)
         self.main_window.preview_paned.set_target_position(preview_position)
         self.main_window.build_log_paned.set_target_position(build_log_position)
 
+        self.main_window.headerbar.symbols_toggle.set_active(self.workspace.show_symbols)
+        self.main_window.headerbar.document_structure_toggle.set_active(self.workspace.show_document_structure)
         self.main_window.headerbar.preview_toggle.set_active(self.workspace.show_preview)
         self.main_window.headerbar.help_toggle.set_active(self.workspace.show_help)
 
