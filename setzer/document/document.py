@@ -18,8 +18,9 @@
 import gi
 gi.require_version('GtkSource', '5')
 gi.require_version('Gtk', '4.0')
-from gi.repository import GtkSource, Gtk
-import os.path
+from gi.repository import GtkSource, Gtk, GObject
+
+import os.path, time
 
 import setzer.document.document_controller as document_controller
 import setzer.document.document_presenter as document_presenter
@@ -33,6 +34,7 @@ import setzer.document.parser.parser_dummy as parser_dummy
 import setzer.document.code_folding.code_folding as code_folding
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
+from setzer.app.color_manager import ColorManager
 from setzer.app.font_manager import FontManager
 
 
@@ -48,6 +50,8 @@ class Document(Observable):
         self.last_activated = 0
         self.is_root = False
         self.root_is_set = False
+        self.highlight_tag_count = 0
+        self.highlight_tags = dict()
 
         self.source_buffer = GtkSource.Buffer()
         self.source_buffer.set_language(ServiceLocator.get_source_language(language))
@@ -281,6 +285,36 @@ class Document(Observable):
         result = start_iter.forward_search('•', 0, end_iter)
         if result != None:
             self.source_buffer.select_range(result[0], result[1])
+
+    def highlight_section(self, start_iter, end_iter):
+        self.highlight_tag_count += 1
+        color = ColorManager.get_ui_color('highlight_tag_textview')
+        self.source_buffer.create_tag('highlight-' + str(self.highlight_tag_count), background_rgba=color, background_full_height=True)
+        tag = self.source_buffer.get_tag_table().lookup('highlight-' + str(self.highlight_tag_count))
+        self.source_buffer.apply_tag(tag, start_iter, end_iter)
+        if not self.highlight_tags:
+            GObject.timeout_add(15, self.remove_or_color_highlight_tags)
+        self.highlight_tags[self.highlight_tag_count] = {'tag': tag, 'time': time.time()}
+
+    def remove_or_color_highlight_tags(self):
+        for tag_count in list(self.highlight_tags):
+            item = self.highlight_tags[tag_count]
+            time_factor = time.time() - item['time']
+            if time_factor > 1.5:
+                if time_factor <= 1.75:
+                    opacity_factor = int(self.ease(1 - (time_factor - 1.5) * 4) * 20)
+                    color = ColorManager.get_ui_color('highlight_tag_textview')
+                    color.alpha *= opacity_factor * 0.05
+                    item['tag'].set_property('background-rgba', color)
+                else:
+                    start = self.source_buffer.get_start_iter()
+                    end = self.source_buffer.get_end_iter()
+                    self.source_buffer.remove_tag(item['tag'], start, end)
+                    self.source_buffer.get_tag_table().remove(item['tag'])
+                    del(self.highlight_tags[tag_count])
+        return bool(self.highlight_tags)
+
+    def ease(self, factor): return (factor - 1)**3 + 1
 
     def scroll_cursor_onscreen(self, margin_lines=5):
         height = self.view.scrolled_window.get_allocated_height()

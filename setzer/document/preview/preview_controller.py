@@ -17,9 +17,11 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
+gi.require_version('Poppler', '0.18')
 from gi.repository import Gdk
+from gi.repository import Poppler
 
-import webbrowser
+import webbrowser, math
 import _thread as thread
 
 
@@ -128,7 +130,7 @@ class PreviewController(object):
         x_offset, y_offset, state = data
 
         if state == Gdk.ModifierType.CONTROL_MASK:
-            self.init_backward_sync(event)
+            self.init_backward_sync(x_offset, y_offset)
             return True
 
         if state == 0:
@@ -148,5 +150,27 @@ class PreviewController(object):
                         thread.start_new_thread(webbrowser.open_new_tab, (link[1],))
                         return True
             return True
+
+    def init_backward_sync(self, x_offset, y_offset):
+        if self.preview.layout == None: return False
+
+        window_width = self.view.get_allocated_width()
+        y_total_pixels = min(max(y_offset, 0), (self.preview.layout.page_height + self.preview.layout.page_gap) * self.preview.poppler_document.get_n_pages() - self.preview.layout.page_gap)
+        x_pixels = min(max(x_offset - self.preview.layout.get_horizontal_margin(window_width), 0), self.preview.layout.page_width)
+        page = math.floor(y_total_pixels / (self.preview.layout.page_height + self.preview.layout.page_gap))
+        y_pixels = min(max(y_total_pixels - page * (self.preview.layout.page_height + self.preview.layout.page_gap), 0), self.preview.layout.page_height)
+        x = x_pixels / self.preview.layout.scale_factor
+        y = y_pixels / self.preview.layout.scale_factor
+        page += 1
+
+        poppler_page = self.preview.poppler_document.get_page(page - 1)
+        rect = Poppler.Rectangle()
+        rect.x1 = max(min(x, self.preview.page_width), 0)
+        rect.y1 = max(min(y, self.preview.page_height), 0)
+        rect.x2 = max(min(x, self.preview.page_width), 0)
+        rect.y2 = max(min(y, self.preview.page_height), 0)
+        word = poppler_page.get_selected_text(Poppler.SelectionStyle.WORD, rect)
+        context = poppler_page.get_selected_text(Poppler.SelectionStyle.LINE, rect)
+        self.preview.document.build_system.backward_sync(page, x, y, word, context)
 
 

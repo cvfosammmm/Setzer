@@ -156,7 +156,9 @@ class PreviewPresenter(object):
             if time_factor < 0:
                 self.preview.set_synctex_rectangles(list())
             else:
-                ctx.set_source_rgba(0.976, 0.941, 0.420, 0.6 * time_factor)
+                color = ColorManager.get_ui_color('highlight_tag_preview')
+                color.alpha *= time_factor
+                ctx.set_source_rgba(color.red, color.green, color.blue, color.alpha)
                 ctx.set_operator(cairo.Operator.MULTIPLY)
                 for rectangle in rectangles:
                     ctx.rectangle(rectangle['x'], rectangle['y'], rectangle['width'], rectangle['height'])

@@ -19,7 +19,7 @@ import gi
 from gi.repository import GObject
 
 import _thread as thread, queue
-import time
+import time, re, difflib
 
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
@@ -228,13 +228,13 @@ class BuildSystem(Observable):
         elif result_blob['backward_sync'] != None:
             if not self.document.root_is_set:
                 if result_blob['backward_sync']['filename'] == self.document.get_filename():
-                    #TODO self.document.set_synctex_position(result_blob['backward_sync'])
+                    self.set_synctex_position(self.document, result_blob['backward_sync'])
                     self.document.scroll_cursor_onscreen()
             elif self.document.is_root:
                 workspace = ServiceLocator.get_workspace()
                 document = workspace.open_document_by_filename(result_blob['backward_sync']['filename'])
                 if document != None:
-                    #TODO document.set_synctex_position(result_blob['backward_sync'])
+                    self.set_synctex_position(document, result_blob['backward_sync'])
                     document.scroll_cursor_onscreen()
 
         self.change_build_state('idle')
@@ -328,5 +328,58 @@ class BuildSystem(Observable):
         if notify:
             self.show_build_state('')
             self.change_build_state('idle')
+
+    def set_synctex_position(self, document, position):
+        position_found, start = document.source_buffer.get_iter_at_line(position['line'])
+        end = start.copy()
+        if not start.ends_line():
+            end.forward_to_line_end()
+        text = document.source_buffer.get_text(start, end, False)
+
+        matches = self.get_synctex_word_bounds(text, position['word'], position['context'])
+        if matches != None:
+            for word_bounds in matches:
+                end = start.copy()
+                new_start = start.copy()
+                new_start.forward_chars(word_bounds[0])
+                end.forward_chars(word_bounds[1])
+                document.source_buffer.place_cursor(new_start)
+                document.highlight_section(new_start, end)
+        else:
+            ws_number = len(text) - len(text.lstrip())
+            start.forward_chars(ws_number)
+            document.source_buffer.place_cursor(start)
+            document.highlight_section(start, end)
+
+    def get_synctex_word_bounds(self, text, word, context):
+        if not word: return None
+        word = word.split(' ')
+        if len(word) > 2:
+            word = word[:2]
+        word = ' '.join(word)
+        regex_pattern = re.escape(word)
+
+        for c in regex_pattern:
+            if ord(c) > 127:
+                regex_pattern = regex_pattern.replace(c, '(?:\w)')
+
+        matches = list()
+        top_score = 0.1
+        regex = ServiceLocator.get_regex_object(r'(\W{0,1})' + regex_pattern.replace('\x1b', r'(?:\w{2,3})').replace('\x1c', r'(?:\w{2})').replace('\x1d', r'(?:\w{2,3})').replace('\-', r'(?:-{0,1})') + r'(\W{0,1})')
+        for match in regex.finditer(text):
+            offset1 = context.find(word)
+            offset2 = len(context) - offset1 - len(word)
+            match_text = text[max(match.start() - max(offset1, 0), 0):min(match.end() + max(offset2, 0), len(text))]
+            score = difflib.SequenceMatcher(None, match_text, context).ratio()
+            if bool(match.group(1)) or bool(match.group(2)):
+                if score > top_score + 0.1:
+                    top_score = score
+                    matches = [[match.start() + len(match.group(1)), match.end() - len(match.group(2))]]
+                elif score > top_score - 0.1:
+                    matches.append([match.start() + len(match.group(1)), match.end() - len(match.group(2))])
+        if len(matches) > 0:
+            return matches
+        else:
+            return None
 
 

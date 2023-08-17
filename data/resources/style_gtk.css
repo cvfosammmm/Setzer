@@ -2,6 +2,8 @@
 @define-color list_hover mix(@theme_fg_color, transparent, 0.9);
 @define-color list_active mix(@theme_fg_color, transparent, 0.8);
 @define-color code_folding_hover #c7c7c7;
+@define-color highlight_tag_preview rgba(250, 240, 107, 0.6);
+@define-color highlight_tag_textview rgba(250, 240, 107, 0.65);
 
 /*
 ** main_window

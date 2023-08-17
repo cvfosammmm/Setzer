@@ -63,7 +63,8 @@ class DocumentController(object):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
         if n_press == 1:
-            GLib.idle_add(ServiceLocator.get_workspace().actions.forward_sync)
+            if controller.get_current_event_state() & modifiers == Gdk.ModifierType.CONTROL_MASK:
+                GLib.idle_add(ServiceLocator.get_workspace().actions.forward_sync)
 
     def on_secondary_buttonpress(self, controller, n_press, x, y):
         modifiers = Gtk.accelerator_get_default_mod_mask()
