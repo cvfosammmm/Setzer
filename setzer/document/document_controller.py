@@ -40,6 +40,12 @@ class DocumentController(object):
         self.continue_save_date_loop = True
         GObject.timeout_add(500, self.save_date_loop)
 
+        self.primary_click_controller = Gtk.GestureClick()
+        self.primary_click_controller.set_button(1)
+        self.primary_click_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
+        self.primary_click_controller.connect('pressed', self.on_primary_buttonpress)
+        self.view.source_view.add_controller(self.primary_click_controller)
+
         self.secondary_click_controller = Gtk.GestureClick()
         self.secondary_click_controller.set_button(3)
         self.secondary_click_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
@@ -52,6 +58,12 @@ class DocumentController(object):
         self.scrolling_controller.connect('scroll', self.on_scroll)
         self.scrolling_controller.connect('decelerate', self.on_decelerate)
         self.view.scrolled_window.add_controller(self.scrolling_controller)
+
+    def on_primary_buttonpress(self, controller, n_press, x, y):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if n_press == 1:
+            GLib.idle_add(ServiceLocator.get_workspace().actions.forward_sync)
 
     def on_secondary_buttonpress(self, controller, n_press, x, y):
         modifiers = Gtk.accelerator_get_default_mod_mask()

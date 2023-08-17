@@ -56,6 +56,7 @@ class Actions(object):
         self.add_action('include-latex-file', self.start_include_latex_file_dialog, None)
         self.add_action('add-remove-packages-dialog', self.start_add_remove_packages_dialog, None)
         self.add_action('toggle-comment', self.toggle_comment)
+        self.add_action('forward-sync', self.forward_sync)
 
         self.add_action('start-search', self.start_search)
         self.add_action('start-search-and-replace', self.start_search_and_replace)
@@ -81,6 +82,7 @@ class Actions(object):
         self.actions['quit'] = Gio.SimpleAction.new('quit', None)
         self.main_window.add_action(self.actions['quit'])
 
+        self.workspace.connect('new_document', self.on_new_document)
         self.workspace.connect('document_removed', self.on_document_removed)
         self.workspace.connect('new_inactive_document', self.on_new_inactive_document)
         self.workspace.connect('new_active_document', self.on_new_active_document)
@@ -92,7 +94,12 @@ class Actions(object):
         self.main_window.add_action(self.actions[name])
         self.actions[name].connect('activate', callback)
 
+    def on_new_document(self, workspace, document):
+        document.build_system.connect('can_sync_changed', self.on_can_sync_changed)
+        self.update_actions()
+
     def on_document_removed(self, workspace, document):
+        document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
         self.update_actions()
 
     def on_new_inactive_document(self, workspace, document):
@@ -107,6 +114,9 @@ class Actions(object):
         document.source_buffer.connect('notify::has-selection', self.on_has_selection_changed)
 
     def on_modified_changed(self, document):
+        self.update_actions()
+
+    def on_can_sync_changed(self, document, can_sync):
         self.update_actions()
 
     def on_undo_changed(self, buffer, can_undo):
@@ -124,6 +134,9 @@ class Actions(object):
         document_active_is_latex = document_active and document.is_latex_document()
         enable_save = document_active and (document.source_buffer.get_modified() or document.get_filename() == None)
         has_selection = document_active and document.source_buffer.get_has_selection()
+        if self.workspace.root_document != None: sync_document = self.workspace.root_document
+        else: sync_document = document
+        can_sync = sync_document != None and sync_document.is_latex_document() and sync_document.build_system.can_sync
 
         self.actions['close-active-document'].set_enabled(document_active)
         self.actions['close-all-documents'].set_enabled(document_active)
@@ -151,6 +164,7 @@ class Actions(object):
         self.actions['include-latex-file'].set_enabled(document_active_is_latex)
         self.actions['add-remove-packages-dialog'].set_enabled(document_active_is_latex)
         self.actions['toggle-comment'].set_enabled(document_active_is_latex)
+        self.actions['forward-sync'].set_enabled(can_sync)
         self.actions['show-build-log'].set_enabled(document_active_is_latex)
         self.actions['close-build-log'].set_enabled(document_active_is_latex)
 
@@ -197,6 +211,17 @@ class Actions(object):
     def build_save_cb(self, response_id):
         if response_id == Gtk.ResponseType.YES:
             self.save_as()
+
+    def forward_sync(self, action=None, parameter=''):
+        active_document = self.workspace.get_active_document()
+        if active_document == None: return
+
+        if self.workspace.root_document != None: sync_document = self.workspace.root_document
+        else: sync_document = active_document
+        if not sync_document.is_latex_document(): return
+        if not sync_document.build_system.can_sync: return
+
+        sync_document.build_system.forward_sync(active_document)
 
     def show_build_log(self, action=None, parameter=''):
         self.workspace.set_show_build_log(True)

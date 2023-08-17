@@ -35,6 +35,7 @@ class PagingWidget(object):
 
         self.preview.connect('pdf_changed', self.on_pdf_changed)
         self.preview.connect('position_changed', self.on_position_changed)
+        self.preview.connect('layout_changed', self.on_layout_changed)
         self.preview.zoom_manager.connect('zoom_level_changed', self.on_zoom_level_changed)
 
     def on_pdf_changed(self, preview):
@@ -43,19 +44,22 @@ class PagingWidget(object):
     def on_position_changed(self, preview):
         self.update_label()
 
+    def on_layout_changed(self, preview):
+        self.update_label()
+
     def on_zoom_level_changed(self, preview):
         self.update_label()
 
     def update_label(self):
         if self.preview.pdf_filename != None:
             total = str(self.preview.poppler_document.get_n_pages())
+            if self.preview.layout != None:
+                offset = self.preview.view.content.scrolling_offset_y
+                current = str(self.preview.layout.get_page_by_offset(offset))
+            else:
+                current = "0"
         else:
             total = "0"
-
-        if self.preview.layout != None:
-            offset = self.preview.view.content.scrolling_offset_y
-            current = str(self.preview.layout.get_page_by_offset(offset))
-        else:
             current = "0"
 
         self.view.set_text(_('Page ') + current + _(' of ') + total)
