@@ -68,15 +68,24 @@ class BuildWidget(Observable):
 
             if selfstate[0] != build_button_state[0]:
                 self.build_button_state = build_button_state
-                if build_button_state[0] != 'idle':
+                if build_button_state[0] == 'idle':
+                    self.view.stop_button.hide()
+                    self.view.build_button.set_sensitive(True)
+                    self.view.build_button.show()
+                else:
+                    self.view.stop_button.show()
+                    self.view.build_button.set_sensitive(False)
+                    self.view.build_button.hide()
                     self.view.reset_timer()
                     self.view.label.set_text('0:00')
                     self.view.show_timer()
                     self.view.start_timer()
         else:
+            self.view.stop_button.hide()
+            self.view.build_button.set_sensitive(True)
+            self.view.build_button.show()
             self.build_button_state = ('idle', int(time.time()*1000))
             self.view.hide_timer_now()
-        self.update_build_button()
         self.set_clean_button_state()
 
     def on_build_state(self, build_system, message):

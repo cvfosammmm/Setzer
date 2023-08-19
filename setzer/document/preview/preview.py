@@ -35,6 +35,7 @@ import setzer.document.preview.preview_links_parser as preview_links_parser
 import setzer.document.preview.preview_zoom_manager as preview_zoom_manager
 import setzer.document.preview.zoom_widget.zoom_widget as zoom_widget
 import setzer.document.preview.paging_widget.paging_widget as paging_widget
+import setzer.document.preview.context_menu.context_menu as context_menu
 from setzer.helpers.observable import Observable
 from setzer.helpers.timer import timer
 
@@ -65,6 +66,7 @@ class Preview(Observable):
         self.presenter = preview_presenter.PreviewPresenter(self, self.page_renderer, self.view)
         self.paging_widget = paging_widget.PagingWidget(self)
         self.zoom_widget = zoom_widget.ZoomWidget(self)
+        self.context_menu = context_menu.ContextMenu(self, self.view)
 
         self.document.connect('filename_change', self.on_filename_change)
         self.document.connect('pdf_updated', self.on_pdf_updated)
@@ -182,5 +184,27 @@ class Preview(Observable):
 
             content.scroll_to_position([x, y])
             self.presenter.start_fade_loop()
+
+    def init_backward_sync(self, x_offset, y_offset):
+        if self.layout == None: return False
+
+        window_width = self.view.get_allocated_width()
+        y_total_pixels = min(max(y_offset, 0), (self.layout.page_height + self.layout.page_gap) * self.poppler_document.get_n_pages() - self.layout.page_gap)
+        x_pixels = min(max(x_offset - self.layout.get_horizontal_margin(window_width), 0), self.layout.page_width)
+        page = math.floor(y_total_pixels / (self.layout.page_height + self.layout.page_gap))
+        y_pixels = min(max(y_total_pixels - page * (self.layout.page_height + self.layout.page_gap), 0), self.layout.page_height)
+        x = x_pixels / self.layout.scale_factor
+        y = y_pixels / self.layout.scale_factor
+        page += 1
+
+        poppler_page = self.poppler_document.get_page(page - 1)
+        rect = Poppler.Rectangle()
+        rect.x1 = max(min(x, self.page_width), 0)
+        rect.y1 = max(min(y, self.page_height), 0)
+        rect.x2 = max(min(x, self.page_width), 0)
+        rect.y2 = max(min(y, self.page_height), 0)
+        word = poppler_page.get_selected_text(Poppler.SelectionStyle.WORD, rect)
+        context = poppler_page.get_selected_text(Poppler.SelectionStyle.LINE, rect)
+        self.document.build_system.backward_sync(page, x, y, word, context)
 
 

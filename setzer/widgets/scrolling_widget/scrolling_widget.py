@@ -77,6 +77,11 @@ class ScrollingWidget(Observable):
         self.primary_click_controller.connect('released', self.on_primary_button_release)
         self.content.add_controller(self.primary_click_controller)
 
+        self.secondary_click_controller = Gtk.GestureClick()
+        self.secondary_click_controller.set_button(3)
+        self.secondary_click_controller.connect('pressed', self.on_secondary_button_press)
+        self.content.add_controller(self.secondary_click_controller)
+
     def queue_draw(self):
         self.content.queue_draw()
 
@@ -167,6 +172,14 @@ class ScrollingWidget(Observable):
         x = self.scrolling_offset_x + x
         y = self.scrolling_offset_y + y
         self.add_change_code('primary_button_release', (x, y, controller.get_current_event_state() & modifiers))
+
+    def on_secondary_button_press(self, controller, n_press, x, y):
+        if n_press != 1: return
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        x = self.scrolling_offset_x + x
+        y = self.scrolling_offset_y + y
+        self.add_change_code('secondary_button_press', (x, y, controller.get_current_event_state() & modifiers))
 
     def on_enter(self, controller, x, y):
         self.set_cursor_position(x, y)

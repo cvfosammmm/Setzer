@@ -66,10 +66,7 @@ class BuilderBackwardSync(builder_build.BuilderBuild):
                 result['word'] = query.backward_sync_data['word']
                 result['context'] = query.backward_sync_data['context']
 
-        if result != None:
-            query.backward_sync_result = result
-        else:
-            query.backward_sync_result = None
+        query.backward_sync_result = result
 
     def stop_running(self):
         if self.process != None:

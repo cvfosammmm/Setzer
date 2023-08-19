@@ -41,9 +41,9 @@ class ContextMenu(object):
         self.popover_pointer = MenuBuilder.create_menu()
         self.popover_pointer.set_position(Gtk.PositionType.BOTTOM)
         self.popover_pointer.set_parent(self.document_view)
-        self.popover_pointer.set_size_request(260, -1)
+        self.popover_pointer.set_size_request(300, -1)
         self.popover_pointer.set_has_arrow(False)
-        self.popover_pointer.set_offset(130, 0)
+        self.popover_pointer.set_offset(150, 0)
         self.popover_pointer.set_can_focus(False)
         self.popover_pointer.connect('closed', self.on_popover_close)
         self.dynamic_buttons[self.popover_pointer] = {}

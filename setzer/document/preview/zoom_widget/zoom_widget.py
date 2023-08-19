@@ -36,6 +36,7 @@ class ZoomWidget(object):
         self.view.zoom_out_button.connect('clicked', self.on_zoom_button_clicked, 'out')
 
         self.update_zoom_level()
+        self.update_buttons()
 
         self.view.button_fit_to_width.connect('clicked', self.on_fit_to_width_button_clicked)
         self.view.button_fit_to_text_width.connect('clicked', self.on_fit_to_text_width_button_clicked)
@@ -51,6 +52,7 @@ class ZoomWidget(object):
 
     def on_zoom_level_changed(self, preview):
         self.update_zoom_level()
+        self.update_buttons()
 
     def on_zoom_button_clicked(self, button, direction):
         if direction == 'in':
@@ -77,5 +79,11 @@ class ZoomWidget(object):
     def update_zoom_level(self):
         if self.preview.zoom_manager.get_zoom_level() != None:
             self.view.label.set_text('{0:.1f}%'.format(self.preview.zoom_manager.get_zoom_level() * 100))
+
+    def update_buttons(self):
+        zoom_level = self.preview.zoom_manager.get_zoom_level()
+
+        self.view.zoom_in_button.set_sensitive(zoom_level != None and zoom_level < 4)
+        self.view.zoom_out_button.set_sensitive(zoom_level != None and zoom_level > 0.25)
 
 
