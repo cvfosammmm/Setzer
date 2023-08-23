@@ -55,12 +55,12 @@ class ServiceLocator(object):
         return ServiceLocator.workspace
 
     def get_regex_object(pattern):
-        try:
-            regex = ServiceLocator.regexes[pattern]
-        except KeyError:
+        if pattern in ServiceLocator.regexes:
+            return ServiceLocator.regexes[pattern]
+        else:
             regex = re.compile(pattern)
             ServiceLocator.regexes[pattern] = regex
-        return regex
+            return regex
 
     def get_settings():
         if ServiceLocator.settings == None:

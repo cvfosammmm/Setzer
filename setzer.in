@@ -30,6 +30,7 @@ from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 from setzer.app.color_manager import ColorManager
 from setzer.app.font_manager import FontManager
+from setzer.app.latex_db import LaTeXDB
 from setzer.settings.document_settings import DocumentSettings
 from setzer.helpers.timer import timer
 
@@ -110,6 +111,7 @@ class MainApplicationController(Adw.Application):
         ServiceLocator.set_main_window(self.main_window)
         ColorManager.init(self.main_window)
         FontManager.init(self.main_window)
+        LaTeXDB.init(resources_path)
 
         self.workspace = Workspace()
         ServiceLocator.set_workspace(self.workspace)

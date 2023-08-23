@@ -29,6 +29,7 @@ class WorkspacePresenter(object):
         self.workspace.connect('new_document', self.on_new_document)
         self.workspace.connect('document_removed', self.on_document_removed)
         self.workspace.connect('new_active_document', self.on_new_active_document)
+        self.workspace.connect('new_inactive_document', self.on_new_inactive_document)
         self.workspace.connect('set_show_symbols_or_document_structure', self.on_set_show_symbols_or_document_structure)
         self.workspace.connect('set_show_preview_or_help', self.on_set_show_preview_or_help)
         self.workspace.connect('show_build_log_state_change', self.on_show_build_log_state_change)
@@ -69,6 +70,8 @@ class WorkspacePresenter(object):
             notebook = self.main_window.latex_notebook
             notebook.set_current_page(notebook.page_num(document.view))
             document.view.source_view.grab_focus()
+            try: self.main_window.preview_paned_overlay.add_overlay(document.autocomplete.widget.view)
+            except AttributeError: pass
             self.activate_latex_documents_mode()
         elif document.is_bibtex_document():
             notebook = self.main_window.bibtex_notebook
@@ -80,6 +83,11 @@ class WorkspacePresenter(object):
             notebook.set_current_page(notebook.page_num(document.view))
             document.view.source_view.grab_focus()
             self.activate_other_documents_mode()
+
+    def on_new_inactive_document(self, workspace, document):
+        if document.is_latex_document():
+            try: self.main_window.preview_paned_overlay.remove_overlay(document.autocomplete.widget.view)
+            except AttributeError: pass
 
     def on_set_show_symbols_or_document_structure(self, workspace):
         if self.workspace.show_symbols:

@@ -4,6 +4,9 @@
 @define-color code_folding_hover #c7c7c7;
 @define-color highlight_tag_preview rgba(250, 240, 107, 0.6);
 @define-color highlight_tag_textview rgba(250, 240, 107, 0.65);
+@define-color ac_text #000000;
+@define-color ac_bg #fff895;
+@define-color ac_selection_bg #f8e45c;
 
 /*
 ** main_window
@@ -18,50 +21,6 @@ button.new-document-menu-button {
 }
 scrollbar.hidden slider {
     opacity: 0;
-}
-
-/*
-** document view
-*/
-
-box.autocomplete {
-    padding: 0px;
-}
-box.autocomplete scrollbar.right slider {
-    min-height: 12px;
-}
-box.autocomplete list {
-    background-color: #fff895;
-    border-radius: 1px;
-}
-box.autocomplete list row {
-    padding-top: 0px;
-    padding-bottom: 0px;
-    padding-left: 2px;
-    padding-right: 2px;
-    border-radius: 1px;
-}
-box.autocomplete list row:selected {
-    background: mix(@borders, @theme_bg_color, 0.5);
-    background: #f8e45c;
-}
-box.autocomplete list row:not(:selected) {
-    background-color: @theme_bg_color;
-    background-color: #fff895;
-}
-box.autocomplete list label {
-    color: #000;
-}
-box.autocomplete label.infobox {
-    border-top: 1px dotted mix(#f9f4af, #000, 0.2);
-    border-radius: 1px;
-    padding-top: 1px;
-    padding-bottom: 2px;
-    padding-left: 3px;
-    padding-right: 3px;
-    font-size: 13px;
-    color: #000;
-    background-color: #fff895;
 }
 
 /*

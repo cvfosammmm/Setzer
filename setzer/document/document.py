@@ -32,6 +32,7 @@ import setzer.document.parser.parser_latex as parser_latex
 import setzer.document.parser.parser_bibtex as parser_bibtex
 import setzer.document.parser.parser_dummy as parser_dummy
 import setzer.document.code_folding.code_folding as code_folding
+import setzer.document.autocomplete.autocomplete as autocomplete
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 from setzer.app.color_manager import ColorManager
@@ -60,6 +61,7 @@ class Document(Observable):
         self.source_buffer.connect('modified-changed', self.on_modified_change)
         self.source_buffer.connect('changed', self.on_change)
         self.source_buffer.connect('notify::cursor-position', self.on_cursor_position_change)
+        self.settings = ServiceLocator.get_settings()
 
         self.view = document_view.DocumentView(self)
         self.context_menu = context_menu.ContextMenu(self, self.view)
@@ -72,6 +74,7 @@ class Document(Observable):
         self.code_folding = code_folding.CodeFolding(self)
         self.gutter = gutter.Gutter(self, self.view)
         self.search = search.Search(self, self.view)
+        if self.is_latex_document(): self.autocomplete = autocomplete.Autocomplete(self)
 
     def set_filename(self, filename):
         if filename == None:
@@ -187,6 +190,10 @@ class Document(Observable):
             end_iter.forward_to_line_end()
         return self.source_buffer.get_slice(start_iter, end_iter, False)
 
+    def get_line_after_offset(self, offset):
+        start_iter = self.source_buffer.get_iter_at_offset(offset)
+        return self.get_line(start_iter.get_line())[start_iter.get_line_offset():]
+
     def place_cursor(self, line_number, offset=0):
         _, text_iter = self.source_buffer.get_iter_at_line_offset(line_number, offset)
         self.source_buffer.place_cursor(text_iter)
@@ -264,6 +271,25 @@ class Document(Observable):
             self.source_buffer.end_user_action()
         else:
             self.source_buffer.insert_at_cursor(text)
+
+    def replace_tabs_with_spaces_if_set(self, text):
+        if self.settings.get_value('preferences', 'spaces_instead_of_tabs'):
+            number_of_spaces = self.settings.get_value('preferences', 'tab_width')
+            text = text.replace('\t', ' ' * number_of_spaces)
+        return text
+
+    def indent_text_with_whitespace_at_iter(self, text, start_iter):
+        found, line_iter = self.source_buffer.get_iter_at_line(start_iter.get_line())
+        ws_line = self.source_buffer.get_text(line_iter, start_iter, False)
+        lines = text.split('\n')
+        ws_number = len(ws_line) - len(ws_line.lstrip())
+        whitespace = ws_line[:ws_number]
+        final_text = ''
+        for no, line in enumerate(lines):
+            if no != 0:
+                final_text += '\n' + whitespace
+            final_text += line
+        return final_text
 
     def on_modified_change(self, buffer):
         self.add_change_code('modified_changed')
