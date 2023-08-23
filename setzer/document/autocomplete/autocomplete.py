@@ -32,6 +32,7 @@ class Autocomplete(object):
         self.current_word_offset = None
         self.current_word = None
         self.items = []
+        self.last_tabbed_item = None
         self.first_item_index = None
         self.selected_item_index = None
 
@@ -73,6 +74,7 @@ class Autocomplete(object):
         self.current_word_offset = None
         self.current_word = None
         self.items = []
+        self.last_tabbed_item = None
         self.first_item_index = None
         self.selected_item_index = None
 
@@ -86,7 +88,7 @@ class Autocomplete(object):
         line_offset = self.source_buffer.get_iter_at_line(insert_iter.get_line())[1].get_offset()
 
         self.current_word = line_before_cursor[self.current_word_offset - line_offset:]
-        self.items = LaTeXDB.get_items(self.current_word)
+        self.items = LaTeXDB.get_items(self.current_word, self.last_tabbed_item)
 
         if len(self.items) > 1:
             self.first_item_index = 0
@@ -135,8 +137,10 @@ class Autocomplete(object):
             lcp = os.path.commonprefix([item['command'] for item in matching_items])
             matching_result = re.match(re.escape(lcp), self.document.get_line_after_offset(self.current_word_offset))
             if matching_result:
+                self.last_tabbed_item = self.items[self.selected_item_index]['command']
                 self.move_cursor_to_offset(self.current_word_offset + len(lcp))
             else:
+                self.last_tabbed_item = self.items[self.selected_item_index]['command']
                 self.replace_current_word_in_buffer(lcp)
                 self.document.scroll_cursor_onscreen()
                 if lcp == command:

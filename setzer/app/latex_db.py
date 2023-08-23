@@ -29,11 +29,19 @@ class LaTeXDB(object):
         LaTeXDB.resources_path = resources_path
         LaTeXDB.generate_static_proposals()
 
-    def get_items(word):
+    def get_items(word, top_item=None):
         try: items = LaTeXDB.static_proposals[word.lower()]
         except KeyError: items = list()
 
-        return items
+        if top_item == None: return items
+
+        result = []
+        for item in reversed(items):
+            if item['command'] == top_item:
+                result.insert(0, item)
+            else:
+                result.append(item)
+        return result
 
     def generate_static_proposals():
         commands = LaTeXDB.get_commands()
