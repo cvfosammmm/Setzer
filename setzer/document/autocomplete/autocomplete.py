@@ -36,6 +36,8 @@ class Autocomplete(object):
         self.first_item_index = None
         self.selected_item_index = None
 
+        self.cursor_unchanged_after_autoclosing_bracket = False
+
         self.controller = autocomplete_controller.AutocompleteController(self, document)
         self.widget = autocomplete_widget.AutocompleteWidget(self)
 
@@ -191,5 +193,37 @@ class Autocomplete(object):
         self.source_buffer.begin_user_action()
         self.source_buffer.insert_at_cursor(text)
         self.source_buffer.end_user_action()
+
+    def autoclose_brackets(self, char):
+        closing_char = {'[': ']', '{': '}', '(': ')'}[char]
+        start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        end_iter = start_iter.copy()
+        end_iter.backward_char()
+        if self.source_buffer.get_text(start_iter, end_iter, False) == '\\':
+            closing_char = '\\' + closing_char
+
+        self.source_buffer.begin_user_action()
+        self.source_buffer.delete_selection(True, True)
+        self.source_buffer.insert_at_cursor(char + closing_char)
+        self.source_buffer.end_user_action()
+
+        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        insert_iter.backward_char()
+        if closing_char.startswith('\\'):
+            insert_iter.backward_char()
+        self.source_buffer.place_cursor(insert_iter)
+        self.cursor_unchanged_after_autoclosing_bracket = True
+
+    def handle_autoclosing_bracket_overwrite(self, char):
+        if not self.cursor_unchanged_after_autoclosing_bracket: return False
+        if not self.document.get_chars_at_cursor(1) == char: return False
+
+        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        insert_iter.forward_chars(1)
+        self.source_buffer.begin_user_action()
+        self.source_buffer.place_cursor(insert_iter)
+        self.source_buffer.end_user_action()
+        if char == '\\':
+            self.cursor_unchanged_after_autoclosing_bracket = True
 
 

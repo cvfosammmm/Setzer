@@ -194,6 +194,12 @@ class Document(Observable):
         start_iter = self.source_buffer.get_iter_at_offset(offset)
         return self.get_line(start_iter.get_line())[start_iter.get_line_offset():]
 
+    def get_chars_at_cursor(self, number_of_chars):
+        start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        end_iter = start_iter.copy()
+        end_iter.forward_chars(number_of_chars)
+        return self.source_buffer.get_text(start_iter, end_iter, False)
+
     def place_cursor(self, line_number, offset=0):
         _, text_iter = self.source_buffer.get_iter_at_line_offset(line_number, offset)
         self.source_buffer.place_cursor(text_iter)

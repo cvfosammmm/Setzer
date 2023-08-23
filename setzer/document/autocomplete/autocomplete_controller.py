@@ -77,6 +77,25 @@ class AutocompleteController(object):
                     self.autocomplete.widget.queue_draw()
                     return True
 
+        if not self.autocomplete.is_active:
+            if keyval == Gdk.keyval_from_name('bracketleft'):
+                self.autocomplete.autoclose_brackets('[')
+                return True
+            if keyval == Gdk.keyval_from_name('braceleft'):
+                self.autocomplete.autoclose_brackets('{')
+                return True
+            if keyval == Gdk.keyval_from_name('parenleft'):
+                self.autocomplete.autoclose_brackets('(')
+                return True
+            if keyval == Gdk.keyval_from_name('bracketright'):
+                return self.autocomplete.handle_autoclosing_bracket_overwrite(']')
+            if keyval == Gdk.keyval_from_name('braceright'):
+                return self.autocomplete.handle_autoclosing_bracket_overwrite('}')
+            if keyval == Gdk.keyval_from_name('parenright'):
+                return self.autocomplete.handle_autoclosing_bracket_overwrite(')')
+            if keyval == Gdk.keyval_from_name('backslash'):
+                return self.autocomplete.handle_autoclosing_bracket_overwrite('\\')
+
     def on_document_change(self, document):
         if self.autocomplete.is_active:
             self.autocomplete.deactivate_if_necessary()
@@ -92,6 +111,7 @@ class AutocompleteController(object):
             self.autocomplete.deactivate_if_necessary()
             self.autocomplete.update_suggestions()
             self.autocomplete.widget.queue_draw()
+        self.autocomplete.cursor_unchanged_after_autoclosing_bracket = False
 
     def on_adjustment_change(self, adjustment):
         self.autocomplete.widget.queue_draw()
