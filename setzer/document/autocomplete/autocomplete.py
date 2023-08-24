@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk
+
 import re, os.path
 
 import setzer.document.autocomplete.autocomplete_controller as autocomplete_controller
@@ -238,5 +242,37 @@ class Autocomplete(object):
             return True
         else:
             return False
+
+    def placeholder_selected(self):
+        return self.document.get_selected_text() == '•'
+
+    def select_next_placeholder(self):
+        if self.placeholder_selected():
+            insert = self.source_buffer.get_selection_bounds()[1]
+        else:
+            insert = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+
+        limit_iter = insert.copy()
+        limit_iter.forward_lines(5)
+        limit_iter.backward_chars(1)
+        result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
+        if result != None:
+            self.source_buffer.select_range(result[0], result[1])
+            self.document.scroll_cursor_onscreen()
+            return True
+
+    def select_previous_placeholder(self):
+        if self.placeholder_selected():
+            insert = self.source_buffer.get_selection_bounds()[0]
+        else:
+            insert = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+
+        limit_iter = insert.copy()
+        limit_iter.backward_lines(5)
+        result = insert.backward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
+        if result != None:
+            self.source_buffer.select_range(result[0], result[1])
+            self.document.scroll_cursor_onscreen()
+            return True
 
 

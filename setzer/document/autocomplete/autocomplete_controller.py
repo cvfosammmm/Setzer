@@ -41,7 +41,7 @@ class AutocompleteController(object):
     def on_keypress(self, controller, keyval, keycode, state):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if keyval == Gdk.keyval_from_name('Tab'):
+        if keyval in [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]:
             if state & modifiers == 0:
                 if self.autocomplete.is_active:
                     self.autocomplete.tab()
@@ -52,6 +52,14 @@ class AutocompleteController(object):
                     if self.autocomplete.is_active:
                         return True
                     elif self.autocomplete.jump_over_closing_bracket():
+                        return True
+                    elif self.autocomplete.select_next_placeholder():
+                        return True
+                    elif self.autocomplete.placeholder_selected():
+                        return True
+            elif state & modifiers == Gdk.ModifierType.SHIFT_MASK:
+                if not self.autocomplete.is_active:
+                    if self.autocomplete.select_previous_placeholder():
                         return True
 
         if keyval == Gdk.keyval_from_name('Return'):
