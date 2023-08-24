@@ -226,4 +226,17 @@ class Autocomplete(object):
         if char == '\\':
             self.cursor_unchanged_after_autoclosing_bracket = True
 
+    def jump_over_closing_bracket(self):
+        chars_at_cursor = self.document.get_chars_at_cursor(2)
+        if chars_at_cursor in ['\\}', '\\)', '\\]']: forward_chars = 2
+        elif chars_at_cursor[0] in ['}', ')', ']']: forward_chars = 1
+        else: forward_chars = 0
+        if forward_chars > 0:
+            insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+            insert_iter.forward_chars(forward_chars)
+            self.source_buffer.place_cursor(insert_iter)
+            return True
+        else:
+            return False
+
 

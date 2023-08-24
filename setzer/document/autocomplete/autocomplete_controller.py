@@ -49,7 +49,10 @@ class AutocompleteController(object):
                 else:
                     self.autocomplete.activate_if_possible()
                     self.autocomplete.widget.queue_draw()
-                    return self.autocomplete.is_active
+                    if self.autocomplete.is_active:
+                        return True
+                    elif self.autocomplete.jump_over_closing_bracket():
+                        return True
 
         if keyval == Gdk.keyval_from_name('Return'):
             if state & modifiers == 0:
