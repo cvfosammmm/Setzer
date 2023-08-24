@@ -17,13 +17,14 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 
 import re, os.path
 
 import setzer.document.autocomplete.autocomplete_controller as autocomplete_controller
 import setzer.document.autocomplete.autocomplete_widget as autocomplete_widget
 from setzer.app.latex_db import LaTeXDB
+from setzer.app.service_locator import ServiceLocator
 
 
 class Autocomplete(object):
@@ -274,5 +275,56 @@ class Autocomplete(object):
             self.source_buffer.select_range(result[0], result[1])
             self.document.scroll_cursor_onscreen()
             return True
+
+    def handle_keypress_inside_begin_or_end(self, keyval):
+        buffer = self.source_buffer
+        insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        line = self.document.get_line(insert_iter.get_line())
+        offset = insert_iter.get_line_offset()
+        cursor_offset = insert_iter.get_offset()
+        line = line[:offset] + '%•%' + line[offset:]
+        match_begin_end = ServiceLocator.get_regex_object(r'.*\\(begin|end)\{((?:[^\{\[\(])*)%•%((?:[^\{\[\(])*)\}').match(line)
+        if match_begin_end == None: return False
+        if keyval == Gdk.keyval_from_name('BackSpace') and len(match_begin_end.group(2)) == 0: return False
+        if keyval == Gdk.keyval_from_name('Delete') and len(match_begin_end.group(3)) == 0: return False
+
+        orig_offset = cursor_offset - insert_iter.get_line_offset() + match_begin_end.start()
+        offset = None
+        for block in self.document.parser.symbols['blocks']:
+            if block[0] == orig_offset:
+                if block[1] == None:
+                    return False
+                else:
+                    offset = block[1] + 5 + len(match_begin_end.group(2))
+                    break
+            elif block[1] == orig_offset:
+                if block[0] == None:
+                    return False
+                else:
+                    offset = block[0] + 7 + len(match_begin_end.group(2))
+                    break
+        if offset == None: return False
+
+        buffer.begin_user_action()
+        if keyval == Gdk.keyval_from_name('asterisk'):
+            if cursor_offset < offset: offset += 1
+            buffer.insert_at_cursor('*')
+            buffer.insert(buffer.get_iter_at_offset(offset), '*')
+        elif keyval == Gdk.keyval_from_name('BackSpace'):
+            if cursor_offset < offset: offset -= 1
+            buffer.delete(buffer.get_iter_at_offset(cursor_offset - 1), buffer.get_iter_at_offset(cursor_offset))
+            buffer.delete(buffer.get_iter_at_offset(offset - 1), buffer.get_iter_at_offset(offset))
+        elif keyval == Gdk.keyval_from_name('Delete'):
+            if cursor_offset < offset: offset -= 1
+            buffer.delete(buffer.get_iter_at_offset(cursor_offset), buffer.get_iter_at_offset(cursor_offset + 1))
+            buffer.delete(buffer.get_iter_at_offset(offset), buffer.get_iter_at_offset(offset + 1))
+        else:
+            if cursor_offset < offset: offset += 1
+            char = Gdk.keyval_name(keyval)
+            buffer.insert_at_cursor(char)
+            buffer.insert(buffer.get_iter_at_offset(offset), char)
+        buffer.end_user_action()
+
+        return True
 
 

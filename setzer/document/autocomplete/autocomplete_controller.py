@@ -19,6 +19,8 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk, Gdk
 
+from setzer.app.service_locator import ServiceLocator
+
 
 class AutocompleteController(object):
 
@@ -40,6 +42,12 @@ class AutocompleteController(object):
 
     def on_keypress(self, controller, keyval, keycode, state):
         modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if ServiceLocator.get_regex_object('[a-zA-Z]\Z').match(Gdk.keyval_name(keyval)) or keyval == Gdk.keyval_from_name('asterisk') or keyval == Gdk.keyval_from_name('BackSpace') or keyval == Gdk.keyval_from_name('Delete'):
+            if state & modifiers == 0:
+                if not self.autocomplete.is_active:
+                    if self.autocomplete.handle_keypress_inside_begin_or_end(keyval):
+                        return True
 
         if keyval in [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]:
             if state & modifiers == 0:
@@ -106,6 +114,9 @@ class AutocompleteController(object):
                 return self.autocomplete.handle_autoclosing_bracket_overwrite(')')
             if keyval == Gdk.keyval_from_name('backslash'):
                 return self.autocomplete.handle_autoclosing_bracket_overwrite('\\')
+
+    def on_im_commit(self, im_context, text):
+        print(text)
 
     def on_document_change(self, document):
         if self.autocomplete.is_active:
