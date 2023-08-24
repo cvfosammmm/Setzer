@@ -76,11 +76,13 @@ class Shortcuts(object):
         self.shortcut_controller.add_shortcut(Shortcut('F3', self.shortcut_symbols_toggle))
         self.shortcut_controller.add_shortcut(Shortcut('F5', actions.save_and_build))
         self.shortcut_controller.add_shortcut(Shortcut('F6', actions.build))
+        self.shortcut_controller.add_shortcut(Shortcut('F7', actions.forward_sync))
         self.shortcut_controller.add_shortcut(Shortcut('F8', self.shortcut_build_log))
         self.shortcut_controller.add_shortcut(Shortcut('F9', self.shortcut_preview))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>z', actions.undo))
         self.shortcut_controller.add_shortcut(Shortcut('<Control><Shift>z', actions.redo))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>k', actions.toggle_comment))
+        self.shortcut_controller.add_shortcut(Shortcut('<Control>quotedbl', self.shortcut_quotes))
 
     def set_document_type(self, document_type):
         if document_type == 'latex':
@@ -165,5 +167,10 @@ class Shortcuts(object):
         if toggle.get_sensitive():
             toggle.set_active(not toggle.get_active())
         return True
+
+    def shortcut_quotes(self, accel_group=None, window=None, key=None, mask=None):
+        active_document = self.workspace.get_active_document()
+        if active_document != None and active_document.is_latex_document():
+            self.main_window.latex_shortcutsbar.quotes_button.popup()
 
 

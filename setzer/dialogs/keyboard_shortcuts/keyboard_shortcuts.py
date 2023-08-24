@@ -44,6 +44,7 @@ class KeyboardShortcutsDialog(object):
         section = {'title': _('Tools'), 'items': list()}
         section['items'].append({'title': _('Save and build .pdf-file from document'), 'shortcut': 'F5'})
         section['items'].append({'title': _('Build .pdf-file from document'), 'shortcut': 'F6'})
+        section['items'].append({'title': _('Show current position in preview'), 'shortcut': 'F7'})
         data.append(section)
 
         section = {'title': 'Windows and Panels', 'items': list()}
@@ -101,6 +102,7 @@ class KeyboardShortcutsDialog(object):
         section['items'].append({'title': _('Underlined Text'), 'shortcut': '&lt;ctrl&gt;U'})
         section['items'].append({'title': _('Typewriter Text'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;T'})
         section['items'].append({'title': _('Emphasized Text'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;E'})
+        section['items'].append({'title': _('Quotation Marks'), 'shortcut': '&lt;ctrl&gt;quotedbl'})
         section['items'].append({'title': _('List Item'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;I'})
         section['items'].append({'title': _('Environment'), 'shortcut': '&lt;ctrl&gt;E'})
         data.append(section)
