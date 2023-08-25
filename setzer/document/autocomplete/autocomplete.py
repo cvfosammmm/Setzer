@@ -97,7 +97,7 @@ class Autocomplete(object):
         self.current_word = line_before_cursor[self.current_word_offset - line_offset:]
         self.items = LaTeXDB.get_items(self.current_word, self.last_tabbed_item)
 
-        if len(self.items) > 1:
+        if len(self.items) > 0:
             self.first_item_index = 0
             self.selected_item_index = 0
         else:

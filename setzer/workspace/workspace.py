@@ -203,12 +203,6 @@ class Workspace(Observable):
             return document
         return None
 
-    def get_open_documents_filenames(self):
-        pathnames = list()
-        for document in self.open_documents:
-            pathnames.append(document.get_filename())
-        return pathnames
-
     def update_recently_opened_document(self, filename, date=None, notify=True):
         if not isinstance(filename, str) or not os.path.isfile(filename):
             self.remove_recently_opened_document(filename)

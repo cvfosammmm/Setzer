@@ -1,0 +1,15 @@
+<commands>
+  <command name="\autocite{•}" text="\autocite{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="bibid###" />
+  <command name="\citealp{•}" text="\citealp{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keylist###" />
+  <command name="\citealt{•}" text="\citealt{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keylist###" />
+  <command name="\citeauthor{•}" text="\citeauthor{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keylist###" />
+  <command name="\citeauthor*{•}" text="\citeauthor*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keylist###" />
+  <command name="\citep{•}" text="\citep{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keylist###" />
+  <command name="\citep*{•}" text="\citep*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keylist###" />
+  <command name="\citet{•}" text="\citet{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keylist###" />
+  <command name="\citet*{•}" text="\citet*{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keylist###" />
+  <command name="\citeyear{•}" text="\citeyear{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keylist###" />
+  <command name="\citeyearpar{•}" text="\citeyearpar{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="keylist###" />
+  <command name="\parencite{•}" text="\parencite{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="bibid###" />
+  <command name="\textcite{•}" text="\textcite{•}" onlymath="False" onlytext="False" onlytabular="False" onlytabbing="False" lowpriority="False" description="" dotlabels="bibid###" />
+</commands>

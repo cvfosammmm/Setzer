@@ -115,9 +115,6 @@ class AutocompleteController(object):
             if keyval == Gdk.keyval_from_name('backslash'):
                 return self.autocomplete.handle_autoclosing_bracket_overwrite('\\')
 
-    def on_im_commit(self, im_context, text):
-        print(text)
-
     def on_document_change(self, document):
         if self.autocomplete.is_active:
             self.autocomplete.deactivate_if_necessary()
