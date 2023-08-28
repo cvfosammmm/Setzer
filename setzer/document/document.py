@@ -318,6 +318,13 @@ class Document(Observable):
         if result != None:
             self.source_buffer.select_range(result[0], result[1])
 
+    def select_last_dot_around_cursor(self):
+        end_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        start_iter = self.source_buffer.get_start_iter()
+        result = end_iter.backward_search('•', 0, start_iter)
+        if result != None:
+            self.source_buffer.select_range(result[0], result[1])
+
     def highlight_section(self, start_iter, end_iter):
         self.highlight_tag_count += 1
         color = ColorManager.get_ui_color('highlight_tag_textview')

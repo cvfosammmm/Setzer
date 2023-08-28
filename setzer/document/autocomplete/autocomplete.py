@@ -148,10 +148,15 @@ class Autocomplete(object):
                 self.move_cursor_to_offset(self.current_word_offset + len(lcp))
             else:
                 self.last_tabbed_item = self.items[self.selected_item_index]['command']
-                self.replace_current_word_in_buffer(lcp)
-                self.document.scroll_cursor_onscreen()
-                if lcp == command:
+                if lcp == command and command.startswith('\\begin{'):
+                    bracket_pos = command.find('}') + 1
+                    command += '\n\t•\n\\end{' + command[7:bracket_pos]
+                    self.replace_current_word_in_buffer(command, select_dot_and_scroll=True)
                     self.deactivate()
+                else:
+                    self.replace_current_word_in_buffer(lcp, select_dot_and_scroll=False)
+                    if lcp == command:
+                        self.deactivate()
 
     def submit(self):
         # If the selected item matches with the beginning of the end
@@ -169,14 +174,20 @@ class Autocomplete(object):
             self.move_cursor_to_offset(end)
         else:
             command = self.items[self.selected_item_index]['command']
-            self.replace_current_word_in_buffer(command)
-            self.document.select_first_dot_around_cursor(offset_before=len(command), offset_after=0)
-            self.document.scroll_cursor_onscreen()
+            if command.startswith('\\begin{'):
+                bracket_pos = command.find('}') + 1
+                command += '\n\t•\n\\end{' + command[7:bracket_pos]
+                self.replace_current_word_in_buffer(command, select_dot_and_scroll=True)
+            else:
+                self.replace_current_word_in_buffer(command, select_dot_and_scroll=True)
+
         self.deactivate()
 
     def match_current_command_with_buffer(self):
         command = self.items[self.selected_item_index]['command']
-        matching_result = re.match(re.escape(command).replace('•', '.*'), self.document.get_line_after_offset(self.current_word_offset))
+        regex = re.escape(command)
+        regex = regex.replace('•', '\{(?:[^\{\}\(\)\[\]])*\}')
+        matching_result = re.match(regex, self.document.get_line_after_offset(self.current_word_offset))
         if matching_result:
             return (self.current_word_offset, self.current_word_offset + matching_result.end())
         else:
@@ -187,7 +198,7 @@ class Autocomplete(object):
         self.source_buffer.place_cursor(new_cursor_iter)
         self.document.scroll_cursor_onscreen()
 
-    def replace_current_word_in_buffer(self, text):
+    def replace_current_word_in_buffer(self, text, select_dot_and_scroll):
         start_iter = self.source_buffer.get_iter_at_offset(self.current_word_offset)
         insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
 
@@ -198,6 +209,10 @@ class Autocomplete(object):
         self.source_buffer.begin_user_action()
         self.source_buffer.insert_at_cursor(text)
         self.source_buffer.end_user_action()
+
+        if select_dot_and_scroll:
+            self.document.select_first_dot_around_cursor(offset_before=len(text), offset_after=0)
+            self.document.scroll_cursor_onscreen()
 
     def autoclose_brackets(self, char):
         closing_char = {'[': ']', '{': '}', '(': ')'}[char]
