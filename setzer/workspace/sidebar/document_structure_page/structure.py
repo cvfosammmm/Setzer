@@ -19,8 +19,6 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk, Gdk
 
-import os.path
-
 import setzer.workspace.sidebar.document_structure_page.structure_viewgtk as structure_section_view
 
 
@@ -70,7 +68,7 @@ class StructureSection(object):
                             block_included.append(includes[0]['document'])
                         blocks.append(block_included)
                 else:
-                    file_block = [0, 0, 0, 0, 'file', os.path.basename(includes[0]['filename']), includes[0]['document']]
+                    file_block = [0, 0, 0, 0, 'file', includes[0]['filename'], includes[0]['document']]
                     blocks.append(file_block)
                 del(includes[0])
             if len(block) < 7:

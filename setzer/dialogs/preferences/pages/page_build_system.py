@@ -17,9 +17,10 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
+gi.require_version('Xdp', '1.0')
+from gi.repository import Gtk, Xdp
 
-import subprocess
+import subprocess, os
 
 
 class PageBuildSystem(object):
@@ -122,7 +123,11 @@ class PageBuildSystemView(Gtk.Box):
 
         self.no_interpreter_label = Gtk.Label()
         self.no_interpreter_label.set_wrap(True)
-        self.no_interpreter_label.set_markup(_('No LaTeX interpreter found. For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibooks.org/wiki/LaTeX/Installation</a>'))
+        if Xdp.Portal().running_under_flatpak():
+            self.no_interpreter_label.set_markup(_('''No LaTeX interpreter found. To install interpreters in Flatpak, open a terminal and run the following command:
+flatpak install org.freedesktop.Sdk.Extension.texlive'''))
+        else:
+            self.no_interpreter_label.set_markup(_('No LaTeX interpreter found. For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibooks.org/wiki/LaTeX/Installation</a>'))
         self.no_interpreter_label.set_xalign(0)
         self.no_interpreter_label.set_margin_bottom(6)
         self.append(self.no_interpreter_label)
@@ -149,7 +154,7 @@ class PageBuildSystemView(Gtk.Box):
         label.set_margin_top(18)
         label.set_margin_bottom(6)
         self.append(label)
-        self.option_cleanup_build_files = Gtk.CheckButton.new_with_label(_('Automatically remove helper files (.log, .dvi, ...) after building .pdf.'))
+        self.option_cleanup_build_files = Gtk.CheckButton.new_with_label(_('Automatically remove helper files (.log, .dvi, …) after building .pdf.'))
         self.append(self.option_cleanup_build_files)
         self.option_use_latexmk = Gtk.CheckButton.new_with_label(_('Use Latexmk'))
         self.append(self.option_use_latexmk)

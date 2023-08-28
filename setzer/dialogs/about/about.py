@@ -39,7 +39,7 @@ class AboutDialog(object):
         self.view.set_modal(True)
         self.view.set_program_name('Setzer')
         self.view.set_version(ServiceLocator.get_setzer_version())
-        self.view.set_copyright('Copyright © 2018-present')
+        self.view.set_copyright('Copyright © 2017-present')
         self.view.set_comments(_('Setzer is a LaTeX editor.'))
         self.view.set_license_type(Gtk.License.GPL_3_0)
         self.view.set_website('https://www.cvfosammmm.org/setzer/')

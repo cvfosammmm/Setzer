@@ -34,6 +34,8 @@ class LaTeXDB(object):
     dynamic_commands['references'] = ['\\ref*', '\\ref', '\\pageref*', '\\pageref', '\\eqref']
     dynamic_commands['citations'] = ['\\citet*', '\\citet', '\\citep*', '\\citep', '\\citealt', '\\citealp', '\\citeauthor*', '\\citeauthor', '\\citeyearpar', '\\citeyear', '\\textcite', '\\parencite', '\\autocite', '\\cite']
     files = dict()
+    languages_dict = None
+    packages_dict = None
 
     def init(resources_path):
         LaTeXDB.resources_path = resources_path
@@ -167,5 +169,30 @@ class LaTeXDB(object):
             bibitems = bibitems | {match['ID']}
 
         LaTeXDB.files[pathname]['bibitems'] = bibitems
+
+    def get_languages_dict():
+        if LaTeXDB.languages_dict == None:
+            LaTeXDB.languages_dict = dict()
+
+            resources_path = ServiceLocator.get_resources_path()
+            tree = ET.parse(os.path.join(resources_path, 'latexdb', 'languages', 'languages.xml'))
+            root = tree.getroot()
+            for child in root:
+                attrib = child.attrib
+                LaTeXDB.languages_dict[attrib['code']] = _(attrib['name'])
+
+        return LaTeXDB.languages_dict
+
+    def get_packages_dict():
+        if LaTeXDB.packages_dict == None:
+            LaTeXDB.packages_dict = dict()
+
+            resources_path = ServiceLocator.get_resources_path()
+            tree = ET.parse(os.path.join(resources_path, 'latexdb', 'packages', 'general.xml'))
+            root = tree.getroot()
+            for child in root:
+                attrib = child.attrib
+                LaTeXDB.packages_dict[attrib['name']] = {'command': attrib['text'], 'description': _(attrib['description'])}
+        return LaTeXDB.packages_dict
 
 

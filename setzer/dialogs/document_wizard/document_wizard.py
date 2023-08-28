@@ -29,6 +29,7 @@ from setzer.dialogs.document_wizard.pages.page_letter_settings import LetterSett
 from setzer.dialogs.document_wizard.pages.page_beamer_settings import BeamerSettingsPage
 from setzer.dialogs.document_wizard.pages.page_general_settings import GeneralSettingsPage
 from setzer.app.service_locator import ServiceLocator
+from setzer.app.latex_db import LaTeXDB
 
 import pickle
 import os
@@ -91,7 +92,7 @@ class DocumentWizard(object):
         self.current_values['title'] = ''
         self.current_values['author'] = ''
         self.current_values['date'] = '\\today'
-        self.current_values['languages'] = ServiceLocator.get_languages_dict()
+        self.current_values['languages'] = LaTeXDB.get_languages_dict()
         self.current_values['packages'] = dict()
         self.current_values['packages']['ams'] = True
         self.current_values['packages']['graphicx'] = True

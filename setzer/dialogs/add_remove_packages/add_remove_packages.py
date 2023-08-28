@@ -23,7 +23,7 @@ from gi.repository import Gio
 from gi.repository import GLib
 
 import setzer.dialogs.add_remove_packages.add_remove_packages_viewgtk as view
-from setzer.app.service_locator import ServiceLocator
+from setzer.app.latex_db import LaTeXDB
 
 import pickle
 import os
@@ -33,7 +33,7 @@ class AddRemovePackagesDialog(object):
 
     def __init__(self, main_window):
         self.main_window = main_window
-        self.packages = ServiceLocator.get_packages_dict()
+        self.packages = LaTeXDB.get_packages_dict()
 
         self.add_list_rows = dict()
         self.remove_list_rows = dict()

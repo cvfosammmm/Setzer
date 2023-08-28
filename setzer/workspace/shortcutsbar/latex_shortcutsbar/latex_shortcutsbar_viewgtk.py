@@ -172,7 +172,7 @@ class LaTeXShortcutsbar(Gtk.Box):
 
         self.create_popover()
         self.add_action_button('\\usetheme', 'win.insert-after-packages', GLib.Variant('as', ['\\usetheme{•}']))
-        self.add_action_button('Hide Navigation', 'win.insert-after-packages', GLib.Variant('as', ['\\beamertemplatenavigationsymbolsempty']))
+        self.add_action_button(_('Hide Navigation'), 'win.insert-after-packages', GLib.Variant('as', ['\\beamertemplatenavigationsymbolsempty']))
         MenuBuilder.add_separator(self.current_popover)
         self.add_insert_symbol_item(_('Title Page'), ['\\begin{frame}\n\t\\titlepage\n\\end{frame}'])
         self.add_insert_symbol_item(_('Table of Contents'), ['\\begin{frame}\n\t\\tableofcontents\n\\end{frame}'])
@@ -489,6 +489,9 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_insert_symbol_item(_('Figure (image inside freestanding block)'), ['\\begin{figure}\n\t\\begin{center}\n\t\t\\includegraphics[scale=1]{•}\n\t\t\\caption{•}\n\t\\end{center}\n\\end{figure}'])
         self.add_insert_symbol_item(_('Inline Image'), ['\\includegraphics[scale=1]{•}'])
         self.add_menu_button(_('Code Listing'), 'code_listing')
+        MenuBuilder.add_separator(self.current_popover)
+        self.add_before_after_item(_('Url (\\url)'), ['\\url{', '}'])
+        self.add_before_after_item(_('Hyperlink (\\href)'), ['\\href{•}{', '}'])
 
         # code listing submenu
         self.add_page('code_listing', _('Code Listing'))

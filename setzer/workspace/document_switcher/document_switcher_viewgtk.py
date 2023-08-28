@@ -56,7 +56,7 @@ class OpenDocsButton(Gtk.Stack):
         self.center_button.set_can_focus(False)
         self.center_button.set_child(hbox)
         self.center_button.set_popover(self.open_docs_popover)
-        self.center_label_welcome = Gtk.Label.new('Welcome to Setzer')
+        self.center_label_welcome = Gtk.Label.new(_('Welcome to Setzer'))
         self.center_label_welcome.get_style_context().add_class('title')
 
         self.add_named(self.center_button, 'button')
