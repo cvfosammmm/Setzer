@@ -56,7 +56,6 @@ class Shortcuts(object):
         self.shortcut_controller.add_shortcut(Shortcut('<Control><Shift>s', actions.save_as))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>w', actions.close_active_document))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>q', actions.actions['quit'].activate))
-        self.shortcut_controller.add_shortcut(Shortcut('F10', self.shortcut_workspace_menu))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>question', actions.show_shortcuts_dialog))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>t', self.shortcut_show_open_docs))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>Page_Down', self.shortcut_switch_document))
@@ -132,10 +131,6 @@ class Shortcuts(object):
     def shortcut_show_open_docs(self):
         if self.main_window.headerbar.center_widget.center_button.get_sensitive():
             self.main_window.headerbar.center_widget.center_button.activate()
-
-    def shortcut_workspace_menu(self):
-        if self.main_window.headerbar.menu_button.get_sensitive():
-            self.main_window.headerbar.menu_button.activate()
 
     def shortcut_switch_document(self):
         self.workspace.switch_to_earliest_open_document()

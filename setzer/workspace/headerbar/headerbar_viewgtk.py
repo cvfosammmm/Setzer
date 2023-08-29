@@ -53,12 +53,10 @@ class HeaderBar(Gtk.HeaderBar):
         self.open_document_blank_button.set_action_name('win.open-document-dialog')
 
         self.document_chooser = document_chooser_viewgtk.DocumentChooser()
-        self.open_document_button_label = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 12)
-        self.open_document_button_label.append(Gtk.Label.new(_('Open')))
-        self.open_document_button_label.append(Gtk.Image.new_from_icon_name('pan-down-symbolic'))
         self.open_document_button = Gtk.MenuButton()
+        self.open_document_button.set_label(_('Open'))
+        self.open_document_button.set_always_show_arrow(True)
         self.open_document_button.set_tooltip_text(_('Open a document') + ' (' + _('Shift') + '+' + _('Ctrl') + '+O)')
-        self.open_document_button.set_child(self.open_document_button_label)
         self.open_document_button.set_popover(self.document_chooser)
 
         # new document buttons
@@ -70,12 +68,9 @@ class HeaderBar(Gtk.HeaderBar):
         MenuBuilder.add_widget(self.new_document_popover, self.button_latex)
         MenuBuilder.add_widget(self.new_document_popover, self.button_bibtex)
 
-        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 12)
-        box.append(Gtk.Image.new_from_icon_name('document-new-symbolic'))
-        box.append(Gtk.Image.new_from_icon_name('pan-down-symbolic'))
-
         self.new_document_button = Gtk.MenuButton()
-        self.new_document_button.set_child(box)
+        self.new_document_button.set_icon_name('document-new-symbolic')
+        self.new_document_button.set_always_show_arrow(True)
         self.new_document_button.set_can_focus(False)
         self.new_document_button.set_tooltip_text(_('Create a new document'))
         self.new_document_button.get_style_context().add_class('new-document-menu-button')
@@ -151,10 +146,11 @@ class HeaderBar(Gtk.HeaderBar):
         box_session = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         self.menu_button = Gtk.MenuButton()
-        image = Gtk.Image.new_from_icon_name('open-menu-symbolic')
-        self.menu_button.set_child(image)
+        self.menu_button.set_icon_name('open-menu-symbolic')
         self.menu_button.set_can_focus(False)
+        self.menu_button.set_primary(True)
         self.menu_button.set_popover(self.hamburger_popover)
+        self.menu_button.set_tooltip_text(_('Main Menu'))
         self.pack_end(self.menu_button)
 
         # session submenu
