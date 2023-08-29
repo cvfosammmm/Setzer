@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gdk
 from gi.repository import Gtk
 
@@ -26,39 +26,55 @@ class BuildLogController(object):
     def __init__(self, build_log, build_log_view):
         self.build_log = build_log
         self.view = build_log_view
-        self.view.scrolled_window.connect('enter-notify-event', self.on_enter)
-        self.view.scrolled_window.connect('motion-notify-event', self.on_hover)
-        self.view.scrolled_window.connect('leave-notify-event', self.on_leave)
-        self.view.list.connect('button-press-event', self.on_button_press)
 
-    def on_enter(self, widget, event):
-        self.update_hover_state(event)
+        event_controller = Gtk.GestureClick()
+        event_controller.connect('pressed', self.on_button_press)
+        event_controller.set_button(1)
+        self.view.list.add_controller(event_controller)
 
-    def on_hover(self, widget, event):
-        self.update_hover_state(event)
+        motion_controller = Gtk.EventControllerMotion()
+        motion_controller.connect('enter', self.on_enter)
+        motion_controller.connect('motion', self.on_hover)
+        motion_controller.connect('leave', self.on_leave)
+        self.view.list.add_controller(motion_controller)
 
-    def on_leave(self, widget, event):
+    def on_enter(self, controller, x, y):
+        self.update_hover_state(y)
+
+    def on_hover(self, controller, x, y):
+        self.update_hover_state(y)
+
+    def on_leave(self, controller):
         self.build_log.set_hover_item(None)
 
-    def update_hover_state(self, event):
+    def update_hover_state(self, y):
         offset = self.view.scrolled_window.get_vadjustment().get_value()
-        item_num = max(0, min(int((offset + event.y) // self.view.line_height), len(self.build_log.items) - 1))
-        self.build_log.set_hover_item(item_num)
+        item_num = int((y) // self.view.list.line_height)
 
-    def on_button_press(self, drawing_area, event):
+        if item_num < 0 or item_num > (len(self.build_log.items) - 1):
+            self.build_log.set_hover_item(None)
+        else:
+            self.build_log.set_hover_item(item_num)
+
+    def on_button_press(self, event_controller, n_press, x, y):
+        if n_press != 1: return False
+
         if self.build_log.document == None: return
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1 and event.state & modifiers == 0:
-            item_num = max(0, min(int(event.y // self.view.line_height), len(self.build_log.items) - 1))
-            item = self.build_log.items[item_num]
+        item_num = int(y / self.view.list.line_height)
+        if item_num < 0 or item_num > (len(self.build_log.items) - 1): return True
 
-            if item[2] != None:
-                self.build_log.workspace.open_document_by_filename(item[2])
-                line_number = item[3] - 1
-                if line_number >= 0:
-                    self.build_log.workspace.active_document.content.place_cursor(item[3] - 1)
-                    self.build_log.workspace.active_document.content.scroll_cursor_onscreen()
-                    self.build_log.workspace.active_document.view.source_view.grab_focus()
+        item = self.build_log.items[item_num]
+        if item[2] == None: return True
+
+        self.build_log.workspace.open_document_by_filename(item[2])
+        line_number = item[3] - 1
+        if line_number < 0: return True
+
+        self.build_log.workspace.active_document.place_cursor(item[3] - 1)
+        self.build_log.workspace.active_document.scroll_cursor_onscreen()
+        self.build_log.workspace.active_document.source_view.grab_focus()
+        return True
 
 

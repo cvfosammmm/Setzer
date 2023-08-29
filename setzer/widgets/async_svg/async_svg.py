@@ -16,24 +16,21 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-from gi.repository import GLib
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk, GLib
 
 
-class AsyncSvg(Gtk.Bin):
+class AsyncSvg(Gtk.Picture):
 
     def __init__(self, filename, width, height):
-        Gtk.Bin.__init__(self)
+        Gtk.Picture.__init__(self)
 
         self.filename = filename
-
         self.set_size_request(width, height)
+
         GLib.idle_add(self.load_image)
 
     def load_image(self):
-        self.image = Gtk.Image.new_from_file(self.filename)
-        self.image.show_all()
-        self.add(self.image)
+        self.set_filename(self.filename)
 
 

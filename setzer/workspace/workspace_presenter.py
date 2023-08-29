@@ -15,11 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import gi
-gi.require_version('Handy', '1')
-from gi.repository import Handy
-
 from setzer.app.service_locator import ServiceLocator
+from setzer.app.font_manager import FontManager
 
 
 class WorkspacePresenter(object):
@@ -27,6 +24,7 @@ class WorkspacePresenter(object):
     def __init__(self, workspace):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
+        self.settings = ServiceLocator.get_settings()
 
         self.workspace.connect('new_document', self.on_new_document)
         self.workspace.connect('document_removed', self.on_document_removed)
@@ -35,14 +33,18 @@ class WorkspacePresenter(object):
         self.workspace.connect('set_show_symbols_or_document_structure', self.on_set_show_symbols_or_document_structure)
         self.workspace.connect('set_show_preview_or_help', self.on_set_show_preview_or_help)
         self.workspace.connect('show_build_log_state_change', self.on_show_build_log_state_change)
-        self.workspace.connect('set_dark_mode', self.on_set_dark_mode)
+        self.settings.connect('settings_changed', self.on_settings_changed)
 
         self.activate_welcome_screen_mode()
+        self.update_font()
         self.setup_paneds()
 
-    def on_new_document(self, workspace, document):
-        document.set_dark_mode(ServiceLocator.get_is_dark_mode())
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+        if item in ['font_string', 'use_system_font']:
+            self.update_font()
 
+    def on_new_document(self, workspace, document):
         if document.is_latex_document():
             self.main_window.latex_notebook.append_page(document.view)
         elif document.is_bibtex_document():
@@ -52,11 +54,13 @@ class WorkspacePresenter(object):
 
     def on_document_removed(self, workspace, document):
         if document.is_latex_document():
-            self.main_window.latex_notebook.remove(document.view)
+            notebook = self.main_window.latex_notebook
         elif document.is_bibtex_document():
-            self.main_window.bibtex_notebook.remove(document.view)
+            notebook = self.main_window.bibtex_notebook
         else:
-            self.main_window.others_notebook.remove(document.view)
+            notebook = self.main_window.others_notebook
+        
+        notebook.remove_page(notebook.page_num(document.view))
 
         if self.workspace.active_document == None:
             self.activate_welcome_screen_mode()
@@ -66,29 +70,23 @@ class WorkspacePresenter(object):
             notebook = self.main_window.latex_notebook
             notebook.set_current_page(notebook.page_num(document.view))
             document.view.source_view.grab_focus()
-            try:
-                self.main_window.preview_paned_overlay.add_overlay(document.autocomplete.view)
-                document.autocomplete.update()
+            try: self.main_window.preview_paned_overlay.add_overlay(document.autocomplete.widget.view)
             except AttributeError: pass
-
             self.activate_latex_documents_mode()
         elif document.is_bibtex_document():
             notebook = self.main_window.bibtex_notebook
             notebook.set_current_page(notebook.page_num(document.view))
             document.view.source_view.grab_focus()
-
             self.activate_bibtex_documents_mode()
         else:
             notebook = self.main_window.others_notebook
             notebook.set_current_page(notebook.page_num(document.view))
             document.view.source_view.grab_focus()
-
             self.activate_other_documents_mode()
 
     def on_new_inactive_document(self, workspace, document):
         if document.is_latex_document():
-            try:
-                self.main_window.preview_paned_overlay.remove(document.autocomplete.view)
+            try: self.main_window.preview_paned_overlay.remove_overlay(document.autocomplete.widget.view)
             except AttributeError: pass
 
     def on_set_show_symbols_or_document_structure(self, workspace):
@@ -120,26 +118,16 @@ class WorkspacePresenter(object):
         self.main_window.build_log_paned.set_show_widget(self.workspace.show_build_log)
         self.main_window.build_log_paned.animate(True)
 
-    def on_set_dark_mode(self, workspace, darkmode_enabled):
-        if darkmode_enabled:
-            Handy.StyleManager.get_default().set_color_scheme(Handy.ColorScheme.FORCE_DARK)
-        else:
-            Handy.StyleManager.get_default().set_color_scheme(Handy.ColorScheme.FORCE_LIGHT)
-
     def activate_welcome_screen_mode(self):
-        self.workspace.welcome_screen.activate()
         self.main_window.mode_stack.set_visible_child_name('welcome_screen')
 
     def activate_latex_documents_mode(self):
-        self.workspace.welcome_screen.deactivate()
         self.main_window.mode_stack.set_visible_child_name('latex_documents')
 
     def activate_bibtex_documents_mode(self):
-        self.workspace.welcome_screen.deactivate()
         self.main_window.mode_stack.set_visible_child_name('bibtex_documents')
 
     def activate_other_documents_mode(self):
-        self.workspace.welcome_screen.deactivate()
         self.main_window.mode_stack.set_visible_child_name('other_documents')
 
     def focus_active_document(self):
@@ -147,31 +135,39 @@ class WorkspacePresenter(object):
         if active_document != None:
             active_document.view.source_view.grab_focus()
 
+    def update_font(self):
+        if self.settings.get_value('preferences', 'use_system_font'):
+            FontManager.font_string = FontManager.default_font_string
+        else:
+            FontManager.font_string = self.settings.get_value('preferences', 'font_string')
+        FontManager.propagate_font_setting()
+
     def setup_paneds(self):
-        if self.workspace.show_document_structure:
-            self.main_window.sidebar.set_visible_child_name('document_structure')
-        elif self.workspace.show_symbols:
-            self.main_window.sidebar.set_visible_child_name('symbols')
-
-        if self.workspace.show_preview:
-            self.main_window.preview_help_stack.set_visible_child_name('preview')
-        elif self.workspace.show_help:
-            self.main_window.preview_help_stack.set_visible_child_name('help')
-
         show_sidebar = (self.workspace.show_symbols or self.workspace.show_document_structure)
-        self.main_window.sidebar_paned.set_show_widget(show_sidebar)
-        self.main_window.preview_paned.set_show_widget(self.workspace.show_preview or self.workspace.show_help)
-        self.main_window.build_log_paned.set_show_widget(self.workspace.get_show_build_log())
+        show_preview_help = (self.workspace.show_preview or self.workspace.show_help)
+        show_build_log = self.workspace.get_show_build_log()
 
-        preview_position = self.workspace.preview_position
-        if self.workspace.show_preview or self.workspace.show_help:
-            if show_sidebar == False:
-                preview_position += - 253
-            else:
-                preview_position += self.workspace.sidebar_position - 252
+        sidebar_position = self.workspace.settings.get_value('window_state', 'sidebar_paned_position')
+        preview_position = self.workspace.settings.get_value('window_state', 'preview_paned_position')
+        build_log_position = self.workspace.settings.get_value('window_state', 'build_log_paned_position')
+
+        if sidebar_position in [None, -1]: self.main_window.sidebar_paned.set_start_on_first_show()
+        if preview_position in [None, -1]: self.main_window.preview_paned.set_center_on_first_show()
+        if build_log_position in [None, -1]: self.main_window.build_log_paned.set_end_on_first_show()
+
+        if self.workspace.show_symbols: self.main_window.sidebar.set_visible_child_name('symbols')
+        elif self.workspace.show_document_structure: self.main_window.sidebar.set_visible_child_name('document_structure')
+
+        if self.workspace.show_preview: self.main_window.preview_help_stack.set_visible_child_name('preview')
+        elif self.workspace.show_help: self.main_window.preview_help_stack.set_visible_child_name('help')
+
+        self.main_window.sidebar_paned.first_set_show_widget(show_sidebar)
+        self.main_window.preview_paned.first_set_show_widget(show_preview_help)
+        self.main_window.build_log_paned.first_set_show_widget(show_build_log)
+
+        self.main_window.sidebar_paned.set_target_position(sidebar_position)
         self.main_window.preview_paned.set_target_position(preview_position)
-        self.main_window.sidebar_paned.set_target_position(self.workspace.sidebar_position)
-        self.main_window.build_log_paned.set_target_position(self.workspace.build_log_position)
+        self.main_window.build_log_paned.set_target_position(build_log_position)
 
         self.main_window.headerbar.symbols_toggle.set_active(self.workspace.show_symbols)
         self.main_window.headerbar.document_structure_toggle.set_active(self.workspace.show_document_structure)

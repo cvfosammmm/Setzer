@@ -16,215 +16,306 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk, Gdk, GObject, Pango, PangoCairo
+
+import math, time
 
 from setzer.helpers.timer import timer
 from setzer.app.service_locator import ServiceLocator
+from setzer.app.color_manager import ColorManager
+from setzer.app.font_manager import FontManager
 
 
 class Gutter(object):
 
     def __init__(self, document, document_view):
         self.document = document
+        self.document_view = document_view
+        self.source_buffer = document.source_buffer
         self.source_view = document_view.source_view
-        self.adjustment = document_view.scrolled_window.get_vadjustment()
+        self.adjustment = self.document_view.scrolled_window.get_vadjustment()
+        self.settings = ServiceLocator.get_settings()
 
-        self.widgets = list()
-        self.total_size = 0
-        self.lines = list()
-        self.current_line = 0
+        self.drawing_area = Gtk.DrawingArea()
+        self.drawing_area.set_halign(Gtk.Align.START)
+        self.document_view.overlay.add_overlay(self.drawing_area)
+        self.drawing_area.set_draw_func(self.draw)
 
-        self.font_manager = ServiceLocator.get_font_manager()
-        self.font_manager.connect('font_string_changed', self.on_font_string_changed)
+        self.line_numbers_visible = self.settings.get_value('preferences', 'show_line_numbers')
+        self.line_numbers_width = None
 
-        self.view = Gtk.DrawingArea()
-        self.view.set_valign(Gtk.Align.FILL)
-        self.view.set_halign(Gtk.Align.START)
-        self.view.connect('draw', self.on_draw)
-        self.view.show_all()
-        def on_realize(widget): widget.get_window().set_pass_through(True)
-        self.view.connect('realize', on_realize)
-        self.style_context = self.view.get_style_context()
-        self.color_manager = ServiceLocator.get_color_manager()
-        self.bg_color = None
-        self.fg_color = None
-        self.cl_color = None
-        self.border_color = None
-        self.update_colors()
-        self.source_view.get_style_context().connect('changed', self.update_colors)
+        self.code_folding_visible = self.document.is_latex_document() and self.settings.get_value('preferences', 'enable_code_folding')
+        self.code_folding_width = None
 
-        document_view.overlay.add_overlay(self.view)
-        document_view.overlay.set_overlay_pass_through(self.view, True)
+        self.char_width = FontManager.get_char_width(self.source_view)
+        self.line_height = FontManager.get_line_height(self.source_view)
+        self.total_width = None
+        self.cursor_x, self.cursor_y = None, None
+        self.hovered_folding_region = None
 
-        self.char_width, self.line_height = self.font_manager.get_char_dimensions()
+        self.layout = Pango.Layout(self.source_view.get_pango_context())
+        self.layout.set_alignment(Pango.Alignment.RIGHT)
 
-        self.source_view.connect('button-press-event', self.on_click)
-        self.source_view.connect('enter-notify-event', self.on_pointer_movement)
-        self.source_view.connect('leave-notify-event', self.on_pointer_movement)
-        self.source_view.connect('motion-notify-event', self.on_pointer_movement)
+        self.update_size()
 
-        self.highlight_current_line = False
-        settings = ServiceLocator.get_settings()
-        self.set_line_highlighting(settings.get_value('preferences', 'highlight_current_line'))
-        settings.connect('settings_changed', self.on_settings_changed)
+        self.settings.connect('settings_changed', self.on_settings_changed)
+        self.document.connect('changed', self.on_document_change)
+        self.document.connect('cursor_position_changed', self.on_cursor_change)
+        self.document_view.scrolled_window.get_vadjustment().connect('changed', self.on_adjustment_changed)
+        self.document_view.scrolled_window.get_vadjustment().connect('value-changed', self.on_adjustment_value_changed)
 
-    def on_font_string_changed(self, font_manager):
-        self.char_width, self.line_height = self.font_manager.get_char_dimensions()
-        for widget in self.widgets:
-            widget.set_font_desc(self.font_manager.get_font_desc())
-            widget.set_char_dimensions(self.line_height, self.char_width)
+        scrolling_controller = Gtk.EventControllerScroll()
+        scrolling_controller.set_flags(Gtk.EventControllerScrollFlags.BOTH_AXES | Gtk.EventControllerScrollFlags.KINETIC)
+        scrolling_controller.connect('scroll', self.on_scroll)
+        scrolling_controller.connect('decelerate', self.on_decelerate)
+        self.drawing_area.add_controller(scrolling_controller)
+
+        event_controller = Gtk.GestureClick()
+        event_controller.connect('pressed', self.on_button_press)
+        event_controller.set_button(1)
+        self.drawing_area.add_controller(event_controller)
+
+        event_controller = Gtk.EventControllerMotion()
+        event_controller.connect('enter', self.on_enter)
+        event_controller.connect('motion', self.on_hover)
+        event_controller.connect('leave', self.on_leave)
+        self.drawing_area.add_controller(event_controller)
 
     def on_settings_changed(self, settings, parameter):
         section, item, value = parameter
-        if (section, item) == ('preferences', 'highlight_current_line'):
-            self.set_line_highlighting(value)
+
+        if item == 'show_line_numbers':
+            self.line_numbers_visible = self.settings.get_value('preferences', 'show_line_numbers')
+            self.update_hovered_folding_region()
+            self.update_size()
+            self.drawing_area.queue_draw()
+
+        if item == 'enable_code_folding':
+            self.code_folding_visible = self.document.is_latex_document() and self.settings.get_value('preferences', 'enable_code_folding')
+            self.update_hovered_folding_region()
+            self.update_size()
+            self.drawing_area.queue_draw()
+
+    def on_document_change(self, document):
+        self.update_hovered_folding_region()
+        self.update_size()
+        self.drawing_area.queue_draw()
+
+    def on_cursor_change(self, document):
+        self.update_hovered_folding_region()
+        self.update_size()
+        self.drawing_area.queue_draw()
+
+    def on_adjustment_value_changed(self, adjustment):
+        self.update_hovered_folding_region()
+        self.update_size()
+        self.drawing_area.queue_draw()
+
+    def on_adjustment_changed(self, adjustment):
+        self.update_hovered_folding_region()
+        self.update_size()
+        self.drawing_area.queue_draw()
+
+    def on_button_press(self, event_controller, n_press, x, y):
+        if self.hovered_folding_region != None:
+            if self.hovered_folding_region['is_folded']:
+                self.document.code_folding.unfold(self.hovered_folding_region)
+            else:
+                self.document.code_folding.fold(self.hovered_folding_region)
+        else:
+            offset = self.adjustment.get_value()
+            target = self.source_view.get_line_at_y(offset + y).target_iter
+            self.source_buffer.place_cursor(target)
+        return True
+
+    def on_scroll(self, controller, dx, dy):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if controller.get_current_event_state() & modifiers == 0:
+            if controller.get_unit() == Gdk.ScrollUnit.WHEEL:
+                dy *= self.adjustment.get_page_size() ** (2/3)
+            else:
+                dy *= 2.5
+            self.document_view.scrolled_window.set_kinetic_scrolling(False)
+            self.adjustment.set_value(self.adjustment.get_value() + dy)
+            self.document_view.scrolled_window.set_kinetic_scrolling(True)
+
+    def on_decelerate(self, controller, vel_x, vel_y):
+        data = {'starting_time': time.time(), 'initial_position': self.adjustment.get_value(), 'position': self.adjustment.get_value(), 'vel_y': vel_y * 2.5}
+        self.deceleration(data)
+
+    def deceleration(self, data):
+        if data['position'] != self.adjustment.get_value(): return False
+
+        time_elapsed = time.time() - data['starting_time']
+        exponential_factor = 2.71828 ** (-4 * time_elapsed)
+        position = data['initial_position'] + (1 - exponential_factor) * (data['vel_y'] / 4)
+        velocity = data['vel_y'] * exponential_factor
+        if abs(velocity) >= 0.1:
+            self.adjustment.set_value(position)
+            data['position'] = position
+            GObject.timeout_add(15, self.deceleration, data)
+
+        return False
+
+    def on_enter(self, controller, x, y):
+        self.set_cursor_position(x, y)
+
+    def on_hover(self, controller, x, y):
+        self.set_cursor_position(x, y)
+
+    def on_leave(self, controller):
+        self.set_cursor_position(None, None)
+
+    def set_cursor_position(self, x, y):
+        if x != self.cursor_x or y != self.cursor_y:
+            self.cursor_x, self.cursor_y = x, y
+            self.drawing_area.queue_draw()
+        if self.cursor_x != None and self.cursor_x > self.total_width + 1:
+            self.drawing_area.set_cursor_from_name('text')
+        else:
+            self.drawing_area.set_cursor_from_name('default')
+        self.update_hovered_folding_region()
+
+    def update_hovered_folding_region(self):
+        self.hovered_folding_region = None
+        if self.get_cursor_area() == 'code_folding':
+            line = self.source_view.get_line_at_y(self.cursor_y + self.adjustment.get_value()).target_iter.get_line()
+            self.hovered_folding_region = self.document.code_folding.get_region_by_line(line)
+
+    def update_size(self):
+        self.char_width = FontManager.get_char_width(self.source_view)
+        self.line_height = FontManager.get_line_height(self.source_view)
+        total_width = 0
+        line_numbers_width = 0
+        if self.line_numbers_visible:
+            total_width += int(math.log10(self.source_buffer.get_line_count()) + 3) * self.char_width
+            line_numbers_width = total_width
+        if self.code_folding_visible:
+            total_width += 3 * self.char_width
+            self.code_folding_width = 3 * self.char_width
+        else:
+            self.code_folding_width = 0
+
+        if total_width != self.total_width or line_numbers_width != self.line_numbers_width:
+            self.total_width = total_width
+            self.line_numbers_width = line_numbers_width
+            self.layout.set_width((line_numbers_width - self.char_width) * Pango.SCALE)
+            self.source_view.set_left_margin(total_width + self.char_width)
+            self.drawing_area.set_size_request(total_width + 2, -1)
 
     #@timer
-    def on_draw(self, drawing_area, ctx, data = None):
-        self.update_sizes()
-        if self.total_size != 0:
-            self.update_lines()
-            self.draw_background(drawing_area, ctx)
+    def draw(self, drawing_area, ctx, width, height, data=None):
+        if self.total_width == 0: return
 
-            ctx.set_source_rgba(self.fg_color.red, self.fg_color.green, self.fg_color.blue, self.fg_color.alpha)
-            total_size = 3
-            for widget in self.widgets:
-                if widget.is_visible():
-                    widget.on_draw(self, drawing_area, ctx, self.lines, self.current_line, total_size)
-                    total_size += widget.get_size()
+        self.draw_background_and_border(ctx, width, height)
+        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('theme_fg_color'))
 
-    #@timer
-    def draw_background(self, drawing_area, ctx):
-        if self.highlight_current_line and self.current_line != None:
-            ctx.rectangle(0, self.current_line[1], self.total_size, self.current_line[2])
-            ctx.set_source_rgba(self.cl_color.red, self.cl_color.green, self.cl_color.blue, self.cl_color.alpha)
-            ctx.fill()
-        ctx.rectangle(self.total_size - 2, 0, 1, drawing_area.get_allocated_height())
-        ctx.set_source_rgba(self.border_color.red, self.border_color.green, self.border_color.blue, self.border_color.alpha)
+        current_line = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_line()
+        line_iter, offset = self.source_view.get_line_at_y(self.adjustment.get_value())
+        prev_line = None
+        while offset <= self.adjustment.get_value() + height:
+            line_iter, top = self.source_view.get_line_at_y(offset)
+            line = line_iter.get_line()
+            line_height = self.source_view.get_line_yrange(line_iter).height
+            if line != prev_line:
+                drawing_offset = offset - self.adjustment.get_value()
+                if drawing_offset < 0:
+                    drawing_offset = min(0, drawing_offset + line_height - self.line_height)
+                self.draw_line(ctx, line, current_line == line, drawing_offset)
+
+            prev_line = line
+            offset += line_height
+
+        self.draw_hovered_folding_region(ctx)
+
+    def draw_background_and_border(self, ctx, width, height):
+        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('theme_base_color'))
+        ctx.rectangle(0, 0, self.total_width, height)
         ctx.fill()
 
-    #@timer
-    def update_colors(self, style_context=None):
-        style_scheme = self.document.content.get_style_scheme()
-        line_numbers_style = style_scheme.get_style('line-numbers')
-        bg_color_string = line_numbers_style.get_property('background')
-        if bg_color_string != None:
-            self.bg_color = self.color_manager.get_rgba_from_string(bg_color_string)
+        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('borders'))
+        ctx.rectangle(self.total_width, 0, 1, height)
+        ctx.fill()
+
+    def draw_line(self, ctx, line, is_current, offset):
+        if self.line_numbers_visible:
+            self.draw_line_number(ctx, line, is_current, offset)
+
+        if self.code_folding_visible:
+            self.draw_folding_region(ctx, line, is_current, offset)
+
+    def draw_line_number(self, ctx, line, is_current, offset):
+        if is_current: text = '<b>' + str(line + 1) + '</b>'
+        else: text = str(line + 1)
+
+        if offset < 0: offset -= 1
+        offset = int(offset)
+        ctx.move_to(0, offset)
+        self.layout.set_markup(text)
+        PangoCairo.show_layout(ctx, self.layout)
+
+    def draw_folding_region(self, ctx, line, is_current, offset):
+        folding_region = self.document.code_folding.get_region_by_line(line)
+        if folding_region == None: return
+
+        ctx.set_line_width(0)
+
+        xoff1 = 6.5 * self.char_width / 6
+        xoff2 = 9.5 * self.char_width / 6
+        xoff3 = 2 * self.char_width / 11
+        xoff4 = 10 * self.char_width / 11
+        xoff5 = 18 * self.char_width / 11
+        xoff6 = 6 * self.char_width / 8
+        xoff7 = 11 * self.char_width / 8
+        xoff8 = 16 * self.char_width / 8
+        xoff9 = 26 * self.char_width / 11
+        yoff1 = 1.75 * self.line_height / 8
+        yoff2 = 4.25 * self.line_height / 8
+        yoff3 = 6.75 * self.line_height / 8
+        yoff4 = 2.5 * self.line_height / 6
+        yoff5 = 4 * self.line_height / 6
+        len1 = 4 * self.char_width / 11
+
+        if folding_region['is_folded']:
+            ctx.move_to(self.line_numbers_width + xoff1, offset + yoff1)
+            ctx.line_to(self.line_numbers_width + xoff2, offset + yoff2)
+            ctx.line_to(self.line_numbers_width + xoff1, offset + yoff3)
+            ctx.line_to(self.line_numbers_width + xoff1, offset + yoff1)
+            ctx.fill()
+            for i in range(4):
+                ctx.rectangle(self.line_numbers_width + (i + 0.5) * self.char_width, offset + self.line_height, self.char_width / 2, 1)
+                ctx.fill()
         else:
-            self.bg_color = self.color_manager.get_theme_color_mix('theme_base_color', 'theme_bg_color', 0.5)
+            ctx.move_to(self.line_numbers_width + xoff6, offset + yoff4 + 0.5)
+            ctx.line_to(self.line_numbers_width + xoff7, offset + yoff5 + 0.5)
+            ctx.line_to(self.line_numbers_width + xoff8, offset + yoff4 + 0.5)
+            ctx.line_to(self.line_numbers_width + xoff6, offset + yoff4 + 0.5)
+            ctx.fill()
 
-        fg_color_string = line_numbers_style.get_property('foreground')
-        if fg_color_string != None:
-            self.fg_color = self.color_manager.get_rgba_from_string(fg_color_string)
-        else:
-            self.fg_color = self.color_manager.get_theme_color('theme_fg_color')
+    def draw_hovered_folding_region(self, ctx):
+        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('code_folding_hover'))
+        if self.hovered_folding_region != None:
+            region = self.hovered_folding_region
+            yrange_1 = self.source_view.get_line_yrange(self.source_buffer.get_iter_at_line(region['starting_line']).iter)
+            yrange_2 = self.source_view.get_line_yrange(self.source_buffer.get_iter_at_line(region['ending_line']).iter)
 
-        current_line_style = style_scheme.get_style('current-line')
-        cl_color_string = current_line_style.get_property('background')
-        if cl_color_string != None:
-            self.cl_color = self.color_manager.get_rgba_from_string(cl_color_string)
-        else:
-            self.cl_color = self.color_manager.get_theme_color('theme_base_color')
+            ctx.rectangle(self.total_width - 1, yrange_1.y - self.adjustment.get_value(), 3, yrange_2.y - yrange_1.y + yrange_2.height)
+            ctx.fill()
 
-        self.border_color = self.color_manager.get_theme_color_mix('theme_base_color', 'borders', 0.5)
-        self.border_color_bold = self.color_manager.get_theme_color_mix('theme_base_color', 'borders', 0.25)
+    def get_cursor_area(self):
+        if self.cursor_x == None: return None
+        offset = 0
 
-        for widget in self.widgets:
-            widget.update_colors()
+        if self.line_numbers_visible:
+            offset += self.line_numbers_width
+        if self.cursor_x <= offset: return 'line_numbers'
 
-        self.view.queue_draw()
+        if self.code_folding_visible:
+            offset += self.code_folding_width
+        if self.cursor_x <= offset: return 'code_folding'
 
-    #@timer
-    def update_lines(self):
-        lines = list()
-        y_window = 0
-        allocated_height = self.source_view.get_allocated_height()
-        last_line_top = None
-        line = None
-        current_line = None
-        current_line_no = self.document.content.get_current_line_number() + 1
-        offset = self.adjustment.get_value()
-        while y_window <= allocated_height:
-            y = y_window + offset
-            line_iter, line_top = self.source_view.get_line_at_y(y)
-
-            if line_top != last_line_top:
-                if len(lines):
-                    lines[-1][2] = line_top - last_line_top
-                    if lines[-1][0] == current_line_no:
-                        current_line[2] = line_top - last_line_top
-
-                line = line_iter.get_line() + 1
-
-                lines.append([line, line_top - int(offset), None])
-                if line == current_line_no:
-                    current_line = [line, line_top - int(offset), None]
-
-                last_line_top = line_top
-            y_window += self.line_height - 1
-            if y_window > allocated_height and y_window < allocated_height + self.line_height - 1:
-                y_window = allocated_height
-
-        y2, height = self.source_view.get_line_yrange(line_iter)
-        lines[-1][2] = height
-        if lines[-1][0] == current_line_no:
-            current_line[2] = height
-
-        self.lines = lines
-        self.current_line = current_line
-
-    def on_click(self, widget, event):
-        x, y = self.source_view.window_to_buffer_coords(Gtk.TextWindowType.LEFT, event.x, event.y)
-        if event.window == self.source_view.get_window(Gtk.TextWindowType.LEFT):
-            x += self.total_size
-            total_size = 3
-
-            for i, widget in enumerate(self.widgets):
-                if widget.is_visible():
-                    widget_size = widget.get_size()
-                    total_size += widget_size
-                    if (x <= total_size and x > total_size - widget_size) or i == len(self.widgets) - 1:
-                        return widget.on_click(event)
-        return False
-
-    def on_pointer_movement(self, widget, event):
-        x, y = self.source_view.window_to_buffer_coords(Gtk.TextWindowType.LEFT, event.x, event.y)
-        if event.window == self.source_view.get_window(Gtk.TextWindowType.LEFT):
-            x += self.total_size
-            total_size = 3
-            for widget in self.widgets:
-                if widget.is_visible():
-                    widget_size = widget.get_size()
-                    total_size += widget_size
-                    widget.on_pointer_movement(event)
-        return False
-
-    def add_widget(self, widget):
-        self.widgets.append(widget)
-        widget.set_font_desc(self.font_manager.get_font_desc())
-        widget.set_char_dimensions(self.line_height, self.char_width)
-        widget.update_colors()
-        self.update_sizes()
-
-    def update_sizes(self):
-        total_size = 0
-        for widget in self.widgets:
-            if widget.is_visible():
-                widget.update_size()
-                total_size += widget.get_size()
-
-        if total_size != 0:
-            total_size += self.char_width + 5
-
-        if total_size != self.total_size:
-            self.total_size = total_size
-            self.source_view.set_border_window_size(Gtk.TextWindowType.LEFT, self.total_size)
-            self.view.set_size_request(self.total_size, 1000)
-
-    def set_line_highlighting(self, value):
-        self.highlight_current_line = value
-        self.view.queue_draw()
-
+        return None
 
 

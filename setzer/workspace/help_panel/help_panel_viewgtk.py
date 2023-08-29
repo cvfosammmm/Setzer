@@ -16,56 +16,63 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+gi.require_versions({'Gtk': '4.0', 'WebKit': '6.0'})
+from gi.repository import WebKit, Gtk
 
 
-class HelpPanelView(Gtk.VBox):
+class HelpPanelView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self)
+        self.set_orientation(Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('help')
 
-        self.action_bar = Gtk.HBox()
+        self.action_bar = Gtk.CenterBox()
         self.action_bar.set_size_request(-1, 37)
+        self.action_bar_left = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.action_bar_right = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.action_bar.set_start_widget(self.action_bar_left)
+        self.action_bar.set_end_widget(self.action_bar_right)
 
-        self.home_button = Gtk.Button.new_from_icon_name('go-home-symbolic', Gtk.IconSize.MENU)
+        self.home_button = Gtk.Button.new_from_icon_name('go-home-symbolic')
         self.home_button.set_tooltip_text(_('Home'))
         self.home_button.get_style_context().add_class('flat')
         self.home_button.set_can_focus(False)
-        self.action_bar.pack_start(self.home_button, False, False, 0)
+        self.action_bar_left.append(self.home_button)
 
-        self.up_button = Gtk.Button.new_from_icon_name('go-up-symbolic', Gtk.IconSize.MENU)
+        self.up_button = Gtk.Button.new_from_icon_name('go-up-symbolic')
         self.up_button.set_tooltip_text(_('Top'))
         self.up_button.get_style_context().add_class('flat')
         self.up_button.set_can_focus(False)
-        self.action_bar.pack_start(self.up_button, False, False, 0)
+        self.action_bar_left.append(self.up_button)
 
-        self.back_button = Gtk.Button.new_from_icon_name('go-previous-symbolic', Gtk.IconSize.MENU)
+        self.back_button = Gtk.Button.new_from_icon_name('go-previous-symbolic')
         self.back_button.set_tooltip_text(_('Back'))
         self.back_button.get_style_context().add_class('flat')
         self.back_button.set_can_focus(False)
-        self.action_bar.pack_start(self.back_button, False, False, 0)
+        self.action_bar_left.append(self.back_button)
 
-        self.next_button = Gtk.Button.new_from_icon_name('go-next-symbolic', Gtk.IconSize.MENU)
+        self.next_button = Gtk.Button.new_from_icon_name('go-next-symbolic')
         self.next_button.set_tooltip_text(_('Forward'))
         self.next_button.get_style_context().add_class('flat')
         self.next_button.set_can_focus(False)
-        self.action_bar.pack_start(self.next_button, False, False, 0)
+        self.action_bar_left.append(self.next_button)
 
         self.search_button = Gtk.ToggleButton()
-        self.search_button.set_image(Gtk.Image.new_from_icon_name('edit-find-symbolic', Gtk.IconSize.MENU))
+        self.search_button.set_icon_name('edit-find-symbolic')
         self.search_button.set_tooltip_text(_('Find'))
         self.search_button.get_style_context().add_class('flat')
         self.search_button.set_can_focus(False)
-        self.action_bar.pack_end(self.search_button, False, False, 0)
+        self.action_bar_right.append(self.search_button)
 
-        self.pack_start(self.action_bar, False, False, 0)
+        self.append(self.action_bar)
 
-        self.search_widget = Gtk.HBox()
-        self.search_vbox = Gtk.VBox()
-        self.search_vbox.set_margin_left(18)
-        self.search_vbox.set_margin_right(18)
+        self.search_widget = Gtk.CenterBox()
+        self.search_widget.set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.search_vbox = Gtk.CenterBox()
+        self.search_vbox.set_orientation(Gtk.Orientation.VERTICAL)
+        self.search_vbox.set_margin_start(18)
+        self.search_vbox.set_margin_end(18)
         self.search_entry = Gtk.SearchEntry()
         self.search_entry.set_size_request(360, -1)
         self.search_entry.set_margin_bottom(21)
@@ -74,21 +81,28 @@ class HelpPanelView(Gtk.VBox):
         self.search_results.set_size_request(300, 359)
         self.search_results.set_can_focus(False)
         self.search_results.set_selection_mode(Gtk.SelectionMode.NONE)
-        self.search_results.set_margin_left(26)
-        self.search_results.set_margin_right(26)
-        self.search_content_box = Gtk.VBox()
-        self.search_content_box.pack_start(self.search_entry, False, False, 0)
-        self.search_content_box.pack_start(self.search_results, False, False, 0)
+        self.search_results.set_margin_start(26)
+        self.search_results.set_margin_end(26)
+        self.search_content_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.search_content_box.append(self.search_entry)
+        self.search_content_box.append(self.search_results)
         self.search_vbox.set_center_widget(self.search_content_box)
         self.search_widget.set_center_widget(self.search_vbox)
 
-        self.settings = None
-        self.content = None
+        self.content = WebKit.WebView()
+
+        self.settings = self.content.get_settings()
+        self.settings.set_enable_javascript(False)
+        self.settings.set_enable_javascript_markup(False)
+        self.settings.set_enable_developer_extras(False)
+        self.settings.set_enable_page_cache(False)
 
         self.stack = Gtk.Stack()
-        self.pack_start(self.stack, True, True, 0)
+        self.stack.set_vexpand(True)
+        self.stack.add_named(self.content, 'content')
+        self.stack.add_named(self.search_widget, 'search')
 
-        self.show_all()
+        self.append(self.stack)
 
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE
@@ -103,9 +117,9 @@ class SearchResultView(Gtk.ListBoxRow):
         Gtk.ListBoxRow.__init__(self)
         self.set_can_focus(False)
         self.uri_ending = data[0]
-        self.box = Gtk.VBox()
-        self.box.set_margin_left(3)
-        self.box.set_margin_right(3)
+        self.box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.box.set_margin_start(3)
+        self.box.set_margin_end(3)
         self.text_label = Gtk.Label()
         self.text_label.set_markup(data[1])
         self.text_label.set_xalign(0)
@@ -113,9 +127,8 @@ class SearchResultView(Gtk.ListBoxRow):
         self.location_label.set_markup('' + data[2] + '')
         self.location_label.set_xalign(0)
         self.location_label.get_style_context().add_class('location-label')
-        self.box.pack_start(self.text_label, False, False, 0)
-        self.box.pack_start(self.location_label, False, False, 0)
-        self.add(self.box)
-        self.show_all()
+        self.box.append(self.text_label)
+        self.box.append(self.location_label)
+        self.set_child(self.box)
 
 

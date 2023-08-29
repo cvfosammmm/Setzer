@@ -42,8 +42,8 @@ class BuilderBuildLaTeX(builder_build.BuilderBuild):
         build_command_defaults['xelatex'] = 'xelatex -synctex=1 -interaction=nonstopmode'
         build_command_defaults['lualatex'] = 'lualatex --synctex=1 --interaction=nonstopmode'
         build_command_defaults['tectonic'] = 'tectonic --synctex --keep-logs'
-        latex_interpreter = query.build_data['latex_interpreter']
 
+        latex_interpreter = query.build_data['latex_interpreter']
         if latex_interpreter == 'tectonic':
             build_command = build_command_defaults[latex_interpreter]
             build_command += ' --outdir "' + os.path.dirname(query.tex_filename) + '" "' 

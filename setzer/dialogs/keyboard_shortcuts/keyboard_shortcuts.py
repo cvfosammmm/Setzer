@@ -17,15 +17,13 @@
 
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
-
-from setzer.dialogs.dialog import Dialog
 
 import os.path
 
 
-class KeyboardShortcutsDialog(Dialog):
+class KeyboardShortcutsDialog(object):
 
     def __init__(self, main_window):
         self.main_window = main_window
@@ -37,7 +35,7 @@ class KeyboardShortcutsDialog(Dialog):
         section['items'].append({'title': _('Open a document'), 'shortcut': '&lt;ctrl&gt;O'})
         section['items'].append({'title': _('Show recent documents'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;O'})
         section['items'].append({'title': _('Show open documents'), 'shortcut': '&lt;ctrl&gt;T'})
-        section['items'].append({'title': _('Switch to the next open document'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;T'})
+        section['items'].append({'title': _('Switch to the next open document'), 'shortcut': '&lt;ctrl&gt;Page_Down'})
         section['items'].append({'title': _('Save the current document'), 'shortcut': '&lt;ctrl&gt;S'})
         section['items'].append({'title': _('Save the document with a new filename'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;S'})
         section['items'].append({'title': _('Close the current document'), 'shortcut': '&lt;ctrl&gt;W'})
@@ -46,14 +44,11 @@ class KeyboardShortcutsDialog(Dialog):
         section = {'title': _('Tools'), 'items': list()}
         section['items'].append({'title': _('Save and build .pdf-file from document'), 'shortcut': 'F5'})
         section['items'].append({'title': _('Build .pdf-file from document'), 'shortcut': 'F6'})
-        section['items'].append({'title': _('Show current position in preview'), 'shortcut': '&lt;ctrl&gt;&lt;Alt&gt;J'})
+        section['items'].append({'title': _('Show current position in preview'), 'shortcut': 'F7'})
         data.append(section)
 
         section = {'title': 'Windows and Panels', 'items': list()}
         section['items'].append({'title': _('Show help panel'), 'shortcut': 'F1'})
-        section['items'].append({'title': _('Show document structure panel'), 'shortcut': 'F2'})
-        section['items'].append({'title': _('Show symbols panel'), 'shortcut': 'F3'})
-        section['items'].append({'title': _('Spellchecking dialog'), 'shortcut': 'F7'})
         section['items'].append({'title': _('Show build log'), 'shortcut': 'F8'})
         section['items'].append({'title': _('Show preview panel'), 'shortcut': 'F9'})
         section['items'].append({'title': _('Show global menu'), 'shortcut': 'F10'})
@@ -105,7 +100,7 @@ class KeyboardShortcutsDialog(Dialog):
         section['items'].append({'title': _('Bold Text'), 'shortcut': '&lt;ctrl&gt;B'})
         section['items'].append({'title': _('Italic Text'), 'shortcut': '&lt;ctrl&gt;I'})
         section['items'].append({'title': _('Underlined Text'), 'shortcut': '&lt;ctrl&gt;U'})
-        section['items'].append({'title': _('Typewriter Text'), 'shortcut': '&lt;ctrl&gt;M'})
+        section['items'].append({'title': _('Typewriter Text'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;T'})
         section['items'].append({'title': _('Emphasized Text'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;E'})
         section['items'].append({'title': _('Quotation Marks'), 'shortcut': '&lt;ctrl&gt;quotedbl'})
         section['items'].append({'title': _('List Item'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;I'})
@@ -113,8 +108,8 @@ class KeyboardShortcutsDialog(Dialog):
         data.append(section)
 
         section = {'title': _('Math Shortcuts'), 'items': list()}
-        section['items'].append({'title': _('Inline Math Section'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;M'})
-        section['items'].append({'title': _('Display Math Section'), 'shortcut': '&lt;alt&gt;&lt;shift&gt;M'})
+        section['items'].append({'title': _('Inline Math Section'), 'shortcut': '&lt;ctrl&gt;M'})
+        section['items'].append({'title': _('Display Math Section'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;M'})
         section['items'].append({'title': _('Equation'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;N'})
         section['items'].append({'title': _('Subscript'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;D'})
         section['items'].append({'title': _('Superscript'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;U'})
@@ -127,7 +122,7 @@ class KeyboardShortcutsDialog(Dialog):
 
     def run(self):
         self.setup()
-        self.view.show_all()
+        self.view.show()
         del(self.view)
 
     def setup(self):

@@ -17,21 +17,20 @@
 
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
-from setzer.dialogs.dialog import Dialog
 from setzer.app.service_locator import ServiceLocator
 
 
-class AboutDialog(Dialog):
+class AboutDialog(object):
 
     def __init__(self, main_window):
         self.main_window = main_window
 
     def run(self):
         self.setup()
-        self.view.show_all()
+        self.view.show()
         del(self.view)
 
     def setup(self):
@@ -40,7 +39,7 @@ class AboutDialog(Dialog):
         self.view.set_modal(True)
         self.view.set_program_name('Setzer')
         self.view.set_version(ServiceLocator.get_setzer_version())
-        self.view.set_copyright('Copyright © 2018-present')
+        self.view.set_copyright('Copyright © 2017-present')
         self.view.set_comments(_('Setzer is a LaTeX editor.'))
         self.view.set_license_type(Gtk.License.GPL_3_0)
         self.view.set_website('https://www.cvfosammmm.org/setzer/')

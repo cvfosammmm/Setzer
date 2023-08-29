@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk
+
 import os.path
 
 from setzer.app.service_locator import ServiceLocator
@@ -31,26 +35,74 @@ class DocumentChooser(object):
 
         self.view.connect('closed', self.on_document_chooser_closed)
         self.view.search_entry.connect('search-changed', self.on_document_chooser_search_changed)
-        auto_suggest_box = self.view.auto_suggest_box
-        auto_suggest_box.connect('row-activated', self.on_document_chooser_selection)
+        self.view.search_entry.connect('stop-search', self.on_stop_search)
+
+        motion_controller = Gtk.EventControllerMotion()
+        motion_controller.connect('enter', self.on_enter)
+        motion_controller.connect('motion', self.on_hover)
+        motion_controller.connect('leave', self.on_leave)
+        self.view.auto_suggest_list.add_controller(motion_controller)
+
+        event_controller = Gtk.GestureClick()
+        event_controller.connect('pressed', self.on_button_press)
+        event_controller.connect('released', self.on_button_release)
+        event_controller.set_button(1)
+        self.view.auto_suggest_list.add_controller(event_controller)
+
+        self.view.other_documents_button.connect('clicked', self.on_other_docs_clicked)
+
+    def on_enter(self, controller, x, y):
+        self.update_hover_state(y)
+
+    def on_hover(self, controller, x, y):
+        self.update_hover_state(y)
+
+    def on_leave(self, controller):
+        self.view.auto_suggest_list.hover_item = None
+        self.view.auto_suggest_list.queue_draw()
+
+    def on_button_press(self, event_controller, n_press, x, y):
+        self.view.auto_suggest_list.selected_index = self.view.auto_suggest_list.hover_item
+        self.view.auto_suggest_list.queue_draw()
+
+    def on_button_release(self, event_controller, n_press, x, y):
+        if self.view.auto_suggest_list.hover_item != None and self.view.auto_suggest_list.hover_item == self.view.auto_suggest_list.selected_index:
+            item = self.view.auto_suggest_list.items[self.view.auto_suggest_list.hover_item]
+            self.view.popdown()
+            filename = item.folder + '/' + item.filename
+            self.workspace.open_document_by_filename(filename)
+        self.view.auto_suggest_list.selected_index = None
+
+    def update_hover_state(self, y):
+        item_num = int((y) // (25 + 2 * self.view.auto_suggest_list.line_height))
+
+        if item_num < 0 or item_num > (len(self.view.auto_suggest_list.items) - 1):
+            self.view.auto_suggest_list.hover_item = None
+        else:
+            self.view.auto_suggest_list.hover_item = item_num
+        self.view.auto_suggest_list.queue_draw()
 
     def on_update_recently_opened_documents(self, workspace, recently_opened_documents):
         items = list()
         data = recently_opened_documents.values()
         for item in sorted(data, key=lambda val: -val['date']):
             items.append(os.path.split(item['filename']))
-        self.view.update_autosuggest(items)
+        self.view.update_items(items)
 
     def on_document_chooser_closed(self, document_chooser, data=None):
         document_chooser.search_entry.set_text('')
-        document_chooser.auto_suggest_box.unselect_all()
+        active_document = self.workspace.get_active_document()
+        if active_document != None:
+            active_document.view.source_view.grab_focus()
 
     def on_document_chooser_search_changed(self, search_entry):
         self.view.search_filter()
     
-    def on_document_chooser_selection(self, box, row):
+    def on_stop_search(self, search_entry):
         self.view.popdown()
-        filename = row.folder + '/' + row.filename
-        self.workspace.open_document_by_filename(filename)
+
+    def on_other_docs_clicked(self, button):
+        self.workspace.actions.actions['open-document-dialog'].activate()
+        self.view.popdown()
 
 

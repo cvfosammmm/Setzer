@@ -16,34 +16,51 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import Pango
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk, Gdk, Pango, Graphene
+
+import setzer.workspace.sidebar.document_structure_page.structure_widget as structure_widget
+from setzer.app.service_locator import ServiceLocator
 
 
-class LabelsSectionView(Gtk.DrawingArea):
+class LabelsSectionView(structure_widget.StructureWidget):
 
-    def __init__(self):
-        Gtk.DrawingArea.__init__(self)
+    def __init__(self, model):
+        structure_widget.StructureWidget.__init__(self, model)
 
-        self.bg_color = None
-        self.hover_color = None
-        self.fg_color = None
-        self.icon_infos = dict()
-        self.icons = dict()
+        self.layout = Pango.Layout(self.get_pango_context())
+        self.layout.set_font_description(self.font)
+        self.layout.set_spacing(8 * Pango.SCALE)
+        self.layout.set_ellipsize(Pango.EllipsizeMode.END)
+        self.layout.set_text('\n')
 
-        self.icon_infos['tag'] = Gtk.IconTheme.get_default().lookup_icon('tag-symbolic', 16 * self.get_scale_factor(), 0)
+        self.line_height = self.layout.get_extents()[0].height / Pango.SCALE
 
-        self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        self.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
-        self.add_events(Gdk.EventMask.ENTER_NOTIFY_MASK)
-        self.add_events(Gdk.EventMask.LEAVE_NOTIFY_MASK)
-        self.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
+    def do_snapshot(self, snapshot):
+        self.drawing_setup()
+        self.setup_icons()
+        self.draw_background(snapshot)
+        self.draw_hover_background(snapshot, len(self.model.labels))
 
-        style_context = self.get_style_context()
-        self.font = style_context.get_font(style_context.get_state())
-        self.font_size = (self.font.get_size() * 4) / (3 * Pango.SCALE)
-        self.line_height = int(self.font_size) + 11
+        snapshot.translate(Graphene.Point().init(9, 13))
+
+        text = ''
+        for count, label in enumerate(self.model.labels):
+            text += label[0] + '\n'
+
+        self.layout.set_text(text)
+        self.layout.set_width((self.get_allocated_width() - 47) * Pango.SCALE)
+        snapshot.translate(Graphene.Point().init(26, -1))
+        snapshot.append_layout(self.layout, self.fg_color)
+        snapshot.translate(Graphene.Point().init(-26, 1))
+
+        for count, label in enumerate(self.model.labels):
+            self.icons['tag-symbolic'].snapshot_symbolic(snapshot, 16, 16, [self.fg_color])
+            snapshot.translate(Graphene.Point().init(0, self.line_height))
+
+    def setup_icons(self, widget=None):
+        icon_theme = Gtk.IconTheme.get_for_display(ServiceLocator.get_main_window().get_display())
+        icon = icon_theme.lookup_icon('tag-symbolic', None, 16, self.get_scale_factor(), Gtk.TextDirection.LTR, 0)
+        self.icons['tag-symbolic'] = icon
 
 

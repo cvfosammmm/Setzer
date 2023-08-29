@@ -16,118 +16,52 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Pango
 from gi.repository import Gtk
 
-from setzer.helpers.observable import Observable
 
+class FontManager(object):
 
-class FontManager(Observable):
+    main_window = None
+    default_font_string = None
+    font_string = None
 
-    def __init__(self, main_window, settings):
-        Observable.__init__(self)
+    def init(main_window):
+        FontManager.main_window = main_window
 
-        self.main_window = main_window
-        self.settings = settings
-        self.settings.connect('settings_changed', self.on_settings_changed)
+        FontManager.default_font_string = 'monospace 11'
+        FontManager.font_string = 'monospace 11'
 
-        self.text_view = Gtk.TextView()
-        self.text_view.set_monospace(True)
-        self.system_font = self.text_view.get_pango_context().get_font_description().to_string()
-        self.font_string = None
-        self.update_font_string()
+    def propagate_font_setting():
+        font_string = FontManager.font_string
 
-    def on_settings_changed(self, settings, parameter):
-        section, item, value = parameter
-        if (section, item) in [('preferences', 'font_string'), ('preferences', 'use_system_font')]:
-            self.update_font_string()
-
-    def update_font_string(self):
-        self.set_font_string(self.get_normal_font_string())
-
-    def get_system_font(self):
-        return self.system_font
-
-    def get_line_height(self):
-        char_width, line_height = self.get_char_dimensions()
-        return line_height
-
-    def get_char_width(self, char='A'):
-        char_width, line_height = self.get_char_dimensions(char)
-        return char_width
-
-    def get_char_dimensions(self, char='A'):
-        context = self.text_view.get_pango_context()
-        font_desc = Pango.FontDescription.from_string(self.font_string)
-        layout = Pango.Layout.new(context)
-        layout.set_text(char, -1)
-        layout.set_font_description(font_desc)
-        return layout.get_pixel_size()
-
-    def get_zoom_level(self):
-        return self.get_font_size() / self.get_normal_font_size()
-
-    def set_font_string(self, font_string):
         font_desc = Pango.FontDescription.from_string(font_string)
         font_size = font_desc.get_size() / Pango.SCALE
+        font_family = font_desc.get_family()
 
-        self.font_string = font_string
-        self.propagate_font_setting()
-        self.add_change_code('font_string_changed')
+        FontManager.main_window.css_provider_font_size.load_from_data(('textview { font-size: ' + str(font_size) + 'pt; font-family: ' + font_family + '; }\nbox.autocomplete list row { font-size: ' + str(font_size) + 'pt; }\nbox.autocomplete list row label { font-family: ' + font_family + '; }').encode('utf-8'))
 
-    def zoom_in(self):
-        if self.get_font_size() * 1.1 > 24 * Pango.SCALE: return
+    def get_char_width(text_view):
+        context = text_view.get_pango_context()
+        layout = Pango.Layout.new(context)
+        layout.set_text('A', -1)
+        char_width, line_height_1 = layout.get_pixel_size()
+        return char_width
 
-        font_desc = Pango.FontDescription.from_string(self.font_string)
-        font_desc.set_size(self.get_font_size() * 1.1)
-        self.set_font_string(font_desc.to_string())
+    def get_line_height(text_view):
+        context = text_view.get_pango_context()
+        layout = Pango.Layout.new(context)
+        layout.set_text('A', -1)
+        char_width, line_height_1 = layout.get_pixel_size()
+        layout.set_text('A\nA', -1)
+        char_width, line_height_2 = layout.get_pixel_size()
+        return line_height_2 - line_height_1
 
-    def zoom_out(self):
-        if self.get_font_size() / 1.1 < 6 * Pango.SCALE: return
+    def get_font_desc():
+        return Pango.FontDescription.from_string(FontManager.font_string)
 
-        font_desc = Pango.FontDescription.from_string(self.font_string)
-        font_desc.set_size(self.get_font_size() / 1.1)
-        self.set_font_string(font_desc.to_string())
-
-    def reset_zoom(self):
-        font_desc = Pango.FontDescription.from_string(self.get_normal_font_string())
-        self.set_font_string(font_desc.to_string())
-
-    def propagate_font_setting(self):
-        font_size = self.get_font_size() / Pango.SCALE
-        font_family = self.get_font_family()
-        self.main_window.css_provider_font_size.load_from_data(('''
-textview { font-size: ''' + str(font_size) + '''pt; font-family: ''' + font_family + '''; }
-box.autocomplete list row { font-size: ''' + str(font_size) + '''pt; }
-box.autocomplete list row label { font-family: ''' + font_family + '''; }
-''').encode('utf-8'))
-
-    def get_font_desc(self):
-        return Pango.FontDescription.from_string(self.font_string)
-
-    def get_font_size(self):
-        font_desc = Pango.FontDescription.from_string(self.font_string)
-        return font_desc.get_size()
-
-    def get_font_family(self):
-        font_desc = Pango.FontDescription.from_string(self.font_string)
-        return font_desc.get_family()
-
-    def get_font_size_in_points(self):
-        return self.get_font_size() / Pango.SCALE
-
-    def get_normal_font_string(self):
-        if self.settings.get_value('preferences', 'use_system_font'):
-            return self.system_font
-        else:
-            return self.settings.get_value('preferences', 'font_string')
-
-    def get_normal_font_size(self):
-        font_desc = Pango.FontDescription.from_string(self.get_normal_font_string())
-        return font_desc.get_size()
-
-    def get_normal_font_size_in_points(self):
-        return self.get_normal_font_size() / Pango.SCALE
+    def get_system_font():
+        return FontManager.default_font_string
 
 

@@ -16,99 +16,68 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gdk
-from gi.repository import Pango
-from gi.repository import PangoCairo
-from gi.repository import cairo
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk, Gdk, Pango, Graphene
 
 
-class StructureWidget(object):
+class StructureWidget(Gtk.DrawingArea):
 
-    def __init__(self, data_provider):
-        self.data_provider = data_provider
-        self.data_provider.connect('data_updated', self.update_items)
+    def __init__(self, model):
+        Gtk.DrawingArea.__init__(self)
+        self.model = model
 
+        self.icons = dict()
         self.height = 0
+
+        self.font = self.get_pango_context().get_font_description()
+        self.font_size = self.font.get_size() / Pango.SCALE
+
         self.hover_item = None
+        self.bg_color = None
+        self.hover_color = None
+        self.fg_color = None
 
-    def init_view(self):
-        self.layout = Pango.Layout(self.view.get_pango_context())
-        self.layout.set_ellipsize(Pango.EllipsizeMode.END)
+        click_controller = Gtk.GestureClick()
+        click_controller.set_button(1)
+        click_controller.connect('pressed', self.model.on_button_press)
+        self.add_controller(click_controller)
 
-        self.view.connect('enter-notify-event', self.on_enter)
-        self.view.connect('motion-notify-event', self.on_hover)
-        self.view.connect('leave-notify-event', self.on_leave)
-        self.view.connect('button-press-event', self.on_button_press)
-        self.view.connect('draw', self.draw)
+        motion_controller = Gtk.EventControllerMotion()
+        motion_controller.connect('enter', self.on_enter)
+        motion_controller.connect('motion', self.on_hover)
+        motion_controller.connect('leave', self.on_leave)
+        self.add_controller(motion_controller)
 
-    def on_enter(self, widget, event):
-        self.update_hover_state(event)
+    def on_enter(self, controller, x, y):
+        self.update_hover_state(y)
 
-    def on_hover(self, widget, event):
-        self.update_hover_state(event)
+    def on_hover(self, controller, x, y):
+        self.update_hover_state(y)
 
-    def on_leave(self, widget, event):
+    def on_leave(self, controller):
         self.set_hover_item(None)
 
-    def update_hover_state(self, event):
-        if event.y >= 9:
-            item_num = int((event.y - 9) // self.view.line_height)
+    def update_hover_state(self, y):
+        if y >= 9:
+            item_num = int((y - 9) // self.line_height)
             self.set_hover_item(item_num)
         else:
             self.set_hover_item(None)
 
     def set_hover_item(self, item):
         self.hover_item = item
-        self.view.queue_draw()
+        self.queue_draw()
 
-    def draw_hover_background(self, ctx, item_num):
-        if self.hover_item == item_num:
-            ctx.set_source_rgba(self.view.hover_color.red, self.view.hover_color.green, self.view.hover_color.blue, self.view.hover_color.alpha)
-            ctx.rectangle(0, item_num * self.view.line_height + 9, self.view_width, self.view.line_height)
-            ctx.fill()
+    def draw_hover_background(self, snapshot, max_item_num):
+        if self.hover_item != None and self.hover_item < max_item_num:
+            snapshot.append_color(self.hover_color, Graphene.Rect().init(0, self.hover_item * self.line_height + 9, self.get_allocated_width(), self.line_height))
 
-    def draw_icon(self, ctx, icon_name, voffset, item_num):
-        ctx.move_to(voffset, item_num * self.view.line_height + 13)
-        surface = self.view.icons[icon_name]
-        surface.set_device_offset(-voffset * self.view.get_scale_factor(), -(item_num * self.view.line_height + 13) * self.view.get_scale_factor())
-        ctx.set_source_surface(surface)
-        ctx.rectangle(voffset, item_num * self.view.line_height + 13, 16, 16)
-        ctx.fill()
+    def drawing_setup(self):
+        self.fg_color = self.get_style_context().lookup_color('theme_fg_color')[1]
+        self.bg_color = self.get_style_context().lookup_color('theme_base_color')[1]
+        self.hover_color = self.get_style_context().lookup_color('theme_bg_color')[1]
 
-    def draw_text(self, ctx, voffset, item_num, text):
-        ctx.set_source_rgba(self.view.fg_color.red, self.view.fg_color.green, self.view.fg_color.blue, self.view.fg_color.alpha)
-        ctx.move_to(voffset, (item_num) * self.view.line_height + 12)
-
-        self.layout.set_width((self.view_width - (voffset + 18)) * Pango.SCALE)
-        self.layout.set_text(text)
-
-        PangoCairo.show_layout(ctx, self.layout)
-
-    def drawing_setup(self, ctx):
-        style_context = self.view.get_style_context()
-
-        self.view_width = self.view.get_allocated_width()
-
-        self.view.bg_color = style_context.lookup_color('theme_base_color')[1]
-        self.view.hover_color = style_context.lookup_color('theme_bg_color')[1]
-        fg_color = style_context.lookup_color('theme_fg_color')[1]
-
-        if not self.view.fg_color or fg_color.red != self.view.fg_color.red or fg_color.green != self.view.fg_color.green or fg_color.blue != self.view.fg_color.blue or fg_color.alpha != self.view.fg_color.alpha:
-            self.view.fg_color = fg_color
-            self.icons = dict()
-            for icon_name, icon_info in self.view.icon_infos.items():
-                pixbuf, was_symbolic = icon_info.load_symbolic(self.view.fg_color, self.view.fg_color, self.view.fg_color, self.view.fg_color)
-                surface = Gdk.cairo_surface_create_from_pixbuf(pixbuf, self.view.get_scale_factor())
-                self.view.icons[icon_name + '-symbolic'] = surface
-
-    def get_first_line_last_line(self, ctx):
-        extents = ctx.clip_extents()
-        return extents[1] // self.view.line_height, extents[3] // self.view.line_height
-
-    def draw_background(self, ctx):
-        ctx.set_source_rgba(self.view.bg_color.red, self.view.bg_color.green, self.view.bg_color.blue, self.view.bg_color.alpha)
-        ctx.rectangle(0, 0, self.view_width, self.height)
-        ctx.fill()
+    def draw_background(self, snapshot):
+        snapshot.append_color(self.bg_color, Graphene.Rect().init(0, 0, self.get_allocated_width(), self.height))
 
 

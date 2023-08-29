@@ -16,10 +16,9 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
-from setzer.dialogs.dialog import Dialog
 import setzer.dialogs.preferences.preferences_viewgtk as view
 import setzer.dialogs.preferences.pages.page_build_system as page_build_system
 import setzer.dialogs.preferences.pages.page_editor as page_editor
@@ -27,7 +26,7 @@ import setzer.dialogs.preferences.pages.page_font_color as page_font_color
 from setzer.app.service_locator import ServiceLocator
 
 
-class PreferencesDialog(Dialog):
+class PreferencesDialog(object):
 
     def __init__(self, main_window):
         self.main_window = main_window
@@ -35,7 +34,12 @@ class PreferencesDialog(Dialog):
 
     def run(self):
         self.setup()
-        self.view.run()
+        self.view.dialog.show()
+        self.signal_connection_id = self.view.dialog.connect('response', self.close)
+
+    def close(self, view=None, response_id=None):
+        self.view.dialog.hide()
+        self.view.dialog.disconnect(self.signal_connection_id)
         del(self.view)
         del(self.page_build_system)
         del(self.page_editor)
@@ -48,11 +52,9 @@ class PreferencesDialog(Dialog):
         self.page_editor = page_editor.PageEditor(self, self.settings)
         self.page_font_color = page_font_color.PageFontColor(self, self.settings, self.main_window)
 
-        self.view.notebook.append_page(self.page_build_system.view, Gtk.Label(_('Build System')))
-        self.view.notebook.append_page(self.page_editor.view, Gtk.Label(_('Editor')))
-        self.view.notebook.append_page(self.page_font_color.view, Gtk.Label(_('Font & Colors')))
-
-        self.view.dialog.show_all()
+        self.view.notebook.append_page(self.page_build_system.view, Gtk.Label.new(_('Build System')))
+        self.view.notebook.append_page(self.page_editor.view, Gtk.Label.new(_('Editor')))
+        self.view.notebook.append_page(self.page_font_color.view, Gtk.Label.new(_('Font & Colors')))
 
         self.page_build_system.init()
         self.page_editor.init()

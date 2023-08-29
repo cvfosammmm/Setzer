@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
 from setzer.app.service_locator import ServiceLocator
@@ -29,7 +29,6 @@ class DocumentPresenter(object):
         self.document = document
         self.view = document_view
         self.settings = ServiceLocator.get_settings()
-        self.font_manager = ServiceLocator.get_font_manager()
 
         self.indentation_update = None
 
@@ -37,15 +36,13 @@ class DocumentPresenter(object):
         self.view.source_view.set_insert_spaces_instead_of_tabs(self.settings.get_value('preferences', 'spaces_instead_of_tabs'))
         self.view.source_view.set_tab_width(self.settings.get_value('preferences', 'tab_width'))
         self.view.source_view.set_highlight_current_line(self.settings.get_value('preferences', 'highlight_current_line'))
-        self.document.content.source_buffer.set_highlight_matching_brackets(self.settings.get_value('preferences', 'highlight_matching_brackets'))
+        self.document.source_buffer.set_highlight_matching_brackets(self.settings.get_value('preferences', 'highlight_matching_brackets'))
         if self.settings.get_value('preferences', 'enable_line_wrapping'):
             self.view.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
         else:
             self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
-        self.view.source_view.set_left_margin(self.font_manager.get_char_width() - 2)
 
         self.settings.connect('settings_changed', self.on_settings_changed)
-        self.font_manager.connect('font_string_changed', self.on_font_string_changed)
 
     def on_settings_changed(self, settings, parameter):
         section, item, value = parameter
@@ -56,14 +53,11 @@ class DocumentPresenter(object):
         if (section, item) == ('preferences', 'highlight_current_line'):
             self.view.source_view.set_highlight_current_line(value)
         if (section, item) == ('preferences', 'highlight_matching_brackets'):
-            self.document.content.source_buffer.set_highlight_matching_brackets(value)
+            self.document.source_buffer.set_highlight_matching_brackets(value)
         if (section, item) == ('preferences', 'enable_line_wrapping'):
             if value == True:
                 self.view.source_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
             else:
                 self.view.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
-
-    def on_font_string_changed(self, font_manager):
-        self.view.source_view.set_left_margin(self.font_manager.get_char_width() - 2)
 
 

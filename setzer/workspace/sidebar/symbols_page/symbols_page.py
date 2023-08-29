@@ -16,12 +16,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk, Gdk, Gio, GLib, GObject
 
 import setzer.workspace.sidebar.symbols_page.symbols_page_viewgtk as symbols_page_view
 from setzer.app.service_locator import ServiceLocator
@@ -46,15 +42,15 @@ class SymbolsPage(object):
         self.recent_view_size = None
         self.update_recent_widget()
 
-        self.view.show_all()
-
         for symbols_list_view in self.view.symbols_views:
-            symbols_list_view.connect('size-allocate', self.on_symbols_view_size_allocate)
-            symbols_list_view.connect('button-press-event', self.on_flowbox_clicked, symbols_list_view)
+            event_controller = Gtk.GestureClick()
+            event_controller.set_button(1)
+            event_controller.connect('pressed', self.on_flowbox_clicked, symbols_list_view)
+            symbols_list_view.add_controller(event_controller)
 
-        self.view.vbox.connect('size-allocate', self.on_scroll_or_resize)
+        self.view.scrolled_window.get_hadjustment().connect('changed', self.on_symbols_view_size_allocate)
+        self.view.scrolled_window.get_vadjustment().connect('changed', self.on_scroll_or_resize)
         self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_scroll_or_resize)
-        self.view.vbox.connect('realize', self.on_scroll_or_resize)
         self.view.next_button.connect('clicked', self.on_next_button_clicked)
         self.view.prev_button.connect('clicked', self.on_prev_button_clicked)
         self.view.search_button.connect('toggled', self.on_search_button_toggled)
@@ -67,17 +63,17 @@ class SymbolsPage(object):
     def update_recent_widget(self):
         for item in [item for item in self.recent]:
             self.add_recent_symbol_to_flowbox(item)
-        self.view.symbols_view_recent.connect('button-press-event', self.on_recent_widget_clicked)
-        self.view.symbols_view_recent.connect('size-allocate', self.on_recent_view_size_allocate)
+        event_controller = Gtk.GestureClick()
+        event_controller.set_button(1)
+        event_controller.connect('pressed', self.on_recent_widget_clicked)
+        self.view.symbols_view_recent.add_controller(event_controller)
 
-    def on_recent_widget_clicked(self, flowbox, event):
-        if event.button != 1: return
-
-        child = flowbox.get_child_at_pos(event.x, event.y)
-
+    def on_recent_widget_clicked(self, event_controller, n_press, x, y):
+        flowbox = event_controller.get_widget()
+        child = flowbox.get_child_at_pos(x, y)
         if child != None and self.workspace.active_document != None:
-            self.workspace.get_active_document().content.insert_text_at_cursor_indent_and_select_dot(self.recent_details[- child.get_index() - 1][1])
-            self.workspace.get_active_document().content.scroll_cursor_onscreen()
+            text = self.recent_details[- child.get_index() - 1][1]
+            self.workspace.actions.insert_symbol(None, [text])
             self.add_recent_symbol(self.recent[- child.get_index() - 1])
 
         return True
@@ -111,18 +107,27 @@ class SymbolsPage(object):
             symbol = [attrib['file'].rsplit('.')[0], attrib['command'], attrib.get('package', None), int(attrib.get('original_width', 10)), int(attrib.get('original_height', 10))]
             size = max(symbol[3], symbol[4])
 
-            image = Gtk.Image.new_from_icon_name('sidebar-' + symbol[0] + '-symbolic', 0)
+            image = Gtk.Image.new_from_icon_name('sidebar-' + symbol[0] + '-symbolic')
             image.set_pixel_size(int(size * 1.5))
             tooltip_text = symbol[1]
             if symbol[2] != None: 
                 tooltip_text += ' (' + _('Package') + ': ' + symbol[2] + ')'
             image.set_tooltip_text(tooltip_text)
-            image.show_all()
             symbol.append(image)
             self.recent_details.append(symbol)
 
             self.view.symbols_view_recent.insert(image, 0)
             self.view.queue_draw()
+
+    def on_flowbox_clicked(self, event_controller, n_press, x, y, symbols_view):
+        flowbox = event_controller.get_widget()
+        child = flowbox.get_child_at_pos(x, y)
+        if child != None and self.workspace.active_document != None:
+            text = symbols_view.visible_symbols[child.get_index()][1]
+            self.workspace.actions.insert_symbol(None, [text])
+            self.add_recent_symbol((flowbox.symbol_folder, symbols_view.visible_symbols[child.get_index()][1]))
+
+        return True
 
     def on_scroll_or_resize(self, *args):
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
@@ -150,13 +155,13 @@ class SymbolsPage(object):
             placeholder = self.view.placeholders[len(self.view.symbols_views) - key - 1]
             margin_top = max(0, offset - int(scrolling_offset))
             label.set_margin_top(margin_top)
-            if margin_top > 0 and margin_top <= label.get_allocated_height():
+            if margin_top > 1 and margin_top <= label.get_allocated_height():
                 self.view.tabs_box.get_style_context().add_class('no-border')
             if len(symbols_view.visible_symbols) > 0:
                 offset += symbols_view.get_allocated_height() + placeholder.get_allocated_height()
 
     def on_next_button_clicked(self, button):
-        offset = self.view.symbols_view_recent.get_allocated_height() + self.view.label_recent.get_allocated_height() + 1
+        offset = self.view.symbols_view_recent.get_allocated_height() + self.view.label_recent.get_allocated_height() + 2
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
         if scrolling_offset < offset:
             self.scroll_view(offset)
@@ -178,7 +183,7 @@ class SymbolsPage(object):
             offset += view_height
 
     def on_prev_button_clicked(self, button):
-        offset = self.view.symbols_view_recent.get_allocated_height() + self.view.label_recent.get_allocated_height() + 1
+        offset = self.view.symbols_view_recent.get_allocated_height() + self.view.label_recent.get_allocated_height() + 2
         old_offset = offset
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
 
@@ -214,7 +219,7 @@ class SymbolsPage(object):
             self.view.search_revealer.set_reveal_child(False)
             document = self.workspace.get_active_document()
             if document != None:
-                document.content.source_view.grab_focus()
+                document.source_view.grab_focus()
 
     def on_search_close_button_clicked(self, button):
         self.view.search_button.set_active(False)
@@ -242,35 +247,35 @@ class SymbolsPage(object):
                     symbols_view.visible_symbols.append(symbol)
                     symbols_view.insert(image, -1)
             if len(symbols_view.visible_symbols) > 0:
-                symbols_view.show_all()
-                self.view.labels[i].show_all()
-                self.view.placeholders[i].show_all()
+                symbols_view.show()
+                self.view.labels[i].show()
+                self.view.placeholders[i].show()
                 self.update_borders(symbols_view, symbols_view.get_allocated_width())
             else:
                 symbols_view.hide()
                 self.view.labels[i].hide()
                 self.view.placeholders[i].hide()
 
-    def on_flowbox_clicked(self, flowbox, event, symbols_view):
-        if event.button != 1: return
+    def on_symbols_view_size_allocate(self, *arguments):
+        for symbols_view in self.view.symbols_views:
+            allocation = symbols_view.get_allocation()
+            if symbols_view.size != (allocation.width, allocation.height):
+                symbols_view.size = (allocation.width, allocation.height)
+                self.update_borders(symbols_view, allocation.width)
 
-        child = flowbox.get_child_at_pos(event.x, event.y)
+        view = self.view.symbols_view_recent
+        allocation = view.get_allocation()
+        if self.recent_view_size != (allocation.width, allocation.height):
+            self.recent_view_size = (allocation.width, allocation.height)
 
-        if child != None and self.workspace.active_document != None:
-            self.workspace.get_active_document().content.insert_text_at_cursor_indent_and_select_dot(symbols_view.visible_symbols[child.get_index()][1])
-            self.workspace.get_active_document().content.scroll_cursor_onscreen()
-            self.add_recent_symbol((flowbox.symbol_folder, symbols_view.visible_symbols[child.get_index()][1]))
+            for number, recent_symbol in enumerate(self.recent_details):
+                image = recent_symbol[5]
+                image.get_style_context().remove_class('no_right_border')
 
-        return True
-
-    '''
-    *** manage borders of images
-    '''
-
-    def on_symbols_view_size_allocate(self, symbols_view, allocation, data=None):
-        if symbols_view.size != (allocation.width, allocation.height):
-            symbols_view.size = (allocation.width, allocation.height)
-            self.update_borders(symbols_view, allocation.width)
+            for offset in range(max(0, allocation.height) // 20 + 1):
+                widget = view.get_child_at_pos(allocation.width - 1, offset * 20)
+                if widget != None:
+                    widget.get_child().get_style_context().add_class('no_right_border')
 
     def update_borders(self, symbols_view, width_available):
         width_with_border = symbols_view.symbol_width + 11
@@ -284,19 +289,6 @@ class SymbolsPage(object):
                 image[5].get_style_context().add_class('no_right_border')
             else:
                 image[5].get_style_context().remove_class('no_right_border')
-
-    def on_recent_view_size_allocate(self, recent_view, allocation, data=None):
-        if self.recent_view_size != (allocation.width, allocation.height):
-            self.recent_view_size = (allocation.width, allocation.height)
-
-            for number, recent_symbol in enumerate(self.recent_details):
-                image = recent_symbol[5]
-                image.get_style_context().remove_class('no_right_border')
-
-            for offset in range(max(0, allocation.height) // 20 + 1):
-                widget = recent_view.get_child_at_pos(allocation.width - 1, offset * 20)
-                if widget != None:
-                    widget.get_child().get_style_context().add_class('no_right_border')
 
     def scroll_view(self, position, duration=0.2):
         adjustment = self.view.scrolled_window.get_vadjustment()

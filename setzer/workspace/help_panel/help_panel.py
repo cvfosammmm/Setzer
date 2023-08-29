@@ -15,12 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import gi
-gi.require_version('Gtk', '3.0')
-gi.require_version('WebKit2', '4.1')
-from gi.repository import WebKit2
-from gi.repository import GLib
-
 import os.path
 import pickle
 
@@ -42,31 +36,14 @@ class HelpPanel(Observable):
         self.home_uri = self.path + '/latex2e_0.html'
         self.current_uri = self.home_uri
 
-        with open(os.path.join(ServiceLocator.get_resources_path(), 'help', 'search_index.pickle'), 'rb') as filehandle:
-            self.search_index = pickle.load(filehandle)
-
+        self.search_index = None
         self.search_results_blank = list()
         self.search_results = self.search_results_blank
         self.query = ''
 
-        GLib.idle_add(self.activate, priority=GLib.PRIORITY_LOW)
-
-    def activate(self):
-        self.view.settings = WebKit2.Settings()
-        self.view.settings.set_enable_java(False)
-        self.view.settings.set_enable_javascript(False)
-        self.view.settings.set_enable_javascript_markup(False)
-        self.view.settings.set_enable_plugins(False)
-        self.view.settings.set_enable_developer_extras(False)
-        self.view.settings.set_enable_page_cache(False)
-
-        self.view.content = WebKit2.WebView.new_with_settings(self.view.settings)
-        self.view.content.set_can_focus(False)
-
-        self.view.stack.add_named(self.view.content, 'content')
-        self.view.stack.add_named(self.view.search_widget, 'search')
-
-        self.view.show_all()
+        index_location = os.path.join(ServiceLocator.get_resources_path(), 'help', 'search_index.pickle')
+        with open(index_location, 'rb') as filehandle:
+            self.search_index = pickle.load(filehandle)
 
         self.controller = help_panel_controller.HelpPanelController(self, self.view)
         self.presenter = help_panel_presenter.HelpPanelPresenter(self, self.view)

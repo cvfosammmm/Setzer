@@ -16,23 +16,24 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
 
-class PreviewPanelView(Gtk.VBox):
+class PreviewPanelView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self)
+        self.set_orientation(Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('preview')
 
         self.notebook = Gtk.Notebook()
         self.notebook.set_show_tabs(False)
         self.notebook.set_show_border(False)
-        
+        self.notebook.set_vexpand(True)
+        self.append(self.notebook)
+
         self.notebook.insert_page(Gtk.DrawingArea(), None, 0)
-        self.pack_start(self.notebook, True, True, 0)
-        self.show_all()
 
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE

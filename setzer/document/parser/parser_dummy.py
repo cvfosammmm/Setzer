@@ -15,11 +15,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+from setzer.helpers.observable import Observable
 
-class ParserDummy(object):
+
+class ParserDummy(Observable):
 
     def __init__(self, document):
+        Observable.__init__(self)
         self.document = document
+
+        self.symbols = dict()
+        self.symbols['bibitems'] = set()
+        self.symbols['labels'] = set()
+        self.symbols['labels_with_offset'] = list()
+        self.symbols['todos'] = set()
+        self.symbols['todos_with_offset'] = set()
+        self.symbols['included_latex_files'] = set()
+        self.symbols['bibliographies'] = set()
+        self.symbols['packages'] = set()
+        self.symbols['packages_detailed'] = dict()
+        self.symbols['blocks'] = list()
+
+        self.document.source_buffer.connect('insert-text', self.on_text_inserted)
+        self.document.source_buffer.connect('delete-range', self.on_text_deleted)
 
     def on_text_deleted(self, buffer, start_iter, end_iter):
         pass

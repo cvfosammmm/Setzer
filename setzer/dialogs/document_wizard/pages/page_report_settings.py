@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 from gi.repository import GLib
 
@@ -32,9 +32,9 @@ class ReportSettingsPage(Page):
         self.view = ReportSettingsPageView()
 
     def observe_view(self):
-        def format_changed(box, user_data=None):
-            format_name = box.get_active_text()
-            self.current_values['report']['page_format'] = format_name
+        def format_button_toggled(button, format_name):
+            if button.get_active():
+                self.current_values['report']['page_format'] = format_name
 
         def scale_change_value(scale, scroll, value, user_data=None):
             self.current_values['report']['font_size'] = int(value)
@@ -45,13 +45,11 @@ class ReportSettingsPage(Page):
         def margin_changed(button, side):
             self.current_values['report']['margin_' + side] = button.get_value()
 
-        def on_orientation_toggle(button, button_name):
-            if button_name == 'portrait':
-                self.current_values['report']['is_landscape'] = not button.get_active()
-            elif button_name == 'landscape':
-                self.current_values['report']['is_landscape'] = button.get_active()
+        def on_orientation_toggle(button):
+            self.current_values['report']['is_landscape'] = button.get_active()
 
-        self.view.page_format_list.connect('changed', format_changed)
+        for name, button in self.view.page_format_buttons.items():
+            button.connect('toggled', format_button_toggled, name)
         self.view.font_size_entry.connect('change-value', scale_change_value)
         self.view.option_twocolumn.connect('toggled', option_toggled, 'twocolumn')
         self.view.option_default_margins.connect('toggled', self.option_default_margins_toggled, 'default_margins')
@@ -59,8 +57,7 @@ class ReportSettingsPage(Page):
         self.view.margins_button_right.connect('value-changed', margin_changed, 'right')
         self.view.margins_button_top.connect('value-changed', margin_changed, 'top')
         self.view.margins_button_bottom.connect('value-changed', margin_changed, 'bottom')
-        self.view.option_portrait.connect('toggled', on_orientation_toggle, 'portrait')
-        self.view.option_landscape.connect('toggled', on_orientation_toggle, 'landscape')
+        self.view.option_landscape.connect('toggled', on_orientation_toggle)
 
     def option_default_margins_toggled(self, button, option_name=None):
         for spinbutton in [self.view.margins_button_left, self.view.margins_button_right, self.view.margins_button_top, self.view.margins_button_bottom]:
@@ -72,26 +69,28 @@ class ReportSettingsPage(Page):
 
     def load_presets(self, presets):
         for setter_function, value_name in [
-            (self.view.page_format_list.set_active_id, 'page_format'),
             (self.view.font_size_entry.set_value, 'font_size'),
             (self.view.option_twocolumn.set_active, 'option_twocolumn'),
             (self.view.margins_button_left.set_value, 'margin_left'),
             (self.view.margins_button_right.set_value, 'margin_right'),
             (self.view.margins_button_top.set_value, 'margin_top'),
             (self.view.margins_button_bottom.set_value, 'margin_bottom'),
-            (self.view.option_default_margins.set_active, 'option_default_margins'),
-            (self.view.option_landscape.set_active, 'is_landscape')
+            (self.view.option_landscape.set_active, 'is_landscape'),
+            (self.view.option_default_margins.set_active, 'option_default_margins')
         ]:
-            try:
-                value = presets['report'][value_name]
-            except TypeError:
-                value = self.current_values['report'][value_name]
+            try: value = presets['report'][value_name]
+            except TypeError: value = self.current_values['report'][value_name]
             setter_function(value)
+
+        try: value = presets['report']['page_format']
+        except Exception: value = self.current_values['report']['page_format']
+        for name, button in self.view.page_format_buttons.items():
+            button.set_active(name == value)
 
         self.option_default_margins_toggled(self.view.option_default_margins)
 
     def on_activation(self):
-        GLib.idle_add(self.view.page_format_list.grab_focus)
+        pass
 
 
 class ReportSettingsPageView(PageView):
@@ -103,30 +102,23 @@ class ReportSettingsPageView(PageView):
         self.header.set_text(_('Report settings'))
         self.headerbar_subtitle = _('Step') + ' 2: ' + _('Report settings')
 
-        self.subheader_options = Gtk.Label(_('Options'))
-        self.subheader_options.get_style_context().add_class('document-wizard-subheader')
-        self.subheader_options.set_xalign(0)
-        self.subheader_options.set_margin_top(18)
+        self.right_content.append(self.subheader_page_format)
+        self.right_content.append(self.page_format_list)
 
-        self.option_twocolumn = Gtk.CheckButton.new_with_label(_('Two-column layout'))
+        self.left_content.append(self.subheader_options)
+        self.left_content.append(self.option_landscape)
+        self.left_content.append(self.option_twocolumn)
+        self.left_content.append(self.subheader_font_size)
+        self.left_content.append(self.font_size_entry)
+        self.left_content.append(self.subheader_margins)
+        self.left_content.append(self.option_default_margins)
+        self.left_content.append(self.margins_box)
+        self.left_content.append(self.margins_description)
 
-        self.pack_start(self.header, False, False, 0)
+        self.content.append(self.left_content)
 
-        self.left_content.pack_start(self.subheader_page_format, False, False, 0)
-        self.left_content.pack_start(self.page_format_list, False, False, 0)
-        self.left_content.pack_start(self.orientation_box, False, False, 0)
-        self.left_content.pack_start(self.subheader_margins, False, False, 0)
-        self.left_content.pack_start(self.option_default_margins, False, False, 0)
-        self.left_content.pack_start(self.margins_box, False, False, 0)
-
-        self.right_content.pack_start(self.subheader_font_size, False, False, 0)
-        self.right_content.pack_start(self.font_size_entry, False, False, 0)
-        self.right_content.pack_start(self.subheader_options, False, False, 0)
-        self.right_content.pack_start(self.option_twocolumn, False, False, 0)
-
-        self.content.pack_start(self.left_content, False, False, 0)
-        self.content.pack_start(self.right_content, False, False, 0)
-        self.pack_start(self.content, False, False, 0)
-        self.show_all()
+        self.append(self.header)
+        self.append(self.right_content)
+        self.append(self.content)
 
 

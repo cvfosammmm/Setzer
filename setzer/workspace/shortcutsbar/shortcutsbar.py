@@ -22,49 +22,66 @@ class Shortcutsbar(object):
 
     def __init__(self, workspace):
         self.workspace = workspace
-        self.main_window = ServiceLocator.get_main_window()
+        self.latex_shortcutsbar = ServiceLocator.get_main_window().latex_shortcutsbar
+        self.bibtex_shortcutsbar = ServiceLocator.get_main_window().bibtex_shortcutsbar
+        self.others_shortcutsbar = ServiceLocator.get_main_window().others_shortcutsbar
 
-        self.main_window.latex_shortcutsbar.button_build_log.set_active(self.workspace.get_show_build_log())
-        self.main_window.latex_shortcutsbar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
-        self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
+        self.latex_shortcutsbar.button_build_log.set_active(self.workspace.get_show_build_log())
+        self.latex_shortcutsbar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
+        self.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
+        self.latex_shortcutsbar.button_search.connect('clicked', self.on_find_button_clicked)
+        self.latex_shortcutsbar.button_replace.connect('clicked', self.on_find_replace_button_clicked)
 
-        self.workspace.connect('document_removed', self.on_document_removed)
-        self.workspace.connect('new_active_document', self.on_new_active_document)
-        self.workspace.connect('new_inactive_document', self.on_new_inactive_document)
-        self.workspace.connect('show_build_log_state_change', self.on_show_build_log_state_change)
+        self.workspace.connect('document_removed', self.update_document)
+        self.workspace.connect('new_active_document', self.update_document)
+        self.workspace.connect('show_build_log_state_change', self.update_buttons)
 
-    def on_document_removed(self, workspace, document):
-        if self.workspace.active_document == None:
-            self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
+        self.document = None
+        self.update_document()
 
-    def on_new_active_document(self, workspace, document):
-        if document.is_latex_document():
-            self.update_shortcutsbar(self.main_window.latex_shortcutsbar)
-            self.main_window.latex_shortcutsbar.top_icons.insert(document.view.wizard_button, 0)
-            self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(True)
-        elif document.is_bibtex_document():
-            self.update_shortcutsbar(self.main_window.bibtex_shortcutsbar)
-            self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
+    def update_document(self, workspace=None, parameter=None):
+        if self.document != None:
+            self.document.disconnect('changed', self.update_buttons)
+            self.document.search.disconnect('mode_changed', self.update_buttons)
+
+        self.document = self.workspace.active_document
+        if self.document != None:
+            self.document.connect('changed', self.update_buttons)
+            self.document.search.connect('mode_changed', self.update_buttons)
+
+        self.update_buttons()
+
+    def update_buttons(self, workspace=None, parameter=None):
+        if self.document == None: return
+
+        if self.document.is_latex_document():
+            if self.document.source_buffer.get_char_count() > 0:
+                self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(False)
+            else:
+                self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(True)
+
+            self.latex_shortcutsbar.button_more.set_popover(self.document.context_menu.popover_more)
+            self.latex_shortcutsbar.button_search.set_active(self.document.search.search_bar_mode == 'search')
+            self.latex_shortcutsbar.button_replace.set_active(self.document.search.search_bar_mode == 'replace')
         else:
-            self.update_shortcutsbar(self.main_window.others_shortcutsbar)
-            self.main_window.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
+            self.latex_shortcutsbar.button_more.set_popover(None)
 
-    def on_new_inactive_document(self, workspace, document):
-        if document.is_latex_document():
-            self.main_window.latex_shortcutsbar.top_icons.remove(document.view.wizard_button)
-
-    def on_show_build_log_state_change(self, workspace, show_build_log):
-        self.main_window.latex_shortcutsbar.button_build_log.set_active(show_build_log)
-
-    def update_shortcutsbar(self, shortcutsbar):
-        document = self.workspace.active_document
-
-        if shortcutsbar.current_bottom != None:
-            shortcutsbar.remove(shortcutsbar.current_bottom)
-        shortcutsbar.current_bottom = document.view.shortcutsbar_bottom
-        shortcutsbar.pack_end(document.view.shortcutsbar_bottom, False, False, 0)
+        show_build_log = self.workspace.get_show_build_log()
+        self.latex_shortcutsbar.button_build_log.set_active(show_build_log)
 
     def on_build_log_button_clicked(self, toggle_button, parameter=None):
         self.workspace.set_show_build_log(toggle_button.get_active())
+
+    def on_find_button_clicked(self, button=None):
+        if button.get_active():
+            self.workspace.actions.start_search()
+        else:
+            self.workspace.actions.stop_search()
+
+    def on_find_replace_button_clicked(self, button=None):
+        if button.get_active():
+            self.workspace.actions.start_search_and_replace()
+        else:
+            self.workspace.actions.stop_search()
 
 

@@ -38,7 +38,7 @@ class PreviewPanelPresenter(object):
 
     def on_document_removed(self, workspace, document):
         if document.is_latex_document():
-            self.notebook.remove(document.preview.view)
+            self.notebook.remove_page(self.notebook.page_num(document.preview.view))
 
     def on_new_active_document(self, workspace, document):
         self.set_preview_document()

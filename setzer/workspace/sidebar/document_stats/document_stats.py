@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import GObject
 
 import os.path
@@ -71,7 +71,7 @@ class DocumentStats(object):
         filenames = {self.document.get_filename()}
         if self.workspace.get_active_document() != None:
             filenames |= {self.workspace.get_active_document().get_filename()}
-        for filename, _ in self.document.get_included_latex_files():
+        for filename, _ in self.document.parser.symbols['included_latex_files']:
             filenames |= {path_helpers.get_abspath(filename, self.document.get_dirname())}
 
         for filename in filenames:
@@ -83,10 +83,14 @@ class DocumentStats(object):
                     self.values[filename]['counts'] = None
 
             else:
-                save_date = os.path.getmtime(filename)
-                if save_date > self.values[filename]['save_date']:
-                    self.values[filename]['save_date'] = save_date
-                    self.count_words(filename)
+                try:
+                    save_date = os.path.getmtime(filename)
+                except FileNotFoundError:
+                    pass
+                else:
+                    if save_date > self.values[filename]['save_date']:
+                        self.values[filename]['save_date'] = save_date
+                        self.count_words(filename)
         return True
 
     def count_words(self, filename):
@@ -105,7 +109,11 @@ class DocumentStats(object):
         process.wait()
 
         with self.values_lock:
-            self.values[filename]['counts'] = process.communicate()[0].decode('utf-8').split(' ')[0].split('+')
+            raw_result = process.communicate()[0].decode('utf-8').split('+')
+            count_0 = raw_result[0].split('\n')[-1]
+            count_1 = raw_result[1]
+            count_2 = raw_result[2].split(' ')[0]
+            self.values[filename]['counts'] = [count_0, count_1, count_2]
             self.texcount_missing = False
 
     #@timer
@@ -123,7 +131,7 @@ class DocumentStats(object):
 
             else:
                 values = [int(value) for value in values]
-                for filename, _ in self.document.get_included_latex_files():
+                for filename, _ in self.document.parser.symbols['included_latex_files']:
                     filename = path_helpers.get_abspath(filename, self.document.get_dirname())
                     with self.values_lock:
                         if filename in self.values:

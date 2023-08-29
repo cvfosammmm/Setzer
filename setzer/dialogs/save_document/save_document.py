@@ -17,60 +17,64 @@
 
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-
-from setzer.dialogs.dialog import Dialog
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk, Gio
 
 import os.path
 
 
-class SaveDocumentDialog(Dialog):
-    ''' File chooser for saving documents '''
+class SaveDocumentDialog(object):
 
     def __init__(self, main_window, workspace):
         self.main_window = main_window
         self.workspace = workspace
+        self.document = None
 
     def run(self, document):
+        self.document = document
         self.setup()
-        pathname = document.get_filename()
+        pathname = self.document.get_filename()
         if pathname != None:
             self.view.set_current_name(os.path.basename(pathname))
-            self.view.set_current_folder(document.get_dirname())
+            self.view.set_current_folder(Gio.File.new_for_path(self.document.get_dirname()))
         else:
-            if document.get_document_type() == 'latex':
+            if self.document.get_document_type() == 'latex':
                 ending = '.tex'
-            elif document.get_document_type() == 'bibtex':
+            elif self.document.get_document_type() == 'bibtex':
                 ending = '.bib'
             else:
                 ending = ''
             self.view.set_current_name(ending)
-        response = self.view.run()
-        if response == Gtk.ResponseType.OK:
-            filename = self.view.get_filename()
-            document.set_filename(filename)
-            document.save_to_disk()
+        self.view.show()
+        self.signal_connection_id = self.view.connect('response', self.process_response)
+
+    def close(self):
+        self.view.hide()
+        self.view.disconnect(self.signal_connection_id)
+        del(self.view)
+
+    def process_response(self, view, response_id):
+        if response_id == Gtk.ResponseType.OK:
+            filename = self.view.get_file().get_path()
+            self.document.set_filename(filename)
+            self.document.save_to_disk()
             self.workspace.update_recently_opened_document(filename)
-            return_value = True
-        else:
-            return_value = False
         self.close()
-        return return_value
+
+    def close(self):
+        self.view.hide()
+        self.view.disconnect(self.signal_connection_id)
+        del(self.view)
 
     def setup(self):
-        self.action = Gtk.FileChooserAction.SAVE
-        self.buttons = (_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Save'), Gtk.ResponseType.OK)
-        self.view = Gtk.FileChooserDialog(_('Save document'), self.main_window, self.action, self.buttons)
+        self.view = Gtk.FileChooserDialog()
+        self.view.set_transient_for(self.main_window)
+        self.view.set_modal(True)
+        self.view.set_action(Gtk.FileChooserAction.SAVE)
+        self.view.add_button(_('_Cancel'), Gtk.ResponseType.CANCEL)
+        button_open = Gtk.Button.new_with_mnemonic(_('_Save'))
+        button_open.get_style_context().add_class('suggested-action')
+        self.view.add_action_widget(button_open, Gtk.ResponseType.OK)
+        self.view.set_title(_('Save document'))
 
-        self.view.set_do_overwrite_confirmation(True)
-
-        headerbar = self.view.get_header_bar()
-        if headerbar != None:
-            for widget in headerbar.get_children():
-                if isinstance(widget, Gtk.Button) and widget.get_label() == _('_Save'):
-                    widget.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
-                    widget.set_can_default(True)
-                    widget.grab_default()
-        
 

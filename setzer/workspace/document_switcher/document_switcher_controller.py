@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk
+
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 
@@ -28,19 +32,19 @@ class DocumentSwitcherController(object):
         self.button = ServiceLocator.get_main_window().headerbar.center_widget
         self.view = self.button.open_docs_popover
 
+        self.click_controller = Gtk.GestureClick()
+        self.click_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.click_controller.set_button(2)
+        self.click_controller.connect('released', self.on_doclist_row_button_release)
+        self.view.document_list.add_controller(self.click_controller)
+
         self.observe_document_switcher_view()
 
     def observe_document_switcher_view(self):
-        self.view.document_list.connect('add', self.on_doclist_row_added)
         self.view.document_list.connect('row-activated', self.on_doclist_row_activated)
-        self.view.document_list.connect('button-release-event', self.on_doclist_row_button_release)
         self.view.connect('closed', self.on_doclist_row_popdown)
         self.view.set_root_document_button.connect('clicked', self.set_selection_mode)
         self.view.unset_root_document_button.connect('clicked', self.unset_root_document)
-
-    def on_doclist_row_added(self, doclist, row, data=None):
-        row.document_close_button.connect('clicked', self.on_doclist_close_clicked, row.document)
-        row.document_close_button.connect('button-release-event', self.on_doclist_close_button_release, row.document)
 
     def on_doclist_row_activated(self, box, row, data=None):
         if self.view.in_selection_mode:
@@ -50,14 +54,11 @@ class DocumentSwitcherController(object):
             self.view.popdown()
             self.workspace.set_active_document(row.document)
 
-    def on_doclist_row_button_release(self, box, event, data=None):
-        if event.button != 2: return False
+    def on_doclist_row_button_release(self, controller, n_press, x, y):
         if self.view.in_selection_mode: return False
 
-        row = box.get_row_at_y(event.y)
-        if row.get_window() != event.window: return False
-
-        row.document_close_button.clicked()
+        row = self.view.document_list.get_row_at_y(y)
+        self.document_switcher.on_close_clicked(row.document_close_button, row.document)
         return True
 
     def on_doclist_row_popdown(self, popover, data=None):
@@ -71,21 +72,5 @@ class DocumentSwitcherController(object):
     def unset_root_document(self, action, parameter=None):
         self.document_switcher.set_mode('normal')
         self.workspace.unset_root_document()
-
-    def on_doclist_close_button_release(self, button_object, event, document):
-        if event.button != 2: return False
-        if self.view.in_selection_mode: return False
-
-        button_object.clicked()
-        return True
-
-    def on_doclist_close_clicked(self, button_object, document):
-        if document.content.get_modified():
-            dialog = DialogLocator.get_dialog('close_confirmation')
-            not_save_to_close = dialog.run([document])['not_save_to_close_documents']
-            if document not in not_save_to_close:
-                self.workspace.remove_document(document)
-        else:
-            self.workspace.remove_document(document)
         
 

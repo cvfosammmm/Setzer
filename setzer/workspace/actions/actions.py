@@ -16,306 +16,239 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-gi.require_version('Gspell', '1')
-gi.require_version('Handy', '1')
-from gi.repository import Gspell
-from gi.repository import GLib, Gio
-from gi.repository import Handy
+gi.require_version('Gtk', '4.0')
+from gi.repository import GLib, Gio, Gtk, Gdk, Pango
 
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
+from setzer.app.font_manager import FontManager
 
 
 class Actions(object):
 
     def __init__(self, workspace):
         self.workspace = workspace
-        main_window = ServiceLocator.get_main_window()
-        settings = ServiceLocator.get_settings()
+        self.main_window = ServiceLocator.get_main_window()
+        self.settings = ServiceLocator.get_settings()
 
-        self.new_latex_document_action = Gio.SimpleAction.new('new-latex-document', None)
-        self.new_bibtex_document_action = Gio.SimpleAction.new('new-bibtex-document', None)
-        self.open_document_dialog_action = Gio.SimpleAction.new('open-document-dialog', None)
-        self.build_action = Gio.SimpleAction.new('build', None)
-        self.save_and_build_action = Gio.SimpleAction.new('save-and-build', None)
-        self.save_action = Gio.SimpleAction.new('save', None)
-        self.save_as_action = Gio.SimpleAction.new('save-as', None)
-        self.save_all_action = Gio.SimpleAction.new('save-all', None)
-        self.save_session_action = Gio.SimpleAction.new('save-session', None)
-        self.restore_session_action = Gio.SimpleAction.new('restore-session', GLib.VariantType('as'))
-        self.find_action = Gio.SimpleAction.new('find', None)
-        self.find_next_action = Gio.SimpleAction.new('find-next', None)
-        self.find_prev_action = Gio.SimpleAction.new('find-prev', None)
-        self.find_replace_action = Gio.SimpleAction.new('find-replace', None)
-        self.close_all_action = Gio.SimpleAction.new('close-all-documents', None)
-        self.close_document_action = Gio.SimpleAction.new('close-active-document', None)
-        self.insert_before_after_action = Gio.SimpleAction.new('insert-before-after', GLib.VariantType('as'))
-        self.insert_symbol_action = Gio.SimpleAction.new('insert-symbol', GLib.VariantType('as'))
-        self.insert_before_document_end_action = Gio.SimpleAction.new('insert-before-document-end', GLib.VariantType('as'))
-        self.insert_after_packages_action = Gio.SimpleAction.new('insert-after-packages', GLib.VariantType('as'))
-        self.document_wizard_action = Gio.SimpleAction.new('show-document-wizard', None)
-        self.create_new_bibtex_entry_action = Gio.SimpleAction.new('create-new-bibtex-entry', None)
-        self.show_previous_bibtex_entries_action = Gio.SimpleAction.new('show-previous-bibtex-entries', None)
-        self.search_online_for_bibtex_entries_action = Gio.SimpleAction.new('search-online-for-bibtex-entries', None)
-        self.include_bibtex_file_action = Gio.SimpleAction.new('include-bibtex-file', None)
-        self.include_latex_file_action = Gio.SimpleAction.new('include-latex-file', None)
-        self.add_remove_packages_dialog_action = Gio.SimpleAction.new('add-remove-packages-dialog', None)
-        self.add_packages_action = Gio.SimpleAction.new('add-packages', GLib.VariantType('as'))
-        self.comment_uncomment_action = Gio.SimpleAction.new('comment-uncomment', None)
-        self.shortcuts_window_action = Gio.SimpleAction.new('show-shortcuts-window', None)
-        self.show_preferences_action = Gio.SimpleAction.new('show-preferences-dialog', None)
-        self.show_about_action = Gio.SimpleAction.new('show-about-dialog', None)
-        self.quit_action = Gio.SimpleAction.new('quit', None)
-        self.show_build_log_action = Gio.SimpleAction.new('show-build-log', None)
-        self.close_build_log_action = Gio.SimpleAction.new('close-build-log', None)
-        sc_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'inline_spellchecking'))
-        self.toggle_spellchecking_action = Gio.SimpleAction.new_stateful('toggle-spellchecking', None, sc_default)
-        self.set_spellchecking_language_action = Gio.SimpleAction.new('set-spellchecking-language', None)
-        self.spellchecking_action = Gio.SimpleAction.new('spellchecking', None)
-        cs_default = GLib.Variant.new_boolean(Handy.StyleManager.get_default().get_dark())
-        self.change_color_scheme_action = Gio.SimpleAction.new_stateful('toggle-dark-mode', None, cs_default)
-        ip_default = GLib.Variant.new_boolean(settings.get_value('preferences', 'invert_pdf'))
-        self.toggle_invert_pdf_action = Gio.SimpleAction.new_stateful('toggle-invert-pdf', None, ip_default)
-        self.zoom_out_action = Gio.SimpleAction.new('zoom-out', None)
-        self.zoom_in_action = Gio.SimpleAction.new('zoom-in', None)
-        self.reset_zoom_action = Gio.SimpleAction.new('reset-zoom', None)
+        self.actions = dict()
+        self.add_action('new-latex-document', self.new_latex_document)
+        self.add_action('new-bibtex-document', self.new_bibtex_document)
+        self.add_action('open-document-dialog', self.open_document_dialog)
+        self.add_action('build', self.build)
+        self.add_action('save-and-build', self.save_and_build)
+        self.add_action('show-build-log', self.show_build_log)
+        self.add_action('close-build-log', self.close_build_log)
+        self.add_action('save', self.save)
+        self.add_action('save-as', self.save_as)
+        self.add_action('save-all', self.save_all)
+        self.add_action('save-session', self.save_session)
+        self.add_action('close-all-documents', self.close_all)
+        self.add_action('close-active-document', self.close_active_document)
 
-        main_window.add_action(self.new_latex_document_action)
-        main_window.add_action(self.new_bibtex_document_action)
-        main_window.add_action(self.open_document_dialog_action)
-        main_window.add_action(self.build_action)
-        main_window.add_action(self.save_and_build_action)
-        main_window.add_action(self.save_action)
-        main_window.add_action(self.save_as_action)
-        main_window.add_action(self.save_all_action)
-        main_window.add_action(self.save_session_action)
-        main_window.add_action(self.restore_session_action)
-        main_window.add_action(self.find_action)
-        main_window.add_action(self.find_next_action)
-        main_window.add_action(self.find_prev_action)
-        main_window.add_action(self.find_replace_action)
-        main_window.add_action(self.close_all_action)
-        main_window.add_action(self.close_document_action)
-        main_window.add_action(self.insert_before_after_action)
-        main_window.add_action(self.insert_symbol_action)
-        main_window.add_action(self.insert_before_document_end_action)
-        main_window.add_action(self.insert_after_packages_action)
-        main_window.add_action(self.document_wizard_action)
-        main_window.add_action(self.create_new_bibtex_entry_action)
-        main_window.add_action(self.show_previous_bibtex_entries_action)
-        main_window.add_action(self.search_online_for_bibtex_entries_action)
-        main_window.add_action(self.include_bibtex_file_action)
-        main_window.add_action(self.include_latex_file_action)
-        main_window.add_action(self.add_remove_packages_dialog_action)
-        main_window.add_action(self.add_packages_action)
-        main_window.add_action(self.comment_uncomment_action)
-        main_window.add_action(self.shortcuts_window_action)
-        main_window.add_action(self.show_preferences_action)
-        main_window.add_action(self.show_about_action)
-        main_window.add_action(self.quit_action)
-        main_window.add_action(self.show_build_log_action)
-        main_window.add_action(self.close_build_log_action)
-        main_window.add_action(self.toggle_spellchecking_action)
-        main_window.add_action(self.set_spellchecking_language_action)
-        main_window.add_action(self.spellchecking_action)
-        main_window.add_action(self.change_color_scheme_action)
-        main_window.add_action(self.toggle_invert_pdf_action)
-        main_window.add_action(self.zoom_out_action)
-        main_window.add_action(self.zoom_in_action)
-        main_window.add_action(self.reset_zoom_action)
+        self.add_action('show-document-wizard', self.start_wizard, None)
+        self.add_action('insert-before-after', self.insert_before_after, GLib.VariantType('as'))
+        self.add_action('insert-symbol', self.insert_symbol, GLib.VariantType('as'))
+        self.add_action('insert-after-packages', self.insert_after_packages, GLib.VariantType('as'))
+        self.add_action('insert-before-document-end', self.insert_before_document_end, GLib.VariantType('as'))
+        self.add_action('add-packages', self.add_packages, GLib.VariantType('as'))
+        self.add_action('include-bibtex-file', self.start_include_bibtex_file_dialog, None)
+        self.add_action('include-latex-file', self.start_include_latex_file_dialog, None)
+        self.add_action('add-remove-packages-dialog', self.start_add_remove_packages_dialog, None)
+        self.add_action('toggle-comment', self.toggle_comment)
+        self.add_action('forward-sync', self.forward_sync)
 
-        self.new_latex_document_action.connect('activate', self.on_new_latex_document_action_activated)
-        self.new_bibtex_document_action.connect('activate', self.on_new_bibtex_document_action_activated)
-        self.open_document_dialog_action.connect('activate', self.on_open_document_dialog_action_activated)
-        self.build_action.connect('activate', self.on_build_action_activated)
-        self.save_and_build_action.connect('activate', self.on_save_and_build_action_activated)
-        self.save_action.connect('activate', self.on_save_button_click)
-        self.save_as_action.connect('activate', self.on_save_as_clicked)
-        self.save_all_action.connect('activate', self.on_save_all_clicked)
-        self.save_session_action.connect('activate', self.on_save_session_clicked)
-        self.restore_session_action.connect('activate', self.on_restore_session_clicked)
-        self.find_action.connect('activate', self.on_menu_find_clicked)
-        self.find_next_action.connect('activate', self.find_next)
-        self.find_prev_action.connect('activate', self.find_prev)
-        self.find_replace_action.connect('activate', self.on_menu_find_replace_clicked)
-        self.close_all_action.connect('activate', self.on_close_all_clicked)
-        self.close_document_action.connect('activate', self.on_close_document_clicked)
-        self.insert_before_after_action.connect('activate', self.insert_before_after)
-        self.insert_symbol_action.connect('activate', self.insert_symbol)
-        self.insert_before_document_end_action.connect('activate', self.insert_before_document_end)
-        self.insert_after_packages_action.connect('activate', self.insert_after_packages)
-        self.document_wizard_action.connect('activate', self.start_wizard)
-        self.include_bibtex_file_action.connect('activate', self.start_include_bibtex_file_dialog)
-        self.include_latex_file_action.connect('activate', self.start_include_latex_file_dialog)
-        self.add_remove_packages_dialog_action.connect('activate', self.start_add_remove_packages_dialog)
-        self.add_packages_action.connect('activate', self.add_packages)
-        self.comment_uncomment_action.connect('activate', self.comment_uncomment)
-        self.create_new_bibtex_entry_action.connect('activate', self.start_create_new_bibtex_entry_dialog)
-        self.show_previous_bibtex_entries_action.connect('activate', self.start_show_previous_bibtex_entries_dialog)
-        self.search_online_for_bibtex_entries_action.connect('activate', self.start_search_online_for_bibtex_entries_dialog)
-        self.shortcuts_window_action.connect('activate', self.show_shortcuts_window)
-        self.show_preferences_action.connect('activate', self.show_preferences_dialog)
-        self.show_about_action.connect('activate', self.show_about_dialog)
-        self.show_build_log_action.connect('activate', self.show_build_log)
-        self.close_build_log_action.connect('activate', self.close_build_log)
-        self.toggle_spellchecking_action.connect('activate', self.on_spellchecking_toggle_toggled)
-        self.set_spellchecking_language_action.connect('activate', self.start_spellchecking_language_dialog)
-        self.spellchecking_action.connect('activate', self.start_spellchecking_dialog)
-        self.change_color_scheme_action.connect('activate', self.on_color_scheme_change_changed)
-        self.toggle_invert_pdf_action.connect('activate', self.on_invert_pdf_toggle_toggled)
-        self.zoom_out_action.connect('activate', self.on_zoom_out)
-        self.zoom_in_action.connect('activate', self.on_zoom_in)
-        self.reset_zoom_action.connect('activate', self.on_reset_zoom)
+        self.add_action('start-search', self.start_search)
+        self.add_action('start-search-and-replace', self.start_search_and_replace)
+        self.add_action('find-next', self.find_next)
+        self.add_action('find-previous', self.find_previous)
+        self.add_action('stop-search', self.stop_search)
 
-        self.font_manager = ServiceLocator.get_font_manager()
-        self.update_zoom_actions()
+        self.add_action('cut', self.cut)
+        self.add_action('copy', self.copy)
+        self.add_action('paste', self.paste)
+        self.add_action('delete-selection', self.delete_selection)
+        self.add_action('select-all', self.select_all)
+        self.add_action('undo', self.undo)
+        self.add_action('redo', self.redo)
 
+        self.add_action('zoom-in', self.zoom_in)
+        self.add_action('zoom-out', self.zoom_out)
+        self.add_action('reset-zoom', self.reset_zoom)
+        self.add_action('show-preferences-dialog', self.show_preferences_dialog)
+        self.add_action('show-shortcuts-dialog', self.show_shortcuts_dialog)
+        self.add_action('show-about-dialog', self.show_about_dialog)
+
+        self.actions['quit'] = Gio.SimpleAction.new('quit', None)
+        self.main_window.add_action(self.actions['quit'])
+
+        self.workspace.connect('new_document', self.on_new_document)
         self.workspace.connect('document_removed', self.on_document_removed)
         self.workspace.connect('new_inactive_document', self.on_new_inactive_document)
         self.workspace.connect('new_active_document', self.on_new_active_document)
-        self.font_manager.connect('font_string_changed', self.on_font_string_changed)
 
-    def _assert_has_active_document(original_function):
-        def new_function(self, *args, **kwargs):
-            if self.workspace.get_active_document() != None:
-                return original_function(self, *args, **kwargs)
-        return new_function    
+        self.update_actions()
+
+    def add_action(self, name, callback, parameter=None):
+        self.actions[name] = Gio.SimpleAction.new(name, parameter)
+        self.main_window.add_action(self.actions[name])
+        self.actions[name].connect('activate', callback)
+
+    def on_new_document(self, workspace, document):
+        if document.is_latex_document():
+            document.build_system.connect('can_sync_changed', self.on_can_sync_changed)
+        self.update_actions()
 
     def on_document_removed(self, workspace, document):
-        if self.workspace.active_document == None:
-            self.activate_welcome_screen_mode()
-            self.update_document_actions(None)
-            self.update_save_actions(None)
+        if document.is_latex_document():
+            document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
+        self.update_actions()
 
     def on_new_inactive_document(self, workspace, document):
-        document.content.disconnect('modified_changed', self.on_modified_changed)
+        document.disconnect('modified_changed', self.on_modified_changed)
+        document.source_buffer.disconnect_by_func(self.on_undo_changed)
+        document.source_buffer.disconnect_by_func(self.on_has_selection_changed)
 
     def on_new_active_document(self, workspace, document):
-        self.activate_document_mode()
-        self.update_document_actions(document)
-        self.update_save_actions(document)
-        document.content.connect('modified_changed', self.on_modified_changed)
+        self.update_actions()
+        document.connect('modified_changed', self.on_modified_changed)
+        document.source_buffer.connect('notify::can-undo', self.on_undo_changed)
+        document.source_buffer.connect('notify::has-selection', self.on_has_selection_changed)
 
-    def on_font_string_changed(self, font_manager):
-        self.update_zoom_actions()
+    def on_modified_changed(self, document):
+        self.update_actions()
 
-    def on_modified_changed(self, content):
-        self.update_save_actions(self.workspace.active_document)
+    def on_can_sync_changed(self, document, can_sync):
+        self.update_actions()
 
-    def activate_welcome_screen_mode(self):
-        self.save_all_action.set_enabled(False)
-        self.spellchecking_action.set_enabled(False)
-        self.add_remove_packages_dialog_action.set_enabled(False)
+    def on_undo_changed(self, buffer, can_undo):
+        self.update_actions()
 
-    def activate_document_mode(self):
-        self.enable_spellchecking_action()
-        active_document = self.workspace.get_active_document()
-        if active_document.is_latex_document():
-            self.add_remove_packages_dialog_action.set_enabled(True)
+    def on_redo_changed(self, buffer, can_redo):
+        self.update_actions()
 
-    def enable_spellchecking_action(self):
-        default_language = Gspell.Language.get_default()
-        if default_language != None:
-            self.spellchecking_action.set_enabled(True)
+    def on_has_selection_changed(self, buffer, has_selection):
+        self.update_actions()
 
-    def update_zoom_actions(self):
-        normal_font_size = self.font_manager.get_normal_font_size_in_points()
-        current_font_size = self.font_manager.get_font_size_in_points()
-        self.zoom_out_action.set_enabled(current_font_size / 1.1 > 6)
-        self.zoom_in_action.set_enabled(current_font_size * 1.1 < 24)
-        self.reset_zoom_action.set_enabled(current_font_size != normal_font_size)
+    def update_actions(self):
+        document = self.workspace.get_active_document()
+        document_active = document != None
+        document_active_is_latex = document_active and document.is_latex_document()
+        enable_save = document_active and (document.source_buffer.get_modified() or document.get_filename() == None)
+        has_selection = document_active and document.source_buffer.get_has_selection()
+        if self.workspace.root_document != None: sync_document = self.workspace.root_document
+        else: sync_document = document
+        can_sync = sync_document != None and sync_document.is_latex_document() and sync_document.build_system.can_sync
 
-    def update_save_actions(self, document):
-        if document == None:
-            self.save_action.set_enabled(False)
-            self.save_all_action.set_enabled(False)
-        else:
-            if document.content.get_modified():
-                self.save_action.set_enabled(True)
-            elif document.get_filename() == None:
-                self.save_action.set_enabled(True)
-            else:
-                self.save_action.set_enabled(False)
+        self.actions['close-active-document'].set_enabled(document_active)
+        self.actions['close-all-documents'].set_enabled(document_active)
+        self.actions['save-session'].set_enabled(document_active)
+        self.actions['save'].set_enabled(enable_save)
+        self.actions['save-as'].set_enabled(document_active)
+        self.actions['save-all'].set_enabled(self.workspace.get_unsaved_documents() != None)
+        self.actions['add-remove-packages-dialog'].set_enabled(document_active_is_latex)
+        self.actions['redo'].set_enabled(document_active and document.source_buffer.get_can_redo())
+        self.actions['undo'].set_enabled(document_active and document.source_buffer.get_can_undo())
+        self.actions['cut'].set_enabled(has_selection)
+        self.actions['copy'].set_enabled(has_selection)
+        self.actions['delete-selection'].set_enabled(has_selection)
+        self.actions['start-search'].set_enabled(document_active)
+        self.actions['start-search-and-replace'].set_enabled(document_active)
+        self.actions['find-next'].set_enabled(document_active)
+        self.actions['find-previous'].set_enabled(document_active)
+        self.actions['insert-before-after'].set_enabled(document_active_is_latex)
+        self.actions['insert-symbol'].set_enabled(document_active_is_latex)
+        self.actions['insert-before-document-end'].set_enabled(document_active_is_latex)
+        self.actions['insert-after-packages'].set_enabled(document_active_is_latex)
+        self.actions['add-packages'].set_enabled(document_active_is_latex)
+        self.actions['show-document-wizard'].set_enabled(document_active_is_latex)
+        self.actions['include-bibtex-file'].set_enabled(document_active_is_latex)
+        self.actions['include-latex-file'].set_enabled(document_active_is_latex)
+        self.actions['add-remove-packages-dialog'].set_enabled(document_active_is_latex)
+        self.actions['toggle-comment'].set_enabled(document_active_is_latex)
+        self.actions['forward-sync'].set_enabled(can_sync)
+        self.actions['show-build-log'].set_enabled(document_active_is_latex)
+        self.actions['close-build-log'].set_enabled(document_active_is_latex)
 
-        if self.workspace.get_unsaved_documents() != None:
-            self.save_all_action.set_enabled(True)
-        else:
-            self.save_all_action.set_enabled(False)
-
-    def update_document_actions(self, document):
-        if document != None:
-            value = True
-        else:
-            value = False
-
-        self.save_as_action.set_enabled(value)
-        self.find_action.set_enabled(value)
-        self.find_next_action.set_enabled(value)
-        self.find_prev_action.set_enabled(value)
-        self.find_replace_action.set_enabled(value)
-        self.close_document_action.set_enabled(value)
-        self.close_all_action.set_enabled(value)
-        self.save_session_action.set_enabled(value)
-
-        if document != None and document.is_latex_document():
-            value = True
-        else:
-            value = False
-
-        self.insert_before_after_action.set_enabled(value)
-        self.insert_symbol_action.set_enabled(value)
-        self.insert_before_document_end_action.set_enabled(value)
-        self.include_bibtex_file_action.set_enabled(value)
-        self.include_latex_file_action.set_enabled(value)
-        self.add_packages_action.set_enabled(value)
-        self.comment_uncomment_action.set_enabled(value)
-        self.document_wizard_action.set_enabled(value)
-        self.show_build_log_action.set_enabled(value)
-        self.close_build_log_action.set_enabled(value)
-
-    def on_new_latex_document_action_activated(self, action=None, parameter=None):
+    def new_latex_document(self, action=None, parameter=None):
         document = self.workspace.create_latex_document()
         self.workspace.add_document(document)
         self.workspace.set_active_document(document)
 
-    def on_new_bibtex_document_action_activated(self, action=None, parameter=None):
+    def new_bibtex_document(self, action=None, parameter=None):
         document = self.workspace.create_bibtex_document()
         self.workspace.add_document(document)
         self.workspace.set_active_document(document)
 
-    def on_open_document_dialog_action_activated(self, action=None, parameter=None):
-        filenames = DialogLocator.get_dialog('open_document').run()
-        if filenames is not None:
-            for filename in filenames:
-                self.workspace.open_document_by_filename(filename)
+    def open_document_dialog(self, action=None, parameter=None):
+        DialogLocator.get_dialog('open_document').run()
 
-    @_assert_has_active_document
-    def on_save_and_build_action_activated(self, action=None, parameter=None):
-        self.on_save_button_click()
-        self.on_build_action_activated()
+    def save_and_build(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
 
-    @_assert_has_active_document
-    def on_build_action_activated(self, action=None, parameter=None):
         document = self.workspace.get_root_or_active_latex_document()
-        if document != None:
-            document.build_widget.build_document_request()
+        active_document = ServiceLocator.get_workspace().get_active_document()
+        if document == None or active_document == None: return
 
-    @_assert_has_active_document
-    def on_save_button_click(self, action=None, parameter=None):
+        if document.filename == None:
+            dialog = DialogLocator.get_dialog('build_save')
+            dialog.run(document, self.build_save_cb)
+        else:
+            self.save()
+            document.build_system.build_and_forward_sync(active_document)
+
+    def build(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
+        document = self.workspace.get_root_or_active_latex_document()
+        active_document = ServiceLocator.get_workspace().get_active_document()
+        if document == None or active_document == None: return
+
+        if document.filename == None:
+            dialog = DialogLocator.get_dialog('build_save')
+            dialog.run(document, self.build_save_cb)
+        else:
+            document.build_system.build_and_forward_sync(active_document)
+
+    def build_save_cb(self, response_id):
+        if response_id == Gtk.ResponseType.YES:
+            self.save_as()
+
+    def forward_sync(self, action=None, parameter=''):
+        active_document = self.workspace.get_active_document()
+        if active_document == None: return
+
+        if self.workspace.root_document != None: sync_document = self.workspace.root_document
+        else: sync_document = active_document
+        if not sync_document.is_latex_document(): return
+        if not sync_document.build_system.can_sync: return
+
+        sync_document.build_system.forward_sync(active_document)
+
+    def show_build_log(self, action=None, parameter=''):
+        self.workspace.set_show_build_log(True)
+
+    def close_build_log(self, action=None, parameter=''):
+        self.workspace.set_show_build_log(False)
+
+    def save(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         active_document = self.workspace.get_active_document()
         if active_document.filename == None:
-            self.on_save_as_clicked()
+            self.save_as()
         else:
             active_document.save_to_disk()
 
-    @_assert_has_active_document
-    def on_save_as_clicked(self, action=None, parameter=None):
+    def save_as(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('save_document').run(document)
-        
-    @_assert_has_active_document
-    def on_save_all_clicked(self, action=None, parameter=None):
+
+    def save_all(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         active_document = self.workspace.get_active_document()
         return_to_active_document = False
         documents = self.workspace.get_unsaved_documents()
@@ -330,197 +263,270 @@ class Actions(object):
             if return_to_active_document == True:
                 self.workspace.set_active_document(document)
 
-    @_assert_has_active_document
-    def on_save_session_clicked(self, action=None, parameter=None):
+    def save_session(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         DialogLocator.get_dialog('save_session').run()
 
-    def on_restore_session_clicked(self, action=None, parameter=None):
-        parameter = parameter.unpack()[0]
-        if parameter == '':
-            filename = DialogLocator.get_dialog('open_session').run()
-            if filename == None: return
-        else:
-            filename = parameter
+    def close_all(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
 
-        active_document = self.workspace.get_active_document()
         documents = self.workspace.get_all_documents()
         unsaved_documents = self.workspace.get_unsaved_documents()
         dialog = DialogLocator.get_dialog('close_confirmation')
-        not_save_to_close_documents = dialog.run(unsaved_documents)['not_save_to_close_documents']
+        dialog.run({'unsaved_documents': unsaved_documents, 'documents': documents}, self.close_all_callback)
 
-        if len(not_save_to_close_documents) == 0:
-            if documents != None:
-                for document in documents:
-                    self.workspace.remove_document(document)
-            self.workspace.load_documents_from_session_file(filename)
-
-    @_assert_has_active_document
-    def on_menu_find_clicked(self, action=None, parameter=None):
-        active_document = self.workspace.get_active_document()
-        if active_document.view.shortcutsbar_bottom.button_find.get_active():
-            GLib.idle_add(active_document.search.search_entry_grab_focus, None)
-        else:
-            active_document.view.shortcutsbar_bottom.button_find.set_active(True)
-
-    @_assert_has_active_document
-    def find_next(self, action=None, parameter=None):
-        active_document = self.workspace.get_active_document()
-        if active_document.view.source_view.has_focus() or active_document.view.search_bar.entry.has_focus() or active_document.view.search_bar.replace_entry.has_focus():
-            active_document.view.search_bar.entry.emit('next-match')
-
-    @_assert_has_active_document
-    def find_prev(self, action=None, parameter=None):
-        active_document = self.workspace.get_active_document()
-        if active_document.view.source_view.has_focus() or active_document.view.search_bar.entry.has_focus() or active_document.view.search_bar.replace_entry.has_focus():
-            active_document.view.search_bar.entry.emit('previous-match')
-
-    @_assert_has_active_document
-    def on_menu_find_replace_clicked(self, action=None, parameter=None):
-        active_document = self.workspace.get_active_document()
-        if active_document.view.shortcutsbar_bottom.button_find_and_replace.get_active():
-            GLib.idle_add(active_document.search.search_entry_grab_focus, None)
-        else:
-            active_document.view.shortcutsbar_bottom.button_find_and_replace.set_active(True)
-
-    @_assert_has_active_document
-    def on_close_all_clicked(self, action=None, parameter=None):
-        active_document = self.workspace.get_active_document()
-        documents = self.workspace.get_all_documents()
-        unsaved_documents = self.workspace.get_unsaved_documents()
-        dialog = DialogLocator.get_dialog('close_confirmation')
-        not_save_to_close_documents = dialog.run(unsaved_documents)['not_save_to_close_documents']
-
-        for document in documents:
+    def close_all_callback(self, parameters, response):
+        not_save_to_close_documents = response['not_save_to_close_documents']
+        for document in parameters['documents']:
             if document not in not_save_to_close_documents:
                 self.workspace.remove_document(document)
 
-    def on_close_document_clicked(self, action=None, parameter=None):
+    def close_active_document(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         document = self.workspace.get_active_document()
-        if document.content.get_modified():
+        if document.source_buffer.get_modified():
             dialog = DialogLocator.get_dialog('close_confirmation')
-            not_save_to_close = dialog.run([document])['not_save_to_close_documents']
-            if document not in not_save_to_close:
-                self.workspace.remove_document(document)
+            dialog.run({'unsaved_documents': [document], 'document': document}, self.close_document_callback)
         else:
             self.workspace.remove_document(document)
 
-    @_assert_has_active_document
-    def insert_before_after(self, action, parameter):
-        active_document = self.workspace.get_active_document()
-        active_document.content.insert_before_after(parameter[0], parameter[1])
-        active_document.content.scroll_cursor_onscreen()
+    def close_document_callback(self, parameters, response):
+        not_save_to_close = response['not_save_to_close_documents']
+        if parameters['document'] not in not_save_to_close:
+            self.workspace.remove_document(parameters['document'])
 
-    @_assert_has_active_document
-    def insert_symbol(self, action, parameter):
-        self.workspace.get_active_document().content.insert_text_at_cursor_indent_and_select_dot(parameter[0])
-        self.workspace.get_active_document().content.scroll_cursor_onscreen()
+    def start_wizard(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
 
-    @_assert_has_active_document
-    def insert_before_document_end(self, action, parameter):
-        document = self.workspace.get_active_document()
-        document.content.insert_before_document_end(parameter[0])
-        document.content.scroll_cursor_onscreen()
-
-    @_assert_has_active_document
-    def insert_after_packages(self, action, parameter):
-        document = self.workspace.get_active_document()
-        document.content.insert_text_after_packages_if_possible(parameter[0])
-        document.content.scroll_cursor_onscreen()
-
-    @_assert_has_active_document
-    def start_wizard(self, action, parameter=None):
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('document_wizard').run(document)
 
-    @_assert_has_active_document
-    def start_include_bibtex_file_dialog(self, action, parameter=None):
+    def insert_before_after(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+        if parameter == None: return
+
+        document = self.workspace.get_active_document()
+        document.source_buffer.begin_user_action()
+
+        before, after = parameter[0], parameter[1]
+        bounds = document.source_buffer.get_selection_bounds()
+        if len(bounds) > 1:
+            text = before + document.source_buffer.get_text(*bounds, False) + after
+            text = document.replace_tabs_with_spaces_if_set(text)
+
+            document.source_buffer.delete_selection(False, False)
+
+            insert_iter = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
+            text = document.indent_text_with_whitespace_at_iter(text, insert_iter)
+
+            document.source_buffer.insert_at_cursor(text)
+        else:
+            text = before + '•' + after
+            text = document.replace_tabs_with_spaces_if_set(text)
+            insert_iter = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
+            text = document.indent_text_with_whitespace_at_iter(text, insert_iter)
+            document.source_buffer.insert_at_cursor(text)
+
+        document.select_first_dot_around_cursor(offset_before=len(text), offset_after=0)
+        document.source_buffer.end_user_action()
+
+    def insert_symbol(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+        if parameter == None: return
+
+        document = self.workspace.get_active_document()
+        document.source_buffer.begin_user_action()
+
+        text = parameter[0]
+        text = document.replace_tabs_with_spaces_if_set(text)
+        insert_iter = document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert())
+        text = document.indent_text_with_whitespace_at_iter(text, insert_iter)
+
+        bounds = document.source_buffer.get_selection_bounds()
+
+        if len(bounds) > 1:
+            document.source_buffer.delete_selection(False, False)
+
+        document.source_buffer.insert_at_cursor(text)
+        document.select_first_dot_around_cursor(offset_before=len(text), offset_after=0)
+        document.source_buffer.end_user_action()
+
+    def insert_after_packages(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
+        document = self.workspace.get_active_document()
+        document.insert_text_after_packages_if_possible(parameter[0])
+        document.select_first_dot_around_cursor(offset_before=len(parameter[0]), offset_after=0)
+        document.scroll_cursor_onscreen()
+
+    def insert_before_document_end(self, action, parameter):
+        if self.workspace.get_active_document() == None: return
+
+        document = self.workspace.get_active_document()
+        document.insert_before_document_end(parameter[0])
+        document.scroll_cursor_onscreen()
+
+    def add_packages(self, action, parameter):
+        if self.workspace.get_active_document() == None: return
+        if parameter == None: return
+
+        document = self.workspace.get_active_document()
+        if document.is_latex_document():
+            document.add_packages(parameter)
+            document.scroll_cursor_onscreen()
+
+    def start_include_bibtex_file_dialog(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('include_bibtex_file').run(document)
 
-    @_assert_has_active_document
-    def start_include_latex_file_dialog(self, action, parameter=None):
+    def start_include_latex_file_dialog(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('include_latex_file').run(document)
 
-    @_assert_has_active_document
-    def start_add_remove_packages_dialog(self, action, parameter=None):
+    def start_add_remove_packages_dialog(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('add_remove_packages').run(document)
 
-    @_assert_has_active_document
-    def add_packages(self, action, parameter):
-        if parameter == None: return
-        document = self.workspace.get_active_document()
-        if document.is_latex_document():
-            document.content.add_packages(parameter)
-            document.content.scroll_cursor_onscreen()
+    def toggle_comment(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
 
-    @_assert_has_active_document
-    def comment_uncomment(self, action, parameter=None):
         document = self.workspace.get_active_document()
-        document.content.comment_uncomment()
+        document.source_buffer.begin_user_action()
 
-    @_assert_has_active_document
-    def start_create_new_bibtex_entry_dialog(self, action, parameter=None):
+        bounds = document.source_buffer.get_selection_bounds()
+
+        if len(bounds) > 1:
+            end = (bounds[1].get_line() + 1) if (bounds[1].get_line_index() > 0) else bounds[1].get_line()
+            line_numbers = list(range(bounds[0].get_line(), end))
+        else:
+            line_numbers = [document.source_buffer.get_iter_at_mark(document.source_buffer.get_insert()).get_line()]
+
+        do_comment = False
+        for line_number in line_numbers:
+            line = document.get_line(line_number)
+            if not line.lstrip().startswith('%'):
+                do_comment = True
+
+        if do_comment:
+            for line_number in line_numbers:
+                found, line_iter = document.source_buffer.get_iter_at_line(line_number)
+                document.source_buffer.insert(line_iter, '%')
+        else:
+            for line_number in line_numbers:
+                line = document.get_line(line_number)
+                offset = len(line) - len(line.lstrip())
+                found, start = document.source_buffer.get_iter_at_line(line_number)
+                start.forward_chars(offset)
+                end = start.copy()
+                end.forward_char()
+                document.source_buffer.delete(start, end)
+
+        document.source_buffer.end_user_action()
+
+    def start_search(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+        if not self.workspace.get_active_document().is_latex_document(): return
+
+        self.workspace.get_active_document().search.set_mode_search()
+
+    def start_search_and_replace(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+        if not self.workspace.get_active_document().is_latex_document(): return
+
+        self.workspace.get_active_document().search.set_mode_replace()
+
+    def find_next(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+        if not self.workspace.get_active_document().is_latex_document(): return
+
+        self.workspace.get_active_document().search.on_search_next_match()
+
+    def find_previous(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+        if not self.workspace.get_active_document().is_latex_document(): return
+
+        self.workspace.get_active_document().search.on_search_previous_match()
+
+    def stop_search(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+        if not self.workspace.get_active_document().is_latex_document(): return
+
+        self.workspace.get_active_document().search.hide_search_bar()
+
+    def cut(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
+        self.copy()
+        self.workspace.get_active_document().delete_selection()
+
+    def copy(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
         document = self.workspace.get_active_document()
-        DialogLocator.get_dialog('bibtex_wizard').run('new_entry', document)
+        text = document.get_selected_text()
+        if text != None:
+            clipboard = document.source_view.get_clipboard()
+            clipboard.set(text)
 
-    @_assert_has_active_document
-    def start_show_previous_bibtex_entries_dialog(self, action, parameter=None):
-        document = self.workspace.get_active_document()
-        DialogLocator.get_dialog('bibtex_wizard').run('previous_entries', document)
+    def paste(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
 
-    @_assert_has_active_document
-    def start_search_online_for_bibtex_entries_dialog(self, action, parameter=None):
-        document = self.workspace.get_active_document()
-        DialogLocator.get_dialog('bibtex_wizard').run('search_online', document)
+        self.workspace.get_active_document().source_view.emit('paste-clipboard')
 
-    def show_shortcuts_window(self, action, parameter=''):
-        DialogLocator.get_dialog('keyboard_shortcuts').run()
+    def delete_selection(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
+        self.workspace.get_active_document().delete_selection()
+
+    def select_all(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
+        self.workspace.get_active_document().select_all()
+
+    def undo(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
+        self.workspace.get_active_document().source_buffer.undo()
+
+    def redo(self, action=None, parameter=None):
+        if self.workspace.get_active_document() == None: return
+
+        self.workspace.get_active_document().source_buffer.redo()
+
+    def zoom_in(self, action=None, parameter=''):
+        font_desc = Pango.FontDescription.from_string(FontManager.font_string)
+        font_desc.set_size(min(font_desc.get_size() * 1.1, 24 * Pango.SCALE))
+        FontManager.font_string = font_desc.to_string()
+        FontManager.propagate_font_setting()
+
+    def zoom_out(self, action=None, parameter=''):
+        font_desc = Pango.FontDescription.from_string(FontManager.font_string)
+        font_desc.set_size(max(font_desc.get_size() / 1.1, 6 * Pango.SCALE))
+        FontManager.font_string = font_desc.to_string()
+        FontManager.propagate_font_setting()
+
+    def reset_zoom(self, action=None, parameter=''):
+        if self.settings.get_value('preferences', 'use_system_font'):
+            FontManager.font_string = FontManager.default_font_string
+        else:
+            FontManager.font_string = self.settings.get_value('preferences', 'font_string')
+        FontManager.propagate_font_setting()
 
     def show_preferences_dialog(self, action=None, parameter=''):
         DialogLocator.get_dialog('preferences').run()
 
-    def show_about_dialog(self, action, parameter=''):
+    def show_shortcuts_dialog(self, action=None, parameter=''):
+        DialogLocator.get_dialog('keyboard_shortcuts').run()
+
+    def show_about_dialog(self, action=None, parameter=''):
         DialogLocator.get_dialog('about').run()
-
-    def show_build_log(self, action, parameter=''):
-        self.workspace.set_show_build_log(True)
-
-    def close_build_log(self, action, parameter=''):
-        self.workspace.set_show_build_log(False)
-
-    def on_spellchecking_toggle_toggled(self, action, parameter=None):
-        new_state = not action.get_state().get_boolean()
-        action.set_state(GLib.Variant.new_boolean(new_state))
-        self.workspace.set_inline_spellchecking(new_state)
-
-    def start_spellchecking_language_dialog(self, action, parameter=None):
-        DialogLocator.get_dialog('spellchecking_language').run()
-
-    def start_spellchecking_dialog(self, action, parameter=None):
-        DialogLocator.get_dialog('spellchecking').run()
-
-    def on_color_scheme_change_changed(self, action, parameter=None):
-        new_state = not action.get_state().get_boolean()
-        action.set_state(GLib.Variant.new_boolean(new_state))
-        if new_state:
-            self.workspace.set_color_scheme('force_dark')
-        else:
-            self.workspace.set_color_scheme('default')
-
-    def on_invert_pdf_toggle_toggled(self, action, parameter=None):
-        new_state = not action.get_state().get_boolean()
-        action.set_state(GLib.Variant.new_boolean(new_state))
-        self.workspace.set_invert_pdf(new_state)
-
-    def on_zoom_out(self, widget=None, event=None):
-        ServiceLocator.get_font_manager().zoom_out()
-
-    def on_zoom_in(self, widget=None, event=None):
-        ServiceLocator.get_font_manager().zoom_in()
-
-    def on_reset_zoom(self, widget=None, event=None):
-        ServiceLocator.get_font_manager().reset_zoom()
 
 

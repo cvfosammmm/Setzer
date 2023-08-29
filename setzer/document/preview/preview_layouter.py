@@ -31,9 +31,9 @@ class PreviewLayouter(Observable):
 
             layout = PreviewLayout(self.view.get_scale_factor())
             layout.scale_factor = self.preview.zoom_manager.get_zoom_level() * layout.hidpi_factor
-            layout.page_width = int(round(layout.scale_factor * self.preview.page_width))
-            layout.page_height = int(layout.scale_factor * self.preview.page_height)
-            layout.page_gap = int(layout.hidpi_factor * 10)
+            layout.page_width = layout.scale_factor * self.preview.page_width
+            layout.page_height = layout.scale_factor * self.preview.page_height
+            layout.page_gap = layout.hidpi_factor * 10
             layout.border_width = 1
             layout.canvas_width = layout.page_width + 2 * layout.get_horizontal_margin(window_width)
             layout.canvas_height = self.preview.poppler_document.get_n_pages() * (layout.page_height + layout.page_gap) - layout.page_gap

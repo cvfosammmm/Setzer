@@ -16,65 +16,36 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-gi.require_version('Handy', '1')
+gi.require_version('Gtk', '4.0')
+gi.require_version('Adw', '1')
 from gi.repository import Gtk
 from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import Handy
+from gi.repository import Adw
 
-import sys
-import gettext
-import argparse
-import os.path
+import sys, gettext, argparse, os.path
 
 from setzer.workspace.workspace import Workspace
 import setzer.workspace.workspace_viewgtk as view
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
+from setzer.app.color_manager import ColorManager
+from setzer.app.font_manager import FontManager
+from setzer.app.latex_db import LaTeXDB
+from setzer.settings.document_settings import DocumentSettings
+from setzer.helpers.timer import timer
 
 
-class MainApplicationController(Gtk.Application):
+class MainApplicationController(Adw.Application):
 
     def __init__(self):
-        Gtk.Application.__init__(self, application_id='org.cvfosammmm.Setzer', flags=Gio.ApplicationFlags.HANDLES_OPEN)
+        Adw.Application.__init__(self, application_id='org.cvfosammmm.Setzer', flags=Gio.ApplicationFlags.HANDLES_OPEN)
 
-    def do_startup(self):
-        Gtk.Application.do_startup(self)
         self.is_active = False
-
-        # setup gettext
-        gettext.install('setzer', names=('ngettext',), localedir='@localedir_path@')
-
-        # get settings
-        self.settings = ServiceLocator.get_settings()
-        cs_default = self.settings.get_value('preferences', 'color_scheme')
-        if cs_default == 'force_light':
-            cs_default = Handy.ColorScheme.FORCE_LIGHT
-        elif cs_default == 'force_dark':
-            cs_default = Handy.ColorScheme.FORCE_DARK
-        else:
-            cs_default = Handy.ColorScheme.PREFER_LIGHT
-        Handy.StyleManager.get_default().set_color_scheme(cs_default)
-
-        # init static variables
-        ServiceLocator.set_setzer_version('@setzer_version@')
-        ServiceLocator.set_resources_path('@resources_path@')
-        ServiceLocator.set_app_icons_path('@app_icons_path@')
-        resources_path = ServiceLocator.get_resources_path()
-        app_icons_path = ServiceLocator.get_app_icons_path()
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), os.path.join(resources_path, 'icons'))
-        for folder in ['arrows', 'greek_letters', 'misc_math', 'misc_text', 'operators', 'relations']:
-            path = os.path.join(resources_path, 'symbols', folder)
-            Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), path)
-        Gtk.IconTheme.append_search_path(Gtk.IconTheme.get_default(), app_icons_path)
-
-        # init main window, model, dialogs
-        self.main_window = view.MainWindow(self)
-        ServiceLocator.set_main_window(self.main_window)
 
     def do_open(self, files, number_of_files, hint=""):
         if not self.is_active:
+            Adw.Application.do_activate(self)
+
             self.activate()
             self.is_active = True
 
@@ -108,13 +79,42 @@ class MainApplicationController(Gtk.Application):
 
     def do_activate(self):
         if not self.is_active:
+            Adw.Application.do_activate(self)
+
             self.activate()
             self.is_active = True
 
+    @timer
     def activate(self):
+        # setup gettext
+        gettext.install('setzer', names=('ngettext',), localedir='@localedir_path@')
+
+        # get settings
+        self.settings = ServiceLocator.get_settings()
+
+        # init static variables
+        ServiceLocator.set_setzer_version('@setzer_version@')
+        ServiceLocator.set_resources_path('@resources_path@')
+        ServiceLocator.set_app_icons_path('@app_icons_path@')
+        resources_path = ServiceLocator.get_resources_path()
+        app_icons_path = ServiceLocator.get_app_icons_path()
+
+        # init main window, model, dialogs
+        self.main_window = view.MainWindow(self)
+
+        icon_theme = Gtk.IconTheme.get_for_display(self.main_window.get_display())
+        icon_theme.add_search_path(os.path.join(resources_path, 'icons'))
+        icon_theme.add_search_path(app_icons_path)
+        for folder in ['arrows', 'greek_letters', 'misc_math', 'misc_text', 'operators', 'relations']:
+            icon_theme.add_search_path(os.path.join(resources_path, 'symbols', folder))
+
+        ServiceLocator.set_main_window(self.main_window)
+        ColorManager.init(self.main_window)
+        FontManager.init(self.main_window)
+        LaTeXDB.init(resources_path)
+
         self.workspace = Workspace()
         ServiceLocator.set_workspace(self.workspace)
-        ServiceLocator.init_autocomplete_provider(self.workspace)
         DialogLocator.init_dialogs(self.main_window, self.workspace)
 
         # init view
@@ -127,63 +127,27 @@ class MainApplicationController(Gtk.Application):
         self.main_window.current_width = self.settings.get_value('window_state', 'width')
         self.main_window.current_height = self.settings.get_value('window_state', 'height')
         self.first_window_state_event = True
-        self.main_window.show_all()
+        self.main_window.show()
 
-        self.color_manager = ServiceLocator.get_color_manager()
-        self.fg_color = self.color_manager.get_theme_color('theme_fg_color')
-        self.bg_color = self.color_manager.get_theme_color('theme_bg_color')
-
-        self.main_window.connect('size-allocate', self.on_window_size_allocate)
-        self.main_window.connect('notify::is-maximized', self.on_window_maximize_event)
-        self.main_window.connect('delete-event', self.on_window_close)
-        self.main_window.connect('draw', self.on_window_draw)
+        self.main_window.connect('close-request', self.on_window_close)
 
         # init controller
         self.workspace.init_workspace_controller()
-        self.workspace.actions.quit_action.connect('activate', self.on_quit_action)
-
-    def on_window_size_allocate(self, main_window, window_size):
-        ''' signal handler, update window size variables '''
-
-        if not main_window.ismaximized:
-            main_window.current_width, main_window.current_height = main_window.get_size()
-
-    def on_window_maximize_event(self, main_window, state_event):
-        ''' signal handler, update window state variables '''
-
-        main_window.ismaximized = main_window.is_maximized()
-        return False
-    
-    def on_window_draw(self, main_window, context):
-        ''' check for theme changes, update sidebar, textviews '''
-
-        fg_color = self.color_manager.get_theme_color('theme_fg_color')
-        bg_color = self.color_manager.get_theme_color('theme_bg_color')
-        if self.fg_color.red != fg_color.red or self.bg_color.red != bg_color.red:
-            self.fg_color = fg_color
-            self.bg_color = bg_color
-            
-            try: documents = self.workspace.open_documents
-            except AttributeError: pass
-            else:
-                is_dark_mode = ServiceLocator.get_is_dark_mode()
-                for document in documents:
-                    document.set_dark_mode(is_dark_mode)
-        return False
+        self.workspace.actions.actions['quit'].connect('activate', self.on_quit_action)
 
     def save_window_state(self):
         main_window = self.main_window
-        self.settings.set_value('window_state', 'width', main_window.current_width)
-        self.settings.set_value('window_state', 'height', main_window.current_height)
-        self.settings.set_value('window_state', 'is_maximized', main_window.ismaximized)
-        self.settings.set_value('window_state', 'show_symbols', self.workspace.show_symbols)
-        self.settings.set_value('window_state', 'show_document_structure', self.workspace.show_document_structure)
-        self.settings.set_value('window_state', 'sidebar_paned_position', main_window.sidebar_paned.target_position)
+        self.settings.set_value('window_state', 'width', main_window.get_property('default-width'))
+        self.settings.set_value('window_state', 'height', main_window.get_property('default-height'))
+        self.settings.set_value('window_state', 'is_maximized', main_window.get_property('maximized'))
         self.settings.set_value('window_state', 'show_help', self.workspace.show_help)
         self.settings.set_value('window_state', 'show_preview', self.workspace.show_preview)
         self.settings.set_value('window_state', 'preview_paned_position', main_window.preview_paned.target_position)
         self.settings.set_value('window_state', 'show_build_log', self.workspace.show_build_log)
         self.settings.set_value('window_state', 'build_log_paned_position', main_window.build_log_paned.target_position)
+        self.settings.set_value('window_state', 'show_symbols', self.workspace.show_symbols)
+        self.settings.set_value('window_state', 'show_document_structure', self.workspace.show_document_structure)
+        self.settings.set_value('window_state', 'sidebar_paned_position', main_window.sidebar_paned.target_position)
         self.settings.pickle()
 
     def on_window_close(self, window=None, parameter=None):
@@ -194,15 +158,23 @@ class MainApplicationController(Gtk.Application):
         self.save_quit()
 
     def save_quit(self):
-        for document in self.workspace.open_documents: document.state_manager.save_document_state()
+        for document in self.workspace.open_documents: DocumentSettings.save_document_state(document)
 
         documents = self.workspace.get_unsaved_documents()
         active_document = self.workspace.get_active_document()
+        if documents == None or active_document == None:
+            self.save_state_and_quit()
 
-        if documents == None or active_document == None or DialogLocator.get_dialog('close_confirmation').run(documents)['all_save_to_close']:
-            self.save_window_state()
-            self.workspace.save_to_disk()
-            self.quit()
+        DialogLocator.get_dialog('close_confirmation').run({'unsaved_documents': documents}, self.save_quit_callback)
+
+    def save_quit_callback(self, parameters, response):
+        if response['all_save_to_close']:
+            self.save_state_and_quit()
+
+    def save_state_and_quit(self):
+        self.save_window_state()
+        self.workspace.save_to_disk()
+        self.quit()
 
 
 argparser = argparse.ArgumentParser(usage='%(prog)s [OPTION...] [FILE...]')

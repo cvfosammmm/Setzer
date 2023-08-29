@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
 
@@ -25,53 +25,90 @@ class AnimatedPaned(object):
     def __init__(self, widget1, widget2, animate_first_widget=True):
         self.animate_first_widget = animate_first_widget
         if animate_first_widget:
-            self.pack1(widget1, False, True)
-            self.pack2(widget2, True, False)
+            self.set_start_child(widget1)
+            self.set_end_child(widget2)
+
+            self.set_resize_start_child(False)
+            self.set_resize_end_child(True)
+
+            self.set_shrink_start_child(True)
+            self.set_shrink_end_child(False)
+
             self.animated_widget = widget1
             self.fixed_widget = widget2
         else:
-            self.pack1(widget1, True, False)
-            self.pack2(widget2, False, True)
+            self.set_start_child(widget1)
+            self.set_end_child(widget2)
+
+            self.set_resize_start_child(True)
+            self.set_resize_end_child(False)
+
+            self.set_shrink_start_child(False)
+            self.set_shrink_end_child(True)
+
             self.animated_widget = widget2
             self.fixed_widget = widget1
 
         self.is_initialized = False
         self.animation_id = None
         self.is_visible = None
+        self.visible_before = False
         self.show_widget = False
-        self.animated_widget_extent = 0
         self.target_position = None
+        self.center_on_first_show = False
+        self.end_on_first_show = False
+        self.start_on_first_show = False
 
-        self.animated_widget.connect('size-allocate', self.on_size_allocate)
-        self.connect('size-allocate', self.on_size_allocate)
-        self.connect('draw', self.on_realize)
+        self.connect('notify::position', self.on_position_changed)
 
-    def on_realize(self, view=None, cr=None, user_data=None):
+    def on_position_changed(self, widget, position):
+        if self.animation_id != None: return
+        if not self.show_widget: return
+
         if not self.is_initialized:
             self.animate(False)
             self.is_initialized = True
 
-    def on_size_allocate(self, widget, allocation):
-        if not self.is_initialized: return
-        if not self.show_widget: return
-        if self.animation_id != None: return
-
-        new_extent = self.get_animated_widget_extent()
-        self.animated_widget_extent = new_extent
-
-        if self.animate_first_widget:
-            self.set_target_position(new_extent)
-        else:
-            self.set_target_position(self.get_paned_extent() - new_extent - 1)
+        self.set_target_position(self.get_position())
 
     def set_target_position(self, position):
         self.target_position = position
 
+    def first_set_show_widget(self, show_widget):
+        self.set_show_widget(show_widget)
+        if show_widget:
+            self.animated_widget.show()
+        else:
+            self.animated_widget.hide()
+
     def set_show_widget(self, show_widget):
         self.show_widget = show_widget
 
+    def set_center_on_first_show(self):
+        self.center_on_first_show = True
+        self.end_on_first_show = False
+        self.start_on_first_show = False
+
+    def set_end_on_first_show(self):
+        self.center_on_first_show = False
+        self.end_on_first_show = True
+        self.start_on_first_show = False
+
+    def set_start_on_first_show(self):
+        self.center_on_first_show = False
+        self.end_on_first_show = False
+        self.start_on_first_show = True
+
     def set_is_visible(self, is_visible):
         self.is_visible = is_visible
+        if is_visible:
+            self.visible_before = True
+
+    def set_shrink_animated_widget(self, shrink):
+        if self.animate_first_widget:
+            self.set_shrink_start_child(shrink)
+        else:
+            self.set_shrink_end_child(shrink)
 
     def animate(self, animate=False):
         if self.animation_id != None: self.remove_tick_callback(self.animation_id)
@@ -79,6 +116,14 @@ class AnimatedPaned(object):
 
         frame_clock = self.get_frame_clock()
         duration = 200
+
+        if not self.visible_before:
+            if self.center_on_first_show:
+                self.set_target_position(self.get_paned_extent() / 2)
+            elif self.end_on_first_show:
+                self.set_target_position(self.get_paned_extent() - self.original_size_request)
+            elif self.start_on_first_show:
+                self.set_target_position(self.original_size_request)
 
         if self.show_widget:
             end = self.target_position
@@ -92,19 +137,26 @@ class AnimatedPaned(object):
             if self.get_position() != end:
                 if self.show_widget:
                     self.animated_widget.show()
-                start = self.get_position()
+
+                if self.is_visible:
+                    start = self.get_position()
+                elif self.animate_first_widget:
+                    start = 0
+                else:
+                    start = self.get_paned_extent()
+
                 start_time = frame_clock.get_frame_time()
                 end_time = start_time + 1000 * duration
-                self.child_set_property(self.animated_widget, 'shrink', True)
+                self.set_shrink_animated_widget(True)
                 self.fix_animated_widget_size()
                 self.animation_id = self.add_tick_callback(self.set_position_on_tick, (self.show_widget, start_time, end_time, start, end))
         else:
             if self.show_widget:
-                self.child_set_property(self.animated_widget, 'shrink', False)
                 self.animated_widget.show()
+                self.set_shrink_animated_widget(False)
                 self.set_is_visible(True)
             else:
-                self.child_set_property(self.animated_widget, 'shrink', True)
+                self.set_shrink_animated_widget(True)
                 self.animated_widget.hide()
                 self.set_is_visible(False)
             self.set_position(end)
@@ -112,18 +164,18 @@ class AnimatedPaned(object):
     def set_position_on_tick(self, paned, frame_clock_cb, user_data):
         show_widget, start_time, end_time, start, end = user_data
         now = frame_clock_cb.get_frame_time()
-        if now < end_time and paned.get_position() != end:
+        if now < end_time and self.get_position() != end:
             t = self.ease((now - start_time) / (end_time - start_time))
-            paned.set_position(int(start + t * (end - start)))
+            self.set_position(int(start + t * (end - start)))
             return True
         else:
-            paned.set_position(end)
+            self.set_position(end)
             self.reset_animated_widget_size_request()
             if not show_widget:
                 self.animated_widget.hide()
                 self.set_is_visible(False)
             else:
-                self.child_set_property(self.animated_widget, 'shrink', False)
+                self.set_shrink_animated_widget(False)
                 self.set_is_visible(True)
             self.animation_id = None
             return False
@@ -132,10 +184,12 @@ class AnimatedPaned(object):
         return (time - 1)**3 + 1;
 
 
-class AnimatedHPaned(Gtk.HPaned, AnimatedPaned):
+class AnimatedHPaned(Gtk.Paned, AnimatedPaned):
 
     def __init__(self, widget1, widget2, animate_first_widget=True):
-        Gtk.HPaned.__init__(self)
+        Gtk.Paned.__init__(self)
+        self.set_orientation(Gtk.Orientation.HORIZONTAL)
+
         AnimatedPaned.__init__(self, widget1, widget2, animate_first_widget)
 
         self.original_size_request = self.animated_widget.get_size_request()[0]
@@ -144,7 +198,11 @@ class AnimatedHPaned(Gtk.HPaned, AnimatedPaned):
         self.animated_widget.set_size_request(self.original_size_request, -1)
 
     def fix_animated_widget_size(self):
-        self.animated_widget.set_size_request(self.get_animated_widget_extent(), -1)
+        if self.animate_first_widget:
+            size = self.target_position
+        else:
+            size = self.get_paned_extent() - self.target_position
+        self.animated_widget.set_size_request(size, -1)
 
     def get_animated_widget_extent(self):
         return self.animated_widget.get_allocated_width()
@@ -153,10 +211,12 @@ class AnimatedHPaned(Gtk.HPaned, AnimatedPaned):
         return self.get_allocated_width()
 
 
-class AnimatedVPaned(Gtk.VPaned, AnimatedPaned):
+class AnimatedVPaned(Gtk.Paned, AnimatedPaned):
 
     def __init__(self, widget1, widget2, animate_first_widget=True):
-        Gtk.VPaned.__init__(self)
+        Gtk.Paned.__init__(self)
+        self.set_orientation(Gtk.Orientation.VERTICAL)
+
         AnimatedPaned.__init__(self, widget1, widget2, animate_first_widget)
 
         self.original_size_request = self.animated_widget.get_size_request()[1]
@@ -165,7 +225,11 @@ class AnimatedVPaned(Gtk.VPaned, AnimatedPaned):
         self.animated_widget.set_size_request(-1, self.original_size_request)
 
     def fix_animated_widget_size(self):
-        self.animated_widget.set_size_request(-1, self.get_animated_widget_extent())
+        if self.animate_first_widget:
+            size = self.target_position
+        else:
+            size = self.get_paned_extent() - self.target_position
+        self.animated_widget.set_size_request(-1, size)
 
     def get_animated_widget_extent(self):
         return self.animated_widget.get_allocated_height()

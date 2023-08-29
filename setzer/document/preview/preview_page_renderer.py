@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import GObject
 import cairo
 
@@ -125,10 +125,10 @@ class PreviewPageRenderer(Observable):
         if self.preview.layout == None: return
 
         hidpi_factor = self.preview.layout.hidpi_factor
-        page_width = self.preview.layout.page_width
-        page_height = self.preview.layout.page_height
+        page_width = int(self.preview.layout.page_width)
+        page_height = int(self.preview.layout.page_height)
 
-        offset = self.preview.view.scrolled_window.get_vadjustment().get_value()
+        offset = self.preview.view.content.scrolling_offset_y
         current_page = self.preview.layout.get_page_by_offset(offset) - 1
 
         visible_pages = [current_page, min(current_page + math.floor(self.preview.view.get_allocated_height() / page_height) + 1, self.preview.poppler_document.get_n_pages() - 1)]

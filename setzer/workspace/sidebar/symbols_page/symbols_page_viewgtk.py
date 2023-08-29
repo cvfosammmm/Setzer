@@ -16,97 +16,100 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gdk
-from gi.repository import Gtk
-
-from setzer.app.service_locator import ServiceLocator
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gdk, Gtk
 
 import xml.etree.ElementTree as ET
 import os
 
+from setzer.app.service_locator import ServiceLocator
 
-class SymbolsPageView(Gtk.VBox):
+
+class SymbolsPageView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self)
+        self.set_orientation(Gtk.Orientation.VERTICAL)
+        self.set_size_request(252, -1)
 
         self.get_style_context().add_class('sidebar-symbols')
 
         self.overlay = Gtk.Overlay()
-        self.vbox_top = Gtk.VBox()
+        self.overlay.set_vexpand(True)
+        self.overlay.set_can_focus(False)
+        self.vbox_top = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.scrolled_window = Gtk.ScrolledWindow()
-        self.vbox = Gtk.VBox()
-        self.scrolled_window.add(self.vbox)
+        self.scrolled_window.set_vexpand(True)
+        self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.scrolled_window.set_child(self.vbox)
 
-        self.tabs_box = Gtk.HBox()
+        self.tabs_box = Gtk.CenterBox()
+        self.tabs_box.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.tabs_box.set_valign(Gtk.Align.START)
         self.tabs_box.set_halign(Gtk.Align.FILL)
         self.tabs_box.get_style_context().add_class('tabs-box')
 
-        self.tabs = Gtk.Toolbar()
-        self.tabs.set_style(Gtk.ToolbarStyle.ICONS)
-        self.tabs.set_orientation(Gtk.Orientation.HORIZONTAL)
-        self.tabs.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
+        self.tabs = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
 
-        self.prev_button = Gtk.ToolButton()
-        self.prev_button.set_icon_name('go-up-symbolic')
+        self.prev_button = Gtk.Button.new_from_icon_name('go-up-symbolic')
         self.prev_button.set_focus_on_click(False)
+        self.prev_button.get_style_context().add_class('flat')
         self.prev_button.set_tooltip_text(_('Back'))
-        self.tabs.insert(self.prev_button, -1)
+        self.tabs.append(self.prev_button)
 
-        self.next_button = Gtk.ToolButton()
-        self.next_button.set_icon_name('go-down-symbolic')
+        self.next_button = Gtk.Button.new_from_icon_name('go-down-symbolic')
         self.next_button.set_focus_on_click(False)
+        self.next_button.get_style_context().add_class('flat')
         self.next_button.set_tooltip_text(_('Forward'))
-        self.tabs.insert(self.next_button, -1)
+        self.tabs.append(self.next_button)
 
-        self.search_button = Gtk.ToggleToolButton()
+        self.search_button = Gtk.ToggleButton()
         self.search_button.set_icon_name('edit-find-symbolic')
         self.search_button.set_focus_on_click(False)
+        self.search_button.get_style_context().add_class('flat')
         self.search_button.set_tooltip_text(_('Find'))
-        self.tabs.insert(self.search_button, -1)
+        self.tabs.append(self.search_button)
 
         self.search_revealer = Gtk.Revealer()
-        self.search_box = Gtk.HBox()
+        self.search_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.search_box.get_style_context().add_class('search_bar')
 
         self.search_entry = Gtk.SearchEntry()
-        self.search_box.pack_start(self.search_entry, True, True, 0)
+        self.search_entry.set_hexpand(True)
+        self.search_box.append(self.search_entry)
 
-        self.search_close_button = Gtk.Button.new_from_icon_name('window-close-symbolic', Gtk.IconSize.MENU)
+        self.search_close_button = Gtk.Button.new_from_icon_name('window-close-symbolic')
         self.search_close_button.get_style_context().add_class('flat')
         self.search_close_button.set_can_focus(False)
-        self.search_box.pack_start(self.search_close_button, False, False, 0)
+        self.search_box.append(self.search_close_button)
 
-        self.search_revealer.add(self.search_box)
+        self.search_revealer.set_child(self.search_box)
 
-        self.tabs_box.pack_end(self.tabs, False, False, 0)
-        self.vbox_top.pack_start(self.tabs_box, False, False, 0)
-        self.vbox_top.pack_start(self.scrolled_window, True, True, 0)
-        self.overlay.add(self.vbox_top)
-        self.pack_start(self.overlay, True, True, 0)
-        self.pack_start(self.search_revealer, False, False, 0)
+        self.tabs_box.set_end_widget(self.tabs)
+        self.vbox_top.append(self.tabs_box)
+        self.vbox_top.append(self.scrolled_window)
+        self.overlay.set_child(self.vbox_top)
+        self.append(self.overlay)
+        self.append(self.search_revealer)
 
         self.labels = list()
         self.symbols_views = list()
         self.placeholders = list()
 
-        self.label_recent = Gtk.Label(_('Recent'))
+        self.label_recent = Gtk.Label.new(_('Recent'))
         self.label_recent.set_xalign(0)
         self.label_recent.set_halign(Gtk.Align.START)
         self.label_recent.set_valign(Gtk.Align.START)
         self.label_recent.set_size_request(108, -1)
         self.label_recent.get_style_context().add_class('overlay')
+        self.label_recent.set_can_target(False)
         self.overlay.add_overlay(self.label_recent)
-        self.overlay.reorder_overlay(self.label_recent, 0)
-        self.overlay.set_overlay_pass_through(self.label_recent, True)
 
         self.symbols_view_recent = Gtk.FlowBox()
         self.symbols_view_recent.set_homogeneous(False)
         self.symbols_view_recent.set_valign(Gtk.Align.START)
         self.symbols_view_recent.set_max_children_per_line(20)
-        self.vbox.pack_start(self.symbols_view_recent, False, False, 0)
+        self.vbox.append(self.symbols_view_recent)
 
         self.symbols_lists = list()
         self.symbols_lists.append(['greek_letters', 'own-symbols-greek-letters-symbolic', _('Greek Letters'), 
@@ -127,27 +130,21 @@ class SymbolsPageView(Gtk.VBox):
     def init_symbols_lists(self):
         for symbols_list in self.symbols_lists:
             symbols_list_view = eval(symbols_list[3])
-            label = Gtk.Label(symbols_list[2])
+            label = Gtk.Label.new(symbols_list[2])
             label.set_xalign(0)
             label.set_halign(Gtk.Align.START)
             label.set_valign(Gtk.Align.START)
             label.set_size_request(108, -1)
             label.get_style_context().add_class('overlay')
+            label.set_can_target(False)
             self.overlay.add_overlay(label)
-            self.overlay.set_overlay_pass_through(label, True)
             self.labels.append(label)
-            placeholder = Gtk.Label(symbols_list[2])
+            placeholder = Gtk.Label.new(symbols_list[2])
             placeholder.set_xalign(0)
             self.placeholders.append(placeholder)
-            self.vbox.pack_start(placeholder, False, False, 0)
+            self.vbox.append(placeholder)
             self.symbols_views.append(symbols_list_view)
-            self.vbox.pack_start(symbols_list_view, False, False, 0)
-
-    def do_get_request_mode(self):
-        return Gtk.SizeRequestMode.CONSTANT_SIZE
-
-    def do_get_preferred_width(self):
-        return 252, 300
+            self.vbox.append(symbols_list_view)
 
 
 class SidebarSymbolsList(Gtk.FlowBox):
@@ -179,8 +176,9 @@ class SidebarSymbolsList(Gtk.FlowBox):
         for symbol in self.symbols:
             size = max(symbol[3], symbol[4])
 
-            image = Gtk.Image.new_from_icon_name('sidebar-' + symbol[0] + '-symbolic', 0)
+            image = Gtk.Image()
             image.set_pixel_size(int(size * 1.5))
+            image.set_from_icon_name('sidebar-' + symbol[0] + '-symbolic')
             tooltip_text = symbol[1]
             if symbol[2] != None: 
                 tooltip_text += ' (' + _('Package') + ': ' + symbol[2] + ')'

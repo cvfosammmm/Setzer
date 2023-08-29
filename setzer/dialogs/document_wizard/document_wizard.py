@@ -17,12 +17,9 @@
 
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-from gi.repository import Gio
-from gi.repository import Gdk
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk, Gio, Gdk
 
-from setzer.dialogs.dialog import Dialog
 import setzer.dialogs.document_wizard.document_wizard_viewgtk as view
 from setzer.dialogs.document_wizard.pages.page_document_class import DocumentClassPage
 from setzer.dialogs.document_wizard.pages.page_article_settings import ArticleSettingsPage
@@ -32,17 +29,16 @@ from setzer.dialogs.document_wizard.pages.page_letter_settings import LetterSett
 from setzer.dialogs.document_wizard.pages.page_beamer_settings import BeamerSettingsPage
 from setzer.dialogs.document_wizard.pages.page_general_settings import GeneralSettingsPage
 from setzer.app.service_locator import ServiceLocator
+from setzer.app.latex_db import LaTeXDB
 
 import pickle
 import os
 
 
-class DocumentWizard(Dialog):
-    ''' Create document templates for users to build on. '''
+class DocumentWizard(object):
 
-    def __init__(self, main_window, workspace):
+    def __init__(self, main_window):
         self.main_window = main_window
-        self.workspace = workspace
         self.settings = ServiceLocator.get_settings()
         self.current_values = dict()
         self.page_formats = {'US Letter': 'letterpaper', 'US Legal': 'legalpaper', 'A4': 'a4paper', 'A5': 'a5paper', 'B5': 'b5paper'}
@@ -70,27 +66,33 @@ class DocumentWizard(Dialog):
             self.is_not_setup = False
 
         self.presets = None
-        self.current_page = 0
+        self.current_page = -1
         self.load_presets()
         self.goto_page(0)
 
-        response = self.view.run()
+        self.view.dialog.show()
+        self.signal_connection_id = self.view.dialog.connect('response', self.process_response)
 
-        if response == Gtk.ResponseType.APPLY:
+    def process_response(self, view, response_id):
+        if response_id == Gtk.ResponseType.APPLY:
             self.save_presets()
 
             document_class = self.current_values['document_class']
             template_start, template_end = eval('self.get_insert_text_' + document_class + '()')
             self.insert_template(template_start, template_end)
 
+        self.close()
+
+    def close(self):
         self.view.dialog.hide()
+        self.view.dialog.disconnect(self.signal_connection_id)
 
     def init_current_values(self):
         self.current_values['document_class'] = 'article'
         self.current_values['title'] = ''
         self.current_values['author'] = ''
         self.current_values['date'] = '\\today'
-        self.current_values['languages'] = ServiceLocator.get_languages_dict()
+        self.current_values['languages'] = LaTeXDB.get_languages_dict()
         self.current_values['packages'] = dict()
         self.current_values['packages']['ams'] = True
         self.current_values['packages']['graphicx'] = True
@@ -147,7 +149,9 @@ class DocumentWizard(Dialog):
         self.current_values['beamer']['option_top_align'] = True
     
     def setup(self):
-        self.view.dialog.connect('key-press-event', self.on_keypress)
+        key_controller = Gtk.EventControllerKey()
+        key_controller.connect('key-pressed', self.on_keypress)
+        self.view.dialog.add_controller(key_controller)
         for page in self.pages: page.observe_view()
         self.view.next_button.connect('clicked', self.goto_page_next)
         self.view.back_button.connect('clicked', self.goto_page_prev)
@@ -184,35 +188,36 @@ class DocumentWizard(Dialog):
             self.goto_page(0)
 
     def goto_page(self, page_number):
-        self.current_page = page_number
-        self.view.notebook.set_current_page(page_number)
-        self.view.headerbar.set_subtitle(self.pages[page_number].view.headerbar_subtitle)
-        
-        self.pages[page_number].on_activation()
+        if self.current_page != page_number:
+            self.current_page = page_number
+            self.view.notebook.set_current_page(page_number)
+            self.view.subtitle_label.set_text(self.pages[page_number].view.headerbar_subtitle)
 
-        if page_number == 0:
-            self.view.back_button.hide()
-            self.view.create_button.hide()
-            self.view.next_button.show_all()
-        elif page_number < 6:
-            self.view.create_button.hide()
-            self.view.back_button.show_all()
-            self.view.next_button.show_all()
-        else:
-            self.view.next_button.hide()
-            self.view.back_button.show_all()
-            self.view.create_button.show_all()
+            self.pages[page_number].on_activation()
 
-    def on_keypress(self, widget, event, data=None):
+            if page_number == 0:
+                self.view.back_button.hide()
+                self.view.create_button.hide()
+                self.view.next_button.show()
+            elif page_number < 6:
+                self.view.create_button.hide()
+                self.view.back_button.show()
+                self.view.next_button.show()
+            else:
+                self.view.next_button.hide()
+                self.view.back_button.show()
+                self.view.create_button.show()
+
+    def on_keypress(self, controller, keyval, keycode, state, data=None):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if event.keyval == Gdk.keyval_from_name('Return'):
-            if event.state & modifiers == 0:
+        if keyval == Gdk.keyval_from_name('Return'):
+            if state & modifiers == 0:
                 if self.current_page in range(0, 6):
-                    self.view.next_button.clicked()
+                    self.goto_page_next()
                     return True
                 elif self.current_page == 6:
-                    self.view.create_button.clicked()
+                    self.goto_page_prev()
                     return True
         return False
 
@@ -370,7 +375,7 @@ class DocumentWizard(Dialog):
         return text
 
     def insert_template(self, template_start, template_end):
-        buffer = self.document.content.source_buffer
+        buffer = self.document.source_buffer
         buffer.begin_user_action()
 
         bounds = buffer.get_bounds()
@@ -405,9 +410,12 @@ class DocumentWizard(Dialog):
             note_len = len(note)
             note_number_of_lines = note.count('\n')
             offset = buffer.get_iter_at_mark(buffer.get_insert()).get_line()
-            buffer.insert(buffer.get_iter_at_line(offset), note)
+            iter_found, offset_iter = buffer.get_iter_at_line(offset)
+            buffer.insert(offset_iter, note)
+
             for line_number in range(offset + note_number_of_lines, line_count_before_insert + offset + note_number_of_lines):
-                buffer.insert(buffer.get_iter_at_line(line_number), '% ')
+                iter_found, offset_iter = buffer.get_iter_at_line(line_number)
+                buffer.insert(offset_iter, '% ')
             insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
             insert_iter.backward_chars(note_len + 2)
             buffer.place_cursor(insert_iter)

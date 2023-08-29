@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 from gi.repository import Gdk
 
@@ -29,30 +29,26 @@ class Preferences(object):
 
         self.dialog = builder.get_object('dialog')
         self.dialog.set_destroy_with_parent(True)
-        self.dialog.set_type_hint(Gdk.WindowTypeHint.DIALOG)
         self.dialog.set_modal(True)
         self.dialog.set_transient_for(main_window)
         self.dialog.set_can_focus(False)
-        self.dialog.set_size_request(400, 400)
-        self.dialog.set_default_size(400, 400)
-
+        self.dialog.set_size_request(400, 250)
+        self.dialog.set_default_size(400, 250)
+        
         self.headerbar = self.dialog.get_header_bar()
-        self.headerbar.set_title(_('Preferences'))
+        self.headerbar.set_title_widget(Gtk.Label.new(_('Preferences')))
 
         self.topbox = self.dialog.get_content_area()
-        self.topbox.set_border_width(0)
-
         self.notebook = Gtk.Notebook()
         self.notebook.set_show_tabs(True)
-        self.notebook.set_show_border(False)
-        self.topbox.pack_start(self.notebook, True, True, 0)
+        self.notebook.set_vexpand(True)
+        self.topbox.append(self.notebook)
 
-    def run(self):
-        return self.dialog.run()
-        
     def response(self, args):
         self.dialog.response(args)
         
     def __del__(self):
         self.dialog.destroy()
+        
+
 

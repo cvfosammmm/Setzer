@@ -16,11 +16,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 from gi.repository import Pango
+from gi.repository import Graphene
 
 import re
+
+from setzer.app.color_manager import ColorManager
 
 
 class DocumentChooser(Gtk.Popover):
@@ -28,115 +31,177 @@ class DocumentChooser(Gtk.Popover):
     
     def __init__(self):
         Gtk.Popover.__init__(self)
-        
+
         self.search_entry = Gtk.SearchEntry()
-        self.icon_name = self.search_entry.get_icon_name(Gtk.EntryIconPosition.PRIMARY)
-        
+
         self.auto_suggest_entries = list()
-        self.auto_suggest_box = Gtk.ListBox()
-        self.auto_suggest_box.set_size_request(398, -1)
-        
+        self.auto_suggest_list = DocumentChooserList()
+        self.auto_suggest_list.set_size_request(398, -1)
+
         self.scrolled_window = Gtk.ScrolledWindow()
         self.scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        self.scrolled_window.add(self.auto_suggest_box)
+        self.scrolled_window.set_child(self.auto_suggest_list)
         self.scrolled_window.get_style_context().add_class('frame')
-        self.scrolled_window.set_min_content_height(295)
+        self.scrolled_window.set_min_content_height(10 * self.auto_suggest_list.line_height + 120)
         self.scrolled_window.set_min_content_width(398)
-        self.scrolled_window.set_max_content_height(295)
+        self.scrolled_window.set_max_content_height(10 * self.auto_suggest_list.line_height + 120)
         self.scrolled_window.set_max_content_width(398)
         
-        self.not_found_slate = Gtk.HBox()
+        self.not_found_slate = Gtk.CenterBox()
+        self.not_found_slate.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.not_found_slate.get_style_context().add_class('not_found')
         self.not_found_slate.get_style_context().add_class('frame')
-        box = Gtk.VBox()
-        image = Gtk.Image.new_from_icon_name('system-search-symbolic', Gtk.IconSize.MENU)
+
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        image = Gtk.Image.new_from_icon_name('system-search-symbolic')
         image.set_pixel_size(64)
-        box.pack_start(image, True, True, 0)
-        box.pack_start(Gtk.Label(_('No results')), False, False, 0)
-        outer_box = Gtk.VBox()
+        image.set_vexpand(True)
+        box.append(image)
+        box.append(Gtk.Label.new(_('No results')))
+
+        outer_box = Gtk.CenterBox()
+        outer_box.set_orientation(Gtk.Orientation.VERTICAL)
         outer_box.set_center_widget(box)
+
         self.not_found_slate.set_center_widget(outer_box)
-        
+
         self.other_documents_button = Gtk.Button.new_with_label(_('Other Documents') + '...')
-        self.other_documents_button.set_action_name('win.open-document-dialog')
+        self.other_documents_button.set_can_focus(False)
 
         self.notebook = Gtk.Notebook()
+        self.notebook.set_can_focus(False)
         self.notebook.set_show_tabs(False)
         self.notebook.set_show_border(False)
         self.notebook.insert_page(self.scrolled_window, None, 0)
         self.notebook.insert_page(self.not_found_slate, None, 1)
         self.notebook.set_current_page(0)
+        self.notebook.set_vexpand(True)
 
-        self.box = Gtk.VBox()
-        self.box.pack_start(self.search_entry, False, False, 0)
-        self.box.pack_start(self.notebook, True, True, 0)
-        self.box.pack_start(self.other_documents_button, False, False, 0)
-        self.box.show_all()
-        self.add(self.box)
+        self.box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.box.append(self.search_entry)
+        self.box.append(self.notebook)
+        self.box.append(self.other_documents_button)
+
+        self.set_child(self.box)
 
         self.get_style_context().add_class('documentchooser')
-        
-    def update_autosuggest(self, items):
-        for entry in self.auto_suggest_box.get_children():
-            self.auto_suggest_box.remove(entry)
+
+    def update_items(self, items):
+        self.auto_suggest_entries = []
         for item in items:
             entry = DocumentChooserEntry(item[0], item[1])
-            self.auto_suggest_box.add(entry)
-        return self.search_filter()
+            self.auto_suggest_entries.append(entry)
+        self.search_filter()
 
     def search_filter(self):
-        query = self.search_entry.get_buffer().get_text()
+        query = self.search_entry.get_text()
         count = 0
-        for entry in self.auto_suggest_box.get_children():
+
+        entries = list()
+        for entry in self.auto_suggest_entries:
             if query == '':
-                if count < 5:
-                    entry.highlight_search(query)
-                    entry.show_all()
-                    count += 1
+                entry.highlight_search(query)
+                count += 1
             elif query.lower() in entry.filename.lower() or query.lower() in entry.folder.lower():
                 entry.highlight_search(query)
-                entry.show_all()
+                entries.append(entry)
                 count += 1
-            else:
-                entry.hide()
+        if query == '': entries = self.auto_suggest_entries
+
+        self.auto_suggest_list.set_data(entries)
         self.update_search_entry(count)
         
     def update_search_entry(self, results_count):
         if results_count == 0:
             self.search_entry.get_style_context().add_class('error')
-            self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'face-uncertain-symbolic')
             self.notebook.set_current_page(1)
         else:
             self.search_entry.get_style_context().remove_class('error')
-            self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, self.icon_name)
             self.notebook.set_current_page(0)
 
 
-class DocumentChooserEntry(Gtk.ListBoxRow):
-    ''' an item in the document chooser '''
+class DocumentChooserList(Gtk.Widget):
     
+    def __init__(self):
+        Gtk.Widget.__init__(self)
+
+        self.items = []
+        self.hover_item = None
+        self.selected_index = None
+        self.offset_start = 0
+        self.offset_end = 0
+
+        self.font = self.get_pango_context().get_font_description()
+        self.font_size = self.font.get_size() / Pango.SCALE
+
+        self.layout_header = Pango.Layout(self.get_pango_context())
+        self.layout_header.set_ellipsize(Pango.EllipsizeMode.START)
+        self.layout_header.set_width(374 * Pango.SCALE)
+        self.layout_header.set_font_description(self.font)
+        self.layout_header.set_text('\n')
+
+        self.layout_subheader = Pango.Layout(self.get_pango_context())
+        self.layout_subheader.set_ellipsize(Pango.EllipsizeMode.START)
+        self.layout_subheader.set_width(374 * Pango.SCALE)
+        self.font.set_size(10 * Pango.SCALE)
+        self.layout_subheader.set_font_description(self.font)
+        self.layout_subheader.set_text('\n')
+
+        self.line_height = self.layout_header.get_extents()[0].height / Pango.SCALE
+        self.subline_height = self.layout_subheader.get_extents()[0].height / Pango.SCALE
+        self.layout_header.set_spacing((25 + self.line_height) * Pango.SCALE)
+        self.layout_subheader.set_spacing((25 + 2 * self.line_height - self.subline_height) * Pango.SCALE)
+
+    def do_snapshot(self, snapshot):
+        fg_color = ColorManager.get_ui_color('theme_fg_color')
+        fg_color_light = ColorManager.get_ui_color('fg_color_light')
+        bg_color = ColorManager.get_ui_color('theme_base_color')
+        hover_color = ColorManager.get_ui_color('list_hover')
+        active_color = ColorManager.get_ui_color('list_active')
+        border_color = ColorManager.get_ui_color('borders')
+
+        snapshot.append_color(bg_color, Graphene.Rect().init(0, 0, self.get_allocated_width(), self.get_allocated_height()))
+        
+        if self.hover_item != None:
+            if self.selected_index == self.hover_item:
+                highlight_color = active_color
+            else:
+                highlight_color = hover_color
+            snapshot.append_color(highlight_color, Graphene.Rect().init(0, self.hover_item * (25 + 2 * self.line_height), self.get_allocated_width(), 25 + 2 * self.line_height))
+
+        filename_text = ''
+        folder_text = ''
+        for item in self.items:
+            filename_text += item.filename_markup + '\n'
+            folder_text += item.folder_markup + '\n'
+
+        snapshot.translate(Graphene.Point().init(6, 8))
+        self.layout_header.set_markup(filename_text)
+        snapshot.append_layout(self.layout_header, fg_color)
+
+        snapshot.translate(Graphene.Point().init(0, self.line_height + 10))
+        self.layout_subheader.set_markup(folder_text)
+        snapshot.append_layout(self.layout_subheader, fg_color_light)
+        
+        snapshot.translate(Graphene.Point().init(-6, self.line_height + 7))
+        for i in range(len(self.items)):
+            snapshot.append_color(border_color, Graphene.Rect().init(0, 0, self.get_allocated_width(), 1))
+            snapshot.translate(Graphene.Point().init(0, 2 * self.line_height + 25))
+
+    def set_data(self, items):
+        self.items = items
+        self.set_size_request(386, len(items) * (2 * self.line_height + 25))
+
+        self.queue_draw()
+
+
+class DocumentChooserEntry(object):
+
     def __init__(self, folder, filename):
-        Gtk.ListBoxRow.__init__(self)
-        
         self.filename = filename
-        self.filename_label = Gtk.Label()
-        self.filename_label.set_ellipsize(Pango.EllipsizeMode.END)
-        self.filename_label.set_use_markup(True)
-        self.filename_label.set_markup(self.filename)
-        self.filename_label.set_xalign(0)
+        self.filename_markup = filename
         self.folder = folder
-        self.folder_label = Gtk.Label()
-        self.folder_label.set_ellipsize(Pango.EllipsizeMode.END)
-        self.folder_label.set_use_markup(True)
-        self.folder_label.set_markup(self.folder)
-        self.folder_label.set_xalign(0)
-        self.folder_label.get_style_context().add_class('folder')
-        
-        self.box = Gtk.VBox()
-        self.add(self.box)
-        
-        self.box.pack_start(self.filename_label, False, False, 0)
-        self.box.pack_start(self.folder_label, False, False, 0)
+        self.folder_markup = self.folder
         
     def highlight_search(self, query):
         if query != '':
@@ -147,7 +212,7 @@ class DocumentChooserEntry(Gtk.ListBoxRow):
                 counter += 7
         else: 
             markup = self.filename
-        self.filename_label.set_markup(markup)
+        self.filename_markup = markup
         if query != '':
             markup = self.folder
             counter = 0
@@ -156,6 +221,6 @@ class DocumentChooserEntry(Gtk.ListBoxRow):
                 counter += 33
         else:
             markup = self.folder
-        self.folder_label.set_markup(markup)
+        self.folder_markup = markup
 
 

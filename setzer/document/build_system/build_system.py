@@ -19,7 +19,7 @@ import gi
 from gi.repository import GObject
 
 import _thread as thread, queue
-import time
+import time, re, difflib
 
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
@@ -103,6 +103,7 @@ class BuildSystem(Observable):
         self.update_can_sync()
 
     def update_can_sync(self, *params):
+        self.can_sync = False
         if self.has_synctex_file and self.document.preview.poppler_document != None:
             self.can_sync = True
         else:
@@ -110,27 +111,30 @@ class BuildSystem(Observable):
         self.add_change_code('can_sync_changed', self.can_sync)
 
     def forward_sync(self, active_document):
-        self.forward_sync_arguments = dict()
-        self.forward_sync_arguments['filename'] = active_document.get_filename()
-        self.forward_sync_arguments['line'] = active_document.content.get_cursor_line_number() + 1
-        self.forward_sync_arguments['line_offset'] = active_document.content.get_cursor_line_offset() + 1
-        if self.can_sync:
-            self.set_build_mode('forward_sync')
-            self.start_building()
+        if not self.can_sync: return
+
+        self.set_forward_sync_arguments(active_document)
+        self.set_build_mode('forward_sync')
+        self.start_building()
 
     def backward_sync(self, page, x, y, word, context):
-        if self.can_sync:
-            self.backward_sync_data = {'page': page, 'x': x, 'y': y, 'word': word, 'context': context}
-            self.set_build_mode('backward_sync')
-            self.start_building()
+        if not self.can_sync: return
+
+        self.backward_sync_data = {'page': page, 'x': x, 'y': y, 'word': word, 'context': context}
+        self.set_build_mode('backward_sync')
+        self.start_building()
 
     def build_and_forward_sync(self, active_document):
-        self.forward_sync_arguments = dict()
-        self.forward_sync_arguments['filename'] = active_document.get_filename()
-        self.forward_sync_arguments['line'] = active_document.content.get_cursor_line_number() + 1
-        self.forward_sync_arguments['line_offset'] = active_document.content.get_cursor_line_offset() + 1
+        self.set_forward_sync_arguments(active_document)
         self.set_build_mode('build_and_forward_sync')
         self.start_building()
+
+    def set_forward_sync_arguments(self, active_document):
+        sb = active_document.source_buffer
+        self.forward_sync_arguments = dict()
+        self.forward_sync_arguments['filename'] = active_document.get_filename()
+        self.forward_sync_arguments['line'] = sb.get_iter_at_mark(sb.get_insert()).get_line() + 1
+        self.forward_sync_arguments['line_offset'] = sb.get_iter_at_mark(sb.get_insert()).get_line_offset() + 1
 
     def set_build_log_items(self, log_items):
         build_log_items = list()
@@ -199,15 +203,13 @@ class BuildSystem(Observable):
                 if build_blob['error'] == 'interpreter_missing':
                     self.show_build_state('')
                     self.change_build_state('idle')
-                    if DialogLocator.get_dialog('interpreter_missing').run(build_blob['error_arg']):
-                        DialogLocator.get_dialog('preferences').run()
+                    DialogLocator.get_dialog('interpreter_missing').run(build_blob['error_arg'])
                     return
 
                 if build_blob['error'] == 'interpreter_not_working':
                     self.show_build_state('')
                     self.change_build_state('idle')
-                    if DialogLocator.get_dialog('building_failed').run(build_blob['error_arg']):
-                        DialogLocator.get_dialog('preferences').run()
+                    DialogLocator.get_dialog('building_failed').run(build_blob['error_arg'])
                     return
 
                 build_blob['log_messages']['BibTeX'] = build_blob['bibtex_log_messages']
@@ -216,13 +218,9 @@ class BuildSystem(Observable):
 
                 error_count = self.get_error_count()
                 if error_count > 0:
-                    error_color_rgba = ServiceLocator.get_color_manager().get_theme_color('error_color')
-                    error_color = '#' + format(int(error_color_rgba.red * 255), '02x') + format(int(error_color_rgba.green * 255), '02x') + format(int(error_color_rgba.blue * 255), '02x')
-                    str_errors = ngettext('<span color="{color}">Failed</span> ({amount} error)!', '<span color="{color}">Failed</span> ({amount} errors)!', error_count)
-                    message = str_errors.format(color=error_color, amount=str(error_count))
-                    self.show_build_state(message)
+                    self.show_build_state('error')
                 else:
-                    self.show_build_state(_('Success!'))
+                    self.show_build_state('success')
 
                 self.set_has_synctex_file(build_blob['has_synctex_file'])
                 self.document_has_been_built = True
@@ -230,14 +228,14 @@ class BuildSystem(Observable):
         elif result_blob['backward_sync'] != None:
             if not self.document.root_is_set:
                 if result_blob['backward_sync']['filename'] == self.document.get_filename():
-                    self.document.content.set_synctex_position(result_blob['backward_sync'])
-                    self.document.content.scroll_cursor_onscreen()
+                    self.set_synctex_position(self.document, result_blob['backward_sync'])
+                    self.document.scroll_cursor_onscreen()
             elif self.document.is_root:
                 workspace = ServiceLocator.get_workspace()
                 document = workspace.open_document_by_filename(result_blob['backward_sync']['filename'])
                 if document != None:
-                    document.content.set_synctex_position(result_blob['backward_sync'])
-                    document.content.scroll_cursor_onscreen()
+                    self.set_synctex_position(document, result_blob['backward_sync'])
+                    document.scroll_cursor_onscreen()
 
         self.change_build_state('idle')
 
@@ -286,7 +284,7 @@ class BuildSystem(Observable):
                 elif build_option_system_commands == 'enable':
                     additional_arguments += lualatex_prefix + '-shell-escape'
 
-            text = self.document.content.get_all_text()
+            text = self.document.get_all_text()
             do_cleanup = self.settings.get_value('preferences', 'cleanup_build_files')
 
         if mode == 'build':
@@ -333,5 +331,58 @@ class BuildSystem(Observable):
         if notify:
             self.show_build_state('')
             self.change_build_state('idle')
+
+    def set_synctex_position(self, document, position):
+        position_found, start = document.source_buffer.get_iter_at_line(position['line'])
+        end = start.copy()
+        if not start.ends_line():
+            end.forward_to_line_end()
+        text = document.source_buffer.get_text(start, end, False)
+
+        matches = self.get_synctex_word_bounds(text, position['word'], position['context'])
+        if matches != None:
+            for word_bounds in matches:
+                end = start.copy()
+                new_start = start.copy()
+                new_start.forward_chars(word_bounds[0])
+                end.forward_chars(word_bounds[1])
+                document.source_buffer.place_cursor(new_start)
+                document.highlight_section(new_start, end)
+        else:
+            ws_number = len(text) - len(text.lstrip())
+            start.forward_chars(ws_number)
+            document.source_buffer.place_cursor(start)
+            document.highlight_section(start, end)
+
+    def get_synctex_word_bounds(self, text, word, context):
+        if not word: return None
+        word = word.split(' ')
+        if len(word) > 2:
+            word = word[:2]
+        word = ' '.join(word)
+        regex_pattern = re.escape(word)
+
+        for c in regex_pattern:
+            if ord(c) > 127:
+                regex_pattern = regex_pattern.replace(c, '(?:\w)')
+
+        matches = list()
+        top_score = 0.1
+        regex = ServiceLocator.get_regex_object(r'(\W{0,1})' + regex_pattern.replace('\x1b', r'(?:\w{2,3})').replace('\x1c', r'(?:\w{2})').replace('\x1d', r'(?:\w{2,3})').replace('\-', r'(?:-{0,1})') + r'(\W{0,1})')
+        for match in regex.finditer(text):
+            offset1 = context.find(word)
+            offset2 = len(context) - offset1 - len(word)
+            match_text = text[max(match.start() - max(offset1, 0), 0):min(match.end() + max(offset2, 0), len(text))]
+            score = difflib.SequenceMatcher(None, match_text, context).ratio()
+            if bool(match.group(1)) or bool(match.group(2)):
+                if score > top_score + 0.1:
+                    top_score = score
+                    matches = [[match.start() + len(match.group(1)), match.end() - len(match.group(2))]]
+                elif score > top_score - 0.1:
+                    matches.append([match.start() + len(match.group(1)), match.end() - len(match.group(2))])
+        if len(matches) > 0:
+            return matches
+        else:
+            return None
 
 

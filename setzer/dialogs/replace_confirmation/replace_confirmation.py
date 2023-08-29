@@ -17,13 +17,11 @@
 
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
-from setzer.dialogs.dialog import Dialog
 
-
-class ReplaceConfirmationDialog(Dialog):
+class ReplaceConfirmationDialog(object):
     ''' This dialog is asking users if they really want to do a replace all. '''
 
     def __init__(self, main_window):
@@ -38,6 +36,11 @@ class ReplaceConfirmationDialog(Dialog):
             return_value = False
         self.close()
         return return_value
+
+    def close(self):
+        self.view.hide()
+        self.view.disconnect(self.signal_connection_id)
+        del(self.view)
 
     def setup(self, original, replacement, number_of_occurrences):
         self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)

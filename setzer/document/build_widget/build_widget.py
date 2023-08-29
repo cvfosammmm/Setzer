@@ -19,6 +19,7 @@ import setzer.document.build_widget.build_widget_viewgtk as build_widget_view
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
+from setzer.app.color_manager import ColorManager
 
 import time
 import os.path
@@ -37,11 +38,9 @@ class BuildWidget(Observable):
         self.view.stop_button.connect('clicked', self.on_stop_build_button_click)
         self.view.clean_button.connect('clicked', self.on_clean_button_click)
 
-        self.view.build_button.show_all()
-        self.view.stop_button.hide()
-
         self.build_button_state = ('idle', int(time.time()*1000))
         self.set_clean_button_state()
+        self.update_build_button()
 
         self.document.connect('filename_change', self.on_filename_change)
         self.document.build_system.connect('build_state_change', self.on_build_state_change)
@@ -72,25 +71,38 @@ class BuildWidget(Observable):
                 if build_button_state[0] == 'idle':
                     self.view.stop_button.hide()
                     self.view.build_button.set_sensitive(True)
-                    self.view.build_button.show_all()
+                    self.view.build_button.show()
                 else:
+                    self.view.stop_button.show()
                     self.view.build_button.set_sensitive(False)
                     self.view.build_button.hide()
-                    self.view.stop_button.show_all()
                     self.view.reset_timer()
                     self.view.label.set_text('0:00')
                     self.view.show_timer()
                     self.view.start_timer()
         else:
+            self.view.stop_button.hide()
+            self.view.build_button.set_sensitive(True)
+            self.view.build_button.show()
             self.build_button_state = ('idle', int(time.time()*1000))
             self.view.hide_timer_now()
-            self.view.build_button.set_sensitive(True)
-            self.view.build_button.show_all()
-            self.view.stop_button.hide()
         self.set_clean_button_state()
 
     def on_build_state(self, build_system, message):
-        self.show_message(message)
+        if message == '':
+            self.show_message('')
+        elif message == 'success':
+            self.show_message(_('Success!'))
+        elif message == 'error':
+            error_count = build_system.get_error_count()
+            error_color_rgba = ColorManager.get_ui_color_string('error_color')
+
+            message = '<span color="' + error_color_rgba + '">' + _('Failed') + '</span> '
+            if error_count == 1:
+                message += '(' + _('1 error') + ')!'
+            else:
+                message += '(' + str(error_count) + ' ' + _('errors') + ')!'
+            self.show_message(message)
 
     def on_settings_changed(self, settings, parameter):
         section, item, value = parameter
@@ -102,17 +114,6 @@ class BuildWidget(Observable):
         self.view.show_result(message)
         if self.view.get_parent() != None:
             self.view.hide_timer(1600)
-
-    def build_document_request(self, button_object=None):
-        if self.document.filename == None:
-            if DialogLocator.get_dialog('build_save').run(self.document):
-                DialogLocator.get_dialog('save_document').run(self.document)
-            else:
-                return False
-        if self.document.filename != None:
-            active_document = ServiceLocator.get_workspace().get_active_document()
-            if active_document != None:
-                self.document.build_system.build_and_forward_sync(active_document)
 
     def on_stop_build_button_click(self, button_object=None):
         document = self.document
@@ -134,7 +135,7 @@ class BuildWidget(Observable):
         if self.settings.get_value('preferences', 'cleanup_build_files') == True:
             self.view.clean_button.hide()
         else:
-            self.view.clean_button.show_all()
+            self.view.clean_button.show()
             self.view.clean_button.set_sensitive(get_clean_button_state(self.document))
 
     def on_clean_button_click(self, button_object=None):
@@ -149,5 +150,15 @@ class BuildWidget(Observable):
             except FileNotFoundError: pass
 
         self.set_clean_button_state()
+
+    def update_build_button(self):
+        if self.document.build_system.get_build_state() in ['', 'idle']:
+            self.view.stop_button.hide()
+            self.view.build_button.set_sensitive(True)
+            self.view.build_button.show()
+        else:
+            self.view.build_button.set_sensitive(False)
+            self.view.build_button.hide()
+            self.view.stop_button.show()
 
 

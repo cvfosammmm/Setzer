@@ -16,54 +16,63 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
+
+from setzer.widgets.fixed_width_label.fixed_width_label import FixedWidthLabel
+from setzer.helpers.popover_menu_builder import MenuBuilder
 
 
 class PreviewZoomWidget(Gtk.Revealer):
 
-    def __init__(self):
+    def __init__(self, model):
         Gtk.Revealer.__init__(self)
         self.set_transition_type(Gtk.RevealerTransitionType.NONE)
 
-        self.box = Gtk.HBox()
+        self.box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.box.get_style_context().add_class('zoom_widget')
-        
-        self.zoom_out_button = Gtk.Button.new_from_icon_name('zoom-out-symbolic', Gtk.IconSize.MENU)
+
+        self.zoom_out_button = Gtk.Button.new_from_icon_name('zoom-out-symbolic')
         self.zoom_out_button.set_tooltip_text(_('Zoom out'))
         self.zoom_out_button.get_style_context().add_class('flat')
         self.zoom_out_button.set_can_focus(False)
-        self.zoom_in_button = Gtk.Button.new_from_icon_name('zoom-in-symbolic', Gtk.IconSize.MENU)
+        self.zoom_out_button.get_style_context().add_class('scbar')
+        self.zoom_in_button = Gtk.Button.new_from_icon_name('zoom-in-symbolic')
         self.zoom_in_button.set_tooltip_text(_('Zoom in'))
         self.zoom_in_button.get_style_context().add_class('flat')
         self.zoom_in_button.set_can_focus(False)
+        self.zoom_in_button.get_style_context().add_class('scbar')
 
-        popover = Gtk.PopoverMenu()
-        stack = popover.get_child()
+        self.popover = MenuBuilder.create_menu()
 
-        self.zoom_button_box = Gtk.VBox()
-        self.zoom_button_box.set_margin_top(10)
-        self.zoom_button_box.set_margin_bottom(10)
-        self.zoom_button_box.set_margin_left(10)
-        self.zoom_button_box.set_margin_right(10)
-        stack.add_named(self.zoom_button_box, 'main')
+        self.button_fit_to_width = MenuBuilder.create_button(_('Fit to Width'))
+        MenuBuilder.add_widget(self.popover, self.button_fit_to_width)
+        self.button_fit_to_text_width = MenuBuilder.create_button(_('Fit to Text Width'))
+        MenuBuilder.add_widget(self.popover, self.button_fit_to_text_width)
+        self.button_fit_to_height = MenuBuilder.create_button(_('Fit to Height'))
+        MenuBuilder.add_widget(self.popover, self.button_fit_to_height)
+        MenuBuilder.add_separator(self.popover)
 
-        self.label = Gtk.Label('100.0%')
-        self.label.set_xalign(0.5)
+        self.zoom_level_buttons = dict()
+        for level in model.preview.zoom_manager.get_list_of_zoom_levels():
+            self.zoom_level_buttons[level] = MenuBuilder.create_button('{0:.0f}%'.format(level * 100))
+            MenuBuilder.add_widget(self.popover, self.zoom_level_buttons[level])
+
+        self.label = FixedWidthLabel(66)
+        self.label.get_style_context().add_class('zoom-level-button')
         self.zoom_level_button = Gtk.MenuButton()
         self.zoom_level_button.set_direction(Gtk.ArrowType.DOWN)
         self.zoom_level_button.set_focus_on_click(False)
-        self.zoom_level_button.set_popover(popover)
+        self.zoom_level_button.set_popover(self.popover)
         self.zoom_level_button.set_tooltip_text(_('Set zoom level'))
         self.zoom_level_button.get_style_context().add_class('flat')
-        self.zoom_level_button.get_style_context().add_class('zoom_level_button')
+        self.zoom_level_button.get_style_context().add_class('scbar')
         self.zoom_level_button.set_can_focus(False)
-        self.zoom_level_button.add(self.label)
-        
-        self.box.pack_start(self.zoom_out_button, False, False, 0)
-        self.box.pack_start(self.zoom_level_button, False, False, 0)
-        self.box.pack_start(self.zoom_in_button, False, False, 0)
-        self.add(self.box)
-        self.show_all()
+        self.zoom_level_button.set_child(self.label)
+
+        self.box.append(self.zoom_out_button)
+        self.box.append(self.zoom_level_button)
+        self.box.append(self.zoom_in_button)
+        self.set_child(self.box)
 
 

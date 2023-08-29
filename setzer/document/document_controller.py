@@ -18,15 +18,12 @@
 import os.path
 
 import gi
-gi.require_version('Gtk', '3.0')
-gi.require_version('Gdk', '3.0')
-from gi.repository import Gdk
-from gi.repository import GLib
-from gi.repository import Gtk
-from gi.repository import GObject
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gdk, GLib, Gtk, GObject, Pango
 
 from setzer.dialogs.dialog_locator import DialogLocator
 from setzer.app.service_locator import ServiceLocator
+from setzer.app.font_manager import FontManager
 
 
 class DocumentController(object):
@@ -36,90 +33,95 @@ class DocumentController(object):
         self.document = document
         self.view = document_view
 
-        self.workspace = ServiceLocator.get_workspace()
-
-        self.view.source_view.connect('key-press-event', self.on_keypress)
-        self.view.source_view.connect('button-press-event', self.on_buttonpress)
-        self.view.source_view.connect('scroll-event', self.on_scroll)
+        self.deleted_on_disk_dialog_shown_after_last_save = False
+        self.changed_on_disk_dialog_shown_after_last_change = False
         self.continue_save_date_loop = True
         self.zoom_threshold = 0
         GObject.timeout_add(500, self.save_date_loop)
 
-    '''
-    *** signal handlers: changes in documents
-    '''
+        self.primary_click_controller = Gtk.GestureClick()
+        self.primary_click_controller.set_button(1)
+        self.primary_click_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
+        self.primary_click_controller.connect('pressed', self.on_primary_buttonpress)
+        self.view.source_view.add_controller(self.primary_click_controller)
 
-    def on_buttonpress(self, widget, event, data=None):
+        self.secondary_click_controller = Gtk.GestureClick()
+        self.secondary_click_controller.set_button(3)
+        self.secondary_click_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
+        self.secondary_click_controller.connect('pressed', self.on_secondary_buttonpress)
+        self.view.source_view.add_controller(self.secondary_click_controller)
+
+        self.scrolling_controller = Gtk.EventControllerScroll()
+        self.scrolling_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.scrolling_controller.set_flags(Gtk.EventControllerScrollFlags.BOTH_AXES | Gtk.EventControllerScrollFlags.KINETIC)
+        self.scrolling_controller.connect('scroll', self.on_scroll)
+        self.scrolling_controller.connect('decelerate', self.on_decelerate)
+        self.view.scrolled_window.add_controller(self.scrolling_controller)
+
+    def on_primary_buttonpress(self, controller, n_press, x, y):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if event.type == Gdk.EventType.BUTTON_PRESS:
-            if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-                if self.workspace.can_sync:
-                    GLib.idle_add(self.workspace.forward_sync, self.document)
-        return False
+        if n_press == 1:
+            if controller.get_current_event_state() & modifiers == Gdk.ModifierType.CONTROL_MASK:
+                GLib.idle_add(ServiceLocator.get_workspace().actions.forward_sync)
 
-    def on_keypress(self, widget, event, data=None):
-        modifiers = Gtk.accelerator_get_default_mod_mask()
-        tab_keyvals = [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]
-        keypress_handled = False
-
-        try: autocomplete = self.document.autocomplete
-        except AttributeError: pass
-        else:
-            if not keypress_handled:
-                keypress_handled = self.document.autocomplete.on_keypress(event)
-                if keypress_handled:
-                    return True
-
-        if not keypress_handled and event.keyval == Gdk.keyval_from_name('c'):
-            if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-                self.document.content.copy()
-                return True
-
-        if not keypress_handled and event.keyval == Gdk.keyval_from_name('x'):
-            if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-                self.document.content.cut()
-                return True
-
-        if not keypress_handled and event.keyval == Gdk.keyval_from_name('v'):
-            if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-                self.document.content.paste()
-                return True
-
-    def on_scroll(self, widget, event):
+    def on_secondary_buttonpress(self, controller, n_press, x, y):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
-            font_manager = ServiceLocator.get_font_manager()
+        if n_press == 1:
+            self.document.context_menu.popup_at_cursor(x, y)
+        controller.reset()
 
-            self.zoom_threshold += event.delta_y
-            if event.is_stop:
-                self.zoom_threshold = 0
+    def on_scroll(self, controller, dx, dy):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if controller.get_current_event_state() & modifiers == Gdk.ModifierType.CONTROL_MASK:
+            if controller.get_unit() == Gdk.ScrollUnit.WHEEL:
+                self.zoom_threshold += dy
+            else:
+                self.zoom_threshold += dy * 0.05
 
             if self.zoom_threshold <= -1:
-                font_manager.zoom_in()
+                font_desc = Pango.FontDescription.from_string(FontManager.font_string)
+                font_desc.set_size(min(font_desc.get_size() * 1.1, 24 * Pango.SCALE))
+                FontManager.font_string = font_desc.to_string()
+                FontManager.propagate_font_setting()
                 self.zoom_threshold = 0
             elif self.zoom_threshold >= 1:
-                font_manager.zoom_out()
+                font_desc = Pango.FontDescription.from_string(FontManager.font_string)
+                font_desc.set_size(max(font_desc.get_size() / 1.1, 6 * Pango.SCALE))
+                FontManager.font_string = font_desc.to_string()
+                FontManager.propagate_font_setting()
                 self.zoom_threshold = 0
             return True
         return False
+
+    def on_decelerate(self, controller, vel_x, vel_y):
+        self.zoom_threshold = 0
 
     def save_date_loop(self):
         if self.document.filename == None: return True
-        if self.document.deleted_on_disk_dialog_shown_after_last_save: return True
-        if self.document.get_deleted_on_disk():
-            DialogLocator.get_dialog('document_deleted_on_disk').run(self.document)
-            self.document.deleted_on_disk_dialog_shown_after_last_save = True
-            self.document.content.set_modified(True)
+        if self.deleted_on_disk_dialog_shown_after_last_save: return True
+        if self.changed_on_disk_dialog_shown_after_last_change:
             return True
-        if self.document.get_changed_on_disk():
-            if DialogLocator.get_dialog('document_changed_on_disk').run(self.document):
-                self.document.populate_from_filename()
-                self.document.content.set_modified(False)
-            else:
-                self.document.content.set_modified(True)
-            self.document.update_save_date()
+
+        if self.document.get_deleted_on_disk():
+            self.deleted_on_disk_dialog_shown_after_last_save = True
+            self.document.source_buffer.set_modified(True)
+            DialogLocator.get_dialog('document_deleted_on_disk').run({'document': self.document})
+        elif self.document.get_changed_on_disk():
+            self.changed_on_disk_dialog_shown_after_last_change = True
+            DialogLocator.get_dialog('document_changed_on_disk').run({'document': self.document}, self.changed_on_disk_cb)
+
         return self.continue_save_date_loop
+
+    def changed_on_disk_cb(self, do_reload):
+        if do_reload:
+            self.document.populate_from_filename()
+            self.document.source_buffer.set_modified(False)
+        else:
+            self.document.source_buffer.set_modified(True)
+        self.changed_on_disk_dialog_shown_after_last_change = False
+        self.document.update_save_date()
 
 

@@ -16,22 +16,30 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 from gi.repository import GLib
 
 
-class OthersShortcutsbar(Gtk.HBox):
+class OthersShortcutsbar(Gtk.Box):
 
     def __init__(self):
-        Gtk.HBox.__init__(self)
+        Gtk.Box.__init__(self)
+        self.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.get_style_context().add_class('shortcutsbar')
 
-        self.current_bottom = None
+        self.top_icons = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.right_icons = Gtk.Box()
+        self.right_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.center_icons = Gtk.CenterBox()
+        self.center_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.center_icons.set_hexpand(True)
 
-        self.create_top_toolbar()
         self.populate_top_toolbar()
-        self.pack_start(self.top_icons, True, True, 0)
+
+        self.append(self.top_icons)
+        self.append(self.center_icons)
+        self.append(self.right_icons)
 
     def create_top_toolbar(self):
         self.top_icons = Gtk.Toolbar()

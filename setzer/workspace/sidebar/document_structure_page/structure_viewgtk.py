@@ -16,36 +16,61 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import Pango
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk, Gdk, Graphene, Pango
+
+import os.path
+
+import setzer.workspace.sidebar.document_structure_page.structure_widget as structure_widget
+from setzer.app.service_locator import ServiceLocator
 
 
-class StructureSectionView(Gtk.DrawingArea):
+class StructureSectionView(structure_widget.StructureWidget):
 
     def __init__(self, model):
-        Gtk.DrawingArea.__init__(self)
+        structure_widget.StructureWidget.__init__(self, model)
 
-        self.bg_color = None
-        self.hover_color = None
-        self.fg_color = None
-        self.icon_infos = dict()
-        self.icons = dict()
+        self.layout = Pango.Layout(self.get_pango_context())
+        self.layout.set_font_description(self.font)
+        self.layout.set_ellipsize(Pango.EllipsizeMode.END)
+        self.layout.set_spacing(8 * Pango.SCALE)
+        self.layout.set_text('\n')
 
-        for icon_name in model.levels:
-            self.icon_infos[icon_name] = Gtk.IconTheme.get_default().lookup_icon(icon_name + '-symbolic', 16 * self.get_scale_factor(), 0)
-        self.icon_infos['tag'] = Gtk.IconTheme.get_default().lookup_icon('tag-symbolic', 16 * self.get_scale_factor(), 0)
+        self.line_height = int(self.layout.get_extents()[0].height / Pango.SCALE)
 
-        self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        self.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
-        self.add_events(Gdk.EventMask.ENTER_NOTIFY_MASK)
-        self.add_events(Gdk.EventMask.LEAVE_NOTIFY_MASK)
-        self.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
+    def do_snapshot(self, snapshot):
+        self.drawing_setup()
+        self.setup_icons()
+        self.draw_background(snapshot)
+        self.draw_hover_background(snapshot, len(self.model.nodes_in_line))
 
-        style_context = self.get_style_context()
-        self.font = style_context.get_font(style_context.get_state())
-        self.font_size = (self.font.get_size() * 4) / (3 * Pango.SCALE)
-        self.line_height = int(self.font_size) + 11
+        snapshot.translate(Graphene.Point().init(9, 13))
+        self.draw_nodes(self.model.nodes, 0, snapshot)
+
+    def draw_nodes(self, nodes, level, snapshot):
+        for node in nodes:
+            if node['item'][2] == 'file-symbolic':
+                text = os.path.basename(node['item'][3])
+            else:
+                text = node['item'][3]
+            self.layout.set_text(text)
+            self.layout.set_width((self.get_allocated_width() - 47 - 18 * level) * Pango.SCALE)
+
+            snapshot.translate(Graphene.Point().init(26, -1))
+            snapshot.append_layout(self.layout, self.fg_color)
+            snapshot.translate(Graphene.Point().init(-26, 1))
+            self.icons[node['item'][2]].snapshot_symbolic(snapshot, 16, 16, [self.fg_color])
+
+            snapshot.translate(Graphene.Point().init(0, self.line_height))
+
+            snapshot.translate(Graphene.Point().init(18, 0))
+            self.draw_nodes(node['children'], level + 1, snapshot)
+            snapshot.translate(Graphene.Point().init(-18, 0))
+
+    def setup_icons(self, widget=None):
+        icon_theme = Gtk.IconTheme.get_for_display(ServiceLocator.get_main_window().get_display())
+        for icon_name in self.model.levels:
+            icon = icon_theme.lookup_icon(icon_name + '-symbolic', None, 16, self.get_scale_factor(), Gtk.TextDirection.LTR, 0)
+            self.icons[icon_name + '-symbolic'] = icon
 
 

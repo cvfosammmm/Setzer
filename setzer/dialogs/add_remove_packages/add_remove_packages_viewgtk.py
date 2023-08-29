@@ -16,111 +16,104 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GLib
-from gi.repository import Gdk, GdkPixbuf
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk
 
 import os
 
 
-class AddRemovePackagesDialogView(object):
-    ''' Create document templates for users to build on. '''
+class AddRemovePackagesDialogView(Gtk.Dialog):
 
     def __init__(self, main_window):
         builder = Gtk.Builder.new_from_string('<?xml version="1.0" encoding="UTF-8"?><interface><object class="GtkDialog" id="dialog"><property name="use-header-bar">1</property></object></interface>', -1)
 
         self.dialog = builder.get_object('dialog')
-        self.dialog.set_type_hint(Gdk.WindowTypeHint.DIALOG)
         self.dialog.set_modal(True)
         self.dialog.set_transient_for(main_window)
         self.dialog.set_destroy_with_parent(True)
         self.dialog.set_default_size(650, -1)
         self.dialog.set_can_focus(False)
         self.topbox = self.dialog.get_content_area()
-        self.topbox.set_border_width(0)
         self.topbox.set_size_request(650, -1)
 
         self.create_headerbar()
         self.create_add_box()
         self.create_remove_box()
 
-        self.topbox.show_all()
-
     def create_headerbar(self):
         self.headerbar = self.dialog.get_header_bar()
-        self.headerbar.set_title(_('Add / Remove Packages'))
-        self.headerbar.show_all()
+        self.headerbar.set_title_widget(Gtk.Label.new(_('Add / Remove Packages')))
 
     def create_add_box(self):
-        self.add_box = Gtk.HBox()
+        self.add_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.add_box.get_style_context().add_class('add-remove-packages-add-box')
 
         self.scrolled_window = Gtk.ScrolledWindow()
         self.scrolled_window.set_size_request(300, 146)
-        self.scrolled_window.set_margin_right(18)
+        self.scrolled_window.set_margin_end(18)
         self.add_list = Gtk.ListBox()
         self.add_list.set_can_focus(True)
         self.add_list.set_size_request(298, -1)
         self.add_list.set_vexpand(False)
         self.add_list.set_sort_func(self.sort_function)
-        self.scrolled_window.add(self.add_list)
+        self.scrolled_window.set_child(self.add_list)
 
-        self.add_details = Gtk.VBox()
-        self.add_description = Gtk.Label('')
+        self.add_details = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.add_description = Gtk.Label.new('')
         self.add_description.set_yalign(0)
         self.add_description.set_xalign(0)
         self.add_description.set_size_request(300, 110)
-        self.add_description.set_line_wrap(True)
+        self.add_description.set_wrap(True)
         self.add_description.set_width_chars(30)
-        self.add_details.pack_start(self.add_description, False, False, 0)
+        self.add_details.append(self.add_description)
         self.add_button = Gtk.Button()
         self.add_button.set_label(_('Add Package'))
-        add_button_wrapper = Gtk.HBox()
-        add_button_wrapper.pack_start(self.add_button, False, False, 0)
+        add_button_wrapper = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        add_button_wrapper.append(self.add_button)
         self.add_button.get_style_context().add_class('suggested-action')
-        self.add_details.pack_start(add_button_wrapper, False, False, 0)
+        self.add_details.append(add_button_wrapper)
         
-        self.add_box.pack_start(self.scrolled_window, False, False, 0)
-        self.add_box.pack_start(self.add_details, False, False, 0)
+        self.add_box.append(self.scrolled_window)
+        self.add_box.append(self.add_details)
 
-        self.topbox.pack_start(self.add_box, False, False, 0)
+        self.topbox.append(self.add_box)
 
     def create_remove_box(self):
-        self.remove_box = Gtk.HBox()
+        self.remove_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.remove_box.set_margin_top(18)
         self.remove_box.set_margin_bottom(18)
-        self.remove_box.set_margin_left(18)
-        self.remove_box.set_margin_right(18)
+        self.remove_box.set_margin_start(18)
+        self.remove_box.set_margin_end(18)
         self.remove_box.get_style_context().add_class('add-remove-packages-remove-box')
 
         self.scrolled_window = Gtk.ScrolledWindow()
         self.scrolled_window.set_size_request(300, 146)
-        self.scrolled_window.set_margin_right(18)
+        self.scrolled_window.set_margin_end(18)
         self.remove_list = Gtk.ListBox()
         self.remove_list.set_can_focus(True)
         self.remove_list.set_size_request(298, -1)
         self.remove_list.set_vexpand(False)
         self.remove_list.set_sort_func(self.sort_function)
-        self.scrolled_window.add(self.remove_list)
+        self.scrolled_window.set_child(self.remove_list)
 
-        self.remove_details = Gtk.VBox()
-        self.remove_description = Gtk.Label('')
+        self.remove_details = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.remove_description = Gtk.Label.new('')
         self.remove_description.set_yalign(0)
         self.remove_description.set_xalign(0)
         self.remove_description.set_size_request(300, 110)
-        self.remove_description.set_line_wrap(True)
+        self.remove_description.set_wrap(True)
         self.remove_description.set_width_chars(30)
-        self.remove_details.pack_start(self.remove_description, False, False, 0)
+        self.remove_details.append(self.remove_description)
         self.remove_button = Gtk.Button()
         self.remove_button.set_label(_('Remove Package'))
-        remove_button_wrapper = Gtk.HBox()
-        remove_button_wrapper.pack_start(self.remove_button, False, False, 0)
-        self.remove_details.pack_start(remove_button_wrapper, False, False, 0)
+        remove_button_wrapper = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        remove_button_wrapper.append(self.remove_button)
+        self.remove_details.append(remove_button_wrapper)
         
-        self.remove_box.pack_start(self.scrolled_window, False, False, 0)
-        self.remove_box.pack_start(self.remove_details, False, False, 0)
+        self.remove_box.append(self.scrolled_window)
+        self.remove_box.append(self.remove_details)
 
-        self.topbox.pack_start(self.remove_box, False, False, 0)
+        self.topbox.append(self.remove_box)
 
     def sort_function(self, row1, row2, user_data=None):
         val1 = row1.get_child().get_text().lower()

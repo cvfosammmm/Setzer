@@ -16,8 +16,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('WebKit2', '4.1')
-from gi.repository import WebKit2
+gi.require_version('WebKit', '6.0')
+from gi.repository import WebKit
 
 import webbrowser
 import _thread as thread
@@ -86,9 +86,9 @@ class HelpPanelController(object):
         self.view.next_button.set_sensitive(self.view.content.can_go_forward())
 
     def on_policy_decision(self, view, decision, decision_type, user_data=None):
-        na = WebKit2.PolicyDecisionType.NAVIGATION_ACTION
-        nwa = WebKit2.PolicyDecisionType.NEW_WINDOW_ACTION
-        ra = WebKit2.PolicyDecisionType.RESPONSE
+        na = WebKit.PolicyDecisionType.NAVIGATION_ACTION
+        nwa = WebKit.PolicyDecisionType.NEW_WINDOW_ACTION
+        ra = WebKit.PolicyDecisionType.RESPONSE
         if decision_type == na or decision_type == nwa:
             uri = decision.get_navigation_action().get_request().get_uri()
             if uri.startswith(self.help_panel.path):

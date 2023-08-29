@@ -103,10 +103,15 @@ class PreviewZoomManager(Observable):
         return zoom_levels
 
     def set_zoom_level_auto_offset(self, zoom_level):
-        x = self.view.get_allocated_width() / 2
-        xoffset = (-x + x * zoom_level / self.zoom_level) / (zoom_level * self.preview.layout.hidpi_factor)
+        layout = self.preview.layout
+        factor = zoom_level / self.zoom_level
+
+        x = factor * self.view.content.scrolling_offset_x + (factor - 1) * self.view.content.width / 2
+        prev_pages = self.view.content.scrolling_offset_y // (layout.page_height + layout.page_gap)
+        y = (1 - factor) * prev_pages * layout.page_gap + factor * self.view.content.scrolling_offset_y
+
         self.set_zoom_level(zoom_level)
-        self.preview.scroll_by_offsets(xoffset, 0)
+        self.preview.scroll_to_position(x, y)
 
     def set_zoom_level(self, level):
         if level == None: return

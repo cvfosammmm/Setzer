@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 from gi.repository import GLib
 
@@ -56,11 +56,11 @@ class GeneralSettingsPage(Page):
         def option_toggled(button, package_name):
             self.current_values['packages'][package_name] = button.get_active()
 
-        def package_hover_start(button, event, package_name):
+        def package_hover_start(button, x, y, package_name):
             markup = self.view.packages_tooltip_data[package_name]
             self.view.packages_tooltip.set_markup(markup)
 
-        def package_hover_end(button, event, package_name):
+        def package_hover_end(button, package_name):
             self.view.packages_tooltip.set_markup(' ')
 
         self.view.title_entry.get_buffer().connect('deleted-text', text_deleted, 'title')
@@ -76,8 +76,10 @@ class GeneralSettingsPage(Page):
 
         for name, checkbox in self.view.option_packages.items():
             checkbox.connect('toggled', option_toggled, name)
-            checkbox.connect('enter-notify-event', package_hover_start, name)
-            checkbox.connect('leave-notify-event', package_hover_end, name)
+            motion_controller = Gtk.EventControllerMotion()
+            motion_controller.connect('enter', package_hover_start, name)
+            motion_controller.connect('leave', package_hover_end, name)
+            checkbox.add_controller(motion_controller)
 
     def load_presets(self, presets):
         try:
@@ -103,7 +105,7 @@ class GeneralSettingsPage(Page):
             option.set_active(is_active)
 
     def on_activation(self):
-        GLib.idle_add(self.view.title_entry.grab_focus)
+        self.view.title_entry.grab_focus()
 
     def add_languages_list(self, langs):
         self.view.language_combobox.remove_all()
@@ -132,68 +134,63 @@ class GeneralSettingsPageView(PageView):
 
     def __init__(self):
         PageView.__init__(self)
-            
+
         self.header.set_text(_('General document settings'))
         self.headerbar_subtitle = _('Step') + ' 3: ' + _('General document settings')
-        self.content = Gtk.HBox()
-        self.form = Gtk.VBox()
 
-        self.subheader_title = Gtk.Label(_('Title'))
+        self.subheader_title = Gtk.Label.new(_('Title'))
         self.subheader_title.get_style_context().add_class('document-wizard-subheader')
         self.subheader_title.set_xalign(0)
         self.title_entry = Gtk.Entry()
-        self.title_entry.set_margin_right(280)
-        self.subheader_author = Gtk.Label(_('Author'))
+        self.title_entry.set_margin_end(280)
+        self.subheader_author = Gtk.Label.new(_('Author'))
         self.subheader_author.get_style_context().add_class('document-wizard-subheader')
         self.subheader_author.set_xalign(0)
         self.author_entry = Gtk.Entry()
-        self.author_entry.set_margin_right(100)
-        self.author_box = Gtk.VBox()
-        self.author_box.pack_start(self.subheader_author, False, False, 0)
-        self.author_box.pack_start(self.author_entry, False, False, 0)
+        self.author_entry.set_margin_end(100)
+        self.author_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.author_box.append(self.subheader_author)
+        self.author_box.append(self.author_entry)
         self.author_box.set_size_request(348, -1)
-        self.subheader_date = Gtk.Label(_('Date'))
+        self.subheader_date = Gtk.Label.new(_('Date'))
         self.subheader_date.get_style_context().add_class('document-wizard-subheader')
         self.subheader_date.set_xalign(0)
         self.date_entry = Gtk.Entry()
-        self.date_entry.set_margin_right(100)
-        self.date_box = Gtk.VBox()
-        self.date_box.pack_start(self.subheader_date, False, False, 0)
-        self.date_box.pack_start(self.date_entry, False, False, 0)
+        self.date_entry.set_margin_end(100)
+        self.date_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.date_box.append(self.subheader_date)
+        self.date_box.append(self.date_entry)
         self.date_box.set_size_request(348, -1)
-        self.subheader_language = Gtk.Label(_('Language'))
+        self.subheader_language = Gtk.Label.new(_('Language'))
         self.subheader_language.get_style_context().add_class('document-wizard-subheader')
         self.subheader_language.set_xalign(0)
         self.subheader_language.set_margin_top(18)
-        self.language_box = Gtk.Box(orientation = Gtk.Orientation.HORIZONTAL)
-        self.language_box.get_style_context().add_class('linked')
+
         self.language_buttons = []
         self.language_buttons.append(Gtk.ToggleButton.new())
         self.language_buttons.append(Gtk.ToggleButton.new())
         self.language_combobox = Gtk.ComboBoxText()
-        self.language_combobox.set_can_focus(True)
-        self.language_box.add(self.language_buttons[0])
-        self.language_box.add(self.language_buttons[1])
-        self.language_box.add(self.language_combobox)
-        self.language_description = Gtk.Label(_('The main language for this document. This is used to apply rules for hyphenation and other purposes.'))
+
+        self.language_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.language_box.get_style_context().add_class('linked')
+        self.language_box.append(self.language_buttons[0])
+        self.language_box.append(self.language_buttons[1])
+        self.language_box.append(self.language_combobox)
+
+        self.language_description = Gtk.Label.new(_('The main language for this document. This is used to apply rules for hyphenation and other purposes.'))
         self.language_description.set_xalign(0)
         self.language_description.set_margin_top(6)
         self.language_description.get_style_context().add_class('document-wizard-desc')
-        self.document_properties_hbox = Gtk.HBox()
+        self.document_properties_hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.document_properties_hbox.set_margin_top(18)
-        self.document_properties_hbox.pack_start(self.author_box, False, False, 0)
-        self.document_properties_hbox.pack_start(self.date_box, False, False, 0)
+        self.document_properties_hbox.append(self.author_box)
+        self.document_properties_hbox.append(self.date_box)
 
-        self.subheader_packages = Gtk.Label(_('Packages'))
+        self.subheader_packages = Gtk.Label.new(_('Packages'))
         self.subheader_packages.get_style_context().add_class('document-wizard-subheader')
         self.subheader_packages.set_margin_top(18)
         self.subheader_packages.set_xalign(0)
         
-        self.packages_box = Gtk.HBox()
-        self.packages_leftbox = Gtk.VBox()
-        self.packages_leftbox.set_size_request(348, -1)
-        self.packages_rightbox = Gtk.VBox()
-        self.packages_rightbox.set_size_request(348, -1)
         self.option_packages = dict()
         self.option_packages['ams'] = Gtk.CheckButton.new_with_label(_('AMS math packages'))
         self.option_packages['textcomp'] = Gtk.CheckButton.new_with_label('textcomp')
@@ -206,21 +203,30 @@ class GeneralSettingsPageView(PageView):
         self.option_packages['listings'] = Gtk.CheckButton.new_with_label('listings')
         self.option_packages['glossaries'] = Gtk.CheckButton.new_with_label('glossaries')
         self.option_packages['parskip'] = Gtk.CheckButton.new_with_label('parskip')
-        self.packages_leftbox.pack_start(self.option_packages['ams'], False, False, 0)
-        self.packages_leftbox.pack_start(self.option_packages['textcomp'], False, False, 0)
-        self.packages_leftbox.pack_start(self.option_packages['graphicx'], False, False, 0)
-        self.packages_leftbox.pack_start(self.option_packages['color'], False, False, 0)
-        self.packages_leftbox.pack_start(self.option_packages['xcolor'], False, False, 0)
-        self.packages_leftbox.pack_start(self.option_packages['url'], False, False, 0)
-        self.packages_rightbox.pack_start(self.option_packages['hyperref'], False, False, 0)
-        self.packages_rightbox.pack_start(self.option_packages['theorem'], False, False, 0)
-        self.packages_rightbox.pack_start(self.option_packages['listings'], False, False, 0)
-        self.packages_rightbox.pack_start(self.option_packages['glossaries'], False, False, 0)
-        self.packages_rightbox.pack_start(self.option_packages['parskip'], False, False, 0)
-        self.packages_box.pack_start(self.packages_leftbox, False, False, 0)
-        self.packages_box.pack_start(self.packages_rightbox, False, False, 0)
-        
-        self.packages_tooltip = Gtk.Label()
+
+        self.packages_leftbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.packages_leftbox.set_size_request(348, -1)
+        self.packages_leftbox.append(self.option_packages['ams'])
+        self.packages_leftbox.append(self.option_packages['textcomp'])
+        self.packages_leftbox.append(self.option_packages['graphicx'])
+        self.packages_leftbox.append(self.option_packages['color'])
+        self.packages_leftbox.append(self.option_packages['xcolor'])
+        self.packages_leftbox.append(self.option_packages['url'])
+
+        self.packages_rightbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.packages_rightbox.set_size_request(348, -1)
+        self.packages_rightbox.append(self.option_packages['hyperref'])
+        self.packages_rightbox.append(self.option_packages['theorem'])
+        self.packages_rightbox.append(self.option_packages['listings'])
+        self.packages_rightbox.append(self.option_packages['glossaries'])
+        self.packages_rightbox.append(self.option_packages['parskip'])
+
+        self.packages_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.packages_box.get_style_context().add_class('packages')
+        self.packages_box.append(self.packages_leftbox)
+        self.packages_box.append(self.packages_rightbox)
+
+        self.packages_tooltip = Gtk.Label.new('')
         self.packages_tooltip_data = dict()
         self.packages_tooltip_data['ams'] = _('<b>AMS packages:</b> provide mathematical symbols, math-related environments, …') + ' (' + _('recommended') + ')'
         self.packages_tooltip_data['textcomp'] = '<b>textcomp:</b> ' + _('contains symbols to be used in textmode.') + ' (' + _('recommended') + ')'
@@ -235,23 +241,26 @@ class GeneralSettingsPageView(PageView):
         self.packages_tooltip_data['parskip'] = '<b>parskip:</b> ' + _('paragraphs without indentation.')
         self.packages_tooltip.set_markup(' ')
         self.packages_tooltip.set_xalign(0)
-        self.packages_tooltip.set_line_wrap(True)
+        self.packages_tooltip.set_wrap(True)
         self.packages_tooltip.set_margin_top(12)
-        self.packages_tooltip.set_margin_right(18)
+        self.packages_tooltip.set_margin_end(18)
         self.packages_tooltip.set_size_request(714, -1)
 
-        self.pack_start(self.header, False, False, 0)
-        self.form.pack_start(self.subheader_title, False, False, 0)
-        self.form.pack_start(self.title_entry, False, False, 0)
-        self.form.pack_start(self.document_properties_hbox, False, False, 0)
-        self.form.pack_start(self.subheader_language, False, False, 0)
-        self.form.pack_start(self.language_box, False, False, 0)
-        self.form.pack_start(self.language_description, False, False, 0)
-        self.form.pack_start(self.subheader_packages, False, False, 0)
-        self.form.pack_start(self.packages_box, False, False, 0)
-        self.form.pack_start(self.packages_tooltip, False, False, 0)
-        self.content.pack_start(self.form, False, False, 0)
-        self.pack_start(self.content, False, False, 0)
-        self.show_all()
+        self.form = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.form.append(self.subheader_title)
+        self.form.append(self.title_entry)
+        self.form.append(self.document_properties_hbox)
+        self.form.append(self.subheader_language)
+        self.form.append(self.language_box)
+        self.form.append(self.language_description)
+        self.form.append(self.subheader_packages)
+        self.form.append(self.packages_box)
+        self.form.append(self.packages_tooltip)
+
+        self.content = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.content.append(self.form)
+
+        self.append(self.header)
+        self.append(self.content)
 
 

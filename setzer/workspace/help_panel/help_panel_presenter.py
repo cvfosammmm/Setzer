@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
 import setzer.workspace.help_panel.help_panel_viewgtk as help_panel_view
@@ -39,18 +39,14 @@ class HelpPanelPresenter(object):
         self.view.search_result_items = list()
         if results_list:
             self.view.search_entry.get_style_context().remove_class('error')
-            self.view.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'edit-find-symbolic')
             for item in reversed(results_list):
                 list_item = help_panel_view.SearchResultView(item)
                 self.view.search_results.prepend(list_item)
                 self.view.search_result_items.append(list_item)
-            self.view.search_results.show_all()
         elif self.help_panel.query != '':
             self.view.search_entry.get_style_context().add_class('error')
-            self.view.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'face-uncertain-symbolic')
         else:
             self.view.search_entry.get_style_context().remove_class('error')
-            self.view.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'edit-find-symbolic')
 
     def on_uri_changed(self, help_panel, uri):
         if self.view.content.get_uri() != uri:

@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
 import setzer.document.preview.zoom_widget.zoom_widget_viewgtk as view
@@ -26,8 +26,8 @@ class ZoomWidget(object):
 
     def __init__(self, preview):
         self.preview = preview
-        self.view = view.PreviewZoomWidget()
-        self.preview.view.action_bar.pack_end(self.view, False, False, 0)
+        self.view = view.PreviewZoomWidget(self)
+        self.preview.view.action_bar_right.prepend(self.view)
 
         self.preview.connect('pdf_changed', self.on_pdf_changed)
         self.preview.zoom_manager.connect('zoom_level_changed', self.on_zoom_level_changed)
@@ -36,31 +36,13 @@ class ZoomWidget(object):
         self.view.zoom_out_button.connect('clicked', self.on_zoom_button_clicked, 'out')
 
         self.update_zoom_level()
+        self.update_buttons()
 
-        model_button = Gtk.ModelButton()
-        model_button.set_label(_('Fit to Width'))
-        model_button.get_child().set_halign(Gtk.Align.START)
-        model_button.connect('clicked', self.on_fit_to_width_button_clicked)
-        self.view.zoom_button_box.pack_start(model_button, False, False, 0)
-        model_button = Gtk.ModelButton()
-        model_button.set_label(_('Fit to Text Width'))
-        model_button.get_child().set_halign(Gtk.Align.START)
-        model_button.connect('clicked', self.on_fit_to_text_width_button_clicked)
-        self.view.zoom_button_box.pack_start(model_button, False, False, 0)
-        model_button = Gtk.ModelButton()
-        model_button.set_label(_('Fit to Height'))
-        model_button.get_child().set_halign(Gtk.Align.START)
-        model_button.connect('clicked', self.on_fit_to_height_button_clicked)
-        self.view.zoom_button_box.pack_start(model_button, False, False, 0)
-        separator = Gtk.SeparatorMenuItem()
-        self.view.zoom_button_box.pack_start(separator, False, False, 0)
-        for level in self.preview.zoom_manager.get_list_of_zoom_levels():
-            model_button = Gtk.ModelButton()
-            model_button.set_label('{0:.0f}%'.format(level * 100))
-            model_button.get_child().set_halign(Gtk.Align.START)
-            model_button.connect('clicked', self.on_set_zoom_button_clicked, level)
-            self.view.zoom_button_box.pack_start(model_button, False, False, 0)
-        self.view.zoom_button_box.show_all()
+        self.view.button_fit_to_width.connect('clicked', self.on_fit_to_width_button_clicked)
+        self.view.button_fit_to_text_width.connect('clicked', self.on_fit_to_text_width_button_clicked)
+        self.view.button_fit_to_height.connect('clicked', self.on_fit_to_height_button_clicked)
+        for level, button in self.view.zoom_level_buttons.items():
+            button.connect('clicked', self.on_set_zoom_button_clicked, level)
 
     def on_pdf_changed(self, preview):
         if self.preview.poppler_document != None:
@@ -70,6 +52,7 @@ class ZoomWidget(object):
 
     def on_zoom_level_changed(self, preview):
         self.update_zoom_level()
+        self.update_buttons()
 
     def on_zoom_button_clicked(self, button, direction):
         if direction == 'in':
@@ -79,18 +62,28 @@ class ZoomWidget(object):
 
     def on_fit_to_width_button_clicked(self, button):
         self.preview.zoom_manager.set_zoom_fit_to_width_auto_offset()
+        self.view.popover.popdown()
 
     def on_fit_to_text_width_button_clicked(self, button):
         self.preview.zoom_manager.set_zoom_fit_to_text_width()
+        self.view.popover.popdown()
 
     def on_fit_to_height_button_clicked(self, button):
         self.preview.zoom_manager.set_zoom_fit_to_height()
+        self.view.popover.popdown()
 
     def on_set_zoom_button_clicked(self, button, level):
         self.preview.zoom_manager.set_zoom_level_auto_offset(level)
+        self.view.popover.popdown()
 
     def update_zoom_level(self):
         if self.preview.zoom_manager.get_zoom_level() != None:
             self.view.label.set_text('{0:.1f}%'.format(self.preview.zoom_manager.get_zoom_level() * 100))
-    
+
+    def update_buttons(self):
+        zoom_level = self.preview.zoom_manager.get_zoom_level()
+
+        self.view.zoom_in_button.set_sensitive(zoom_level != None and zoom_level < 4)
+        self.view.zoom_out_button.set_sensitive(zoom_level != None and zoom_level > 0.25)
+
 

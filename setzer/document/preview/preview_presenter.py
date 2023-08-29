@@ -16,16 +16,15 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import GObject
 import cairo
 
 import os.path
 import math
 import time
-import queue
 
-from setzer.app.service_locator import ServiceLocator
+from setzer.app.color_manager import ColorManager
 from setzer.helpers.timer import timer
 
 
@@ -37,13 +36,9 @@ class PreviewPresenter(object):
         self.view = view
 
         self.highlight_duration = 1.5
+        self.count = 1
 
-        self.color_manager = ServiceLocator.get_color_manager()
-
-        self.view.drawing_area.connect('draw', self.draw)
-        self.scrolling_queue = queue.Queue()
-        self.view.drawing_area.connect('size-allocate', self.scrolling_loop)
-        GObject.timeout_add(50, self.scrolling_loop)
+        self.view.drawing_area.set_draw_func(self.draw)
 
         self.preview.connect('pdf_changed', self.on_pdf_changed)
         self.preview.connect('invert_pdf_changed', self.on_invert_pdf_changed)
@@ -63,20 +58,20 @@ class PreviewPresenter(object):
 
     def on_layout_changed(self, preview):
         if self.preview.layout != None:
-            self.view.drawing_area.set_size_request(self.preview.layout.canvas_width, self.preview.layout.canvas_height)
+            self.view.content.adjustment_x.set_upper(self.preview.layout.canvas_width)
+            self.view.content.adjustment_y.set_upper(self.preview.layout.canvas_height)
+            self.view.content.queue_draw()
 
     def on_rendered_pages_changed(self, page_renderer):
         self.view.drawing_area.queue_draw()
 
     def show_blank_slate(self):
         self.view.stack.set_visible_child_name('blank_slate')
-        self.view.blank_slate.show_all()
         self.view.external_viewer_button.set_sensitive(False)
         self.view.external_viewer_button_revealer.set_reveal_child(False)
 
     def show_pdf(self):
         self.view.stack.set_visible_child_name('pdf')
-        self.view.scrolled_window.show_all()
         self.view.external_viewer_button.set_sensitive(True)
         self.view.external_viewer_button_revealer.set_reveal_child(True)
 
@@ -89,51 +84,31 @@ class PreviewPresenter(object):
         self.view.drawing_area.queue_draw()
         GObject.timeout_add(15, draw)
 
-    def scroll_to_position(self, position):
-        if self.preview.layout != None:
-            window_width = self.view.get_allocated_width()
-            yoffset = max((self.preview.layout.page_gap + self.preview.layout.page_height) * (position['page'] - 1) + position['y'] * self.preview.layout.scale_factor, 0)
-            xoffset = self.preview.layout.get_horizontal_margin(window_width) + position['x'] * self.preview.layout.scale_factor
-            self.scrolling_queue.put((xoffset, yoffset))
-
-    def scrolling_loop(self, widget=None, allocation=None):
-        allocated_height = int(self.view.drawing_area.get_allocated_height())
-        if self.preview.layout != None and allocated_height >= int(self.preview.layout.canvas_height):
-            while self.scrolling_queue.empty() == False:
-                todo = self.scrolling_queue.get(block=False)
-                if self.scrolling_queue.empty():
-                    self.scroll_now(todo)
-        return True
-
-    def scroll_now(self, position):
-        self.view.scrolled_window.get_hadjustment().set_value(position[0])
-        self.view.scrolled_window.get_vadjustment().set_value(position[1])
-
     #@timer
-    def draw(self, drawing_area, ctx, data = None):
-        if self.preview.layout != None:
-            bg_color = self.color_manager.get_theme_color('theme_bg_color')
-            border_color = self.color_manager.get_theme_color('borders')
-            self.draw_background(ctx, drawing_area, bg_color)
+    def draw(self, drawing_area, ctx, width, height):
+        if self.preview.layout == None:
+            self.preview.setup_layout_and_zoom_levels()
+            return
 
-            window_width = self.view.get_allocated_width()
-            ctx.transform(cairo.Matrix(1, 0, 0, 1, self.preview.layout.get_horizontal_margin(window_width), 0))
+        bg_color = ColorManager.get_ui_color('theme_bg_color')
+        border_color = ColorManager.get_ui_color('borders')
+        self.draw_background(ctx, drawing_area, bg_color)
 
-            offset = self.view.scrolled_window.get_vadjustment().get_value()
-            view_height = self.view.scrolled_window.get_allocated_height()
-            additional_height = ctx.get_target().get_height() - view_height
-            additional_pages = additional_height // self.preview.layout.page_height + 2
+        page_height = self.preview.layout.page_height
+        page_gap = self.preview.layout.page_gap
+        margin = self.preview.layout.get_horizontal_margin(width)
+        scrolling_offset_x = self.view.content.scrolling_offset_x
+        scrolling_offset_y = self.view.content.scrolling_offset_y
+        first_page = int(scrolling_offset_y // (page_height + page_gap))
+        last_page = int((scrolling_offset_y + height + 1) // (page_height + page_gap))
+        ctx.transform(cairo.Matrix(1, 0, 0, 1, margin - scrolling_offset_x, first_page * (page_height + page_gap) - scrolling_offset_y))
 
-            first_page = max(int(offset // self.preview.layout.page_height) - additional_pages, 0)
-            last_page = min(int((offset + view_height) // self.preview.layout.page_height) + additional_pages, self.preview.poppler_document.get_n_pages())
-            ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, first_page * (self.preview.layout.page_height + self.preview.layout.page_gap)))
+        for page_number in range(first_page, last_page + 1):
+            self.draw_page_background_and_outline(ctx, border_color)
+            self.draw_rendered_page(ctx, page_number)
+            self.draw_synctex_rectangles(ctx, page_number)
 
-            for page_number in range(first_page, last_page):
-                self.draw_page_background_and_outline(ctx, border_color)
-                self.draw_rendered_page(ctx, page_number)
-                self.draw_synctex_rectangles(ctx, page_number)
-
-                ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, self.preview.layout.page_height + self.preview.layout.page_gap))
+            ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, page_height + self.preview.layout.page_gap))
 
     def draw_background(self, ctx, drawing_area, bg_color):
         ctx.rectangle(0, 0, drawing_area.get_allocated_width(), drawing_area.get_allocated_height())
@@ -181,7 +156,9 @@ class PreviewPresenter(object):
             if time_factor < 0:
                 self.preview.set_synctex_rectangles(list())
             else:
-                ctx.set_source_rgba(0.976, 0.941, 0.420, 0.6 * time_factor)
+                color = ColorManager.get_ui_color('highlight_tag_preview')
+                color.alpha *= time_factor
+                ctx.set_source_rgba(color.red, color.green, color.blue, color.alpha)
                 ctx.set_operator(cairo.Operator.MULTIPLY)
                 for rectangle in rectangles:
                     ctx.rectangle(rectangle['x'], rectangle['y'], rectangle['width'], rectangle['height'])

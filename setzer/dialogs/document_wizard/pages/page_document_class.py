@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import GLib
 from gi.repository import Gtk
 
@@ -49,30 +49,30 @@ class DocumentClassPage(Page):
         self.view.list.select_row(row)
 
     def on_activation(self):
-        GLib.idle_add(self.view.list.get_selected_row().grab_focus)
+        pass
 
 
 class DocumentClassPageView(PageView):
 
     def __init__(self):
         PageView.__init__(self)
-            
+
         self.header.set_text(_('Choose a document class'))
         self.headerbar_subtitle = _('Step') + ' 1: ' + _('Choose a document class')
-        self.content = Gtk.HBox()
         
         self.list = Gtk.ListBox()
-        self.list.set_can_focus(True)
+        self.list.set_selection_mode(Gtk.SelectionMode.BROWSE)
         self.list.set_size_request(348, -1)
+        self.list.set_can_focus(False)
         self.list_rows = dict()
         for document_class in ['beamer', 'letter', 'book', 'report', 'article']:
-            label = Gtk.Label(document_class.title())
+            label = Gtk.Label.new(document_class.title())
             label.set_xalign(0)
-            self.list.prepend(label)
-        for row in self.list.get_children():
+            row = Gtk.ListBoxRow()
+            row.set_child(label)
             self.list_rows[row.get_child().get_text().lower()] = row
-            row.set_can_focus(True)
-        self.list.set_margin_right(0)
+            self.list.prepend(row)
+
         self.list.set_vexpand(False)
         self.list.get_style_context().add_class('document-wizard-list1')
         
@@ -85,23 +85,27 @@ class DocumentClassPageView(PageView):
         self.preview_data.append({'name': 'letter', 'image': 'letter1.svg', 'text': _('<b>Letter:</b>  For writing letters.')})
         self.preview_data.append({'name': 'beamer', 'image': 'beamer1.svg', 'text': _('<b>Beamer:</b>  A class for making presentation slides with LaTeX.\n\nThere are many predefined presentation styles.')})
         for item in self.preview_data:
-            box = Gtk.VBox()
             image = async_svg.AsyncSvg(os.path.join(ServiceLocator.get_resources_path(), 'document_wizard', item['image']), 374, 262)
             image.set_margin_bottom(6)
+
             label = Gtk.Label()
             label.set_markup(item['text'])
             label.set_xalign(0)
-            label.set_line_wrap(True)
+            label.set_wrap(True)
             label.set_margin_start(19)
-            label.set_margin_right(18)
-            box.pack_start(image, False, False, 0)
-            box.pack_start(label, False, False, 0)
+            label.set_margin_end(18)
+
+            box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+            box.append(image)
+            box.append(label)
+
             self.preview_container.add_named(box, item['name'])
         
-        self.pack_start(self.header, False, False, 0)
-        self.content.pack_start(self.list, False, False, 0)
-        self.content.pack_start(self.preview_container, False, False, 0)
-        self.pack_start(self.content, False, False, 0)
-        self.show_all()
+        self.content = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.content.append(self.list)
+        self.content.append(self.preview_container)
+
+        self.append(self.header)
+        self.append(self.content)
 
 

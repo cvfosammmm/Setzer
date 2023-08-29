@@ -17,7 +17,7 @@
 
 import gi
 gi.require_version('Poppler', '0.18')
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Poppler
 from gi.repository import GLib
 from gi.repository import Gio
@@ -35,6 +35,7 @@ import setzer.document.preview.preview_links_parser as preview_links_parser
 import setzer.document.preview.preview_zoom_manager as preview_zoom_manager
 import setzer.document.preview.zoom_widget.zoom_widget as zoom_widget
 import setzer.document.preview.paging_widget.paging_widget as paging_widget
+import setzer.document.preview.context_menu.context_menu as context_menu
 from setzer.helpers.observable import Observable
 from setzer.helpers.timer import timer
 
@@ -51,8 +52,6 @@ class Preview(Observable):
         self.poppler_document = None
         self.page_width = None
         self.page_height = None
-        self.xoffset = 0
-        self.yoffset = 0
         self.layout = None
 
         self.visible_synctex_rectangles = list()
@@ -67,6 +66,7 @@ class Preview(Observable):
         self.presenter = preview_presenter.PreviewPresenter(self, self.page_renderer, self.view)
         self.paging_widget = paging_widget.PagingWidget(self)
         self.zoom_widget = zoom_widget.ZoomWidget(self)
+        self.context_menu = context_menu.ContextMenu(self, self.view)
 
         self.document.connect('filename_change', self.on_filename_change)
         self.document.connect('pdf_updated', self.on_pdf_updated)
@@ -89,54 +89,6 @@ class Preview(Observable):
         self.invert_pdf = invert_pdf
         self.add_change_code('invert_pdf_changed')
 
-    def update_position(self):
-        if self.layout == None: return
-        if not self.presenter.scrolling_queue.empty(): return
-
-        window_width = self.view.get_allocated_width()
-        xoffset = max((self.view.scrolled_window.get_hadjustment().get_value() - self.layout.get_horizontal_margin(window_width)) / self.layout.scale_factor, 0)
-
-        offset = self.view.scrolled_window.get_vadjustment().get_value()
-        current_page = int(1 + offset // (self.layout.page_height + self.layout.page_gap))
-        yoffset = max(current_page - 1, 0) * self.page_height
-        yoffset += min(max(offset - max(current_page - 1, 0) * (self.layout.page_height + self.layout.page_gap), 0), self.layout.page_height) / self.layout.scale_factor
-
-        value_changed = False
-        if xoffset != self.xoffset or yoffset != self.yoffset:
-            self.xoffset = xoffset
-            self.yoffset = yoffset
-            self.add_change_code('position_changed')
-
-    def scroll_to_position_from_offsets(self, xoffset=0, yoffset=0):
-        if self.layout != None:
-            page = math.floor(yoffset / self.page_height) + 1
-            self.presenter.scroll_to_position({'page': page, 'x': xoffset, 'y': yoffset - (page - 1) * self.page_height})
-
-    def scroll_dest_on_screen(self, dest):
-        page_number = dest.page_num
-        if self.xoffset > dest.left:
-            x = dest.left
-        else:
-            x = self.xoffset
-        self.presenter.scroll_to_position({'page': page_number, 'x': x, 'y': self.page_height - dest.top})
-
-    def scroll_by_offsets(self, xoffset, yoffset):
-        if self.xoffset != None and self.yoffset != None:
-            page = math.floor(self.yoffset / self.page_height) + 1
-            position = {'page': page, 'x': self.xoffset + xoffset, 'y': self.yoffset - (page - 1) * self.page_height + yoffset}
-            self.presenter.scroll_to_position(position)
-
-    def set_synctex_rectangles(self, rectangles):
-        if self.layout != None:
-            self.visible_synctex_rectangles = rectangles
-            self.layouter.update_synctex_rectangles(self.layout)
-            self.visible_synctex_rectangles_time = time.time()
-            if len(rectangles) > 0:
-                position = rectangles[0]
-                window_width = self.view.get_allocated_width()
-                self.presenter.scroll_to_position({'page': position['page'], 'x': max((self.layout.page_width / 2 + self.layout.get_horizontal_margin(window_width) - self.view.stack.get_allocated_width() / 2) / self.layout.scale_factor, 0), 'y': max(((position['v'] - position['height'] / 2) * self.layout.scale_factor - self.view.stack.get_allocated_height() / 2) / self.layout.scale_factor, 0)})
-                self.presenter.start_fade_loop()
-
     def get_pdf_date(self):
         if self.pdf_filename != None:
             return os.path.getmtime(self.pdf_filename)
@@ -146,32 +98,32 @@ class Preview(Observable):
     def load_pdf(self):
         try:
             self.poppler_document = Poppler.Document.new_from_file(GLib.filename_to_uri(self.pdf_filename))
-        except TypeError:
+        except Exception:
             self.reset_pdf_data()
-        except gi.repository.GLib.Error:
-            self.reset_pdf_data()
-        else:
-            page_size = self.poppler_document.get_page(0).get_size()
-            self.page_width = page_size.width
-            self.page_height = page_size.height
-            self.update_vertical_margin()
-            self.zoom_manager.update_dynamic_zoom_levels()
-            self.layout = self.layouter.create_layout()
-            self.add_change_code('layout_changed')
-            self.add_change_code('pdf_changed')
-            if self.zoom_manager.get_zoom_level() == None:
-                self.zoom_manager.set_zoom_fit_to_width()
+            return
+
+        page_size = self.poppler_document.get_page(0).get_size()
+        self.page_width = page_size.width
+        self.page_height = page_size.height
+        self.update_vertical_margin()
+        self.add_change_code('pdf_changed')
 
     def reset_pdf_data(self):
         self.pdf_filename = None
         self.poppler_document = None
         self.page_width = None
         self.page_height = None
-        self.xoffset = 0
-        self.yoffset = 0
-        self.layout = None
-        self.zoom_manager.update_dynamic_zoom_levels()
         self.add_change_code('pdf_changed')
+        self.layout = None
+        self.add_change_code('layout_changed')
+
+    def setup_layout_and_zoom_levels(self):
+        self.zoom_manager.update_dynamic_zoom_levels()
+        if self.zoom_manager.get_zoom_level() == None:
+            self.zoom_manager.set_zoom_fit_to_width()
+
+        self.layout = self.layouter.create_layout()
+        self.add_change_code('layout_changed')
 
     def update_vertical_margin(self):
         current_min = self.page_width
@@ -187,5 +139,72 @@ class Preview(Observable):
     def open_external_viewer(self):
         if self.pdf_filename != None:
             Gio.AppInfo.launch_default_for_uri(GLib.filename_to_uri(self.pdf_filename))
+
+    def scroll_to_position(self, x, y):
+        if self.layout == None: return
+
+        self.view.content.scroll_to_position([x, y])
+
+    def scroll_dest_on_screen(self, dest):
+        if self.layout == None: return
+
+        page_number = dest.page_num
+        content = self.view.content
+        left = dest.left * self.layout.scale_factor
+        top = dest.top * self.layout.scale_factor
+        x = max(min(left, content.scrolling_offset_x), content.scrolling_offset_x + content.width)
+        y = (self.layout.page_height + self.layout.page_gap) * (page_number) - top - self.layout.page_gap
+
+        self.view.content.scroll_to_position([x, y])
+
+    def update_position(self):
+        if self.layout == None: return
+
+        self.add_change_code('position_changed')
+
+    def set_synctex_rectangles(self, rectangles):
+        if self.layout == None: return
+
+        self.visible_synctex_rectangles = rectangles
+        self.layouter.update_synctex_rectangles(self.layout)
+        self.visible_synctex_rectangles_time = time.time()
+
+        if len(rectangles) > 0:
+            content = self.view.content
+            position = rectangles[0]
+            window_width = self.view.get_allocated_width()
+            page_number = position['page']
+            left = position['h'] * self.layout.scale_factor
+            top = position['v'] * self.layout.scale_factor
+            width = position['width'] * self.layout.scale_factor
+            height = position['height'] * self.layout.scale_factor
+
+            x = max(min(left - 18, content.scrolling_offset_x), left + width - content.width + 18)
+            y = (self.layout.page_height + self.layout.page_gap) * (page_number - 1) + max(0, top - height / 2 - content.height * 0.3)
+
+            content.scroll_to_position([x, y])
+            self.presenter.start_fade_loop()
+
+    def init_backward_sync(self, x_offset, y_offset):
+        if self.layout == None: return False
+
+        window_width = self.view.get_allocated_width()
+        y_total_pixels = min(max(y_offset, 0), (self.layout.page_height + self.layout.page_gap) * self.poppler_document.get_n_pages() - self.layout.page_gap)
+        x_pixels = min(max(x_offset - self.layout.get_horizontal_margin(window_width), 0), self.layout.page_width)
+        page = math.floor(y_total_pixels / (self.layout.page_height + self.layout.page_gap))
+        y_pixels = min(max(y_total_pixels - page * (self.layout.page_height + self.layout.page_gap), 0), self.layout.page_height)
+        x = x_pixels / self.layout.scale_factor
+        y = y_pixels / self.layout.scale_factor
+        page += 1
+
+        poppler_page = self.poppler_document.get_page(page - 1)
+        rect = Poppler.Rectangle()
+        rect.x1 = max(min(x, self.page_width), 0)
+        rect.y1 = max(min(y, self.page_height), 0)
+        rect.x2 = max(min(x, self.page_width), 0)
+        rect.y2 = max(min(y, self.page_height), 0)
+        word = poppler_page.get_selected_text(Poppler.SelectionStyle.WORD, rect)
+        context = poppler_page.get_selected_text(Poppler.SelectionStyle.LINE, rect)
+        self.document.build_system.backward_sync(page, x, y, word, context)
 
 

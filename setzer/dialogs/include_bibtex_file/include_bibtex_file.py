@@ -17,10 +17,9 @@
 
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
-from setzer.dialogs.dialog import Dialog
 import setzer.dialogs.include_bibtex_file.include_bibtex_file_viewgtk as view
 from setzer.app.service_locator import ServiceLocator
 
@@ -28,7 +27,7 @@ import pickle
 import os
 
 
-class IncludeBibTeXFile(Dialog):
+class IncludeBibTeXFile(object):
 
     def __init__(self, main_window):
         self.main_window = main_window
@@ -53,20 +52,26 @@ class IncludeBibTeXFile(Dialog):
 
         self.view.style_buttons[self.current_values['style']].set_active(True)
         self.view.style_buttons[self.current_values['style']].toggled()
-
         self.view.natbib_style_buttons[self.current_values['natbib_style']].set_active(True)
         self.view.natbib_style_buttons[self.current_values['natbib_style']].toggled()
+        self.view.natbib_option.set_active(self.current_values['natbib_toggle'])
+        self.update_style_chooser_visibility()
 
         self.view.create_button.set_sensitive(False)
         self.view.file_chooser_button.reset()
-        self.view.natbib_option.set_active(self.current_values['natbib_toggle'])
-        self.on_natbib_toggled(self.view.natbib_option)
-        response = self.view.run()
 
-        if response == Gtk.ResponseType.APPLY:
+        self.view.dialog.show()
+        self.signal_connection_id = self.view.dialog.connect('response', self.process_response)
+
+    def process_response(self, view, response_id):
+        if response_id == Gtk.ResponseType.APPLY:
             self.insert_template()
 
+        self.close()
+
+    def close(self):
         self.view.dialog.hide()
+        self.view.dialog.disconnect(self.signal_connection_id)
 
     def init_current_values(self):
         self.current_values['style'] = 'plain'
@@ -83,12 +88,12 @@ class IncludeBibTeXFile(Dialog):
             except KeyError: pass
             try:
                 style = presets['natbib_style']
-                if style in self.styles:
+                if style in self.natbib_styles:
                     self.current_values['natbib_style'] = style
             except KeyError: pass
             try: self.current_values['natbib_toggle'] = presets['natbib_toggle']
             except KeyError: pass
-    
+
     def setup(self):
         file_filter1 = Gtk.FileFilter()
         file_filter1.add_pattern('*.bib')
@@ -98,42 +103,40 @@ class IncludeBibTeXFile(Dialog):
         first_button = None
         for name in self.style_names:
             style = name.lower()
-            self.view.style_buttons[style] = Gtk.RadioButton()
-            if first_button == None: first_button = self.view.style_buttons[style]
-            box = Gtk.HBox()
-            box.pack_start(Gtk.Label(name), False, False, 0)
-            box.set_margin_right(6)
-            box.set_margin_left(4)
-            self.view.style_buttons[style].add(box)
-            self.view.style_buttons[style].set_mode(False)
+            self.view.style_buttons[style] = Gtk.ToggleButton()
+            box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+            box.append(Gtk.Label.new(name))
+            box.set_margin_end(6)
+            box.set_margin_start(4)
+            self.view.style_buttons[style].set_child(box)
             if first_button != None:
-                self.view.style_buttons[style].join_group(first_button)
-            self.view.style_switcher.pack_start(self.view.style_buttons[style], False, False, 0)
+                self.view.style_buttons[style].set_group(first_button)
+            self.view.style_switcher.append(self.view.style_buttons[style])
             self.view.style_buttons[style].connect('toggled', self.on_style_chosen, style)
+            if first_button == None: first_button = self.view.style_buttons[style]
 
-            image = Gtk.Image.new_from_file(os.path.join(ServiceLocator.get_resources_path(), 'bibliography_styles', style + '.png'))
+            image = Gtk.Picture.new_for_filename(os.path.join(ServiceLocator.get_resources_path(), 'bibliography_styles', style + '.png'))
+            image.set_can_shrink(False)
             self.view.preview_stack.add_named(image, style)
 
         first_button = None
         for name in self.natbib_style_names:
             style = name.lower()
-            self.view.natbib_style_buttons[style] = Gtk.RadioButton()
-            if first_button == None: first_button = self.view.natbib_style_buttons[style]
-            box = Gtk.HBox()
-            box.pack_start(Gtk.Label(name), False, False, 0)
-            box.set_margin_right(6)
-            box.set_margin_left(4)
-            self.view.natbib_style_buttons[style].add(box)
-            self.view.natbib_style_buttons[style].set_mode(False)
+            self.view.natbib_style_buttons[style] = Gtk.ToggleButton()
+            box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+            box.append(Gtk.Label.new(name))
+            box.set_margin_end(6)
+            box.set_margin_start(4)
+            self.view.natbib_style_buttons[style].set_child(box)
             if first_button != None:
-                self.view.natbib_style_buttons[style].join_group(first_button)
-            self.view.natbib_style_switcher.pack_start(self.view.natbib_style_buttons[style], False, False, 0)
+                self.view.natbib_style_buttons[style].set_group(first_button)
+            self.view.natbib_style_switcher.append(self.view.natbib_style_buttons[style])
             self.view.natbib_style_buttons[style].connect('toggled', self.on_natbib_style_chosen, style)
+            if first_button == None: first_button = self.view.natbib_style_buttons[style]
 
-            image = Gtk.Image.new_from_file(os.path.join(ServiceLocator.get_resources_path(), 'bibliography_styles', style + '.png'))
+            image = Gtk.Picture.new_for_filename(os.path.join(ServiceLocator.get_resources_path(), 'bibliography_styles', style + '.png'))
+            image.set_can_shrink(False)
             self.view.natbib_preview_stack.add_named(image, style)
-
-        self.view.topbox.show_all()
 
         self.view.file_chooser_button.connect('file-set', self.on_file_chosen)
         self.view.natbib_option.connect('toggled', self.on_natbib_toggled)
@@ -143,15 +146,18 @@ class IncludeBibTeXFile(Dialog):
         self.current_values['filename'] = self.view.file_chooser_button.get_filename()
 
     def on_natbib_toggled(self, togglebutton):
-        self.current_values['natbib_toggle'] = togglebutton.get_active()
-        if togglebutton.get_active():
+        self.update_style_chooser_visibility()
+
+    def update_style_chooser_visibility(self):
+        self.current_values['natbib_toggle'] = self.view.natbib_option.get_active()
+        if self.view.natbib_option.get_active():
             self.view.preview_stack_wrapper.hide()
             self.view.style_switcher.hide()
-            self.view.natbib_preview_stack_wrapper.show_all()
-            self.view.natbib_style_switcher.show_all()
+            self.view.natbib_preview_stack_wrapper.show()
+            self.view.natbib_style_switcher.show()
         else:
-            self.view.preview_stack_wrapper.show_all()
-            self.view.style_switcher.show_all()
+            self.view.preview_stack_wrapper.show()
+            self.view.style_switcher.show()
             self.view.natbib_preview_stack_wrapper.hide()
             self.view.natbib_style_switcher.hide()
 
@@ -186,8 +192,9 @@ class IncludeBibTeXFile(Dialog):
 
     def insert_template(self):
         self.settings.set_value('app_include_bibtex_file_dialog', 'presets', pickle.dumps(self.current_values))
-        self.document.content.insert_before_document_end('''\\bibliographystyle{''' + self.get_style() + '''}
+
+        self.document.insert_before_document_end('''\\bibliographystyle{''' + self.get_style() + '''}
 \\bibliography{''' + self.get_display_filename() + '''}''')
-        self.document.content.scroll_cursor_onscreen()
+        self.document.scroll_cursor_onscreen()
 
 

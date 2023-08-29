@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
 
@@ -50,10 +50,11 @@ class PageEditor(object):
         self.view.option_highlight_matching_brackets.connect('toggled', self.preferences.on_check_button_toggle, 'highlight_matching_brackets')
 
 
-class PageEditorView(Gtk.VBox):
+class PageEditorView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self)
+        self.set_orientation(Gtk.Orientation.VERTICAL)
 
         self.set_margin_start(18)
         self.set_margin_end(18)
@@ -65,58 +66,58 @@ class PageEditorView(Gtk.VBox):
         label.set_markup('<b>' + _('Tab Stops') + '</b>')
         label.set_xalign(0)
         label.set_margin_bottom(6)
-        self.pack_start(label, False, False, 0)
+        self.append(label)
 
-        self.option_spaces_instead_of_tabs = Gtk.CheckButton(_('Insert spaces instead of tabs'))
-        self.pack_start(self.option_spaces_instead_of_tabs, False, False, 0)
+        self.option_spaces_instead_of_tabs = Gtk.CheckButton.new_with_label(_('Insert spaces instead of tabs'))
+        self.append(self.option_spaces_instead_of_tabs)
 
         label = Gtk.Label()
         label.set_markup(_('Set Tab Width:'))
         label.set_xalign(0)
         label.set_margin_top(18)
         label.set_margin_bottom(6)
-        self.pack_start(label, False, False, 0)
-        box = Gtk.HBox()
+        self.append(label)
+        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.tab_width_spinbutton = Gtk.SpinButton.new_with_range(1, 8, 1)
-        box.pack_start(self.tab_width_spinbutton, False, False, 0)
-        self.pack_start(box, False, False, 0)
+        box.append(self.tab_width_spinbutton)
+        self.append(box)
 
         label = Gtk.Label()
         label.set_markup('<b>' + _('Line Numbers') + '</b>')
         label.set_xalign(0)
         label.set_margin_top(18)
         label.set_margin_bottom(6)
-        self.pack_start(label, False, False, 0)
-        self.option_show_line_numbers = Gtk.CheckButton(_('Show line numbers'))
-        self.pack_start(self.option_show_line_numbers, False, False, 0)
+        self.append(label)
+        self.option_show_line_numbers = Gtk.CheckButton.new_with_label(_('Show line numbers'))
+        self.append(self.option_show_line_numbers)
 
         label = Gtk.Label()
         label.set_markup('<b>' + _('Line Wrapping') + '</b>')
         label.set_xalign(0)
         label.set_margin_top(18)
         label.set_margin_bottom(6)
-        self.pack_start(label, False, False, 0)
-        self.option_line_wrapping = Gtk.CheckButton(_('Enable line wrapping'))
-        self.pack_start(self.option_line_wrapping, False, False, 0)
+        self.append(label)
+        self.option_line_wrapping = Gtk.CheckButton.new_with_label(_('Enable line wrapping'))
+        self.append(self.option_line_wrapping)
 
         label = Gtk.Label()
         label.set_markup('<b>' + _('Code Folding') + '</b>')
         label.set_xalign(0)
         label.set_margin_top(18)
         label.set_margin_bottom(6)
-        self.pack_start(label, False, False, 0)
-        self.option_code_folding = Gtk.CheckButton(_('Enable code folding'))
-        self.pack_start(self.option_code_folding, False, False, 0)
+        self.append(label)
+        self.option_code_folding = Gtk.CheckButton.new_with_label(_('Enable code folding'))
+        self.append(self.option_code_folding)
 
         label = Gtk.Label()
         label.set_markup('<b>' + _('Highlighting') + '</b>')
         label.set_xalign(0)
         label.set_margin_top(18)
         label.set_margin_bottom(6)
-        self.pack_start(label, False, False, 0)
-        self.option_highlight_current_line = Gtk.CheckButton(_('Highlight current line'))
-        self.pack_start(self.option_highlight_current_line, False, False, 0)
-        self.option_highlight_matching_brackets = Gtk.CheckButton(_('Highlight matching brackets'))
-        self.pack_start(self.option_highlight_matching_brackets, False, False, 0)
+        self.append(label)
+        self.option_highlight_current_line = Gtk.CheckButton.new_with_label(_('Highlight current line'))
+        self.append(self.option_highlight_current_line)
+        self.option_highlight_matching_brackets = Gtk.CheckButton.new_with_label(_('Highlight matching brackets'))
+        self.append(self.option_highlight_matching_brackets)
 
 

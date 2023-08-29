@@ -16,13 +16,12 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import Pango
-from gi.repository import PangoCairo
 
 import os.path
-import cairo
 
 import setzer.workspace.build_log.build_log_viewgtk as build_log_view
 import setzer.helpers.drawing as drawing_helper
@@ -36,112 +35,33 @@ class BuildLogPresenter(object):
         self.build_log = build_log
         self.view = build_log_view
 
-        self.line_cache = dict()
-
         self.set_header_data(0, 0, False)
-        self.view.list.connect('draw', self.draw)
 
         self.build_log.connect('build_log_finished_adding', self.on_build_log_finished_adding)
         self.build_log.connect('hover_item_changed', self.on_hover_item_changed)
+        self.view.scrolled_window.get_vadjustment().connect('value-changed', self.on_scroll)
 
-        self.max_width = -1
-        self.height = -1
+    def on_scroll(self, adjustment, *arguments):
+        self.update_list()
 
     def on_build_log_finished_adding(self, build_log, has_been_built):
-        self.line_cache = dict()
         num_errors = self.build_log.count_items('errors')
         num_others = self.build_log.count_items('warnings') + self.build_log.count_items('badboxes')
-        num_items = self.build_log.count_items('all')
         self.set_header_data(num_errors, num_others, has_been_built)
-        self.max_width = -1
-        self.height = num_items * self.view.line_height + 24
-        self.view.list.set_size_request(self.max_width, self.height)
         self.view.scrolled_window.get_vadjustment().set_value(0)
         self.view.scrolled_window.get_hadjustment().set_value(0)
-        self.view.list.queue_draw()
+        self.view.list.items = self.build_log.items
+        self.view.list.generate_layouts()
+        height = len(self.view.list.items) * self.view.list.line_height + 24
+        self.view.list.set_size_request(354 + self.view.list.layouts[3].get_extents()[0].width / Pango.SCALE, height)
+        self.update_list()
 
     def on_hover_item_changed(self, build_log):
+        self.view.list.hover_item = build_log.hover_item
+        self.update_list()
+
+    def update_list(self):
         self.view.list.queue_draw()
-
-    #@timer
-    def draw(self, drawing_area, ctx):
-        update_size = False
-
-        style_context = drawing_area.get_style_context()
-
-        offset = self.view.scrolled_window.get_vadjustment().get_value()
-        view_width = drawing_area.get_allocated_width()
-        view_height = self.view.scrolled_window.get_allocated_height()
-        additional_height = ctx.get_target().get_height() - view_height
-        additional_lines = additional_height // self.view.line_height + 2
-
-        bg_color = style_context.lookup_color('theme_base_color')[1]
-        hover_color = style_context.lookup_color('theme_bg_color')[1]
-        self.view.fg_color = style_context.lookup_color('theme_fg_color')[1]
-
-        ctx.set_source_rgba(bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha)
-        ctx.rectangle(0, max(0, offset - additional_height), view_width, max(len(self.build_log.items) * self.view.line_height, view_height + 2 * additional_height))
-        ctx.fill()
-
-        first_line = max(int(offset // self.view.line_height) - additional_lines, 0)
-        last_line = min(int((offset + view_height) // self.view.line_height) + additional_lines, len(self.build_log.items))
-        items = self.build_log.items[first_line:last_line]
-
-        count = first_line
-        ctx.set_source_rgba(self.view.fg_color.red, self.view.fg_color.green, self.view.fg_color.blue, self.view.fg_color.alpha)
-        for item in items:
-            if count == self.build_log.hover_item:
-                ctx.set_source_rgba(hover_color.red, hover_color.green, hover_color.blue, hover_color.alpha)
-                ctx.rectangle(0, count * self.view.line_height - 1, view_width, self.view.line_height - 1)
-                ctx.fill()
-
-            self.draw_line(ctx, item, count)
-            count += 1
-
-            if (342 + self.view.layout.get_extents()[1].width / Pango.SCALE) > self.max_width:
-                self.max_width = 342 + self.view.layout.get_extents()[1].width / Pango.SCALE
-                update_size = True
-
-        if update_size:
-            drawing_area.set_size_request(self.max_width, self.height)
-
-    def draw_line(self, da_context, item, count):
-        if count not in self.line_cache:
-            surface = cairo.ImageSurface(cairo.Format.ARGB32, 350 + len(item[4]) * self.view.line_height, self.view.line_height)
-            ctx = cairo.Context(surface)
-
-            icon_surface = self.view.icons[item[0]]
-            ctx.set_source_surface(icon_surface)
-            ctx.rectangle(0, 1, 16, 16)
-            ctx.fill()
-
-            ctx.set_source_rgba(self.view.fg_color.red, self.view.fg_color.green, self.view.fg_color.blue, self.view.fg_color.alpha)
-
-            ctx.move_to(36, -1)
-            self.view.layout.set_text(item[0])
-            PangoCairo.show_layout(ctx, self.view.layout)
-
-            ctx.move_to(120, -1)
-            self.view.layout.set_width(117 * Pango.SCALE)
-            self.view.layout.set_text(item[2])
-            PangoCairo.show_layout(ctx, self.view.layout)
-            self.view.layout.set_width(-1)
-
-            ctx.move_to(264, -1)
-            self.view.layout.set_text(_('Line {number}').format(number=str(item[3])) if item[3] >= 0 else '')
-            PangoCairo.show_layout(ctx, self.view.layout)
-
-            ctx.move_to(348, -1)
-            self.view.layout.set_text(item[4])
-            PangoCairo.show_layout(ctx, self.view.layout)
-
-            self.line_cache[count] = surface
-
-        surface = self.line_cache[count]
-        surface.set_device_offset(-12 * self.view.get_scale_factor(), -(count * self.view.line_height + 3) * self.view.get_scale_factor())
-        da_context.set_source_surface(surface)
-        da_context.rectangle(12, count * self.view.line_height + 4, 350 + len(item[4]) * self.view.line_height, self.view.line_height)
-        da_context.fill()
 
     def set_header_data(self, errors, warnings, tried_building=False):
         if tried_building:
@@ -167,5 +87,5 @@ class BuildLogPresenter(object):
             self.view.header_label.set_markup(markup)
         else:
             self.view.header_label.set_markup('')
-    
+
 

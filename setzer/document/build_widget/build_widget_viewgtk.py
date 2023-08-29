@@ -16,53 +16,46 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 from gi.repository import GObject
 
 
-class BuildWidgetView(Gtk.HBox):
+class BuildWidgetView(Gtk.Box):
     ''' Shows how long the build process takes '''
     
     def __init__(self):
-        Gtk.HBox.__init__(self)
+        Gtk.Box.__init__(self)
+        self.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.get_style_context().add_class('build-widget')
+        self.set_can_focus(False)
 
         self.timer = 0
         self.timer_active = False
         self.state_change_count = 0
         
-        self.build_button = Gtk.Button.new_from_icon_name('builder-build-symbolic', Gtk.IconSize.MENU)
-        self.build_button.set_focus_on_click(False)
+        self.build_button = Gtk.Button.new_from_icon_name('builder-build-symbolic')
         self.build_button.set_tooltip_text(_('Save and build .pdf-file from document') + ' (F5)')
         self.build_button.set_action_name('win.save-and-build')
 
-        self.stop_button = Gtk.Button.new_from_icon_name('process-stop-symbolic', Gtk.IconSize.MENU)
-        self.stop_button.set_focus_on_click(False)
+        self.stop_button = Gtk.Button.new_from_icon_name('process-stop-symbolic')
         self.stop_button.set_tooltip_text(_('Stop building'))
 
-        self.clean_button = Gtk.Button.new_from_icon_name('brush-symbolic', Gtk.IconSize.MENU)
-        self.clean_button.set_focus_on_click(False)
+        self.clean_button = Gtk.Button.new_from_icon_name('brush-symbolic')
         self.clean_button.set_tooltip_text(_('Cleanup build files'))
 
         self.build_timer = Gtk.Revealer()
         self.build_timer.set_transition_type(Gtk.RevealerTransitionType.CROSSFADE)
-        self.build_timer_wrapper = Gtk.VBox()
-        self.build_timer_wrapper.pack_start(Gtk.DrawingArea(), True, True, 0)
-        self.label = Gtk.Label('')
+        self.label = Gtk.Label.new('')
         self.label.get_style_context().add_class('build-timer')
         self.label.set_xalign(0)
-        self.build_timer_wrapper.pack_start(self.label, False, False, 0)
-        self.build_timer_wrapper.pack_start(Gtk.DrawingArea(), True, True, 0)
-        self.build_timer.add(self.build_timer_wrapper)
-        self.build_timer_wrapper.show_all()
+        self.label.set_hexpand(True)
+        self.build_timer.set_child(self.label)
 
-        self.show()
-
-        self.pack_start(self.build_timer, False, False, 0)
-        self.pack_end(self.clean_button, False, False, 0)
-        self.pack_end(self.build_button, False, False, 0)
-        self.pack_end(self.stop_button, False, False, 0)
+        self.prepend(self.clean_button)
+        self.prepend(self.build_button)
+        self.prepend(self.stop_button)
+        self.prepend(self.build_timer)
         
     def start_timer(self):
         self.timer_active = True
@@ -73,7 +66,6 @@ class BuildWidgetView(Gtk.HBox):
             self.timer += 50
             if self.timer // 1000 >= 1:
                 self.label.set_text('{}:{:02}'.format(self.timer // 60000, (self.timer % 60000) // 1000))
-                self.set_size_request(max(self.label.get_allocated_width(), self.label.get_size_request()[0]), -1)
         return self.timer_active
 
     def stop_timer(self):
@@ -82,7 +74,6 @@ class BuildWidgetView(Gtk.HBox):
     def reset_timer(self):
         self.timer = 0
         self.label.set_text('')
-        self.build_timer.set_size_request(-1, -1)
 
     def show_timer(self):
         self.build_timer.show()
@@ -91,7 +82,6 @@ class BuildWidgetView(Gtk.HBox):
         
     def show_result(self, text=''):
         self.label.set_markup(text)
-        self.build_timer.set_size_request(max(self.label.get_allocated_width(), self.label.get_size_request()[0]), -1)
     
     def has_result(self):
         text = self.label.get_text()

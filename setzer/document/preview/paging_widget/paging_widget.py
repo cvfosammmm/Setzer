@@ -16,60 +16,52 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk, Pango
+
+from setzer.widgets.fixed_width_label.fixed_width_label import FixedWidthLabel
 
 
 class PagingWidget(object):
 
     def __init__(self, preview):
         self.preview = preview
-        self.view = PagingWidgetView()
+        self.view = FixedWidthLabel(100)
+        self.view.layout.set_alignment(Pango.Alignment.LEFT)
+        self.view.get_style_context().add_class('paging-widget')
 
-        self.preview.view.action_bar.pack_start(self.view, False, False, 0)
-        self.update_number_of_pages()
-        self.update_current_page()
+        self.preview.view.action_bar_left.append(self.view)
+        self.update_label()
 
         self.preview.connect('pdf_changed', self.on_pdf_changed)
         self.preview.connect('position_changed', self.on_position_changed)
+        self.preview.connect('layout_changed', self.on_layout_changed)
         self.preview.zoom_manager.connect('zoom_level_changed', self.on_zoom_level_changed)
 
     def on_pdf_changed(self, preview):
-        self.update_number_of_pages()
-        self.update_current_page()
+        self.update_label()
 
     def on_position_changed(self, preview):
-        self.update_current_page()
+        self.update_label()
+
+    def on_layout_changed(self, preview):
+        self.update_label()
 
     def on_zoom_level_changed(self, preview):
-        self.update_current_page()
+        self.update_label()
 
-    def update_number_of_pages(self):
+    def update_label(self):
         if self.preview.pdf_filename != None:
-            self.view.label_number_of_pages.set_text(str(self.preview.poppler_document.get_n_pages()))
+            total = str(self.preview.poppler_document.get_n_pages())
+            if self.preview.layout != None:
+                offset = self.preview.view.content.scrolling_offset_y
+                current = str(self.preview.layout.get_page_by_offset(offset))
+            else:
+                current = "0"
         else:
-            self.view.label_number_of_pages.set_text("0")
+            total = "0"
+            current = "0"
 
-    def update_current_page(self):
-        if self.preview.layout != None:
-            offset = self.preview.view.scrolled_window.get_vadjustment().get_value()
-            self.view.label_current_page.set_text(str(self.preview.layout.get_page_by_offset(offset)))
-        else:
-            self.view.label_current_page.set_text("0")
-
-
-class PagingWidgetView(Gtk.HBox):
-
-    def __init__(self):
-        Gtk.HBox.__init__(self)
-        self.set_margin_left(9)
-
-        self.pack_start(Gtk.Label(_('Page ')), False, False, 0)
-        self.label_current_page = Gtk.Label('')
-        self.pack_start(self.label_current_page, False, False, 0)
-        self.pack_start(Gtk.Label(_(' of ')), False, False, 0)
-        self.label_number_of_pages = Gtk.Label('')
-        self.pack_start(self.label_number_of_pages, False, False, 0)
-        self.show_all()
+        self.view.set_text(_('Page ') + current + _(' of ') + total)
 
 

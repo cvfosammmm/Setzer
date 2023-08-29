@@ -16,9 +16,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-from gi.repository import GObject
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk, GObject
 
 import time
 
@@ -28,79 +27,81 @@ class DocumentStructurePage(Gtk.Overlay):
     def __init__(self):
         Gtk.Overlay.__init__(self)
         self.labels = dict()
-
-        self.vbox = Gtk.VBox()
-        self.content_vbox = Gtk.VBox()
-
+        self.content_vbox_children = list()
         self.scroll_to = None
 
+        self.content_vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.scrolled_window = Gtk.ScrolledWindow()
+        self.scrolled_window.set_child(self.content_vbox)
+        self.scrolled_window.set_vexpand(True)
+
+        self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.add_buttons()
-        self.add_scrolled_window()
+        self.vbox.append(self.scrolled_window)
+        self.set_child(self.vbox)
 
-        self.show_all()
-
-        self.vbox.connect('size-allocate', self.on_scroll_or_resize)
+        self.scrolled_window.get_vadjustment().connect('changed', self.on_scroll_or_resize)
         self.scrolled_window.get_vadjustment().connect('value-changed', self.on_scroll_or_resize)
-        self.vbox.connect('realize', self.on_scroll_or_resize)
         self.next_button.connect('clicked', self.on_next_button_clicked)
         self.prev_button.connect('clicked', self.on_prev_button_clicked)
 
     def add_content_widget(self, name, widget):
-        self.content_vbox.pack_start(widget, False, False, 0)
+        self.content_vbox.append(widget)
+        self.content_vbox_children.append(widget)
 
     def add_label(self, name, text):
-        label_inline = Gtk.Label(text)
+        label_inline = Gtk.Label.new(text)
         label_inline.set_xalign(0)
         label_inline.get_style_context().add_class('headline')
-        self.content_vbox.pack_start(label_inline, False, False, 0)
+        self.content_vbox.append(label_inline)
+        self.content_vbox_children.append(label_inline)
 
-        label_overlay = Gtk.Label(text)
+        label_overlay = Gtk.Label.new(text)
         label_overlay.set_xalign(0)
         label_overlay.set_halign(Gtk.Align.START)
         label_overlay.set_valign(Gtk.Align.START)
         label_overlay.set_size_request(148, -1)
         label_overlay.get_style_context().add_class('overlay')
+        label_overlay.set_can_target(False)
         self.add_overlay(label_overlay)
-        self.set_overlay_pass_through(label_overlay, True)
 
         self.labels[name] = {'inline': label_inline, 'overlay': label_overlay}
 
     def add_buttons(self):
-        self.tabs_box = Gtk.HBox()
-        self.tabs_box.get_style_context().add_class('tabs-box')
-        self.tabs_box.pack_start(Gtk.Label('Files'), False, False, 0)
-        self.vbox.pack_start(self.tabs_box, False, False, 0)
+        self.tabs = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
 
-        self.tabs = Gtk.Toolbar()
-        self.tabs.set_style(Gtk.ToolbarStyle.ICONS)
-        self.tabs.set_orientation(Gtk.Orientation.HORIZONTAL)
-        self.tabs.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
-        self.tabs_box.pack_end(self.tabs, False, False, 0)
-
-        self.prev_button = Gtk.ToolButton()
+        self.prev_button = Gtk.Button()
         self.prev_button.set_icon_name('go-up-symbolic')
         self.prev_button.set_focus_on_click(False)
         self.prev_button.set_tooltip_text(_('Back'))
-        self.tabs.insert(self.prev_button, -1)
+        self.prev_button.get_style_context().add_class('flat')
+        self.tabs.append(self.prev_button)
 
-        self.next_button = Gtk.ToolButton()
+        self.next_button = Gtk.Button()
         self.next_button.set_icon_name('go-down-symbolic')
         self.next_button.set_focus_on_click(False)
         self.next_button.set_tooltip_text(_('Forward'))
-        self.tabs.insert(self.next_button, -1)
+        self.next_button.get_style_context().add_class('flat')
+        self.tabs.append(self.next_button)
 
-    def add_scrolled_window(self):
-        self.scrolled_window = Gtk.ScrolledWindow()
-        self.scrolled_window.add(self.content_vbox)
-        self.vbox.pack_start(self.scrolled_window, True, True, 0)
-        self.add(self.vbox)
+        self.tabs_box = Gtk.CenterBox()
+        self.tabs_box.set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.tabs_box.get_style_context().add_class('tabs-box')
+        self.tabs_box.set_start_widget(Gtk.Label.new('Files'))
+        self.tabs_box.set_end_widget(self.tabs)
+        self.vbox.append(self.tabs_box)
 
     def on_scroll_or_resize(self, *args):
-        label_offsets = self.get_label_offsets()
         scrolling_offset = self.scrolled_window.get_vadjustment().get_value()
+        if scrolling_offset == 0:
+            self.prev_button.set_sensitive(False)
+        else:
+            self.prev_button.set_sensitive(True)
 
-        self.prev_button.set_sensitive(scrolling_offset != 0)
-        self.next_button.set_sensitive(scrolling_offset < label_offsets[-1] and scrolling_offset < self.content_vbox.get_allocated_height() - self.scrolled_window.get_allocated_height())
+        label_offsets = self.get_label_offsets()
+        height_condition = scrolling_offset < self.content_vbox.get_allocated_height() - self.scrolled_window.get_allocated_height()
+        label_condition = len(label_offsets) > 0 and scrolling_offset < label_offsets[-1]
+        self.next_button.set_sensitive(height_condition and label_condition)
 
         self.update_labels()
 
@@ -108,13 +109,18 @@ class DocumentStructurePage(Gtk.Overlay):
         tabs_height = self.tabs_box.get_allocated_height()
         scrolling_offset = self.scrolled_window.get_vadjustment().get_value()
 
-        self.tabs_box.get_style_context().remove_class('no-border')
-        for label_name, label_offset in zip(self.labels, self.get_label_offsets()):
-            margin_top = max(0, label_offset - int(scrolling_offset))
-            self.labels[label_name]['overlay'].set_margin_top(margin_top)
+        if self.content_vbox.get_allocated_height() == self.scrolled_window.get_allocated_height():
+            for label_name in self.labels:
+                self.labels[label_name]['overlay'].hide()
+        else:
+            self.tabs_box.get_style_context().remove_class('no-border')
+            for label_name, label_offset in zip(self.labels, self.get_label_offsets()):
+                margin_top = max(0, label_offset - int(scrolling_offset))
+                self.labels[label_name]['overlay'].show()
+                self.labels[label_name]['overlay'].set_margin_top(margin_top)
 
-            if margin_top > 0 and margin_top <= tabs_height:
-                self.tabs_box.get_style_context().add_class('no-border')
+                if margin_top > 0 and margin_top <= tabs_height:
+                    self.tabs_box.get_style_context().add_class('no-border')
 
     def on_next_button_clicked(self, button):
         scrolling_offset = self.scrolled_window.get_vadjustment().get_value()
@@ -136,7 +142,8 @@ class DocumentStructurePage(Gtk.Overlay):
         offsets = list()
         offset = self.tabs_box.get_allocated_height()
         labels = [label['inline'] for label in self.labels.values()]
-        for child in self.content_vbox.get_children():
+
+        for child in self.content_vbox_children:
             if child in labels:
                 offsets.append(offset)
             if child.is_visible():

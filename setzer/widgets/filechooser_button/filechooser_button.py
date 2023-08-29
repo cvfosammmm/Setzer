@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 from gi.repository import Pango
 
@@ -30,20 +30,20 @@ class FilechooserButtonView(Gtk.Button):
     def __init__(self):
         Gtk.Button.__init__(self)
 
-        self.button_widget = Gtk.HBox()
-        self.button_label = Gtk.Label(_('(None)'))
+        self.button_widget = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
+        self.button_label = Gtk.Label.new(_('(None)'))
         self.button_label.set_ellipsize(Pango.EllipsizeMode.START)
-        self.button_widget.pack_end(Gtk.Image.new_from_icon_name('document-open-symbolic', Gtk.IconSize.BUTTON), False, False, 0)
-        self.button_widget.pack_start(self.button_label, False, False, 0)
-        self.add(self.button_widget)
+        self.button_widget.append(Gtk.Image.new_from_icon_name('document-open-symbolic'))
+        self.button_widget.append(self.button_label)
+        self.set_child(self.button_widget)
 
 
 class FilechooserButton(Observable):
 
-    def __init__(self, main_window):
+    def __init__(self, parent_window):
         Observable.__init__(self)
 
-        self.main_window = main_window
+        self.parent_window = parent_window
         self.default_folder = None
         self.filename = None
         self.filters = list()
@@ -71,28 +71,36 @@ class FilechooserButton(Observable):
         self.filters.append(file_filter)
 
     def on_button_clicked(self, button):
-        action = Gtk.FileChooserAction.OPEN
-        buttons = (_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Select'), Gtk.ResponseType.APPLY)
-        dialog = Gtk.FileChooserDialog(self.title, self.main_window, action, buttons)
+        self.dialog = Gtk.FileChooserDialog()
+        self.dialog.set_action(Gtk.FileChooserAction.OPEN)
+        self.dialog.set_transient_for(self.parent_window)
+
+        self.cancel_button = self.dialog.add_button(_('_Cancel'), Gtk.ResponseType.CANCEL)
+        self.cancel_button.set_can_focus(False)
+        
+        self.create_button = self.dialog.add_button(_('_Select'), Gtk.ResponseType.APPLY)
+        self.create_button.set_can_focus(False)
+        self.create_button.get_style_context().add_class('suggested-action')
 
         for file_filter in self.filters:
-            dialog.add_filter(file_filter)
-
-        for widget in dialog.get_header_bar().get_children():
-            if isinstance(widget, Gtk.Button) and widget.get_label() == _('_Select'):
-                widget.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
-                widget.set_can_default(True)
-                widget.grab_default()
+            self.dialog.add_filter(file_filter)
 
         if self.default_folder != None:
-            dialog.set_current_folder(self.default_folder)
+            self.dialog.set_current_folder(self.default_folder)
 
-        response = dialog.run()
-        if response == Gtk.ResponseType.APPLY:
-            self.filename = dialog.get_filename()
+        self.dialog.show()
+        self.signal_connection_id = self.dialog.connect('response', self.dialog_process_response)
+
+    def dialog_process_response(self, view, response_id):
+        if response_id == Gtk.ResponseType.APPLY:
+            self.filename = self.dialog.get_file().get_path()
             self.view.button_label.set_text(os.path.basename(self.filename))
             self.add_change_code('file-set')
-        dialog.hide()
-        del(dialog)
+        self.dialog_close()
+
+    def dialog_close(self):
+        self.dialog.hide()
+        self.dialog.disconnect(self.signal_connection_id)
+        del(self.dialog)
 
 

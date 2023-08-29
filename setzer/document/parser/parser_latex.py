@@ -16,27 +16,48 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 from setzer.app.service_locator import ServiceLocator
+from setzer.helpers.observable import Observable
 from setzer.helpers.timer import timer
 
 
-class ParserLaTeX(object):
+class ParserLaTeX(Observable):
 
     def __init__(self, document):
+        Observable.__init__(self)
         self.document = document
         self.text_length = 0
         self.number_of_lines = 0
         self.block_symbol_matches = {'begin_or_end': list(), 'others': list()}
         self.other_symbols = list()
 
+        self.symbols = dict()
+        self.symbols['bibitems'] = set()
+        self.symbols['labels'] = set()
+        self.symbols['labels_with_offset'] = list()
+        self.symbols['todos'] = set()
+        self.symbols['todos_with_offset'] = set()
+        self.symbols['included_latex_files'] = set()
+        self.symbols['bibliographies'] = set()
+        self.symbols['packages'] = set()
+        self.symbols['packages_detailed'] = dict()
+        self.symbols['blocks'] = list()
+
+        self.last_edit = None
+
+        self.document.source_buffer.connect('insert-text', self.on_insert_text)
+        self.document.source_buffer.connect('delete-range', self.on_text_deleted)
+
     #@timer
     def on_text_deleted(self, buffer, start_iter, end_iter):
+        self.last_edit = ('delete', start_iter, end_iter)
+
         offset_start = start_iter.get_offset()
         offset_end = end_iter.get_offset()
         line_start = start_iter.get_line()
         line_end = end_iter.get_line()
         char_count = buffer.get_char_count()
-        before_iter = buffer.get_iter_at_line(line_start)
-        after_iter = buffer.get_iter_at_line(line_end + 1)
+        _, before_iter = buffer.get_iter_at_line(line_start)
+        _, after_iter = buffer.get_iter_at_line(line_end + 1)
         if not after_iter.get_offset() == char_count:
             after_iter.backward_char()
 
@@ -86,15 +107,19 @@ class ParserLaTeX(object):
         self.other_symbols = other_symbols
         self.parse_symbols()
 
+        self.add_change_code('finished_parsing')
+
     #@timer
-    def on_text_inserted(self, buffer, location_iter, text, text_length):
+    def on_insert_text(self, buffer, location_iter, text, text_length):
+        self.last_edit = ('insert', location_iter, text, text_length)
+
         text_length = len(text)
         offset = location_iter.get_offset()
         new_line_count = text.count('\n')
         line_start = location_iter.get_line()
         char_count = buffer.get_char_count()
-        before_iter = buffer.get_iter_at_line(line_start)
-        after_iter = buffer.get_iter_at_line(line_start + 1)
+        _, before_iter = buffer.get_iter_at_line(line_start)
+        _, after_iter = buffer.get_iter_at_line(line_start + 1)
         if not after_iter.get_offset() == char_count:
             after_iter.backward_char()
 
@@ -139,6 +164,8 @@ class ParserLaTeX(object):
 
         self.other_symbols = other_symbols
         self.parse_symbols()
+
+        self.add_change_code('finished_parsing')
 
     #@timer
     def parse_for_blocks(self, text, line_start, offset_line_start):
@@ -214,13 +241,13 @@ class ParserLaTeX(object):
             block.append(match.group(3))
             block.append(match.group(4))
             blocks_list.append(block)
-            for i in range(level, 5):
+            for i in range(level, 7):
                 relevant_following_blocks[i].append(block)
 
         if add_preamble_folding and begin_document_offset and begin_document_line:
             blocks_list.append([0, begin_document_offset - 1, 0, begin_document_line - 1, 'preamble'])
 
-        self.document.set_blocks(sorted(blocks_list, key=lambda block: block[0]))
+        self.symbols['blocks'] = sorted(blocks_list, key=lambda block: block[0])
 
     #@timer
     def parse_symbols(self):
@@ -257,18 +284,20 @@ class ParserLaTeX(object):
                 todos_with_offset.append([match.group(2).strip(), offset])
             elif match.group(3) == 'usepackage':
                 packages = packages | {match.group(4).strip()}
-                packages_detailed[match.group(4).strip()] = [offset, match]
+                if match.group(4).strip() not in packages_detailed:
+                    packages_detailed[match.group(4).strip()] = []
+                packages_detailed[match.group(4).strip()].append([offset, match])
             elif match.group(5) == 'bibitem':
                 bibitems = bibitems | {match.group(6).strip()}
 
-        self.document.symbols['labels'] = labels
-        self.document.symbols['labels_with_offset'] = labels_with_offset
-        self.document.symbols['included_latex_files'] = included_latex_files
-        self.document.symbols['todos'] = todos
-        self.document.symbols['todos_with_offset'] = todos_with_offset
-        self.document.symbols['bibliographies'] = bibliographies
-        self.document.symbols['bibitems'] = bibitems
-        self.document.symbols['packages'] = packages
-        self.document.symbols['packages_detailed'] = packages_detailed
+        self.symbols['labels'] = labels
+        self.symbols['labels_with_offset'] = labels_with_offset
+        self.symbols['included_latex_files'] = included_latex_files
+        self.symbols['todos'] = todos
+        self.symbols['todos_with_offset'] = todos_with_offset
+        self.symbols['bibliographies'] = bibliographies
+        self.symbols['bibitems'] = bibitems
+        self.symbols['packages'] = packages
+        self.symbols['packages_detailed'] = packages_detailed
 
 

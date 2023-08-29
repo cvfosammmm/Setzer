@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 from gi.repository import GLib
 from gi.repository import GdkPixbuf
@@ -48,14 +48,13 @@ class BeamerSettingsPage(Page):
                 image_box = self.view.preview_image_boxes[child_name][i]
                 if image_box.get_center_widget() == None:
                     image_box.set_center_widget(self.view.preview_images[child_name][i])
-                    image_box.show_all()
             self.view.preview_stack.set_transition_type(Gtk.StackTransitionType.NONE)
             self.view.preview_stack.set_visible_child_name(child_name + '_0')
 
             button = self.view.preview_buttons[child_name][0]
-            button.set_image(self.view.preview_button_images[child_name][0])
+            button.set_child(self.view.preview_button_images[child_name][0])
             button = self.view.preview_buttons[child_name][1]
-            button.set_image(self.view.preview_button_images[child_name][1])
+            button.set_child(self.view.preview_button_images[child_name][1])
             self.view.preview_button_stack.set_visible_child_name(child_name)
 
         def option_toggled(button, option_name):
@@ -82,20 +81,17 @@ class BeamerSettingsPage(Page):
         with self.image_loading_lock:
             for name in self.view.theme_names:
                 for i in range(0, 2):
-                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.join(ServiceLocator.get_resources_path(), 'document_wizard', 'beamerpreview_' + name + '_page_' + str(i) + '.png'), 346, 260, False)
-                    image = Gtk.Image.new_from_pixbuf(pixbuf)
+                    image = Gtk.Picture.new_for_filename(os.path.join(ServiceLocator.get_resources_path(), 'document_wizard', 'beamerpreview_' + name + '_page_' + str(i) + '.png'))
+                    image.set_size_request(346, 260)
                     self.view.preview_images[name].append(image)
-                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(os.path.join(ServiceLocator.get_resources_path(), 'document_wizard', 'beamerpreview_' + name + '_page_' + str(i) + '.png'), 100, 75, False)
-                    image = Gtk.Image.new_from_pixbuf(pixbuf)
+                    image = Gtk.Picture.new_for_filename(os.path.join(ServiceLocator.get_resources_path(), 'document_wizard', 'beamerpreview_' + name + '_page_' + str(i) + '.png'))
+                    image.set_size_request(100, 75)
                     self.view.preview_button_images[name].append(image)
-            self.view.preview_stack.show_all()
 
     def load_presets(self, presets):
         try:
             row = self.view.themes_list_rows[presets['beamer']['theme']]
-        except TypeError:
-            row = self.view.themes_list_rows[self.current_values['beamer']['theme']]
-        except KeyError:
+        except Exception:
             row = self.view.themes_list_rows[self.current_values['beamer']['theme']]
         self.view.themes_list.select_row(row)
 
@@ -110,22 +106,22 @@ class BeamerSettingsPage(Page):
             setter_function(value)
 
     def on_activation(self):
-        GLib.idle_add(self.view.themes_list.get_selected_row().grab_focus)
+        pass
 
 
 class BeamerSettingsPageView(PageView):
 
     def __init__(self):
         PageView.__init__(self)
-            
+
         self.header.set_text(_('Beamer settings'))
         self.headerbar_subtitle = _('Step') + ' 2: ' + _('Beamer settings')
-        self.content = Gtk.HBox()
-        self.form = Gtk.VBox()
+        self.content = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.form = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         
         self.theme_names = ['Warsaw', 'Malmoe', 'Luebeck', 'Copenhagen', 'Szeged', 'Singapore', 'Frankfurt', 'Darmstadt', 'Dresden', 'Ilmenau', 'Berlin', 'Hannover', 'Marburg', 'Goettingen', 'PaloAlto', 'Berkeley', 'Montpellier', 'JuanLesPins', 'Antibes', 'Rochester', 'Pittsburgh', 'EastLansing', 'CambridgeUS', 'AnnArbor', 'Madrid', 'Boadilla', 'Bergen', 'default']
 
-        self.subheader_themes = Gtk.Label(_('Themes'))
+        self.subheader_themes = Gtk.Label.new(_('Themes'))
         self.subheader_themes.get_style_context().add_class('document-wizard-subheader')
         self.subheader_themes.set_xalign(0)
 
@@ -133,21 +129,21 @@ class BeamerSettingsPageView(PageView):
         self.themes_list_scrolled_window.set_size_request(348, 230)
         self.themes_list_scrolled_window.get_style_context().add_class('document-wizard-scrolledwindow')
         self.themes_list = Gtk.ListBox()
-        self.themes_list.set_can_focus(True)
         self.themes_list.set_size_request(346, -1)
+        self.themes_list.set_can_focus(False)
         self.themes_list_rows = dict()
         for name in self.theme_names:
-            label = Gtk.Label(name)
+            label = Gtk.Label.new(name)
             label.set_xalign(0)
-            self.themes_list.prepend(label)
-        for row in self.themes_list.get_children():
-            self.themes_list_rows[row.get_child().get_text()] = row
-        self.themes_list.set_margin_right(0)
+            row = Gtk.ListBoxRow()
+            row.set_child(label)
+            self.themes_list_rows[name] = row
+            self.themes_list.prepend(row)
         self.themes_list.set_vexpand(False)
         self.themes_list.get_style_context().add_class('document-wizard-list2')
-        self.themes_list_scrolled_window.add(self.themes_list)
+        self.themes_list_scrolled_window.set_child(self.themes_list)
         
-        self.subheader_options = Gtk.Label(_('Options'))
+        self.subheader_options = Gtk.Label.new(_('Options'))
         self.subheader_options.get_style_context().add_class('document-wizard-subheader')
         self.subheader_options.set_margin_top(18)
         self.subheader_options.set_xalign(0)
@@ -155,12 +151,12 @@ class BeamerSettingsPageView(PageView):
         self.option_show_navigation = Gtk.CheckButton.new_with_label(_('Show navigation buttons'))
         self.option_top_align = Gtk.CheckButton.new_with_label(_('Align content to the top of pages'))
         self.option_top_align.get_style_context().add_class('has-desc')
-        self.option_top_align_desc = Gtk.Label(_('("t" option, it\'s centered by default)'))
+        self.option_top_align_desc = Gtk.Label.new(_('("t" option, it\'s centered by default)'))
         self.option_top_align_desc.get_style_context().add_class('document-wizard-option-desc')
         self.option_top_align_desc.set_xalign(0)
         
-        self.preview = Gtk.VBox()
-        self.preview_stack_wrapper = Gtk.VBox()
+        self.preview = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.preview_stack_wrapper = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.preview_stack_wrapper.get_style_context().add_class('document-wizard-beamer-preview-stack-wrapper')
         self.preview_stack = Gtk.Stack()
         self.preview_button_stack = Gtk.Stack()
@@ -174,38 +170,37 @@ class BeamerSettingsPageView(PageView):
             self.preview_images[name] = list()
             self.preview_image_boxes[name] = list()
             self.preview_buttons[name] = list()
-            button_box =  Gtk.HBox()
+            button_box =  Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
             button_box.get_style_context().add_class('document-wizard-beamer-preview-buttons')
             self.preview_button_widgets[name] = button_box
             self.preview_button_stack.add_named(button_box, name)
             for i in range(0, 2):
-                image_box = Gtk.HBox()
+                image_box = Gtk.CenterBox()
+                image_box.set_orientation(Gtk.Orientation.HORIZONTAL)
                 self.preview_image_boxes[name].append(image_box)
                 self.preview_stack.add_named(image_box, name + '_' + str(i))
                 button = Gtk.Button()
                 button.set_margin_end(12)
                 button.set_margin_top(12)
-                button.set_relief(Gtk.ReliefStyle.NONE)
                 self.preview_buttons[name].append(button)
                 self.preview_button_images[name] = list()
-                self.preview_button_widgets[name].pack_start(button, False, False, 0)
-        self.preview_stack_wrapper.pack_start(self.preview_stack, False, False, 0)
-        self.preview.pack_start(self.preview_stack_wrapper, False, False, 0)
-        self.preview.pack_start(self.preview_button_stack, False, False, 0)
+                self.preview_button_widgets[name].append(button)
+        self.preview_stack_wrapper.append(self.preview_stack)
+        self.preview.append(self.preview_stack_wrapper)
+        self.preview.append(self.preview_button_stack)
         self.preview.set_margin_top(30)
         self.preview.set_margin_start(18)
         self.preview.set_margin_end(18)
 
-        self.pack_start(self.header, False, False, 0)
-        self.form.pack_start(self.subheader_themes, False, False, 0)
-        self.form.pack_start(self.themes_list_scrolled_window, False, False, 0)
-        self.form.pack_start(self.subheader_options, False, False, 0)
-        self.form.pack_start(self.option_show_navigation, False, False, 0)
-        self.form.pack_start(self.option_top_align, False, False, 0)
-        self.form.pack_start(self.option_top_align_desc, False, False, 0)
-        self.content.pack_start(self.form, False, False, 0)
-        self.content.pack_start(self.preview, False, False, 0)
-        self.pack_start(self.content, False, False, 0)
-        self.show_all()
+        self.append(self.header)
+        self.form.append(self.subheader_themes)
+        self.form.append(self.themes_list_scrolled_window)
+        self.form.append(self.subheader_options)
+        self.form.append(self.option_show_navigation)
+        self.form.append(self.option_top_align)
+        self.form.append(self.option_top_align_desc)
+        self.content.append(self.form)
+        self.content.append(self.preview)
+        self.append(self.content)
 
 

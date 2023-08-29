@@ -19,28 +19,27 @@ import gi
 import os.path
 import time
 import pickle
-gi.require_version('Handy', '1')
-from gi.repository import Handy
 
 from setzer.document.document import Document
-from setzer.document.document_latex import DocumentLaTeX
-from setzer.document.document_bibtex import DocumentBibTeX
-from setzer.document.document_other import DocumentOther
+import setzer.document.build_system.build_system as build_system
+import setzer.document.build_widget.build_widget as build_widget
+import setzer.document.preview.preview as preview
 from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
 import setzer.workspace.preview_panel.preview_panel_presenter as preview_panel_presenter
 import setzer.workspace.help_panel.help_panel as help_panel
 import setzer.workspace.welcome_screen.welcome_screen as welcome_screen
+import setzer.workspace.headerbar.headerbar as headerbar
 import setzer.workspace.sidebar.sidebar as sidebar
 import setzer.workspace.shortcutsbar.shortcutsbar as shortcutsbar
 import setzer.workspace.build_log.build_log as build_log
-import setzer.workspace.headerbar.headerbar_presenter as headerbar_presenter
-import setzer.workspace.document_chooser.document_chooser as document_chooser
 import setzer.workspace.keyboard_shortcuts.shortcuts as shortcuts
 import setzer.workspace.document_switcher.document_switcher as document_switcher
+import setzer.workspace.document_chooser.document_chooser as document_chooser
 import setzer.workspace.actions.actions as actions
 from setzer.app.service_locator import ServiceLocator
+from setzer.settings.document_settings import DocumentSettings
 
 
 class Workspace(Observable):
@@ -58,41 +57,30 @@ class Workspace(Observable):
 
         self.active_document = None
 
-        self.can_sync = False
-        self.sync_document = None
-        self.update_sync_document()
-
         self.recently_opened_session_files = dict()
         self.session_file_opened = None
 
         self.settings = ServiceLocator.get_settings()
-        self.inline_spellchecking = self.settings.get_value('preferences', 'inline_spellchecking')
-        self.spellchecking_language_code = self.settings.get_value('preferences', 'spellchecking_language_code')
-        self.color_scheme = self.settings.get_value('preferences', 'color_scheme')
-        self.invert_pdf = self.settings.get_value('preferences', 'invert_pdf')
 
-        self.sidebar = sidebar.Sidebar(self)
-        self.welcome_screen = welcome_screen.WelcomeScreen()
+        self.show_build_log = self.settings.get_value('window_state', 'show_build_log')
+        self.show_preview = self.settings.get_value('window_state', 'show_preview')
+        self.show_help = self.settings.get_value('window_state', 'show_help')
         self.show_symbols = self.settings.get_value('window_state', 'show_symbols')
         self.show_document_structure = self.settings.get_value('window_state', 'show_document_structure')
-        self.sidebar_position = self.settings.get_value('window_state', 'sidebar_paned_position')
-        self.show_help = self.settings.get_value('window_state', 'show_help')
-        self.show_preview = self.settings.get_value('window_state', 'show_preview')
-        self.preview_position = self.settings.get_value('window_state', 'preview_paned_position')
-        self.build_log = build_log.BuildLog(self)
-        self.show_build_log = self.settings.get_value('window_state', 'show_build_log')
-        self.build_log_position = self.settings.get_value('window_state', 'build_log_paned_position')
-        self.shortcutsbar = shortcutsbar.Shortcutsbar(self)
-        self.shortcuts = shortcuts.Shortcuts(self)
-        self.propagate_color_scheme()
+
+        self.welcome_screen = welcome_screen.WelcomeScreen()
+        self.sidebar = sidebar.Sidebar(self)
 
     def init_workspace_controller(self):
         self.actions = actions.Actions(self)
+        self.shortcutsbar = shortcutsbar.Shortcutsbar(self)
+        self.shortcuts = shortcuts.Shortcuts(self)
         self.presenter = workspace_presenter.WorkspacePresenter(self)
-        self.headerbar = headerbar_presenter.HeaderbarPresenter(self)
-        self.document_chooser = document_chooser.DocumentChooser(self)
+        self.headerbar = headerbar.Headerbar(self)
         self.preview_panel = preview_panel_presenter.PreviewPanelPresenter(self)
         self.help_panel = help_panel.HelpPanel(self)
+        self.build_log = build_log.BuildLog(self)
+        self.document_chooser = document_chooser.DocumentChooser(self)
         self.document_switcher = document_switcher.DocumentSwitcher(self)
         self.controller = workspace_controller.WorkspaceController(self)
 
@@ -122,17 +110,14 @@ class Workspace(Observable):
         self.open_documents.append(document)
         if document.is_latex_document():
             self.open_latex_documents.append(document)
-            document.preview.set_invert_pdf(self.invert_pdf)
-        document.spellchecker.set_enabled(self.inline_spellchecking)
-        document.spellchecker.set_language(self.spellchecking_language_code)
-        document.state_manager.load_document_state()
+        DocumentSettings.load_document_state(document)
         self.add_change_code('new_document', document)
         self.update_recently_opened_document(document.get_filename(), notify=True)
 
     def remove_document(self, document):
         if document == self.root_document:
             self.unset_root_document()
-        document.state_manager.save_document_state()
+        DocumentSettings.save_document_state(document)
         document.controller.continue_save_date_loop = False
         self.open_documents.remove(document)
         if document.is_latex_document():
@@ -146,13 +131,19 @@ class Workspace(Observable):
         self.add_change_code('document_removed', document)
 
     def create_latex_document(self):
-        return DocumentLaTeX()
+        document = Document('latex')
+        document.preview = preview.Preview(document)
+        document.build_system = build_system.BuildSystem(document)
+        document.build_widget = build_widget.BuildWidget(document)
+        return document
 
     def create_bibtex_document(self):
-        return DocumentBibTeX()
+        document = Document('bibtex')
+        return document
 
     def create_other_document(self):
-        return DocumentOther()
+        document = Document('other')
+        return document
 
     def create_document_from_filename(self, filename):
         if filename[-4:] == '.tex':
@@ -184,8 +175,6 @@ class Workspace(Observable):
     def set_active_document(self, document):
         if self.active_document != None:
             self.add_change_code('new_inactive_document', self.active_document)
-            self.update_sync_document()
-            self.set_can_sync()
             previously_active_document = self.active_document
             self.active_document = document
             self.update_preview_visibility(previously_active_document)
@@ -196,8 +185,6 @@ class Workspace(Observable):
             self.active_document.set_last_activated(time.time())
             self.update_preview_visibility(self.active_document)
             self.add_change_code('new_active_document', document)
-            self.update_sync_document()
-            self.set_can_sync()
             self.shortcuts.set_document_type(self.active_document.get_document_type())
             self.set_build_log()
 
@@ -215,12 +202,6 @@ class Workspace(Observable):
         for document in sorted(self.open_documents, key=lambda val: val.last_activated):
             return document
         return None
-
-    def get_open_documents_filenames(self):
-        pathnames = list()
-        for document in self.open_documents:
-            pathnames.append(document.get_filename())
-        return pathnames
 
     def update_recently_opened_document(self, filename, date=None, notify=True):
         if not isinstance(filename, str) or not os.path.isfile(filename):
@@ -277,7 +258,7 @@ class Workspace(Observable):
                 for item in data['recently_opened_documents'].values():
                     self.update_recently_opened_document(item['filename'], item['date'], notify=False)
                 try:
-                    self.help_panel.search_results_blank = data['recently_help_searches']
+                    self.help_panel.search_results_blank = data['recent_help_searches']
                 except KeyError:
                     pass
                 try:
@@ -327,7 +308,7 @@ class Workspace(Observable):
                 'open_documents': open_documents,
                 'recently_opened_documents': self.recently_opened_documents,
                 'recently_opened_session_files': self.recently_opened_session_files,
-                'recently_help_searches': self.help_panel.search_results_blank
+                'recent_help_searches': self.help_panel.search_results_blank
             }
             if self.root_document != None:
                 data['root_document_filename'] = self.root_document.get_filename()
@@ -355,7 +336,7 @@ class Workspace(Observable):
     def get_unsaved_documents(self):
         unsaved_documents = list()
         for document in self.open_documents:
-            if document.content.get_modified():
+            if document.source_buffer.get_modified():
                 unsaved_documents.append(document)
 
         return unsaved_documents if len(unsaved_documents) >= 1 else None
@@ -373,8 +354,6 @@ class Workspace(Observable):
                     document.set_root_state(False, True)
                 self.update_preview_visibility(document)
             self.add_change_code('root_state_change', 'one_document')
-            self.update_sync_document()
-            self.set_can_sync()
             self.set_build_log()
 
     def unset_root_document(self):
@@ -384,8 +363,6 @@ class Workspace(Observable):
         self.root_document = None
         self.update_preview_visibility(self.active_document)
         self.add_change_code('root_state_change', 'no_root_document')
-        self.update_sync_document()
-        self.set_can_sync()
         self.set_build_log()
 
     def get_root_document(self):
@@ -411,72 +388,17 @@ class Workspace(Observable):
             else:
                 document.preview.page_renderer.deactivate()
 
-    def update_sync_document(self):
-        document = self.get_root_or_active_latex_document()
-        if document != None:
-            self.set_sync_document(document)
-            self.sync_document.disconnect('is_root_changed', self.on_is_root_changed)
-            self.sync_document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
-            self.sync_document = None
-
-    def update_sync_document(self):
-        if self.root_document != None:
-            self.set_sync_document(self.root_document)
-        elif self.active_document != None:
-            self.set_sync_document(self.active_document)
-        elif self.sync_document != None:
-            self.sync_document.disconnect('is_root_changed', self.on_is_root_changed)
-            if self.sync_document.is_latex_document():
-                self.sync_document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
-            self.sync_document = None
-
-    def set_sync_document(self, document):
-        if document == None: return
-        if document == self.sync_document: return
-
-        if self.sync_document != None:
-            self.sync_document.disconnect('is_root_changed', self.on_is_root_changed)
-            if self.sync_document.is_latex_document():
-                self.sync_document.build_system.disconnect('can_sync_changed', self.on_can_sync_changed)
-        self.sync_document = document
-        self.sync_document.connect('is_root_changed', self.on_is_root_changed)
-        if self.sync_document.is_latex_document():
-            self.sync_document.build_system.connect('can_sync_changed', self.on_can_sync_changed)
-
-    def on_can_sync_changed(self, build_system, can_sync):
-        self.set_can_sync()
-
-    def on_is_root_changed(self, document, is_root):
-        self.set_can_sync()
-
-    def set_can_sync(self):
-        can_sync = False
-        if self.sync_document != None:
-            if self.sync_document.is_latex_document():
-                if self.sync_document.build_system.can_sync:
-                    can_sync = True
-        self.can_sync = can_sync
-        self.add_change_code('update_sync_state')
-
-    def forward_sync(self, active_document=None):
-        if active_document == None: return
-        if not self.sync_document.is_latex_document(): return
-
-        document = self.get_root_or_active_latex_document()
-        if document != None:
-            document.build_system.forward_sync(active_document)
+    def set_show_preview_or_help(self, show_preview, show_help):
+        if show_preview != self.show_preview or show_help != self.show_help:
+            self.show_preview = show_preview
+            self.show_help = show_help
+            self.add_change_code('set_show_preview_or_help')
 
     def set_show_symbols_or_document_structure(self, show_symbols, show_document_structure):
         if show_symbols != self.show_symbols or show_document_structure != self.show_document_structure:
             self.show_symbols = show_symbols
             self.show_document_structure = show_document_structure
             self.add_change_code('set_show_symbols_or_document_structure')
-
-    def set_show_preview_or_help(self, show_preview, show_help):
-        if show_preview != self.show_preview or show_help != self.show_help:
-            self.show_preview = show_preview
-            self.show_help = show_help
-            self.add_change_code('set_show_preview_or_help')
 
     def set_show_build_log(self, show_build_log):
         if show_build_log != self.show_build_log:
@@ -488,36 +410,5 @@ class Workspace(Observable):
             return self.show_build_log
         else:
             return False
-
-    def set_color_scheme(self, value):
-        if self.color_scheme != value:
-            self.color_scheme = value
-            self.settings.set_value('preferences', 'color_scheme', self.color_scheme)
-            self.propagate_color_scheme()
-
-    def propagate_color_scheme(self):
-        handy_color_modes = {'force_light': Handy.ColorScheme.FORCE_LIGHT, 'force_dark': Handy.ColorScheme.FORCE_DARK, 'default': Handy.ColorScheme.PREFER_LIGHT}
-        Handy.StyleManager.get_default().set_color_scheme(handy_color_modes[self.color_scheme])
-
-    def set_invert_pdf(self, value):
-        if self.invert_pdf != value:
-            self.invert_pdf = value
-            self.settings.set_value('preferences', 'invert_pdf', self.invert_pdf)
-            for document in self.open_latex_documents:
-                document.preview.set_invert_pdf(self.invert_pdf)
-
-    def set_inline_spellchecking(self, value):
-        if self.inline_spellchecking != value:
-            self.inline_spellchecking = value
-            self.settings.set_value('preferences', 'inline_spellchecking', self.inline_spellchecking)
-            for document in self.open_documents:
-                document.spellchecker.set_enabled(value)
-
-    def set_spellchecking_language(self, language_code):
-        if self.spellchecking_language_code != language_code:
-            self.spellchecking_language_code = language_code
-            self.settings.set_value('preferences', 'spellchecking_language_code', self.spellchecking_language_code)
-            for document in self.open_documents:
-                document.spellchecker.set_language(language_code)
 
 

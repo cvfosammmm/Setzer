@@ -16,37 +16,35 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-from gi.repository import Pango
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk, Pango
 
 
-class DocumentStatsView(Gtk.VBox):
+class DocumentStatsView(Gtk.Box):
 
     def __init__(self):
-        Gtk.VBox.__init__(self)
+        Gtk.Box.__init__(self)
+        self.set_orientation(Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('document-stats')
 
-        description = Gtk.Label(_('These counts are updated after the document is saved.'))
-        description.set_line_wrap(True)
+        description = Gtk.Label.new(_('These counts are updated after the document is saved.'))
+        description.set_wrap(True)
         description.set_xalign(0)
         description.get_style_context().add_class('description')
-        self.pack_start(description, False, False, 0)
+        self.append(description)
 
         self.label_whole_document = Gtk.Label()
-        self.label_whole_document.set_line_wrap(True)
-        self.label_whole_document.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.label_whole_document.set_wrap(True)
+        self.label_whole_document.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
         self.label_whole_document.set_xalign(0)
         self.label_whole_document.get_style_context().add_class('stats-paragraph')
-        self.pack_start(self.label_whole_document, False, False, 0)
+        self.append(self.label_whole_document)
 
         self.label_current_file = Gtk.Label()
-        self.label_current_file.set_line_wrap(True)
-        self.label_current_file.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.label_current_file.set_wrap(True)
+        self.label_current_file.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
         self.label_current_file.set_xalign(0)
         self.label_current_file.get_style_context().add_class('stats-paragraph')
-        self.pack_start(self.label_current_file, False, False, 0)
-
-        self.show_all()
+        self.append(self.label_current_file)
 
 

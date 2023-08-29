@@ -32,31 +32,31 @@ class DataProvider(Observable):
 
         self.integrated_includes = dict()
 
-        self.signal_id = sidebar.view.connect('draw', self.on_first_draw)
+        self.signal_id = sidebar.view.connect('realize', self.on_realize)
         self.workspace.connect('new_document', self.on_new_document)
         self.workspace.connect('document_removed', self.on_document_removed)
         self.workspace.connect('new_active_document', self.on_new_active_document)
         self.workspace.connect('root_state_change', self.on_root_state_change)
 
-    def on_new_document(self, workspace, document):
+    def on_new_document(self, workspace, document=None):
         self.update_data()
 
-    def on_document_removed(self, workspace, document):
+    def on_document_removed(self, workspace, document=None):
         self.update_data()
 
-    def on_new_active_document(self, workspace, document):
+    def on_new_active_document(self, workspace, document=None):
         self.set_document()
 
-    def on_root_state_change(self, workspace, root_state):
+    def on_root_state_change(self, workspace, root_state=None):
         self.set_document()
 
-    def on_buffer_changed(self, content, parameter):
+    def on_buffer_changed(self, document, parameter=None):
         self.update_data()
 
-    def on_is_root_changed(self, document, parameter):
+    def on_is_root_changed(self, document, parameter=None):
         self.update_data()
 
-    def on_first_draw(self, view, *parameter):
+    def on_realize(self, view, *parameter):
         view.disconnect(self.signal_id)
         self.update_data()
 
@@ -64,11 +64,11 @@ class DataProvider(Observable):
         document = self.workspace.get_root_or_active_latex_document()
         if document != self.document:
             if self.document != None:
-                self.document.content.disconnect('buffer_changed', self.on_buffer_changed)
+                self.document.disconnect('changed', self.on_buffer_changed)
                 self.document.disconnect('is_root_changed', self.on_is_root_changed)
             self.document = document
             if self.document != None:
-                self.document.content.connect('buffer_changed', self.on_buffer_changed)
+                self.document.connect('changed', self.on_buffer_changed)
                 self.document.connect('is_root_changed', self.on_is_root_changed)
             self.update_data()
 
@@ -81,20 +81,20 @@ class DataProvider(Observable):
     def update_integrated_includes(self):
         integrated_includes = dict()
         if self.document.get_is_root():
-            for filename, offset in self.document.get_included_latex_files():
+            for filename, offset in self.document.parser.symbols['included_latex_files']:
                 filename = path_helpers.get_abspath(filename, self.document.get_dirname())
                 document = self.workspace.get_document_by_filename(filename)
                 if document:
                     integrated_includes[document] = (document, offset)
-                    document.content.connect('buffer_changed', self.on_buffer_changed)
+                    document.connect('changed', self.on_buffer_changed)
         for document in self.integrated_includes:
             if document not in integrated_includes:
-                document.content.disconnect('buffer_changed', self.on_buffer_changed)
+                document.disconnect('changed', self.on_buffer_changed)
         self.integrated_includes = integrated_includes
 
     def get_includes(self):
         includes = list()
-        for filename, offset in self.document.get_included_latex_files():
+        for filename, offset in self.document.parser.symbols['included_latex_files']:
             filename = path_helpers.get_abspath(filename, self.document.get_dirname())
             document = self.workspace.get_document_by_filename(filename)
             if document and document in self.integrated_includes:

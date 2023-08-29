@@ -16,88 +16,27 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
-from gi.repository import GLib
 
 
-class BibTeXShortcutsbar(Gtk.HBox):
+class BibTeXShortcutsbar(Gtk.Box):
 
     def __init__(self):
-        Gtk.HBox.__init__(self)
+        Gtk.Box.__init__(self)
+        self.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.get_style_context().add_class('shortcutsbar')
+        self.set_can_focus(False)
 
-        self.current_bottom = None
+        self.top_icons = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.right_icons = Gtk.Box()
+        self.right_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.center_icons = Gtk.CenterBox()
+        self.center_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.center_icons.set_hexpand(True)
 
-        self.create_top_toolbar()
-        self.populate_top_toolbar()
-        self.pack_start(self.top_icons, True, True, 0)
-
-    def create_top_toolbar(self):
-        self.top_icons = Gtk.Toolbar()
-        self.top_icons.set_style(Gtk.ToolbarStyle.ICONS)
-        self.top_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
-        self.top_icons.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
-        
-    def populate_top_toolbar(self):
-        self.entry_button = Gtk.ToolButton()
-        icon_widget = Gtk.HBox()
-        icon = Gtk.Image.new_from_icon_name('list-add-symbolic', Gtk.IconSize.MENU)
-        icon.set_margin_left(4)
-        icon_widget.pack_start(icon, False, False, 0)
-        label_revealer = Gtk.Revealer()
-        label = Gtk.Label(_('Create New Entry'))
-        label.set_margin_left(5)
-        label.set_margin_right(4)
-        label_revealer.add(label)
-        label_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT)
-        label_revealer.set_reveal_child(True)
-        icon_widget.pack_start(label_revealer, False, False, 0)
-
-        self.entry_button.set_icon_widget(icon_widget)
-        self.entry_button.set_action_name('win.create-new-bibtex-entry')
-        self.entry_button.set_focus_on_click(False)
-        self.entry_button.set_tooltip_text(_('Create a New BibTeX Entry'))
-        self.top_icons.insert(self.entry_button, 0)
-
-        self.entry_button = Gtk.ToolButton()
-        icon_widget = Gtk.HBox()
-        icon = Gtk.Image.new_from_icon_name('media-playlist-repeat-symbolic', Gtk.IconSize.MENU)
-        icon.set_margin_left(4)
-        icon_widget.pack_start(icon, False, False, 0)
-        label_revealer = Gtk.Revealer()
-        label = Gtk.Label(_('Previously Used Entries'))
-        label.set_margin_left(6)
-        label.set_margin_right(4)
-        label_revealer.add(label)
-        label_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT)
-        label_revealer.set_reveal_child(True)
-        icon_widget.pack_start(label_revealer, False, False, 0)
-
-        self.entry_button.set_icon_widget(icon_widget)
-        self.entry_button.set_action_name('win.show-previous-bibtex-entries')
-        self.entry_button.set_focus_on_click(False)
-        self.entry_button.set_tooltip_text(_('Add a Previously Used BibTeX Entry'))
-        #self.top_icons.insert(self.entry_button, 0)
-
-        self.entry_button = Gtk.ToolButton()
-        icon_widget = Gtk.HBox()
-        icon = Gtk.Image.new_from_icon_name('globe-alt-symbolic', Gtk.IconSize.MENU)
-        icon.set_margin_left(4)
-        icon_widget.pack_start(icon, False, False, 0)
-        label_revealer = Gtk.Revealer()
-        label = Gtk.Label(_('Search For Entries Online'))
-        label.set_margin_left(6)
-        label.set_margin_right(4)
-        label_revealer.add(label)
-        label_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT)
-        label_revealer.set_reveal_child(True)
-        icon_widget.pack_start(label_revealer, False, False, 0)
-
-        self.entry_button.set_icon_widget(icon_widget)
-        self.entry_button.set_action_name('win.search-online-for-bibtex-entries')
-        self.entry_button.set_focus_on_click(False)
-        self.entry_button.set_tooltip_text(_('Add a BibTeX Entry from an Online Database'))
-        #self.top_icons.insert(self.entry_button, 0)
+        self.append(self.top_icons)
+        self.append(self.center_icons)
+        self.append(self.right_icons)
 
 

@@ -17,19 +17,20 @@
 
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
-from setzer.dialogs.dialog import Dialog
+import os.path, pickle
+
 import setzer.dialogs.include_latex_file.include_latex_file_viewgtk as view
+from setzer.app.service_locator import ServiceLocator
 
-import os.path
 
-
-class IncludeLaTeXFile(Dialog):
+class IncludeLaTeXFile(object):
 
     def __init__(self, main_window):
         self.main_window = main_window
+        self.settings = ServiceLocator.get_settings()
         self.pathtypes = {'rel' : _('Relative Path'), 'abs' : _('Absolute Path')}
         self.current_values = dict()
 
@@ -51,17 +52,29 @@ class IncludeLaTeXFile(Dialog):
 
         self.view.create_button.set_sensitive(False)
         self.view.file_chooser_button.reset()
-        response = self.view.run()
 
-        if response == Gtk.ResponseType.APPLY:
+        self.view.dialog.show()
+        self.signal_connection_id = self.view.dialog.connect('response', self.process_response)
+
+    def process_response(self, view, response_id):
+        if response_id == Gtk.ResponseType.APPLY:
             self.insert_template()
 
+        self.close()
+
+    def close(self):
         self.view.dialog.hide()
+        self.view.dialog.disconnect(self.signal_connection_id)
 
     def init_current_values(self):
         self.current_values['filename'] = ''
         self.current_values['pathtype'] = 'rel'
-    
+        try:
+            presets = self.settings.get_value('app_include_latex_file_dialog', 'presets')
+            presets = pickle.loads(presets)
+            self.current_values['pathtype'] = presets['pathtype']
+        except Exception: pass
+
     def setup(self):
         file_filter1 = Gtk.FileFilter()
         file_filter1.add_pattern('*.tex')
@@ -70,21 +83,18 @@ class IncludeLaTeXFile(Dialog):
 
         first_button = None
         for pathtype in self.pathtypes:
-            self.view.pathtype_buttons[pathtype] = Gtk.RadioButton()
-            if first_button == None: first_button = self.view.pathtype_buttons[pathtype]
-            box = Gtk.HBox()
-            box.pack_start(Gtk.Label(self.pathtypes[pathtype]), False, False, 0)
-            box.set_margin_right(6)
-            box.set_margin_left(4)
-            self.view.pathtype_buttons[pathtype].add(box)
-            self.view.pathtype_buttons[pathtype].set_mode(False)
+            self.view.pathtype_buttons[pathtype] = Gtk.ToggleButton()
+            box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+            box.append(Gtk.Label.new(self.pathtypes[pathtype]))
+            box.set_margin_end(6)
+            box.set_margin_start(4)
+            self.view.pathtype_buttons[pathtype].set_child(box)
             if first_button != None:
-                self.view.pathtype_buttons[pathtype].join_group(first_button)
-            self.view.pathtype_switcher.pack_start(self.view.pathtype_buttons[pathtype], False, False, 0)
+                self.view.pathtype_buttons[pathtype].set_group(first_button)
+            self.view.pathtype_switcher.append(self.view.pathtype_buttons[pathtype])
             self.view.pathtype_buttons[pathtype].connect('toggled', self.on_pathtype_chosen, pathtype)
             self.view.pathtype_info_button.connect('toggled', self.on_info_button_toggled)
-
-        self.view.topbox.show_all()
+            if first_button == None: first_button = self.view.pathtype_buttons[pathtype]
 
         self.view.file_chooser_button.connect('file-set', self.on_file_chosen)
 
@@ -106,8 +116,14 @@ class IncludeLaTeXFile(Dialog):
             return self.current_values['filename']
 
     def insert_template(self):
+        self.settings.set_value('app_include_latex_file_dialog', 'presets', pickle.dumps(self.current_values))
+
         text = '\\input{' + self.get_display_filename() + '}'
-        self.document.content.insert_text_at_cursor_indent_and_select_dot(text)
-        self.document.content.scroll_cursor_onscreen()
+
+        self.document.source_buffer.begin_user_action()
+        self.document.source_buffer.delete_selection(False, False)
+        self.document.source_buffer.insert_at_cursor(text)
+        self.document.source_buffer.end_user_action()
+        self.document.scroll_cursor_onscreen()
 
 
