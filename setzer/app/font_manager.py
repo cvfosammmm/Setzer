@@ -40,7 +40,11 @@ class FontManager(object):
         font_size = font_desc.get_size() / Pango.SCALE
         font_family = font_desc.get_family()
 
-        FontManager.main_window.css_provider_font_size.load_from_data(('textview { font-size: ' + str(font_size) + 'pt; font-family: ' + font_family + '; }\nbox.autocomplete list row { font-size: ' + str(font_size) + 'pt; }\nbox.autocomplete list row label { font-family: ' + font_family + '; }').encode('utf-8'))
+        data = ('textview { font-size: ' + str(font_size) + 'pt; font-family: ' + font_family + '; }\nbox.autocomplete list row { font-size: ' + str(font_size) + 'pt; }\nbox.autocomplete list row label { font-family: ' + font_family + '; }')
+        if Gtk.get_minor_version() >= 9:
+            FontManager.main_window.css_provider_font_size.load_from_data(data, -1)
+        else:
+            FontManager.main_window.css_provider_font_size.load_from_data(data.encode('utf-8'))
 
     def get_char_width(text_view):
         context = text_view.get_pango_context()
