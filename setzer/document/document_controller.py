@@ -38,6 +38,7 @@ class DocumentController(object):
         self.deleted_on_disk_dialog_shown_after_last_save = False
         self.changed_on_disk_dialog_shown_after_last_change = False
         self.continue_save_date_loop = True
+        self.zoom_threshold = 0
         GObject.timeout_add(500, self.save_date_loop)
 
         self.primary_click_controller = Gtk.GestureClick()
@@ -99,6 +100,25 @@ class DocumentController(object):
 
     def on_decelerate(self, controller, vel_x, vel_y):
         self.zoom_threshold = 0
+
+    def on_scroll(self, widget, event):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if event.state & modifiers == Gdk.ModifierType.CONTROL_MASK:
+            font_manager = ServiceLocator.get_font_manager()
+
+            self.zoom_threshold += event.delta_y
+            if event.is_stop:
+                self.zoom_threshold = 0
+
+            if self.zoom_threshold <= -1:
+                font_manager.zoom_in()
+                self.zoom_threshold = 0
+            elif self.zoom_threshold >= 1:
+                font_manager.zoom_out()
+                self.zoom_threshold = 0
+            return True
+        return False
 
     def save_date_loop(self):
         if self.document.filename == None: return True
