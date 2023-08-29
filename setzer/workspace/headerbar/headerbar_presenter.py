@@ -75,12 +75,20 @@ class HeaderbarPresenter(object):
         self.view.get_style_context().remove_class('welcome')
 
     def hide_pane_toggles(self):
+        self.view.document_structure_toggle.hide()
+        self.view.document_structure_toggle.set_sensitive(False)
+        self.view.symbols_toggle.hide()
+        self.view.symbols_toggle.set_sensitive(False)
         self.view.preview_toggle.hide()
         self.view.preview_toggle.set_sensitive(False)
         self.view.help_toggle.hide()
         self.view.help_toggle.set_sensitive(False)
 
     def show_pane_toggles(self):
+        self.view.document_structure_toggle.show()
+        self.view.document_structure_toggle.set_sensitive(True)
+        self.view.symbols_toggle.show()
+        self.view.symbols_toggle.set_sensitive(True)
         self.view.preview_toggle.show()
         self.view.preview_toggle.set_sensitive(True)
         self.view.help_toggle.show()
