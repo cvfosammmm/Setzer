@@ -56,7 +56,7 @@ class PageBuildSystem(object):
 
     def setup_latex_interpreters(self):
         self.latex_interpreters = list()
-        for interpreter in ['xelatex', 'pdflatex', 'lualatex']:
+        for interpreter in ['xelatex', 'pdflatex', 'lualatex', 'tectonic']:
             self.view.option_latex_interpreter[interpreter].hide()
             arguments = [interpreter, '--version']
             try:
@@ -102,6 +102,21 @@ class PageBuildSystem(object):
                 else:
                     self.view.option_latex_interpreter[interpreter].hide()
 
+            self.view.option_latex_interpreter['tectonic'].connect('toggled', self.on_use_tectonic_toggled)
+            self.update_tectonic_element_visibility()
+
+    def on_use_tectonic_toggled(self, button):
+        self.update_tectonic_element_visibility()
+
+    def update_tectonic_element_visibility(self):
+        if self.view.option_latex_interpreter['tectonic'].get_active():
+            self.view.tectonic_warning_label.show()
+            self.view.option_use_latexmk.hide()
+            self.view.shell_escape_box.hide()
+        else:
+            self.view.tectonic_warning_label.hide()
+            self.view.option_use_latexmk.show()
+            self.view.shell_escape_box.show()
 
 class PageBuildSystemView(Gtk.Box):
 
@@ -141,12 +156,25 @@ flatpak install org.freedesktop.Sdk.Extension.texlive'''))
         self.option_latex_interpreter['lualatex'] = Gtk.CheckButton.new_with_label('LuaLaTeX')
         self.option_latex_interpreter['lualatex'].set_margin_end(12)
         self.option_latex_interpreter['lualatex'].set_group(self.option_latex_interpreter['xelatex'])
+        self.option_latex_interpreter['tectonic'] = Gtk.CheckButton.new_with_label('Tectonic')
+        self.option_latex_interpreter['tectonic'].set_margin_end(12)
+        self.option_latex_interpreter['tectonic'].set_group(self.option_latex_interpreter['xelatex'])
 
         self.hbox1 = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.hbox1.append(self.option_latex_interpreter['xelatex'])
         self.hbox1.append(self.option_latex_interpreter['pdflatex'])
         self.hbox1.append(self.option_latex_interpreter['lualatex'])
+        self.hbox1.append(self.option_latex_interpreter['tectonic'])
         self.append(self.hbox1)
+
+        self.tectonic_warning_label = Gtk.Label()
+        self.tectonic_warning_label.set_wrap(True)
+        self.tectonic_warning_label.set_markup(_('Please note: the Tectonic backend uses only the V1 command-line interface. Tectonic.toml configuration files are ignored.'))
+        self.tectonic_warning_label.set_xalign(0)
+        self.tectonic_warning_label.set_margin_top(6)
+        self.tectonic_warning_label.get_style_context().add_class('description')
+
+        self.append(self.tectonic_warning_label)
 
         label = Gtk.Label()
         label.set_markup('<b>' + _('Options') + '</b>')
@@ -156,6 +184,7 @@ flatpak install org.freedesktop.Sdk.Extension.texlive'''))
         self.append(label)
         self.option_cleanup_build_files = Gtk.CheckButton.new_with_label(_('Automatically remove helper files (.log, .dvi, …) after building .pdf.'))
         self.append(self.option_cleanup_build_files)
+
         self.option_use_latexmk = Gtk.CheckButton.new_with_label(_('Use Latexmk'))
         self.append(self.option_use_latexmk)
 
@@ -173,27 +202,32 @@ flatpak install org.freedesktop.Sdk.Extension.texlive'''))
         self.append(self.option_autoshow_build_log_errors)
         self.append(self.option_autoshow_build_log_errors_warnings)
         self.append(self.option_autoshow_build_log_all)
-    
-        label = Gtk.Label()
-        label.set_markup('<b>' + _('Embedded system commands') + '</b>')
-        label.set_xalign(0)
-        label.set_margin_top(18)
-        label.set_margin_bottom(6)
-        self.append(label)
-        label = Gtk.Label()
-        label.set_wrap(True)
-        label.set_markup(_('Warning: enable this only if you have to. It can cause security problems when building files from untrusted sources.'))
-        label.set_xalign(0)
-        label.set_margin_bottom(9)
-        label.get_style_context().add_class('description')
-        self.append(label)
+
+        label_header = Gtk.Label()
+        label_header.set_markup('<b>' + _('Embedded system commands') + '</b>')
+        label_header.set_xalign(0)
+        label_header.set_margin_top(18)
+        label_header.set_margin_bottom(6)
+
+        label_explainer = Gtk.Label()
+        label_explainer.set_wrap(True)
+        label_explainer.set_markup(_('Warning: enable this only if you have to. It can cause security problems when building files from untrusted sources.'))
+        label_explainer.set_xalign(0)
+        label_explainer.set_margin_bottom(9)
+        label_explainer.get_style_context().add_class('description')
         self.option_system_commands_disable = Gtk.CheckButton.new_with_label(_('Disable') + ' (' + _('recommended') + ')')
         self.option_system_commands_restricted = Gtk.CheckButton.new_with_label(_('Enable restricted \\write18{SHELL COMMAND}'))
         self.option_system_commands_restricted.set_group(self.option_system_commands_disable)
         self.option_system_commands_full = Gtk.CheckButton.new_with_label(_('Fully enable \\write18{SHELL COMMAND}'))
         self.option_system_commands_full.set_group(self.option_system_commands_disable)
-        self.append(self.option_system_commands_disable)
-        self.append(self.option_system_commands_restricted)
-        self.append(self.option_system_commands_full)
+
+        self.shell_escape_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.shell_escape_box.append(label_header)
+        self.shell_escape_box.append(label_explainer)
+        self.shell_escape_box.append(self.option_system_commands_disable)
+        self.shell_escape_box.append(self.option_system_commands_restricted)
+        self.shell_escape_box.append(self.option_system_commands_full)
+
+        self.append(self.shell_escape_box)
 
 
