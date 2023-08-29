@@ -120,18 +120,19 @@ class LaTeXDB(object):
 
         files = dict()
         for document in ServiceLocator.get_workspace().open_documents:
-            files[document.get_filename()] = get_file_dict(document.get_filename())
-            files[document.get_filename()]['includes'] = list()
+            if document.get_filename() != None:
+                files[document.get_filename()] = get_file_dict(document.get_filename())
+                files[document.get_filename()]['includes'] = list()
 
-            dirname = document.get_dirname()
-            for filename, offset in document.parser.symbols['included_latex_files']:
-                filename = path_helpers.get_abspath(filename, dirname)
-                files[document.get_filename()]['includes'].append(filename)
-                files[filename] = get_file_dict(filename)
-            for filename in document.parser.symbols['bibliographies']:
-                filename = path_helpers.get_abspath(filename, dirname)
-                files[document.get_filename()]['includes'].append(filename)
-                files[filename] = get_file_dict(filename)
+                dirname = document.get_dirname()
+                for filename, offset in document.parser.symbols['included_latex_files']:
+                    filename = path_helpers.get_abspath(filename, dirname)
+                    files[document.get_filename()]['includes'].append(filename)
+                    files[filename] = get_file_dict(filename)
+                for filename in document.parser.symbols['bibliographies']:
+                    filename = path_helpers.get_abspath(filename, dirname)
+                    files[document.get_filename()]['includes'].append(filename)
+                    files[filename] = get_file_dict(filename)
         LaTeXDB.files = files
 
         for filename, file_dict in LaTeXDB.files.items():
