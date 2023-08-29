@@ -32,6 +32,7 @@ class PreviewController(object):
         self.view = view
 
         self.zoom_buffer = 1
+        self.label_height = 0
 
         self.cursor_default = Gdk.Cursor.new_from_name('default')
         self.cursor_pointer = Gdk.Cursor.new_from_name('pointer')
@@ -115,14 +116,23 @@ class PreviewController(object):
 
         page_number, x_offset, y_offset = data
         cursor = self.cursor_default
+        link_target = ''
         links = self.preview.links_parser.get_links_for_page(page_number)
         y_offset = (self.preview.page_height - y_offset)
         for link in links:
             if x_offset > link[0].x1 and x_offset < link[0].x2 and y_offset > link[0].y1 and y_offset < link[0].y2:
                 cursor = self.cursor_pointer
+                self.label_height = max(self.view.target_label.get_allocated_height(), self.label_height)
+                if self.view.overlay.get_allocated_height() - content.cursor_y <= self.label_height:
+                    link_target = ''
+                elif link[2] == 'uri':
+                    link_target = link[1]
+                elif link[2] == 'goto':
+                    link_target = _('Go to page ') + str(link[1].page_num)
                 break
 
         self.view.set_cursor(cursor)
+        self.view.set_link_target_string(link_target)
 
     def on_primary_button_press(self, content, data):
         if self.preview.layout == None: return True
