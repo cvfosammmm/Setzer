@@ -27,6 +27,7 @@ class OthersShortcutsbar(Gtk.Box):
         Gtk.Box.__init__(self)
         self.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.get_style_context().add_class('shortcutsbar')
+        self.set_can_focus(False)
 
         self.top_icons = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.right_icons = Gtk.Box()
@@ -35,19 +36,8 @@ class OthersShortcutsbar(Gtk.Box):
         self.center_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.center_icons.set_hexpand(True)
 
-        self.populate_top_toolbar()
-
         self.append(self.top_icons)
         self.append(self.center_icons)
         self.append(self.right_icons)
-
-    def create_top_toolbar(self):
-        self.top_icons = Gtk.Toolbar()
-        self.top_icons.set_style(Gtk.ToolbarStyle.ICONS)
-        self.top_icons.set_orientation(Gtk.Orientation.HORIZONTAL)
-        self.top_icons.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
-        
-    def populate_top_toolbar(self):
-        pass
 
 
