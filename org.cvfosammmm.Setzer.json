@@ -162,7 +162,7 @@
             "config-opts": [
                 "-Ddocs=false",
                 "-Dvapi=false",
-                "-Dbackends=gtk3"
+                "-Dbackends=gtk4"
             ],
             "sources": [
                 {
