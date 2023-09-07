@@ -236,7 +236,7 @@ popover label.explaination-header {
 }
 .sidebar box.tabs-box {
     background-color: @theme_base_color;
-    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.8);
     padding-bottom: 0px;
 }
 .sidebar box.tabs-box.no-border {
@@ -255,29 +255,28 @@ popover label.explaination-header {
     box-shadow: none;
 }
 box.sidebar-symbols {
-    background-color: mix(@theme_base_color, @theme_bg_color, 0.7);
+    background-color: @theme_base_color;
 }
 box.sidebar-symbols label {
     padding: 9px 8px 8px 9px;
     background-color: @theme_base_color;
-    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.8);
 }
 box.sidebar-symbols label.overlay {
     border-bottom-width: 0px;
 }
 box.sidebar-symbols flowbox {
-    background-color: mix(@theme_base_color, @theme_bg_color, 0.7);
+    background-color: @theme_base_color;
     padding-bottom: 36px;
-    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
 }
 box.sidebar-symbols flowbox flowboxchild {
     padding: 0px;
 }
 box.sidebar-symbols flowbox flowboxchild image {
     color: @theme_fg_color;
-    background-color: mix(@theme_base_color, @theme_bg_color, 0.7);
-    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
-    border-right: 1px solid mix(@theme_base_color, @borders, 0.5);
+    background-color: @theme_base_color;
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.8);
+    border-right: 1px solid mix(@theme_base_color, @borders, 0.8);
     margin: 0px;
     padding: 5px;
 }
@@ -294,7 +293,7 @@ box.sidebar-symbols box.search_bar button {
 .sidebar-document-structure scrolledwindow label.headline {
     padding: 9px 8px 8px 9px;
     background-color: @theme_base_color;
-    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.8);
 }
 .sidebar-document-structure label.overlay {
     padding: 9px 8px 8px 9px;
@@ -321,7 +320,7 @@ box.document-stats {
 
 box.shortcutsbar {
     background-color: @theme_base_color;
-    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.8);
 }
 box.shortcutsbar button.scbar, box.shortcutsbar menubutton.scbar > button {
     border-width: 0px;
@@ -347,7 +346,7 @@ box.preview scrolledwindow {
 }
 box.preview > box {
     background-color: @theme_base_color;
-    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.8);
 }
 box.preview button.scbar, box.preview .scbar > button {
     border-width: 0px;
@@ -416,7 +415,7 @@ box.help {
 }
 box.help > box {
     background-color: @theme_base_color;
-    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.5);
+    border-bottom: 1px solid mix(@theme_base_color, @borders, 0.8);
 }
 box.help > box button {
     border-width: 0px;
