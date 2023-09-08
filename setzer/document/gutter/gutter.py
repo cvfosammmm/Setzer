@@ -62,6 +62,7 @@ class Gutter(object):
         self.settings.connect('settings_changed', self.on_settings_changed)
         self.document.connect('changed', self.on_document_change)
         self.document.connect('cursor_position_changed', self.on_cursor_change)
+        self.document.code_folding.connect('folding_state_changed', self.on_folding_state_changed)
         self.document_view.scrolled_window.get_vadjustment().connect('changed', self.on_adjustment_changed)
         self.document_view.scrolled_window.get_vadjustment().connect('value-changed', self.on_adjustment_value_changed)
 
@@ -113,6 +114,11 @@ class Gutter(object):
         self.drawing_area.queue_draw()
 
     def on_adjustment_changed(self, adjustment):
+        self.update_hovered_folding_region()
+        self.update_size()
+        self.drawing_area.queue_draw()
+
+    def on_folding_state_changed(self, code_folding):
         self.update_hovered_folding_region()
         self.update_size()
         self.drawing_area.queue_draw()

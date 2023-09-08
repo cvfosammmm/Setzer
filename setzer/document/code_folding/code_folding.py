@@ -129,7 +129,7 @@ class CodeFolding(Observable):
             if some_region['is_folded']:
                 if some_region['starting_line'] >= region['starting_line'] and some_region['ending_line'] <= region['ending_line']:
                     self.hide_region(some_region)
-        self.add_change_code('folding_state_changed', region)
+        self.add_change_code('folding_state_changed')
 
     def hide_region(self, region):
         offset_start = region['offset_start']
@@ -141,7 +141,7 @@ class CodeFolding(Observable):
             end_iter.forward_to_line_end()
         end_iter.forward_char()
         self.source_buffer.apply_tag(self.tag, start_iter, end_iter)
-        self.add_change_code('folding_state_changed', region)
+        self.add_change_code('folding_state_changed')
 
     def get_folded_regions(self):
         folded_regions = list()
