@@ -158,7 +158,7 @@ class SymbolsPage(object):
             if margin_top > 1 and margin_top <= label.get_allocated_height():
                 self.view.tabs_box.get_style_context().add_class('no-border')
             if len(symbols_view.visible_symbols) > 0:
-                offset += symbols_view.get_allocated_height() + placeholder.get_allocated_height()
+                offset += symbols_view.get_allocated_height() + self.view.tabs.get_allocated_height()
 
     def on_next_button_clicked(self, button):
         offset = self.view.symbols_view_recent.get_allocated_height() + self.view.label_recent.get_allocated_height() + 2
@@ -255,6 +255,9 @@ class SymbolsPage(object):
                 symbols_view.hide()
                 self.view.labels[i].hide()
                 self.view.placeholders[i].hide()
+            adjustment = self.view.scrolled_window.get_vadjustment()
+            if adjustment.get_upper() <= self.view.scrolled_window.get_allocated_height():
+                self.view.labels[i].hide()
 
     def on_symbols_view_size_allocate(self, *arguments):
         for symbols_view in self.view.symbols_views:

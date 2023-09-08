@@ -141,6 +141,7 @@ class SymbolsPageView(Gtk.Box):
             self.labels.append(label)
             placeholder = Gtk.Label.new(symbols_list[2])
             placeholder.set_xalign(0)
+            placeholder.get_style_context().add_class('placeholder')
             self.placeholders.append(placeholder)
             self.vbox.append(placeholder)
             self.symbols_views.append(symbols_list_view)
