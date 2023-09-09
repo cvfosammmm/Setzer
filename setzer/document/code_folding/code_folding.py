@@ -30,6 +30,7 @@ class CodeFolding(Observable):
         self.tag = self.source_buffer.create_tag('invisible_region', invisible=1)
 
         self.folding_regions = dict()
+        self.folding_regions_by_line = dict()
         self.initial_folded_regions = None
 
         self.document.parser.connect('finished_parsing', self.on_parser_update)
@@ -78,6 +79,7 @@ class CodeFolding(Observable):
 
         last_line = -1
         self.folding_regions = dict()
+        self.folding_regions_by_line = dict()
         for block in parser.symbols['blocks']:
             if block[1] != None:
                 if block[2] != last_line:
@@ -91,6 +93,7 @@ class CodeFolding(Observable):
                     region['starting_line'] = block[2]
                     region['ending_line'] = block[3]
                     self.folding_regions[block[0]] = region
+                    self.folding_regions_by_line[block[2]] = region
                 last_line = block[2]
 
         # in a last step, the regions that are no longer
@@ -102,9 +105,8 @@ class CodeFolding(Observable):
         self.initial_folding()
 
     def get_region_by_line(self, line):
-        offset = self.source_buffer.get_iter_at_line(line).iter.get_offset()
-        if offset in self.folding_regions:
-            return self.folding_regions[offset]
+        if line in self.folding_regions_by_line:
+            return self.folding_regions_by_line[line]
         return None
 
     def fold(self, region):
