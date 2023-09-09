@@ -91,6 +91,7 @@ class MainApplicationController(Adw.Application):
 
         # get settings
         self.settings = ServiceLocator.get_settings()
+        Adw.StyleManager.get_default().set_color_scheme(Adw.ColorScheme.FORCE_LIGHT)
 
         # init static variables
         ServiceLocator.set_setzer_version('@setzer_version@')
