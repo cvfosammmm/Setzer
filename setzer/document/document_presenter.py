@@ -30,8 +30,6 @@ class DocumentPresenter(object):
         self.view = document_view
         self.settings = ServiceLocator.get_settings()
 
-        self.indentation_update = None
-
         self.view.source_view.set_show_line_numbers(False)
         self.view.source_view.set_insert_spaces_instead_of_tabs(self.settings.get_value('preferences', 'spaces_instead_of_tabs'))
         self.view.source_view.set_tab_width(self.settings.get_value('preferences', 'tab_width'))

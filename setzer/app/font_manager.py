@@ -46,10 +46,10 @@ class FontManager(object):
         else:
             FontManager.main_window.css_provider_font_size.load_from_data(data.encode('utf-8'))
 
-    def get_char_width(text_view):
+    def get_char_width(text_view, char='A'):
         context = text_view.get_pango_context()
         layout = Pango.Layout.new(context)
-        layout.set_text('A', -1)
+        layout.set_text(char, -1)
         char_width, line_height_1 = layout.get_pixel_size()
         return char_width
 
