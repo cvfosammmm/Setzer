@@ -123,6 +123,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         label = Gtk.Label.new(_('New Document Wizard'))
         label.set_margin_start(6)
         label.set_margin_end(4)
+        label.get_style_context().add_class('wizard-button-label')
         self.wizard_button_revealer = Gtk.Revealer()
         self.wizard_button_revealer.set_child(label)
         self.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT)

@@ -516,6 +516,10 @@ box.preferences-page button.style-switcher-label.active label {
 ** document wizard
 */
 
+label.wizard-button-label {
+    font-weight: normal;
+    text-decoration: underline;
+}
 box.document-wizard-page checkbutton {
     padding-left: 0px;
 }
