@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk
+
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -32,26 +36,44 @@ class Shortcutsbar(object):
         self.latex_shortcutsbar.button_search.connect('clicked', self.on_find_button_clicked)
         self.latex_shortcutsbar.button_replace.connect('clicked', self.on_find_replace_button_clicked)
 
-        self.workspace.connect('document_removed', self.update_document)
-        self.workspace.connect('new_active_document', self.update_document)
+        self.workspace.connect('document_removed', self.on_document_removed)
+        self.workspace.connect('new_active_document', self.on_new_active_document)
         self.workspace.connect('show_build_log_state_change', self.update_buttons)
 
-        self.document = None
-        self.update_document()
-
-    def update_document(self, workspace=None, parameter=None):
+        self.document = self.workspace.active_document
         if self.document != None:
+            self.document.connect('changed', self.on_document_changed)
+            self.document.search.connect('mode_changed', self.update_buttons)
+            self.latex_shortcutsbar.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
+            self.update_wizard_button()
+
+    def on_document_removed(self, workspace=None, parameter=None):
+        if self.workspace.active_document == None:
             self.document.disconnect('changed', self.update_buttons)
+            self.document.search.disconnect('mode_changed', self.update_buttons)
+            self.document == None
+
+        self.update_buttons()
+
+    def on_new_active_document(self, workspace=None, parameter=None):
+        if self.document != None:
+            self.document.disconnect('changed', self.on_document_changed)
             self.document.search.disconnect('mode_changed', self.update_buttons)
 
         self.document = self.workspace.active_document
         if self.document != None:
-            self.document.connect('changed', self.update_buttons)
+            self.document.connect('changed', self.on_document_changed)
             self.document.search.connect('mode_changed', self.update_buttons)
+            self.latex_shortcutsbar.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
+            self.update_wizard_button()
 
         self.update_buttons()
 
-    def update_buttons(self, workspace=None, parameter=None):
+    def on_document_changed(self, workspace=None, parameter=None):
+        self.latex_shortcutsbar.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT)
+        self.update_wizard_button()
+
+    def update_wizard_button(self):
         if self.document == None: return
 
         if self.document.is_latex_document():
@@ -60,6 +82,10 @@ class Shortcutsbar(object):
             else:
                 self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(True)
 
+    def update_buttons(self, workspace=None, parameter=None):
+        if self.document == None: return
+
+        if self.document.is_latex_document():
             self.latex_shortcutsbar.button_more.set_popover(self.document.context_menu.popover_more)
             self.latex_shortcutsbar.button_search.set_active(self.document.search.search_bar_mode == 'search')
             self.latex_shortcutsbar.button_replace.set_active(self.document.search.search_bar_mode == 'replace')
