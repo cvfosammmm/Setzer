@@ -64,6 +64,11 @@
     </requires>
 
     <releases>
+        <release version="59" date="2023-9-9">
+            <description translatable="no">
+                <p>Bug fix</p>
+            </description>
+        </release>
         <release version="58" date="2023-9-9">
             <description translatable="no">
                 <p>Force light mode, ...</p>
