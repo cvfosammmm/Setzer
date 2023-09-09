@@ -7,6 +7,7 @@
 @define-color ac_text #000000;
 @define-color ac_bg #fff895;
 @define-color ac_selection_bg #f8e45c;
+@define-color line_highlighting_color #eef4ff;
 
 /*
 ** main_window

@@ -221,7 +221,9 @@ class Gutter(object):
         current_line = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_line()
         line_iter, offset = self.source_view.get_line_at_y(self.adjustment.get_value())
         prev_line = None
-        while offset <= self.adjustment.get_value() + height:
+        line = -1
+        total_lines = self.source_buffer.get_end_iter().get_line()
+        while (offset <= self.adjustment.get_value() + height) and line < total_lines:
             line_iter, top = self.source_view.get_line_at_y(offset)
             line = line_iter.get_line()
             line_height = self.source_view.get_line_yrange(line_iter).height
@@ -253,12 +255,22 @@ class Gutter(object):
             self.draw_folding_region(ctx, line, is_current, offset)
 
     def draw_line_number(self, ctx, line, is_current, offset):
-        if is_current: text = '<b>' + str(line + 1) + '</b>'
-        else: text = str(line + 1)
+        if is_current:
+            text = '<b>' + str(line + 1) + '</b>'
+        else:
+            text = str(line + 1)
+
+        if is_current:
+            Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('line_highlighting_color'))
+            yrange = self.source_view.get_line_yrange(self.source_buffer.get_iter_at_line(line).iter)
+            ctx.rectangle(0, yrange.y - self.adjustment.get_value(), self.total_width, yrange.height)
+            ctx.fill()
+            Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('theme_fg_color'))
 
         if offset < 0: offset -= 1
         offset = int(offset)
         ctx.move_to(0, offset)
+
         self.layout.set_markup(text)
         PangoCairo.show_layout(ctx, self.layout)
 
