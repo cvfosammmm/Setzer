@@ -40,11 +40,14 @@ class Shortcutsbar(object):
         self.workspace.connect('new_active_document', self.on_new_active_document)
         self.workspace.connect('show_build_log_state_change', self.update_buttons)
 
+        self.preview_paned = ServiceLocator.get_main_window().preview_paned
+        self.width = 0
+        self.preview_paned.connect('notify::position', self.on_paned_position_changed)
+
         self.document = self.workspace.active_document
         if self.document != None:
             self.document.connect('changed', self.on_document_changed)
             self.document.search.connect('mode_changed', self.update_buttons)
-            self.latex_shortcutsbar.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
             self.update_wizard_button()
 
     def on_document_removed(self, workspace=None, parameter=None):
@@ -64,23 +67,34 @@ class Shortcutsbar(object):
         if self.document != None:
             self.document.connect('changed', self.on_document_changed)
             self.document.search.connect('mode_changed', self.update_buttons)
-            self.latex_shortcutsbar.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
             self.update_wizard_button()
 
         self.update_buttons()
 
-    def on_document_changed(self, workspace=None, parameter=None):
-        self.latex_shortcutsbar.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT)
-        self.update_wizard_button()
+    def on_paned_position_changed(self, paned, position=None):
+        self.width = paned.get_position()
+        self.update_wizard_button(animate=True)
 
-    def update_wizard_button(self):
+    def on_document_changed(self, workspace=None, parameter=None):
+        self.update_wizard_button(animate=True)
+
+    def update_wizard_button(self, animate=False):
         if self.document == None: return
 
         if self.document.is_latex_document():
-            if self.document.source_buffer.get_char_count() > 0:
-                self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(False)
-            else:
+            is_visible = self.document.source_buffer.get_char_count() == 0 and self.width > 675
+            if is_visible and animate == False:
+                self.latex_shortcutsbar.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
                 self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(True)
+                self.latex_shortcutsbar.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT)
+                self.latex_shortcutsbar.wizard_button_revealer.show()
+            elif is_visible:
+                self.latex_shortcutsbar.wizard_button_revealer.show()
+                self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(True)
+            elif animate == False:
+                self.latex_shortcutsbar.wizard_button_revealer.hide()
+            else:
+                self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(False)
 
     def update_buttons(self, workspace=None, parameter=None):
         if self.document == None: return
