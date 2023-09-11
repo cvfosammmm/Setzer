@@ -78,6 +78,14 @@ class Document(Observable):
         self.search = search.Search(self, self.view)
         if self.is_latex_document(): self.autocomplete = autocomplete.Autocomplete(self)
 
+        self.settings.connect('settings_changed', self.on_settings_changed)
+
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+
+        if item == 'color_scheme':
+            self.source_buffer.set_style_scheme(ServiceLocator.get_style_scheme())
+
     def set_filename(self, filename):
         if filename == None:
             self.filename = filename
