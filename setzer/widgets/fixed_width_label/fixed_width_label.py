@@ -17,9 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
-from gi.repository import Pango
-from gi.repository import PangoCairo
+from gi.repository import Gtk, Gdk, Pango, PangoCairo
 
 from setzer.app.color_manager import ColorManager
 
@@ -43,6 +41,7 @@ class FixedWidthLabel(Gtk.DrawingArea):
 
     def draw(self, drawing_area, ctx, width, height):
         fg_color = ColorManager.get_ui_color('theme_fg_color')
+        Gdk.cairo_set_source_rgba(ctx, fg_color)
         PangoCairo.show_layout(ctx, self.layout)
 
 

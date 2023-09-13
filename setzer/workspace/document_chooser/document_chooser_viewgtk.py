@@ -156,8 +156,8 @@ class DocumentChooserList(Gtk.Widget):
         fg_color = ColorManager.get_ui_color('theme_fg_color')
         fg_color_light = ColorManager.get_ui_color('fg_color_light')
         bg_color = ColorManager.get_ui_color('theme_base_color')
-        hover_color = ColorManager.get_ui_color('list_hover')
-        active_color = ColorManager.get_ui_color('list_active')
+        hover_color = ColorManager.get_ui_color('view_hover_color')
+        active_color = ColorManager.get_ui_color('view_active_color')
         border_color = ColorManager.get_ui_color('borders')
 
         snapshot.append_color(bg_color, Graphene.Rect().init(0, 0, self.get_allocated_width(), self.get_allocated_height()))

@@ -170,16 +170,15 @@ class SidebarSymbolsList(Gtk.FlowBox):
         xml_root = xml_tree.getroot()
         for symbol_tag in xml_root:
             self.symbols.append([symbol_tag.attrib['file'].rsplit('.')[0], symbol_tag.attrib['command'], symbol_tag.attrib.get('package', None), int(symbol_tag.attrib.get('original_width', 10)), int(symbol_tag.attrib.get('original_height', 10))])
-        
+
         self.init_symbols_list()
 
     def init_symbols_list(self):
         for symbol in self.symbols:
             size = max(symbol[3], symbol[4])
 
-            image = Gtk.Image()
+            image = Gtk.Image.new_from_icon_name('sidebar-' + symbol[0] + '-symbolic')
             image.set_pixel_size(int(size * 1.5))
-            image.set_from_icon_name('sidebar-' + symbol[0] + '-symbolic')
             tooltip_text = symbol[1]
             if symbol[2] != None: 
                 tooltip_text += ' (' + _('Package') + ': ' + symbol[2] + ')'

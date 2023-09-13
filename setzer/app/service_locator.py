@@ -89,17 +89,17 @@ class ServiceLocator(object):
     def get_source_language_manager():
         if ServiceLocator.source_language_manager == None:
             ServiceLocator.source_language_manager = GtkSource.LanguageManager()
-            path = os.path.join(ServiceLocator.get_resources_path(), 'gtksourceview', 'language-specs')
+            path = os.path.join(ServiceLocator.get_resources_path(), 'language-specs')
             ServiceLocator.source_language_manager.set_search_path((path,))
         return ServiceLocator.source_language_manager
 
     def get_source_style_scheme_manager():
         if ServiceLocator.source_style_scheme_manager == None:
             ServiceLocator.source_style_scheme_manager = GtkSource.StyleSchemeManager()
-            path1 = os.path.join(ServiceLocator.get_resources_path(), 'gtksourceview', 'styles')
-            if not os.path.isdir(os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes')):
-                os.mkdir(os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes'))
-            path2 = os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes')
+            path1 = os.path.join(ServiceLocator.get_resources_path(), 'themes')
+            if not os.path.isdir(os.path.join(ServiceLocator.get_config_folder(), 'themes')):
+                os.mkdir(os.path.join(ServiceLocator.get_config_folder(), 'themes'))
+            path2 = os.path.join(ServiceLocator.get_config_folder(), 'themes')
             ServiceLocator.source_style_scheme_manager.set_search_path((path1, path2))
         return ServiceLocator.source_style_scheme_manager
 

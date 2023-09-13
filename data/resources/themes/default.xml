@@ -32,8 +32,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
   <author>Robert Griesel</author>
   <_description>Setzer default color scheme</_description>
 
-  <color name="blue"                         value="#0051b4"/>
-  <color name="green"                         value="#008000"/>
+  <color name="blue"                        value="#0051b4"/>
+  <color name="green"                       value="#008000"/>
   <color name="white"                       value="#ffffff"/>
   <color name="black"                       value="#000000"/>
   <color name="butter1"                     value="#fce94f"/>

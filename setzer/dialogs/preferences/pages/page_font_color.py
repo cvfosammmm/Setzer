@@ -85,7 +85,7 @@ class PageFontColor(object):
         return root.attrib['id']
 
     def get_scheme_filename_from_id(self, scheme_id):
-        directory_pathname = os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes')
+        directory_pathname = os.path.join(ServiceLocator.get_config_folder(), 'themes')
         for filename in os.listdir(directory_pathname):
             tree = ET.parse(os.path.join(directory_pathname, filename))
             root = tree.getroot()
@@ -95,9 +95,9 @@ class PageFontColor(object):
     def update_switchers(self):
         active_id = self.settings.get_value('preferences', 'color_scheme')
         set_active_id = False
-        for name in ['default']:
+        for name in ['default', 'default-dark']:
             self.view.style_switcher.append(name, name)
-        directory_pathname = os.path.join(ServiceLocator.get_config_folder(), 'syntax_schemes')
+        directory_pathname = os.path.join(ServiceLocator.get_config_folder(), 'themes')
         if os.path.isdir(directory_pathname):
             for filename in os.listdir(directory_pathname):
                 name = self.get_scheme_id_from_file(os.path.join(directory_pathname, filename))

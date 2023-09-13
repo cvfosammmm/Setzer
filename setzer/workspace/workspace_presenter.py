@@ -18,6 +18,8 @@
 from setzer.app.service_locator import ServiceLocator
 from setzer.app.font_manager import FontManager
 
+import os.path
+
 
 class WorkspacePresenter(object):
 
@@ -37,12 +39,17 @@ class WorkspacePresenter(object):
 
         self.activate_welcome_screen_mode()
         self.update_font()
+        self.update_colors()
         self.setup_paneds()
 
     def on_settings_changed(self, settings, parameter):
         section, item, value = parameter
+
         if item in ['font_string', 'use_system_font']:
             self.update_font()
+
+        if item == 'color_scheme':
+            self.update_colors()
 
     def on_new_document(self, workspace, document):
         if document.is_latex_document():
@@ -141,6 +148,11 @@ class WorkspacePresenter(object):
         else:
             FontManager.font_string = self.settings.get_value('preferences', 'font_string')
         FontManager.propagate_font_setting()
+
+    def update_colors(self):
+        name = self.settings.get_value('preferences', 'color_scheme')
+        path = os.path.join(ServiceLocator.get_resources_path(), 'themes', name + '.css')
+        self.main_window.css_provider_colors.load_from_path(path)
 
     def setup_paneds(self):
         show_sidebar = (self.workspace.show_symbols or self.workspace.show_document_structure)

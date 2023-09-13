@@ -1,0 +1,86 @@
+/* The main accent color and the matching text value */
+@define-color accent_bg_color #3584e4;
+@define-color accent_fg_color white;
+@define-color accent_color #78aeed;
+
+/* destructive-action buttons */
+@define-color destructive_bg_color #c01c28;
+@define-color destructive_fg_color white;
+@define-color destructive_color #ff7b63;
+
+/* Levelbars, entries, labels and infobars. These don't need text colors */
+@define-color success_bg_color #26a269;
+@define-color success_fg_color white;
+@define-color success_color #8ff0a4;
+
+@define-color warning_bg_color #cd9309;
+@define-color warning_fg_color rgba(0, 0, 0, 0.8);
+@define-color warning_color #f8e45c;
+
+@define-color error_bg_color #c01c28;
+@define-color error_fg_color white;
+@define-color error_color #ff7b63;
+
+/* Window */
+@define-color window_bg_color #242424;
+@define-color window_fg_color white;
+
+/* Views - e.g. text view or tree view */
+@define-color view_bg_color #1e1e1e;
+@define-color view_fg_color white;
+@define-color view_hover_color rgba(255, 255, 255, 0.07);
+@define-color view_active_color rgba(255, 255, 255, 0.16);
+
+/* Header bar, search bar, tab bar */
+@define-color headerbar_bg_color #303030;
+@define-color headerbar_fg_color white;
+@define-color headerbar_border_color white;
+@define-color headerbar_backdrop_color @window_bg_color;
+@define-color headerbar_shade_color rgba(0, 0, 0, 0.36);
+@define-color headerbar_darker_shade_color rgba(0, 0, 0, 0.9);
+
+/* Split pane views */
+@define-color sidebar_bg_color #303030;
+@define-color sidebar_fg_color white;
+@define-color sidebar_backdrop_color #2a2a2a;
+@define-color sidebar_shade_color rgba(0, 0, 0, 0.36);
+
+@define-color secondary_sidebar_bg_color #2a2a2a;
+@define-color secondary_sidebar_fg_color white;
+@define-color secondary_sidebar_backdrop_color #272727;
+@define-color secondary_sidebar_shade_color rgba(0, 0, 0, 0.64);
+
+/* Cards, boxed lists */
+@define-color card_bg_color rgba(255, 255, 255, 0.08);
+@define-color card_fg_color white;
+@define-color card_shade_color rgba(0, 0, 0, 0.36);
+
+/* Dialogs */
+@define-color dialog_bg_color #383838;
+@define-color dialog_fg_color white;
+
+/* Popovers */
+@define-color popover_bg_color #383838;
+@define-color popover_fg_color white;
+@define-color popover_shade_color rgba(0, 0, 0, 0.36);
+
+/* Thumbnails */
+@define-color thumbnail_bg_color #383838;
+@define-color thumbnail_fg_color white;
+
+/* Miscellaneous */
+@define-color shade_color rgba(0, 0, 0, 0.36);
+@define-color scrollbar_outline_color rgba(0, 0, 0, 0.5);
+
+/* Setzer-Specific */
+@define-color code_folding_hover rgba(255, 255, 255, 0.5);
+@define-color theme_fg_color @view_fg_color;
+@define-color theme_bg_color @window_bg_color;
+@define-color theme_base_color @view_bg_color;
+@define-color fg_color_light mix(@theme_fg_color, transparent, 0.5);
+@define-color highlight_tag_preview rgba(250, 240, 107, 0.6);
+@define-color highlight_tag_textview rgba(250, 240, 107, 0.65);
+@define-color ac_text #000000;
+@define-color ac_bg #fff895;
+@define-color ac_selection_bg #f8e45c;
+@define-color line_highlighting_color #3e3e3e;

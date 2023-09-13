@@ -93,9 +93,9 @@ class BuildLogList(Gtk.Widget):
 
         self.setup_icons()
 
-        fg_color = ColorManager.get_ui_color('theme_fg_color')
-        bg_color = ColorManager.get_ui_color('theme_base_color')
-        hover_color = ColorManager.get_ui_color('theme_bg_color')
+        fg_color = ColorManager.get_ui_color('view_fg_color')
+        bg_color = ColorManager.get_ui_color('view_bg_color')
+        hover_color = ColorManager.get_ui_color('view_hover_color')
 
         snapshot.append_color(bg_color, Graphene.Rect().init(0, self.offset_start, self.get_allocated_width(), self.offset_end + 2000))
         if self.hover_item != None:
