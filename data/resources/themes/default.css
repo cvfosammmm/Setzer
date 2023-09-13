@@ -74,13 +74,17 @@
 
 /* Setzer-Specific */
 @define-color code_folding_hover #c7c7c7;
-@define-color theme_fg_color @view_fg_color;
-@define-color theme_bg_color @window_bg_color;
-@define-color theme_base_color @view_bg_color;
-@define-color fg_color_light mix(@theme_fg_color, transparent, 0.5);
+@define-color fg_color_light mix(@view_fg_color, transparent, 0.5);
+@define-color lighter_border mix(@borders, transparent, 0.2);
 @define-color highlight_tag_preview rgba(250, 240, 107, 0.6);
 @define-color highlight_tag_textview rgba(250, 240, 107, 0.65);
 @define-color ac_text #000000;
 @define-color ac_bg #fff895;
 @define-color ac_selection_bg #f8e45c;
 @define-color line_highlighting_color #eef4ff;
+@define-color description_color mix(@view_fg_color, transparent, 0.3);
+@define-color blank_preview_color mix(@window_bg_color, @view_bg_color, 0.5);
+@define-color menu_shortcut_color mix(@view_fg_color, transparent, 0.4);
+@define-color list_row_border_color mix(@borders, transparent, 0.68);
+@define-color button_active_color mix(@borders, transparent, 0.55);
+@define-color location_label_color mix(@view_fg_color, transparent, 0.4);

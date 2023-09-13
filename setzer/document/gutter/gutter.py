@@ -216,7 +216,7 @@ class Gutter(object):
         if self.total_width == 0: return
 
         self.draw_background_and_border(ctx, width, height)
-        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('theme_fg_color'))
+        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('view_fg_color'))
 
         current_line = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()).get_line()
         line_iter, offset = self.source_view.get_line_at_y(self.adjustment.get_value())
@@ -239,7 +239,7 @@ class Gutter(object):
         self.draw_hovered_folding_region(ctx)
 
     def draw_background_and_border(self, ctx, width, height):
-        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('theme_base_color'))
+        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('view_bg_color'))
         ctx.rectangle(0, 0, self.total_width, height)
         ctx.fill()
 
@@ -265,7 +265,7 @@ class Gutter(object):
             yrange = self.source_view.get_line_yrange(self.source_buffer.get_iter_at_line(line).iter)
             ctx.rectangle(0, yrange.y - self.adjustment.get_value(), self.total_width, yrange.height)
             ctx.fill()
-            Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('theme_fg_color'))
+            Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('view_fg_color'))
 
         if offset < 0: offset -= 1
         offset = int(offset)

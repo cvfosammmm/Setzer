@@ -67,9 +67,9 @@ class WelcomeScreen(object):
         return self.is_active
 
     def draw(self, drawing_area, ctx, width, height, data=None):
-        self.fg_color = ColorManager.get_ui_color('theme_fg_color')
+        self.fg_color = ColorManager.get_ui_color('window_fg_color')
         self.fg_color.alpha = self.alpha
-        self.bg_color = ColorManager.get_ui_color('theme_bg_color')
+        self.bg_color = ColorManager.get_ui_color('window_bg_color')
 
         ctx.rotate(-self.angle)
         Gdk.cairo_set_source_rgba(ctx, self.fg_color)

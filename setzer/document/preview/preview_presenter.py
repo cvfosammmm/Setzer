@@ -90,7 +90,7 @@ class PreviewPresenter(object):
             self.preview.setup_layout_and_zoom_levels()
             return
 
-        bg_color = ColorManager.get_ui_color('theme_bg_color')
+        bg_color = ColorManager.get_ui_color('window_bg_color')
         border_color = ColorManager.get_ui_color('borders')
         self.draw_background(ctx, drawing_area, bg_color)
 

@@ -42,7 +42,7 @@ class GutterView(Gtk.DrawingArea):
 
         self.draw_background_and_border(ctx, width, height)
 
-        fg_color = ColorManager.get_ui_color('theme_fg_color')
+        fg_color = ColorManager.get_ui_color('view_fg_color')
         Gdk.cairo_set_source_rgba(ctx, fg_color)
 
         if self.current_line == self.lines[0]: layout = self.layout_current_line
@@ -67,7 +67,7 @@ class GutterView(Gtk.DrawingArea):
             last_line = line
 
     def draw_background_and_border(self, ctx, width, height):
-        bg_color = ColorManager.get_ui_color('theme_base_color')
+        bg_color = ColorManager.get_ui_color('view_bg_color')
         border_color = ColorManager.get_ui_color('borders')
 
         Gdk.cairo_set_source_rgba(ctx, bg_color)

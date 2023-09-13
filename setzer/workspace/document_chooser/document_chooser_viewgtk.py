@@ -153,9 +153,9 @@ class DocumentChooserList(Gtk.Widget):
         self.layout_subheader.set_spacing((25 + 2 * self.line_height - self.subline_height) * Pango.SCALE)
 
     def do_snapshot(self, snapshot):
-        fg_color = ColorManager.get_ui_color('theme_fg_color')
+        fg_color = ColorManager.get_ui_color('view_fg_color')
         fg_color_light = ColorManager.get_ui_color('fg_color_light')
-        bg_color = ColorManager.get_ui_color('theme_base_color')
+        bg_color = ColorManager.get_ui_color('view_bg_color')
         hover_color = ColorManager.get_ui_color('view_hover_color')
         active_color = ColorManager.get_ui_color('view_active_color')
         border_color = ColorManager.get_ui_color('borders')

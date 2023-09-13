@@ -40,7 +40,7 @@ class FixedWidthLabel(Gtk.DrawingArea):
         self.queue_draw()
 
     def draw(self, drawing_area, ctx, width, height):
-        fg_color = ColorManager.get_ui_color('theme_fg_color')
+        fg_color = ColorManager.get_ui_color('window_fg_color')
         Gdk.cairo_set_source_rgba(ctx, fg_color)
         PangoCairo.show_layout(ctx, self.layout)
 

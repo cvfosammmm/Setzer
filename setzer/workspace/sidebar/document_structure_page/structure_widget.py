@@ -73,9 +73,9 @@ class StructureWidget(Gtk.DrawingArea):
             snapshot.append_color(self.hover_color, Graphene.Rect().init(0, self.hover_item * self.line_height + 9, self.get_allocated_width(), self.line_height))
 
     def drawing_setup(self):
-        self.fg_color = self.get_style_context().lookup_color('theme_fg_color')[1]
-        self.bg_color = self.get_style_context().lookup_color('theme_base_color')[1]
-        self.hover_color = self.get_style_context().lookup_color('theme_bg_color')[1]
+        self.fg_color = self.get_style_context().lookup_color('view_fg_color')[1]
+        self.bg_color = self.get_style_context().lookup_color('view_bg_color')[1]
+        self.hover_color = self.get_style_context().lookup_color('view_hover_color')[1]
 
     def draw_background(self, snapshot):
         snapshot.append_color(self.bg_color, Graphene.Rect().init(0, 0, self.get_allocated_width(), self.height))
