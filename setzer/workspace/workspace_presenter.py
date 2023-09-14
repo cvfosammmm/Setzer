@@ -153,6 +153,8 @@ class WorkspacePresenter(object):
         name = self.settings.get_value('preferences', 'color_scheme')
         path = os.path.join(ServiceLocator.get_resources_path(), 'themes', name + '.css')
         self.main_window.css_provider_colors.load_from_path(path)
+        try: self.workspace.help_panel.update_colors()
+        except AttributeError: pass
 
     def setup_paneds(self):
         show_sidebar = (self.workspace.show_symbols or self.workspace.show_document_structure)

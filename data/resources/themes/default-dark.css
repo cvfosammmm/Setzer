@@ -88,3 +88,6 @@
 @define-color list_row_border_color mix(@borders, transparent, 0.68);
 @define-color button_active_color mix(@borders, transparent, 0.55);
 @define-color location_label_color mix(@view_fg_color, transparent, 0.4);
+@define-color link_color @accent_color;
+@define-color link_color_active white;
+@define-color link_color_visited mix(@accent_color, transparent, 0.8);
