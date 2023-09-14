@@ -24,8 +24,6 @@ import xml.etree.ElementTree as ET
 import subprocess, os, os.path
 import re
 
-width_regex = re.compile('exported to ([0-9]+) x ([0-9]+) pixels')
-
 folders = [
             'arrows',
             'greek_letters',
@@ -101,19 +99,32 @@ for folder in folders:
         except FileExistsError: pass
         try: os.mkdir('../data/resources/symbols/' + folder)
         except FileExistsError: pass
+        try: os.mkdir('../data/resources/symbols/' + folder + '/hicolor')
+        except FileExistsError: pass
+        try: os.mkdir('../data/resources/symbols/' + folder + '/hicolor/scalable')
+        except FileExistsError: pass
+        try: os.mkdir('../data/resources/symbols/' + folder + '/hicolor/scalable/actions')
+        except FileExistsError: pass
 
-        arguments = ['pdf2svg', 'temp.pdf', '../data/resources/symbols/' + folder + '/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
+        arguments = ['pdf2svg', 'temp.pdf', '../data/resources/symbols/' + folder + '/hicolor/scalable/actions/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
         process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         process.wait()
 
         # get image size
-        arguments = ['inkscape', '--export-filename=temp.png', '../data/resources/symbols/' + folder + '/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
+        arguments = ['inkscape', '--export-filename=temp.png', '../data/resources/symbols/' + folder + '/hicolor/scalable/actions/sidebar-' + attrib['file'][:-4] + '-symbolic.svg']
+        process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process.wait()
+        process.communicate()
+        process.kill()
+
+        arguments = ['file', 'temp.png']
         process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         process.wait()
         output = process.communicate()
-        output = output[1].decode('utf8')
-        width_match = width_regex.search(output)
-        
+        output = output[0].decode('utf8')
+
+        width_match = re.search('PNG image data, ([0-9]+) x ([0-9]+),', output)
+
         process.kill()
         child.set('original_width', width_match.group(1))
         child.set('original_height', width_match.group(2))
