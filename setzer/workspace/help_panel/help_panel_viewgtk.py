@@ -90,6 +90,7 @@ class HelpPanelView(Gtk.Box):
         self.search_widget.set_center_widget(self.search_vbox)
 
         self.content = WebKit.WebView()
+        self.user_content_manager = self.content.get_user_content_manager()
 
         self.settings = self.content.get_settings()
         self.settings.set_enable_javascript(False)
