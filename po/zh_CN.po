@@ -8,11 +8,11 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 15:33+0200\n"
-"PO-Revision-Date: 2023-07-02 04:52+0000\n"
+"PO-Revision-Date: 2023-08-13 10:50+0000\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "setzer/application/zh_Hans/>\n"
-"Language: zh_Hans\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -71,151 +71,151 @@ msgstr "文档创建向导"
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:48
 #, python-brace-format
 msgid "Reference to '{label}'"
-msgstr "参考“{label}”"
+msgstr "对“{label}”的引用"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:48
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:63
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:331
 msgid "Reference"
-msgstr "参考文献"
+msgstr "引用"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:49
 #, python-brace-format
 msgid "Reference to page of '{label}'"
-msgstr ""
+msgstr "对“{label}”页面的引用"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:49
 msgid "Page reference"
-msgstr ""
+msgstr "页面引用"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:50
 #, python-brace-format
 msgid "Reference to '{label}', with parantheses"
-msgstr ""
+msgstr "对“{label}”的引用，带括号"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:50
 msgid "Reference with parantheses"
-msgstr ""
+msgstr "带括号的引用"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:52
 #, python-brace-format
 msgid "Cite '{label}'"
-msgstr ""
+msgstr "引文“{label}”"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:52
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:188
 msgid "Citation"
-msgstr ""
+msgstr "参考文献"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:53
 #, python-brace-format
 msgid "Cite '{label}' (abbreviated)"
-msgstr ""
+msgstr "引文“{label}”（缩写）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:53
 msgid "Citation (abbreviated)"
-msgstr ""
+msgstr "参考文献（缩写）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:54
 #, python-brace-format
 msgid "Cite '{label}' (abbreviated with brackets)"
-msgstr ""
+msgstr "引文“{label}”（带方括号缩写）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:54
 msgid "Citation (abbreviated with brackets)"
-msgstr ""
+msgstr "参考文献（带方括号缩写）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:55
 #, python-brace-format
 msgid "Cite '{label}' (detailed)"
-msgstr ""
+msgstr "引文“{label}”（详细）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:55
 msgid "Citation (detailed)"
-msgstr ""
+msgstr "参考文献（详细）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:56
 #, python-brace-format
 msgid "Cite '{label}' (detailed with brackets)"
-msgstr ""
+msgstr "引文“{label}”（详细且带方括号）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:56
 msgid "Citation (detailed with brackets)"
-msgstr ""
+msgstr "参考文献（详细且带方括号）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:57
 #, python-brace-format
 msgid "Cite '{label}' (alternative style 1)"
-msgstr ""
+msgstr "引文“{label}”（备选样式 1）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:57
 msgid "Citation (alternative style 1)"
-msgstr ""
+msgstr "参考文献（备选样式 1）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:58
 #, python-brace-format
 msgid "Cite '{label}' (alternative style 2)"
-msgstr ""
+msgstr "引文“{label}”（备选样式 2）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:58
 msgid "Citation (alternative style 2)"
-msgstr ""
+msgstr "参考文献（备选样式 2）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:59
 #, python-brace-format
 msgid "Cite '{label}' (author)"
-msgstr ""
+msgstr "引文“{label}”（作者）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:59
 msgid "Citation (author)"
-msgstr ""
+msgstr "参考文献（作者）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:60
 #, python-brace-format
 msgid "Cite '{label}' (author detailed)"
-msgstr ""
+msgstr "引文“{label}”（作者详细）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:60
 msgid "Citation (author detailed)"
-msgstr ""
+msgstr "参考文献（作者详细）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:61
 #, python-brace-format
 msgid "Cite '{label}' (year)"
-msgstr ""
+msgstr "引文“{label}”（年份）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:61
 msgid "Citation (year)"
-msgstr ""
+msgstr "参考文献（年份）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:62
 #, python-brace-format
 msgid "Cite '{label}' (year with brackets)"
-msgstr ""
+msgstr "引文“{label}”（带方括号年份）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:62
 msgid "Citation (year with brackets)"
-msgstr ""
+msgstr "参考文献（带方括号年份）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:63
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:65
 #, python-brace-format
 msgid "Cite '{label}' (BibLaTeX)"
-msgstr ""
+msgstr "引文“{label}”（BibLaTeX）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:63
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:65
 msgid "BibLaTeX citation"
-msgstr ""
+msgstr "BibLaTeX 参考文献"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:64
 #, python-brace-format
 msgid "Cite '{label}' (BibLaTeX, with brackets)"
-msgstr ""
+msgstr "引文“{label}”（BibLaTeX，带方括号）"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:64
 msgid "BibLaTeX citation (with brackets)"
-msgstr ""
+msgstr "BibLaTeX 参考文献（带方括号）"
 
 #: setzer/dialogs/about/about.py:44
 msgid "Setzer is a LaTeX editor."
@@ -252,6 +252,10 @@ msgid ""
 "refer to the journal while <tt>translator</tt> and related fields refer to "
 "the article."
 msgstr ""
+"期刊、杂志、报纸或其它定期刊物中带有独自标题形成自包含单元的文章。刊物标题在 "
+"<tt>journaltitle</tt> 域中给定。如果该期发行在刊物主标题外附带独自标题，可在 "
+"<tt>issuetitle</tt> 域中给定。需要注意的是 <tt>editor</tt> "
+"和相关域用于刊物而 <tt>translator</tt> 和相关域用于文章。"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:43
 msgid "Book"
@@ -262,7 +266,8 @@ msgid ""
 "A single-volume book with one or more authors where the authors share credit "
 "for the work as a whole. This entry type also covers the function of the "
 "@inbook type of traditional BibTeX."
-msgstr ""
+msgstr "具有一位或多位作者作为整体共享著作荣誉的单卷本书籍。该条目类型同时覆盖传统 "
+"BibTeX @inbook 类型的功能。"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:44
 msgid "Multi-volume Book"
@@ -273,7 +278,8 @@ msgid ""
 "A multi-volume @book. For backwards compatibility, multi-volume books are "
 "also supported by the entry type @book. However, it is advisable to make use "
 "of the dedicated entry type @mvbook."
-msgstr ""
+msgstr "多卷本 @book。为了向后兼容，条目类型 @book 同样支持多卷本书籍。然而，"
+"仍建议使用独立的条目类型 @mvbook。"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:45
 msgid "Part of a Book With Its Own Title"
@@ -283,7 +289,8 @@ msgstr "书籍中有自己标题的一部分"
 msgid ""
 "A part of a book which forms a self-contained unit with its own title. Note "
 "that the profile of this entry type is different from standard BibTeX."
-msgstr ""
+msgstr "书籍中带有独自标题形成自包含单元的部分。需要注意的是该条目类型的大体与标准 "
+"BibTeX 不同。"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:46
 msgid "Book in Book"
@@ -294,7 +301,8 @@ msgid ""
 "This type is similar to @inbook but intended for works originally published "
 "as a stand-alone book. A typical example are books reprinted in the "
 "collected works of an author."
-msgstr ""
+msgstr "该类型与 @inbook 相似但目标为原始发表为独立书籍的著作。典型的例子就是在某位作"
+"者著作合集中重新刊印的书籍。"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:47
 msgid "Supplemental Material in a Book"
@@ -311,6 +319,11 @@ msgid ""
 "other @inbook items. The standard styles will treat this entry type as an "
 "alias for @inbook."
 msgstr ""
+"在 @book 中增补的材料。该类型与 @inbook 条目类型紧密相关。但是 @inbook 主要目"
+"标为书籍中具有独自标题的部分（如同一作者短文合集中的一篇单独短文），而该类型"
+"目标为诸如序言、介绍、前言、后记等经常仅具有常规标题的元素。"
+"样式引导可能需要这些项目格式化为与其它 @inbook 项目不同的形式。"
+"标准样式会将该条目类型视为 @inbook 的别名。"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:48
 msgid "Booklet"
@@ -322,6 +335,8 @@ msgid ""
 "the field <tt>howpublished</tt> to supply publishing information in free "
 "format, if applicable. The field <tt>type</tt> may be useful as well."
 msgstr ""
+"不具有正规出版社或赞助机构的类似书籍的著作。如果合适则使用 <tt>howpublished</"
+"tt> 以自由格式提供出版信息。<tt>type</tt> 域可能同样有用。"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:49
 msgid "Single-volume Collection"
@@ -332,7 +347,8 @@ msgid ""
 "A single-volume collection with multiple, self-contained contributions by "
 "distinct authors which have their own title. The work as a whole has no "
 "overall author but it will usually have an editor."
-msgstr ""
+msgstr "具有多篇由不同作者贡献带有独自标题的自包含文章的单卷合集。该著作作为整体没有"
+"总体作者但通常具有编辑。"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:50
 msgid "Multi-volume Collection"
@@ -537,7 +553,7 @@ msgstr "软件"
 msgid ""
 "Computer software. The standard styles will treat this entry type as an "
 "alias for @misc."
-msgstr ""
+msgstr "计算机软件。标准样式将把该条目类型视为 @misc 的别名。"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:68
 msgid "Thesis"
@@ -865,20 +881,23 @@ msgid ""
 "This class on its own is pretty simplistic and is often used as a starting "
 "point for more custom layouts."
 msgstr ""
+"<b>文章：</b>科学期刊中的文章、学期论文、讲义、短报告……\n"
+"\n"
+"该类别就本身而言较为简化且经常作为更多自定义布局的起始点使用。"
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:83
 msgid "<b>Book:</b>  For actual books containing many chapters and sections."
-msgstr ""
+msgstr "<b>书籍：</b>包含很多章节的真实书籍。"
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:84
 msgid ""
 "<b>Report:</b>  For longer reports and articles containing more than one "
 "chapter, small books, thesis."
-msgstr ""
+msgstr "<b>报告：</b>包含多个章节的长报告和文章，小型书籍，毕业论文。"
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:85
 msgid "<b>Letter:</b>  For writing letters."
-msgstr ""
+msgstr "<b>信件：</b>编写信件。"
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:86
 msgid ""
@@ -886,6 +905,9 @@ msgid ""
 "\n"
 "There are many predefined presentation styles."
 msgstr ""
+"<b>投影：</b>使用 LaTeX 制作演讲幻灯片的类别。\n"
+"\n"
+"具有很多预定义的呈现样式。"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:116
 msgid "Others…"
@@ -1090,13 +1112,14 @@ msgid ""
 "<b>Relative Path:</b> Set the path relative to the main document. This is "
 "useful when the included file is in the same folder as the main document and "
 "you want to move around both of them together."
-msgstr ""
+msgstr "<b>相对路径：</b>设定与主文档相关联的路径。这在包含的文件与主文档在相同文件夹"
+"里且您想要将它们一起移动时有用。"
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:82
 msgid ""
 "<b>Absolute Path:</b> Specify the absolute location of the included file in "
 "your filesystem."
-msgstr ""
+msgstr "<b>绝对路径：</b>为包含的文件指定在您文件系统中的绝对路径。"
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:94
 msgid "Include LaTeX file"
@@ -1119,6 +1142,13 @@ msgid ""
 "\n"
 "    flatpak install org.freedesktop.Sdk.Extension.texlive"
 msgstr ""
+"Setzer 配置为使用 »{interpreter}« 但看起来在该系统上缺失。\n"
+"\n"
+"要选择不同解释器可前往首选项。\n"
+"\n"
+"要在 Flatpak 中安装解释器，打开终端且运行如下命令：\n"
+"\n"
+"    flatpak install org.freedesktop.Sdk.Extension.texlive"
 
 #: setzer/dialogs/interpreter_missing/interpreter_missing.py:57
 #, python-brace-format
@@ -1132,6 +1162,12 @@ msgid ""
 "wiki/LaTeX/Installation\">https://en.wikibooks.org/wiki/LaTeX/Installation</"
 "a>"
 msgstr ""
+"Setzer 配置为使用 »{interpreter}« 但看起来在该系统上缺失。\n"
+"\n"
+"要选择不同解释器可前往首选项。\n"
+"\n"
+"要获取安装 LaTeX 的介绍可参阅 <a href=\"https://en.wikibooks.org/wiki/LaTeX/"
+"Installation\">https://en.wikibooks.org/wiki/LaTeX/Installation</a>"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:35
 msgid "Documents"
@@ -1448,6 +1484,9 @@ msgid ""
 "\n"
 "    flatpak install org.freedesktop.Sdk.Extension.texlive"
 msgstr ""
+"未找到 LaTeX 解释器。要在 Flatpak 中安装解释器，打开终端并运行如下命令：\n"
+"\n"
+"    flatpak install org.freedesktop.Sdk.Extension.texlive"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:138
 msgid ""
@@ -1455,12 +1494,15 @@ msgid ""
 "href=\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en."
 "wikibooks.org/wiki/LaTeX/Installation</a>"
 msgstr ""
+"未找到 LaTeX 解释器。要获取安装 LaTeX 的介绍可参阅 <a href=\"https://en."
+"wikibooks.org/wiki/LaTeX/Installation\">https://en.wikibooks.org/wiki/LaTeX/"
+"Installation</a>"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:164
 msgid ""
 "Please note: the Tectonic backend uses only the V1 command-line interface. "
 "Tectonic.toml configuration files are ignored."
-msgstr ""
+msgstr "请注意：Tectonic 后端仅使用 V1 命令行接口。Tectonic.toml 配置文件已被忽略。"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:178
 msgid "Automatically remove helper files (.log, .dvi, …) after building .pdf."
@@ -1654,12 +1696,11 @@ msgstr "首选项"
 msgid "Replacing {amount} occurence of »{original}« with »{replacement}«."
 msgid_plural ""
 "Replacing {amount} occurrences of »{original}« with »{replacement}«."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "用 »{replacement}« 替换 »{original}« 的 {amount} 个匹配。"
 
 #: setzer/dialogs/replace_confirmation/replace_confirmation.py:49
 msgid "_Yes, replace all occurrences"
-msgstr ""
+msgstr "是，替换所有匹配(_Y)"
 
 #: setzer/dialogs/save_document/save_document.py:64
 msgid "Save document"
@@ -1835,116 +1876,114 @@ msgstr "无预览可用"
 msgid ""
 "To show a .pdf preview of your document, click the build button in the "
 "headerbar."
-msgstr ""
+msgstr "要显示您文档的 PDF 预览，请点击头部栏中的构建按钮。"
 
 #: setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py:57
 msgid "Set zoom level"
-msgstr ""
+msgstr "设置缩放级别"
 
 #: setzer/document/search/search_viewgtk.py:53
 msgid "Previous result"
-msgstr ""
+msgstr "上个结果"
 
 #: setzer/document/search/search_viewgtk.py:56
 msgid "Next result"
-msgstr ""
+msgstr "下个结果"
 
 #: setzer/document/search/search_viewgtk.py:57
 msgid "Replace"
-msgstr ""
+msgstr "替换"
 
 #: setzer/document/search/search_viewgtk.py:59
 msgid "Replace selected result"
-msgstr ""
+msgstr "替换选中结果"
 
 #: setzer/document/search/search_viewgtk.py:61
 msgid "All"
-msgstr ""
+msgstr "全部"
 
 #: setzer/document/search/search_viewgtk.py:63
 msgid "Replace all results"
-msgstr ""
+msgstr "替换所有结果"
 
 #: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:38
 msgid "More Actions"
-msgstr ""
+msgstr "更多动作"
 
 #: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:47
 msgid "Find and Replace (Ctrl+H)"
-msgstr ""
+msgstr "查找和替换（Ctrl+H）"
 
 #: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:53
 msgid "Find (Ctrl+F)"
-msgstr ""
+msgstr "查找（Ctrl+F）"
 
 #: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:69
 msgid "New Document Wizard"
-msgstr ""
+msgstr "新建文档向导"
 
 #: setzer/widgets/filechooser_button/filechooser_button.py:34
 #: setzer/widgets/filechooser_button/filechooser_button.py:59
 msgid "(None)"
-msgstr ""
+msgstr "（无）"
 
 #: setzer/widgets/filechooser_button/filechooser_button.py:50
 msgid "Choose File"
-msgstr ""
+msgstr "选择文件"
 
 #: setzer/widgets/filechooser_button/filechooser_button.py:75
 #: setzer/widgets/filechooser_button/filechooser_button.py:82
 msgid "_Select"
-msgstr ""
+msgstr "选择(_S)"
 
 #: setzer/workspace/build_log/build_log_presenter.py:131
 #, python-brace-format
 msgid "Line {number}"
-msgstr ""
+msgstr "第 {number} 行"
 
 #: setzer/workspace/build_log/build_log_presenter.py:153
 #, python-brace-format
 msgid "Building failed with {amount} error"
 msgid_plural "Building failed with {amount} errors"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "构建失败且有 {amount} 个错误"
 
 #: setzer/workspace/build_log/build_log_presenter.py:154
 #, python-brace-format
 msgid "{amount} warning or badbox"
 msgid_plural "{amount} warnings or badboxes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{amount} 个警告或坏盒"
 
 #: setzer/workspace/build_log/build_log_presenter.py:157
 msgid "Building successful"
-msgstr ""
+msgstr "构建成功"
 
 #: setzer/workspace/build_log/build_log_presenter.py:162
 msgid "no warnings or badboxes"
-msgstr ""
+msgstr "无警告或坏盒"
 
 #: setzer/workspace/document_chooser/document_chooser_viewgtk.py:55
 msgid "No results"
-msgstr ""
+msgstr "无结果"
 
 #: setzer/workspace/document_chooser/document_chooser_viewgtk.py:60
 msgid "Other Documents"
-msgstr ""
+msgstr "其它文档"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:59
 msgid "Welcome to Setzer"
-msgstr ""
+msgstr "欢迎使用 Setzer"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:107
 msgid "Set one Document as Root"
-msgstr ""
+msgstr "设置一篇文档为根文档"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:113
 msgid "Unset Root Document"
-msgstr ""
+msgstr "取消设置根文档"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:119
 msgid "Click on a document in the list below to set it as root."
-msgstr ""
+msgstr "在下面列表中的文档上点击将其设为根文档。"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:123
 msgid ""
@@ -1955,43 +1994,49 @@ msgid ""
 "a top level document (the root) will contain multiple lower\n"
 "level files via include statements."
 msgstr ""
+"根文档将一直获得构建，无论您当前在编辑\n"
+"哪篇文档，且它将永远在 PDF 预览中显示。\n"
+"构建日志同样会指向根文档。\n"
+"这经常对在大型项目上工作有用，典型例子\n"
+"为一篇顶层级别文档（根文档）会包含多篇\n"
+"通过包括语句导入的低级别文件。"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:45
 msgid "Toggle document structure"
-msgstr ""
+msgstr "切换文档结构"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:50
 msgid "Toggle symbols"
-msgstr ""
+msgstr "切换符号"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:78
 msgid "New LaTeX Document"
-msgstr ""
+msgstr "新建 LaTeX 文档"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:79
 msgid "New BibTeX Document"
-msgstr ""
+msgstr "新建 BibTeX 文档"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:92
 msgid "Create a new document"
-msgstr ""
+msgstr "创建新的文档"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:103
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:114
 msgid "Toggle preview"
-msgstr ""
+msgstr "切换预览"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:119
 msgid "Toggle help"
-msgstr ""
+msgstr "切换帮助"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:145
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:169
 msgid "Session"
-msgstr ""
+msgstr "会话"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:146
 msgid ""
@@ -1999,646 +2044,651 @@ msgid ""
 "and restore it later, a convenient way to work\n"
 "on multiple projects."
 msgstr ""
+"在会话文件中保存打开文档的列表\n"
+"并在之后恢复，一种在多个项目上\n"
+"工作的便利方法。"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:152
 msgid "Restore Previous Session"
-msgstr ""
+msgstr "恢复上个会话"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:153
 msgid "Save Current Session"
-msgstr ""
+msgstr "保存当前会话"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:166
 msgid "Save Document As"
-msgstr ""
+msgstr "保存文档为"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:167
 msgid "Save All Documents"
-msgstr ""
+msgstr "保存所有文档"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:171
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:188
 msgid "View"
-msgstr ""
+msgstr "视图"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:176
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "键盘快捷键"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:177
 msgid "About"
-msgstr ""
+msgstr "关于"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:179
 msgid "Close All Documents"
-msgstr ""
+msgstr "关闭所有文档"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:180
 msgid "Close Document"
-msgstr ""
+msgstr "关闭文档"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:181
 msgid "Quit"
-msgstr ""
+msgstr "退出"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:189
 msgid "Dark Mode"
-msgstr ""
+msgstr "暗色模式"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:201
 msgid "Check Spelling"
-msgstr ""
+msgstr "拼写检查"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:202
 msgid "Automatic Spellchecking"
-msgstr ""
+msgstr "自动拼写检查"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:203
 msgid "Set Spellchecking Language"
-msgstr ""
+msgstr "设置拼写检查语言"
 
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:33
 msgid "Home"
-msgstr ""
+msgstr "主页"
 
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:39
 msgid "Top"
-msgstr ""
+msgstr "顶部"
 
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:45
 #: setzer/workspace/sidebar/document_structure_page/document_structure_page.py:83
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:55
 msgid "Back"
-msgstr ""
+msgstr "返回"
 
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:51
 #: setzer/workspace/sidebar/document_structure_page/document_structure_page.py:89
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:61
 msgid "Forward"
-msgstr ""
+msgstr "前进"
 
 #: setzer/workspace/shortcutsbar/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:49
 msgid "Create New Entry"
-msgstr ""
+msgstr "创建新条目"
 
 #: setzer/workspace/shortcutsbar/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:60
 msgid "Create a New BibTeX Entry"
-msgstr ""
+msgstr "创建新的 BibTeX 条目"
 
 #: setzer/workspace/shortcutsbar/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:69
 msgid "Previously Used Entries"
-msgstr ""
+msgstr "上次使用的条目"
 
 #: setzer/workspace/shortcutsbar/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:80
 msgid "Add a Previously Used BibTeX Entry"
-msgstr ""
+msgstr "添加上次使用的 BibTeX 条目"
 
 #: setzer/workspace/shortcutsbar/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:89
 msgid "Search For Entries Online"
-msgstr ""
+msgstr "搜索在线条目"
 
 #: setzer/workspace/shortcutsbar/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:100
 msgid "Add a BibTeX Entry from an Online Database"
-msgstr ""
+msgstr "从在线数据库添加 BibTeX 条目"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:55
 msgid "Build log"
-msgstr ""
+msgstr "构建日志"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:66
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Italic"
-msgstr ""
+msgstr "斜体"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:75
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Bold"
-msgstr ""
+msgstr "粗体"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:93
 msgid "Document"
-msgstr ""
+msgstr "文档"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:110
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:123
 msgid "Document Info"
-msgstr ""
+msgstr "文档信息"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:112
 msgid "Document Environment"
-msgstr ""
+msgstr "文档环境"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:113
 msgid "Show Title"
-msgstr ""
+msgstr "显示标题"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:114
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:156
 msgid "Table of Contents"
-msgstr ""
+msgstr "目录"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:116
 msgid "Include LaTeX File"
-msgstr ""
+msgstr "包括 LaTeX 文件"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:127
 msgid "Date Today"
-msgstr ""
+msgstr "日期今天"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:137
 msgid "Beamer"
-msgstr ""
+msgstr "投影"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:153
 msgid "Hide Navigation"
-msgstr ""
+msgstr "隐藏导览"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:155
 msgid "Title Page"
-msgstr ""
+msgstr "标题页面"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:158
 msgid "Frame"
-msgstr ""
+msgstr "框架"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:159
 msgid "Frame with Title"
-msgstr ""
+msgstr "带标题框架"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:160
 msgid "\\frametitle"
-msgstr ""
+msgstr "\\frametitle"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:170
 msgid "Bibliography"
-msgstr ""
+msgstr "参考资料"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:185
 msgid "Include BibTeX File"
-msgstr ""
+msgstr "包括 BibTeX 文件"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:186
 msgid "Include 'natbib' Package"
-msgstr ""
+msgstr "包括“natbib”宏包"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:188
 msgid "Citation with Page Number"
-msgstr ""
+msgstr "带页码参考文献"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:190
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:198
 msgid "Natbib Citations"
-msgstr ""
+msgstr "Natbib 参考文献"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:191
 msgid "Include non-cited BibTeX Entries with '\\nocite'"
 msgstr ""
+"用“\\n"
+"ocite”包括未引用的 BibTeX 条目"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:199
 msgid "Abbreviated"
-msgstr ""
+msgstr "缩写"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:199
 msgid "Abbreviated with Brackets"
-msgstr ""
+msgstr "带方括号缩写"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:199
 msgid "Detailed"
-msgstr ""
+msgstr "详细"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:199
 msgid "Detailed with Brackets"
-msgstr ""
+msgstr "详细且带方括号"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:199
 msgid "Alternative 1"
-msgstr ""
+msgstr "备选 1"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:199
 msgid "Alternative 2"
-msgstr ""
+msgstr "备选 2"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:202
 msgid "Cite Author"
-msgstr ""
+msgstr "引文作者"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:202
 msgid "Cite Author Detailed"
-msgstr ""
+msgstr "引文作者详细"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:202
 msgid "Cite Year"
-msgstr ""
+msgstr "引文年份"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:202
 msgid "Cite Year with Brackets"
-msgstr ""
+msgstr "引文带方括号年份"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:213
 msgid "Text"
-msgstr ""
+msgstr "文字"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:228
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:249
 msgid "Font Styles"
-msgstr ""
+msgstr "字体样式"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:229
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:259
 msgid "Font Sizes"
-msgstr ""
+msgstr "字体大小"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:230
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:268
 msgid "Alignment"
-msgstr ""
+msgstr "对齐"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:231
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:277
 msgid "Vertical Spacing"
-msgstr ""
+msgstr "竖直空间"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:232
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:288
 msgid "International Accents"
-msgstr ""
+msgstr "国际音调"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:234
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:297
 msgid "Sectioning"
-msgstr ""
+msgstr "章节"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:237
 msgid "Verbatim Environment"
-msgstr ""
+msgstr "代码环境"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:238
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:309
 msgid "List Environments"
-msgstr ""
+msgstr "列表环境"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:239
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:320
 msgid "Quotations"
-msgstr ""
+msgstr "引述"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:241
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:330
 msgid "Cross References"
-msgstr ""
+msgstr "交叉引用"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:242
 msgid "Footnote"
-msgstr ""
+msgstr "脚注"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 msgid "Underline"
-msgstr ""
+msgstr "下划线"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Sans Serif"
-msgstr ""
+msgstr "Sans Serif"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Typewriter"
-msgstr ""
+msgstr "打字机"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 msgid "Small Caps"
-msgstr ""
+msgstr "小体大写"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 msgid "Slanted"
-msgstr ""
+msgstr "倾斜"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 msgid "Emphasis"
-msgstr ""
+msgstr "强调"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:269
 msgid "Centered"
-msgstr ""
+msgstr "居中"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:269
 msgid "Left-aligned"
-msgstr ""
+msgstr "左对齐"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:269
 msgid "Right-aligned"
-msgstr ""
+msgstr "右对齐"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Part"
-msgstr ""
+msgstr "部"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Chapter"
-msgstr ""
+msgstr "章"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Section"
-msgstr ""
+msgstr "节"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Subsection"
-msgstr ""
+msgstr "小节"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Subsubsection"
-msgstr ""
+msgstr "小小节"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Paragraph"
-msgstr ""
+msgstr "段"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Subparagraph"
-msgstr ""
+msgstr "小段"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:310
 msgid "Bulleted List"
-msgstr ""
+msgstr "子弹列表"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:310
 msgid "Numbered List"
-msgstr ""
+msgstr "编号列表"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:310
 msgid "List with Bold Labels"
-msgstr ""
+msgstr "带粗体标签列表"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:321
 msgid "Short Quotation"
-msgstr ""
+msgstr "短引述"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:322
 msgid "Longer Quotation"
-msgstr ""
+msgstr "长引述"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:323
 msgid "Poetry Quotation"
-msgstr ""
+msgstr "诗歌引述"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:331
 msgid "Label"
-msgstr ""
+msgstr "标签"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:331
 msgid "Equation Reference"
-msgstr ""
+msgstr "方程式引用"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:331
 msgid "Page Reference"
-msgstr ""
+msgstr "页面引用"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:345
 msgid "Quotes"
-msgstr ""
+msgstr "引号"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "Primary Quotes"
-msgstr ""
+msgstr "主引号"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "Secondary Quotes"
-msgstr ""
+msgstr "次引号"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "German Quotes"
-msgstr ""
+msgstr "德语引号"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "German Single Quotes"
-msgstr ""
+msgstr "德语单引号"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "French Quotes"
-msgstr ""
+msgstr "法语引号"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "French Single Quotes"
-msgstr ""
+msgstr "法语单引号"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "German Alt Quotes"
-msgstr ""
+msgstr "德语备用引号"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "German Alt Single Quotes"
-msgstr ""
+msgstr "德语备用单引号"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:369
 msgid "Math"
-msgstr ""
+msgstr "数学"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:385
 msgid "Include AMS Packages"
-msgstr ""
+msgstr "包括 AMS 宏包"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:389
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:409
 msgid "Math Environments"
-msgstr ""
+msgstr "数学环境"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:394
 msgid "Square Root"
-msgstr ""
+msgstr "平方根"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:398
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:418
 msgid "Math Functions"
-msgstr ""
+msgstr "数学函数"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:399
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:435
 msgid "Math Font Styles"
-msgstr ""
+msgstr "数学字体样式"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:400
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:444
 msgid "Math Stacking Symbols"
-msgstr ""
+msgstr "数学堆叠符号"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:401
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:458
 msgid "Math Accents"
-msgstr ""
+msgstr "数学音调"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:402
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:467
 msgid "Math Spaces"
-msgstr ""
+msgstr "数学空间"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Roman"
-msgstr ""
+msgstr "罗马体"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Calligraphic"
-msgstr ""
+msgstr "书法体"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Blackboard Bold"
-msgstr ""
+msgstr "黑板粗体"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Fraktur"
-msgstr ""
+msgstr "哥特体"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:482
 msgid "Objects"
-msgstr ""
+msgstr "对象"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:496
 msgid "Figure (image inside freestanding block)"
-msgstr ""
+msgstr "图解（独立区块内的图像）"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:497
 msgid "Inline Image"
-msgstr ""
+msgstr "行内图像"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:498
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:508
 msgid "Code Listing"
-msgstr ""
+msgstr "代码列表"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:500
 msgid "Url (\\url)"
-msgstr ""
+msgstr "URL（\\url）"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:501
 msgid "Hyperlink (\\href)"
-msgstr ""
+msgstr "超链接（\\href）"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:509
 msgid "Include 'listings' Package"
-msgstr ""
+msgstr "包括“listings”宏包"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:514
 msgid "Other Language"
-msgstr ""
+msgstr "其它语言"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:515
 msgid "Plain Text"
-msgstr ""
+msgstr "纯文本"
 
 #: setzer/workspace/sidebar/document_stats/document_stats_viewgtk.py:30
 msgid "These counts are updated after the document is saved."
-msgstr ""
+msgstr "这些计数会在文档保存后更新。"
 
 #: setzer/workspace/sidebar/sidebar.py:53
 msgid "Document Structure"
-msgstr ""
+msgstr "文档结构"
 
 #: setzer/workspace/sidebar/sidebar.py:57
 msgid "Labels"
-msgstr ""
+msgstr "标签"
 
 #: setzer/workspace/sidebar/sidebar.py:61
 msgid "To-Dos"
-msgstr ""
+msgstr "待办"
 
 #: setzer/workspace/sidebar/sidebar.py:65
 msgid "Document Stats"
-msgstr ""
+msgstr "文档统计"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page.py:118
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:186
 msgid "Package"
-msgstr ""
+msgstr "宏包"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:95
 msgid "Recent"
-msgstr ""
+msgstr "最近"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:112
 msgid "Greek Letters"
-msgstr ""
+msgstr "希腊字母"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:114
 msgid "Arrows"
-msgstr ""
+msgstr "箭头"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:116
 msgid "Relations"
-msgstr ""
+msgstr "关系符"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:118
 msgid "Operators"
-msgstr ""
+msgstr "运算符"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:120
 msgid "Misc. Math"
-msgstr ""
+msgstr "数学杂项"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:122
 msgid "Misc. Symbols"
-msgstr ""
+msgstr "符号杂项"
 
 #: setzer/workspace/welcome_screen/welcome_screen_viewgtk.py:31
 msgid "Write beautiful LaTeX documents with ease!"
-msgstr ""
+msgstr "易于编写漂亮的 LaTeX 文档！"
 
 #: setzer/workspace/welcome_screen/welcome_screen_viewgtk.py:34
 msgid ""
 "Click the open or create buttons in the headerbar above to start editing."
-msgstr ""
+msgstr "点击上方头部栏中的打开或创建按钮来开始编辑。"
 
 #: setzer/workspace/workspace.py:120
 #, python-brace-format
 msgid "Untitled Document {number}"
-msgstr ""
+msgstr "无标题文档 {number}"
 
 #: data/resources/latexdb/packages/general.xml:2
 msgid "additional math fonts from AMS."
-msgstr ""
+msgstr "来自 AMS 的额外数学字体。"
 
 #: data/resources/latexdb/packages/general.xml:3
 msgid "mathematics package from AMS."
-msgstr ""
+msgstr "来自 AMS 的数学宏包。"
 
 #: data/resources/latexdb/packages/general.xml:4
 msgid "mathematical symbols from AMS."
-msgstr ""
+msgstr "来自 AMS 的数学符号。"
 
 #: data/resources/latexdb/packages/general.xml:5
 msgid "math theorems setting package from AMS."
-msgstr ""
+msgstr "来自 AMS 的数学定理设置宏包。"
 
 #: data/resources/latexdb/packages/general.xml:6
 msgid "multilingual documents."
-msgstr ""
+msgstr "多语言文档。"
 
 #: data/resources/latexdb/packages/general.xml:7
 msgid "dirac braket and set notations."
-msgstr ""
+msgstr "狄拉克共轭和集合符号。"
 
 #: data/resources/latexdb/packages/general.xml:8
 msgid "bibliographies in LaTeX."
-msgstr ""
+msgstr "LaTeX 中的参考资料。"
 
 #: data/resources/latexdb/packages/general.xml:9
 msgid "simple arithmetic in LaTeX commands."
-msgstr ""
+msgstr "LaTeX 命令中的简单运算。"
 
 #: data/resources/latexdb/packages/general.xml:10
 msgid "foreground and background colors."
-msgstr ""
+msgstr "前景和背景颜色。"
 
 #: data/resources/latexdb/packages/general.xml:11
 msgid "colored tables."
-msgstr ""
+msgstr "着色的表格。"
 
 #: data/resources/latexdb/packages/general.xml:12
 msgid "enumerate with redefinable labels."
@@ -2646,11 +2696,11 @@ msgstr ""
 
 #: data/resources/latexdb/packages/general.xml:13
 msgid "interface to document dimensions."
-msgstr ""
+msgstr "文档尺寸接口。"
 
 #: data/resources/latexdb/packages/general.xml:17
 msgid "conditional commands."
-msgstr ""
+msgstr "条件式命令。"
 
 #: data/resources/latexdb/packages/general.xml:18
 msgid "provides a listing environment for embedding programming code."
@@ -2672,7 +2722,7 @@ msgstr ""
 
 #: data/resources/latexdb/packages/general.xml:24
 msgid "graphics and plotting."
-msgstr ""
+msgstr "图形和绘制。"
 
 #: data/resources/latexdb/packages/general.xml:25
 msgid "set transparency for sections in your document."
@@ -2689,179 +2739,179 @@ msgstr ""
 #: data/resources/document_wizard/languages.xml:23
 #: data/resources/document_wizard/languages.xml:24
 msgid "English"
-msgstr ""
+msgstr "英语"
 
 #: data/resources/document_wizard/languages.xml:3
 msgid "Spanish"
-msgstr ""
+msgstr "西班牙语"
 
 #: data/resources/document_wizard/languages.xml:4
 #: data/resources/document_wizard/languages.xml:28
 msgid "French"
-msgstr ""
+msgstr "法语"
 
 #: data/resources/document_wizard/languages.xml:5
 msgid "Russian"
-msgstr ""
+msgstr "俄语"
 
 #: data/resources/document_wizard/languages.xml:6
 #: data/resources/document_wizard/languages.xml:7
 msgid "Portuguese"
-msgstr ""
+msgstr "葡萄牙语"
 
 #: data/resources/document_wizard/languages.xml:8
 #: data/resources/document_wizard/languages.xml:30
 #: data/resources/document_wizard/languages.xml:31
 #: data/resources/document_wizard/languages.xml:32
 msgid "German"
-msgstr ""
+msgstr "德语"
 
 #: data/resources/document_wizard/languages.xml:9
 msgid "Italian"
-msgstr ""
+msgstr "意大利语"
 
 #: data/resources/document_wizard/languages.xml:10
 msgid "Afrikaans"
-msgstr ""
+msgstr "南非荷兰语"
 
 #: data/resources/document_wizard/languages.xml:11
 msgid "Azerbaijani"
-msgstr ""
+msgstr "阿塞拜疆语"
 
 #: data/resources/document_wizard/languages.xml:12
 msgid "Basque"
-msgstr ""
+msgstr "巴斯克语"
 
 #: data/resources/document_wizard/languages.xml:13
 msgid "Breton"
-msgstr ""
+msgstr "布列塔尼语"
 
 #: data/resources/document_wizard/languages.xml:14
 msgid "Bulgarian"
-msgstr ""
+msgstr "保加利亚语"
 
 #: data/resources/document_wizard/languages.xml:15
 msgid "Catalan"
-msgstr ""
+msgstr "加泰罗尼亚语"
 
 #: data/resources/document_wizard/languages.xml:16
 msgid "Croatian"
-msgstr ""
+msgstr "克罗地亚语"
 
 #: data/resources/document_wizard/languages.xml:17
 msgid "Czech"
-msgstr ""
+msgstr "捷克语"
 
 #: data/resources/document_wizard/languages.xml:18
 msgid "Danish"
-msgstr ""
+msgstr "丹麦语"
 
 #: data/resources/document_wizard/languages.xml:19
 msgid "Dutch"
-msgstr ""
+msgstr "荷兰语"
 
 #: data/resources/document_wizard/languages.xml:25
 msgid "Esperanto"
-msgstr ""
+msgstr "世界语"
 
 #: data/resources/document_wizard/languages.xml:26
 msgid "Estonian"
-msgstr ""
+msgstr "爱沙尼亚语"
 
 #: data/resources/document_wizard/languages.xml:27
 msgid "Finnish"
-msgstr ""
+msgstr "芬兰语"
 
 #: data/resources/document_wizard/languages.xml:29
 msgid "Galician"
-msgstr ""
+msgstr "加利西亚语"
 
 #: data/resources/document_wizard/languages.xml:33
 #: data/resources/document_wizard/languages.xml:34
 msgid "Greek"
-msgstr ""
+msgstr "希腊语"
 
 #: data/resources/document_wizard/languages.xml:35
 msgid "Hebrew"
-msgstr ""
+msgstr "希伯来语"
 
 #: data/resources/document_wizard/languages.xml:36
 msgid "Icelandic"
-msgstr ""
+msgstr "冰岛语"
 
 #: data/resources/document_wizard/languages.xml:37
 msgid "Indonesian"
-msgstr ""
+msgstr "印尼语"
 
 #: data/resources/document_wizard/languages.xml:38
 msgid "Interlingua"
-msgstr ""
+msgstr "拉丁国际语"
 
 #: data/resources/document_wizard/languages.xml:39
 msgid "Irish Gaelic"
-msgstr ""
+msgstr "爱尔兰居尔特语"
 
 #: data/resources/document_wizard/languages.xml:40
 msgid "Latin"
-msgstr ""
+msgstr "拉丁语"
 
 #: data/resources/document_wizard/languages.xml:41
 msgid "Lower Sorbian"
-msgstr ""
+msgstr "下索布语"
 
 #: data/resources/document_wizard/languages.xml:42
 msgid "Malay"
-msgstr ""
+msgstr "马来语"
 
 #: data/resources/document_wizard/languages.xml:43
 msgid "Northern Sami"
-msgstr ""
+msgstr "北部萨米语"
 
 #: data/resources/document_wizard/languages.xml:44
 #: data/resources/document_wizard/languages.xml:45
 msgid "Norwegian"
-msgstr ""
+msgstr "挪威语"
 
 #: data/resources/document_wizard/languages.xml:46
 msgid "Polish"
-msgstr ""
+msgstr "波兰语"
 
 #: data/resources/document_wizard/languages.xml:47
 msgid "Romanian"
-msgstr ""
+msgstr "罗马尼亚语"
 
 #: data/resources/document_wizard/languages.xml:48
 msgid "Scottish Gaelic"
-msgstr ""
+msgstr "苏格兰凯尔特语"
 
 #: data/resources/document_wizard/languages.xml:49
 msgid "Slovakian"
-msgstr ""
+msgstr "斯洛伐克语"
 
 #: data/resources/document_wizard/languages.xml:50
 msgid "Slovenian"
-msgstr ""
+msgstr "斯洛文尼亚语"
 
 #: data/resources/document_wizard/languages.xml:51
 msgid "Swedish"
-msgstr ""
+msgstr "瑞典语"
 
 #: data/resources/document_wizard/languages.xml:52
 msgid "Serbian"
-msgstr ""
+msgstr "塞尔维亚语"
 
 #: data/resources/document_wizard/languages.xml:53
 msgid "Turkish"
-msgstr ""
+msgstr "土耳其语"
 
 #: data/resources/document_wizard/languages.xml:54
 msgid "Ukrainian"
-msgstr ""
+msgstr "乌克兰语"
 
 #: data/resources/document_wizard/languages.xml:55
 msgid "Upper Sorbian"
-msgstr ""
+msgstr "高地索布语"
 
 #: data/resources/document_wizard/languages.xml:56
 msgid "Welsh"
-msgstr ""
+msgstr "威尔士语"

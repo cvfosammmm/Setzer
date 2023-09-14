@@ -1,249 +1,250 @@
-#
-# Cvfosammmm <r.griesel@gmail.com>, 2020.
-# Stephan Lachnit <stephanlachnit@protonmail.com>, 2020-2021.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: setzer\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 15:33+0200\n"
-"PO-Revision-Date: 2023-08-11 16:51+0000\n"
-"Last-Translator: Norwid Behrnd <nbehrnd@yahoo.com>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/setzer/"
-"application/de/>\n"
-"Language: de\n"
+"PO-Revision-Date: 2023-07-16 15:06+0000\n"
+"Last-Translator: Giai Ngo <giai.ngo@disroot.org>\n"
+"Language-Team: Vietnamese <https://hosted.weblate.org/projects/setzer/"
+"application/vi/>\n"
+"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.0-dev\n"
 
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:8
 msgid "Simple yet full-featured LaTeX editor"
-msgstr "LaTeX-Editor mit vielen nützlichen Funktionen"
+msgstr "Trình soạn thảo LaTeX đơn giản nhưng đầy đủ tính năng"
 
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:12
 msgid ""
 "Setzer lets you Write LaTeX documents with an easy to use yet full-featured "
 "editor."
 msgstr ""
-"Schreiben Sie LaTeX-Dokumente in einem einfach zu bedienenden Editor, der "
-"viele nützliche Funktionen hat."
+"Setzer cho phép bạn Viết các tài liệu LaTeX bằng một trình chỉnh sửa dễ sử "
+"dụng nhưng đầy đủ tính năng."
 
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:13
 msgid "Features include:"
-msgstr "Enthaltende Funktionen:"
+msgstr "Các tính năng bao gồm:"
 
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:15
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:30
 msgid "Buttons and shortcuts for many LaTeX elements and special characters"
-msgstr "Knöpfe und Tastenkürzel für viele LaTeX-Elemente und spezielle Zeichen"
+msgstr "Các nút và phím tắt cho những câu lệnh LaTeX và các ký tự đặc biệt"
 
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:16
 msgid "Comfortable document creation wizard"
-msgstr "Komfortabler Assistent zum Erstellen von Dokumenten"
+msgstr "Trình tạo tài liệu theo mẫu tiện lợi"
 
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:17
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:38
 msgid "Dark mode"
-msgstr "Nachtmodus"
+msgstr "Chế độ tối"
 
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:18
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:42
 msgid "Helpful error messages in the build log"
-msgstr "Hilfreiche Fehlermeldungen"
+msgstr "Thông báo lỗi cách hữu ích trong nhật ký biên dịch"
 
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:19
 msgid "Looks great on the Gnome desktop"
-msgstr "Sieht gut aus auf dem Gnome-Desktop"
+msgstr "Trông tuyệt vời trong môi trường Gnome"
 
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:20
 msgid "Good screen to content ratio"
-msgstr "Gutes Verhältnis von Fenstergröße zu Inhalt"
+msgstr "Tỷ lệ phù hợp giữa màn hình và nội dung"
 
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:21
 msgid "Arguably the best .pdf viewer of any LaTeX editor"
-msgstr "Der vielleicht beste .pdf-Betrachter von allen LaTeX-Editoren"
+msgstr ""
+"Có thể cho rằng trình xem .pdf tốt nhất so với bất kỳ trình soạn thảo LaTeX "
+"nào"
 
 #: data/org.cvfosammmm.Setzer.metainfo.xml.in:34
 msgid "Document creation wizard"
-msgstr "Assistent zum Erstellen von Dokumenten"
+msgstr "Trình hướng dẫn tạo tài liệu"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:48
 #, python-brace-format
 msgid "Reference to '{label}'"
-msgstr "Verweis auf '{label}'"
+msgstr "Tham chiếu đến '{label}'"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:48
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:63
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:331
 msgid "Reference"
-msgstr "Verweis"
+msgstr "Tham chiếu"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:49
 #, python-brace-format
 msgid "Reference to page of '{label}'"
-msgstr "Verweis auf Seite von '{label}'"
+msgstr "Tham chiếu đến trang '{label}'"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:49
 msgid "Page reference"
-msgstr "Verweis auf Seite"
+msgstr "Trang tham khảo"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:50
 #, python-brace-format
 msgid "Reference to '{label}', with parantheses"
-msgstr "Verweis auf '{label}', mit Klammern"
+msgstr "Tham chiếu đến '{label}', có dấu ngoặc đơn"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:50
 msgid "Reference with parantheses"
-msgstr "Verweis mit Klammern"
+msgstr "Tham chiếu với dấu ngoặc đơn"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:52
 #, python-brace-format
 msgid "Cite '{label}'"
-msgstr "Zitiere '{label}'"
+msgstr "Trích dẫn '{label}'"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:52
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:188
 msgid "Citation"
-msgstr "Zitat"
+msgstr "Trích dẫn"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:53
 #, python-brace-format
 msgid "Cite '{label}' (abbreviated)"
-msgstr "Zitiere '{label}' (Kurzform)"
+msgstr "Trích dẫn '{label}' (viết tắt)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:53
 msgid "Citation (abbreviated)"
-msgstr "Zitat (Kurzform)"
+msgstr "Trích dẫn (viết tắt)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:54
 #, python-brace-format
 msgid "Cite '{label}' (abbreviated with brackets)"
-msgstr "Zitiere '{label}' (Kurzform mit Klammern)"
+msgstr "Trích dẫn '{label}' (viết tắt trong ngoặc)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:54
 msgid "Citation (abbreviated with brackets)"
-msgstr "Zitat (Kurzform mit Klammern)"
+msgstr "Trích dẫn (viết tắt trong ngoặc)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:55
 #, python-brace-format
 msgid "Cite '{label}' (detailed)"
-msgstr "Zitiere '{label}' (ausführlich)"
+msgstr "Trích dẫn '{label}' (chi tiết)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:55
 msgid "Citation (detailed)"
-msgstr "Zitat (ausführlich)"
+msgstr "Trích dẫn (chi tiết)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:56
 #, python-brace-format
 msgid "Cite '{label}' (detailed with brackets)"
-msgstr "Zitiere '{label}' (ausführlich mit Klammern)"
+msgstr "Trích dẫn '{label}' (chi tiết có dấu ngoặc đơn)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:56
 msgid "Citation (detailed with brackets)"
-msgstr "Zitat (ausführlich mit Klammern)"
+msgstr "Trích dẫn (chi tiết trong ngoặc)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:57
 #, python-brace-format
 msgid "Cite '{label}' (alternative style 1)"
-msgstr "Zitiere '{label}' (Stilalternative 1)"
+msgstr "Trích dẫn '{label}' (kiểu thay thế 1)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:57
 msgid "Citation (alternative style 1)"
-msgstr "Zitat (Stilalternative 1)"
+msgstr "Trích dẫn (kiểu thay thế 1)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:58
 #, python-brace-format
 msgid "Cite '{label}' (alternative style 2)"
-msgstr "Zitiere '{label}' (Stilalternative 2)"
+msgstr "Trích dẫn '{label}' (kiểu thay thế 2)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:58
 msgid "Citation (alternative style 2)"
-msgstr "Zitat (Stilalternative 2)"
+msgstr "Trích dẫn (kiểu thay thế 2)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:59
 #, python-brace-format
 msgid "Cite '{label}' (author)"
-msgstr "Zitiere '{label}' (Autor)"
+msgstr "Trích dẫn '{label}' (tác giả)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:59
 msgid "Citation (author)"
-msgstr "Zitat (Autor)"
+msgstr "Trích dẫn (tác giả)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:60
 #, python-brace-format
 msgid "Cite '{label}' (author detailed)"
-msgstr "Zitiere '{label}' (Autor, ausführlich)"
+msgstr "Trích dẫn '{label}' (tác giả chi tiết)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:60
 msgid "Citation (author detailed)"
-msgstr "Zitat (Autor, ausführlich)"
+msgstr "Trích dẫn (tác giả chi tiết)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:61
 #, python-brace-format
 msgid "Cite '{label}' (year)"
-msgstr "Zitiere '{label}' (Jahr)"
+msgstr "Trích dẫn '{label}' (năm)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:61
 msgid "Citation (year)"
-msgstr "Zitat (Jahr)"
+msgstr "Trích dẫn (năm)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:62
 #, python-brace-format
 msgid "Cite '{label}' (year with brackets)"
-msgstr "Zitiere '{label}' (Jahr mit Klammern)"
+msgstr "Trích dẫn '{label}' (năm có dấu ngoặc đơn)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:62
 msgid "Citation (year with brackets)"
-msgstr "Zitat (Jahr mit Klammern)"
+msgstr "Trích dẫn (năm có ngoặc)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:63
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:65
 #, python-brace-format
 msgid "Cite '{label}' (BibLaTeX)"
-msgstr "Zitiere '{label}' (BibLaTeX)"
+msgstr "Trích dẫn '{label}' (BibLaTeX)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:63
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:65
 msgid "BibLaTeX citation"
-msgstr "BibLaTeX-Zitat"
+msgstr "Trích dẫn BibLaTeX"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:64
 #, python-brace-format
 msgid "Cite '{label}' (BibLaTeX, with brackets)"
-msgstr "Zitiere '{label}' (BibLaTeX mit Klammern)"
+msgstr "Trích dẫn '{label}' (BibLaTeX, có dấu ngoặc)"
 
 #: setzer/app/autocomplete_provider/autocomplete_provider.py:64
 msgid "BibLaTeX citation (with brackets)"
-msgstr "BibLaTeX-Zitat (mit Klammern)"
+msgstr "Trích dẫn BibLaTeX (có dấu ngoặc)"
 
 #: setzer/dialogs/about/about.py:44
 msgid "Setzer is a LaTeX editor."
-msgstr "Setzer ist ein LaTeX-Editor."
+msgstr "Setzer là một trình soạn thảo LaTeX."
 
 #: setzer/dialogs/about/about.py:51
 msgid "translator-credits"
-msgstr ""
-"Stephan Lachnit <stephanlachnit@protonmail.com>\n"
-"Norwid Behrnd <nbehrnd@yahoo.com>"
+msgstr "Danh sách dịch giả"
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages_viewgtk.py:51
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:109
 msgid "Add / Remove Packages"
-msgstr "Pakete einbinden / entfernen"
+msgstr "Thêm/Xóa Gói"
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages_viewgtk.py:77
 msgid "Add Package"
-msgstr "Paket einbinden"
+msgstr "Thêm gói"
 
 #: setzer/dialogs/add_remove_packages/add_remove_packages_viewgtk.py:115
 msgid "Remove Package"
-msgstr "Paket entfernen"
+msgstr "Xóa gói"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:42
 msgid "Article in Journal"
-msgstr "Zeitschriftenartikel"
+msgstr "Bài báo trên Nhật báo"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:42
 msgid ""
@@ -255,17 +256,17 @@ msgid ""
 "refer to the journal while <tt>translator</tt> and related fields refer to "
 "the article."
 msgstr ""
-"Ein Artikel in einem Journal, einer Zeitung, oder einem anderwertigen "
-"Magazin, der eine abgeschlossene Einheit mit seinem eigenen Titel bildet. "
-"Der Titel der Zeitschrift ist im <tt>journaltitle</tt> Feld gegeben. Falls "
-"die Ausgabe einen eigenen Namen zusätlich zum Haupttitel des Magazins hat, "
-"gehört dieser in das <tt>issuetitle</tt> Feld. Beachte, dass <tt>editor</tt> "
-"und verwandte Felder sich auf das Magazin beziehen, während sich "
-"<tt>translator</tt> und verwandte Felder auf den Artikel beziehen."
+"Một bài báo trên nhật báo, tạp chí, thời báo, hoặc tạp chí định kỳ khác mà "
+"nó tạo thành một đơn vị độc lập có tiêu đề riêng. Tiêu đề của tạp chí định "
+"kỳ được đặt trong trường <tt>tên tạp chí</tt>. Nếu số báo có tiêu đề riêng "
+"ngoài tiêu đề chính của tạp chí định kỳ, thì nó sẽ nằm trong trường <tt>số "
+"báo</tt>. Lưu ý rằng <tt>nhà xuất bản</tt> và các trường liên quan đề cập "
+"đến tạp chí, trong khi <tt>dịch giả</tt> và các trường liên quan đề cập đến "
+"bài viết."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:43
 msgid "Book"
-msgstr "Buch"
+msgstr "Sách"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:43
 msgid ""
@@ -273,13 +274,13 @@ msgid ""
 "for the work as a whole. This entry type also covers the function of the "
 "@inbook type of traditional BibTeX."
 msgstr ""
-"Ein einbandiges Buch mit einem oder mehreren Autoren, bei dem sich die "
-"Autoren die Annerkennung für das ganze Werk teilen. Dieser Dokumententyp "
-"schließt die Funktion vom @inbook type von traditionellem BibTeX mit ein."
+"Một cuốn sách một tập với một hoặc nhiều tác giả trong đó các tác giả chia "
+"sẻ công lao cho toàn bộ tác phẩm. Loại mục nhập này cũng bao hàm chức năng "
+"của loại @inbook của BibTeX truyền thống."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:44
 msgid "Multi-volume Book"
-msgstr "Mehrbändiges Buch"
+msgstr "Sách nhiều tập"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:44
 msgid ""
@@ -287,26 +288,25 @@ msgid ""
 "also supported by the entry type @book. However, it is advisable to make use "
 "of the dedicated entry type @mvbook."
 msgstr ""
-"Ein mehrbändiges @book. Zur Abwärtskompatibilität sind mehrbändige Bücher "
-"auch vom Dokumententyp @book unterstützt. Allerdings ist es empfehlenswert "
-"den dafür bestimmten Dokumententyp @mvbook zu verwenden."
+"Sách nhiều tập @book. Để tương thích ngược, loại sách nhiều tập cũng được hỗ "
+"trợ bởi loại mục nhập @book. Tuy nhiên, bạn nên sử dụng loại mục nhập chuyên "
+"dụng @mvbook."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:45
 msgid "Part of a Book With Its Own Title"
-msgstr "Buchteil mit eigenem Titel"
+msgstr "Một phần của cuốn Sách có Tựa đề Riêng"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:45
 msgid ""
 "A part of a book which forms a self-contained unit with its own title. Note "
 "that the profile of this entry type is different from standard BibTeX."
 msgstr ""
-"Ein Teil eines Buches welches eine unabhängige Einheit mit seinem eigenen "
-"Titel formt. Beachte, dass das Profil dieses Dokumententypes verschieden zu "
-"standardmäßigem BibTeX ist."
+"Một phần của cuốn sách tạo thành một đơn vị khép kín với tiêu đề riêng. Lưu "
+"ý rằng cấu hình của loại mục nhập này khác với BibTeX tiêu chuẩn."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:46
 msgid "Book in Book"
-msgstr "Buch in Buch"
+msgstr "Sách trong một cuốn Sách"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:46
 msgid ""
@@ -314,13 +314,13 @@ msgid ""
 "as a stand-alone book. A typical example are books reprinted in the "
 "collected works of an author."
 msgstr ""
-"Dieser Typ ist ähnlich zu @inbook, allerdings für Werke, die ursprünglich "
-"als selbständiges Buch veröffentlicht werden sollten. Ein typisches Beispiel "
-"sind Bücher, die in einer Sammlung eines Autors veröffentlicht werden."
+"Loại này tương tự như @inbook nhưng dành cho các tác phẩm ban đầu được xuất "
+"bản dưới dạng sách độc lập. Ví dụ điển hình là những cuốn sách in lại trong "
+"tuyển tập của một tác giả."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:47
 msgid "Supplemental Material in a Book"
-msgstr "Ergänzungsmaterial in einem Buch"
+msgstr "Tài liệu Bổ sung trong một cuốn Sách"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:47
 msgid ""
@@ -333,18 +333,18 @@ msgid ""
 "other @inbook items. The standard styles will treat this entry type as an "
 "alias for @inbook."
 msgstr ""
-"Ergänzendes Material in einem @book. Dieser Typ is nahe verwandt mit dem "
-"@inbook Typ. Während @inbook hauptsächlich für einen Teil eines Buches mit "
-"einem eigenen Titel gedacht ist (z. B. ein einziger Essay in einer Sammlung "
-"von Essays vom selben Autor), ist dieser Typ vorgesehen für Elemente wie "
-"Vorworte, Einleitungen, Geleitworte, Nachworte, etc., welche oft nur einen "
-"generischen Namen haben. Stilistische Leitfäden können voraussetzen, dass "
-"solche Elemente anders als @inbook Elemente formatiert werden. Der "
-"gewöhnliche Stil wird diesen Typ wie ein Pseudonym für @inbook behandeln."
+"Tài liệu bổ sung trong @book. Loại này có liên quan chặt chẽ với loại mục "
+"nhập @inbook. Mặc dù @inbook chủ yếu dành cho một phần của cuốn sách có tiêu "
+"đề riêng (ví dụ: một bài tiểu luận trong bộ sưu tập các bài tiểu luận của "
+"cùng một tác giả), loại này được cung cấp cho các thành phần như lời tựa, "
+"lời giới thiệu, lời nói đầu, lời bạt, v.v. mà thường chỉ có một tiêu đề "
+"chung chung. Hướng dẫn về phong cách có thể yêu cầu các mục đó được định "
+"dạng khác với các mục @inbook khác. Các kiểu tiêu chuẩn sẽ coi loại mục nhập "
+"này là bí danh cho @inbook."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:48
 msgid "Booklet"
-msgstr "Broschüre"
+msgstr "Tập sách"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:48
 msgid ""
@@ -352,14 +352,13 @@ msgid ""
 "the field <tt>howpublished</tt> to supply publishing information in free "
 "format, if applicable. The field <tt>type</tt> may be useful as well."
 msgstr ""
-"Eine Buch-ähnliche Veröffentlichung, jedoch ohne einen formalen Verleger "
-"oder eine betreuende Organisation. Wenn zugänglich, benutzen Sie das Feld "
-"<tt>howpublished</tt> um weitere Informationen zur Publikation formlos "
-"hinzuzufügen. Das Feld <tt>type</tt> kann ebenfalls nützlich sein."
+"Một tác phẩm giống như sách mà không có nhà xuất bản chính thức hoặc tổ chức "
+"tài trợ. Sử dụng trường <tt>howpublished</tt> để cung cấp thông tin xuất bản "
+"ở định dạng miễn phí, nếu có. Trường <tt>kiểu</tt> cũng có thể hữu ích."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:49
 msgid "Single-volume Collection"
-msgstr "Einbändiger Sammelband"
+msgstr "Bộ sưu tập một tập"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:49
 msgid ""
@@ -367,13 +366,13 @@ msgid ""
 "distinct authors which have their own title. The work as a whole has no "
 "overall author but it will usually have an editor."
 msgstr ""
-"Eine einbändige Sammlung mehrerer, thematisch eigenständiger Beiträge "
-"unterschiedlicher Autoren. Die Publikation als Ganzes hat vielleicht keinen "
-"Hauptautor, aber typischerweise einen Herausgeber und Lektor."
+"Một bộ sưu tập một tập với sự đóng góp độc lập của các tác giả khác nhau có "
+"tiêu đề riêng. Tác phẩm nói chung không có tác giả tổng thể nhưng nó thường "
+"sẽ có một người biên tập."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:50
 msgid "Multi-volume Collection"
-msgstr "Mehrbändiger Sammelband"
+msgstr "Bộ sưu tập nhiều tập"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:50
 msgid ""
@@ -381,14 +380,13 @@ msgid ""
 "collections are also supported by the entry type @collection. However, it is "
 "advisable to make use of the dedicated entry type @mvcollection."
 msgstr ""
-"Eine mehrbändinge @collection. Für einen Austausch mit älteren "
-"Bibliographien können mehrbändige Sammlungen auch mit dem Eintragstyp @"
-"collection beschrieben werden. Es ist aber ratsam, den speziellen Typ @"
-"mvcollection dazu einzusetzen."
+"Một bộ sưu tập nhiều tập @collection. Để tương thích ngược, các bộ sưu tập "
+"nhiều tập cũng được hỗ trợ bởi loại mục nhập @collection. Tuy nhiên, nên sử "
+"dụng loại mục nhập chuyên dụng @mvcollection."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:51
 msgid "Article in a Collection"
-msgstr "Artikel in einer Sammlung"
+msgstr "Bài viết trong một Bộ sưu tập"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:51
 msgid ""
@@ -397,14 +395,14 @@ msgid ""
 "the <tt>editor</tt> to the <tt>booktitle</tt>, i. e., the title of the "
 "collection."
 msgstr ""
-"Ein Beitrag in einer Sammelpublikation, der eine eigenständige Einheit mit "
-"eigenem Autoren und Titel bildet. Das Feld<tt>author</tt> bezieht sich auf "
-"<tt>title</tt>, der <tt>editor</tt> auf <tt>booktitle</tt>, d. h. den Titel "
-"des Sammelbandes."
+"Một đóng góp cho một bộ sưu tập tạo thành một đơn vị độc lập, với một tác "
+"giả và tiêu đề riêng biệt. <tt>tác giả</tt> đề cập đến <tt>tên sách</tt>, "
+"<tt>biên tập viên</tt> cho <tt>tên sách</tt>, hoặc tương tự như thết, tiêu "
+"đề của bộ sưu tập."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:52
 msgid "Supplemental Material in a Collection"
-msgstr "Ergänzungsmaterial in einem Sammelband"
+msgstr "Tài liệu bổ sung trong Bộ sưu tập"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:52
 msgid ""
@@ -412,36 +410,35 @@ msgid ""
 "but related to the @collection entry type. The standard styles will treat "
 "this entry type as an alias for @incollection."
 msgstr ""
-"Ergänzungsmaterial eines Sammelbandes (@collection). Dieser Eintragstyp "
-"verhält sich analog zu @suppbook gegenüber @book, nun aber gegenüber @"
-"collection. Standardstile werden diesen Eintragstyp als Platzhalter für @"
-"incollection bearbeiten."
+"Tài liệu bổ sung trong @collection. Loại này tương tự như @suppbook nhưng "
+"liên quan đến loại mục nhập @collection. Các kiểu tiêu chuẩn sẽ coi loại mục "
+"nhập này là bí danh cho @incollection."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:53
+#, fuzzy
 msgid "Data Set"
-msgstr "Datensatz"
+msgstr "Đặt dữ liệu"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:53
 msgid "A data set or a similar collection of (mostly) raw data."
-msgstr ""
-"Eine Datensatz oder eine vergleichbare Sammlung von (hauptsächlich) Rohdaten."
+msgstr "Một bộ dữ liệu hoặc tương tự bộ sưu tập với (hầu hết) dữ liệu thô."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:54
 msgid "Technical Manual"
-msgstr "Technisches Handbuch"
+msgstr "Hướng dẫn kỹ thuật"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:54
 msgid ""
 "Technical or other documentation, not necessarily in printed form. The "
 "<tt>author</tt> or <tt>editor</tt> is omissible under certain terms."
 msgstr ""
-"Eine technische oder andere Dokumentation, die nicht notwendigerweise in "
-"gedruckter Form vorliegen muss. Die Felder <tt>author</tt> or <tt>editor</"
-"tt> können unter bestimmten Umständen weggelassen werden."
+"Tài liệu kỹ thuật hoặc tài liệu khác, không nhất thiết phải ở dạng in. Có "
+"thể bỏ qua <tt>tác giả</tt> hoặc <tt>biên tập viên</tt> theo một số điều "
+"khoản nhất định."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:55
 msgid "Miscellaneous"
-msgstr "Sonstiges"
+msgstr "Điều khoản khác"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:55
 msgid ""
@@ -450,15 +447,15 @@ msgid ""
 "format, if applicable. The field type may be useful as well. <tt>author</"
 "tt>, <tt>editor</tt>, and <tt>year</tt> are omissible under certain terms."
 msgstr ""
-"Eine Ausweichlösung für Einträge, die nicht in eine andere Kategorie passen. "
-"Soweit anwendbar, benutzen Sie das Feld <tt>howpublished</tt> um "
-"Informationen zur Publikation anzugeben, gegebenenfalls auch im Feld typ. "
-"Einträge unter <tt>author</tt>, <tt>editor</tt> und <tt>year</tt> können "
-"unter bestimmten Bedingungen weggelassen werden."
+"Loại dự phòng cho các mục không phù hợp với bất kỳ danh mục nào khác. Sử "
+"dụng trường <tt>howpublished</tt> để cung cấp thông tin xuất bản ở định dạng "
+"miễn phí, nếu có. Loại trường này cũng có thể hữu ích. Có thể bỏ qua <tt>tác "
+"giả</tt>, <tt>biên tập viên</tt> và <tt>năm</tt> theo một số điều khoản nhất "
+"định."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:56
 msgid "Online Resource"
-msgstr "Internetseite"
+msgstr "Tài nguyên trực tuyến"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:56
 msgid ""
@@ -469,16 +466,16 @@ msgid ""
 "from an online journal, it may be preferable to use the @article type and "
 "its <tt>url</tt> field."
 msgstr ""
-"Eine Quelle im Internet. <tt>author</tt>, <tt>editor</tt>, und <tt>year</tt> "
-"können unter gewissen Bedingungen ausgelassen werden. Dieser Typ ist für "
-"Quellen wie etwa Internetseiten vorgesehen. Beachten Sie, dass alle "
-"Quellentypen das <tt>url</tt> Feld unterstützen. Beispielsweise kann es für "
-"einen Artikel in einer online erscheinenden Zeitschrift vorteilhaft sein, "
-"den @article Typ mit seinem <tt>url</tt> Feld zu kombinieren."
+"Một tài nguyên trực tuyến. Có thể bỏ qua <tt>tác giả</tt>, <tt>biên tập "
+"viên</tt> và <tt>năm</tt> theo một số điều khoản nhất định. Loại mục nhập "
+"này dành cho các nguồn chẳng hạn như các trang web về bản chất là các nguồn "
+"trực tuyến. Lưu ý rằng tất cả các loại mục nhập đều hỗ trợ trường <tt>url</"
+"tt>. Ví dụ: khi thêm một bài báo từ một nhật báo trực tuyến, tốt hơn nên sử "
+"dụng loại @article và trường <tt>url</tt> của nó."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:57
 msgid "Patent"
-msgstr "Patent"
+msgstr "Bằng sáng chế"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:57
 msgid ""
@@ -488,10 +485,15 @@ msgid ""
 "different from the scope implied by the <tt>type</tt>. Note that the "
 "<tt>location</tt> field is treated as a key list with this entry type."
 msgstr ""
+"Một bằng sáng chế hoặc yêu cầu bằng sáng chế. Số hoặc mã thông báo bản ghi "
+"được cung cấp trong trường <tt>số</tt>. Sử dụng trường <tt>loại</tt> để chỉ "
+"định loại và trường <tt>vị trí</tt> để chỉ ra phạm vi của bằng sáng chế, nếu "
+"khác với phạm vi ngụ ý của <tt>loại</tt> . Lưu ý rằng trường <tt>vị trí</tt> "
+"được coi là danh sách khóa với loại mục nhập này."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:58
 msgid "Complete Issue of a Periodical"
-msgstr "Vollständige Ausgabe einer Zeitschrift"
+msgstr "Một số hoàn chỉnh của một Tạp chí định kỳ"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:58
 msgid ""
@@ -501,17 +503,18 @@ msgid ""
 "in the <tt>issuetitle</tt> field. The <tt>editor</tt> is omissible under "
 "certain terms."
 msgstr ""
-"Eine komplette Ausgabe eines Periodikums, etwa ein (thematisches) Sonderheft "
-"einer Zeitschrift. Der Titel des Periodikums ist mit dem Feld <tt>title</tt> "
-"gegeben. Falls die Ausgabe zusätzlich zum Namen des Periodikums einen "
-"eigenen Titel besitzt, nutzen Sie bitte das Feld <tt>issuetitle</tt>. Unter "
-"bestimmten Umständen kann das Feld <tt>editor</tt> entfallen."
+"Một số hoàn chỉnh của một tạp chí định kỳ, chẳng hạn như một số đặc biệt của "
+"một tạp chí. Tiêu đề của tạp chí định kỳ được đặt trong trường <tt>tiêu đề</"
+"tt>. Nếu số báo có tiêu đề riêng ngoài tiêu đề chính của tạp chí định kỳ, "
+"thì nó sẽ nằm trong trường <tt>issuetitle</tt>. <tt>nhà xuất bản</tt> có thể "
+"bỏ qua theo một số điều khoản nhất định."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:59
 msgid "Supplemental Material in a Periodical"
-msgstr "Ergänzungsmaterial in einer Zeitschrift"
+msgstr "Tài liệu bổ sung trong Tạp chí định kỳ"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:59
+#, fuzzy
 msgid ""
 "Supplemental material in a @periodical. This type is similar to @suppbook "
 "but related to the @periodical entry type. The role of this entry type may "
@@ -522,19 +525,18 @@ msgid ""
 "differently from articles in the strict sense of the word. The standard "
 "styles will treat this entry type as an alias for @article."
 msgstr ""
-"Ergänzungsmaterial zu @periodical. Funktional ähnelt dieser Eingangsgtyp @"
-"suppbook, gehört aber zu @periodical. Der Nutzen wird wahrscheinlich "
-"deutlicher, wenn der Eingangstyp @article als (allerdings hypothetischer) "
-"Eingangstyp @inperiodical gesehen wird. Dieser Eingangstyp kann nützlich "
-"sein, um Veröffentlichungen in wiederkehrenden Rubriken wie etwa Kolumnen, "
-"Nachrufen, oder Leserbriefen an die Redaktion die nur einen allgemeinen "
-"Titel haben zu zitieren. Stilvorlagen können verlangen, diese "
-"Veröffentlichungen von Artikeln im engeren Sinn formal zu unterscheiden. Die "
-"Standardstile bearbeiten diesen Eintragstyp als Platzhalter für @article."
+"Tài liệu bổ sung trong tạp chí định kì @periodical. Loại này tương tự như @"
+"suppbook nhưng liên quan đến loại mục nhập @periodical. Vai trò của loại mục "
+"nhập này có thể rõ ràng hơn nếu bạn nhớ rằng loại @article cũng có thể được "
+"gọi là @inperiodical. Loại này có thể hữu ích khi đề cập đến các mục như cột "
+"thông thường, cáo phó, thư gửi người biên tập, v.v. mà chỉ có một tiêu đề "
+"chung chung. Các hướng dẫn về phong cách có thể yêu cầu các mục như vậy được "
+"định dạng khác với các bài viết theo nghĩa chặt chẽ của từ này. Các kiểu "
+"tiêu chuẩn sẽ coi loại mục nhập này là bí danh cho @article."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:60
 msgid "Conference Proceedings"
-msgstr "Tagungsband einer Konferenz"
+msgstr "Kỷ yếu hội nghị"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:60
 msgid ""
@@ -543,14 +545,13 @@ msgid ""
 "the sponsoring institution. The <tt>editor</tt> is omissible under certain "
 "terms."
 msgstr ""
-"Ein einbändiger Konferenzbericht. Dieser Typ ähnelt @collection sehr. Das "
-"optionale Feld <tt>organization</tt> für die gastgebende Organisation steht "
-"zur Verfügung. Unter bestimmten Bedingungen kann <tt>editor</tt> ausgelassen "
-"werden."
+"Kỷ yếu hội nghị một tập. Loại này rất giống với @collection. Nó hỗ trợ "
+"trường <tt>tổ chức</tt> tùy chọn chứa tổ chức tài trợ. Có thể bỏ qua "
+"<tt>trình chỉnh sửa</tt> theo một số điều khoản nhất định."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:61
 msgid "Multi-volume Proceedings Entry"
-msgstr "Mehrbändiger Tagungsband einer Konferenz"
+msgstr "Kỷ yếu nhiều tập"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:61
 msgid ""
@@ -558,22 +559,21 @@ msgid ""
 "proceedings are also supported by the entry type @proceedings. However, it "
 "is advisable to make use of the dedicated entry type @mvproceedings."
 msgstr ""
-"Ein mehrbändiger Eintrag vom Typ @proceedings. Um mit bisherigen "
-"Bibliographien vereinbar zu sein, werden mehrbändige Konferenzbände auch vom "
-"Typ @proceedings unterstützt. Es ist aber empfehlenswert, den speziellen "
-"Eintragstyp @mvproceedings zu benutzen."
+"Một mục nhập @proceedings nhiều tập. Để tương thích ngược, các kỷ yếu nhiều "
+"tập cũng được hỗ trợ bởi loại mục nhập @proceedings. Tuy nhiên, bạn nên sử "
+"dụng loại mục nhập chuyên dụng @mvproceedings."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:62
 msgid "Article in Conference Proceedings"
-msgstr "Artikel in einem Tagungsband einer Konferenz"
+msgstr "Bài báo trong Kỷ yếu Hội nghị"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:62
 msgid ""
 "An article in a conference proceedings. This type is similar to "
 "@incollection. It supports an optional <tt>organization</tt> field."
 msgstr ""
-"Ein Artikel in einem Konferenzband. Dieser Eintragstyp ähnelt @incollection. "
-"Das optionale Feld <tt>organization</tt> wird unterstützt."
+"Một bài viết trong kỷ yếu hội nghị. Loại này tương tự như @incollection. Nó "
+"hỗ trợ trường <tt>tổ chức</tt> tùy chọn."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:63
 msgid ""
@@ -581,14 +581,13 @@ msgid ""
 "This is a more specific variant of the generic @collection entry type. The "
 "standard styles will treat this entry type as an alias for @collection."
 msgstr ""
-"Eine einbändige Referenz wie etwa eine Enzyklopädie, ein Lexikon, oder ein "
-"Wörterbuch. Das ist ein Spezialfall für den allgemeineren Eintrag vom Typ @"
-"collection. Die Standardstile werden diesen Eintragstyp als einen "
-"Platzhalter von @collection bearbeiten."
+"Một tác phẩm tham khảo gồm một tập như bách khoa toàn thư hoặc từ điển. Đây "
+"là một biến thể cụ thể hơn của loại mục nhập chung @collection. Các kiểu "
+"tiêu chuẩn sẽ coi loại mục nhập này là bí danh cho @collection."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:64
 msgid "Multi-volume Reference Entry"
-msgstr "Mehrbändiges Lexikon"
+msgstr "Mục tham khảo nhiều tập"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:64
 msgid ""
@@ -597,15 +596,14 @@ msgid ""
 "volume references are also supported by the entry type @reference. However, "
 "it is advisable to make use of the dedicated entry type @mvreference."
 msgstr ""
-"Ein mehrbändiger Eintrag vom Typ @reference. Die Standardstile werden diesen "
-"Eintragstyp als Platzhalter für @mvcollection auswerten. Um mit bisherigen "
-"Bibliographien vereinbar zu sein, werden mehrbändige Quellen auch vom "
-"Eintragstyp @reference unterstützt. Es ist aber empfehlenswert, den "
-"speziellen Eingangstyp @mvreference zu benutzen."
+"Mục tham khảo @reference nhiều tập. Các kiểu tiêu chuẩn sẽ coi loại mục nhập "
+"này là bí danh cho @mvcollection. Để tương thích ngược, tham chiếu nhiều tập "
+"cũng được hỗ trợ bởi loại mục nhập @reference. Tuy nhiên, nên sử dụng loại "
+"mục nhập chuyên dụng @mvreference."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:65
 msgid "Article in a Reference"
-msgstr "Lexikonartikel"
+msgstr "Bài viết trong một Tài liệu tham khảo"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:65
 msgid ""
@@ -613,13 +611,13 @@ msgid ""
 "generic @incollection entry type. The standard styles will treat this entry "
 "type as an alias for @incollection."
 msgstr ""
-"Ein Beitrag zu einem Standardwerk. Das ist ein spezieller Fall für den "
-"generischen @incollection Typ. Von Standardstilen wird dieser Eingabetyp wie "
-"ein Pseudonym für @incollection verarbeitet."
+"Một bài viết trong một tác phẩm tham khảo. Đây là một biến thể cụ thể hơn "
+"của loại mục nhập chung @incollection. Các kiểu tiêu chuẩn sẽ coi loại mục "
+"nhập này là bí danh cho @incollection."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:66
 msgid "Report"
-msgstr "Forschungsbericht"
+msgstr "Báo cáo"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:66
 msgid ""
@@ -628,39 +626,37 @@ msgid ""
 "the type of report. The sponsoring institution goes in the <tt>institution</"
 "tt> field."
 msgstr ""
-"Ein technischer Bericht, ein Forschungsbericht, Whitepaper oder Leitfaden "
-"der von einer Universität oder anderen Organisation veröffentlicht wird. "
-"Benutzen Sie <tt>type</tt> um die Art des Berichtes zu beschreiben. Für die "
-"federführende Organisation ist das Feld <tt>institution</tt> vorgesehen."
+"Một báo cáo kỹ thuật, báo cáo nghiên cứu hoặc tham luận được xuất bản bởi "
+"một trường đại học hoặc một số tổ chức khác. Sử dụng trường <tt>loại</tt> để "
+"chỉ định loại báo cáo. Tổ chức tài trợ cho vào trường <tt>tổ chức</tt>."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:67
 msgid "Software"
-msgstr "Software"
+msgstr "Phần mềm"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:67
 msgid ""
 "Computer software. The standard styles will treat this entry type as an "
 "alias for @misc."
 msgstr ""
-"Computerprogramm. Die Standardstile werden diesen Eintrag als einen Alias "
-"für @misc bearbeiten."
+"Phần mềm máy tính. Các kiểu tiêu chuẩn sẽ coi loại mục nhập này là bí danh "
+"cho @misc."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:68
 msgid "Thesis"
-msgstr "Studienarbeit"
+msgstr "Luận án"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:68
 msgid ""
 "A thesis written for an educational institution to satisfy the requirements "
 "for a degree. Use the <tt>type</tt> field to specify the type of thesis."
 msgstr ""
-"Eine Abschlussarbeit für eine Bildungseinrichtung um einen Bildungsabschluss "
-"zu genügen. Nutzen Sie das <tt>type</tt> Feld um den Typ der Abschlussarbeit "
-"zu beschreiben."
+"Một luận án được viết cho một tổ chức giáo dục để đáp ứng các yêu cầu về "
+"bằng cấp. Sử dụng trường <tt>loại</tt> để chỉ định loại luận văn."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:69
 msgid "Unpublished"
-msgstr "Unveröffentlicht"
+msgstr "Chưa xuất bản"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:69
 msgid ""
@@ -669,18 +665,18 @@ msgid ""
 "<tt>howpublished</tt> and <tt>note</tt> to supply additional information in "
 "free format, if applicable."
 msgstr ""
-"Eine Arbeit mit einem Autoren und einen Titel, die als solche nicht "
-"publiziert wurde – wie beispielsweise das Manuskript zu einem Vortrag. "
-"Soweit möglich, benutzen Sie die Felder <tt>howpublished</tt> und <tt>note</"
-"tt> um zusätzliche Informationen formlos hinzuzufügen."
+"Tác phẩm có tác giả và nhan đề chưa được xuất bản chính thức, chẳng hạn như "
+"bản thảo hoặc bản viết tay của một bài nói chuyện. Sử dụng các trường "
+"<tt>howpublished</tt> và <tt>note</tt> để cung cấp thông tin bổ sung ở định "
+"dạng miễn phí, nếu có."
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:154
 msgid "Create a new BibTeX Entry"
-msgstr "Neuen BibTeX Eintrag erstellen"
+msgstr "Tạo một Mục nhập BibTeX mới"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard.py:154
 msgid "Add BibTeX Entry"
-msgstr "BibTeX Eintrag hinzufügen"
+msgstr "Thêm mục BibTeX"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard_viewgtk.py:59
 #: setzer/dialogs/building_failed/building_failed.py:49
@@ -699,27 +695,27 @@ msgstr "BibTeX Eintrag hinzufügen"
 #: setzer/dialogs/save_session/save_session.py:63
 #: setzer/widgets/filechooser_button/filechooser_button.py:75
 msgid "_Cancel"
-msgstr "_Abbrechen"
+msgstr "_Hủy bỏ"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard_viewgtk.py:61
 #: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:62
 msgid "_Back"
-msgstr "_Zurück"
+msgstr "Quay _lại"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard_viewgtk.py:64
 #: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:65
 msgid "_Next"
-msgstr "_Weiter"
+msgstr "_Tiếp tục"
 
 #: setzer/dialogs/bibtex_wizard/bibtex_wizard_viewgtk.py:67
 #: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:68
 msgid "_Create"
-msgstr "_Erstellen"
+msgstr "_Tạo"
 
 #: setzer/dialogs/bibtex_wizard/pages/page_create_new_entry.py:62
 #: setzer/dialogs/bibtex_wizard/pages/page_create_new_entry.py:63
 msgid "Choose a document type"
-msgstr "Dokumententyp wählen"
+msgstr "Chọn một loại tài liệu"
 
 #: setzer/dialogs/bibtex_wizard/pages/page_create_new_entry.py:63
 #: setzer/dialogs/bibtex_wizard/pages/page_fields_entry.py:102
@@ -732,29 +728,30 @@ msgstr "Dokumententyp wählen"
 #: setzer/dialogs/document_wizard/pages/page.py:50
 #: setzer/dialogs/document_wizard/pages/page_report_settings.py:104
 msgid "Step"
-msgstr "Schritt"
+msgstr "Bước"
 
 #: setzer/dialogs/bibtex_wizard/pages/page_create_new_entry.py:90
 #: setzer/dialogs/bibtex_wizard/pages/page_fields_entry.py:108
 msgid "Required fields"
-msgstr "Notwendige Felder"
+msgstr "Phần bắt buộc"
 
 #: setzer/dialogs/bibtex_wizard/pages/page_create_new_entry.py:97
 #: setzer/dialogs/bibtex_wizard/pages/page_fields_entry.py:121
 msgid "Optional fields"
-msgstr "Optionale Felder"
+msgstr "Trường tùy chọn"
 
 #: setzer/dialogs/bibtex_wizard/pages/page_fields_entry.py:102
 msgid "Entry fields"
-msgstr "Felder ausfüllen"
+msgstr "Trường nhập"
 
 #: setzer/dialogs/bibtex_wizard/pages/page_fields_entry.py:123
+#, fuzzy
 msgid "Insert empty optional fields"
-msgstr "Leere optionale Felder einfügen"
+msgstr "Chèn các trường tùy chọn trống"
 
 #: setzer/dialogs/building_failed/building_failed.py:44
 msgid "Something went wrong."
-msgstr "Irgendetwas ist schief gelaufen."
+msgstr "Đã xảy ra sự cố."
 
 #: setzer/dialogs/building_failed/building_failed.py:45
 #, python-brace-format
@@ -763,42 +760,40 @@ msgid ""
 "\n"
 "To configure your build system go to Preferences."
 msgstr ""
-"Der Erstellungsprozess wurde unerwartet beendet, Ausgabe: "
-"\"{error_message}\".\n"
+"Quá trình biên dịch kết thúc bất ngờ trả về \"{error_message}\".\n"
 "\n"
-"Sie können das Erstellungssystem in den Einstellungen konfigurieren."
+"Để định cấu hình hệ thống biên dịch của bạn, hãy chuyển đến Tùy chọn."
 
 #: setzer/dialogs/building_failed/building_failed.py:49
 #: setzer/dialogs/interpreter_missing/interpreter_missing.py:63
 msgid "_Go to Preferences"
-msgstr "_Einstellungen"
+msgstr "Đi tới _Tùy chọn"
 
 #: setzer/dialogs/build_save/build_save.py:47
 #, python-brace-format
 msgid "Document »{document}« has no filename."
-msgstr "Dokument »{document}« hat keinen Dateinamen."
+msgstr "Tài liệu »{document}« không có tên tệp."
 
 #: setzer/dialogs/build_save/build_save.py:48
 msgid ""
 "Please save your document to a file, so the build system knows where to put "
 "the .pdf (it will be in the same folder as your document)."
 msgstr ""
-"Bitte speichern Sie das Dokument in einer Datei, damit Setzer weißt wo die "
-"erstellte .pdf-Datei gespeichert werden soll (sie wird im gleichen Ordner "
-"wie das Dokument gespeichert)."
+"Vui lòng lưu tài liệu của bạn vào một tệp, để cho hệ thống xây dựng biết nơi "
+"đặt .pdf (nó sẽ nằm trong cùng thư mục với tài liệu của bạn)."
 
 #: setzer/dialogs/build_save/build_save.py:50
 msgid "_Save document now"
-msgstr "Document jetzt _speichern"
+msgstr "_Lưu tài liệu ngay bây giờ"
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:86
 #, python-brace-format
 msgid "Document »{document}« has unsaved changes."
-msgstr "Dokument »{document}« hat ungespeicherte Änderungen."
+msgstr "Tài liệu »{document}« có các thay đổi chưa được lưu."
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:87
 msgid "If you close without saving, these changes will be lost."
-msgstr "Wenn Sie schließen ohne zu speichern gehen alle Änderungen verloren."
+msgstr "Nếu bạn đóng mà không lưu, những thay đổi này sẽ bị mất."
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:90
 #, python-brace-format
@@ -806,22 +801,20 @@ msgid ""
 "There are {amount} documents with unsaved changes.\n"
 "Save changes before closing?"
 msgstr ""
-"Es gibt {amount} Dokumente mit ungespeicherten Änderungen.\n"
-"Änderungen vor dem Schließen speichern?"
+"Có tài liệu {amount} với các thay đổi chưa được lưu.\n"
+"Lưu các thay đổi trước khi đóng?"
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:91
 msgid "Select the documents you want to save:"
-msgstr "Wählen Sie die Dokumente aus die Sie speichern wollen:"
+msgstr "Chọn tài liệu bạn muốn lưu:"
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:113
 msgid "If you close without saving, all changes will be lost."
-msgstr ""
-"Wenn Sie die Datei schließen ohne zu speichern, gehen alle ungespeicherten "
-"Änderungen verloren."
+msgstr "Nếu bạn đóng mà không lưu, tất cả các thay đổi sẽ bị mất."
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:119
 msgid "Close _without Saving"
-msgstr "Schließen _ohne Speichern"
+msgstr "Đóng _không lưu"
 
 #: setzer/dialogs/close_confirmation/close_confirmation.py:119
 #: setzer/dialogs/save_document/save_document.py:63
@@ -829,36 +822,34 @@ msgstr "Schließen _ohne Speichern"
 #: setzer/dialogs/save_session/save_session.py:63
 #: setzer/dialogs/save_session/save_session.py:71
 msgid "_Save"
-msgstr "_Speichern"
+msgstr "_Lưu lại"
 
 #: setzer/dialogs/document_changed_on_disk/document_changed_on_disk.py:49
 #, python-brace-format
 msgid "Document »{document}« has changed on disk."
-msgstr "Dokument »{document}« wurde auf der Festplatte geändert."
+msgstr "Tài liệu »{document}« đã thay đổi trên đĩa."
 
 #: setzer/dialogs/document_changed_on_disk/document_changed_on_disk.py:50
 msgid "Should Setzer reload it now?"
-msgstr "Soll Setzer es jetzt neu laden?"
+msgstr "Có nên tải lại Setzer ngay bây giờ không?"
 
 #: setzer/dialogs/document_changed_on_disk/document_changed_on_disk.py:52
 msgid "_Keep the current Version"
-msgstr "_Aktuelle Version behalten"
+msgstr "_Giữ phiên bản hiện tại"
 
 #: setzer/dialogs/document_changed_on_disk/document_changed_on_disk.py:52
 msgid "_Reload from Disk"
-msgstr "_Neu von Diskette laden"
+msgstr "_Tải lại từ đĩa"
 
 #: setzer/dialogs/document_deleted_on_disk/document_deleted_on_disk.py:43
 #, python-brace-format
 msgid "Document »{document}« was deleted from disk or moved."
-msgstr ""
-"Dokument »{document}« wurde von der Festplatte gelöscht oder verschoben."
+msgstr "Tài liệu »{document}« đã bị xóa khỏi đĩa hoặc đã di chuyển."
 
 #: setzer/dialogs/document_deleted_on_disk/document_deleted_on_disk.py:44
 msgid ""
 "If you close it or close Setzer without saving, this document will be lost."
-msgstr ""
-"Wenn Sie Setzer schließen ohne zu speichern, verlieren Sie dieses Dokument."
+msgstr "Nếu bạn đóng hoặc đóng Setzer mà không lưu, tài liệu này sẽ bị mất."
 
 #: setzer/dialogs/document_deleted_on_disk/document_deleted_on_disk.py:46
 msgid "Ok"
@@ -866,47 +857,47 @@ msgstr "Ok"
 
 #: setzer/dialogs/document_wizard/document_wizard.py:310
 msgid "Your name"
-msgstr "Ihr Name"
+msgstr "Tên của bạn"
 
 #: setzer/dialogs/document_wizard/document_wizard.py:310
 msgid "Your address"
-msgstr "Ihre Anschrift"
+msgstr "Địa chỉ của bạn"
 
 #: setzer/dialogs/document_wizard/document_wizard.py:310
 msgid "Your phone number"
-msgstr "Ihre Telefonummer"
+msgstr "Số điện thoại của bạn"
 
 #: setzer/dialogs/document_wizard/document_wizard.py:316
 msgid "Destination"
-msgstr "Ziel"
+msgstr "Người nhận"
 
 #: setzer/dialogs/document_wizard/document_wizard.py:316
 msgid "Address of the destination"
-msgstr "Adresse des Empfängers"
+msgstr "Địa chỉ của người nhận"
 
 #: setzer/dialogs/document_wizard/document_wizard.py:316
 msgid "Phone number of the destination"
-msgstr "Telefonnummer des Empfängers"
+msgstr "Số điện thoại của người nhận"
 
 #: setzer/dialogs/document_wizard/document_wizard.py:318
 msgid "Dear addressee,"
-msgstr "Sehr geehrter Empfänger,"
+msgstr "Kính gửi người nhận,"
 
 #: setzer/dialogs/document_wizard/document_wizard.py:322
 msgid "Yours sincerely,"
-msgstr "Mit freundlichem Gruß,"
+msgstr "Trân trọng,"
 
 #: setzer/dialogs/document_wizard/document_wizard.py:324
 msgid "Other destination"
-msgstr "weiterer Empfänger"
+msgstr "Người nhận khác"
 
 #: setzer/dialogs/document_wizard/document_wizard.py:325
 msgid "PS: PostScriptum"
-msgstr "PS: Post­skript"
+msgstr "Tái bút: PostScriptum"
 
 #: setzer/dialogs/document_wizard/document_wizard.py:326
 msgid "Enclosures"
-msgstr "Anlagen"
+msgstr "Đồ đính kèm"
 
 #: setzer/dialogs/document_wizard/document_wizard.py:399
 msgid ""
@@ -916,22 +907,22 @@ msgid ""
 "% You can remove this note as well.\n"
 "% \n"
 msgstr ""
-"% HINWEIS: Der Inhalt Ihres Dokuments wurde vom Assistenten\n"
-"% auskommentiert. Drücken Sie STRG+Z (rückgängig) um ihn\n"
-"% wieder einzufügen, oder entfernen Sie die \"%\" vor jeder\n"
-"% Zeile, die Sie behalten möchten.\n"
-"% Sie können diesen Hinweis ebenfalls entfernen.\n"
+"% LƯU Ý: Nội dung tài liệu của bạn đã được bình luận\n"
+"% bởi trình hướng dẫn. Chỉ cần thực hiện CTRL+Z (hoàn tác) để đưa nó trở "
+"lại\n"
+"% hoặc bỏ dấu \"%\" trước mỗi dòng bạn muốn giữ lại.\n"
+"% Bạn cũng có thể xóa ghi chú này.\n"
 "% \n"
 
 #: setzer/dialogs/document_wizard/document_wizard_viewgtk.py:57
 #: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:80
 msgid "Create a template document"
-msgstr "Dokumentenvorlage erstellen"
+msgstr "Tạo một tài liệu mẫu"
 
 #: setzer/dialogs/document_wizard/pages/page_article_settings.py:103
 #: setzer/dialogs/document_wizard/pages/page_article_settings.py:104
 msgid "Article settings"
-msgstr "Einstellungen für Dokumententyp \"article\""
+msgstr "Cài đặt bài viết"
 
 #: setzer/dialogs/document_wizard/pages/page_article_settings.py:106
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:150
@@ -939,44 +930,44 @@ msgstr "Einstellungen für Dokumententyp \"article\""
 #: setzer/dialogs/document_wizard/pages/page_report_settings.py:106
 #: setzer/dialogs/preferences/pages/page_build_system.py:173
 msgid "Options"
-msgstr "Optionen"
+msgstr "Tùy chọn"
 
 #: setzer/dialogs/document_wizard/pages/page_article_settings.py:111
 #: setzer/dialogs/document_wizard/pages/page_book_settings.py:111
 #: setzer/dialogs/document_wizard/pages/page_report_settings.py:111
 msgid "Two-column layout"
-msgstr "Zweispaltiges Seitenlayout"
+msgstr "Bố cục hai cột"
 
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:121
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:122
 msgid "Beamer settings"
-msgstr "Beamer Einstellungen"
+msgstr "Cài đặt trình chiếu"
 
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:128
 msgid "Themes"
-msgstr "Themen"
+msgstr "Chủ đề"
 
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:155
 msgid "Show navigation buttons"
-msgstr "Navigationselemente einbinden"
+msgstr "Hiển thị các nút điều hướng"
 
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:156
 msgid "Align content to the top of pages"
-msgstr "Inhalt am oberen Seitenende ausrichten"
+msgstr "Căn chỉnh nội dung lên đầu trang"
 
 #: setzer/dialogs/document_wizard/pages/page_beamer_settings.py:158
 msgid "(\"t\" option, it's centered by default)"
-msgstr "(Option \"t\", der Inhalt ist sonst zentriert)"
+msgstr "(tùy chọn \"t\", nó được căn giữa theo mặc định)"
 
 #: setzer/dialogs/document_wizard/pages/page_book_settings.py:103
 #: setzer/dialogs/document_wizard/pages/page_book_settings.py:104
 msgid "Book settings"
-msgstr "Einstellungen für Dokumententyp \"book\""
+msgstr "Cài đặt sách"
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:60
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:61
 msgid "Choose a document class"
-msgstr "Dokumentenklasse wählen"
+msgstr "Chọn một lớp tài liệu"
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:82
 msgid ""
@@ -986,28 +977,27 @@ msgid ""
 "This class on its own is pretty simplistic and is often used as a starting "
 "point for more custom layouts."
 msgstr ""
-"<b>Article:</b>  Für Artikel in wissenschaftlichen Zeitschriften, "
-"Hausarbeiten, Handouts, kurze Berichte, …\n"
+"<b>Bài báo:</b> Đối với các bài báo trên tạp chí khoa học, bài báo học kỳ, "
+"tài liệu phát tay, báo cáo ngắn, …\n"
 "\n"
-"Diese Klasse ist an sich ziemlich einfach und wird oft als Ausgangspunkt für "
-"kompliziertere Layouts benutzt."
+"Bản thân lớp này khá đơn giản và thường được sử dụng làm điểm khởi đầu cho "
+"các bố cục tùy chỉnh hơn."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:83
 msgid "<b>Book:</b>  For actual books containing many chapters and sections."
-msgstr ""
-"<b>Book:</b>  Für eigentliche Bücher mit mehreren Kapiteln und Abschnitten."
+msgstr "<b>Sách:</b> Đối với sách thực tế có nhiều chương, mục."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:84
 msgid ""
 "<b>Report:</b>  For longer reports and articles containing more than one "
 "chapter, small books, thesis."
 msgstr ""
-"<b>Report:</b>  Für längere Berichte und Artikel mit mehr als einem Kapitel, "
-"kurze Bücher, Abschlussarbeiten."
+"<b>Báo cáo:</b> Đối với các báo cáo dài hơn và các bài viết có nhiều hơn một "
+"chương, sách nhỏ, luận văn."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:85
 msgid "<b>Letter:</b>  For writing letters."
-msgstr "<b>Letter:</b>  Zum Schreiben von Briefen."
+msgstr "<b>Thư:</b> Để viết thư."
 
 #: setzer/dialogs/document_wizard/pages/page_document_class.py:86
 msgid ""
@@ -1015,59 +1005,61 @@ msgid ""
 "\n"
 "There are many predefined presentation styles."
 msgstr ""
-"<b>Beamer:</b>  Für Präsentationsfolien.\n"
+"<b>Beamer:</b> Lớp tạo slide thuyết trình bằng LaTeX.\n"
 "\n"
-"Sie können aus vielen vordefinierten Stilen auswählen."
+"Có nhiều phong cách trình bày được định trước."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:116
 msgid "Others…"
-msgstr "Weiteres…"
+msgstr "Khác…"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:136
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:137
 msgid "General document settings"
-msgstr "Allgemeine Einstellungen"
+msgstr "Cài đặt chung cho tài liệu"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:141
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:125
 msgid "Title"
-msgstr "Titel"
+msgstr "Tiêu đề"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:146
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:124
 msgid "Author"
-msgstr "Autor"
+msgstr "Tác giả"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:155
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:126
 msgid "Date"
-msgstr "Datum"
+msgstr "Ngày"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:164
 msgid "Language"
-msgstr "Sprache"
+msgstr "Ngôn ngữ"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:178
 msgid ""
 "The main language for this document. This is used to apply rules for "
 "hyphenation and other purposes."
 msgstr ""
-"Die Hauptsprache für dieses Dokument. Diese bestimmt unter anderem die "
-"Regeln für die Silbentrennung."
+"Ngôn ngữ chính cho tài liệu này. Điều này được sử dụng để áp dụng các quy "
+"tắc cho gạch nối và các mục đích khác."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:187
 msgid "Packages"
-msgstr "Pakete"
+msgstr "Gói"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:198
 msgid "AMS math packages"
-msgstr "AMS Pakete"
+msgstr "Gói toán học AMS"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:225
 msgid ""
 "<b>AMS packages:</b> provide mathematical symbols, math-related "
 "environments, …"
-msgstr "<b>AMS Pakete:</b> mathematische Symbole, Umgebungen, …"
+msgstr ""
+"<b>Gói AMS:</b> cung cấp các ký hiệu toán học, môi trường liên quan đến toán "
+"học, …"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:225
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:226
@@ -1078,148 +1070,148 @@ msgstr "<b>AMS Pakete:</b> mathematische Symbole, Umgebungen, …"
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:82
 #: setzer/dialogs/preferences/pages/page_build_system.py:216
 msgid "recommended"
-msgstr "empfohlen"
+msgstr "đề nghị"
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:226
 #: data/resources/latexdb/packages/general.xml:22
 msgid "contains symbols to be used in textmode."
-msgstr "enthält Symbole für den Textmodus."
+msgstr "chứa các ký hiệu được sử dụng trong kiểu chữ."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:227
 #: data/resources/latexdb/packages/general.xml:15
 msgid "include graphics in your document."
-msgstr "Grafiken in das Dokument einfügen."
+msgstr "bao gồm đồ họa trong tài liệu của bạn."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:228
 msgid "foreground and background color."
-msgstr "Vorder- und Hintergrundfarbe."
+msgstr "màu nền trước và màu nền."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:229
 #: data/resources/latexdb/packages/general.xml:27
 msgid "enables colored text."
-msgstr "ermöglicht farbigen Text."
+msgstr "cho phép văn bản màu."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:230
 msgid "type urls with the \\url{..} command without escaping them."
-msgstr "URLs schreiben mit dem \\url{..} Befehl."
+msgstr "nhập các liên kết url bằng lệnh \\url{..} mà không thoát chúng."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:231
 #: data/resources/latexdb/packages/general.xml:16
 msgid "create hyperlinks within your document."
-msgstr "Hyperlinks einfügen."
+msgstr "tạo siêu liên kết trong tài liệu của bạn."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:232
 msgid ""
 "define theorem environments (like \"definition\", \"lemma\", …) with custom "
 "styling."
 msgstr ""
-"mathematische Satztypen definieren (wie \"Definition\", \"Lemma\", …) und "
-"deren Aussehen festlegen."
+"xác định các môi trường định lý (như \"định nghĩa\", \"bổ đề\", ...) với "
+"kiểu dáng tùy chỉnh."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:233
 msgid "provides the \\listing environment for embedding programming code."
-msgstr "stellt die \\listings Umgebung für eingebetteten Code bereit."
+msgstr "cung cấp môi trường \\listing để nhúng mã lập trình."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:234
 #: data/resources/latexdb/packages/general.xml:14
 msgid "create a glossary for your document."
-msgstr "Glossar erstellen."
+msgstr "tạo bảng thuật ngữ cho tài liệu của bạn."
 
 #: setzer/dialogs/document_wizard/pages/page_general_settings.py:235
 #: data/resources/latexdb/packages/general.xml:20
 msgid "paragraphs without indentation."
-msgstr "Paragraphen ohne Zeileneinzug."
+msgstr "đoạn văn không có đầu dòng."
 
 #: setzer/dialogs/document_wizard/pages/page_letter_settings.py:89
 #: setzer/dialogs/document_wizard/pages/page_letter_settings.py:90
 msgid "Letter settings"
-msgstr "Einstellungen für Dokumententyp \"letter\""
+msgstr "Cài đặt chữ"
 
 #: setzer/dialogs/document_wizard/pages/page.py:56
 msgid "Page format"
-msgstr "Ausrichtung"
+msgstr "Định dạng trang"
 
 #: setzer/dialogs/document_wizard/pages/page.py:69
 msgid "Portrait"
-msgstr "Hochformat"
+msgstr "Trang đứng"
 
 #: setzer/dialogs/document_wizard/pages/page.py:70
 msgid "Landscape"
-msgstr "Querformat"
+msgstr "Trang nằm"
 
 #: setzer/dialogs/document_wizard/pages/page.py:75
 msgid "Page margins"
-msgstr "Seitenränder"
+msgstr "Lề trang"
 
 #: setzer/dialogs/document_wizard/pages/page.py:79
 msgid "Use default margins"
-msgstr "vorgegebene Werte nutzen"
+msgstr "Sử dụng lề mặc định"
 
 #: setzer/dialogs/document_wizard/pages/page.py:107
 msgid "All values are in cm (1 inch ≅ 2.54 cm)."
-msgstr "Alle Werte sind in cm (1 inch ≅ 2.54 cm)."
+msgstr "Tất cả các giá trị tính bằng cm (1 inch ≅ 2,54 cm)."
 
 #: setzer/dialogs/document_wizard/pages/page.py:112
 msgid "Font size"
-msgstr "Schriftgröße"
+msgstr "Cỡ chữ"
 
 #: setzer/dialogs/document_wizard/pages/page_report_settings.py:103
 #: setzer/dialogs/document_wizard/pages/page_report_settings.py:104
 msgid "Report settings"
-msgstr "Einstellungen für Dokumententyp \"report\""
+msgstr "Cài đặt báo cáo"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file.py:95
 msgid "BibTeX Files"
-msgstr "BibTeX-Dateien"
+msgstr "Tập tin BibTeX"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:50
 msgid "BibTeX file to include"
-msgstr "einzubindende BibTeX-Datei"
+msgstr "Nhúng tập tin BibTeX"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:56
 msgid "Select a BibTeX File"
-msgstr "BibTeX-Datei auswählen"
+msgstr "Chọn một tệp BibTeX"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:59
 msgid "Bibliography style"
-msgstr "Bibliographie-Stil"
+msgstr "Kiểu nguồn tham khảo"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:75
 msgid "Show bibliography styles for the 'natbib' package"
-msgstr "Bibliographie-Stile für das 'natbib'-Paket anzeigen"
+msgstr "Hiển thị kiểu nguồn tham khảo bằng gói 'natbib'"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:108
 msgid "Include BibTeX file"
-msgstr "BibTeX-Datei einbinden"
+msgstr "Nhúng tệp BibTeX"
 
 #: setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py:113
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:99
 msgid "_Include"
-msgstr "_Einbinden"
+msgstr "_Nhúng"
 
 #: setzer/dialogs/include_latex_file/include_latex_file.py:33
 msgid "Relative Path"
-msgstr "Relativer Pfad"
+msgstr "Đường dẫn tương đối"
 
 #: setzer/dialogs/include_latex_file/include_latex_file.py:33
 msgid "Absolute Path"
-msgstr "Absoluter Pfad"
+msgstr "Đường dẫn tuyệt đối"
 
 #: setzer/dialogs/include_latex_file/include_latex_file.py:68
 msgid "LaTeX Files"
-msgstr "LaTeX-Dateien"
+msgstr "Tập tin LaTeX"
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:50
 msgid "LaTeX file to include"
-msgstr "LaTeX-Datei"
+msgstr "Tập tin LaTeX để nhúng"
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:56
 msgid "Select a LaTeX File"
-msgstr "LaTeX-Datei auswählen"
+msgstr "Chọn một tệp LaTeX"
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:59
 msgid "Type of path to included file"
-msgstr "Pfad-Typ"
+msgstr "Loại đường dẫn đến tệp được nhúng"
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:82
 msgid ""
@@ -1227,23 +1219,25 @@ msgid ""
 "useful when the included file is in the same folder as the main document and "
 "you want to move around both of them together."
 msgstr ""
-"<b>Relativer Pfad:</b> setze den Pfad relativ zum Hauptdokument. Das ist "
-"nützlich wenn die eingebundene Datei im selben Ordner liegt wie das "
-"Hauptdokument und Sie ggf. beide Dateien zusammen verschieben möchten."
+"<b>Đường dẫn tương đối:</b> Đặt đường dẫn liên quan đến tài liệu chính. Điều "
+"này hữu ích khi tệp được bao gồm nằm trong cùng thư mục với tài liệu chính "
+"và bạn muốn di chuyển cả hai tệp cùng nhau."
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:82
 msgid ""
 "<b>Absolute Path:</b> Specify the absolute location of the included file in "
 "your filesystem."
-msgstr "<b>Absoluter Pfad:</b> absolute Position im Dateisystem."
+msgstr ""
+"<b>Đường dẫn tuyệt đối:</b> Chỉ định vị trí tuyệt đối của tệp được bao gồm "
+"trong hệ thống tệp của bạn."
 
 #: setzer/dialogs/include_latex_file/include_latex_file_viewgtk.py:94
 msgid "Include LaTeX file"
-msgstr "LaTeX-Datei einbinden"
+msgstr "Nhúng tệp LaTeX"
 
 #: setzer/dialogs/interpreter_missing/interpreter_missing.py:47
 msgid "LateX Interpreter is missing."
-msgstr "LaTeX-Interpreter ist nicht vorhanden."
+msgstr "Phiên dịch LateX bị thiếu."
 
 #: setzer/dialogs/interpreter_missing/interpreter_missing.py:49
 #, python-brace-format
@@ -1258,13 +1252,12 @@ msgid ""
 "\n"
 "    flatpak install org.freedesktop.Sdk.Extension.texlive"
 msgstr ""
-"Setzer ist konfiguriert »{interpreter}« zu verwenden, welches nicht auf dem "
-"System vorhanden zu sein scheint.\n"
+"Setzer được định cấu hình để sử dụng »{interpreter}« dường như bị thiếu trên "
+"hệ thống này.\n"
 "\n"
-"Ein anderer LaTeX-Interpreter lässt sich in den Einstellungen auswählen.\n"
+"Để chọn một trình biên dịch khác, hãy chuyển đến Tùy chọn.\n"
 "\n"
-"Um einen Interpreters in Flatpak zu installieren, öffnen Sie ein Terminal "
-"und führen folgendes Kommando aus:\n"
+"Để cài đặt trình biên dịch trong Flatpak, hãy mở terminal và chạy lệnh sau:\n"
 "\n"
 "    flatpak install org.freedesktop.Sdk.Extension.texlive"
 
@@ -1280,322 +1273,323 @@ msgid ""
 "wiki/LaTeX/Installation\">https://en.wikibooks.org/wiki/LaTeX/Installation</"
 "a>"
 msgstr ""
-"Setzer ist konfiguriert »{interpreter}« zu verwenden, welches nicht auf dem "
-"System vorhanden zu sein scheint.\n"
+"Setzer được định cấu hình để sử dụng »{interpreter}« dường như bị thiếu trên "
+"hệ thống này.\n"
 "\n"
-"Ein anderer LaTeX-Interpreter lässt sich in den Einstellungen auswählen.\n"
+"Để chọn một trình thông dịch khác, hãy chuyển đến Tùy chọn.\n"
 "\n"
-"Hilfe zur Installation von LaTeX gibt es auf <a href=\"https://de.wikibooks."
-"org/wiki/LaTeX/_Installation\">https://de.wikibooks.org/wiki/LaTeX/"
-"_Installation</a>"
+"Để biết hướng dẫn cài đặt LaTeX, hãy xem <a href=\"https://en.wikibooks.org/"
+"wiki/LaTeX/Installation\">https://en.wikibooks.org/wiki/LaTeX/"
+"Installation</a>"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:35
 msgid "Documents"
-msgstr "Dokumente"
+msgstr "Các tài liệu"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:36
 msgid "Create new document"
-msgstr "Neues Dokument anlegen"
+msgstr "Tạo tài liệu mới"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:37
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:62
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:70
 msgid "Open a document"
-msgstr "Dokument öffnen"
+msgstr "Mở một tài liệu"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:38
 msgid "Show recent documents"
-msgstr "Zuletzt geöffnete Dokumente"
+msgstr "Hiển thị các tài liệu gần đây"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:39
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:54
 msgid "Show open documents"
-msgstr "Geöffnete Dokumente"
+msgstr "Hiển thị tài liệu đang mở"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:40
 msgid "Switch to the next open document"
-msgstr "Zum nächsten geöffneten Dokument springen"
+msgstr "Chuyển sang tài liệu đang mở tiếp theo"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:41
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:105
 msgid "Save the current document"
-msgstr "Aktuelles Dokument speichern"
+msgstr "Lưu tài liệu hiện tại"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:42
 msgid "Save the document with a new filename"
-msgstr "Dokument unter neuem Dateinamen speichern"
+msgstr "Lưu tài liệu với tên tệp mới"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:43
 msgid "Close the current document"
-msgstr "Aktuelles Dokument schließen"
+msgstr "Đóng tài liệu hiện tại"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:46
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:172
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:200
 msgid "Tools"
-msgstr "Werkzeuge"
+msgstr "Công cụ"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:47
 #: setzer/document/build_widget/build_widget_viewgtk.py:37
 msgid "Save and build .pdf-file from document"
-msgstr "Speichere und kompiliere die .pdf Datei von diesem Dokument"
+msgstr "Lưu và tạo tệp .pdf từ tài liệu"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:48
 msgid "Build .pdf-file from document"
-msgstr ".pdf-Datei erstellen"
+msgstr "Biên dịch tệp .pdf từ tài liệu"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:49
 msgid "Show current position in preview"
-msgstr "Zeige die gegenwärtige Position in der Vorschau"
+msgstr "Hiển thị vị trí hiện tại trong bản xem trước"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:53
 msgid "Show help panel"
-msgstr "Hilfe anzeigen"
+msgstr "Hiển thị bảng trợ giúp"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:54
 msgid "Show document structure panel"
-msgstr "Zeige die Übersicht der Dokumentgliederung"
+msgstr "Hiển thị bảng cấu trúc tài liệu"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:55
 msgid "Show symbols panel"
-msgstr "Symbolleiste anzeigen"
+msgstr "Hiển thị bảng ký hiệu"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:56
 msgid "Spellchecking dialog"
-msgstr "Rechtschreibung prüfen"
+msgstr "Hộp thoại kiểm tra chính tả"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:57
 msgid "Show build log"
-msgstr "Fehler und Warnungen anzeigen"
+msgstr "Hiển thị nhật ký biên dịch"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:58
 msgid "Show preview panel"
-msgstr "Vorschau anzeigen"
+msgstr "Hiển thị bảng xem trước"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:59
+#, fuzzy
 msgid "Show global menu"
-msgstr "zeige allgemeine Befehlsübersicht"
+msgstr "Hiển thị menu chung"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:60
 msgid "Show keyboard shortcuts"
-msgstr "Tastenkürzel anzeigen"
+msgstr "Hiển thị phím tắt"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:61
 msgid "Close Application"
-msgstr "Anwendung beenden"
+msgstr "Đóng ứng dụng"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:64
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:68
 msgid "Find and Replace"
-msgstr "Suchen und Ersetzen"
+msgstr "Tìm và thay thế"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:65
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:58
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:67
 msgid "Find"
-msgstr "Suchen"
+msgstr "Tìm"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:66
 msgid "Find the next match"
-msgstr "Zeige die nächste Übereinstimmung"
+msgstr "Tìm kết quả tiếp theo"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:67
 msgid "Find the previous match"
-msgstr "Zeige die vorherige Übereinstimmung"
+msgstr "Tìm kết quả trước"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:71
 #: setzer/document/context_menu/context_menu_viewgtk.py:71
 msgid "Zoom"
-msgstr "Zoom"
+msgstr "Phóng"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:72
 #: setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py:37
 msgid "Zoom in"
-msgstr "Vergrößern"
+msgstr "Phóng to"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:73
 #: setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py:33
 msgid "Zoom out"
-msgstr "Verkleinern"
+msgstr "Thu nhỏ"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:74
 msgid "Reset zoom"
-msgstr "Zoom zurücksetzen"
+msgstr "Đặt lại thu phóng"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:78
 msgid "Copy selected text to clipboard"
-msgstr "Markierten Text kopieren"
+msgstr "Sao chép văn bản đã chọn vào khay nhớ tạm"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:79
 msgid "Cut selected text to clipboard"
-msgstr "Markierten Text ausschneiden"
+msgstr "Cắt văn bản đã chọn vào khay nhớ tạm"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:80
 msgid "Paste text from clipboard"
-msgstr "Text aus der Zwischenablage einfügen"
+msgstr "Dán văn bản từ khay nhớ tạm"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:83
 msgid "Undo and Redo"
-msgstr "Rückgängig und Wiederherstellen"
+msgstr "Hoàn tác và làm lại"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:84
 msgid "Undo previous text edit"
-msgstr "Letzten Befehl rückgängig machen"
+msgstr "Hoàn tác chỉnh sửa văn bản trước đó"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:85
 msgid "Redo previous text edit"
-msgstr "Befehl wiederherstellen"
+msgstr "Làm lại chỉnh sửa văn bản trước đó"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:88
 msgid "Selection"
-msgstr "Textauswahl"
+msgstr "Lựa chọn"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:89
 msgid "Select all text"
-msgstr "Gesamten Text auswählen"
+msgstr "Chọn tất cả văn bản"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:92
 msgid "Editing"
-msgstr "Bearbeiten"
+msgstr "Chỉnh sửa"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:93
 msgid "Toggle insert / overwrite"
-msgstr "Einfügen / Überschreiben umschalten"
+msgstr "Chuyển đổi chèn / ghi đè"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:94
 msgid "Move current line up"
-msgstr "Aktuelle Zeile nach oben verschieben"
+msgstr "Di chuyển dòng hiện tại lên"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:95
 msgid "Move current line down"
-msgstr "Aktuelle Zeile nach unten verschieben"
+msgstr "Di chuyển dòng hiện tại xuống"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:96
 msgid "Move current word left"
-msgstr "Aktuelles Wort nach links verschieben"
+msgstr "Di chuyển từ hiện tại sang trái"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:97
 msgid "Move current word right"
-msgstr "Aktuelles Wort nach rechts verschieben"
+msgstr "Di chuyển từ hiện tại sang phải"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:98
 msgid "Increment number at cursor"
-msgstr "Zahl am Cursor erhöhen"
+msgstr "Tăng số tại con trỏ"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:99
 msgid "Decrement number at cursor"
-msgstr "Zahl am Cursor verringern"
+msgstr "Giảm số tại con trỏ"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:102
 msgid "LaTeX Shortcuts"
-msgstr "LaTeX Tastaturkürzel"
+msgstr "Phím tắt LaTeX"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:103
 msgid "Comment / Uncomment current line(s)"
-msgstr "Zeile(n) aus- / entkommentieren"
+msgstr "Bình luận / Bỏ bình luận (các) dòng hiện tại"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:104
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:281
 msgid "New Line"
-msgstr "Neue Zeile"
+msgstr "Dòng mới"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:105
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:71
 msgid "Bold Text"
-msgstr "fetter Text"
+msgstr "Chữ in đậm"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:106
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:62
 msgid "Italic Text"
-msgstr "kursiver Text"
+msgstr "Chữ nghiêng"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:107
 msgid "Underlined Text"
-msgstr "unterstrichener Text"
+msgstr "Văn bản được gạch chân"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:108
 msgid "Typewriter Text"
-msgstr "Schreibmaschinentext"
+msgstr "Văn bản kiểu máy đánh chữ"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:109
 msgid "Emphasized Text"
-msgstr "hervorgehobener Text"
+msgstr "Đoạn văn bản được nhấn mạnh"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:110
 msgid "Quotation Marks"
-msgstr "Anführungszeichen"
+msgstr "Dấu ngoặc kép"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:111
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:313
 msgid "List Item"
-msgstr "Listeneintrag"
+msgstr "Liệt kê mục"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:112
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:236
 msgid "Environment"
-msgstr "Umgebung"
+msgstr "Môi trường"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:115
 msgid "Math Shortcuts"
-msgstr "Tastenkürzel für Mathematik"
+msgstr "Phím tắt toán học"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:116
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:387
 msgid "Inline Math Section"
-msgstr "Mathematische Umgebung (inline)"
+msgstr "Phần toán trong dòng chữ"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:117
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:388
 msgid "Display Math Section"
-msgstr "Math. Umgebung (display)"
+msgstr "Hiển thị phần toán học"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:118
 msgid "Equation"
-msgstr "Gleichung"
+msgstr "Phương trình"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:119
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:391
 msgid "Subscript"
-msgstr "Tiefgestellt"
+msgstr "Chỉ số dưới"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:120
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:392
 msgid "Superscript"
-msgstr "Hochgestellt"
+msgstr "Chỉ số trên"
 
 #: setzer/dialogs/keyboard_shortcuts/keyboard_shortcuts.py:121
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:393
 msgid "Fraction"
-msgstr "Bruchzahl (\\frac)"
+msgstr "Phân số"
 
 #: setzer/dialogs/open_document/open_document.py:46
 #: setzer/dialogs/open_document/open_document.py:52
 #: setzer/dialogs/open_session/open_session.py:46
 #: setzer/dialogs/open_session/open_session.py:52
 msgid "_Open"
-msgstr "_Öffnen"
+msgstr "_Mở"
 
 #: setzer/dialogs/open_document/open_document.py:47
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:58
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:69
 msgid "Open"
-msgstr "Öffnen"
+msgstr "Mở"
 
 #: setzer/dialogs/open_document/open_document.py:62
 msgid "LaTeX and BibTeX Files"
-msgstr "LaTeX- und BibTeX-Dateien"
+msgstr "Tệp LaTeX và BibTeX"
 
 #: setzer/dialogs/open_session/open_session.py:47
 msgid "Load Session"
-msgstr "Sitzung aufrufen"
+msgstr "Phiên tải"
 
 #: setzer/dialogs/open_session/open_session.py:59
 msgid "Setzer Session"
-msgstr "Setzer Sitzung"
+msgstr "Phiên Setzer"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:126
 msgid "LaTeX Interpreter"
-msgstr "LaTeX-Interpreter"
+msgstr "Trình thông dịch LaTeX"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:134
 msgid ""
@@ -1604,265 +1598,262 @@ msgid ""
 "\n"
 "    flatpak install org.freedesktop.Sdk.Extension.texlive"
 msgstr ""
-"Es kann kein LaTeX Interpreter gefunden werden. Um diese in Flatpak zu "
-"installieren, öffnen Sie ein Terminal und geben Sie folgendes Kommando ein:\n"
+"Không tìm thấy trình thông dịch LaTeX. Để cài đặt trình thông dịch trong "
+"Flatpak, hãy mở terminal và chạy lệnh sau:\n"
 "\n"
-"    flatpak install org.freedesktop.Sdk.Extension.texlive"
+"     flatpak install org.freedesktop.Sdk.Extension.texlive"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:138
 msgid ""
-"No LaTeX interpreter found. For instructions on installing LaTeX see <a href="
-"\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en.wikibooks."
-"org/wiki/LaTeX/Installation</a>"
+"No LaTeX interpreter found. For instructions on installing LaTeX see <a "
+"href=\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en."
+"wikibooks.org/wiki/LaTeX/Installation</a>"
 msgstr ""
-"Kein LaTeX-Interpreter gefunden. Informationen zur Installation von LaTeX "
-"finden Sie auf <a href=\"https://en.wikibooks.org/wiki/LaTeX/Installation"
-"\">https://en.wikibooks.org/wiki/LaTeX/Installation</a>"
+"Không tìm thấy trình thông dịch LaTeX. Để biết hướng dẫn cài đặt LaTeX, hãy "
+"xem <a href=\"https://en.wikibooks.org/wiki/LaTeX/Installation\">https://en."
+"wikibooks.org/wiki/LaTeX/Installation</a>"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:164
 msgid ""
 "Please note: the Tectonic backend uses only the V1 command-line interface. "
 "Tectonic.toml configuration files are ignored."
 msgstr ""
-"Beachten Sie: das Backend von Tectonic nutzt nur das V1 CLI. Tectonic.toml "
-"Konfigurationsdateien werden ignoriert."
+"Xin lưu ý: chương trình phụ trợ Tectonic chỉ sử dụng giao diện dòng lệnh V1. "
+"Các tệp cấu hình Tectonic.toml bị bỏ qua."
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:178
 msgid "Automatically remove helper files (.log, .dvi, …) after building .pdf."
-msgstr ""
-"Hilfsdateien (.log, .dvi, …) nach der .pdf-Erstellung automatisch entfernen."
+msgstr "Tự động xóa các tệp trợ giúp (.log, .dvi,…) sau khi xây dựng .pdf."
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:183
 msgid "Use Latexmk"
-msgstr "Latexmk verwenden"
+msgstr "Sử dụng Latexmk"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:188
 msgid "Automatically show build log .."
-msgstr "Beim Erstellen automatisch Fehler und Warnungen anzeigen .."
+msgstr "Tự động hiển thị nhật ký biên dịch .."
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:193
 msgid ".. only when errors occurred."
-msgstr ".. nur wenn Fehler auftreten."
+msgstr ".. chỉ khi xảy ra lỗi."
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:194
 msgid ".. on errors and warnings."
-msgstr ".. bei Fehlern und Warnungen."
+msgstr ".. khi sảy ra lỗi và cảnh báo."
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:195
 msgid ".. on errors, warnings and badboxes."
-msgstr ".. bei Fehlern, Warnungen und Badboxen."
+msgstr ".. khi sảy ra lỗi, cảnh báo và lỗi trình bày."
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:204
 msgid "Embedded system commands"
-msgstr "Zugriff auf Kommandozeilenbefehle des Betriebssystems"
+msgstr "Lệnh hệ thống nhúng"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:211
 msgid ""
 "Warning: enable this only if you have to. It can cause security problems "
 "when building files from untrusted sources."
 msgstr ""
-"Vorsicht: nur aktivieren, wenn es sein muss. Dateien aus nicht "
-"vertrauenswürdiger Quelle können ein Sicherheitsrisiko darstellen."
+"Cảnh báo: chỉ kích hoạt tính năng này nếu bạn phải làm vậy. Nó có thể gây ra "
+"sự cố bảo mật khi xây dựng tệp từ các nguồn không đáng tin cậy."
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:216
 msgid "Disable"
-msgstr "Deaktiviert"
+msgstr "Vô hiệu hóa"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:217
 msgid "Enable restricted \\write18{SHELL COMMAND}"
-msgstr "Eingeschränkt aktiviertes \\write18{SHELL COMMAND}"
+msgstr "Kích hoạt hạn chế \\write18{SHELL COMMAND}"
 
 #: setzer/dialogs/preferences/pages/page_build_system.py:218
 msgid "Fully enable \\write18{SHELL COMMAND}"
-msgstr "Vollständig aktiviertes \\write18{SHELL COMMAND}"
+msgstr "Kích hoạt đầy đủ \\write18{SHELL COMMAND}"
 
 #: setzer/dialogs/preferences/pages/page_editor.py:65
 msgid "Tab Stops"
-msgstr "Tabulatoren"
+msgstr "Điểm dừng tab"
 
 #: setzer/dialogs/preferences/pages/page_editor.py:70
 msgid "Insert spaces instead of tabs"
-msgstr "Leerzeichen statt Tabulatoren einfügen"
+msgstr "Chèn dấu cách thay vì tab"
 
 #: setzer/dialogs/preferences/pages/page_editor.py:74
 msgid "Set Tab Width:"
-msgstr "Tabulatorenbreite:"
+msgstr "Đặt chiều rộng tab:"
 
 #: setzer/dialogs/preferences/pages/page_editor.py:85
 msgid "Line Numbers"
-msgstr "Zeilennummern"
+msgstr "Số dòng"
 
 #: setzer/dialogs/preferences/pages/page_editor.py:90
 msgid "Show line numbers"
-msgstr "Zeilennummern anzeigen"
+msgstr "Hiển thị số dòng"
 
 #: setzer/dialogs/preferences/pages/page_editor.py:94
 msgid "Line Wrapping"
-msgstr "Zeilenumbruch"
+msgstr "Ngắt dòng"
 
 #: setzer/dialogs/preferences/pages/page_editor.py:99
 msgid "Enable line wrapping"
-msgstr "Zeilenumbruch aktivieren"
+msgstr "Bật ngắt dòng"
 
 #: setzer/dialogs/preferences/pages/page_editor.py:103
 msgid "Code Folding"
-msgstr "Code-Folding"
+msgstr "Gấp gọn code"
 
 #: setzer/dialogs/preferences/pages/page_editor.py:108
 msgid "Enable code folding"
-msgstr "Code-Folding aktivieren"
+msgstr "Kích hoạt gấp mã"
 
 #: setzer/dialogs/preferences/pages/page_editor.py:112
 msgid "Highlighting"
-msgstr "Hervorhebung"
+msgstr "Làm nổi bật"
 
 #: setzer/dialogs/preferences/pages/page_editor.py:117
 msgid "Highlight current line"
-msgstr "Aktuelle Zeile hervorheben"
+msgstr "Làm nổi bật dòng hiện tại"
 
 #: setzer/dialogs/preferences/pages/page_editor.py:119
 msgid "Highlight matching brackets"
-msgstr "Übereinstimmende Klammern hervorheben"
+msgstr "Làm nổi bật các dấu ngoặc phù hợp"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:240
 msgid "Font"
-msgstr "Satzschrift"
+msgstr "Phông chữ"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:247
 msgid "Use the system fixed width font ("
-msgstr "Nutze die nichtproportionale Satzschrift des Betriebssystems ("
+msgstr "Sử dụng phông chữ có chiều rộng cố định của hệ thống ("
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:254
 msgid "Set Editor Font:"
-msgstr "Bestimme die Satzschrift des Editors:"
+msgstr "Đặt phông chữ cho trình chỉnh sửa:"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:268
 msgid "UI Colors"
-msgstr "Farben der Benutzerschnittstelle"
+msgstr "Màu giao diện người dùng"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:274
 msgid "Default"
-msgstr "Voreinstellung"
+msgstr "Mặc định"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:276
 msgid "Light Theme"
-msgstr "helles Thema"
+msgstr "Chủ đề sáng"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:278
 msgid "Dark Theme"
-msgstr "dunkles Thema"
+msgstr "Chủ đề tối"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:284
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:190
 msgid "Invert Colors in .pdf-Preview"
-msgstr "Farben invertieren in .pdf-Vorschau"
+msgstr "Đảo ngược màu trong trình xem trước .pdf"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:289
 msgid "Editor Colors"
-msgstr "Editorfarben"
+msgstr "Màu trình soạn thảo"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:309
 msgid "Remove active scheme"
-msgstr "Gegenwärtig benutztes Schema entfernen"
+msgstr "Xóa lược đồ màu đang hoạt động"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:312
 msgid "Add from file…"
-msgstr "Von Datei hinzufügen…"
+msgstr "Thêm từ tệp…"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:317
 msgid "Preview"
-msgstr "Vorschau"
+msgstr "Xem trước"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:369
 #: setzer/dialogs/preferences/pages/page_font_color.py:375
 msgid "_Add Scheme"
-msgstr "_Schema hinzufügen"
+msgstr "_Thêm lược đồ"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:370
 msgid "Add Scheme"
-msgstr "Schema hinzufügen"
+msgstr "Thêm lược đồ"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:382
 msgid "Color Scheme Files"
-msgstr "Dateien der Farbschemata"
+msgstr "Tệp màu cho lược đồ"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:410
 #, python-brace-format
 msgid "Removing syntax scheme »{name}«."
-msgstr "Syntaxschema »{name}« entfernen."
+msgstr "Xóa lược đồ cú pháp »{name}«."
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:412
 #: setzer/dialogs/replace_confirmation/replace_confirmation.py:47
 msgid "Do you really want to do this?"
-msgstr "Wollen Sie das wirklich tun?"
+msgstr "Bạn có thực sự muốn làm điều này?"
 
 #: setzer/dialogs/preferences/pages/page_font_color.py:414
 msgid "_Yes, remove it"
-msgstr "_Ja, entferne es"
+msgstr "_Vâng, gỡ bỏ đi"
 
 #: setzer/dialogs/preferences/preferences.py:51
 msgid "Build System"
-msgstr ".pdf-Erstellung"
+msgstr "Hệ thống Biên dịch"
 
 #: setzer/dialogs/preferences/preferences.py:52
 msgid "Editor"
-msgstr "Editor"
+msgstr "Trình soạn thảo"
 
 #: setzer/dialogs/preferences/preferences.py:53
 msgid "Font & Colors"
-msgstr "Schriftsatz & Farben"
+msgstr "Phông chữ & Màu sắc"
 
 #: setzer/dialogs/preferences/preferences_viewgtk.py:40
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:174
 msgid "Preferences"
-msgstr "Einstellungen"
+msgstr "Tùy chỉnh"
 
 #: setzer/dialogs/replace_confirmation/replace_confirmation.py:45
 #, python-brace-format
 msgid "Replacing {amount} occurence of »{original}« with »{replacement}«."
 msgid_plural ""
 "Replacing {amount} occurrences of »{original}« with »{replacement}«."
-msgstr[0] "Ersetze {amount} Vorkommen von »{original}« durch »{replacement}«."
-msgstr[1] "Ersetze {amount} Vorkommen von »{original}« durch »{replacement}«."
+msgstr[0] "Thay thế {amount} lần xuất hiện của »{original}« bằng »{replacement}«."
 
 #: setzer/dialogs/replace_confirmation/replace_confirmation.py:49
 msgid "_Yes, replace all occurrences"
-msgstr "_Ja, alles ersetzen"
+msgstr "_Vâng, thay thế tất cả các lần xuất hiện"
 
 #: setzer/dialogs/save_document/save_document.py:64
 msgid "Save document"
-msgstr "Dokument speichern"
+msgstr "Lưu tài liệu"
 
 #: setzer/dialogs/save_session/save_session.py:64
 msgid "Save Session"
-msgstr "Sitzung speichern"
+msgstr "Lưu phiên"
 
 #: setzer/dialogs/spellchecking_language/spellchecking_language.py:55
 msgid "Spellchecking Language"
-msgstr "Sprache der Rechtschreibprüfung"
+msgstr "Ngôn ngữ kiểm tra chính tả"
 
 #: setzer/document/build_system/build_system.py:221
 #, python-brace-format
 msgid "<span color=\"{color}\">Failed</span> ({amount} error)!"
 msgid_plural "<span color=\"{color}\">Failed</span> ({amount} errors)!"
-msgstr[0] "<span color=\"{color}\">Fehler</span> ({amount})!"
-msgstr[1] "<span color=\"{color}\">Fehler</span> ({amount})!"
+msgstr[0] "<span color=\"{color}\">Không thành công</span> (lỗi {amount})!"
 
 #: setzer/document/build_system/build_system.py:225
 msgid "Success!"
-msgstr "Erfolg!"
+msgstr "Thành công!"
 
 #: setzer/document/build_widget/build_widget_viewgtk.py:42
 msgid "Stop building"
-msgstr "Erstellung abbrechen"
+msgstr "Ngừng biên dịch"
 
 #: setzer/document/build_widget/build_widget_viewgtk.py:46
 msgid "Cleanup build files"
-msgstr "Hilfsdateien entfernen"
+msgstr "Dọn dẹp các tập tin dùng cho biên dịch"
 
 #: setzer/document/context_menu/context_menu_viewgtk.py:33
 msgid "Undo"
-msgstr "Rückgängig"
+msgstr "Hoàn tác"
 
 #: setzer/document/context_menu/context_menu_viewgtk.py:33
 #: setzer/document/context_menu/context_menu_viewgtk.py:34
@@ -1894,12 +1885,14 @@ msgstr "Rückgängig"
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:395
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:396
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:411
+#, fuzzy
 msgid "Ctrl"
-msgstr "Strg"
+msgstr "Ctrl"
 
 #: setzer/document/context_menu/context_menu_viewgtk.py:34
+#, fuzzy
 msgid "Redo"
-msgstr "Wiederherstellen"
+msgstr "Làm lại"
 
 #: setzer/document/context_menu/context_menu_viewgtk.py:34
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:62
@@ -1915,207 +1908,207 @@ msgstr "Wiederherstellen"
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:395
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:396
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:411
+#, fuzzy
 msgid "Shift"
-msgstr "Umschalt"
+msgstr "Shift"
 
 #: setzer/document/context_menu/context_menu_viewgtk.py:35
 #: setzer/document/context_menu/context_menu_viewgtk.py:113
 msgid "Cut"
-msgstr "Ausschneiden"
+msgstr "Cắt"
 
 #: setzer/document/context_menu/context_menu_viewgtk.py:36
 #: setzer/document/context_menu/context_menu_viewgtk.py:114
 msgid "Copy"
-msgstr "Kopieren"
+msgstr "Sao chép"
 
 #: setzer/document/context_menu/context_menu_viewgtk.py:37
 #: setzer/document/context_menu/context_menu_viewgtk.py:115
 msgid "Paste"
-msgstr "Einfügen"
+msgstr "Dán"
 
 #: setzer/document/context_menu/context_menu_viewgtk.py:38
 #: setzer/document/context_menu/context_menu_viewgtk.py:116
 msgid "Delete"
-msgstr "Löschen"
+msgstr "Xóa bỏ"
 
 #: setzer/document/context_menu/context_menu_viewgtk.py:39
 #: setzer/document/context_menu/context_menu_viewgtk.py:117
 msgid "Select All"
-msgstr "Alles auswählen"
+msgstr "Chọn tất cả"
 
 #: setzer/document/context_menu/context_menu_viewgtk.py:60
 #: setzer/document/context_menu/context_menu_viewgtk.py:118
 msgid "Toggle Comment"
-msgstr "Aus- / Entkommentieren"
+msgstr "Chuyển đổi bình luận"
 
 #: setzer/document/context_menu/context_menu_viewgtk.py:61
 #: setzer/document/context_menu/context_menu_viewgtk.py:119
 msgid "Show in Preview"
-msgstr "In Vorschau anzeigen"
+msgstr "Hiển thị trong Bản xem trước"
 
 #: setzer/document/preview/paging_widget/paging_widget.py:67
 msgid "Page "
-msgstr "Seite "
+msgstr "Trang "
 
 #: setzer/document/preview/paging_widget/paging_widget.py:70
 msgid " of "
-msgstr " von "
+msgstr " của "
 
 #: setzer/document/preview/preview_controller.py:122
 msgid "Go to page "
-msgstr "Gehe zu Seite "
+msgstr "Đi tới trang "
 
 #: setzer/document/preview/preview_viewgtk.py:36
 msgid "External Viewer"
-msgstr "Externes Anzeigeprogramm"
+msgstr "Trình xem bên ngoài"
 
 #: setzer/document/preview/preview_viewgtk.py:52
 msgid "Show Source"
-msgstr "Quellcode anzeigen"
+msgstr "Hiển thị nguồn"
 
 #: setzer/document/preview/preview_viewgtk.py:53
 msgid "Zoom In"
-msgstr "Vergrößern"
+msgstr "Phóng to"
 
 #: setzer/document/preview/preview_viewgtk.py:54
 msgid "Zoom Out"
-msgstr "Verkleinern"
+msgstr "Thu nhỏ"
 
 #: setzer/document/preview/preview_viewgtk.py:55
 #: setzer/document/preview/zoom_widget/zoom_widget.py:41
 msgid "Fit to Width"
-msgstr "An Breite anpassen"
+msgstr "Vừa với chiều rộng"
 
 #: setzer/document/preview/preview_viewgtk.py:56
 #: setzer/document/preview/zoom_widget/zoom_widget.py:46
 msgid "Fit to Text Width"
-msgstr "An Textbreite anpassen"
+msgstr "Vừa với chiều rộng văn bản"
 
 #: setzer/document/preview/preview_viewgtk.py:57
 #: setzer/document/preview/zoom_widget/zoom_widget.py:51
 msgid "Fit to Height"
-msgstr "An Höhe anpassen"
+msgstr "Vừa với chiều cao"
 
 #: setzer/document/preview/preview_viewgtk.py:108
 msgid "No preview available"
-msgstr "Keine Vorschau verfügbar"
+msgstr "Không có xem trước"
 
 #: setzer/document/preview/preview_viewgtk.py:111
 msgid ""
 "To show a .pdf preview of your document, click the build button in the "
 "headerbar."
 msgstr ""
-"Um eine .pdf-Vorschau Ihres Dokuments anzuzeigen, klicken Sie bitte den "
-"Erstellen-Button."
+"Để hiển thị bản xem trước .pdf của tài liệu của bạn, hãy nhấp vào nút bản "
+"dựng trong thanh tiêu đề."
 
 #: setzer/document/preview/zoom_widget/zoom_widget_viewgtk.py:57
 msgid "Set zoom level"
-msgstr "Zoom einstellen"
+msgstr "Đặt mức thu phóng"
 
 #: setzer/document/search/search_viewgtk.py:53
 msgid "Previous result"
-msgstr "Vorheriges Ergebnis"
+msgstr "Kết quả trước đó"
 
 #: setzer/document/search/search_viewgtk.py:56
 msgid "Next result"
-msgstr "Nächstes Ergebnis"
+msgstr "Kết quả tiếp theo"
 
 #: setzer/document/search/search_viewgtk.py:57
 msgid "Replace"
-msgstr "Ersetzen"
+msgstr "Thay thế"
 
 #: setzer/document/search/search_viewgtk.py:59
 msgid "Replace selected result"
-msgstr "Markiertes Ergebnis ersetzen"
+msgstr "Thay thế kết quả đã chọn"
 
 #: setzer/document/search/search_viewgtk.py:61
 msgid "All"
-msgstr "Alle"
+msgstr "Tất cả"
 
 #: setzer/document/search/search_viewgtk.py:63
 msgid "Replace all results"
-msgstr "Alle Ergebnisse ersetzen"
+msgstr "Thay thế tất cả kết quả"
 
 #: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:38
 msgid "More Actions"
-msgstr "Weitere Aufgaben"
+msgstr "Hành động khác"
 
 #: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:47
 msgid "Find and Replace (Ctrl+H)"
-msgstr "Suchen und Ersetzen (Strg+H)"
+msgstr "Tìm và Thay thế (Ctrl+H)"
 
 #: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:53
 msgid "Find (Ctrl+F)"
-msgstr "Suchen (Strg+F)"
+msgstr "Tìm (Ctrl+F)"
 
 #: setzer/document/shortcutsbar/shortcutsbar_viewgtk.py:69
 msgid "New Document Wizard"
-msgstr "Dokumenten-Assistent"
+msgstr "Trình tạo tự động tài liệu mới"
 
 #: setzer/widgets/filechooser_button/filechooser_button.py:34
 #: setzer/widgets/filechooser_button/filechooser_button.py:59
 msgid "(None)"
-msgstr "(Nichts)"
+msgstr "(Không có)"
 
 #: setzer/widgets/filechooser_button/filechooser_button.py:50
 msgid "Choose File"
-msgstr "Datei auswählen"
+msgstr "Chọn tập tin"
 
 #: setzer/widgets/filechooser_button/filechooser_button.py:75
 #: setzer/widgets/filechooser_button/filechooser_button.py:82
 msgid "_Select"
-msgstr "_Auswählen"
+msgstr "_Lựa chọn"
 
 #: setzer/workspace/build_log/build_log_presenter.py:131
 #, python-brace-format
 msgid "Line {number}"
-msgstr "Zeile {number}"
+msgstr "Dòng {number}"
 
 #: setzer/workspace/build_log/build_log_presenter.py:153
 #, python-brace-format
 msgid "Building failed with {amount} error"
 msgid_plural "Building failed with {amount} errors"
-msgstr[0] "Erstellen fehlgeschlagen mit {amount} Fehler"
-msgstr[1] "Erstellen fehlgeschlagen mit {amount} Fehlern"
+msgstr[0] "Xây dựng không thành công với lỗi {amount}"
 
 #: setzer/workspace/build_log/build_log_presenter.py:154
 #, python-brace-format
 msgid "{amount} warning or badbox"
 msgid_plural "{amount} warnings or badboxes"
-msgstr[0] "{amount} Warnung oder Badbox"
-msgstr[1] "{amount} Warnungen oder Badboxen"
+msgstr[0] "{amount} cảnh báo hoặc lỗi trình bày"
 
 #: setzer/workspace/build_log/build_log_presenter.py:157
 msgid "Building successful"
-msgstr "Erstellen erfolgreich"
+msgstr "Biên dịch thành công"
 
 #: setzer/workspace/build_log/build_log_presenter.py:162
 msgid "no warnings or badboxes"
-msgstr "keine Warnungen oder Badboxen"
+msgstr "không có cảnh báo hoặc lỗi trình bày"
 
 #: setzer/workspace/document_chooser/document_chooser_viewgtk.py:55
 msgid "No results"
-msgstr "Keine Ergebnisse"
+msgstr "Không có kết quả"
 
 #: setzer/workspace/document_chooser/document_chooser_viewgtk.py:60
 msgid "Other Documents"
-msgstr "Weitere Dokumente"
+msgstr "Các tài liệu khác"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:59
 msgid "Welcome to Setzer"
-msgstr "Willkommen bei Setzer"
+msgstr "Chào mừng bạn đến với Setzer"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:107
 msgid "Set one Document as Root"
-msgstr "Hauptdokument festlegen"
+msgstr "Đặt một Tài liệu là tài liệu chính"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:113
 msgid "Unset Root Document"
-msgstr "Hauptdokument-Auswahl zurücksetzen"
+msgstr "Bỏ đặt tài liệu chính"
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:119
 msgid "Click on a document in the list below to set it as root."
-msgstr "Klicken Sie auf ein Dokument um es als Hauptdokument festzulegen."
+msgstr ""
+"Bấm vào một tài liệu trong danh sách bên dưới để đặt nó làm tài liệu chính."
 
 #: setzer/workspace/document_switcher/document_switcher_viewgtk.py:123
 msgid ""
@@ -2126,48 +2119,49 @@ msgid ""
 "a top level document (the root) will contain multiple lower\n"
 "level files via include statements."
 msgstr ""
-"Das Hauptdokument wird erstellt, unabhängig davon welches Dokument\n"
-"gerade bearbeitet wird, und wird immer in der .pdf Vorschau angezeigt.\n"
-"Das Erstellungsprotokoll wird sich auf das Hauptdokument beziehen.\n"
-"Dies ist oft sinnvoll wenn an großen Projekten gearbeitet wird, wo ein\n"
-"Hauptdokument typischerweise mehrere Subdokumente einbindet."
+"Tài liệu chính sẽ được xây dựng, bất kể tài liệu nào\n"
+"bạn hiện đang chỉnh sửa và nó sẽ luôn hiển thị ở định dạng .pdf\n"
+"xem trước. Nhật ký xây dựng cũng sẽ đề cập đến tài liệu chính.\n"
+"Điều này thường hữu ích khi làm việc trên các dự án lớn, nơi thường\n"
+"một tài liệu cấp cao nhất (chính) sẽ chứa nhiều cấp thấp hơn\n"
+"các tệp cấp thông qua các câu lệnh nhúng."
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:45
 msgid "Toggle document structure"
-msgstr "Zeige/Verberge die Gliederung"
+msgstr "Chuyển đổi cấu trúc tài liệu"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:50
 msgid "Toggle symbols"
-msgstr "Symbole anzeigen / verbergen"
+msgstr "Chuyển đổi biểu tượng"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:78
 msgid "New LaTeX Document"
-msgstr "Neues LaTeX-Dokument"
+msgstr "Tài liệu LaTeX mới"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:79
 msgid "New BibTeX Document"
-msgstr "Neues BibTeX-Dokument"
+msgstr "Tài liệu BibTeX mới"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:92
 msgid "Create a new document"
-msgstr "Neues Dokument erstellen"
+msgstr "Tạo một tài liệu mới"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:103
 msgid "Save"
-msgstr "Speichern"
+msgstr "Lưu"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:114
 msgid "Toggle preview"
-msgstr "Vorschau anzeigen / verbergen"
+msgstr "Chuyển đổi xem trước"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:119
 msgid "Toggle help"
-msgstr "Hilfe anzeigen / verbergen"
+msgstr "Bật/tắt trợ giúp"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:145
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:169
 msgid "Session"
-msgstr "Sitzung"
+msgstr "Phiên làm việc"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:146
 msgid ""
@@ -2175,696 +2169,701 @@ msgid ""
 "and restore it later, a convenient way to work\n"
 "on multiple projects."
 msgstr ""
-"Speichern Sie die Liste geöffneter Dokumente in einer Sitzungsdatei\n"
-"und öffnen Sie sie später wieder, eine praktische Methode\n"
-"um an mehreren Projekten zu arbeiten."
+"Lưu danh sách các tài liệu đang mở trong một tệp phiên làm việc\n"
+"và khôi phục nó sau, một cách thuận tiện để làm việc\n"
+"trên nhiều dự án."
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:152
 msgid "Restore Previous Session"
-msgstr "Vorherige Sitzung wiederherstellen"
+msgstr "Khôi phục phiên làm việc trước đó"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:153
 msgid "Save Current Session"
-msgstr "Gegenwärtige Sitzung speichern"
+msgstr "Lưu phiên hiện tại"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:166
 msgid "Save Document As"
-msgstr "Dokument speichern unter"
+msgstr "Lưu tài liệu dưới dạng"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:167
 msgid "Save All Documents"
-msgstr "Alle Dokumente speichern"
+msgstr "Lưu tất cả tài liệu"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:171
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:188
 msgid "View"
-msgstr "Ansicht"
+msgstr "Xem"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:176
 msgid "Keyboard Shortcuts"
-msgstr "Tastenkürzel"
+msgstr "Các phím tắt bàn phím"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:177
 msgid "About"
-msgstr "Info"
+msgstr "Thông tin về"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:179
 msgid "Close All Documents"
-msgstr "Alle schließen"
+msgstr "Đóng tất cả tài liệu"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:180
 msgid "Close Document"
-msgstr "Schließen"
+msgstr "Đóng tài liệu"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:181
 msgid "Quit"
-msgstr "Beenden"
+msgstr "Thoát"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:189
 msgid "Dark Mode"
-msgstr "Nachtmodus"
+msgstr "Chế độ tối"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:201
 msgid "Check Spelling"
-msgstr "Rechtschreibung prüfen"
+msgstr "Kiểm tra chính tả"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:202
 msgid "Automatic Spellchecking"
-msgstr "Rechtschreibfehler hervorheben"
+msgstr "Kiểm tra chính tả tự động"
 
 #: setzer/workspace/headerbar/headerbar_viewgtk.py:203
 msgid "Set Spellchecking Language"
-msgstr "Sprache der Rechtschreibkontrolle festlegen"
+msgstr "Đặt ngôn ngữ kiểm tra chính tả"
 
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:33
 msgid "Home"
-msgstr "Startseite"
+msgstr "Trở về đầu"
 
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:39
 msgid "Top"
-msgstr "Seitenanfang"
+msgstr "Đầu"
 
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:45
 #: setzer/workspace/sidebar/document_structure_page/document_structure_page.py:83
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:55
 msgid "Back"
-msgstr "Zurück"
+msgstr "Trước"
 
 #: setzer/workspace/help_panel/help_panel_viewgtk.py:51
 #: setzer/workspace/sidebar/document_structure_page/document_structure_page.py:89
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:61
 msgid "Forward"
-msgstr "Vorwärts"
+msgstr "Tiếp tục"
 
 #: setzer/workspace/shortcutsbar/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:49
 msgid "Create New Entry"
-msgstr "Neuen Eintrag hinzufügen"
+msgstr "Tạo mục nhập mới"
 
 #: setzer/workspace/shortcutsbar/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:60
 msgid "Create a New BibTeX Entry"
-msgstr "Neuen BibTeX Eintrag hinzufügen"
+msgstr "Tạo một mục nhập BibTeX mới"
 
 #: setzer/workspace/shortcutsbar/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:69
 msgid "Previously Used Entries"
-msgstr "Zuvor verwendete Einträge"
+msgstr "Các mục đã sử dụng trước đây"
 
 #: setzer/workspace/shortcutsbar/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:80
 msgid "Add a Previously Used BibTeX Entry"
-msgstr "Zuvor verwendeten Eintrag hinzufügen"
+msgstr "Thêm mục nhập BibTeX đã sử dụng trước đó"
 
 #: setzer/workspace/shortcutsbar/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:89
 msgid "Search For Entries Online"
-msgstr "Online nach Einträgen suchen"
+msgstr "Tìm kiếm các mục trực tuyến"
 
 #: setzer/workspace/shortcutsbar/bibtex_shortcutsbar/bibtex_shortcutsbar_viewgtk.py:100
 msgid "Add a BibTeX Entry from an Online Database"
-msgstr "Einen BibTex Eintrag aus einer Online-Datenbank hinzufügen"
+msgstr "Thêm mục nhập BibTeX từ cơ sở dữ liệu trực tuyến"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:55
 msgid "Build log"
-msgstr "Fehler und Warnungen"
+msgstr "Nhật ký biên dịch"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:66
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Italic"
-msgstr "kursiv"
+msgstr "Chữ nghiêng"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:75
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Bold"
-msgstr "fett"
+msgstr "In đậm"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:93
 msgid "Document"
-msgstr "Dokument"
+msgstr "Tài liệu"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:110
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:123
 msgid "Document Info"
-msgstr "Informationen zum Dokument"
+msgstr "Thông tin tài liệu"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:112
 msgid "Document Environment"
-msgstr "Document Umgebung"
+msgstr "Môi trường tài liệu"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:113
 msgid "Show Title"
-msgstr "Titel anzeigen"
+msgstr "Hiển thị tiêu đề"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:114
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:156
 msgid "Table of Contents"
-msgstr "Inhaltsverzeichnis"
+msgstr "Mục lục"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:116
 msgid "Include LaTeX File"
-msgstr "LaTeX-Datei einbinden"
+msgstr "Nhúng tệp LaTeX"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:127
 msgid "Date Today"
-msgstr "heutiges Datum"
+msgstr "Ngày hôm nay"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:137
 msgid "Beamer"
-msgstr "Beamer"
+msgstr "Trình chiếu"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:153
 msgid "Hide Navigation"
-msgstr "Navigation verbergen"
+msgstr "Ẩn điều hướng"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:155
 msgid "Title Page"
-msgstr "Titelseite"
+msgstr "Trang tiêu đề"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:158
 msgid "Frame"
-msgstr "Rahmen"
+msgstr "Khung"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:159
 msgid "Frame with Title"
-msgstr "Rahmen mit Titel"
+msgstr "Khung có tiêu đề"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:160
 msgid "\\frametitle"
-msgstr "\\frametitle"
+msgstr "\\tiêuđềkhung"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:170
 msgid "Bibliography"
-msgstr "Bibliographie"
+msgstr "Nguồn tham khảo"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:185
 msgid "Include BibTeX File"
-msgstr "BibTeX-Datei einbinden"
+msgstr "Nhúng tệp BibTeX"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:186
 msgid "Include 'natbib' Package"
-msgstr "'natbib'-Paket einbinden"
+msgstr "Nhúng Gói 'natbib'"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:188
 msgid "Citation with Page Number"
-msgstr "Zitat mit Seitenangabe"
+msgstr "Trích dẫn với số trang"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:190
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:198
 msgid "Natbib Citations"
-msgstr "Natbib-Zitate"
+msgstr "Trích dẫn Natbib"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:191
 msgid "Include non-cited BibTeX Entries with '\\nocite'"
-msgstr "Nicht-zitierte BibTeX-Einträge einbinden ('\\nocite')"
+msgstr ""
+"Nhúng các Mục nhập BibTeX không được trích dẫn với '\\n"
+"ocite'"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:199
 msgid "Abbreviated"
-msgstr "Kurzform"
+msgstr "Viết tắt"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:199
 msgid "Abbreviated with Brackets"
-msgstr "Kurzform mit Klammern"
+msgstr "Viết tắt với dấu ngoặc"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:199
 msgid "Detailed"
-msgstr "Ausführlich"
+msgstr "Chi tiết"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:199
 msgid "Detailed with Brackets"
-msgstr "Ausführlich mit Klammern"
+msgstr "Chi tiết với dấu ngoặc"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:199
 msgid "Alternative 1"
-msgstr "Alternativ 1"
+msgstr "Thay thế 1"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:199
 msgid "Alternative 2"
-msgstr "Alternativ 2"
+msgstr "Phương án 2"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:202
 msgid "Cite Author"
-msgstr "Autoren zitieren"
+msgstr "Trích dẫn tác giả"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:202
 msgid "Cite Author Detailed"
-msgstr "Autoren zitieren, detailliert"
+msgstr "Trích dẫn tác giả chi tiết"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:202
 msgid "Cite Year"
-msgstr "Jahr zitieren"
+msgstr "Trích dẫn năm"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:202
 msgid "Cite Year with Brackets"
-msgstr "Jahr zitieren (mit Klammern)"
+msgstr "Trích dẫn năm có dấu ngoặc"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:213
 msgid "Text"
-msgstr "Text"
+msgstr "Chữ"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:228
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:249
 msgid "Font Styles"
-msgstr "Schriftstil"
+msgstr "Kiểu phông chữ"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:229
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:259
 msgid "Font Sizes"
-msgstr "Schriftgrößen"
+msgstr "Cỡ chữ"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:230
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:268
 msgid "Alignment"
-msgstr "Textausrichtung"
+msgstr "Căn chỉnh"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:231
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:277
 msgid "Vertical Spacing"
-msgstr "Vertikale Abstände"
+msgstr "Khoảng cách dọc"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:232
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:288
+#, fuzzy
 msgid "International Accents"
-msgstr "Internationale Akzentzeichen"
+msgstr "Dấu quốc tế"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:234
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:297
 msgid "Sectioning"
-msgstr "in Abschnitte gliedern"
+msgstr "Phân đoạn"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:237
 msgid "Verbatim Environment"
-msgstr "Verbatim Umgebung"
+msgstr "Môi trường trích nguyên văn"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:238
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:309
 msgid "List Environments"
-msgstr "Listen-Umgebungen"
+msgstr "Môi trường danh sách"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:239
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:320
 msgid "Quotations"
-msgstr "Zitat-Umgebungen"
+msgstr "Trích dẫn"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:241
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:330
 msgid "Cross References"
-msgstr "Querverweise"
+msgstr "Tham khảo chéo"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:242
 msgid "Footnote"
-msgstr "Fußnote"
+msgstr "Chú thích cuối trang"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 msgid "Underline"
-msgstr "unterstreichen"
+msgstr "Gạch dưới"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Sans Serif"
-msgstr "serifenlos"
+msgstr "Kiểu Không chân"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Typewriter"
-msgstr "Schreibmaschine"
+msgstr "Kiểu máy đánh chữ"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 msgid "Small Caps"
-msgstr "kleine Kapitälchen"
+msgstr "Kiểu chữ in nhỏ"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
+#, fuzzy
 msgid "Slanted"
-msgstr "Geneigt"
+msgstr "Chữ nghiêng"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:250
 msgid "Emphasis"
-msgstr "Hervorhebung"
+msgstr "Nhấn mạnh"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:269
 msgid "Centered"
-msgstr "Zentriert"
+msgstr "Căn giữa"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:269
 msgid "Left-aligned"
-msgstr "links ausgerichtet"
+msgstr "Căn lề trái"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:269
 msgid "Right-aligned"
-msgstr "rechts ausgerichtet"
+msgstr "Căn lề phải"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Part"
-msgstr "Teil"
+msgstr "Phần"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Chapter"
-msgstr "Kapitel"
+msgstr "Chương"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Section"
-msgstr "Abschnitt"
+msgstr "Mục"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Subsection"
-msgstr "Unterabschnitt"
+msgstr "Tiểu mục"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Subsubsection"
-msgstr "Unterunterabschnitt"
+msgstr "Dưới tiểu mục"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Paragraph"
-msgstr "Paragraph"
+msgstr "Đoạn văn"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:298
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:301
 msgid "Subparagraph"
-msgstr "Subparagraph"
+msgstr "Tiểu đoạn"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:310
 msgid "Bulleted List"
-msgstr "Liste mit Aufzählungszeichen"
+msgstr "Danh sách gạch đầu dòng"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:310
 msgid "Numbered List"
-msgstr "Nummerierte Liste"
+msgstr "Danh sách được đánh số"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:310
 msgid "List with Bold Labels"
-msgstr "Liste mit fetten Beschriftungen"
+msgstr "Danh sách có nhãn in đậm"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:321
 msgid "Short Quotation"
-msgstr "Kurzes Zitat"
+msgstr "Trích dẫn ngắn"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:322
 msgid "Longer Quotation"
-msgstr "Langes Zitat"
+msgstr "Trích dẫn dài"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:323
 msgid "Poetry Quotation"
-msgstr "Gedicht zitieren"
+msgstr "Trích dẫn thơ"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:331
 msgid "Label"
-msgstr "Beschriftung"
+msgstr "Nhãn"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:331
 msgid "Equation Reference"
-msgstr "Referenz auf math. Gleichung"
+msgstr "Phương trình tham khảo"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:331
 msgid "Page Reference"
-msgstr "Referenz auf Seite"
+msgstr "Trang tham khảo"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:345
 msgid "Quotes"
-msgstr "Anführungszeichen"
+msgstr "Trích dẫn"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "Primary Quotes"
-msgstr "Ganze Anführungszeichen"
+msgstr "Trích dẫn chính"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "Secondary Quotes"
-msgstr "Sekundäre (oder halbe) Anführungszeichen"
+msgstr "Trích dẫn phụ"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "German Quotes"
-msgstr "Deutsche Anführungszeichen"
+msgstr "Trích dẫn tiếng Đức"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "German Single Quotes"
-msgstr "halbe Deutsche Anführungszeichen"
+msgstr "Trích dẫn đơn tiếng Đức"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "French Quotes"
-msgstr "Französische Anführungszeichen (Guillemets)"
+msgstr "Trích dẫn tiếng Pháp"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "French Single Quotes"
-msgstr "halbe Französische Anführungszeichen (Guillemets)"
+msgstr "Trích dẫn đơn tiếng Pháp"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "German Alt Quotes"
-msgstr "umgekehrte Französische Anführungszeichen (Möwchen)"
+msgstr "Trích dẫn Alt của Đức"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:358
 msgid "German Alt Single Quotes"
-msgstr "halbe umgekehrte Französische Anführungszeichen (Möwchen)"
+msgstr "Trích dẫn đơn Alt của Đức"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:369
 msgid "Math"
-msgstr "Mathematik"
+msgstr "Toán học"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:385
 msgid "Include AMS Packages"
-msgstr "AMS Pakete einbinden"
+msgstr "Nhúng các gói AMS"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:389
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:409
 msgid "Math Environments"
-msgstr "Mathematische Umgebungen"
+msgstr "Môi trường toán học"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:394
 msgid "Square Root"
-msgstr "Quadratwurzel"
+msgstr "Căn bậc hai"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:398
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:418
 msgid "Math Functions"
-msgstr "Mathematische Funktionen"
+msgstr "Hàm toán học"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:399
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:435
 msgid "Math Font Styles"
-msgstr "Mathematische Schriftstile"
+msgstr "Các kiểu phông chữ toán học"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:400
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:444
 msgid "Math Stacking Symbols"
-msgstr "Gestapelte Symbole"
+msgstr "Biểu tượng xếp chồng toán học"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:401
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:458
 msgid "Math Accents"
-msgstr "Mathematische Akzentzeichen"
+msgstr "Điểm nhấn toán học"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:402
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:467
 msgid "Math Spaces"
-msgstr "Mathematische Leerzeichen"
+msgstr "Không gian toán học"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Roman"
-msgstr "Antiqua"
+msgstr "Kiểu La Mã"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
 msgid "Calligraphic"
-msgstr "Kalligraphisch"
+msgstr "Kiểu thư pháp"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
+#, fuzzy
 msgid "Blackboard Bold"
-msgstr "Blackboard Bold (Mengenbuchstaben)"
+msgstr "In đậm đen"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:436
+#, fuzzy
 msgid "Fraktur"
-msgstr "Fraktur"
+msgstr "Phá vỡ"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:482
 msgid "Objects"
-msgstr "Objekte"
+msgstr "Các đối tượng"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:496
 msgid "Figure (image inside freestanding block)"
-msgstr "Figure (Bild in einem freistehendem Block)"
+msgstr "Hình (hình ảnh bên trong khối độc lập)"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:497
 msgid "Inline Image"
-msgstr "Bild in der Zeile"
+msgstr "Hình ảnh trong dòng chữ"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:498
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:508
 msgid "Code Listing"
-msgstr "Programmcode"
+msgstr "Danh sách code"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:500
 msgid "Url (\\url)"
-msgstr "Url (\\url)"
+msgstr "Địa chỉ (\\url)"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:501
 msgid "Hyperlink (\\href)"
-msgstr "Hyperlink (\\href)"
+msgstr "Siêu liên kết (\\href)"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:509
 msgid "Include 'listings' Package"
-msgstr "'listings'-Paket einbinden"
+msgstr "Nhúng gói 'danh sách'"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:514
 msgid "Other Language"
-msgstr "Andere Sprache"
+msgstr "Ngôn ngữ khác"
 
 #: setzer/workspace/shortcutsbar/latex_shortcutsbar/latex_shortcutsbar_viewgtk.py:515
 msgid "Plain Text"
-msgstr "Einfacher Text"
+msgstr "Văn bản thô"
 
 #: setzer/workspace/sidebar/document_stats/document_stats_viewgtk.py:30
 msgid "These counts are updated after the document is saved."
-msgstr "Diese Zähler werden nach dem Speichern des Dokumentes aktualisiert."
+msgstr "Số lượng này được cập nhật sau khi tài liệu được lưu."
 
 #: setzer/workspace/sidebar/sidebar.py:53
 msgid "Document Structure"
-msgstr "Dokumentenstruktur"
+msgstr "Cấu trúc tài liệu"
 
 #: setzer/workspace/sidebar/sidebar.py:57
 msgid "Labels"
-msgstr "Beschriftungen"
+msgstr "Nhãn"
 
 #: setzer/workspace/sidebar/sidebar.py:61
 msgid "To-Dos"
-msgstr "To-Dos"
+msgstr "Việc cần làm"
 
 #: setzer/workspace/sidebar/sidebar.py:65
 msgid "Document Stats"
-msgstr "Dokumentenstatistik"
+msgstr "Thống kê tài liệu"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page.py:118
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:186
 msgid "Package"
-msgstr "Paket"
+msgstr "Gói"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:95
 msgid "Recent"
-msgstr "kürzlich benutzt"
+msgstr "Gần đây"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:112
 msgid "Greek Letters"
-msgstr "Griechische Buchstaben"
+msgstr "Chữ Hy Lạp"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:114
 msgid "Arrows"
-msgstr "Pfeile"
+msgstr "Mũi tên"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:116
 msgid "Relations"
-msgstr "Beziehungen"
+msgstr "Mối quan hệ"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:118
 msgid "Operators"
-msgstr "Operatoren"
+msgstr "Toán tử"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:120
 msgid "Misc. Math"
-msgstr "Verschiedene math. Symbole"
+msgstr "Toán học khác"
 
 #: setzer/workspace/sidebar/symbols_page/symbols_page_viewgtk.py:122
 msgid "Misc. Symbols"
-msgstr "Verschiedene Symbole"
+msgstr "Ký hiệu khác"
 
 #: setzer/workspace/welcome_screen/welcome_screen_viewgtk.py:31
 msgid "Write beautiful LaTeX documents with ease!"
-msgstr "Schreibe ansprechende LaTeX Dokumente mit Leichtigkeit!"
+msgstr "Viết tài liệu LaTeX đẹp một cách dễ dàng!"
 
 #: setzer/workspace/welcome_screen/welcome_screen_viewgtk.py:34
 msgid ""
 "Click the open or create buttons in the headerbar above to start editing."
 msgstr ""
-"Klicke auf Öffnen oder Erstellen in der Titelleiste oben um mit der Arbeit "
-"zu beginnen."
+"Nhấp vào nút mở hoặc tạo trong thanh tiêu đề phía trên để bắt đầu chỉnh sửa."
 
 #: setzer/workspace/workspace.py:120
 #, python-brace-format
 msgid "Untitled Document {number}"
-msgstr "Unbenanntes Dokument {number}"
+msgstr "Tài liệu không có tiêu đề {number}"
 
 #: data/resources/latexdb/packages/general.xml:2
 msgid "additional math fonts from AMS."
-msgstr "zusätliche mathematischen Schriftarten von AMS."
+msgstr "phông chữ toán học bổ sung từ AMS."
 
 #: data/resources/latexdb/packages/general.xml:3
 msgid "mathematics package from AMS."
-msgstr "Mathematikpaket von AMS."
+msgstr "gói toán học từ AMS."
 
 #: data/resources/latexdb/packages/general.xml:4
 msgid "mathematical symbols from AMS."
-msgstr "mathematische Symbole von AMS."
+msgstr "ký hiệu toán học từ AMS."
 
 #: data/resources/latexdb/packages/general.xml:5
 msgid "math theorems setting package from AMS."
-msgstr "AMS Paket für mathematische Sätze."
+msgstr "gói thiết lập định lý toán học từ AMS."
 
 #: data/resources/latexdb/packages/general.xml:6
 msgid "multilingual documents."
-msgstr "mehrsprachige Dokumente."
+msgstr "tài liệu đa ngôn ngữ."
 
 #: data/resources/latexdb/packages/general.xml:7
 msgid "dirac braket and set notations."
-msgstr "Dirac bra-ket und Mengennotation."
+msgstr "kí hiệu dirac braket và thiết lập các ký hiệu."
 
 #: data/resources/latexdb/packages/general.xml:8
 msgid "bibliographies in LaTeX."
-msgstr "Bibliographien in LaTeX."
+msgstr "nguồn tham khảo trong LaTeX."
 
 #: data/resources/latexdb/packages/general.xml:9
+#, fuzzy
 msgid "simple arithmetic in LaTeX commands."
-msgstr "einfache Arithmetik in LaTeX Befehlen."
+msgstr "số học đơn giản trong các lệnh LaTeX."
 
 #: data/resources/latexdb/packages/general.xml:10
 msgid "foreground and background colors."
-msgstr "Vorder- und Hintergrundfarben."
+msgstr "màu nền trước và màu nền."
 
 #: data/resources/latexdb/packages/general.xml:11
 msgid "colored tables."
-msgstr "farbige Tabellen."
+msgstr "bảng màu."
 
 #: data/resources/latexdb/packages/general.xml:12
 msgid "enumerate with redefinable labels."
-msgstr "Aufzählungen mit redefinierbaren Beschriftungen."
+msgstr "danh sách liệt kê với các nhãn có thể đặt lại."
 
 #: data/resources/latexdb/packages/general.xml:13
 msgid "interface to document dimensions."
-msgstr "Formateinstellungen für das Dokument."
+msgstr "giao diện với kích thước tài liệu."
 
 #: data/resources/latexdb/packages/general.xml:17
 msgid "conditional commands."
-msgstr "von Vorbedingungen abhängige Befehle."
+msgstr "các lệnh có điều kiện."
 
 #: data/resources/latexdb/packages/general.xml:18
 msgid "provides a listing environment for embedding programming code."
-msgstr "stellt die \\listings Umgebung für eingebetteten Code bereit."
+msgstr "cung cấp một môi trường liệt kê để nhúng mã lập trình."
 
 #: data/resources/latexdb/packages/general.xml:19
 msgid "provides additional bibliography and citation styles."
-msgstr "sellt zusätzliche Bibliotheks- und Zitierstile bereit."
+msgstr "cung cấp các kiểu nguồn tham khảo và trích dẫn bổ sung."
 
 #: data/resources/latexdb/packages/general.xml:21
 msgid "create plots in two and three dimensions."
-msgstr "erstelle 2- und 3-dimensionale Plots."
+msgstr "tạo các ô trong hai và ba chiều."
 
 #: data/resources/latexdb/packages/general.xml:23
 msgid ""
 "define theorem environments (like &quot;definition&quot;, &quot;lemma&quot;, "
 "…) with custom styling."
 msgstr ""
-"mathematische Satztypen definieren (wie \"Definition\", \"Lemma\", …) und "
-"deren Aussehen festlegen."
+"xác định các môi trường định lý (như &quot;định nghĩa&quot;, &quot;bổ "
+"đề&quot;,…) với kiểu dáng tùy chỉnh."
 
 #: data/resources/latexdb/packages/general.xml:24
 msgid "graphics and plotting."
-msgstr "Plots und Grafiken."
+msgstr "đồ họa và âm mưu."
 
 #: data/resources/latexdb/packages/general.xml:25
 msgid "set transparency for sections in your document."
-msgstr "transparente Abschnitte."
+msgstr "đặt độ trong suốt cho các phần trong tài liệu của bạn."
 
 #: data/resources/latexdb/packages/general.xml:26
 msgid "type urls with the \\\\url{..} command without escaping them."
-msgstr ""
-"URLs direkt mit dem \\url{..} Befehl schreiben (ohne Codeumschaltung/Escape)."
+msgstr "nhập url bằng lệnh \\\\url{..} mà không thoát chúng."
 
 #: data/resources/document_wizard/languages.xml:2
 #: data/resources/document_wizard/languages.xml:20
@@ -2873,438 +2872,179 @@ msgstr ""
 #: data/resources/document_wizard/languages.xml:23
 #: data/resources/document_wizard/languages.xml:24
 msgid "English"
-msgstr "Englisch"
+msgstr "Tiếng Anh"
 
 #: data/resources/document_wizard/languages.xml:3
 msgid "Spanish"
-msgstr "Spanisch"
+msgstr "Tiếng Tây Ban Nha"
 
 #: data/resources/document_wizard/languages.xml:4
 #: data/resources/document_wizard/languages.xml:28
 msgid "French"
-msgstr "Französisch"
+msgstr "Tiếng Pháp"
 
 #: data/resources/document_wizard/languages.xml:5
 msgid "Russian"
-msgstr "Russisch"
+msgstr "Tiếng Nga"
 
 #: data/resources/document_wizard/languages.xml:6
 #: data/resources/document_wizard/languages.xml:7
 msgid "Portuguese"
-msgstr "Portugiesisch"
+msgstr "Tiếng Bồ Đào Nha"
 
 #: data/resources/document_wizard/languages.xml:8
 #: data/resources/document_wizard/languages.xml:30
 #: data/resources/document_wizard/languages.xml:31
 #: data/resources/document_wizard/languages.xml:32
 msgid "German"
-msgstr "Deutsch"
+msgstr "Tiếng Đức"
 
 #: data/resources/document_wizard/languages.xml:9
 msgid "Italian"
-msgstr "Italienisch"
+msgstr "Tiếng Ý"
 
 #: data/resources/document_wizard/languages.xml:10
 msgid "Afrikaans"
-msgstr "Afrikaans"
+msgstr "Tiếng Nam Phi"
 
 #: data/resources/document_wizard/languages.xml:11
 msgid "Azerbaijani"
-msgstr "Aserbaidschanisch"
+msgstr "Tiếng Azerbaijan"
 
 #: data/resources/document_wizard/languages.xml:12
 msgid "Basque"
-msgstr "Baskisch"
+msgstr "Tiếng Basque"
 
 #: data/resources/document_wizard/languages.xml:13
 msgid "Breton"
-msgstr "Bretonisch"
+msgstr "Tiếng Breton"
 
 #: data/resources/document_wizard/languages.xml:14
 msgid "Bulgarian"
-msgstr "Bulgarisch"
+msgstr "Tiếng Bungari"
 
 #: data/resources/document_wizard/languages.xml:15
 msgid "Catalan"
-msgstr "Katalanisch"
+msgstr "Tiếng Catalunya"
 
 #: data/resources/document_wizard/languages.xml:16
 msgid "Croatian"
-msgstr "Kroatisch"
+msgstr "Tiếng Croatia"
 
 #: data/resources/document_wizard/languages.xml:17
 msgid "Czech"
-msgstr "Tschechisch"
+msgstr "Tiếng Séc"
 
 #: data/resources/document_wizard/languages.xml:18
 msgid "Danish"
-msgstr "Dänisch"
+msgstr "Tiếng Đan Mạch"
 
 #: data/resources/document_wizard/languages.xml:19
 msgid "Dutch"
-msgstr "Niederländisch"
+msgstr "Tiếng Hà Lan"
 
 #: data/resources/document_wizard/languages.xml:25
 msgid "Esperanto"
-msgstr "Esperanto"
+msgstr "Quốc tế ngữ"
 
 #: data/resources/document_wizard/languages.xml:26
 msgid "Estonian"
-msgstr "Estnisch"
+msgstr "Tiếng Estonia"
 
 #: data/resources/document_wizard/languages.xml:27
 msgid "Finnish"
-msgstr "Finnisch"
+msgstr "Tiếng Phần Lan"
 
 #: data/resources/document_wizard/languages.xml:29
 msgid "Galician"
-msgstr "Galicisch"
+msgstr "Tiếng Galicia"
 
 #: data/resources/document_wizard/languages.xml:33
 #: data/resources/document_wizard/languages.xml:34
 msgid "Greek"
-msgstr "Griechisch"
+msgstr "Tiếng Hy Lạp"
 
 #: data/resources/document_wizard/languages.xml:35
 msgid "Hebrew"
-msgstr "Hebräisch"
+msgstr "Tiếng Do Thái"
 
 #: data/resources/document_wizard/languages.xml:36
 msgid "Icelandic"
-msgstr "Isländisch"
+msgstr "Tiếng Iceland"
 
 #: data/resources/document_wizard/languages.xml:37
 msgid "Indonesian"
-msgstr "Indonesisch"
+msgstr "Tiếng Indonesia"
 
 #: data/resources/document_wizard/languages.xml:38
 msgid "Interlingua"
-msgstr "Interlingua"
+msgstr "Liên ngôn ngữ"
 
 #: data/resources/document_wizard/languages.xml:39
 msgid "Irish Gaelic"
-msgstr "Irisches Gälisch"
+msgstr "Tiếng Gaelic Ireland"
 
 #: data/resources/document_wizard/languages.xml:40
 msgid "Latin"
-msgstr "Latein"
+msgstr "Tiếng Latin"
 
 #: data/resources/document_wizard/languages.xml:41
 msgid "Lower Sorbian"
-msgstr "Niedersorbisch"
+msgstr "Tiếng Hạ Sorbia"
 
 #: data/resources/document_wizard/languages.xml:42
 msgid "Malay"
-msgstr "Malaysisch"
+msgstr "Tiếng Mã Lai"
 
 #: data/resources/document_wizard/languages.xml:43
 msgid "Northern Sami"
-msgstr "Nordsamisch"
+msgstr "Tiếng Bắc Sami"
 
 #: data/resources/document_wizard/languages.xml:44
 #: data/resources/document_wizard/languages.xml:45
 msgid "Norwegian"
-msgstr "Norwegisch"
+msgstr "Tiếng Na Uy"
 
 #: data/resources/document_wizard/languages.xml:46
 msgid "Polish"
-msgstr "Polnisch"
+msgstr "Tiếng Ba Lan"
 
 #: data/resources/document_wizard/languages.xml:47
 msgid "Romanian"
-msgstr "Rumänisch"
+msgstr "Tiếng Rumani"
 
 #: data/resources/document_wizard/languages.xml:48
 msgid "Scottish Gaelic"
-msgstr "Schottisches Gälisch"
+msgstr "Tiếng Gaelic Scotland"
 
 #: data/resources/document_wizard/languages.xml:49
 msgid "Slovakian"
-msgstr "Slowakisch"
+msgstr "Tiếng Slovakia"
 
 #: data/resources/document_wizard/languages.xml:50
 msgid "Slovenian"
-msgstr "Slowenisch"
+msgstr "Tiếng Slovenia"
 
 #: data/resources/document_wizard/languages.xml:51
 msgid "Swedish"
-msgstr "Schwedisch"
+msgstr "Tiếng Thụy Điển"
 
 #: data/resources/document_wizard/languages.xml:52
 msgid "Serbian"
-msgstr "Serbisch"
+msgstr "Tiếng Serbia"
 
 #: data/resources/document_wizard/languages.xml:53
 msgid "Turkish"
-msgstr "Türkisch"
+msgstr "Tiếng Thổ Nhĩ Kỳ"
 
 #: data/resources/document_wizard/languages.xml:54
 msgid "Ukrainian"
-msgstr "Ukrainisch"
+msgstr "Tiếng Ukraina"
 
 #: data/resources/document_wizard/languages.xml:55
 msgid "Upper Sorbian"
-msgstr "Obersorbisch"
+msgstr "Tiếng Thượng Sorbia"
 
 #: data/resources/document_wizard/languages.xml:56
 msgid "Welsh"
-msgstr "Walisisch"
-
-#~ msgid "Bug fix"
-#~ msgstr "Bug fix"
-
-#, fuzzy
-#~ msgid "Performance improvements, persistent zoom in preview, ..."
-#~ msgstr "Performance improvements, ..."
-
-#~ msgid "Performance improvements, ..."
-#~ msgstr "Performance improvements, ..."
-
-#~ msgid "Support for links in .pdf preview, new welcome screen, ..."
-#~ msgstr "Support for links in .pdf preview, new welcome screen, ..."
-
-#~ msgid "Build button now does save and build, performance improvements, ..."
-#~ msgstr "Build button now does save and build, performance improvements, ..."
-
-#~ msgid ""
-#~ "Save and build on F5, build in the directory of the LaTeX document being "
-#~ "built, .cls and .sty file editing, ..."
-#~ msgstr ""
-#~ "Save and build on F5, build in the directory of the LaTeX document being "
-#~ "built, .cls and .sty file editing, ..."
-
-#~ msgid ""
-#~ "Zoom in editor view, show warning when document was deleted on disk, ..."
-#~ msgstr ""
-#~ "Zoom in editor view, show warning when document was deleted on disk, ..."
-
-#~ msgid "Set editor font, context menu in shortcuts bar, ..."
-#~ msgstr "Set editor font, context menu in shortcuts bar, ..."
-
-#~ msgid ""
-#~ "Add syntax themes from files, edit begin and end commands simultaneously, "
-#~ "autocomplete improvements, ..."
-#~ msgstr ""
-#~ "Add syntax themes from files, edit begin and end commands simultaneously, "
-#~ "autocomplete improvements, ..."
-
-#~ msgid "New syntax highlighting theme, full line indentation, ..."
-#~ msgstr "New syntax highlighting theme, full line indentation, ..."
-
-#~ msgid ""
-#~ "Tab autocomplete, dynamic citations autocomplete, more autocomplete "
-#~ "improvements, ..."
-#~ msgstr ""
-#~ "Tab autocomplete, dynamic citations autocomplete, more autocomplete "
-#~ "improvements, ..."
-
-#~ msgid "Biber support, Glossaries support, ..."
-#~ msgstr "Biber support, Glossaries support, ..."
-
-#~ msgid ""
-#~ "Use Latexmk with any LaTeX interpreter, invert colors in .pdf preview, ..."
-#~ msgstr ""
-#~ "Use Latexmk with any LaTeX interpreter, invert colors in .pdf preview, ..."
-
-#~ msgid ""
-#~ "Redesigned help panel homepage, LaTeX package documentation links, ..."
-#~ msgstr ""
-#~ "Redesigned help panel homepage, LaTeX package documentation links, ..."
-
-#~ msgid ""
-#~ "Italian translation, help panel with LaTeX documentation, open files from "
-#~ "the file manager and command line, ..."
-#~ msgstr ""
-#~ "Italian translation, help panel with LaTeX documentation, open files from "
-#~ "the file manager and command line, ..."
-
-#~ msgid "German translation, external .pdf viewer button, ..."
-#~ msgstr "German translation, external .pdf viewer button, ..."
-
-#~ msgid ""
-#~ "Initial backward synctex support, improved synctex highlighting, search "
-#~ "UI improvements, ..."
-#~ msgstr ""
-#~ "Initial backward synctex support, improved synctex highlighting, search "
-#~ "UI improvements, ..."
-
-#~ msgid "Session management, highlight passages on build, ..."
-#~ msgstr "Session management, highlight passages on build, ..."
-
-#~ msgid ""
-#~ "Zoom level popover for the .pdf preview, preview should use far less "
-#~ "memory now, ..."
-#~ msgstr ""
-#~ "Zoom level popover for the .pdf preview, preview should use far less "
-#~ "memory now, ..."
-
-#~ msgid "Bug fixes"
-#~ msgstr "Bug fixes"
-
-#~ msgid ""
-#~ "Enable embedded system commands, document modified on disk dialog, option "
-#~ "to highlight current line, option to highlight matching brackets, ..."
-#~ msgstr ""
-#~ "Enable embedded system commands, document modified on disk dialog, option "
-#~ "to highlight current line, option to highlight matching brackets, ..."
-
-#~ msgid "Add/remove packages dialog, improved HiDPI support, ..."
-#~ msgstr "Add/remove packages dialog, improved HiDPI support, ..."
-
-#~ msgid "Keyboard shortcuts in popovers, more commands in shortcuts bar, ..."
-#~ msgstr "Keyboard shortcuts in popovers, more commands in shortcuts bar, ..."
-
-#~ msgid ""
-#~ "More commands in shortcuts bar, autocomplete now case insensitive, ..."
-#~ msgstr ""
-#~ "More commands in shortcuts bar, autocomplete now case insensitive, ..."
-
-#~ msgid "HiDPI support in .pdf preview, presistent code folding, ..."
-#~ msgstr "HiDPI support in .pdf preview, presistent code folding, ..."
-
-#~ msgid "Initial code folding support, ..."
-#~ msgstr "Initial code folding support, ..."
-
-#~ msgid ""
-#~ "References to existing labels in autocomplete, persistent root document "
-#~ "state, ..."
-#~ msgstr ""
-#~ "References to existing labels in autocomplete, persistent root document "
-#~ "state, ..."
-
-#~ msgid "Initial spellchecking support, ..."
-#~ msgstr "Initial spellchecking support, ..."
-
-#~ msgid ""
-#~ "Simple BibTeX wizard, more bibliography features in LaTeX editor, ..."
-#~ msgstr ""
-#~ "Simple BibTeX wizard, more bibliography features in LaTeX editor, ..."
-
-#~ msgid "BibTeX support in the build system, edit BibTeX files, ..."
-#~ msgstr "BibTeX support in the build system, edit BibTeX files, ..."
-
-#~ msgid "Editor settings in preferences dialog, ..."
-#~ msgstr "Editor settings in preferences dialog, ..."
-
-#~ msgid ""
-#~ "Build multiple times to resolve undefined references, show warnings in "
-#~ "build log, ..."
-#~ msgstr ""
-#~ "Build multiple times to resolve undefined references, show warnings in "
-#~ "build log, ..."
-
-#~ msgid "Indent multi-line inserts, ..."
-#~ msgstr "Indent multi-line inserts, ..."
-
-#~ msgid "Multiple documents in build log, build in temporary folder, ..."
-#~ msgstr "Multiple documents in build log, build in temporary folder, ..."
-
-#~ msgid "Root document function, ..."
-#~ msgstr "Root document function, ..."
-
-#~ msgid "New app layout, animated wizard button, big code refactor, ..."
-#~ msgstr "New app layout, animated wizard button, big code refactor, ..."
-
-#~ msgid "Set margins in wizard, improved icon, ..."
-#~ msgstr "Set margins in wizard, improved icon, ..."
-
-#~ msgid "Initial release"
-#~ msgstr "Initial release"
-
-#~ msgid "Create a new LaTeX document"
-#~ msgstr "Neues LaTeX-Dokument erstellen"
-
-#~ msgid "Badbox"
-#~ msgstr "Badbox"
-
-#~ msgid "Error"
-#~ msgstr "Fehler"
-
-#~ msgid "Warning"
-#~ msgstr "Warnung"
-
-#~ msgid "No open documents"
-#~ msgstr "Keine Dokumente geöffnet"
-
-#~ msgid "Setzer"
-#~ msgstr "Setzer"
-
-#~ msgid "Cvfosammmm"
-#~ msgstr "Cvfosammmm"
-
-#~ msgid "Greek letter"
-#~ msgstr "Griechischer Buchstabe"
-
-#~ msgid "Verbatim environment, content won't be interpreted as LaTeX."
-#~ msgstr "Verbatim Umgebung, Inhalt wird nicht von LaTeX ausgewertet."
-
-#~ msgid "Include a non-cited item from the bibliography"
-#~ msgstr "Einen nicht-zitierten BibTeX-Eintrag einbinden"
-
-#~ msgid "Include all non-cited items from the bibliography"
-#~ msgstr "Alle nicht-zitierten BibTeX-Einträge einbinden"
-
-#~ msgid "Colored Text"
-#~ msgstr "Farbiger Text"
-
-#~ msgid "Monospaced Text"
-#~ msgstr "Monospace-Text"
-
-#~ msgid "Inline verbatim text that won't be interpreted as LaTeX."
-#~ msgstr "Verbatim Text, der nicht von LaTeX ausgewertet wird."
-
-#~ msgid "Make text 'tiny' within current scope"
-#~ msgstr "Schriftgröße 'tiny'"
-
-#~ msgid "Make text 'scriptsize' within current scope"
-#~ msgstr "Schriftgröße 'scriptsize'"
-
-#~ msgid "Make text 'footnotesize' within current scope"
-#~ msgstr "Schriftgröße 'footnotesize'"
-
-#~ msgid "Make text 'small' within current scope"
-#~ msgstr "Schriftgröße 'small'"
-
-#~ msgid "Make text 'normalsize' within current scope"
-#~ msgstr "Schriftgröße 'normalsize'"
-
-#~ msgid "Make text 'large' within current scope"
-#~ msgstr "Schriftgröße 'large'"
-
-#~ msgid "Make text 'Large' within current scope"
-#~ msgstr "Schriftgröße 'Large'"
-
-#~ msgid "Make text 'LARGE' within current scope"
-#~ msgstr "Schriftgröße 'LARGE'"
-
-#~ msgid "Make text 'huge' within current scope"
-#~ msgstr "Schriftgröße 'huge'"
-
-#~ msgid "Make text 'Huge' within current scope"
-#~ msgstr "Schriftgröße 'Huge'"
-
-#~ msgid "error"
-#~ msgid_plural "errors"
-#~ msgstr[0] "Fehler"
-#~ msgstr[1] "Fehler"
-
-#~ msgid "warning"
-#~ msgid_plural "warnings"
-#~ msgstr[0] "Warnung"
-#~ msgstr[1] "Warnungen"
-
-#~ msgid "badbox"
-#~ msgid_plural "badboxes"
-#~ msgstr[0] "Badbox"
-#~ msgstr[1] "Badboxen"
-
-#~ msgid "Failed"
-#~ msgstr "Fehlgeschlagen"
-
-#~ msgid "{amount} {str_errors}"
-#~ msgstr "{amount} {str_errors}"
-
-#~ msgid "occurrence"
-#~ msgid_plural "occurrences"
-#~ msgstr[0] "Treffer"
-#~ msgstr[1] "Treffer"
+msgstr "Tiếng xứ Wales"
