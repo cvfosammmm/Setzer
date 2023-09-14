@@ -58,8 +58,6 @@ class SymbolsPage(object):
         self.view.search_entry.connect('stop-search', self.on_search_stopped)
         self.view.search_entry.connect('search-changed', self.on_search_changed)
 
-        self.update_symbols()
-
     def update_recent_widget(self):
         for item in [item for item in self.recent]:
             self.add_recent_symbol_to_flowbox(item)
@@ -161,7 +159,7 @@ class SymbolsPage(object):
                 offset += symbols_view.get_allocated_height() + self.view.tabs.get_allocated_height()
 
     def on_next_button_clicked(self, button):
-        offset = self.view.symbols_view_recent.get_allocated_height() + self.view.label_recent.get_allocated_height() + 2
+        offset = self.view.symbols_view_recent.get_allocated_height() + self.view.tabs.get_allocated_height() + 1
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
         if scrolling_offset < offset:
             self.scroll_view(offset)
@@ -171,19 +169,19 @@ class SymbolsPage(object):
             label = self.view.labels[len(self.view.symbols_views) - key - 1]
 
             if len(symbols_view.visible_symbols) > 0:
-                view_height = (symbols_view.get_allocated_height() + label.get_allocated_height()) + 1
+                view_height = (symbols_view.get_allocated_height() + self.view.tabs.get_allocated_height())
             else:
                 view_height = 0
 
             if offset > scrolling_offset - view_height:
-                new_offset = offset + (symbols_view.get_allocated_height() + label.get_allocated_height()) + 1
+                new_offset = offset + (symbols_view.get_allocated_height() + self.view.tabs.get_allocated_height())
                 if key < len(self.view.symbols_views) - 1:
                     self.scroll_view(new_offset)
                 break
             offset += view_height
 
     def on_prev_button_clicked(self, button):
-        offset = self.view.symbols_view_recent.get_allocated_height() + self.view.label_recent.get_allocated_height() + 2
+        offset = self.view.symbols_view_recent.get_allocated_height() + self.view.tabs.get_allocated_height() + 1
         old_offset = offset
         scrolling_offset = self.view.scrolled_window.get_vadjustment().get_value()
 
@@ -195,7 +193,7 @@ class SymbolsPage(object):
             label = self.view.labels[len(self.view.symbols_views) - key - 1]
 
             if len(symbols_view.visible_symbols) > 0:
-                view_height = (symbols_view.get_allocated_height() + label.get_allocated_height()) + 1
+                view_height = (symbols_view.get_allocated_height() + self.view.tabs.get_allocated_height())
             else:
                 view_height = 0
 
