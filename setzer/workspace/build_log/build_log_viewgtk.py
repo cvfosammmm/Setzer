@@ -101,7 +101,7 @@ class BuildLogList(Gtk.Widget):
         if self.hover_item != None:
             snapshot.append_color(hover_color, Graphene.Rect().init(0, self.hover_item * self.line_height, self.get_allocated_width(), self.line_height))
 
-        snapshot.translate(Graphene.Point().init(40, 0))
+        snapshot.translate(Graphene.Point().init(40, 3))
         snapshot.append_layout(self.layouts[0], fg_color)
         snapshot.translate(Graphene.Point().init(76, 0))
         snapshot.append_layout(self.layouts[1], fg_color)
