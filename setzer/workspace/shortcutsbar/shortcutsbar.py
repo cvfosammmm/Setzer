@@ -33,8 +33,13 @@ class Shortcutsbar(object):
         self.latex_shortcutsbar.button_build_log.set_active(self.workspace.get_show_build_log())
         self.latex_shortcutsbar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
         self.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
+
         self.latex_shortcutsbar.button_search.connect('clicked', self.on_find_button_clicked)
         self.latex_shortcutsbar.button_replace.connect('clicked', self.on_find_replace_button_clicked)
+        self.bibtex_shortcutsbar.button_search.connect('clicked', self.on_find_button_clicked)
+        self.bibtex_shortcutsbar.button_replace.connect('clicked', self.on_find_replace_button_clicked)
+        self.others_shortcutsbar.button_search.connect('clicked', self.on_find_button_clicked)
+        self.others_shortcutsbar.button_replace.connect('clicked', self.on_find_replace_button_clicked)
 
         self.workspace.connect('document_removed', self.on_document_removed)
         self.workspace.connect('new_active_document', self.on_new_active_document)
@@ -99,12 +104,13 @@ class Shortcutsbar(object):
     def update_buttons(self, workspace=None, parameter=None):
         if self.document == None: return
 
-        if self.document.is_latex_document():
-            self.latex_shortcutsbar.button_more.set_popover(self.document.context_menu.popover_more)
-            self.latex_shortcutsbar.button_search.set_active(self.document.search.search_bar_mode == 'search')
-            self.latex_shortcutsbar.button_replace.set_active(self.document.search.search_bar_mode == 'replace')
-        else:
-            self.latex_shortcutsbar.button_more.set_popover(None)
+        if self.document.is_latex_document(): scbar = self.latex_shortcutsbar
+        elif self.document.is_bibtex_document(): scbar = self.bibtex_shortcutsbar
+        else: scbar = self.others_shortcutsbar
+
+        scbar.button_more.set_popover(self.document.context_menu.popover_more)
+        scbar.button_search.set_active(self.document.search.search_bar_mode == 'search')
+        scbar.button_replace.set_active(self.document.search.search_bar_mode == 'replace')
 
         show_build_log = self.workspace.get_show_build_log()
         self.latex_shortcutsbar.button_build_log.set_active(show_build_log)

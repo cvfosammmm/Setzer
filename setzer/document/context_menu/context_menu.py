@@ -90,11 +90,14 @@ class ContextMenu(object):
         button_select_all = self.create_button(_('Select All'), 'win.select-all', shortcut=_('Ctrl') + '+A')
         MenuBuilder.add_widget(self.current_popover, button_select_all)
         MenuBuilder.add_separator(self.current_popover)
-        button_toggle_comment = self.create_button(_('Toggle Comment'), 'win.toggle-comment', shortcut=_('Ctrl') + '+K')
-        MenuBuilder.add_widget(self.current_popover, button_toggle_comment)
-        button_forward_sync = self.create_button(_('Show in Preview'), 'win.forward-sync')
-        MenuBuilder.add_widget(self.current_popover, button_forward_sync)
-        MenuBuilder.add_separator(self.current_popover)
+
+        if self.document.is_latex_document():
+            button_toggle_comment = self.create_button(_('Toggle Comment'), 'win.toggle-comment', shortcut=_('Ctrl') + '+K')
+            MenuBuilder.add_widget(self.current_popover, button_toggle_comment)
+            button_forward_sync = self.create_button(_('Show in Preview'), 'win.forward-sync')
+            MenuBuilder.add_widget(self.current_popover, button_forward_sync)
+            MenuBuilder.add_separator(self.current_popover)
+
         box = Gtk.CenterBox()
         box.set_orientation(Gtk.Orientation.HORIZONTAL)
         zoom_label = Gtk.Label.new(_('Zoom'))

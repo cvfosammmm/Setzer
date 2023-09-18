@@ -433,31 +433,26 @@ class Actions(object):
 
     def start_search(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
-        if not self.workspace.get_active_document().is_latex_document(): return
 
         self.workspace.get_active_document().search.set_mode_search()
 
     def start_search_and_replace(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
-        if not self.workspace.get_active_document().is_latex_document(): return
 
         self.workspace.get_active_document().search.set_mode_replace()
 
     def find_next(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
-        if not self.workspace.get_active_document().is_latex_document(): return
 
         self.workspace.get_active_document().search.on_search_next_match()
 
     def find_previous(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
-        if not self.workspace.get_active_document().is_latex_document(): return
 
         self.workspace.get_active_document().search.on_search_previous_match()
 
     def stop_search(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
-        if not self.workspace.get_active_document().is_latex_document(): return
 
         self.workspace.get_active_document().search.hide_search_bar()
 
