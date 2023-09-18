@@ -470,7 +470,11 @@ box.preferences-page .description {
     font-size: 13px;
 }
 box.preferences-page .preview {
-    border: 1px solid @borders;
+    border-top: 1px solid @borders;
+    margin-top: 18px;
+}
+box.preferences-page .preview textview {
+    padding: 18px;
 }
 box.preferences-page flowboxchild {
     border: 1px solid @borders;
