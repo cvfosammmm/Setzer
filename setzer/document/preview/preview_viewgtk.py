@@ -40,6 +40,14 @@ class PreviewView(Gtk.Box):
         self.action_bar_right = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.action_bar.set_end_widget(self.action_bar_right)
 
+        self.recolor_pdf_toggle = Gtk.ToggleButton()
+        self.recolor_pdf_toggle.set_child(Gtk.Image.new_from_icon_name('preferences-color-symbolic'))
+        self.recolor_pdf_toggle.set_tooltip_text(_('Show .pdf in theme colors'))
+        self.recolor_pdf_toggle.get_style_context().add_class('flat')
+        self.recolor_pdf_toggle.set_can_focus(False)
+        self.recolor_pdf_toggle.get_style_context().add_class('scbar')
+        self.action_bar_right.append(self.recolor_pdf_toggle)
+
         self.external_viewer_button = Gtk.Button.new_from_icon_name('external-viewer-symbolic')
         self.external_viewer_button.set_tooltip_text(_('External Viewer'))
         self.external_viewer_button.get_style_context().add_class('flat')

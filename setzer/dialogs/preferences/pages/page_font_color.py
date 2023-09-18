@@ -42,6 +42,8 @@ class PageFontColor(object):
     def init(self):
         self.update_switchers()
         self.view.style_switcher.connect('child-activated', self.on_style_switcher_changed)
+        self.view.option_recolor_pdf.set_active(self.settings.get_value('preferences', 'recolor_pdf'))
+        self.view.option_recolor_pdf.connect('toggled', self.on_recolor_pdf_option_toggled)
 
         self.update_font_color_preview()
 
@@ -59,6 +61,9 @@ class PageFontColor(object):
     def on_use_system_font_toggled(self, button):
         self.view.font_chooser_revealer.set_reveal_child(not button.get_active())
         self.settings.set_value('preferences', 'use_system_font', button.get_active())
+
+    def on_recolor_pdf_option_toggled(self, button):
+        self.settings.set_value('preferences', 'recolor_pdf', button.get_active())
 
     def on_font_set(self, button):
         if button.get_font_size() < 6 * Pango.SCALE:
@@ -153,6 +158,18 @@ class PageFontColorView(Gtk.Box):
         self.style_switcher.set_margin_start(18)
         self.style_switcher.set_margin_bottom(18)
         self.append(self.style_switcher)
+
+        label = Gtk.Label()
+        label.set_markup('<b>' + _('Options') + '</b>')
+        label.set_xalign(0)
+        label.set_margin_start(18)
+        label.set_margin_bottom(6)
+        self.append(label)
+
+        self.option_recolor_pdf = Gtk.CheckButton.new_with_label(_('Show .pdf in theme colors'))
+        self.option_recolor_pdf.set_margin_start(18)
+        self.option_recolor_pdf.set_margin_bottom(18)
+        self.append(self.option_recolor_pdf)
 
         self.preview_wrapper = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.preview_wrapper.get_style_context().add_class('preview')

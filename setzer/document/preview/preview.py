@@ -47,7 +47,7 @@ class Preview(Observable):
         self.document = document
 
         self.pdf_filename = None
-        self.invert_pdf = False
+        self.recolor_pdf = self.document.settings.get_value('preferences', 'recolor_pdf')
 
         self.poppler_document = None
         self.page_width = None
@@ -71,6 +71,14 @@ class Preview(Observable):
         self.document.connect('filename_change', self.on_filename_change)
         self.document.connect('pdf_updated', self.on_pdf_updated)
 
+        self.document.settings.connect('settings_changed', self.on_settings_changed)
+
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+
+        if item == 'recolor_pdf':
+            self.set_recolor_pdf(value)
+
     def on_filename_change(self, document, filename=None):
         if filename != None:
             pdf_filename = os.path.splitext(filename)[0] + '.pdf'
@@ -85,9 +93,9 @@ class Preview(Observable):
         if pdf_filename != self.pdf_filename:
             self.pdf_filename = pdf_filename
 
-    def set_invert_pdf(self, invert_pdf):
-        self.invert_pdf = invert_pdf
-        self.add_change_code('invert_pdf_changed')
+    def set_recolor_pdf(self, recolor_pdf):
+        self.recolor_pdf = recolor_pdf
+        self.add_change_code('recolor_pdf_changed')
 
     def get_pdf_date(self):
         if self.pdf_filename != None:

@@ -17,7 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import GObject
+from gi.repository import GObject, Gdk
 import cairo
 
 import os.path
@@ -41,9 +41,11 @@ class PreviewPresenter(object):
         self.view.drawing_area.set_draw_func(self.draw)
 
         self.preview.connect('pdf_changed', self.on_pdf_changed)
-        self.preview.connect('invert_pdf_changed', self.on_invert_pdf_changed)
+        self.preview.connect('recolor_pdf_changed', self.on_recolor_pdf_changed)
         self.preview.connect('layout_changed', self.on_layout_changed)
         self.page_renderer.connect('rendered_pages_changed', self.on_rendered_pages_changed)
+
+        self.view.recolor_pdf_toggle.set_active(self.preview.recolor_pdf)
 
         self.show_blank_slate()
 
@@ -53,7 +55,8 @@ class PreviewPresenter(object):
         else:
             self.show_blank_slate()
 
-    def on_invert_pdf_changed(self, preview):
+    def on_recolor_pdf_changed(self, preview):
+        self.view.recolor_pdf_toggle.set_active(self.preview.recolor_pdf)
         self.view.drawing_area.queue_draw()
 
     def on_layout_changed(self, preview):
@@ -90,9 +93,7 @@ class PreviewPresenter(object):
             self.preview.setup_layout_and_zoom_levels()
             return
 
-        bg_color = ColorManager.get_ui_color('window_bg_color')
-        border_color = ColorManager.get_ui_color('borders')
-        self.draw_background(ctx, drawing_area, bg_color)
+        self.draw_background(ctx, drawing_area)
 
         page_height = self.preview.layout.page_height
         page_gap = self.preview.layout.page_gap
@@ -104,23 +105,28 @@ class PreviewPresenter(object):
         ctx.transform(cairo.Matrix(1, 0, 0, 1, margin - scrolling_offset_x, first_page * (page_height + page_gap) - scrolling_offset_y))
 
         for page_number in range(first_page, last_page + 1):
-            self.draw_page_background_and_outline(ctx, border_color)
+            self.draw_page_background_and_outline(ctx)
             self.draw_rendered_page(ctx, page_number)
             self.draw_synctex_rectangles(ctx, page_number)
 
             ctx.transform(cairo.Matrix(1, 0, 0, 1, 0, page_height + self.preview.layout.page_gap))
 
-    def draw_background(self, ctx, drawing_area, bg_color):
+    def draw_background(self, ctx, drawing_area):
         ctx.rectangle(0, 0, drawing_area.get_allocated_width(), drawing_area.get_allocated_height())
-        ctx.set_source_rgba(bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha)
+        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('window_bg_color'))
         ctx.fill()
 
     #@timer
-    def draw_page_background_and_outline(self, ctx, border_color):
-        ctx.set_source_rgba(border_color.red, border_color.green, border_color.blue, border_color.alpha)
+    def draw_page_background_and_outline(self, ctx):
+        Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('borders'))
         ctx.rectangle(- self.preview.layout.border_width, - self.preview.layout.border_width, self.preview.layout.page_width + 2 * self.preview.layout.border_width, self.preview.layout.page_height + 2 * self.preview.layout.border_width)
         ctx.fill()
-        ctx.set_source_rgba(1, 1, 1, 1)
+
+        if self.preview.recolor_pdf:
+            Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('view_bg_color'))
+        else:
+            ctx.set_source_rgba(1, 1, 1, 1)
+
         ctx.rectangle(0, 0, self.preview.layout.page_width, self.preview.layout.page_height)
         ctx.fill()
 
@@ -136,15 +142,26 @@ class PreviewPresenter(object):
         matrix = ctx.get_matrix()
         factor = self.preview.layout.page_width / page_width
         ctx.scale(factor, factor)
-        ctx.set_source_surface(surface, 0, 0)
+
+        colored_surface = cairo.ImageSurface(cairo.Format.ARGB32, int(self.preview.layout.page_width / factor), int(self.preview.layout.page_height / factor))
+        temp_ctx = cairo.Context(colored_surface)
+        temp_ctx.set_source_rgba(1, 1, 1, 0)
+        temp_ctx.rectangle(0, 0, self.preview.layout.page_width / factor, self.preview.layout.page_height / factor)
+        temp_ctx.fill()
+        temp_ctx.set_source_surface(surface, 0, 0)
+        temp_ctx.rectangle(0, 0, self.preview.layout.page_width / factor, self.preview.layout.page_height / factor)
+        temp_ctx.fill()
+
+        if self.preview.recolor_pdf:
+            Gdk.cairo_set_source_rgba(temp_ctx, ColorManager.get_ui_color('view_fg_color'))
+            temp_ctx.set_operator(cairo.Operator.IN)
+            temp_ctx.rectangle(0, 0, self.preview.layout.page_width / factor, self.preview.layout.page_height / factor)
+            temp_ctx.fill()
+
+        ctx.set_source_surface(colored_surface, 0, 0)
         ctx.rectangle(0, 0, self.preview.layout.page_width / factor, self.preview.layout.page_height / factor)
         ctx.fill()
-        if self.preview.invert_pdf:
-            ctx.set_operator(cairo.Operator.DIFFERENCE)
-            ctx.set_source_rgb(1, 1, 1)
-            ctx.rectangle(0, 0, self.preview.layout.page_width / factor, self.preview.layout.page_height / factor)
-            ctx.fill()
-            ctx.set_operator(cairo.Operator.OVER)
+
         ctx.set_matrix(matrix)
 
     def draw_synctex_rectangles(self, ctx, page_number):
@@ -158,7 +175,7 @@ class PreviewPresenter(object):
             else:
                 color = ColorManager.get_ui_color('highlight_tag_preview')
                 color.alpha *= time_factor
-                ctx.set_source_rgba(color.red, color.green, color.blue, color.alpha)
+                Gdk.cairo_set_source_rgba(ctx, color)
                 ctx.set_operator(cairo.Operator.MULTIPLY)
                 for rectangle in rectangles:
                     ctx.rectangle(rectangle['x'], rectangle['y'], rectangle['width'], rectangle['height'])
