@@ -25,6 +25,7 @@ class DocumentView(Gtk.Box):
     def __init__(self, document):
         Gtk.Box.__init__(self)
         self.set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.get_style_context().add_class('document')
 
         self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.vbox.set_hexpand(True)

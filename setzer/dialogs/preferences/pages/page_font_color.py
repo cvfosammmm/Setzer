@@ -41,8 +41,7 @@ class PageFontColor(object):
 
     def init(self):
         self.update_switchers()
-        self.view.style_switcher.set_active_id(self.settings.get_value('preferences', 'color_scheme'))
-        self.view.style_switcher.connect('changed', self.on_style_switcher_changed)
+        self.view.style_switcher.connect('child-activated', self.on_style_switcher_changed)
 
         self.update_font_color_preview()
 
@@ -73,8 +72,9 @@ class PageFontColor(object):
             
         self.settings.set_value('preferences', 'font_string', button.get_font())
 
-    def on_style_switcher_changed(self, switcher):
-        value = switcher.get_active_id()
+    def on_style_switcher_changed(self, switcher, child_widget):
+        style_scheme_preview = child_widget.get_child()
+        value = style_scheme_preview.get_scheme().get_name()
         if value != None:
             self.settings.set_value('preferences', 'color_scheme', value)
             self.update_font_color_preview()
@@ -84,29 +84,17 @@ class PageFontColor(object):
         root = tree.getroot()
         return root.attrib['id']
 
-    def get_scheme_filename_from_id(self, scheme_id):
-        directory_pathname = os.path.join(ServiceLocator.get_config_folder(), 'themes')
-        for filename in os.listdir(directory_pathname):
-            tree = ET.parse(os.path.join(directory_pathname, filename))
-            root = tree.getroot()
-            if root.attrib['id'] == scheme_id:
-                return os.path.join(directory_pathname, filename)
-
     def update_switchers(self):
+        names = ['default', 'default-dark']
+        dirname = os.path.join(ServiceLocator.get_config_folder(), 'themes')
+        if os.path.isdir(dirname):
+            names += [self.get_scheme_id_from_file(os.path.join(dirname, file)) for file in os.listdir(dirname)]
+        for name in names:
+            self.view.style_switcher.add_style(name)
+
         active_id = self.settings.get_value('preferences', 'color_scheme')
-        set_active_id = False
-        for name in ['default', 'default-dark']:
-            self.view.style_switcher.append(name, name)
-        directory_pathname = os.path.join(ServiceLocator.get_config_folder(), 'themes')
-        if os.path.isdir(directory_pathname):
-            for filename in os.listdir(directory_pathname):
-                name = self.get_scheme_id_from_file(os.path.join(directory_pathname, filename))
-                if name == active_id: set_active_id = True
-                self.view.style_switcher.append(name, name)
-        if set_active_id:
-            self.view.style_switcher.set_active_id(active_id)
-        else:
-            self.view.style_switcher.set_active_id('default')
+        if active_id in names: self.view.style_switcher.select_style(active_id)
+        else: self.view.style_switcher.select_style('default')
 
     def update_font_color_preview(self):
         source_style_scheme_manager = ServiceLocator.get_source_style_scheme_manager()
@@ -157,14 +145,12 @@ class PageFontColorView(Gtk.Box):
         label = Gtk.Label()
         label.set_markup('<b>' + _('Color Scheme') + '</b>')
         label.set_xalign(0)
-        label.set_margin_bottom(6)
+        label.set_margin_bottom(7)
         self.append(label)
 
-        self.style_switcher = Gtk.ComboBoxText()
-        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
-        box.set_margin_bottom(18)
-        box.append(self.style_switcher)
-        self.append(box)
+        self.style_switcher = StyleSwitcher()
+        self.style_switcher.set_margin_bottom(18)
+        self.append(self.style_switcher)
 
         label = Gtk.Label()
         label.set_markup('<b>' + _('Preview') + '</b>')
@@ -197,5 +183,40 @@ This is a \\textit{preview}, for $x, y \in \mathbb{R}: x \leq y$ or $x > y$.
         self.source_buffer.place_cursor(self.source_buffer.get_start_iter())
         self.preview_wrapper.append(scrolled_window)
         self.append(self.preview_wrapper)
+
+
+class StyleSwitcher(Gtk.FlowBox):
+
+    def __init__(self):
+        Gtk.FlowBox.__init__(self)
+        self.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        self.set_row_spacing(6)
+        self.set_activate_on_single_click(True)
+        self.get_style_context().add_class('theme_previews')
+
+        self.positions = dict()
+        self.current_max = 0
+        self.current_index = None
+
+        self.connect('selected-children-changed', self.on_child_activated)
+
+    def add_style(self, name):
+        style_manager = ServiceLocator.get_source_style_scheme_manager()
+        widget = GtkSource.StyleSchemePreview.new(style_manager.get_scheme(name))
+        self.append(widget)
+        self.positions[name] = self.current_max
+        self.current_max += 1
+
+    def select_style(self, name):
+        self.select_child(self.get_child_at_index(self.positions[name]))
+
+    def on_child_activated(self, switcher):
+        if self.current_index != None:
+            self.get_child_at_index(self.current_index).get_child().set_selected(False)
+
+        child_widget = self.get_selected_children()[0]
+        name = child_widget.get_child().get_scheme().get_name()
+        child_widget.get_child().set_selected(True)
+        self.current_index = self.positions[name]
 
 

@@ -2,9 +2,8 @@
 ** main_window
 */
 
-textview {
+box.document textview {
     line-height: 1;
-    background: @view_bg_color;
 }
 button.new-document-menu-button {
     padding-left: 8px;
@@ -472,6 +471,27 @@ box.preferences-page .description {
 }
 box.preferences-page .preview {
     border: 1px solid @borders;
+}
+box.preferences-page flowboxchild {
+    border: 1px solid @borders;
+    border-radius: 5px;
+    padding: 0px;
+    margin-right: 6px;
+}
+box.preferences-page flowboxchild:selected {
+    border: 1px solid @accent_bg_color;
+}
+box.preferences-page GtkSourceStyleSchemePreview textview {
+    border-radius: 5px;
+    padding: 0px;
+    margin: 0px;
+}
+box.preferences-page GtkSourceStyleSchemePreview image {
+    background: @accent_bg_color;
+    color: @accent_fg_color;
+    border-radius: 10px;
+    padding: 2px;
+    margin: 4px;
 }
 
 /*

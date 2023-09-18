@@ -54,11 +54,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
 
   <!-- Global Settings -->
   <style name="current-line"                background="#eef4ff"/>
-  <style name="line-numbers"                foreground="black" background="white"/>
-  <style name="current-line-number"         background="aluminium1"/>
   <style name="draw-spaces"                 foreground="aluminium3"/>
   <style name="background-pattern"          background="#f3f3f3"/>
-  <style name="text"                        foreground="black"/>
+  <style name="text"                        foreground="black" background="#ffffff"/>
 
   <!-- Bracket Matching -->
   <style name="bracket-match"               foreground="black" background="aluminium1" bold="true"/>
