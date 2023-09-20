@@ -146,6 +146,7 @@ class PreviewPresenter(object):
         colored_surface = cairo.ImageSurface(cairo.Format.ARGB32, int(self.preview.layout.page_width / factor), int(self.preview.layout.page_height / factor))
         temp_ctx = cairo.Context(colored_surface)
         temp_ctx.set_source_rgba(1, 1, 1, 0)
+        temp_ctx.set_operator(cairo.Operator.OVER)
         temp_ctx.rectangle(0, 0, self.preview.layout.page_width / factor, self.preview.layout.page_height / factor)
         temp_ctx.fill()
         temp_ctx.set_source_surface(surface, 0, 0)

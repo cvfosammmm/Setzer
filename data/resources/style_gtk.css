@@ -342,12 +342,6 @@ box.preview button.scbar, box.preview .scbar > button {
     border-radius: 0px;
     padding: 6px;
 }
-box.preview button.scbar:checked, box.preview .scbar > button:checked {
-    background: @button_active_color;
-}
-box.preview button.scbar:active, box.preview .scbar > button:active {
-    background: @button_active_color;
-}
 .zoom-level-button {
     padding-top: 3px;
     background: @view_bg_color;
@@ -412,12 +406,6 @@ box.help > box button {
 }
 box.help > box button label {
     text-decoration: underline;
-}
-box.help > box button:checked {
-    background: @button_active_color;
-}
-box.help > box button:active {
-    background: @button_active_color;
 }
 label.location-label {
     margin-top: 2px;

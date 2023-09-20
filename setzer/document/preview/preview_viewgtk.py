@@ -41,7 +41,7 @@ class PreviewView(Gtk.Box):
         self.action_bar.set_end_widget(self.action_bar_right)
 
         self.recolor_pdf_toggle = Gtk.ToggleButton()
-        self.recolor_pdf_toggle.set_child(Gtk.Image.new_from_icon_name('preferences-color-symbolic'))
+        self.recolor_pdf_toggle.set_icon_name('preferences-color-symbolic')
         self.recolor_pdf_toggle.set_tooltip_text(_('Show .pdf in theme colors'))
         self.recolor_pdf_toggle.get_style_context().add_class('flat')
         self.recolor_pdf_toggle.set_can_focus(False)

@@ -27,7 +27,7 @@
 
 /* Views - e.g. text view or tree view */
 @define-color view_bg_color #ffffff;
-@define-color view_fg_color rgba(0, 0, 0, 0.8);
+@define-color view_fg_color rgba(0, 0, 0, 1);
 @define-color view_hover_color rgba(0, 0, 0, 0.07);
 @define-color view_active_color rgba(0, 0, 0, 0.16);
 
