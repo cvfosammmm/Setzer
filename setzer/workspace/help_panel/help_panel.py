@@ -108,9 +108,9 @@ a:active {color: @link_color_active; }
 a.external:after {text-decoration: underline; text-decoration-color: @view_bg_color; content: ' 🡭'; }'''
         css = css.replace('@view_bg_color', ColorManager.get_ui_color_string('view_bg_color'))
         css = css.replace('@view_fg_color', ColorManager.get_ui_color_string('view_fg_color'))
-        css = css.replace('@link_color', ColorManager.get_ui_color_string('link_color'))
         css = css.replace('@link_color_visited', ColorManager.get_ui_color_string('link_color_visited'))
         css = css.replace('@link_color_active', ColorManager.get_ui_color_string('link_color_active'))
+        css = css.replace('@link_color', ColorManager.get_ui_color_string('link_color'))
 
         style_sheet = WebKit.UserStyleSheet.new(css, WebKit.UserContentInjectedFrames.ALL_FRAMES, WebKit.UserStyleLevel.USER, None, None)
 
