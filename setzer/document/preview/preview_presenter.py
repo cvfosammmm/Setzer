@@ -23,8 +23,6 @@ import cairo
 import os.path
 import math
 import time
-import numpy as np
-from PIL import Image, ImageFilter
 
 from setzer.app.color_manager import ColorManager
 from setzer.helpers.timer import timer
@@ -128,7 +126,6 @@ class PreviewPresenter(object):
             Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('view_bg_color'))
         else:
             ctx.set_source_rgba(1, 1, 1, 1)
-
         ctx.rectangle(0, 0, self.preview.layout.page_width, self.preview.layout.page_height)
         ctx.fill()
 
@@ -145,33 +142,7 @@ class PreviewPresenter(object):
         factor = self.preview.layout.page_width / page_width
         ctx.scale(factor, factor)
 
-        colored_surface = cairo.ImageSurface(cairo.Format.ARGB32, int(self.preview.layout.page_width / factor), int(self.preview.layout.page_height / factor))
-        temp_ctx = cairo.Context(colored_surface)
-        temp_ctx.set_source_rgba(1, 1, 1, 1)
-        temp_ctx.rectangle(0, 0, self.preview.layout.page_width / factor, self.preview.layout.page_height / factor)
-        temp_ctx.fill()
-        temp_ctx.set_source_surface(surface, 0, 0)
-        temp_ctx.rectangle(0, 0, self.preview.layout.page_width / factor, self.preview.layout.page_height / factor)
-        temp_ctx.fill()
-
-        if self.preview.recolor_pdf:
-            pil_img = Image.frombuffer("RGBA", (colored_surface.get_width(), colored_surface.get_height()), colored_surface.get_data(), "raw", "RGBA", 0, 1)
-
-            img_data = np.array(pil_img, dtype=np.ubyte)
-            alpha = 255 - 0.3 * img_data[..., 0] - 0.6 * img_data[..., 1] - 0.1 * img_data[..., 2]
-            img_data[:,:,-1] = alpha
-            pil_img = Image.fromarray(np.ubyte(img_data))
-
-            im_bytes = bytearray(pil_img.tobytes('raw', 'BGRa'))
-            colored_surface = cairo.ImageSurface.create_for_data(im_bytes, cairo.FORMAT_ARGB32, int(self.preview.layout.page_width / factor), int(self.preview.layout.page_height / factor))
-            temp_ctx = cairo.Context(colored_surface)
-
-            Gdk.cairo_set_source_rgba(temp_ctx, ColorManager.get_ui_color('view_fg_color'))
-            temp_ctx.set_operator(cairo.Operator.IN)
-            temp_ctx.rectangle(0, 0, self.preview.layout.page_width / factor, self.preview.layout.page_height / factor)
-            temp_ctx.fill()
-
-        ctx.set_source_surface(colored_surface, 0, 0)
+        ctx.set_source_surface(surface, 0, 0)
         ctx.rectangle(0, 0, self.preview.layout.page_width / factor, self.preview.layout.page_height / factor)
         ctx.fill()
 

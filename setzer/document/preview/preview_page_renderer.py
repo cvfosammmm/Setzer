@@ -17,13 +17,16 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import GObject
+from gi.repository import GObject, Gdk
 import cairo
 
 import _thread as thread, queue
 import time
 import math
+import numpy as np
+from PIL import Image, ImageFilter
 
+from setzer.app.color_manager import ColorManager
 from setzer.helpers.observable import Observable
 
 
@@ -44,6 +47,8 @@ class PreviewPageRenderer(Observable):
 
         self.preview.connect('position_changed', self.on_layout_or_position_changed)
         self.preview.connect('layout_changed', self.on_layout_or_position_changed)
+        self.preview.connect('recolor_pdf_changed', self.on_recolor_pdf_changed)
+        self.preview.document.settings.connect('settings_changed', self.on_settings_changed)
 
         self.page_render_count_lock = thread.allocate_lock()
         self.page_render_count = dict()
@@ -58,6 +63,15 @@ class PreviewPageRenderer(Observable):
             self.update_rendered_pages()
         else:
             self.rendered_pages = dict()
+
+    def on_recolor_pdf_changed(self, preview):
+        self.update_rendered_pages()
+
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+
+        if item == 'color_scheme':
+            self.update_rendered_pages()
 
     def activate(self):
         with self.is_active_lock:
@@ -77,25 +91,51 @@ class PreviewPageRenderer(Observable):
         while True:
             with self.is_active_lock:
                 is_active = self.is_active
+            todo = None
             if is_active:
                 try: todo = self.render_queue.get(block=False)
                 except queue.Empty:
                     try: todo = self.render_queue_low_priority.get(block=False)
                     except queue.Empty:
                         todo = None
-                        time.sleep(0.05)
-                if todo != None:
-                    with self.page_render_count_lock:
-                        render_count = self.page_render_count[todo['page_number']]
-                    with self.visible_pages_lock:
-                        is_visible = (todo['page_number'] >= self.visible_pages_additional[0] and todo['page_number'] <= self.visible_pages_additional[1])
-                    if todo['render_count'] == render_count and is_visible:
-                        surface = cairo.ImageSurface(cairo.Format.ARGB32, todo['page_width'] * todo['hidpi_factor'], todo['page_height'] * 2)
-                        ctx = cairo.Context(surface)
-                        ctx.scale(todo['scale_factor'] * todo['hidpi_factor'], todo['scale_factor'] * todo['hidpi_factor'])
-                        page = self.preview.poppler_document.get_page(todo['page_number'])
-                        page.render(ctx)
-                        self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [surface, todo['page_width'], todo['pdf_date']]})
+            if todo != None:
+                with self.page_render_count_lock:
+                    render_count = self.page_render_count[todo['page_number']]
+                with self.visible_pages_lock:
+                    is_visible = (todo['page_number'] >= self.visible_pages_additional[0] and todo['page_number'] <= self.visible_pages_additional[1])
+                if todo['render_count'] == render_count and is_visible:
+                    colors = todo['matching_theme_colors']
+                    width = todo['page_width'] * todo['hidpi_factor']
+                    height = todo['page_height'] * 2
+                    surface = cairo.ImageSurface(cairo.Format.ARGB32, width, height)
+                    ctx = cairo.Context(surface)
+                    ctx.scale(todo['scale_factor'] * todo['hidpi_factor'], todo['scale_factor'] * todo['hidpi_factor'])
+
+                    ctx.set_source_rgba(1, 1, 1, 1)
+                    ctx.rectangle(0, 0, width, height)
+                    ctx.fill()
+
+                    page = self.preview.poppler_document.get_page(todo['page_number'])
+                    page.render(ctx)
+
+                    if colors != None:
+                        pil_img = Image.frombuffer("RGBA", (width, height), surface.get_data(), "raw", "RGBA", 0, 1)
+
+                        img_data = np.array(pil_img, dtype=np.ubyte)
+                        alpha = 255 - 0.3 * img_data[..., 0] - 0.6 * img_data[..., 1] - 0.1 * img_data[..., 2]
+                        img_data[:,:,-1] = alpha
+                        pil_img = Image.fromarray(np.ubyte(img_data))
+
+                        im_bytes = bytearray(pil_img.tobytes('raw', 'BGRa'))
+                        surface = cairo.ImageSurface.create_for_data(im_bytes, cairo.FORMAT_ARGB32, width, height)
+                        temp_ctx = cairo.Context(surface)
+
+                        Gdk.cairo_set_source_rgba(temp_ctx, colors[0])
+                        temp_ctx.set_operator(cairo.Operator.IN)
+                        temp_ctx.rectangle(0, 0, width, height)
+                        temp_ctx.fill()
+
+                    self.rendered_pages_queue.put({'page_number': todo['page_number'], 'item': [surface, todo['page_width'], todo['pdf_date'], colors]})
             else:
                 time.sleep(0.05)
 
@@ -138,20 +178,32 @@ class PreviewPageRenderer(Observable):
 
         pdf_date = self.preview.get_pdf_date()
         with self.visible_pages_lock:
-            if pdf_date == self.pdf_date and visible_pages == self.visible_pages and visible_pages_additional == self.visible_pages_additional and page_width == self.page_width:
-                do_return = True
-            else:
-                do_return = False
-        if do_return: return
-        with self.visible_pages_lock:
             self.visible_pages = visible_pages
             self.visible_pages_additional = visible_pages_additional
         self.page_width = page_width
         self.pdf_date = pdf_date
 
+        if self.preview.recolor_pdf:
+            colors = (ColorManager.get_ui_color('view_fg_color'), ColorManager.get_ui_color('view_bg_color'))
+        else:
+            colors = None
+
         changed = False
         for page_number in list(self.rendered_pages):
-            if self.rendered_pages[page_number][2] != pdf_date or page_number < visible_pages_additional[0] or page_number > visible_pages_additional[1]:
+            if self.rendered_pages[page_number][3] == None and colors == None:
+                colors_changed = False
+            elif self.rendered_pages[page_number][3] == None and colors != None:
+                colors_changed = True
+            elif self.rendered_pages[page_number][3] != None and colors == None:
+                colors_changed = True
+            elif not self.rendered_pages[page_number][3][0].equal(colors[0]):
+                colors_changed = True
+            elif not self.rendered_pages[page_number][3][1].equal(colors[1]):
+                colors_changed = True
+            else:
+                colors_changed = False
+
+            if self.rendered_pages[page_number][2] != pdf_date or colors_changed or page_number < visible_pages_additional[0] or page_number > visible_pages_additional[1]:
                 del(self.rendered_pages[page_number])
                 changed = True
         if changed:
@@ -166,9 +218,20 @@ class PreviewPageRenderer(Observable):
                         self.page_render_count[page_number] += 1
                     except KeyError:
                         self.page_render_count[page_number] = 1
+
+                    render_task = dict()
+                    render_task['page_number'] = page_number
+                    render_task['render_count'] = self.page_render_count[page_number]
+                    render_task['scale_factor'] = scale_factor
+                    render_task['hidpi_factor'] = hidpi_factor
+                    render_task['page_width'] = page_width
+                    render_task['page_height'] = page_height
+                    render_task['pdf_date'] = pdf_date
+                    render_task['matching_theme_colors'] = colors
+
                     if visible_pages != None and page_number >= visible_pages[0] and page_number <= visible_pages[1]:
-                        self.render_queue.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'scale_factor': scale_factor, 'hidpi_factor': hidpi_factor, 'page_width': page_width, 'page_height': page_height, 'pdf_date': pdf_date})
+                        self.render_queue.put(render_task)
                     elif page_number >= visible_pages_additional[0] and page_number <= visible_pages_additional[1]:
-                        self.render_queue_low_priority.put({'page_number': page_number, 'render_count': self.page_render_count[page_number], 'scale_factor': scale_factor, 'hidpi_factor': hidpi_factor, 'page_width': page_width, 'page_height': page_height, 'pdf_date': pdf_date})
+                        self.render_queue_low_priority.put(render_task)
 
 
