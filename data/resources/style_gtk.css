@@ -201,6 +201,10 @@ popover button label.shortcut {
     color: @menu_shortcut_color;
     margin-left: 18px;
 }
+popover button image.icon {
+    padding-top: 2px;
+    padding-right: 8px;
+}
 popover separator {
     margin: 6px 0px;
 }
@@ -316,21 +320,11 @@ box.shortcutsbar button.scbar, box.shortcutsbar menubutton.scbar > button {
     border-radius: 0px;
     padding: 6px;
 }
-popover button image.icon {
-    padding-top: 2px;
-    padding-right: 8px;
-}
-popover.menu-own-quotes-symbolic {
-    margin-left: 0px;
-}
 
 /*
 ** preview
 */
 
-box.preview scrolledwindow {
-    background-color: @view_bg_color;
-}
 box.preview > box {
     background-color: @view_bg_color;
     border-bottom: 1px solid @lighter_border;
@@ -378,12 +372,6 @@ box.preview_blank label.body {
     margin-bottom: 50px;
     margin-left: 50px;
     margin-right: 55px;
-}
-paned > paned.hidden-separator separator {
-    padding: 0px;
-}
-paned > paned.visible-separator separator {
-    padding: 4px;
 }
 
 /*
