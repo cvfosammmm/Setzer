@@ -26,16 +26,21 @@ class ReplaceConfirmationDialog(object):
 
     def __init__(self, main_window):
         self.main_window = main_window
+        self.search_context = None
+        self.replacement = None
 
-    def run(self, original, replacement, number_of_occurrences):
+    def run(self, original, replacement, number_of_occurrences, search_context):
+        self.search_context = search_context
+        self.replacement = replacement
         self.setup(original, replacement, number_of_occurrences)
-        response = self.view.run()
-        if response == Gtk.ResponseType.YES:
-            return_value = True
-        else:
-            return_value = False
+
+        self.view.show()
+        self.signal_connection_id = self.view.connect('response', self.process_response)
+
+    def process_response(self, view, response_id):
+        if response_id == Gtk.ResponseType.YES:
+            self.search_context.replace_all(self.replacement, -1)
         self.close()
-        return return_value
 
     def close(self):
         self.view.hide()
@@ -43,11 +48,14 @@ class ReplaceConfirmationDialog(object):
         del(self.view)
 
     def setup(self, original, replacement, number_of_occurrences):
-        self.view = Gtk.MessageDialog(self.main_window, 0, Gtk.MessageType.QUESTION)
+        self.view = Gtk.MessageDialog()
+        self.view.set_transient_for(self.main_window)
+        self.view.set_modal(True)
+        self.view.set_property('message-type', Gtk.MessageType.QUESTION)
 
         str_occurrences = ngettext('Replacing {amount} occurence of »{original}« with »{replacement}«.', 'Replacing {amount} occurrences of »{original}« with »{replacement}«.', number_of_occurrences)
         self.view.set_property('text', str_occurrences.format(amount=str(number_of_occurrences), original=original, replacement=replacement))
-        self.view.format_secondary_markup(_('Do you really want to do this?'))
+        self.view.set_property('secondary-text', _('Do you really want to do this?'))
 
         self.view.add_buttons(_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Yes, replace all occurrences'), Gtk.ResponseType.YES)
         self.view.set_default_response(Gtk.ResponseType.YES)

@@ -82,8 +82,7 @@ class Search(Observable):
 
         if number_of_occurrences > 0:
             dialog = DialogLocator.get_dialog('replace_confirmation')
-            if dialog.run(original, replacement, number_of_occurrences):
-                self.search_context.replace_all(replacement, -1)
+            dialog.run(original, replacement, number_of_occurrences, self.search_context)
 
     def on_search_entry_activate(self, entry=None):
         self.on_search_next_match(entry, True)
