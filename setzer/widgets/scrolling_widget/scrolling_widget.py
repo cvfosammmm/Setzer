@@ -32,7 +32,7 @@ class ScrollingWidget(Observable):
         self.scrolling_offset_x, self.scrolling_offset_y = 0, 0
         self.width, self.height = 0, 0
         self.cursor_x, self.cursor_y = None, None
-        self.sigmoid = 1
+        self.scrolling_multiplier = 2.5
         self.last_cursor_scrolling_change = time.time()
 
         self.view = Gtk.Overlay()
@@ -103,9 +103,8 @@ class ScrollingWidget(Observable):
                 dx *= self.adjustment_x.get_page_size() ** (2/3)
                 dy *= self.adjustment_y.get_page_size() ** (2/3)
             else:
-                self.sigmoid = min(10, 15 / (1 + 2.71828**(-0.1 * abs(dy) + 2.3)))
-                dy *= self.sigmoid
-                dx *= self.sigmoid
+                dy *= self.scrolling_multiplier
+                dx *= self.scrolling_multiplier
 
             self.adjustment_x.set_value(self.adjustment_x.get_value() + dx)
             self.adjustment_y.set_value(self.adjustment_y.get_value() + dy)
@@ -118,7 +117,7 @@ class ScrollingWidget(Observable):
             self.add_change_code('zoom_request', zoom_amount)
 
     def on_decelerate(self, controller, vel_x, vel_y):
-        data = {'starting_time': time.time(), 'initial_position': self.scrolling_offset_y, 'position': self.scrolling_offset_y, 'vel_y': vel_y * self.sigmoid}
+        data = {'starting_time': time.time(), 'initial_position': self.scrolling_offset_y, 'position': self.scrolling_offset_y, 'vel_y': vel_y * self.scrolling_multiplier}
         self.deceleration(data)
 
     def deceleration(self, data):
