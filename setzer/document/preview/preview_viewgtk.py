@@ -46,19 +46,21 @@ class PreviewView(Gtk.Box):
         self.recolor_pdf_toggle.get_style_context().add_class('flat')
         self.recolor_pdf_toggle.set_can_focus(False)
         self.recolor_pdf_toggle.get_style_context().add_class('scbar')
-        self.action_bar_right.append(self.recolor_pdf_toggle)
 
         self.external_viewer_button = Gtk.Button.new_from_icon_name('external-viewer-symbolic')
         self.external_viewer_button.set_tooltip_text(_('External Viewer'))
         self.external_viewer_button.get_style_context().add_class('flat')
         self.external_viewer_button.set_can_focus(False)
         self.external_viewer_button.get_style_context().add_class('scbar')
-        self.external_viewer_button_revealer = Gtk.Revealer()
-        self.external_viewer_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
+
         box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        box.append(self.recolor_pdf_toggle)
         box.append(self.external_viewer_button)
-        self.external_viewer_button_revealer.set_child(box)
-        self.action_bar_right.append(self.external_viewer_button_revealer)
+
+        self.preview_button_revealer = Gtk.Revealer()
+        self.preview_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
+        self.preview_button_revealer.set_child(box)
+        self.action_bar_right.append(self.preview_button_revealer)
 
         self.append(self.action_bar)
 

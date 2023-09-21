@@ -71,12 +71,12 @@ class PreviewPresenter(object):
     def show_blank_slate(self):
         self.view.stack.set_visible_child_name('blank_slate')
         self.view.external_viewer_button.set_sensitive(False)
-        self.view.external_viewer_button_revealer.set_reveal_child(False)
+        self.view.preview_button_revealer.set_reveal_child(False)
 
     def show_pdf(self):
         self.view.stack.set_visible_child_name('pdf')
         self.view.external_viewer_button.set_sensitive(True)
-        self.view.external_viewer_button_revealer.set_reveal_child(True)
+        self.view.preview_button_revealer.set_reveal_child(True)
 
     def start_fade_loop(self):
         def draw():
