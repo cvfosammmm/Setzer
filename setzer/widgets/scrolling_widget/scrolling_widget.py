@@ -96,7 +96,7 @@ class ScrollingWidget(Observable):
         self.adjustment_y.set_value(position[1])
 
     def on_scroll(self, controller, dx, dy):
-        if abs(dx) > 0 and abs(dy / dx) > 1: dx = 0
+        if abs(dx) > 0 and abs(dy / dx) >= 1: dx = 0
 
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
