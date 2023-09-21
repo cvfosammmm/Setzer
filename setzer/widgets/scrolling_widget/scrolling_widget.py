@@ -96,6 +96,8 @@ class ScrollingWidget(Observable):
         self.adjustment_y.set_value(position[1])
 
     def on_scroll(self, controller, dx, dy):
+        if abs(dx) > 0 and abs(dy / dx) > 1: dx = 0
+
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
         if controller.get_current_event_state() & modifiers == 0:
@@ -117,6 +119,8 @@ class ScrollingWidget(Observable):
             self.add_change_code('zoom_request', zoom_amount)
 
     def on_decelerate(self, controller, vel_x, vel_y):
+        if abs(vel_x) > 0 and abs(vel_y / vel_x) > 1: vel_x = 0
+
         data = {'starting_time': time.time(), 'initial_position': self.scrolling_offset_y, 'position': self.scrolling_offset_y, 'vel_y': vel_y * self.scrolling_multiplier}
         self.deceleration(data)
 

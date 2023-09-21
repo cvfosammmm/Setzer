@@ -17,9 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-gi.require_version('Poppler', '0.18')
 from gi.repository import Gdk
-from gi.repository import Poppler
 
 import webbrowser, math
 import _thread as thread
