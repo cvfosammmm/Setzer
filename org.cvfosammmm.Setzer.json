@@ -157,17 +157,28 @@
             ]
         },
         {
-            "name": "python3-numpy",
+            "name": "numpy",
             "buildsystem": "simple",
             "build-commands": [
-                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"numpy\" --no-build-isolation"
+                "pip3 install --no-build-isolation --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} numpy"
             ],
             "sources": [
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/55/b3/b13bce39ba82b7398c06d10446f5ffd5c07db39b09bd37370dc720c7951c/numpy-1.26.0.tar.gz",
-                    "sha256": "f93fc78fe8bf15afe2b8d6b6499f1c73953169fad1e9a8dd086cdff3190e7fdf"
-                }
+                    "url": "https://files.pythonhosted.org/packages/a0/41/8f53eff8e969dd8576ddfb45e7ed315407d27c7518ae49418be8ed532b07/numpy-1.25.2.tar.gz",
+                    "sha256": "fd608e19c8d7c55021dffd43bfe5492fab8cc105cc8986f813f8c3c048b38760",
+                    "x-checker-data": {
+                        "type": "pypi",
+                        "name": "numpy"
+                   }
+               }
+            ],
+            "cleanup": [
+                "/bin",
+                "/lib/python3.*/site-packages/numpy/core/include",
+                "/lib/python3.*/site-packages/numpy/core/lib/libnpymath.a",
+                "/lib/python3.*/site-packages/numpy/tests",
+                "/lib/python3.*/site-packages/numpy/*/tests"
             ]
         },
         {
