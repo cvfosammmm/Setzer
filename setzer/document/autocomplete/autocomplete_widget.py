@@ -39,8 +39,22 @@ class AutocompleteWidget(object):
         self.height = None
         self.shortcutsbar_height = None
         self.x_position, self.y_position = (None, None)
+        self.focus_hide = self.model.document.source_view.has_focus()
+
+        self.focus_controller = Gtk.EventControllerFocus()
+        self.focus_controller.connect('enter', self.on_focus_in)
+        self.focus_controller.connect('leave', self.on_focus_out)
+        self.model.document.source_view.add_controller(self.focus_controller)
 
         self.view.set_draw_func(self.view.draw)
+        self.queue_draw()
+
+    def on_focus_out(self, widget):
+        self.focus_hide = True
+        self.queue_draw()
+
+    def on_focus_in(self, widget):
+        self.focus_hide = False
         self.queue_draw()
 
     def queue_draw(self):
@@ -48,7 +62,7 @@ class AutocompleteWidget(object):
         self.update_position()
         self.update_margins()
 
-        if not self.model.is_active or not self.position_is_visible():
+        if not self.model.is_active or not self.position_is_visible() or self.focus_hide:
             self.view.hide()
         else:
             self.view.show()
