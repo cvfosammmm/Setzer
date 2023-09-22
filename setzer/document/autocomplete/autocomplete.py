@@ -117,6 +117,38 @@ class Autocomplete(object):
         elif self.selected_item_index >= self.first_item_index + 5:
             self.first_item_index = self.selected_item_index - 4
 
+    def page_down(self):
+        s_index = self.selected_item_index
+        f_index = self.first_item_index
+        page_size = min(len(self.items), 5)
+        length = len(self.items)
+
+        if s_index < length - page_size:
+            self.selected_item_index += page_size
+        else:
+            self.selected_item_index = length - 1
+
+        if f_index < length - 2 * page_size + 1:
+            self.first_item_index += page_size
+        elif f_index < length - page_size:
+            self.first_item_index = length - page_size
+
+    def page_up(self):
+        s_index = self.selected_item_index
+        f_index = self.first_item_index
+        page_size = min(len(self.items), 5)
+        length = len(self.items)
+
+        if s_index >= page_size:
+            self.selected_item_index -= page_size
+        else:
+            self.selected_item_index = 0
+
+        if f_index >= page_size:
+            self.first_item_index -= page_size
+        else:
+            self.first_item_index = 0
+
     def tab(self):
         # If the selected item matches the beginning of the end of the
         # current line in the buffer in full, just like on submit,

@@ -96,6 +96,20 @@ class AutocompleteController(object):
                     self.autocomplete.widget.queue_draw()
                     return True
 
+        if keyval == Gdk.keyval_from_name('Page_Down'):
+            if state & modifiers == 0:
+                if self.autocomplete.is_active:
+                    self.autocomplete.page_down()
+                    self.autocomplete.widget.queue_draw()
+                    return True
+
+        if keyval == Gdk.keyval_from_name('Page_Up'):
+            if state & modifiers == 0:
+                if self.autocomplete.is_active:
+                    self.autocomplete.page_up()
+                    self.autocomplete.widget.queue_draw()
+                    return True
+
         if not self.autocomplete.is_active:
             if keyval == Gdk.keyval_from_name('bracketleft'):
                 self.autocomplete.autoclose_brackets('[')
