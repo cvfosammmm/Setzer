@@ -27,7 +27,6 @@ from setzer.app.color_manager import ColorManager
 
 
 class DocumentChooser(Gtk.Popover):
-    ''' GEdit like document chooser widget '''
     
     def __init__(self):
         Gtk.Popover.__init__(self)

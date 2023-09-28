@@ -12,6 +12,12 @@ button.new-document-menu-button {
 scrollbar.hidden slider {
     opacity: 0;
 }
+headerbar > windowhandle > box {
+    padding: 0px;
+}
+headerbar box.start, headerbar box.end {
+    padding: 6px;
+}
 
 /*
 ** welcome-screen
@@ -72,17 +78,15 @@ popover.documentchooser box.not_found label {
     padding-right: 18px;
     border-radius: 0px;
     box-shadow: none;
-    transition: none;
-    text-shadow: none;
     font-weight: normal;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
 }
 .open-docs-popover-button > button:hover:not(:checked):not(:active) {
-    background: none;
     border-left: 1px solid @borders;
     border-right: 1px solid @borders;
 }
 .open-docs-popover-button > button:checked, .open-docs-popover-button > button:active {
-    background: @borders;
     border-left: 1px solid @borders;
     border-right: 1px solid @borders;
 }

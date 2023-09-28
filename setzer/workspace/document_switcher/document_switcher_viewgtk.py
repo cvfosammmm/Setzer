@@ -66,8 +66,6 @@ class OpenDocsButton(Gtk.Stack):
         self.center_button.set_valign(Gtk.Align.FILL)
         self.center_label_welcome.set_valign(Gtk.Align.FILL)
 
-        self.set_size_request(-1, 46)
-
 
 class OpenDocsPopover(Gtk.Popover):
     
