@@ -2,9 +2,6 @@
 ** main_window
 */
 
-box.document textview {
-    line-height: 1;
-}
 button.new-document-menu-button {
     padding-left: 8px;
     padding-right: 8px;
