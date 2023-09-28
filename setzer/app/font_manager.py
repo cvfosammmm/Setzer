@@ -54,13 +54,20 @@ class FontManager(object):
         return char_width
 
     def get_line_height(text_view):
-        context = text_view.get_pango_context()
-        layout = Pango.Layout.new(context)
-        layout.set_text('A', -1)
-        char_width, line_height_1 = layout.get_pixel_size()
-        layout.set_text('A\nA', -1)
-        char_width, line_height_2 = layout.get_pixel_size()
-        return line_height_2 - line_height_1
+        count_iter = text_view.get_buffer().get_start_iter()
+        offset_before = 0
+        count = 1
+        while True:
+            offset_before = count_iter.get_offset()
+            text_view.forward_display_line(count_iter)
+            count += 1
+            if count_iter.get_offset() == offset_before and offset_before != 0:
+                count -= 2
+                break
+            if count_iter.get_offset() == offset_before or count_iter.get_line() != 0:
+                count -= 1
+                break
+        return text_view.get_line_yrange(text_view.get_buffer().get_start_iter()).height / count
 
     def get_font_desc():
         return Pango.FontDescription.from_string(FontManager.font_string)

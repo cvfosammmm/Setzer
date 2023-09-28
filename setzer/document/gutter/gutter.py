@@ -267,11 +267,11 @@ class Gutter(object):
             ctx.fill()
             Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('view_fg_color'))
 
-        if offset < 0: offset -= 1
-        offset = int(offset)
+        self.layout.set_markup(text)
+
+        offset += (self.line_height - self.layout.get_extents().logical_rect.height / Pango.SCALE) / 2 + 1
         ctx.move_to(0, offset)
 
-        self.layout.set_markup(text)
         PangoCairo.show_layout(ctx, self.layout)
 
     def draw_folding_region(self, ctx, line, is_current, offset):
@@ -289,27 +289,28 @@ class Gutter(object):
         xoff7 = 11 * self.char_width / 8
         xoff8 = 16 * self.char_width / 8
         xoff9 = 26 * self.char_width / 11
-        yoff1 = 1.75 * self.line_height / 8
-        yoff2 = 4.25 * self.line_height / 8
-        yoff3 = 6.75 * self.line_height / 8
-        yoff4 = 2.5 * self.line_height / 6
-        yoff5 = 4 * self.line_height / 6
-        len1 = 4 * self.char_width / 11
+        yoff1 = 0
+        yoff2 = 2.5 * self.char_width / 4
+        yoff3 = 5 * self.char_width / 4
+        yoff4 = 0
+        yoff5 = 1 * self.char_width / 2
+        line_gap_folded = ((self.line_height - self.char_width * 5 / 4) / 2)
+        line_gap_unfolded = ((self.line_height - self.char_width * 1 / 2) / 2)
 
         if folding_region['is_folded']:
-            ctx.move_to(self.line_numbers_width + xoff1, offset + yoff1)
-            ctx.line_to(self.line_numbers_width + xoff2, offset + yoff2)
-            ctx.line_to(self.line_numbers_width + xoff1, offset + yoff3)
-            ctx.line_to(self.line_numbers_width + xoff1, offset + yoff1)
+            ctx.move_to(self.line_numbers_width + xoff1, offset + line_gap_folded + 0.5)
+            ctx.line_to(self.line_numbers_width + xoff2, offset + line_gap_folded + yoff2 + 0.5)
+            ctx.line_to(self.line_numbers_width + xoff1, offset + line_gap_folded + yoff3 + 0.5)
+            ctx.line_to(self.line_numbers_width + xoff1, offset + line_gap_folded + 0.5)
             ctx.fill()
             for i in range(4):
                 ctx.rectangle(self.line_numbers_width + (i + 0.5) * self.char_width, offset + self.line_height, self.char_width / 2, 1)
                 ctx.fill()
         else:
-            ctx.move_to(self.line_numbers_width + xoff6, offset + yoff4 + 0.5)
-            ctx.line_to(self.line_numbers_width + xoff7, offset + yoff5 + 0.5)
-            ctx.line_to(self.line_numbers_width + xoff8, offset + yoff4 + 0.5)
-            ctx.line_to(self.line_numbers_width + xoff6, offset + yoff4 + 0.5)
+            ctx.move_to(self.line_numbers_width + xoff6, offset + line_gap_unfolded)
+            ctx.line_to(self.line_numbers_width + xoff7, offset + line_gap_unfolded + yoff5)
+            ctx.line_to(self.line_numbers_width + xoff8, offset + line_gap_unfolded)
+            ctx.line_to(self.line_numbers_width + xoff6, offset + line_gap_unfolded)
             ctx.fill()
 
     def draw_hovered_folding_region(self, ctx):

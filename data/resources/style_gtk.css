@@ -2,6 +2,9 @@
 ** main_window
 */
 
+box.document textview {
+    line-height: 1.1;
+}
 button.new-document-menu-button {
     padding-left: 8px;
     padding-right: 8px;
@@ -236,15 +239,15 @@ popover label.explaination-header {
     padding-bottom: 1px;
 }
 .sidebar box.tabs-box > label {
-    padding: 9px 8px 8px 9px;
+    padding: 1px 0px 0px 9px;
     background-color: @view_bg_color;
 }
 .sidebar box.tabs-box button {
-    margin: 0px;
-    padding: 6px;
     border-width: 0px;
-    border-radius: 0px;
+    margin: 0px;
     box-shadow: none;
+    border-radius: 0px;
+    padding: 6px;
 }
 box.sidebar-symbols {
     background-color: @view_bg_color;
