@@ -56,7 +56,8 @@ class CloseConfirmationDialog(object):
             if len(documents) == 1:
                 selected_documents.append(documents[0])
             else:
-                for child in self.chooser.get_children():
+                for i in range(0, len(documents) - 1):
+                    child = self.chooser.get_row_at_index(i)
                     if child.get_child().get_active():
                         number = int(child.get_child().get_name()[29:])
                         selected_documents.append(documents[number])
