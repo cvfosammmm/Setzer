@@ -4,11 +4,14 @@ project(
   license: 'GPL-3.0-or-later',
 )
 
+python = import('python').find_installation()
+python_bin = python.full_path()
+
 # configure folders
 prefix = get_option('prefix')
 bindir = get_option('bindir')
 datadir = get_option('datadir')
-pymdir = import('python').find_installation().get_install_dir()
+pymdir = python.get_install_dir()
 resourcesdir = join_paths(datadir, 'Setzer')
 localedir = get_option('localedir')
 mandir = get_option('mandir')
@@ -18,6 +21,7 @@ config.set('setzer_version', meson.project_version())
 config.set('localedir_path', join_paths(prefix, localedir))
 config.set('resources_path', join_paths(prefix, resourcesdir, 'resources'))
 config.set('app_icons_path', join_paths(prefix, datadir, 'icons'))
+config.set('python_path', python_bin)
 
 config_dev = config
 config_dev.set('localedir_path', '/tmp/usr/share/locale') # this is a workaround
