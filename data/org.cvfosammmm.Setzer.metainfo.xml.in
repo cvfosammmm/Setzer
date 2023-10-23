@@ -64,6 +64,11 @@
     </requires>
 
     <releases>
+        <release version="61" date="2023-10-23">
+            <description translatable="no">
+                <p>Show app's name in system monitor, ...</p>
+            </description>
+        </release>
         <release version="60" date="2023-9-21">
             <description translatable="no">
                 <p>Themes and recoloring, ...</p>
