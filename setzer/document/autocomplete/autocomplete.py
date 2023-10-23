@@ -277,6 +277,7 @@ class Autocomplete(object):
         self.source_buffer.end_user_action()
         if char == '\\':
             self.cursor_unchanged_after_autoclosing_bracket = True
+        return True
 
     def jump_over_closing_bracket(self):
         chars_at_cursor = self.document.get_chars_at_cursor(2)

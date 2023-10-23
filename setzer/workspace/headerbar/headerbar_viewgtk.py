@@ -27,7 +27,6 @@ from setzer.helpers.popover_menu_builder import MenuBuilder
 
 
 class HeaderBar(Gtk.HeaderBar):
-    ''' Title bar of the app, contains global controls '''
 
     def __init__(self):
         Gtk.HeaderBar.__init__(self)
@@ -69,7 +68,6 @@ class HeaderBar(Gtk.HeaderBar):
         self.button_bibtex = MenuBuilder.create_button(_('New BibTeX Document'))
 
         self.new_document_popover = MenuBuilder.create_menu()
-
         MenuBuilder.add_widget(self.new_document_popover, self.button_latex)
         MenuBuilder.add_widget(self.new_document_popover, self.button_bibtex)
 
