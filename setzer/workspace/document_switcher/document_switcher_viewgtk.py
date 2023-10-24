@@ -112,12 +112,12 @@ class OpenDocsPopover(Gtk.Popover):
         self.root_explaination_revealer = Gtk.Revealer()
         self.root_explaination_revealer.set_child(self.root_explaination_box)
         self.root_explaination_revealer.set_reveal_child(False)
+
         self.vbox.append(self.root_explaination_revealer)
         self.vbox.append(self.scrolled_window)
-
-        MenuBuilder.add_separator(self)
-        MenuBuilder.add_widget(self, self.set_root_document_button)
-        MenuBuilder.add_widget(self, self.unset_root_document_button)
+        self.vbox.append(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
+        self.vbox.append(self.set_root_document_button)
+        self.vbox.append(self.unset_root_document_button)
 
     def sort_function(self, row1, row2, user_data=None):
         date1 = row1.document.get_last_activated()

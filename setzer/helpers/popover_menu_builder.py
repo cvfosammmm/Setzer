@@ -37,6 +37,26 @@ class PopoverMenu(Gtk.Popover):
 
         self.connect('closed', self.on_close)
 
+    def add_page(self, pagename, label):
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+
+        button = Gtk.Button()
+        button_box = Gtk.CenterBox()
+        button_box.set_orientation(Gtk.Orientation.HORIZONTAL)
+        button.set_child(button_box)
+        button.get_style_context().add_class('header')
+        button.connect('clicked', self.show_page, 'main', Gtk.StackTransitionType.SLIDE_LEFT)
+
+        button_box.set_center_widget(Gtk.Label.new(label))
+        button_box.set_start_widget(Gtk.Image.new_from_icon_name('pan-start-symbolic'))
+        box.append(button)
+
+        self.get_child().add_named(box, pagename)
+
+    def add_widget(self, widget, pagename='main'):
+        box = self.get_child().get_child_by_name(pagename)
+        box.append(widget)
+
     def show_page(self, button, page_name, transition_type):
         self.get_child().set_transition_type(transition_type)
         self.get_child().set_visible_child_name(page_name)
@@ -88,29 +108,5 @@ class MenuBuilder():
         button_box.set_end_widget(Gtk.Image.new_from_icon_name('pan-end-symbolic'))
 
         return button
-
-    def add_page(menu, pagename, label):
-        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
-
-        button = Gtk.Button()
-        button_box = Gtk.CenterBox()
-        button_box.set_orientation(Gtk.Orientation.HORIZONTAL)
-        button.set_child(button_box)
-        button.get_style_context().add_class('header')
-        button.connect('clicked', menu.show_page, 'main', Gtk.StackTransitionType.SLIDE_LEFT)
-
-        button_box.set_center_widget(Gtk.Label.new(label))
-        button_box.set_start_widget(Gtk.Image.new_from_icon_name('pan-start-symbolic'))
-        box.append(button)
-
-        menu.get_child().add_named(box, pagename)
-
-    def add_widget(menu, widget, pagename='main'):
-        box = menu.get_child().get_child_by_name(pagename)
-        box.append(widget)
-
-    def add_separator(menu, pagename='main'):
-        box = menu.get_child().get_child_by_name(pagename)
-        box.append(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
 
 

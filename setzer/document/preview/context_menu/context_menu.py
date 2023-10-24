@@ -61,20 +61,20 @@ class ContextMenu(object):
 
     def build_popover(self, popover):
         button_backward_sync = self.create_button(_('Show Source'), self.show_source)
-        MenuBuilder.add_widget(self.popover_pointer, button_backward_sync)
+        popover.add_widget(button_backward_sync)
 
-        MenuBuilder.add_separator(self.popover_pointer)
+        popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
 
         self.button_zoom_in = self.create_button(_('Zoom In'), self.zoom_in)
-        MenuBuilder.add_widget(self.popover_pointer, self.button_zoom_in)
+        popover.add_widget(self.button_zoom_in)
         self.button_zoom_out = self.create_button(_('Zoom Out'), self.zoom_out)
-        MenuBuilder.add_widget(self.popover_pointer, self.button_zoom_out)
+        popover.add_widget(self.button_zoom_out)
         button_fit_to_width = self.create_button(_('Fit to Width'), self.zoom_fit_to_width)
-        MenuBuilder.add_widget(self.popover_pointer, button_fit_to_width)
+        popover.add_widget(button_fit_to_width)
         button_fit_to_text_width = self.create_button(_('Fit to Text Width'), self.zoom_fit_to_text_width)
-        MenuBuilder.add_widget(self.popover_pointer, button_fit_to_text_width)
+        popover.add_widget(button_fit_to_text_width)
         button_fit_to_height = self.create_button(_('Fit to Height'), self.zoom_fit_to_height)
-        MenuBuilder.add_widget(self.popover_pointer, button_fit_to_height)
+        popover.add_widget(button_fit_to_height)
 
     def create_button(self, label, callback):
         button = MenuBuilder.create_button(label)

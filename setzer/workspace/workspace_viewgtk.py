@@ -129,7 +129,11 @@ class MainWindow(Adw.ApplicationWindow):
         self.main_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.main_box.append(self.headerbar)
         self.main_box.append(self.mode_stack)
-        self.set_content(self.main_box)
+
+        # popover overlay
+        self.popoverlay = Gtk.Overlay()
+        self.popoverlay.set_child(self.main_box)
+        self.set_content(self.popoverlay)
 
         self.css_provider = Gtk.CssProvider()
         resources_path = ServiceLocator.get_resources_path()

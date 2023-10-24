@@ -147,11 +147,11 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_insert_symbol_item('\\documentclass', ['\\documentclass[•]{•}'])
         self.add_action_button(_('Add / Remove Packages') + '...', 'win.add-remove-packages-dialog')
         self.add_menu_button(_('Document Info'), 'document_info')
-        MenuBuilder.add_separator(self.current_popover)
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_before_after_item(_('Document Environment'), ['\\begin{document}\n\t', '\n\\end{document}'])
         self.add_insert_symbol_item(_('Show Title') + ' (\\maketitle)', ['\\maketitle'])
         self.add_insert_symbol_item(_('Table of Contents'), ['\\tableofcontents'])
-        MenuBuilder.add_separator(self.current_popover)
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_action_button(_('Include LaTeX File') + ' (\\input)...', 'win.include-latex-file')
 
         # document info submenu
@@ -174,10 +174,10 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.create_popover()
         self.add_action_button('\\usetheme', 'win.insert-after-packages', GLib.Variant('as', ['\\usetheme{•}']))
         self.add_action_button(_('Hide Navigation'), 'win.insert-after-packages', GLib.Variant('as', ['\\beamertemplatenavigationsymbolsempty']))
-        MenuBuilder.add_separator(self.current_popover)
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_insert_symbol_item(_('Title Page'), ['\\begin{frame}\n\t\\titlepage\n\\end{frame}'])
         self.add_insert_symbol_item(_('Table of Contents'), ['\\begin{frame}\n\t\\tableofcontents\n\\end{frame}'])
-        MenuBuilder.add_separator(self.current_popover)
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_before_after_item(_('Frame'), ['\\begin{frame}\n\t', '\n\\end{frame}'])
         self.add_before_after_item(_('Frame with Title'), ['\\begin{frame}\n\t\\frametitle{•}\n\n\t', '\n\\end{frame}'])
         self.add_before_after_item(_('\\frametitle'), ['\\frametitle{', '}'])
@@ -195,7 +195,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.create_popover()
         self.add_action_button(_('Include BibTeX File') + '...', 'win.include-bibtex-file')
         self.add_action_button(_('Include \'natbib\' Package'), 'win.add-packages', GLib.Variant('as', ['natbib']))
-        MenuBuilder.add_separator(self.current_popover)
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_insert_symbol_item(_('Citation'), ['\\cite{•}'])
         self.add_insert_symbol_item(_('Citation with Page Number'), ['\\cite[•]{•}'])
         self.add_menu_button(_('Natbib Citations'), 'natbib_citations')
@@ -209,7 +209,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_insert_symbol_item(_('Detailed with Brackets'), ['\\citep*{•}'])
         self.add_insert_symbol_item(_('Alternative 1'), ['\\citealt{•}'])
         self.add_insert_symbol_item(_('Alternative 2'), ['\\citealp{•}'])
-        MenuBuilder.add_separator(self.current_popover, 'natbib_citations')
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL), 'natbib_citations')
         self.add_insert_symbol_item(_('Cite Author'), ['\\citeauthor{•}'])
         self.add_insert_symbol_item(_('Cite Author Detailed'), ['\\citeauthor*{•}'])
         self.add_insert_symbol_item(_('Cite Year'), ['\\citeyear{•}'])
@@ -231,14 +231,14 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_menu_button(_('Alignment'), 'text_alignment')
         self.add_menu_button(_('Vertical Spacing'), 'vertical_spacing')
         self.add_menu_button(_('International Accents'), 'international_accents')
-        MenuBuilder.add_separator(self.current_popover)
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_menu_button(_('Sectioning'), 'sectioning')
-        MenuBuilder.add_separator(self.current_popover)
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_before_after_item(_('Environment'), ['\\begin{•}\n\t', '\n\\end{•}'], shortcut=_('Ctrl') + '+E')
         self.add_before_after_item(_('Verbatim Environment'), ['\\begin{verbatim}\n\t', '\n\\end{verbatim}'])
         self.add_menu_button(_('List Environments'), 'list_environments')
         self.add_menu_button(_('Quotations'), 'quotations')
-        MenuBuilder.add_separator(self.current_popover)
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_menu_button(_('Cross References'), 'cross_references')
         self.add_before_after_item(_('Footnote'), ['\\footnote{', '}'])
 
@@ -305,7 +305,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_insert_symbol_item(_('Subsubsection'), ['\\subsubsection{•}'])
         self.add_insert_symbol_item(_('Paragraph'), ['\\paragraph{•}'])
         self.add_insert_symbol_item(_('Subparagraph'), ['\\subparagraph{•}'])
-        MenuBuilder.add_separator(self.current_popover, 'sectioning')
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL), 'sectioning')
         self.add_insert_symbol_item(_('Part') + '*', ['\\part*{•}'])
         self.add_insert_symbol_item(_('Chapter')+'*', ['\\chapter*{•}'])
         self.add_insert_symbol_item(_('Section')+'*', ['\\section*{•}'])
@@ -319,7 +319,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_before_after_item(_('Bulleted List') + ' (itemize)', ['\\begin{itemize}\n\t', '\n\\end{itemize}'])
         self.add_before_after_item(_('Numbered List') + ' (enumerate)', ['\\begin{enumerate}\n\t', '\n\\end{enumerate}'])
         self.add_before_after_item(_('List with Bold Labels') + ' (description)', ['\\begin{description}\n\t', '\n\\end{description}'])
-        MenuBuilder.add_separator(self.current_popover, 'list_environments')
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL), 'list_environments')
         self.add_insert_symbol_item(_('List Item'), ['\\item •'], shortcut=_('Shift') + '+' + _('Ctrl') + '+I')
 
         # quotations submenu
@@ -369,18 +369,18 @@ class LaTeXShortcutsbar(Gtk.Box):
 
         self.create_popover()
         self.add_action_button(_('Include AMS Packages'), 'win.add-packages', GLib.Variant('as', ['amsmath', 'amssymb', 'amsfonts', 'amsthm']))
-        MenuBuilder.add_separator(self.current_popover)
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_before_after_item(_('Inline Math Section') + ' ($ ... $)', ['$ ', ' $'], shortcut=_('Ctrl') + '+M')
         self.add_before_after_item(_('Display Math Section') + ' (\\[ ... \\])', ['\\[ ', ' \\]'], shortcut=_('Shift') + '+Ctrl' + '+M')
         self.add_menu_button(_('Math Environments'), 'math_environments')
-        MenuBuilder.add_separator(self.current_popover)
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_before_after_item(_('Subscript') + ' (_{})', ['_{', '}'], shortcut=_('Shift') + '+' + _('Ctrl') + '+D')
         self.add_before_after_item(_('Superscript') + ' (^{})', ['^{', '}'], shortcut=_('Shift') + '+' + _('Ctrl') + '+U')
         self.add_insert_symbol_item(_('Fraction') + ' (\\frac)', ['\\frac{•}{•}'], shortcut=_('Shift') + '+Alt' + '+F')
         self.add_before_after_item(_('Square Root') + ' (\\sqrt)', ['\\sqrt{', '}'])
         self.add_insert_symbol_item('\\left', ['\\left •'], shortcut=_('Shift') + '+' + _('Ctrl') + '+L')
         self.add_insert_symbol_item('\\right', ['\\right •'], shortcut=_('Shift') + '+' + _('Ctrl') + '+R')
-        MenuBuilder.add_separator(self.current_popover)
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_menu_button(_('Math Functions'), 'math_functions')
         self.add_menu_button(_('Math Font Styles'), 'math_font_styles')
         self.add_menu_button(_('Math Stacking Symbols'), 'math_stacking_symbols')
@@ -423,7 +423,7 @@ class LaTeXShortcutsbar(Gtk.Box):
             button.connect('clicked', self.on_menu_button_click, self.current_popover)
             vbox.append(button)
         hbox.append(vbox)
-        MenuBuilder.add_widget(self.current_popover, hbox, self.current_pagename)
+        self.current_popover.add_widget(hbox, self.current_pagename)
 
         # submenu: math font styles
         self.add_page('math_font_styles', _('Math Font Styles'))
@@ -447,7 +447,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_before_after_item('\\stackrel{}{}', ['\\stackrel{•}{', '}'])
         self.add_before_after_item('\\overset{}{}', ['\\overset{•}{', '}'])
         self.add_before_after_item('\\underset{}{}', ['\\underset{•}{', '}'])
-        MenuBuilder.add_separator(self.current_popover, 'math_stacking_symbols')
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL), 'math_stacking_symbols')
         self.add_before_after_item('cases', ['\\begin{cases}\n\t', '\n\\end{cases}'])
         self.add_before_after_item('split', ['\\begin{split}\n\t', '\n\\end{split}'])
 
@@ -490,14 +490,14 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_insert_symbol_item(_('Figure (image inside freestanding block)'), ['\\begin{figure}\n\t\\begin{center}\n\t\t\\includegraphics[scale=1]{•}\n\t\t\\caption{•}\n\t\\end{center}\n\\end{figure}'])
         self.add_insert_symbol_item(_('Inline Image'), ['\\includegraphics[scale=1]{•}'])
         self.add_menu_button(_('Code Listing'), 'code_listing')
-        MenuBuilder.add_separator(self.current_popover)
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_before_after_item(_('Url (\\url)'), ['\\url{', '}'])
         self.add_before_after_item(_('Hyperlink (\\href)'), ['\\href{•}{', '}'])
 
         # code listing submenu
         self.add_page('code_listing', _('Code Listing'))
         self.add_action_button(_('Include \'listings\' Package'), 'win.add-packages', GLib.Variant('as', ['listings']))
-        MenuBuilder.add_separator(self.current_popover, 'code_listing')
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL), 'code_listing')
         self.add_before_after_item('Python', ['\\lstset{language=Python}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
         self.add_before_after_item('C', ['\\lstset{language=C}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
         self.add_before_after_item('C++', ['\\lstset{language=C++}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
@@ -506,7 +506,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_before_after_item('PHP', ['\\lstset{language=PHP}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
         self.add_before_after_item('Ruby', ['\\lstset{language=Ruby}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
         self.add_before_after_item('TeX', ['\\lstset{language=TeX}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
-        MenuBuilder.add_separator(self.current_popover, 'code_listing')
+        self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL), 'code_listing')
         self.add_before_after_item(_('Other Language'), ['\\lstset{language=•}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
         self.add_before_after_item(_('Plain Text'), ['\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
 
@@ -518,26 +518,26 @@ class LaTeXShortcutsbar(Gtk.Box):
 
     def add_page(self, pagename, label):
         self.current_pagename = pagename
-        MenuBuilder.add_page(self.current_popover, pagename, label)
+        self.current_popover.add_page(pagename, label)
 
     def add_insert_symbol_item(self, title, command, icon=None, shortcut=None):
         button = MenuBuilder.create_button(title, icon_name=icon, shortcut=shortcut)
         button.set_action_name('win.insert-symbol')
         button.set_action_target_value(GLib.Variant('as', command))
         button.connect('clicked', self.on_menu_button_click, self.current_popover)
-        MenuBuilder.add_widget(self.current_popover, button, self.current_pagename)
+        self.current_popover.add_widget(button, self.current_pagename)
 
     def add_before_after_item(self, title, commands, icon=None, shortcut=None):
         button = MenuBuilder.create_button(title, icon_name=icon, shortcut=shortcut)
         button.set_action_name('win.insert-before-after')
         button.set_action_target_value(GLib.Variant('as', commands))
         button.connect('clicked', self.on_menu_button_click, self.current_popover)
-        MenuBuilder.add_widget(self.current_popover, button, self.current_pagename)
+        self.current_popover.add_widget(button, self.current_pagename)
 
     def add_menu_button(self, title, menu_name):
         button = MenuBuilder.create_menu_button(title)
         button.connect('clicked', self.current_popover.show_page, menu_name, Gtk.StackTransitionType.SLIDE_RIGHT)
-        MenuBuilder.add_widget(self.current_popover, button)
+        self.current_popover.add_widget(button)
 
     def add_action_button(self, title, action_name, parameter=None):
         button = MenuBuilder.create_button(title)
@@ -545,7 +545,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         if parameter != None:
             button.set_action_target_value(parameter)
         button.connect('clicked', self.on_menu_button_click, self.current_popover)
-        MenuBuilder.add_widget(self.current_popover, button, self.current_pagename)
+        self.current_popover.add_widget(button, self.current_pagename)
 
     def on_menu_button_click(self, button, popover):
         popover.popdown()

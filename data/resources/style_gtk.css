@@ -182,6 +182,80 @@ box.buildlog > box button {
 }
 
 /*
+** popover
+*/
+
+@keyframes popover-animation {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+box.popover {
+    animation-name: popover-animation;
+    animation-duration: 0.2s;
+    animation-timing-function: ease;
+}
+box.popover .content {
+    background: @window_bg_color;
+    padding: 6px;
+    padding-top: 5px;
+    border-radius: 10px;
+    border: 1px solid @borders;
+}
+box.popover .arrow {
+    min-width: 10px;
+    min-height: 10px;
+    background: @window_bg_color;
+    border: 1px solid @borders;
+    transform: translateY(9px) scale(2, 2) rotate(-45deg);
+}
+box.popover .arrow-border {
+    min-width: 26px;
+    min-height: 1px;
+    background: @window_bg_color;
+    transform: translateY(-6px);
+}
+box.popover button.action, box.popover button.menu, box.popover button.header {
+    background: none;
+    font-weight: normal;
+}
+box.popover button.action:hover, box.popover button.menu:hover, box.popover button.header:hover {
+    background: @view_hover_color;
+}
+box.popover button.action:active, box.popover button.action:focus, box.popover button.menu:active, box.popover button.menu:focus, box.popover button.header:active, box.popover button.header:focus {
+    background: @borders;
+}
+box.popover button label.shortcut {
+    color: @menu_shortcut_color;
+    margin-left: 18px;
+}
+box.popover button image.icon {
+    padding-top: 2px;
+    padding-right: 8px;
+}
+box.popover separator {
+    margin: 6px 0px;
+}
+box.popover label.explaination {
+    margin: 0px 10px;
+    color: @description_color;
+    font-size: 13px;
+}
+box.popover label.explaination-header {
+    margin: 0px 10px;
+    font-weight: bold;
+}
+button.popover.active {
+    background: #b3b3b3;
+    background: @headerbar_button_active_color;
+}
+
+/*
 ** popover menus
 */
 

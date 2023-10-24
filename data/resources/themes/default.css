@@ -38,6 +38,7 @@
 @define-color headerbar_backdrop_color @window_bg_color;
 @define-color headerbar_shade_color rgba(0, 0, 0, 0.12);
 @define-color headerbar_darker_shade_color rgba(0, 0, 0, 0.12);
+@define-color headerbar_button_active_color rgba(0, 0, 0, 0.24);
 
 /* Split pane views */
 @define-color sidebar_bg_color #ebebeb;

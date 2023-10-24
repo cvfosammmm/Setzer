@@ -24,6 +24,7 @@ from gi.repository import Gio
 import setzer.workspace.document_switcher.document_switcher_viewgtk as document_switcher_viewgtk
 import setzer.workspace.document_chooser.document_chooser_viewgtk as document_chooser_viewgtk
 from setzer.helpers.popover_menu_builder import MenuBuilder
+from setzer.widgets.popover.popover_manager import PopoverManager
 
 
 class HeaderBar(Gtk.HeaderBar):
@@ -67,20 +68,20 @@ class HeaderBar(Gtk.HeaderBar):
         self.button_latex = MenuBuilder.create_button(_('New LaTeX Document'), shortcut=_('Ctrl') + '+N')
         self.button_bibtex = MenuBuilder.create_button(_('New BibTeX Document'))
 
-        self.new_document_popover = MenuBuilder.create_menu()
-        MenuBuilder.add_widget(self.new_document_popover, self.button_latex)
-        MenuBuilder.add_widget(self.new_document_popover, self.button_bibtex)
+        self.new_document_popover = PopoverManager.create_popover('new_document')
+        self.new_document_popover.set_width(252)
+        self.new_document_popover.add_widget(self.button_latex)
+        self.new_document_popover.add_widget(self.button_bibtex)
 
         box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 12)
         box.append(Gtk.Image.new_from_icon_name('document-new-symbolic'))
         box.append(Gtk.Image.new_from_icon_name('pan-down-symbolic'))
 
-        self.new_document_button = Gtk.MenuButton()
+        self.new_document_button = PopoverManager.create_popover_button('new_document')
         self.new_document_button.set_child(box)
         self.new_document_button.set_can_focus(False)
         self.new_document_button.set_tooltip_text(_('Create a new document'))
         self.new_document_button.get_style_context().add_class('new-document-menu-button')
-        self.new_document_button.set_popover(self.new_document_popover)
 
         self.pack_start(self.open_document_button)
         self.pack_start(self.open_document_blank_button)
@@ -135,19 +136,19 @@ class HeaderBar(Gtk.HeaderBar):
         self.button_close_active = MenuBuilder.create_button(_('Close Document'), shortcut=_('Ctrl') + '+W')
         self.button_quit = MenuBuilder.create_button(_('Quit'), shortcut=_('Ctrl') + '+Q')
 
-        MenuBuilder.add_widget(self.hamburger_popover, self.button_save_as)
-        MenuBuilder.add_widget(self.hamburger_popover, self.button_save_all)
-        MenuBuilder.add_separator(self.hamburger_popover)
-        MenuBuilder.add_widget(self.hamburger_popover, self.button_session)
-        MenuBuilder.add_separator(self.hamburger_popover)
-        MenuBuilder.add_widget(self.hamburger_popover, self.button_preferences)
-        MenuBuilder.add_separator(self.hamburger_popover)
-        MenuBuilder.add_widget(self.hamburger_popover, self.button_shortcuts)
-        MenuBuilder.add_widget(self.hamburger_popover, self.button_about)
-        MenuBuilder.add_separator(self.hamburger_popover)
-        MenuBuilder.add_widget(self.hamburger_popover, self.button_close_all)
-        MenuBuilder.add_widget(self.hamburger_popover, self.button_close_active)
-        MenuBuilder.add_widget(self.hamburger_popover, self.button_quit)
+        self.hamburger_popover.add_widget(self.button_save_as)
+        self.hamburger_popover.add_widget(self.button_save_all)
+        self.hamburger_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
+        self.hamburger_popover.add_widget(self.button_session)
+        self.hamburger_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
+        self.hamburger_popover.add_widget(self.button_preferences)
+        self.hamburger_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
+        self.hamburger_popover.add_widget(self.button_shortcuts)
+        self.hamburger_popover.add_widget(self.button_about)
+        self.hamburger_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
+        self.hamburger_popover.add_widget(self.button_close_all)
+        self.hamburger_popover.add_widget(self.button_close_active)
+        self.hamburger_popover.add_widget(self.button_quit)
 
         box_session = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
@@ -159,7 +160,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.pack_end(self.menu_button)
 
         # session submenu
-        MenuBuilder.add_page(self.hamburger_popover, 'session', _('Session'))
+        self.hamburger_popover.add_page('session', _('Session'))
 
         self.session_explaination = Gtk.Label.new(_('Save the list of open documents in a session file\nand restore it later, a convenient way to work\non multiple projects.'))
         self.session_explaination.set_xalign(0)
@@ -175,10 +176,10 @@ class HeaderBar(Gtk.HeaderBar):
 
         self.prev_sessions_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
-        MenuBuilder.add_widget(self.hamburger_popover, self.session_explaination, pagename='session')
-        MenuBuilder.add_widget(self.hamburger_popover, self.button_restore_session, pagename='session')
-        MenuBuilder.add_widget(self.hamburger_popover, self.button_save_session, pagename='session')
-        MenuBuilder.add_widget(self.hamburger_popover, self.session_box_separator, pagename='session')
-        MenuBuilder.add_widget(self.hamburger_popover, self.prev_sessions_box, pagename='session')
+        self.hamburger_popover.add_widget(self.session_explaination, pagename='session')
+        self.hamburger_popover.add_widget(self.button_restore_session, pagename='session')
+        self.hamburger_popover.add_widget(self.button_save_session, pagename='session')
+        self.hamburger_popover.add_widget(self.session_box_separator, pagename='session')
+        self.hamburger_popover.add_widget(self.prev_sessions_box, pagename='session')
 
 
