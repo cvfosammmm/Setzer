@@ -17,13 +17,11 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import Gtk, GObject
 
 
 class BuildWidgetView(Gtk.Box):
-    ''' Shows how long the build process takes '''
-    
+
     def __init__(self):
         Gtk.Box.__init__(self)
         self.set_orientation(Gtk.Orientation.HORIZONTAL)
@@ -51,8 +49,6 @@ class BuildWidgetView(Gtk.Box):
         self.build_timer.set_transition_type(Gtk.RevealerTransitionType.CROSSFADE)
         self.label = Gtk.Label.new('')
         self.label.get_style_context().add_class('build-timer')
-        self.label.set_xalign(0)
-        self.label.set_hexpand(True)
         self.build_timer.set_child(self.label)
 
         self.prepend(self.clean_button)

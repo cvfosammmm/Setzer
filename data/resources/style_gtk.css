@@ -163,8 +163,6 @@ box.build-widget button {
 }
 box.build-widget label.build-timer {
     padding: 6px 12px;
-    border: 0px solid @borders;
-    border-right-width: 0px;
 }
 
 /*
