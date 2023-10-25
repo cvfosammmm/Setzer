@@ -29,7 +29,7 @@ box.welcome {
     margin-left: 150px;
     margin-right: 150px;
     margin-bottom: 150px;
-    background: radial-gradient(@window_bg_color 10%, @window_bg_color 30%, transparent 50%) -75px 0px, radial-gradient(@window_bg_color 10%, @window_bg_color 30%, transparent 50%) 75px 0px;
+    background: radial-gradient(@window_bg_color 10%, @window_bg_color 30%, mix(@window_bg_color, transparent, 0.99) 50%) -75px 0px, radial-gradient(@window_bg_color 10%, mix(@window_bg_color, transparent, 0.99) 50%) 75px 0px;
 }
 label.welcome-header {
     font-size: 32pt;
