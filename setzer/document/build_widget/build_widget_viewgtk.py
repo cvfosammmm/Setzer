@@ -34,14 +34,17 @@ class BuildWidgetView(Gtk.Box):
         self.timer_active = False
         self.state_change_count = 0
         
-        self.build_button = Gtk.Button.new_from_icon_name('builder-build-symbolic')
+        self.build_button = Gtk.Button()
+        self.build_button.set_child(Gtk.Image.new_from_icon_name('builder-build-symbolic'))
         self.build_button.set_tooltip_text(_('Save and build .pdf-file from document') + ' (F5)')
         self.build_button.set_action_name('win.save-and-build')
 
-        self.stop_button = Gtk.Button.new_from_icon_name('process-stop-symbolic')
+        self.stop_button = Gtk.Button()
+        self.stop_button.set_child(Gtk.Image.new_from_icon_name('process-stop-symbolic'))
         self.stop_button.set_tooltip_text(_('Stop building'))
 
-        self.clean_button = Gtk.Button.new_from_icon_name('brush-symbolic')
+        self.clean_button = Gtk.Button()
+        self.clean_button.set_child(Gtk.Image.new_from_icon_name('brush-symbolic'))
         self.clean_button.set_tooltip_text(_('Cleanup build files'))
 
         self.build_timer = Gtk.Revealer()
