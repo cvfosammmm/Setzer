@@ -36,12 +36,12 @@ class Popover(Gtk.Box):
         self.arrow = Gtk.DrawingArea()
         self.arrow.get_style_context().add_class('arrow')
         self.arrow_box = Gtk.CenterBox()
-        self.arrow_box.set_center_widget(self.arrow)
+        self.arrow_box.set_start_widget(self.arrow)
 
         self.arrow_border = Gtk.DrawingArea()
         self.arrow_border.get_style_context().add_class('arrow-border')
         self.arrow_border_box = Gtk.CenterBox()
-        self.arrow_border_box.set_center_widget(self.arrow_border)
+        self.arrow_border_box.set_start_widget(self.arrow_border)
 
         self.stack = Gtk.Stack()
         self.stack.set_vhomogeneous(False)
@@ -56,9 +56,22 @@ class Popover(Gtk.Box):
 
         self.add_page('main')
 
-    def add_page(self, pagename='main'):
+    def add_page(self, pagename='main', label=None):
         box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.stack.add_named(box, pagename)
+
+        if label != None:
+            button_box = Gtk.CenterBox()
+            button_box.set_orientation(Gtk.Orientation.HORIZONTAL)
+            button_box.set_center_widget(Gtk.Label.new(label))
+            button_box.set_start_widget(Gtk.Image.new_from_icon_name('pan-start-symbolic'))
+
+            button = Gtk.Button()
+            button.set_child(button_box)
+            button.get_style_context().add_class('header')
+            button.connect('clicked', self.show_page, 'main', Gtk.StackTransitionType.SLIDE_LEFT)
+
+            self.add_widget(button, pagename)
 
     def add_widget(self, widget, pagename='main'):
         box = self.get_child().get_child_by_name(pagename)
@@ -68,7 +81,7 @@ class Popover(Gtk.Box):
         self.width = width
         self.set_size_request(width, -1)
 
-    def show_page(self, page_name, transition_type):
+    def show_page(self, button, page_name, transition_type):
         self.stack.set_transition_type(transition_type)
         self.stack.set_visible_child_name(page_name)
 

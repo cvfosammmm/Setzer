@@ -123,12 +123,9 @@ class HeaderBar(Gtk.HeaderBar):
         self.set_title_widget(self.center_widget)
 
     def insert_workspace_menu(self):
-        self.hamburger_popover = MenuBuilder.create_menu()
-
         self.button_save_as = MenuBuilder.create_button(_('Save Document As') + '...', shortcut=_('Shift') + '+' + _('Ctrl') + '+S')
         self.button_save_all = MenuBuilder.create_button(_('Save All Documents'))
         self.button_session = MenuBuilder.create_menu_button(_('Session'))
-        self.button_session.connect('clicked', self.hamburger_popover.show_page, 'session', Gtk.StackTransitionType.SLIDE_RIGHT)
         self.button_preferences = MenuBuilder.create_button(_('Preferences'))
         self.button_shortcuts = MenuBuilder.create_button(_('Keyboard Shortcuts'), shortcut=_('Ctrl') + '+?')
         self.button_about = MenuBuilder.create_button(_('About'))
@@ -136,6 +133,8 @@ class HeaderBar(Gtk.HeaderBar):
         self.button_close_active = MenuBuilder.create_button(_('Close Document'), shortcut=_('Ctrl') + '+W')
         self.button_quit = MenuBuilder.create_button(_('Quit'), shortcut=_('Ctrl') + '+Q')
 
+        self.hamburger_popover = PopoverManager.create_popover('hamburger_menu')
+        self.hamburger_popover.set_width(306)
         self.hamburger_popover.add_widget(self.button_save_as)
         self.hamburger_popover.add_widget(self.button_save_all)
         self.hamburger_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
@@ -150,17 +149,14 @@ class HeaderBar(Gtk.HeaderBar):
         self.hamburger_popover.add_widget(self.button_close_active)
         self.hamburger_popover.add_widget(self.button_quit)
 
-        box_session = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
-
-        self.menu_button = Gtk.MenuButton()
-        image = Gtk.Image.new_from_icon_name('open-menu-symbolic')
-        self.menu_button.set_child(image)
+        self.menu_button = PopoverManager.create_popover_button('hamburger_menu')
+        self.menu_button.set_child(Gtk.Image.new_from_icon_name('open-menu-symbolic'))
         self.menu_button.set_can_focus(False)
-        self.menu_button.set_popover(self.hamburger_popover)
         self.pack_end(self.menu_button)
 
         # session submenu
         self.hamburger_popover.add_page('session', _('Session'))
+        self.button_session.connect('clicked', self.hamburger_popover.show_page, 'session', Gtk.StackTransitionType.SLIDE_RIGHT)
 
         self.session_explaination = Gtk.Label.new(_('Save the list of open documents in a session file\nand restore it later, a convenient way to work\non multiple projects.'))
         self.session_explaination.set_xalign(0)

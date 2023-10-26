@@ -19,7 +19,6 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
-from setzer.app.service_locator import ServiceLocator
 from setzer.widgets.popover.popover import Popover
 from setzer.widgets.popover.popover_button import PopoverButton
 
@@ -30,9 +29,11 @@ class PopoverManager(object):
     popovers = dict()
     popover_buttons = dict()
     current_popover_name = None
+    main_window = None
     inbetween = Gtk.DrawingArea()
 
     def init(main_window):
+        PopoverManager.main_window = main_window
         PopoverManager.popoverlay = main_window.popoverlay
         PopoverManager.popoverlay.add_overlay(PopoverManager.inbetween)
 
@@ -49,21 +50,42 @@ class PopoverManager(object):
         return popover
 
     def create_popover_button(name):
-        popover_button = PopoverButton(name, ServiceLocator.get_main_window(), PopoverManager)
+        popover_button = PopoverButton(name, PopoverManager)
         PopoverManager.popover_buttons[name] = popover_button
         return popover_button
 
-    def popup(name, x=0, y=0):
+    def popup_at_button(name):
+        if PopoverManager.current_popover_name == name: return
+
+        button = PopoverManager.popover_buttons[name]
+        allocation = button.compute_bounds(PopoverManager.main_window).out_bounds
+
+        x = allocation.origin.x + allocation.size.width / 2
+        y = allocation.origin.y + allocation.size.height
+
         popover = PopoverManager.popovers[name]
-        popover.set_margin_start(max(0, x - popover.width / 2))
+        window_width = PopoverManager.main_window.get_width()
+        arrow_width = 10
+        arrow_border_width = 36
+        if x - popover.width / 2 < 0:
+            popover.set_margin_start(0)
+            popover.arrow.set_margin_start(x - arrow_width / 2)
+            popover.arrow_border.set_margin_start(x - arrow_border_width / 2)
+        elif x - popover.width / 2 > window_width - popover.width:
+            popover.set_margin_start(window_width - popover.width)
+            popover.arrow.set_margin_start(x - window_width + popover.width - arrow_width / 2)
+            popover.arrow_border.set_margin_start(x - window_width + popover.width - arrow_border_width / 2)
+        else:
+            popover.set_margin_start(x - popover.width / 2)
+            popover.arrow.set_margin_start(popover.width / 2 - arrow_width / 2)
+            popover.arrow_border.set_margin_start(popover.width / 2 - arrow_border_width / 2)
         popover.set_margin_top(max(0, y))
 
         PopoverManager.current_popover_name = name
         PopoverManager.popoverlay.add_overlay(popover)
         PopoverManager.inbetween.set_can_target(True)
 
-        if name in PopoverManager.popover_buttons:
-            PopoverManager.popover_buttons[name].set_active(True)
+        button.set_active(True)
 
     def popdown():
         if PopoverManager.current_popover_name == None: return
@@ -75,7 +97,7 @@ class PopoverManager(object):
         PopoverManager.current_popover_name = None
         PopoverManager.inbetween.set_can_target(False)
 
-        popover.show_page('main', Gtk.StackTransitionType.NONE)
+        popover.show_page(None, 'main', Gtk.StackTransitionType.NONE)
         if name in PopoverManager.popover_buttons:
             PopoverManager.popover_buttons[name].set_active(False)
 

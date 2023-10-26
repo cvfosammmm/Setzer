@@ -213,7 +213,7 @@ box.popover .arrow {
     transform: translateY(9px) scale(2, 2) rotate(-45deg);
 }
 box.popover .arrow-border {
-    min-width: 26px;
+    min-width: 25px;
     min-height: 1px;
     background: @window_bg_color;
     transform: translateY(-6px);

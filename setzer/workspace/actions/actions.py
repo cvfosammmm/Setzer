@@ -22,6 +22,7 @@ from gi.repository import GLib, Gio, Gtk, Gdk, Pango
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 from setzer.app.font_manager import FontManager
+from setzer.widgets.popover.popover_manager import PopoverManager
 
 
 class Actions(object):
@@ -75,6 +76,8 @@ class Actions(object):
         self.add_action('zoom-in', self.zoom_in)
         self.add_action('zoom-out', self.zoom_out)
         self.add_action('reset-zoom', self.reset_zoom)
+
+        self.add_action('popover-popup-at-button', self.popover_popup_at_button, GLib.VariantType('as'))
         self.add_action('show-preferences-dialog', self.show_preferences_dialog)
         self.add_action('show-shortcuts-dialog', self.show_shortcuts_dialog)
         self.add_action('show-about-dialog', self.show_about_dialog)
@@ -514,6 +517,12 @@ class Actions(object):
         else:
             FontManager.font_string = self.settings.get_value('preferences', 'font_string')
         FontManager.propagate_font_setting()
+
+    def popover_popup_at_button(self, action=None, parameter=None):
+        if parameter == None: return
+
+        name = parameter[0]
+        PopoverManager.popup_at_button(name)
 
     def show_preferences_dialog(self, action=None, parameter=''):
         DialogLocator.get_dialog('preferences').run()

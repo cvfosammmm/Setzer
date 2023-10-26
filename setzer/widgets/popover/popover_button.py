@@ -24,12 +24,11 @@ from setzer.app.service_locator import ServiceLocator
 
 class PopoverButton(Gtk.Button):
 
-    def __init__(self, name, main_window, popover_manager):
+    def __init__(self, name, popover_manager):
         Gtk.Button.__init__(self)
         self.get_style_context().add_class('popover')
 
         self.popover_manager = popover_manager
-        self.main_window = main_window
         self.popover_name = name
         self.is_active = False
 
@@ -41,12 +40,7 @@ class PopoverButton(Gtk.Button):
 
     def on_button_press(self, controller, n_press, x, y):
         if not self.is_active:
-            allocation = self.compute_bounds(ServiceLocator.get_main_window()).out_bounds
-
-            x = allocation.origin.x + allocation.size.width / 2
-            y = allocation.origin.y + allocation.size.height
-
-            self.popover_manager.popup(self.popover_name, x, y)
+            self.popover_manager.popup_at_button(self.popover_name)
 
     def set_active(self, is_active):
         self.is_active = is_active

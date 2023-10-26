@@ -27,8 +27,10 @@ from setzer.dialogs.dialog_locator import DialogLocator
 
 class Shortcut(Gtk.Shortcut):
 
-    def __init__(self, trigger_string, callback):
+    def __init__(self, trigger_string, callback, parameter=None):
         Gtk.Shortcut.__init__(self)
+
+        self.parameter = parameter
 
         self.set_action(Gtk.CallbackAction.new(self.action, callback))
         self.set_trigger(Gtk.ShortcutTrigger.parse_string(trigger_string))
@@ -56,7 +58,7 @@ class Shortcuts(object):
         self.shortcut_controller.add_shortcut(Shortcut('<Control><Shift>s', actions.save_as))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>w', actions.close_active_document))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>q', actions.actions['quit'].activate))
-        self.shortcut_controller.add_shortcut(Shortcut('F10', self.shortcut_workspace_menu))
+        self.main_window.app.set_accels_for_action(Gio.Action.print_detailed_name('win.popover-popup-at-button', GLib.Variant('as', ['hamburger_menu'])), ['F10'])
         self.shortcut_controller.add_shortcut(Shortcut('<Control>question', actions.show_shortcuts_dialog))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>t', self.shortcut_show_open_docs))
         self.shortcut_controller.add_shortcut(Shortcut('<Control>Page_Down', self.shortcut_switch_document))
@@ -134,8 +136,14 @@ class Shortcuts(object):
             self.main_window.headerbar.center_widget.center_button.activate()
 
     def shortcut_workspace_menu(self):
-        if self.main_window.headerbar.menu_button.get_sensitive():
-            self.main_window.headerbar.menu_button.activate()
+        button = self.main_window.headerbar.menu_button
+        if not button.is_active:
+            allocation = button.compute_bounds(self.main_window).out_bounds
+
+            x = allocation.origin.x + allocation.size.width / 2
+            y = allocation.origin.y + allocation.size.height
+
+            PopoverManager.popup(button.popover_name, x, y)
 
     def shortcut_switch_document(self):
         self.workspace.switch_to_earliest_open_document()
