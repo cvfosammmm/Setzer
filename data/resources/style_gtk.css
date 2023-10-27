@@ -68,12 +68,9 @@ box.documentchooser box.not_found label {
 ** tab switching
 */
 
-.open-docs-popover-button {
+button.open-docs-popover-button {
     margin: 0px;
     padding: 0px;
-}
-.open-docs-popover-button > button {
-    margin: 0px;
     padding-left: 8px;
     padding-right: 18px;
     border-radius: 0px;
@@ -82,11 +79,11 @@ box.documentchooser box.not_found label {
     border-left: 1px solid transparent;
     border-right: 1px solid transparent;
 }
-.open-docs-popover-button > button:hover:not(:checked):not(:active) {
+button.open-docs-popover-button:hover:not(:checked):not(:active) {
     border-left: 1px solid @borders;
     border-right: 1px solid @borders;
 }
-.open-docs-popover-button > button:checked, .open-docs-popover-button > button:active {
+button.open-docs-popover-button:checked, button.open-docs-popover-button:active {
     border-left: 1px solid @borders;
     border-right: 1px solid @borders;
 }

@@ -20,6 +20,7 @@ import setzer.workspace.document_switcher.item.document_switcher_item as documen
 import setzer.workspace.document_switcher.document_switcher_presenter as document_switcher_presenter
 import setzer.workspace.document_switcher.document_switcher_controller as document_switcher_controller
 from setzer.dialogs.dialog_locator import DialogLocator
+from setzer.app.service_locator import ServiceLocator
 
 
 class DocumentSwitcher(Observable):
@@ -94,7 +95,7 @@ class DocumentSwitcher(Observable):
             else:
                 previously_active_document = None
 
-            self.presenter.view.popdown()
+            ServiceLocator.get_popover_manager().popdown()
             dialog = DialogLocator.get_dialog('close_confirmation')
             dialog.run({'unsaved_documents': [document], 'document': document, 'previously_active_document': previously_active_document}, self.on_close_document_callback)
             return True
@@ -107,6 +108,6 @@ class DocumentSwitcher(Observable):
             self.workspace.remove_document(parameters['document'])
         if parameters['previously_active_document'] != None:
             self.workspace.set_active_document(parameters['previously_active_document'])
-            self.presenter.view.popup()
+            ServiceLocator.get_popover_manager().popup_at_button('document_switcher')
 
 

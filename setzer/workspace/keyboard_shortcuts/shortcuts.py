@@ -129,11 +129,11 @@ class Shortcuts(object):
 
     def shortcut_show_document_chooser(self):
         if self.main_window.headerbar.open_document_button.get_sensitive():
-            self.main_window.headerbar.open_document_button.popup()
+            ServiceLocator.get_popover_manager().popup_at_button('open_document')
 
     def shortcut_show_open_docs(self):
         if self.main_window.headerbar.center_widget.center_button.get_sensitive():
-            self.main_window.headerbar.center_widget.center_button.activate()
+            ServiceLocator.get_popover_manager().popup_at_button('document_switcher')
 
     def shortcut_switch_document(self):
         self.workspace.switch_to_earliest_open_document()

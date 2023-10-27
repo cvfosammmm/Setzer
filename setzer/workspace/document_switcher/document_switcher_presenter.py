@@ -26,7 +26,7 @@ class DocumentSwitcherPresenter(object):
         self.document_switcher = document_switcher
         self.workspace = workspace
         self.button = ServiceLocator.get_main_window().headerbar.center_widget
-        self.view = self.button.open_docs_popover
+        self.view = self.button.open_docs_widget
 
         self.document_switcher.connect('docswitcher_mode_change', self.on_docswitcher_mode_change)
         self.document_switcher.connect('new_item', self.on_new_item)

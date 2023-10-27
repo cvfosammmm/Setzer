@@ -47,15 +47,19 @@ class OpenDocsButton(Gtk.Stack):
         hbox.append(vbox)
         hbox.append(self.document_arrow)
         hbox.set_valign(Gtk.Align.CENTER)
-        
-        self.open_docs_popover = OpenDocsPopover()
-        self.center_button = Gtk.MenuButton()
+
+        self.open_docs_widget = OpenDocsWidget()
+        self.open_docs_popover = ServiceLocator.get_popover_manager().create_popover('document_switcher')
+        self.open_docs_popover.set_width(414)
+        self.open_docs_popover.add_widget(self.open_docs_widget)
+
+        self.center_button = ServiceLocator.get_popover_manager().create_popover_button('document_switcher')
         self.center_button.get_style_context().add_class('flat')
         self.center_button.get_style_context().add_class('open-docs-popover-button')
         self.center_button.set_tooltip_text(_('Show open documents') + ' (' + _('Ctrl') + '+T)')
         self.center_button.set_can_focus(False)
         self.center_button.set_child(hbox)
-        self.center_button.set_popover(self.open_docs_popover)
+
         self.center_label_welcome = Gtk.Label.new(_('Welcome to Setzer'))
         self.center_label_welcome.get_style_context().add_class('title')
 
@@ -67,16 +71,12 @@ class OpenDocsButton(Gtk.Stack):
         self.center_label_welcome.set_valign(Gtk.Align.FILL)
 
 
-class OpenDocsPopover(Gtk.Popover):
+class OpenDocsWidget(Gtk.Box):
     
     def __init__(self):
-        Gtk.Popover.__init__(self)
+        Gtk.Box.__init__(self)
+        self.set_orientation(Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('open-docs-popover')
-
-        self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
-        self.stack = Gtk.Stack()
-        self.stack.add_named(self.vbox, 'main')
-        self.set_child(self.stack)
 
         self.document_list = Gtk.ListBox()
         self.document_list.set_sort_func(self.sort_function)
@@ -113,11 +113,11 @@ class OpenDocsPopover(Gtk.Popover):
         self.root_explaination_revealer.set_child(self.root_explaination_box)
         self.root_explaination_revealer.set_reveal_child(False)
 
-        self.vbox.append(self.root_explaination_revealer)
-        self.vbox.append(self.scrolled_window)
-        self.vbox.append(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
-        self.vbox.append(self.set_root_document_button)
-        self.vbox.append(self.unset_root_document_button)
+        self.append(self.root_explaination_revealer)
+        self.append(self.scrolled_window)
+        self.append(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
+        self.append(self.set_root_document_button)
+        self.append(self.unset_root_document_button)
 
     def sort_function(self, row1, row2, user_data=None):
         date1 = row1.document.get_last_activated()

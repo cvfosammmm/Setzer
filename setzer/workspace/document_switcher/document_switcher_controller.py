@@ -30,7 +30,7 @@ class DocumentSwitcherController(object):
         self.document_switcher = document_switcher
         self.workspace = workspace
         self.button = ServiceLocator.get_main_window().headerbar.center_widget
-        self.view = self.button.open_docs_popover
+        self.view = self.button.open_docs_widget
 
         self.click_controller = Gtk.GestureClick()
         self.click_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
@@ -42,7 +42,7 @@ class DocumentSwitcherController(object):
 
     def observe_document_switcher_view(self):
         self.view.document_list.connect('row-activated', self.on_doclist_row_activated)
-        self.view.connect('closed', self.on_doclist_row_popdown)
+        ServiceLocator.get_popover_manager().connect('popdown', self.on_popover_popdown)
         self.view.set_root_document_button.connect('clicked', self.set_selection_mode)
         self.view.unset_root_document_button.connect('clicked', self.unset_root_document)
 
@@ -51,7 +51,7 @@ class DocumentSwitcherController(object):
             self.document_switcher.set_mode('normal')
             self.workspace.set_one_document_root(row.document)
         else:
-            self.view.popdown()
+            ServiceLocator.get_popover_manager().popdown()
             self.workspace.set_active_document(row.document)
 
     def on_doclist_row_button_release(self, controller, n_press, x, y):
@@ -61,7 +61,9 @@ class DocumentSwitcherController(object):
         self.document_switcher.on_close_clicked(row.document_close_button, row.document)
         return True
 
-    def on_doclist_row_popdown(self, popover, data=None):
+    def on_popover_popdown(self, popover_manager, name):
+        if name != 'document_switcher': return
+
         self.document_switcher.set_mode('normal')
         self.view.document_list.unselect_all()
 
