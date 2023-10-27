@@ -15,12 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+from setzer.app.service_locator import ServiceLocator
+
 
 class HeaderbarController(object):
 
     def __init__(self, model, view):
         self.model = model
         self.view = view
+        self.popover_manager = ServiceLocator.get_popover_manager()
 
         actions = self.model.workspace.actions.actions
         self.view.button_latex.connect('clicked', self.on_new_document_button_click, actions['new-latex-document'])
@@ -39,11 +42,11 @@ class HeaderbarController(object):
         self.view.button_quit.connect('clicked', self.on_hamburger_button_click, actions['quit'])
 
     def on_new_document_button_click(self, button, action):
-        self.view.new_document_popover.popdown()
+        self.popover_manager.popdown()
         action.activate()
 
     def on_hamburger_button_click(self, button, action):
-        self.view.hamburger_popover.popdown()
+        self.popover_manager.popdown()
         action.activate()
 
 

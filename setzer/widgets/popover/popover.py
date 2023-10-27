@@ -74,7 +74,7 @@ class Popover(Gtk.Box):
             self.add_widget(button, pagename)
 
     def add_widget(self, widget, pagename='main'):
-        box = self.get_child().get_child_by_name(pagename)
+        box = self.stack.get_child_by_name(pagename)
         box.append(widget)
 
     def set_width(self, width):
@@ -84,9 +84,6 @@ class Popover(Gtk.Box):
     def show_page(self, button, page_name, transition_type):
         self.stack.set_transition_type(transition_type)
         self.stack.set_visible_child_name(page_name)
-
-    def get_child(self):
-        return self.stack
 
     def popdown(self):
         self.popover_manager.popdown()

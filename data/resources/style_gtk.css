@@ -45,22 +45,22 @@ headerbar.welcome {
 ** open documents
 */
 
-popover.documentchooser > box {
-    margin: 9px;
+box.documentchooser {
+    margin: 0px;
 }
-popover.documentchooser entry {
+box.documentchooser entry {
     margin-bottom: 6px;
 }
-popover.documentchooser scrolledwindow {
+box.documentchooser scrolledwindow {
     margin-bottom: 12px;
 }
-popover.documentchooser box.not_found {
+box.documentchooser box.not_found {
     margin-bottom: 12px;
 }
-popover.documentchooser box.not_found image {
+box.documentchooser box.not_found image {
     opacity: 0.5;
 }
-popover.documentchooser box.not_found label {
+box.documentchooser box.not_found label {
     opacity: 0.65;
 }
 

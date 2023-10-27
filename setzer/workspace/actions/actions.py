@@ -22,7 +22,6 @@ from gi.repository import GLib, Gio, Gtk, Gdk, Pango
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 from setzer.app.font_manager import FontManager
-from setzer.widgets.popover.popover_manager import PopoverManager
 
 
 class Actions(object):
@@ -522,7 +521,7 @@ class Actions(object):
         if parameter == None: return
 
         name = parameter[0]
-        PopoverManager.popup_at_button(name)
+        ServiceLocator.get_popover_manager().popup_at_button(name)
 
     def show_preferences_dialog(self, action=None, parameter=''):
         DialogLocator.get_dialog('preferences').run()

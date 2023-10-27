@@ -21,50 +21,51 @@ from gi.repository import Gtk
 
 from setzer.widgets.popover.popover import Popover
 from setzer.widgets.popover.popover_button import PopoverButton
+from setzer.helpers.observable import Observable
 
 
-class PopoverManager(object):
+class PopoverManager(Observable):
 
-    popoverlay = None
-    popovers = dict()
-    popover_buttons = dict()
-    current_popover_name = None
-    main_window = None
-    inbetween = Gtk.DrawingArea()
+    def __init__(self, main_window):
+        Observable.__init__(self)
 
-    def init(main_window):
-        PopoverManager.main_window = main_window
-        PopoverManager.popoverlay = main_window.popoverlay
-        PopoverManager.popoverlay.add_overlay(PopoverManager.inbetween)
+        self.popovers = dict()
+        self.popover_buttons = dict()
+        self.current_popover_name = None
+
+        self.main_window = main_window
+        self.inbetween = Gtk.DrawingArea()
+        self.popoverlay = main_window.popoverlay
+        self.popoverlay.add_overlay(self.inbetween)
 
         controller_click = Gtk.GestureClick()
-        controller_click.connect('pressed', PopoverManager.on_click_inbetween)
+        controller_click.connect('pressed', self.on_click_inbetween)
         controller_click.set_button(1)
-        PopoverManager.inbetween.add_controller(controller_click)
+        self.inbetween.add_controller(controller_click)
 
-        PopoverManager.inbetween.set_can_target(False)
+        self.inbetween.set_can_target(False)
 
-    def create_popover(name):
-        popover = Popover(PopoverManager)
-        PopoverManager.popovers[name] = popover
+    def create_popover(self, name):
+        popover = Popover(self)
+        self.popovers[name] = popover
         return popover
 
-    def create_popover_button(name):
-        popover_button = PopoverButton(name, PopoverManager)
-        PopoverManager.popover_buttons[name] = popover_button
+    def create_popover_button(self, name):
+        popover_button = PopoverButton(name, self)
+        self.popover_buttons[name] = popover_button
         return popover_button
 
-    def popup_at_button(name):
-        if PopoverManager.current_popover_name == name: return
+    def popup_at_button(self, name):
+        if self.current_popover_name == name: return
 
-        button = PopoverManager.popover_buttons[name]
-        allocation = button.compute_bounds(PopoverManager.main_window).out_bounds
+        button = self.popover_buttons[name]
+        allocation = button.compute_bounds(self.main_window).out_bounds
 
         x = allocation.origin.x + allocation.size.width / 2
         y = allocation.origin.y + allocation.size.height
 
-        popover = PopoverManager.popovers[name]
-        window_width = PopoverManager.main_window.get_width()
+        popover = self.popovers[name]
+        window_width = self.main_window.get_width()
         arrow_width = 10
         arrow_border_width = 36
         if x - popover.width / 2 < 0:
@@ -81,27 +82,31 @@ class PopoverManager(object):
             popover.arrow_border.set_margin_start(popover.width / 2 - arrow_border_width / 2)
         popover.set_margin_top(max(0, y))
 
-        PopoverManager.current_popover_name = name
-        PopoverManager.popoverlay.add_overlay(popover)
-        PopoverManager.inbetween.set_can_target(True)
+        self.current_popover_name = name
+        self.popoverlay.add_overlay(popover)
+        self.inbetween.set_can_target(True)
 
         button.set_active(True)
 
-    def popdown():
-        if PopoverManager.current_popover_name == None: return
+        self.add_change_code('popup', name)
 
-        name = PopoverManager.current_popover_name
-        popover = PopoverManager.popovers[name]
+    def popdown(self):
+        if self.current_popover_name == None: return
 
-        PopoverManager.popoverlay.remove_overlay(popover)
-        PopoverManager.current_popover_name = None
-        PopoverManager.inbetween.set_can_target(False)
+        name = self.current_popover_name
+        popover = self.popovers[name]
+
+        self.popoverlay.remove_overlay(popover)
+        self.current_popover_name = None
+        self.inbetween.set_can_target(False)
 
         popover.show_page(None, 'main', Gtk.StackTransitionType.NONE)
-        if name in PopoverManager.popover_buttons:
-            PopoverManager.popover_buttons[name].set_active(False)
+        if name in self.popover_buttons:
+            self.popover_buttons[name].set_active(False)
 
-    def on_click_inbetween(controller, n_press, x, y):
-        PopoverManager.popdown()
+        self.add_change_code('popdown', name)
+
+    def on_click_inbetween(self, controller, n_press, x, y):
+        self.popdown()
 
 

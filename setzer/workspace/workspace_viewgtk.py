@@ -43,10 +43,10 @@ class MainWindow(Adw.ApplicationWindow):
         self.app = app
         self.set_size_request(-1, 550)
 
-        # window state variables
-        self.current_width = 0
-        self.current_height = 0
-        self.ismaximized = False
+        self.popoverlay = Gtk.Overlay()
+        self.set_content(self.popoverlay)
+
+    def create_widgets(self):
 
         # latex notebook
         self.latex_notebook = Gtk.Notebook()
@@ -129,11 +129,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.main_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.main_box.append(self.headerbar)
         self.main_box.append(self.mode_stack)
-
-        # popover overlay
-        self.popoverlay = Gtk.Overlay()
         self.popoverlay.set_child(self.main_box)
-        self.set_content(self.popoverlay)
 
         self.css_provider = Gtk.CssProvider()
         resources_path = ServiceLocator.get_resources_path()

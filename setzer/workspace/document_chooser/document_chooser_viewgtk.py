@@ -26,10 +26,12 @@ import re
 from setzer.app.color_manager import ColorManager
 
 
-class DocumentChooser(Gtk.Popover):
+class DocumentChooser(Gtk.Box):
     
     def __init__(self):
-        Gtk.Popover.__init__(self)
+        Gtk.Box.__init__(self)
+        self.set_orientation(Gtk.Orientation.VERTICAL)
+        self.get_style_context().add_class('documentchooser')
 
         self.search_entry = Gtk.SearchEntry()
 
@@ -51,10 +53,10 @@ class DocumentChooser(Gtk.Popover):
         self.not_found_slate.get_style_context().add_class('not_found')
         self.not_found_slate.get_style_context().add_class('frame')
 
-        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 12)
         image = Gtk.Image.new_from_icon_name('system-search-symbolic')
         image.set_pixel_size(64)
-        image.set_vexpand(True)
+        image.set_vexpand(False)
         box.append(image)
         box.append(Gtk.Label.new(_('No results')))
 
@@ -76,14 +78,9 @@ class DocumentChooser(Gtk.Popover):
         self.notebook.set_current_page(0)
         self.notebook.set_vexpand(True)
 
-        self.box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
-        self.box.append(self.search_entry)
-        self.box.append(self.notebook)
-        self.box.append(self.other_documents_button)
-
-        self.set_child(self.box)
-
-        self.get_style_context().add_class('documentchooser')
+        self.append(self.search_entry)
+        self.append(self.notebook)
+        self.append(self.other_documents_button)
 
     def update_items(self, items):
         self.auto_suggest_entries = []

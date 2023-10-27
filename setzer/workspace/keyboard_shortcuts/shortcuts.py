@@ -135,16 +135,6 @@ class Shortcuts(object):
         if self.main_window.headerbar.center_widget.center_button.get_sensitive():
             self.main_window.headerbar.center_widget.center_button.activate()
 
-    def shortcut_workspace_menu(self):
-        button = self.main_window.headerbar.menu_button
-        if not button.is_active:
-            allocation = button.compute_bounds(self.main_window).out_bounds
-
-            x = allocation.origin.x + allocation.size.width / 2
-            y = allocation.origin.y + allocation.size.height
-
-            PopoverManager.popup(button.popover_name, x, y)
-
     def shortcut_switch_document(self):
         self.workspace.switch_to_earliest_open_document()
 

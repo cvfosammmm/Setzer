@@ -24,13 +24,14 @@ from gi.repository import Gio
 import setzer.workspace.document_switcher.document_switcher_viewgtk as document_switcher_viewgtk
 import setzer.workspace.document_chooser.document_chooser_viewgtk as document_chooser_viewgtk
 from setzer.helpers.popover_menu_builder import MenuBuilder
-from setzer.widgets.popover.popover_manager import PopoverManager
+from setzer.app.service_locator import ServiceLocator
 
 
 class HeaderBar(Gtk.HeaderBar):
 
     def __init__(self):
         Gtk.HeaderBar.__init__(self)
+        self.popover_manager = ServiceLocator.get_popover_manager()
 
         # sidebar toggles
         self.document_structure_toggle = Gtk.ToggleButton()
@@ -56,19 +57,25 @@ class HeaderBar(Gtk.HeaderBar):
         self.open_document_blank_button.set_action_name('win.open-document-dialog')
 
         self.document_chooser = document_chooser_viewgtk.DocumentChooser()
-        self.open_document_button_label = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 12)
-        self.open_document_button_label.append(Gtk.Label.new(_('Open')))
-        self.open_document_button_label.append(Gtk.Image.new_from_icon_name('pan-down-symbolic'))
-        self.open_document_button = Gtk.MenuButton()
+
+        self.open_document_popover = self.popover_manager.create_popover('open_document')
+        self.open_document_popover.set_width(414)
+        self.open_document_popover.add_widget(self.document_chooser)
+
+        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 12)
+        box.append(Gtk.Label.new(_('Open')))
+        box.append(Gtk.Image.new_from_icon_name('pan-down-symbolic'))
+
+        self.open_document_button = self.popover_manager.create_popover_button('open_document')
+        self.open_document_button.set_child(box)
+        self.open_document_button.set_can_focus(False)
         self.open_document_button.set_tooltip_text(_('Open a document') + ' (' + _('Shift') + '+' + _('Ctrl') + '+O)')
-        self.open_document_button.set_child(self.open_document_button_label)
-        self.open_document_button.set_popover(self.document_chooser)
 
         # new document buttons
         self.button_latex = MenuBuilder.create_button(_('New LaTeX Document'), shortcut=_('Ctrl') + '+N')
         self.button_bibtex = MenuBuilder.create_button(_('New BibTeX Document'))
 
-        self.new_document_popover = PopoverManager.create_popover('new_document')
+        self.new_document_popover = self.popover_manager.create_popover('new_document')
         self.new_document_popover.set_width(252)
         self.new_document_popover.add_widget(self.button_latex)
         self.new_document_popover.add_widget(self.button_bibtex)
@@ -77,7 +84,7 @@ class HeaderBar(Gtk.HeaderBar):
         box.append(Gtk.Image.new_from_icon_name('document-new-symbolic'))
         box.append(Gtk.Image.new_from_icon_name('pan-down-symbolic'))
 
-        self.new_document_button = PopoverManager.create_popover_button('new_document')
+        self.new_document_button = self.popover_manager.create_popover_button('new_document')
         self.new_document_button.set_child(box)
         self.new_document_button.set_can_focus(False)
         self.new_document_button.set_tooltip_text(_('Create a new document'))
@@ -133,7 +140,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.button_close_active = MenuBuilder.create_button(_('Close Document'), shortcut=_('Ctrl') + '+W')
         self.button_quit = MenuBuilder.create_button(_('Quit'), shortcut=_('Ctrl') + '+Q')
 
-        self.hamburger_popover = PopoverManager.create_popover('hamburger_menu')
+        self.hamburger_popover = self.popover_manager.create_popover('hamburger_menu')
         self.hamburger_popover.set_width(306)
         self.hamburger_popover.add_widget(self.button_save_as)
         self.hamburger_popover.add_widget(self.button_save_all)
@@ -149,7 +156,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.hamburger_popover.add_widget(self.button_close_active)
         self.hamburger_popover.add_widget(self.button_quit)
 
-        self.menu_button = PopoverManager.create_popover_button('hamburger_menu')
+        self.menu_button = self.popover_manager.create_popover_button('hamburger_menu')
         self.menu_button.set_child(Gtk.Image.new_from_icon_name('open-menu-symbolic'))
         self.menu_button.set_can_focus(False)
         self.pack_end(self.menu_button)

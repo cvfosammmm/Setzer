@@ -65,7 +65,7 @@ class Headerbar(object):
         self.presenter.update_recently_opened_session_files(recently_opened_session_files)
 
     def on_restore_session_click(self, button, parameter):
-        self.view.hamburger_popover.popdown()
+        ServiceLocator.get_popover_manager().popdown()
 
         if parameter == None:
             DialogLocator.get_dialog('open_session').run(self.restore_session_cb)

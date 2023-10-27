@@ -29,11 +29,13 @@ class DocumentChooser(object):
     def __init__(self, workspace):
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
+        self.popover_manager = ServiceLocator.get_popover_manager()
+        self.popover = ServiceLocator.get_main_window().headerbar.open_document_popover
         self.view = ServiceLocator.get_main_window().headerbar.document_chooser
 
         self.workspace.connect('update_recently_opened_documents', self.on_update_recently_opened_documents)
-
-        self.view.connect('closed', self.on_document_chooser_closed)
+        self.popover_manager.connect('popdown', self.on_popover_popdown)
+        self.popover_manager.connect('popup', self.on_popover_popup)
         self.view.search_entry.connect('search-changed', self.on_document_chooser_search_changed)
         self.view.search_entry.connect('stop-search', self.on_stop_search)
 
@@ -68,7 +70,7 @@ class DocumentChooser(object):
     def on_button_release(self, event_controller, n_press, x, y):
         if self.view.auto_suggest_list.hover_item != None and self.view.auto_suggest_list.hover_item == self.view.auto_suggest_list.selected_index:
             item = self.view.auto_suggest_list.items[self.view.auto_suggest_list.hover_item]
-            self.view.popdown()
+            self.popover_manager.popdown()
             filename = item.folder + '/' + item.filename
             self.workspace.open_document_by_filename(filename)
         self.view.auto_suggest_list.selected_index = None
@@ -89,8 +91,15 @@ class DocumentChooser(object):
             items.append(os.path.split(item['filename']))
         self.view.update_items(items)
 
-    def on_document_chooser_closed(self, document_chooser, data=None):
-        document_chooser.search_entry.set_text('')
+    def on_popover_popup(self, popover_manager, name):
+        if name != 'open_document': return
+
+        self.view.search_entry.grab_focus()
+
+    def on_popover_popdown(self, popover_manager, name):
+        if name != 'open_document': return
+
+        self.view.search_entry.set_text('')
         active_document = self.workspace.get_active_document()
         if active_document != None:
             active_document.view.source_view.grab_focus()
@@ -99,10 +108,10 @@ class DocumentChooser(object):
         self.view.search_filter()
     
     def on_stop_search(self, search_entry):
-        self.view.popdown()
+        self.popover_manager.popdown()
 
     def on_other_docs_clicked(self, button):
         self.workspace.actions.actions['open-document-dialog'].activate()
-        self.view.popdown()
+        self.popover_manager.popdown()
 
 
