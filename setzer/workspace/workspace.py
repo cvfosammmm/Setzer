@@ -38,6 +38,7 @@ import setzer.workspace.keyboard_shortcuts.shortcuts as shortcuts
 import setzer.workspace.document_switcher.document_switcher as document_switcher
 import setzer.workspace.document_chooser.document_chooser as document_chooser
 import setzer.workspace.actions.actions as actions
+import setzer.workspace.context_menu.context_menu as context_menu
 from setzer.app.service_locator import ServiceLocator
 from setzer.settings.document_settings import DocumentSettings
 
@@ -74,6 +75,7 @@ class Workspace(Observable):
     def init_workspace_controller(self):
         self.actions = actions.Actions(self)
         self.shortcutsbar = shortcutsbar.Shortcutsbar(self)
+        self.context_menu = context_menu.ContextMenu(self)
         self.shortcuts = shortcuts.Shortcuts(self)
         self.presenter = workspace_presenter.WorkspacePresenter(self)
         self.headerbar = headerbar.Headerbar(self)
@@ -171,7 +173,7 @@ class Workspace(Observable):
 
     def get_active_document(self):
         return self.active_document
-        
+
     def set_active_document(self, document):
         if self.active_document != None:
             self.add_change_code('new_inactive_document', self.active_document)
@@ -367,6 +369,13 @@ class Workspace(Observable):
 
     def get_root_document(self):
         return self.root_document
+
+    def get_active_latex_document(self):
+        if self.get_active_document() == None:
+            return None
+        if self.active_document.is_latex_document():
+            return self.active_document
+        return None
 
     def get_root_or_active_latex_document(self):
         if self.get_active_document() == None:

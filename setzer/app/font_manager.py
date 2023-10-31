@@ -20,12 +20,15 @@ gi.require_version('Gtk', '4.0')
 from gi.repository import Pango
 from gi.repository import Gtk
 
+from setzer.app.service_locator import ServiceLocator
+
 
 class FontManager(object):
 
     main_window = None
     default_font_string = None
     font_string = None
+    zoom_level = 1.0
 
     def init(main_window):
         FontManager.main_window = main_window
@@ -45,6 +48,16 @@ class FontManager(object):
             FontManager.main_window.css_provider_font_size.load_from_data(data, -1)
         else:
             FontManager.main_window.css_provider_font_size.load_from_data(data.encode('utf-8'))
+
+        settings = ServiceLocator.get_settings()
+        if settings.get_value('preferences', 'use_system_font'):
+            font_string = FontManager.default_font_string
+        else:
+            font_string = settings.get_value('preferences', 'font_string')
+        font_desc = Pango.FontDescription.from_string(font_string)
+        FontManager.zoom_level = FontManager.get_font_desc().get_size() / font_desc.get_size()
+        ServiceLocator.get_workspace().context_menu.reset_zoom_button_more.set_label("{:.0%}".format(FontManager.zoom_level))
+        ServiceLocator.get_workspace().context_menu.reset_zoom_button_pointer.set_label("{:.0%}".format(FontManager.zoom_level))
 
     def get_char_width(text_view, char='A'):
         context = text_view.get_pango_context()

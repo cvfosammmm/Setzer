@@ -22,9 +22,10 @@ from gi.repository import GLib
 from gi.repository import Gio
 
 from setzer.helpers.popover_menu_builder import MenuBuilder
+from setzer.app.service_locator import ServiceLocator
 
 
-class LaTeXShortcutsbar(Gtk.Box):
+class Shortcutsbar(Gtk.Box):
 
     def __init__(self):
         Gtk.Box.__init__(self)
@@ -64,7 +65,7 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.button_replace.get_style_context().add_class('scbar')
         self.right_icons.append(self.button_replace)
 
-        self.button_more = Gtk.MenuButton()
+        self.button_more = ServiceLocator.get_popover_manager().create_popover_button('scbar_more')
         self.button_more.set_icon_name('view-more-symbolic')
         self.button_more.get_style_context().add_class('flat')
         self.button_more.get_style_context().add_class('scbar')
@@ -136,14 +137,10 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.top_icons.prepend(self.wizard_button)
 
     def insert_document_button(self):
-        self.document_button = Gtk.MenuButton()
-        self.document_button.set_icon_name('application-x-addon-symbolic')
-        self.document_button.get_style_context().add_class('flat')
-        self.document_button.get_style_context().add_class('scbar')
-        self.document_button.set_tooltip_text(_('Document'))
-        self.top_icons.prepend(self.document_button)
+        self.current_popover = ServiceLocator.get_popover_manager().create_popover('document_menu')
+        self.current_popover.set_width(288)
+        self.current_pagename = 'main'
 
-        self.create_popover()
         self.add_insert_symbol_item('\\documentclass', ['\\documentclass[•]{•}'])
         self.add_action_button(_('Add / Remove Packages') + '...', 'win.add-remove-packages-dialog')
         self.add_menu_button(_('Document Info'), 'document_info')
@@ -161,17 +158,18 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_insert_symbol_item(_('Date'), ['\\date{•}'])
         self.add_insert_symbol_item(_('Date Today'), ['\\date{\\today}'])
 
-        self.document_button.set_popover(self.current_popover)
+        self.document_button = ServiceLocator.get_popover_manager().create_popover_button('document_menu')
+        self.document_button.set_icon_name('application-x-addon-symbolic')
+        self.document_button.get_style_context().add_class('flat')
+        self.document_button.get_style_context().add_class('scbar')
+        self.document_button.set_tooltip_text(_('Document'))
+        self.top_icons.prepend(self.document_button)
 
     def insert_beamer_button(self):
-        self.beamer_button = Gtk.MenuButton()
-        self.beamer_button.set_icon_name('view-list-bullet-symbolic')
-        self.beamer_button.set_tooltip_text(_('Beamer'))
-        self.beamer_button.get_style_context().add_class('flat')
-        self.beamer_button.get_style_context().add_class('scbar')
-        self.top_icons.prepend(self.beamer_button)
+        self.current_popover = ServiceLocator.get_popover_manager().create_popover('beamer_menu')
+        self.current_popover.set_width(288)
+        self.current_pagename = 'main'
 
-        self.create_popover()
         self.add_action_button('\\usetheme', 'win.insert-after-packages', GLib.Variant('as', ['\\usetheme{•}']))
         self.add_action_button(_('Hide Navigation'), 'win.insert-after-packages', GLib.Variant('as', ['\\beamertemplatenavigationsymbolsempty']))
         self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
@@ -182,17 +180,18 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_before_after_item(_('Frame with Title'), ['\\begin{frame}\n\t\\frametitle{•}\n\n\t', '\n\\end{frame}'])
         self.add_before_after_item(_('\\frametitle'), ['\\frametitle{', '}'])
 
-        self.beamer_button.set_popover(self.current_popover)
+        self.beamer_button = ServiceLocator.get_popover_manager().create_popover_button('beamer_menu')
+        self.beamer_button.set_icon_name('view-list-bullet-symbolic')
+        self.beamer_button.set_tooltip_text(_('Beamer'))
+        self.beamer_button.get_style_context().add_class('flat')
+        self.beamer_button.get_style_context().add_class('scbar')
+        self.top_icons.prepend(self.beamer_button)
 
     def insert_bibliography_button(self):
-        self.bibliography_button = Gtk.MenuButton()
-        self.bibliography_button.set_icon_name('view-dual-symbolic')
-        self.bibliography_button.set_tooltip_text(_('Bibliography'))
-        self.bibliography_button.get_style_context().add_class('flat')
-        self.bibliography_button.get_style_context().add_class('scbar')
-        self.top_icons.prepend(self.bibliography_button)
+        self.current_popover = ServiceLocator.get_popover_manager().create_popover('bibliography_menu')
+        self.current_popover.set_width(288)
+        self.current_pagename = 'main'
 
-        self.create_popover()
         self.add_action_button(_('Include BibTeX File') + '...', 'win.include-bibtex-file')
         self.add_action_button(_('Include \'natbib\' Package'), 'win.add-packages', GLib.Variant('as', ['natbib']))
         self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
@@ -215,17 +214,18 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_insert_symbol_item(_('Cite Year'), ['\\citeyear{•}'])
         self.add_insert_symbol_item(_('Cite Year with Brackets'), ['\\citeyearpar{•}'])
 
-        self.bibliography_button.set_popover(self.current_popover)
+        self.bibliography_button = ServiceLocator.get_popover_manager().create_popover_button('bibliography_menu')
+        self.bibliography_button.set_icon_name('view-dual-symbolic')
+        self.bibliography_button.set_tooltip_text(_('Bibliography'))
+        self.bibliography_button.get_style_context().add_class('flat')
+        self.bibliography_button.get_style_context().add_class('scbar')
+        self.top_icons.prepend(self.bibliography_button)
 
     def insert_text_button(self):
-        self.text_button = Gtk.MenuButton()
-        self.text_button.set_icon_name('text-symbolic')
-        self.text_button.set_tooltip_text(_('Text'))
-        self.text_button.get_style_context().add_class('flat')
-        self.text_button.get_style_context().add_class('scbar')
-        self.top_icons.prepend(self.text_button)
+        self.current_popover = ServiceLocator.get_popover_manager().create_popover('text_menu')
+        self.current_popover.set_width(288)
+        self.current_pagename = 'main'
 
-        self.create_popover()
         self.add_menu_button(_('Font Styles'), 'font_styles')
         self.add_menu_button(_('Font Sizes'), 'font_sizes')
         self.add_menu_button(_('Alignment'), 'text_alignment')
@@ -335,18 +335,18 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_insert_symbol_item(_('Equation Reference') + ' (\\eqref)', ['\\eqref{•}'])
         self.add_insert_symbol_item(_('Page Reference') + ' (\\pageref)', ['\\pageref{•}'])
 
-        self.text_button.set_popover(self.current_popover)
+        self.text_button = ServiceLocator.get_popover_manager().create_popover_button('text_menu')
+        self.text_button.set_icon_name('text-symbolic')
+        self.text_button.set_tooltip_text(_('Text'))
+        self.text_button.get_style_context().add_class('flat')
+        self.text_button.get_style_context().add_class('scbar')
+        self.top_icons.prepend(self.text_button)
 
     def insert_quotes_button(self):
-        self.quotes_button = Gtk.MenuButton()
-        self.quotes_button.set_direction(Gtk.ArrowType.DOWN)
-        self.quotes_button.set_icon_name('own-quotes-symbolic')
-        self.quotes_button.set_tooltip_text(_('Quotes') + ' (' + _('Ctrl') + '+")')
-        self.quotes_button.get_style_context().add_class('flat')
-        self.quotes_button.get_style_context().add_class('scbar')
-        self.top_icons.prepend(self.quotes_button)
+        self.current_popover = ServiceLocator.get_popover_manager().create_popover('quotes_menu')
+        self.current_popover.set_width(288)
+        self.current_pagename = 'main'
 
-        self.create_popover()
         self.current_popover.get_style_context().add_class('menu-own-quotes-symbolic')
         self.add_before_after_item(_('Primary Quotes') + ' (`` ... \'\')', ['``', '\'\''])
         self.add_before_after_item(_('Secondary Quotes') + ' (` ... \')', ['`', '\''])
@@ -357,17 +357,18 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_before_after_item(_('German Alt Quotes') + ' (\\frqq ... \\flqq{})', ['\\frqq ', '\\flqq{}'])
         self.add_before_after_item(_('German Alt Single Quotes') + ' (\\frq ... \\frq{})', ['\\frq ', '\\flq{}'])
 
-        self.quotes_button.set_popover(self.current_popover)
+        self.quotes_button = ServiceLocator.get_popover_manager().create_popover_button('quotes_menu')
+        self.quotes_button.set_icon_name('own-quotes-symbolic')
+        self.quotes_button.set_tooltip_text(_('Quotes') + ' (' + _('Ctrl') + '+")')
+        self.quotes_button.get_style_context().add_class('flat')
+        self.quotes_button.get_style_context().add_class('scbar')
+        self.top_icons.prepend(self.quotes_button)
 
     def insert_math_button(self):
-        self.math_button = Gtk.MenuButton()
-        self.math_button.set_icon_name('own-math-menu-symbolic')
-        self.math_button.set_tooltip_text(_('Math'))
-        self.math_button.get_style_context().add_class('flat')
-        self.math_button.get_style_context().add_class('scbar')
-        self.top_icons.prepend(self.math_button)
+        self.current_popover = ServiceLocator.get_popover_manager().create_popover('math_menu')
+        self.current_popover.set_width(288)
+        self.current_pagename = 'main'
 
-        self.create_popover()
         self.add_action_button(_('Include AMS Packages'), 'win.add-packages', GLib.Variant('as', ['amsmath', 'amssymb', 'amsfonts', 'amsthm']))
         self.current_popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
         self.add_before_after_item(_('Inline Math Section') + ' ($ ... $)', ['$ ', ' $'], shortcut=_('Ctrl') + '+M')
@@ -475,18 +476,18 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_insert_symbol_item('One Quad', ['\\quad '])
         self.add_insert_symbol_item('Two Quads', ['\\qquad '])
 
-        self.math_button.set_popover(self.current_popover)
+        self.math_button = ServiceLocator.get_popover_manager().create_popover_button('math_menu')
+        self.math_button.set_icon_name('own-math-menu-symbolic')
+        self.math_button.set_tooltip_text(_('Math'))
+        self.math_button.get_style_context().add_class('flat')
+        self.math_button.get_style_context().add_class('scbar')
+        self.top_icons.prepend(self.math_button)
 
     def insert_object_button(self):
-        self.insert_object_button = Gtk.MenuButton()
-        self.insert_object_button.set_direction(Gtk.ArrowType.DOWN)
-        self.insert_object_button.set_icon_name('own-insert-object-symbolic')
-        self.insert_object_button.set_tooltip_text(_('Objects'))
-        self.insert_object_button.get_style_context().add_class('flat')
-        self.insert_object_button.get_style_context().add_class('scbar')
-        self.top_icons.prepend(self.insert_object_button)
+        self.current_popover = ServiceLocator.get_popover_manager().create_popover('insert_object_menu')
+        self.current_popover.set_width(288)
+        self.current_pagename = 'main'
 
-        self.create_popover()
         self.add_insert_symbol_item(_('Figure (image inside freestanding block)'), ['\\begin{figure}\n\t\\begin{center}\n\t\t\\includegraphics[scale=1]{•}\n\t\t\\caption{•}\n\t\\end{center}\n\\end{figure}'])
         self.add_insert_symbol_item(_('Inline Image'), ['\\includegraphics[scale=1]{•}'])
         self.add_menu_button(_('Code Listing'), 'code_listing')
@@ -510,11 +511,12 @@ class LaTeXShortcutsbar(Gtk.Box):
         self.add_before_after_item(_('Other Language'), ['\\lstset{language=•}\n\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
         self.add_before_after_item(_('Plain Text'), ['\\begin{lstlisting}\n\t', '\n\\end{lstlisting}'])
 
-        self.insert_object_button.set_popover(self.current_popover)
-
-    def create_popover(self):
-        self.current_popover = MenuBuilder.create_menu()
-        self.current_pagename = 'main'
+        self.insert_object_button = ServiceLocator.get_popover_manager().create_popover_button('insert_object_menu')
+        self.insert_object_button.set_icon_name('own-insert-object-symbolic')
+        self.insert_object_button.set_tooltip_text(_('Objects'))
+        self.insert_object_button.get_style_context().add_class('flat')
+        self.insert_object_button.get_style_context().add_class('scbar')
+        self.top_icons.prepend(self.insert_object_button)
 
     def add_page(self, pagename, label):
         self.current_pagename = pagename

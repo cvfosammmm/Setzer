@@ -110,12 +110,14 @@ class Actions(object):
         document.disconnect('modified_changed', self.on_modified_changed)
         document.source_buffer.disconnect_by_func(self.on_undo_changed)
         document.source_buffer.disconnect_by_func(self.on_has_selection_changed)
+        document.view.scrolled_window.get_vadjustment().disconnect_by_func(self.on_adjustment_changed)
 
     def on_new_active_document(self, workspace, document):
         self.update_actions()
         document.connect('modified_changed', self.on_modified_changed)
         document.source_buffer.connect('notify::can-undo', self.on_undo_changed)
         document.source_buffer.connect('notify::has-selection', self.on_has_selection_changed)
+        document.view.scrolled_window.get_vadjustment().connect('changed', self.on_adjustment_changed)
 
     def on_modified_changed(self, document):
         self.update_actions()
@@ -132,6 +134,9 @@ class Actions(object):
     def on_has_selection_changed(self, buffer, has_selection):
         self.update_actions()
 
+    def on_adjustment_changed(self, adjustment):
+        self.update_actions()
+
     def update_actions(self):
         document = self.workspace.get_active_document()
         document_active = document != None
@@ -141,6 +146,9 @@ class Actions(object):
         if self.workspace.root_document != None: sync_document = self.workspace.root_document
         else: sync_document = document
         can_sync = sync_document != None and sync_document.is_latex_document() and sync_document.build_system.can_sync
+        can_reset_zoom = (round(FontManager.zoom_level * 100) != 100)
+        can_zoom_in = (FontManager.get_font_desc().get_size() * 1.1 <= 24 * Pango.SCALE)
+        can_zoom_out = (FontManager.get_font_desc().get_size() / 1.1 >= 6 * Pango.SCALE)
 
         self.actions['close-active-document'].set_enabled(document_active)
         self.actions['close-all-documents'].set_enabled(document_active)
@@ -171,6 +179,9 @@ class Actions(object):
         self.actions['forward-sync'].set_enabled(can_sync)
         self.actions['show-build-log'].set_enabled(document_active_is_latex)
         self.actions['close-build-log'].set_enabled(document_active_is_latex)
+        self.actions['reset-zoom'].set_enabled(can_reset_zoom)
+        self.actions['zoom-in'].set_enabled(can_zoom_in)
+        self.actions['zoom-out'].set_enabled(can_zoom_out)
 
     def new_latex_document(self, action=None, parameter=None):
         document = self.workspace.create_latex_document()

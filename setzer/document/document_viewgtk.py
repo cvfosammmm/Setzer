@@ -29,9 +29,6 @@ class DocumentView(Gtk.Box):
 
         self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.vbox.set_hexpand(True)
-        self.overlay = Gtk.Overlay()
-        self.overlay.set_vexpand(True)
-        self.scrolled_window = Gtk.ScrolledWindow()
 
         self.source_view = document.source_view
         self.source_view.set_monospace(True)
@@ -40,8 +37,20 @@ class DocumentView(Gtk.Box):
         self.source_view.set_bottom_margin(120)
         self.source_view.set_right_margin(12)
 
+        self.scrolled_window = Gtk.ScrolledWindow()
         self.scrolled_window.set_child(self.source_view)
-        self.overlay.set_child(self.scrolled_window)
+        self.scrolled_window.set_hexpand(True)
+
+        self.margin = Gtk.DrawingArea()
+        self.margin.set_hexpand(False)
+
+        self.hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.hbox.append(self.margin)
+        self.hbox.append(self.scrolled_window)
+
+        self.overlay = Gtk.Overlay()
+        self.overlay.set_vexpand(True)
+        self.overlay.set_child(self.hbox)
 
         self.vbox.append(self.overlay)
         self.append(self.vbox)

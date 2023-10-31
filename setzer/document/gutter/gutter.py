@@ -208,8 +208,8 @@ class Gutter(object):
             self.total_width = total_width
             self.line_numbers_width = line_numbers_width
             self.layout.set_width((line_numbers_width - self.char_width) * Pango.SCALE)
-            self.source_view.set_left_margin(total_width + self.char_width)
-            self.drawing_area.set_size_request(total_width + 2, -1)
+            self.drawing_area.set_size_request(total_width + self.char_width, -1)
+            self.document_view.margin.set_size_request(total_width + self.char_width, -1)
 
     #@timer
     def draw(self, drawing_area, ctx, width, height, data=None):
@@ -264,6 +264,8 @@ class Gutter(object):
             Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('line_highlighting_color'))
             yrange = self.source_view.get_line_yrange(self.source_buffer.get_iter_at_line(line).iter)
             ctx.rectangle(0, yrange.y - self.adjustment.get_value(), self.total_width, yrange.height)
+            ctx.fill()
+            ctx.rectangle(self.total_width + 1, yrange.y - self.adjustment.get_value(), self.char_width, yrange.height)
             ctx.fill()
             Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('view_fg_color'))
 

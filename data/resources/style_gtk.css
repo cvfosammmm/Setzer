@@ -2,6 +2,9 @@
 ** main_window
 */
 
+box.document {
+    background: @view_bg_color;
+}
 box.document textview {
     line-height: 1.1;
 }

@@ -26,24 +26,19 @@ class Shortcutsbar(object):
 
     def __init__(self, workspace):
         self.workspace = workspace
-        self.latex_shortcutsbar = ServiceLocator.get_main_window().latex_shortcutsbar
-        self.bibtex_shortcutsbar = ServiceLocator.get_main_window().bibtex_shortcutsbar
-        self.others_shortcutsbar = ServiceLocator.get_main_window().others_shortcutsbar
+        self.view = ServiceLocator.get_main_window().shortcutsbar
 
-        self.latex_shortcutsbar.button_build_log.set_active(self.workspace.get_show_build_log())
-        self.latex_shortcutsbar.button_build_log.connect('clicked', self.on_build_log_button_clicked)
-        self.latex_shortcutsbar.button_build_log.get_child().set_sensitive(False)
+        self.view.button_build_log.set_active(self.workspace.get_show_build_log())
+        self.view.button_build_log.connect('clicked', self.on_build_log_button_clicked)
+        self.view.button_build_log.get_child().set_sensitive(False)
 
-        self.latex_shortcutsbar.button_search.connect('clicked', self.on_find_button_clicked)
-        self.latex_shortcutsbar.button_replace.connect('clicked', self.on_find_replace_button_clicked)
-        self.bibtex_shortcutsbar.button_search.connect('clicked', self.on_find_button_clicked)
-        self.bibtex_shortcutsbar.button_replace.connect('clicked', self.on_find_replace_button_clicked)
-        self.others_shortcutsbar.button_search.connect('clicked', self.on_find_button_clicked)
-        self.others_shortcutsbar.button_replace.connect('clicked', self.on_find_replace_button_clicked)
+        self.view.button_search.connect('clicked', self.on_find_button_clicked)
+        self.view.button_replace.connect('clicked', self.on_find_replace_button_clicked)
 
         self.workspace.connect('document_removed', self.on_document_removed)
         self.workspace.connect('new_active_document', self.on_new_active_document)
         self.workspace.connect('show_build_log_state_change', self.update_buttons)
+        self.workspace.connect('root_state_change', self.on_root_state_change)
 
         self.preview_paned = ServiceLocator.get_main_window().preview_paned
         self.width = 0
@@ -59,7 +54,7 @@ class Shortcutsbar(object):
         if self.workspace.active_document == None:
             self.document.disconnect('changed', self.update_buttons)
             self.document.search.disconnect('mode_changed', self.update_buttons)
-            self.document == None
+            self.document = None
 
         self.update_buttons()
 
@@ -76,6 +71,9 @@ class Shortcutsbar(object):
 
         self.update_buttons()
 
+    def on_root_state_change(self, workspace, state):
+        self.update_buttons()
+
     def on_paned_position_changed(self, paned, position=None):
         self.width = paned.get_position()
         self.update_wizard_button(animate=True)
@@ -87,33 +85,58 @@ class Shortcutsbar(object):
         if self.document == None: return
 
         if self.document.is_latex_document():
+            self.view.wizard_button.show()
+
             is_visible = self.document.source_buffer.get_char_count() == 0 and self.width > 675
             if is_visible and animate == False:
-                self.latex_shortcutsbar.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
-                self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(True)
-                self.latex_shortcutsbar.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT)
-                self.latex_shortcutsbar.wizard_button_revealer.show()
+                self.view.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
+                self.view.wizard_button_revealer.set_reveal_child(True)
+                self.view.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT)
+                self.view.wizard_button_revealer.show()
             elif is_visible:
-                self.latex_shortcutsbar.wizard_button_revealer.show()
-                self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(True)
+                self.view.wizard_button_revealer.show()
+                self.view.wizard_button_revealer.set_reveal_child(True)
             elif animate == False:
-                self.latex_shortcutsbar.wizard_button_revealer.hide()
+                self.view.wizard_button_revealer.hide()
             else:
-                self.latex_shortcutsbar.wizard_button_revealer.set_reveal_child(False)
+                self.view.wizard_button_revealer.set_reveal_child(False)
+        else:
+            self.view.wizard_button.hide()
 
     def update_buttons(self, workspace=None, parameter=None):
         if self.document == None: return
 
-        if self.document.is_latex_document(): scbar = self.latex_shortcutsbar
-        elif self.document.is_bibtex_document(): scbar = self.bibtex_shortcutsbar
-        else: scbar = self.others_shortcutsbar
+        self.view.button_search.set_active(self.document.search.search_bar_mode == 'search')
+        self.view.button_replace.set_active(self.document.search.search_bar_mode == 'replace')
 
-        scbar.button_more.set_popover(self.document.context_menu.popover_more)
-        scbar.button_search.set_active(self.document.search.search_bar_mode == 'search')
-        scbar.button_replace.set_active(self.document.search.search_bar_mode == 'replace')
+        if self.document.is_latex_document():
+            self.view.beamer_button.show()
+            self.view.bibliography_button.show()
+            self.view.text_button.show()
+            self.view.quotes_button.show()
+            self.view.math_button.show()
+            self.view.insert_object_button.show()
+            self.view.italic_button.show()
+            self.view.bold_button.show()
+            self.view.document_button.show()
+        else:
+            self.view.beamer_button.hide()
+            self.view.bibliography_button.hide()
+            self.view.text_button.hide()
+            self.view.quotes_button.hide()
+            self.view.math_button.hide()
+            self.view.insert_object_button.hide()
+            self.view.italic_button.hide()
+            self.view.bold_button.hide()
+            self.view.document_button.hide()
 
-        show_build_log = self.workspace.get_show_build_log()
-        self.latex_shortcutsbar.button_build_log.set_active(show_build_log)
+        if self.workspace.get_root_or_active_latex_document():
+            self.view.button_build_log.set_active(self.workspace.get_show_build_log())
+            self.view.button_build_log.set_sensitive(True)
+            self.view.button_build_log.show()
+        else:
+            self.view.button_build_log.set_sensitive(False)
+            self.view.button_build_log.hide()
 
     def on_build_log_button_clicked(self, toggle_button, parameter=None):
         self.workspace.set_show_build_log(toggle_button.get_active())

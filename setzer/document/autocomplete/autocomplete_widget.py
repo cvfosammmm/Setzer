@@ -71,7 +71,7 @@ class AutocompleteWidget(object):
     def update_size(self):
         self.line_height = FontManager.get_line_height(self.source_view)
         self.char_width = FontManager.get_char_width(self.source_view)
-        self.shortcutsbar_height = self.main_window.latex_shortcutsbar.get_allocated_height()
+        self.shortcutsbar_height = self.main_window.shortcutsbar.get_allocated_height()
 
         if self.model.items != None:
             self.height = min(len(self.model.items), 5) * self.line_height
@@ -91,6 +91,7 @@ class AutocompleteWidget(object):
 
         iter_location = self.source_view.get_iter_location(start_iter)
         x_offset = - self.document.view.scrolled_window.get_hadjustment().get_value()
+        x_offset += self.document.view.margin.get_allocated_width()
         y_offset = - self.document.view.scrolled_window.get_vadjustment().get_value()
         self.x_position = x_offset + iter_location.x
         self.y_position = y_offset + iter_location.y + self.line_height

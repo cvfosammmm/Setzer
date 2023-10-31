@@ -23,8 +23,7 @@ from gi.repository import GLib
 
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
-import setzer.workspace.headerbar.headerbar_controller as headerbar_controller
-import setzer.workspace.headerbar.headerbar_presenter as headerbar_presenter
+from setzer.helpers.popover_menu_builder import MenuBuilder
 
 
 class Headerbar(object):
@@ -32,8 +31,24 @@ class Headerbar(object):
     def __init__(self, workspace):
         self.workspace = workspace
         self.view = ServiceLocator.get_main_window().headerbar
-        self.controller = headerbar_controller.HeaderbarController(self, self.view)
-        self.presenter = headerbar_presenter.HeaderbarPresenter(self, self.view)
+
+        self.popover_manager = ServiceLocator.get_popover_manager()
+
+        actions = self.workspace.actions.actions
+        self.view.button_latex.connect('clicked', self.on_new_document_button_click, actions['new-latex-document'])
+        self.view.button_bibtex.connect('clicked', self.on_new_document_button_click, actions['new-bibtex-document'])
+
+        self.view.button_restore_session.connect('clicked', self.on_restore_session_click, None)
+        self.view.button_save_session.connect('clicked', self.on_hamburger_button_click, actions['save-session'])
+
+        self.view.button_save_as.connect('clicked', self.on_hamburger_button_click, actions['save-as'])
+        self.view.button_save_all.connect('clicked', self.on_hamburger_button_click, actions['save-all'])
+        self.view.button_preferences.connect('clicked', self.on_hamburger_button_click, actions['show-preferences-dialog'])
+        self.view.button_shortcuts.connect('clicked', self.on_hamburger_button_click, actions['show-shortcuts-dialog'])
+        self.view.button_about.connect('clicked', self.on_hamburger_button_click, actions['show-about-dialog'])
+        self.view.button_close_all.connect('clicked', self.on_hamburger_button_click, actions['close-all-documents'])
+        self.view.button_close_active.connect('clicked', self.on_hamburger_button_click, actions['close-active-document'])
+        self.view.button_quit.connect('clicked', self.on_hamburger_button_click, actions['quit'])
 
         self.workspace.connect('document_removed', self.on_document_removed)
         self.workspace.connect('new_active_document', self.on_new_active_document)
@@ -41,28 +56,110 @@ class Headerbar(object):
         self.workspace.connect('update_recently_opened_session_files', self.on_update_recently_opened_session_files)
         self.workspace.connect('root_state_change', self.on_root_state_change)
 
-        self.presenter.activate_welcome_screen_mode()
+        self.activate_welcome_screen_mode()
+
+    def on_new_document_button_click(self, button, action):
+        self.popover_manager.popdown()
+        action.activate()
+
+    def on_hamburger_button_click(self, button, action):
+        self.popover_manager.popdown()
+        action.activate()
 
     def on_document_removed(self, workspace, document):
         if self.workspace.active_document == None:
-            self.presenter.set_build_button_state()
-            self.presenter.activate_welcome_screen_mode()
+            self.set_build_button_state()
+            self.activate_welcome_screen_mode()
 
     def on_new_active_document(self, workspace, document):
-        self.presenter.set_build_button_state()
-        if document.is_latex_document():
-            self.presenter.activate_latex_document_mode()
-        else:
-            self.presenter.activate_other_document_mode()
+        self.set_build_button_state()
+        self.activate_document_mode()
+        self.update_toggles()
 
     def on_root_state_change(self, workspace, state):
-        self.presenter.set_build_button_state()
+        self.set_build_button_state()
+        self.update_toggles()
 
     def on_update_recently_opened_documents(self, workspace, recently_opened_documents):
-        self.presenter.update_recently_opened_documents(recently_opened_documents)
+        data = recently_opened_documents.values()
+        if len(data) > 0:
+            self.view.open_document_button.set_sensitive(True)
+            self.view.open_document_button.show()
+            self.view.open_document_blank_button.hide()
+        else:
+            self.view.open_document_button.set_sensitive(False)
+            self.view.open_document_button.hide()
+            self.view.open_document_blank_button.show()
 
     def on_update_recently_opened_session_files(self, workspace, recently_opened_session_files):
-        self.presenter.update_recently_opened_session_files(recently_opened_session_files)
+        items = list()
+        data = recently_opened_session_files.values()
+        for item in sorted(data, key=lambda val: -val['date']):
+            items.append(item['filename'])
+        for button in self.view.session_file_buttons:
+            self.view.prev_sessions_box.remove(button)
+        self.view.session_file_buttons = list()
+        self.view.session_box_separator.hide()
+        if len(items) > 0:
+            self.view.session_box_separator.show()
+        for item in items:
+            button = MenuBuilder.create_button(item)
+            button.connect('clicked', self.on_restore_session_click, item)
+            self.view.prev_sessions_box.append(button)
+            self.view.session_file_buttons.append(button)
+
+    def set_build_button_state(self):
+        document = self.workspace.get_root_or_active_latex_document()
+
+        if document != None:
+            self.view.build_wrapper.set_end_widget(document.build_widget.view)
+            if document.build_widget.view.has_result():
+                document.build_widget.view.hide_timer(1600)
+        else:
+            self.view.build_wrapper.set_end_widget(None)
+
+    def activate_welcome_screen_mode(self):
+        self.hide_sidebar_toggles()
+        self.hide_preview_help_toggles()
+        self.view.save_document_button.hide()
+        self.view.get_style_context().add_class('welcome')
+
+    def activate_document_mode(self):
+        self.view.save_document_button.show()
+        self.view.get_style_context().remove_class('welcome')
+
+    def update_toggles(self):
+        if self.workspace.get_active_latex_document():
+            self.show_sidebar_toggles()
+        else:
+            self.hide_sidebar_toggles()
+
+        if self.workspace.get_root_or_active_latex_document():
+            self.show_preview_help_toggles()
+        else:
+            self.hide_preview_help_toggles()
+
+    def hide_sidebar_toggles(self):
+        self.view.sidebar_toggles_box.hide()
+        self.view.document_structure_toggle.set_sensitive(False)
+        self.view.symbols_toggle.set_sensitive(False)
+
+    def hide_preview_help_toggles(self):
+        self.view.preview_toggle.hide()
+        self.view.preview_toggle.set_sensitive(False)
+        self.view.help_toggle.hide()
+        self.view.help_toggle.set_sensitive(False)
+
+    def show_sidebar_toggles(self):
+        self.view.sidebar_toggles_box.show()
+        self.view.document_structure_toggle.set_sensitive(True)
+        self.view.symbols_toggle.set_sensitive(True)
+
+    def show_preview_help_toggles(self):
+        self.view.preview_toggle.show()
+        self.view.preview_toggle.set_sensitive(True)
+        self.view.help_toggle.show()
+        self.view.help_toggle.set_sensitive(True)
 
     def on_restore_session_click(self, button, parameter):
         ServiceLocator.get_popover_manager().popdown()

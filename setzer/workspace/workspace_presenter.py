@@ -32,12 +32,13 @@ class WorkspacePresenter(object):
         self.workspace.connect('document_removed', self.on_document_removed)
         self.workspace.connect('new_active_document', self.on_new_active_document)
         self.workspace.connect('new_inactive_document', self.on_new_inactive_document)
+        self.workspace.connect('root_state_change', self.on_root_state_change)
         self.workspace.connect('set_show_symbols_or_document_structure', self.on_set_show_symbols_or_document_structure)
         self.workspace.connect('set_show_preview_or_help', self.on_set_show_preview_or_help)
         self.workspace.connect('show_build_log_state_change', self.on_show_build_log_state_change)
         self.settings.connect('settings_changed', self.on_settings_changed)
 
-        self.activate_welcome_screen_mode()
+        self.main_window.mode_stack.set_visible_child_name('welcome_screen')
         self.update_font()
         self.update_colors()
         self.setup_paneds()
@@ -52,44 +53,30 @@ class WorkspacePresenter(object):
             self.update_colors()
 
     def on_new_document(self, workspace, document):
-        if document.is_latex_document():
-            self.main_window.latex_notebook.append_page(document.view)
-        elif document.is_bibtex_document():
-            self.main_window.bibtex_notebook.append_page(document.view)
-        else:
-            self.main_window.others_notebook.append_page(document.view)
+        self.main_window.notebook.append_page(document.view)
 
     def on_document_removed(self, workspace, document):
-        if document.is_latex_document():
-            notebook = self.main_window.latex_notebook
-        elif document.is_bibtex_document():
-            notebook = self.main_window.bibtex_notebook
-        else:
-            notebook = self.main_window.others_notebook
-        
-        notebook.remove_page(notebook.page_num(document.view))
+        self.main_window.notebook.remove_page(self.main_window.notebook.page_num(document.view))
 
         if self.workspace.active_document == None:
-            self.activate_welcome_screen_mode()
+            self.main_window.mode_stack.set_visible_child_name('welcome_screen')
 
     def on_new_active_document(self, workspace, document):
+        self.main_window.mode_stack.set_visible_child_name('documents')
+        self.main_window.notebook.set_current_page(self.main_window.notebook.page_num(document.view))
+        self.focus_active_document()
+
         if document.is_latex_document():
-            notebook = self.main_window.latex_notebook
-            notebook.set_current_page(notebook.page_num(document.view))
-            document.view.source_view.grab_focus()
             try: self.main_window.preview_paned_overlay.add_overlay(document.autocomplete.widget.view)
             except AttributeError: pass
-            self.activate_latex_documents_mode()
-        elif document.is_bibtex_document():
-            notebook = self.main_window.bibtex_notebook
-            notebook.set_current_page(notebook.page_num(document.view))
-            document.view.source_view.grab_focus()
-            self.activate_bibtex_documents_mode()
-        else:
-            notebook = self.main_window.others_notebook
-            notebook.set_current_page(notebook.page_num(document.view))
-            document.view.source_view.grab_focus()
-            self.activate_other_documents_mode()
+
+        self.update_sidebar_visibility(False)
+        self.update_build_log_visibility(False)
+        self.update_preview_help_visibility(False)
+
+    def on_root_state_change(self, workspace, state):
+        self.update_build_log_visibility(False)
+        self.update_preview_help_visibility(False)
 
     def on_new_inactive_document(self, workspace, document):
         if document.is_latex_document():
@@ -102,8 +89,8 @@ class WorkspacePresenter(object):
         elif self.workspace.show_document_structure:
             self.main_window.sidebar.set_visible_child_name('document_structure')
         self.focus_active_document()
-        self.main_window.sidebar_paned.set_show_widget(self.workspace.show_symbols or self.workspace.show_document_structure)
-        self.main_window.sidebar_paned.animate(True)
+
+        self.update_sidebar_visibility()
 
     def on_set_show_preview_or_help(self, workspace):
         if self.workspace.show_preview:
@@ -118,24 +105,27 @@ class WorkspacePresenter(object):
                 self.focus_active_document()
         else:
             self.focus_active_document()
-        self.main_window.preview_paned.set_show_widget(self.workspace.show_preview or self.workspace.show_help)
-        self.main_window.preview_paned.animate(True)
+        self.update_preview_help_visibility()
 
     def on_show_build_log_state_change(self, workspace, show_build_log):
-        self.main_window.build_log_paned.set_show_widget(self.workspace.show_build_log)
-        self.main_window.build_log_paned.animate(True)
+        self.update_build_log_visibility()
 
-    def activate_welcome_screen_mode(self):
-        self.main_window.mode_stack.set_visible_child_name('welcome_screen')
+    def update_sidebar_visibility(self, animate=True):
+        sidebar_visible_for_latex_docs = self.workspace.show_symbols or self.workspace.show_document_structure
+        show_sidebar = self.workspace.get_active_latex_document() and sidebar_visible_for_latex_docs
+        self.main_window.sidebar_paned.set_show_widget(show_sidebar)
+        self.main_window.sidebar_paned.animate(animate)
 
-    def activate_latex_documents_mode(self):
-        self.main_window.mode_stack.set_visible_child_name('latex_documents')
+    def update_build_log_visibility(self, animate=True):
+        show_build_log = self.workspace.get_root_or_active_latex_document() and self.workspace.show_build_log
+        self.main_window.build_log_paned.set_show_widget(show_build_log)
+        self.main_window.build_log_paned.animate(animate)
 
-    def activate_bibtex_documents_mode(self):
-        self.main_window.mode_stack.set_visible_child_name('bibtex_documents')
-
-    def activate_other_documents_mode(self):
-        self.main_window.mode_stack.set_visible_child_name('other_documents')
+    def update_preview_help_visibility(self, animate=True):
+        preview_help_visible_for_latex_docs = self.workspace.show_preview or self.workspace.show_help
+        show_preview_help = self.workspace.get_root_or_active_latex_document() and preview_help_visible_for_latex_docs
+        self.main_window.preview_paned.set_show_widget(show_preview_help)
+        self.main_window.preview_paned.animate(animate)
 
     def focus_active_document(self):
         active_document = self.workspace.get_active_document()
@@ -157,9 +147,11 @@ class WorkspacePresenter(object):
         except AttributeError: pass
 
     def setup_paneds(self):
-        show_sidebar = (self.workspace.show_symbols or self.workspace.show_document_structure)
-        show_preview_help = (self.workspace.show_preview or self.workspace.show_help)
-        show_build_log = self.workspace.get_show_build_log()
+        sidebar_visible_for_latex_docs = self.workspace.show_symbols or self.workspace.show_document_structure
+        show_sidebar = self.workspace.get_active_latex_document() and sidebar_visible_for_latex_docs
+        preview_help_visible_for_latex_docs = self.workspace.show_preview or self.workspace.show_help
+        show_preview_help = self.workspace.get_root_or_active_latex_document() and preview_help_visible_for_latex_docs
+        show_build_log = self.workspace.get_root_or_active_latex_document() and self.workspace.get_show_build_log()
 
         sidebar_position = self.workspace.settings.get_value('window_state', 'sidebar_paned_position')
         preview_position = self.workspace.settings.get_value('window_state', 'preview_paned_position')

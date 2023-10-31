@@ -27,12 +27,10 @@ import setzer.document.document_presenter as document_presenter
 import setzer.document.document_viewgtk as document_view
 import setzer.document.search.search as search
 import setzer.document.gutter.gutter as gutter
-import setzer.document.context_menu.context_menu as context_menu
 import setzer.document.parser.parser_latex as parser_latex
 import setzer.document.parser.parser_bibtex as parser_bibtex
 import setzer.document.parser.parser_dummy as parser_dummy
 import setzer.document.code_folding.code_folding as code_folding
-import setzer.document.multiline_indentation.multiline_indentation as multiline_indentation
 import setzer.document.autocomplete.autocomplete as autocomplete
 from setzer.helpers.observable import Observable
 from setzer.app.service_locator import ServiceLocator
@@ -65,7 +63,6 @@ class Document(Observable):
         self.settings = ServiceLocator.get_settings()
 
         self.view = document_view.DocumentView(self)
-        self.context_menu = context_menu.ContextMenu(self, self.view)
         self.presenter = document_presenter.DocumentPresenter(self, self.view)
         self.controller = document_controller.DocumentController(self, self.view)
 
@@ -73,7 +70,6 @@ class Document(Observable):
         elif self.is_bibtex_document(): self.parser = parser_bibtex.ParserBibTeX(self)
         else: self.parser = parser_dummy.ParserDummy(self)
         self.code_folding = code_folding.CodeFolding(self)
-        self.multiline_indentation = multiline_indentation.MultilineIndentation(self)
         self.gutter = gutter.Gutter(self, self.view)
         self.search = search.Search(self, self.view)
         if self.is_latex_document(): self.autocomplete = autocomplete.Autocomplete(self)

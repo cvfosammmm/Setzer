@@ -69,7 +69,7 @@ class DocumentController(object):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
         if n_press == 1:
-            self.document.context_menu.popup_at_cursor(x, y)
+            ServiceLocator.get_workspace().context_menu.popup_at_cursor(x, y)
         controller.reset()
 
     def on_scroll(self, controller, dx, dy):
