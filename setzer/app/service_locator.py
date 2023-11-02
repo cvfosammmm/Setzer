@@ -37,6 +37,7 @@ class ServiceLocator(object):
     setzer_version = None
     resources_path = None
     app_icons_path = None
+    increments = dict()
     regexes = dict()
     source_language_manager = None
     source_style_scheme_manager = None
@@ -52,6 +53,12 @@ class ServiceLocator(object):
 
     def get_workspace():
         return ServiceLocator.workspace
+
+    def get_increment(key):
+        if key not in ServiceLocator.increments:
+            ServiceLocator.increments[key] = 0
+        ServiceLocator.increments[key] += 1
+        return ServiceLocator.increments[key]
 
     def get_regex_object(pattern):
         if pattern in ServiceLocator.regexes:

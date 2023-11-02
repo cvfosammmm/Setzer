@@ -54,7 +54,6 @@ class Workspace(Observable):
         self.open_latex_documents = list()
         self.root_document = None
         self.recently_opened_documents = dict()
-        self.untitled_documents_no = 0
 
         self.active_document = None
 
@@ -106,9 +105,11 @@ class Workspace(Observable):
     
     def add_document(self, document):
         if document in self.open_documents: return False
+
         if document.get_filename() == None:
-            document.set_displayname(_('Untitled Document {number}').format(number=str(self.untitled_documents_no + 1)))
-            self.untitled_documents_no += 1
+            increment = ServiceLocator.get_increment('untitled_documents_added')
+            document.set_displayname(_('Untitled Document {number}').format(number=str(increment)))
+
         self.open_documents.append(document)
         if document.is_latex_document():
             self.open_latex_documents.append(document)

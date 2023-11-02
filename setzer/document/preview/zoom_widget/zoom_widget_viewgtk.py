@@ -21,6 +21,7 @@ from gi.repository import Gtk
 
 from setzer.widgets.fixed_width_label.fixed_width_label import FixedWidthLabel
 from setzer.helpers.popover_menu_builder import MenuBuilder
+from setzer.app.service_locator import ServiceLocator
 
 
 class PreviewZoomWidget(Gtk.Revealer):
@@ -43,27 +44,27 @@ class PreviewZoomWidget(Gtk.Revealer):
         self.zoom_in_button.set_can_focus(False)
         self.zoom_in_button.get_style_context().add_class('scbar')
 
-        self.popover = MenuBuilder.create_menu()
-
         self.button_fit_to_width = MenuBuilder.create_button(_('Fit to Width'))
-        self.popover.add_widget(self.button_fit_to_width)
         self.button_fit_to_text_width = MenuBuilder.create_button(_('Fit to Text Width'))
-        self.popover.add_widget(self.button_fit_to_text_width)
         self.button_fit_to_height = MenuBuilder.create_button(_('Fit to Height'))
-        self.popover.add_widget(self.button_fit_to_height)
-        self.popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
-
         self.zoom_level_buttons = dict()
         for level in model.preview.zoom_manager.get_list_of_zoom_levels():
             self.zoom_level_buttons[level] = MenuBuilder.create_button('{0:.0f}%'.format(level * 100))
+
+        increment = ServiceLocator.get_increment('zoom_level_popovers_created')
+        self.popover = ServiceLocator.get_popover_manager().create_popover('zoom_level_popover_' + str(increment))
+        self.popover.set_width(180)
+        self.popover.add_widget(self.button_fit_to_width)
+        self.popover.add_widget(self.button_fit_to_text_width)
+        self.popover.add_widget(self.button_fit_to_height)
+        self.popover.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
+        for level in model.preview.zoom_manager.get_list_of_zoom_levels():
             self.popover.add_widget(self.zoom_level_buttons[level])
 
         self.label = FixedWidthLabel(66)
         self.label.get_style_context().add_class('zoom-level-button')
-        self.zoom_level_button = Gtk.MenuButton()
-        self.zoom_level_button.set_direction(Gtk.ArrowType.DOWN)
-        self.zoom_level_button.set_focus_on_click(False)
-        self.zoom_level_button.set_popover(self.popover)
+        self.zoom_level_button = ServiceLocator.get_popover_manager().create_popover_button('zoom_level_popover_' + str(increment))
+        self.zoom_level_button.set_can_focus(False)
         self.zoom_level_button.set_tooltip_text(_('Set zoom level'))
         self.zoom_level_button.get_style_context().add_class('flat')
         self.zoom_level_button.get_style_context().add_class('scbar')
