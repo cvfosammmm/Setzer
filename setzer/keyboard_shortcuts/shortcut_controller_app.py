@@ -67,7 +67,7 @@ class ShortcutControllerApp(ShortcutController):
             PopoverManager.popup_at_button('open_document')
 
     def shortcut_show_open_docs(self):
-        if self.main_window.headerbar.center_widget.center_button.get_sensitive():
+        if self.main_window.headerbar.center_button.get_sensitive():
             PopoverManager.popup_at_button('document_switcher')
 
     def shortcut_switch_document(self):
