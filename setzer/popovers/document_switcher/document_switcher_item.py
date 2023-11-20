@@ -17,11 +17,10 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import Gtk, Pango
 
 
-class OpenDocsPopoverItem(Gtk.ListBoxRow):
+class DocumentSwitcherItem(Gtk.ListBoxRow):
     ''' An item in OpenDocsPopover. '''
 
     def __init__(self, document):
@@ -92,6 +91,16 @@ class OpenDocsPopoverItem(Gtk.ListBoxRow):
         self.flabel.set_text(self.folder)
         self.mlabel.set_text(str(modified_state))
         
+    def set_is_root(self, is_root):
+        if is_root:
+            self.icon.hide()
+            self.root_icon.show()
+            self.root_label.show()
+        else:
+            self.icon.show()
+            self.root_icon.hide()
+            self.root_label.hide()
+
     def get_has_title(self):
         return self.has_title
     

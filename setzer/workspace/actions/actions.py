@@ -76,7 +76,6 @@ class Actions(object):
         self.add_action('zoom-out', self.zoom_out)
         self.add_action('reset-zoom', self.reset_zoom)
 
-        self.add_action('popover-popup-at-button', self.popover_popup_at_button, GLib.VariantType('as'))
         self.add_action('show-preferences-dialog', self.show_preferences_dialog)
         self.add_action('show-shortcuts-dialog', self.show_shortcuts_dialog)
         self.add_action('show-about-dialog', self.show_about_dialog)
@@ -514,12 +513,16 @@ class Actions(object):
         font_desc.set_size(min(font_desc.get_size() * 1.1, 24 * Pango.SCALE))
         FontManager.font_string = font_desc.to_string()
         FontManager.propagate_font_setting()
+        self.workspace.context_menu.popover_more.view.reset_zoom_button.set_label("{:.0%}".format(FontManager.zoom_level))
+        self.workspace.context_menu.reset_zoom_button_pointer.set_label("{:.0%}".format(FontManager.zoom_level))
 
     def zoom_out(self, action=None, parameter=''):
         font_desc = Pango.FontDescription.from_string(FontManager.font_string)
         font_desc.set_size(max(font_desc.get_size() / 1.1, 6 * Pango.SCALE))
         FontManager.font_string = font_desc.to_string()
         FontManager.propagate_font_setting()
+        self.workspace.context_menu.popover_more.view.reset_zoom_button.set_label("{:.0%}".format(FontManager.zoom_level))
+        self.workspace.context_menu.reset_zoom_button_pointer.set_label("{:.0%}".format(FontManager.zoom_level))
 
     def reset_zoom(self, action=None, parameter=''):
         if self.settings.get_value('preferences', 'use_system_font'):
@@ -527,12 +530,8 @@ class Actions(object):
         else:
             FontManager.font_string = self.settings.get_value('preferences', 'font_string')
         FontManager.propagate_font_setting()
-
-    def popover_popup_at_button(self, action=None, parameter=None):
-        if parameter == None: return
-
-        name = parameter[0]
-        ServiceLocator.get_popover_manager().popup_at_button(name)
+        self.workspace.context_menu.popover_more.view.reset_zoom_button.set_label("{:.0%}".format(FontManager.zoom_level))
+        self.workspace.context_menu.reset_zoom_button_pointer.set_label("{:.0%}".format(FontManager.zoom_level))
 
     def show_preferences_dialog(self, action=None, parameter=''):
         DialogLocator.get_dialog('preferences').run()

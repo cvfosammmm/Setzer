@@ -19,7 +19,7 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gdk
 
-import webbrowser, math
+import webbrowser
 import _thread as thread
 
 from setzer.app.service_locator import ServiceLocator
@@ -42,8 +42,6 @@ class PreviewController(object):
         self.view.content.connect('hover_state_changed', self.on_hover_state_change)
         self.view.content.connect('primary_button_press', self.on_primary_button_press)
         self.view.content.connect('zoom_request', self.on_zoom_request)
-        self.view.external_viewer_button.connect('clicked', self.on_external_viewer_button_clicked)
-        self.view.recolor_pdf_toggle.connect('toggled', self.on_recolor_pdf_toggle_toggled)
 
     def on_size_change(self, *arguments):
         self.preview.zoom_manager.update_dynamic_zoom_levels()
@@ -100,14 +98,6 @@ class PreviewController(object):
 
     def on_hover_state_change(self, *arguments):
         self.update_cursor()
-
-    def on_external_viewer_button_clicked(self, button):
-        self.preview.open_external_viewer()
-
-    def on_recolor_pdf_toggle_toggled(self, toggle_button, parameter=None):
-        recolor_pdf = toggle_button.get_active()
-        if ServiceLocator.get_settings().get_value('preferences', 'recolor_pdf') != recolor_pdf:
-            ServiceLocator.get_settings().set_value('preferences', 'recolor_pdf', recolor_pdf)
 
     def update_cursor(self):
         if self.preview.layout == None: return True

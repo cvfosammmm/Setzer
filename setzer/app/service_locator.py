@@ -25,15 +25,13 @@ import os, os.path
 import xml.etree.ElementTree as ET
 
 import setzer.settings.settings as settingscontroller
-from setzer.widgets.popover.popover_manager import PopoverManager
 
 
-class ServiceLocator(object):
+class ServiceLocator():
 
     main_window = None
     workspace = None
     settings = None
-    popover_manager = None
     setzer_version = None
     resources_path = None
     app_icons_path = None
@@ -72,11 +70,6 @@ class ServiceLocator(object):
         if ServiceLocator.settings == None:
             ServiceLocator.settings = settingscontroller.Settings(ServiceLocator.get_config_folder())
         return ServiceLocator.settings
-
-    def get_popover_manager():
-        if ServiceLocator.popover_manager == None:
-            ServiceLocator.popover_manager = PopoverManager(ServiceLocator.main_window)
-        return ServiceLocator.popover_manager
 
     def get_config_folder():
         return os.path.join(GLib.get_user_config_dir(), 'setzer')

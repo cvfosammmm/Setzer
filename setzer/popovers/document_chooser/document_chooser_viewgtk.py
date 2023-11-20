@@ -17,21 +17,25 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
-from gi.repository import Pango
-from gi.repository import Graphene
+from gi.repository import Gtk, Pango, Graphene
 
 import re
+import os.path
 
 from setzer.app.color_manager import ColorManager
+from setzer.app.service_locator import ServiceLocator
+from setzer.popovers.helpers.popover import Popover
 
 
-class DocumentChooser(Gtk.Box):
+class DocumentChooserView(Popover):
     
-    def __init__(self):
-        Gtk.Box.__init__(self)
-        self.set_orientation(Gtk.Orientation.VERTICAL)
-        self.get_style_context().add_class('documentchooser')
+    def __init__(self, popover_manager):
+        Popover.__init__(self, popover_manager)
+
+        self.set_width(414)
+
+        self.box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.box.get_style_context().add_class('documentchooser')
 
         self.search_entry = Gtk.SearchEntry()
 
@@ -78,9 +82,11 @@ class DocumentChooser(Gtk.Box):
         self.notebook.set_current_page(0)
         self.notebook.set_vexpand(True)
 
-        self.append(self.search_entry)
-        self.append(self.notebook)
-        self.append(self.other_documents_button)
+        self.box.append(self.search_entry)
+        self.box.append(self.notebook)
+        self.box.append(self.other_documents_button)
+
+        self.add_widget(self.box)
 
     def update_items(self, items):
         self.auto_suggest_entries = []

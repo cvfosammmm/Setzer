@@ -17,19 +17,26 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk, GLib
+
+from setzer.popovers.helpers.popover_menu_builder import MenuBuilder
 
 
 class Popover(Gtk.Box):
 
     def __init__(self, popover_manager):
         Gtk.Box.__init__(self)
+        self.set_focusable(True)
         self.set_orientation(Gtk.Orientation.VERTICAL)
         self.set_halign(Gtk.Align.START)
         self.set_valign(Gtk.Align.START)
         self.get_style_context().add_class('popover')
 
         self.popover_manager = popover_manager
+
+        self.key_controller = Gtk.EventControllerKey()
+        self.key_controller.connect('key-pressed', self.on_keypress)
+        self.add_controller(self.key_controller)
 
         self.width = 0
 
@@ -56,6 +63,16 @@ class Popover(Gtk.Box):
 
         self.add_page('main')
 
+    def on_keypress(self, controller, keyval, keycode, state):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if keyval == Gdk.keyval_from_name('Escape'):
+            if state & modifiers == 0:
+                self.popover_manager.popdown()
+                return True
+
+        return True
+
     def add_page(self, pagename='main', label=None):
         box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.stack.add_named(box, pagename)
@@ -73,6 +90,38 @@ class Popover(Gtk.Box):
 
             self.add_widget(button, pagename)
 
+    def add_menu_button(self, title, menu_name):
+        button = MenuBuilder.create_menu_button(title)
+        button.connect('clicked', self.show_page, menu_name, Gtk.StackTransitionType.SLIDE_RIGHT)
+        self.add_widget(button)
+
+    def add_before_after_item(self, pagename, title, commands, icon=None, shortcut=None):
+        button = MenuBuilder.create_button(title, icon_name=icon, shortcut=shortcut)
+        button.set_action_name('win.insert-before-after')
+        button.set_action_target_value(GLib.Variant('as', commands))
+        self.add_closing_button(button, pagename)
+
+    def add_insert_symbol_item(self, pagename, title, command, icon=None, shortcut=None):
+        button = MenuBuilder.create_button(title, icon_name=icon, shortcut=shortcut)
+        button.set_action_name('win.insert-symbol')
+        button.set_action_target_value(GLib.Variant('as', command))
+        self.add_closing_button(button, pagename)
+
+    def add_action_button(self, pagename, title, action_name, parameter=None, icon=None, shortcut=None):
+        button = MenuBuilder.create_button(title, icon_name=icon, shortcut=shortcut)
+        button.set_action_name(action_name)
+        if parameter != None:
+            button.set_action_target_value(parameter)
+        self.add_closing_button(button, pagename)
+        return button
+
+    def add_closing_button(self, button, pagename='main'):
+        self.add_widget(button, pagename)
+        button.connect('clicked', self.on_closing_button_click)
+
+    def on_closing_button_click(self, button):
+        self.popover_manager.popdown()
+
     def add_widget(self, widget, pagename='main'):
         box = self.stack.get_child_by_name(pagename)
         box.append(widget)
@@ -84,8 +133,5 @@ class Popover(Gtk.Box):
     def show_page(self, button, page_name, transition_type):
         self.stack.set_transition_type(transition_type)
         self.stack.set_visible_child_name(page_name)
-
-    def popdown(self):
-        self.popover_manager.popdown()
 
 

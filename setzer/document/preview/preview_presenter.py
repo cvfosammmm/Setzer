@@ -41,11 +41,8 @@ class PreviewPresenter(object):
         self.view.drawing_area.set_draw_func(self.draw)
 
         self.preview.connect('pdf_changed', self.on_pdf_changed)
-        self.preview.connect('recolor_pdf_changed', self.on_recolor_pdf_changed)
         self.preview.connect('layout_changed', self.on_layout_changed)
         self.page_renderer.connect('rendered_pages_changed', self.on_rendered_pages_changed)
-
-        self.view.recolor_pdf_toggle.set_active(self.preview.recolor_pdf)
 
         self.show_blank_slate()
 
@@ -54,10 +51,6 @@ class PreviewPresenter(object):
             self.show_pdf()
         else:
             self.show_blank_slate()
-
-    def on_recolor_pdf_changed(self, preview):
-        self.view.recolor_pdf_toggle.set_active(self.preview.recolor_pdf)
-        self.view.drawing_area.queue_draw()
 
     def on_layout_changed(self, preview):
         if self.preview.layout != None:
@@ -70,13 +63,9 @@ class PreviewPresenter(object):
 
     def show_blank_slate(self):
         self.view.stack.set_visible_child_name('blank_slate')
-        self.view.external_viewer_button.set_sensitive(False)
-        self.view.preview_button_revealer.set_reveal_child(False)
 
     def show_pdf(self):
         self.view.stack.set_visible_child_name('pdf')
-        self.view.external_viewer_button.set_sensitive(True)
-        self.view.preview_button_revealer.set_reveal_child(True)
 
     def start_fade_loop(self):
         def draw():

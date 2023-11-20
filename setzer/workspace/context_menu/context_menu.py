@@ -21,7 +21,8 @@ from gi.repository import Gdk, Gtk, Pango
 
 from setzer.app.service_locator import ServiceLocator
 from setzer.app.font_manager import FontManager
-from setzer.helpers.popover_menu_builder import MenuBuilder
+from setzer.popovers.helpers.popover_menu_builder import MenuBuilder
+from setzer.popovers.popover_manager import PopoverManager
 
 
 class ContextMenu(object):
@@ -30,15 +31,10 @@ class ContextMenu(object):
         self.workspace = workspace
         self.document = None
 
-        self.comment_button_more = None
-        self.sync_button_more = None
         self.comment_button_pointer = None
         self.sync_button_pointer = None
 
-        self.popover_more = ServiceLocator.get_popover_manager().create_popover('scbar_more')
-        self.popover_more.set_width(288)
-        self.popover_more.set_can_focus(False)
-        self.build_popover_more()
+        self.popover_more = PopoverManager.create_popover('context_menu')
 
         self.popover_pointer = MenuBuilder.create_menu()
         self.popover_pointer.set_position(Gtk.PositionType.BOTTOM)
@@ -53,52 +49,13 @@ class ContextMenu(object):
     def on_new_active_document(self, workspace=None, parameter=None):
         self.document = self.workspace.active_document
         if self.document != None and self.document.is_latex_document():
-            self.comment_button_more.show()
-            self.sync_button_more.show()
-            self.latex_buttons_separator_more.show()
             self.comment_button_pointer.show()
             self.sync_button_pointer.show()
             self.latex_buttons_separator_pointer.show()
         else:
-            self.comment_button_more.hide()
-            self.sync_button_more.hide()
-            self.latex_buttons_separator_more.hide()
             self.comment_button_pointer.hide()
             self.sync_button_pointer.hide()
             self.latex_buttons_separator_pointer.hide()
-
-    def build_popover_more(self):
-        self.add_basic_buttons(self.popover_more)
-
-        self.comment_button_more = self.create_button(self.popover_more, _('Toggle Comment'), 'win.toggle-comment', shortcut=_('Ctrl') + '+K')
-        self.popover_more.add_widget(self.comment_button_more)
-        self.sync_button_more = self.create_button(self.popover_more, _('Show in Preview'), 'win.forward-sync')
-        self.popover_more.add_widget(self.sync_button_more)
-        self.latex_buttons_separator_more = Gtk.Separator.new(Gtk.Orientation.HORIZONTAL)
-        self.popover_more.add_widget(self.latex_buttons_separator_more)
-
-        box = Gtk.CenterBox()
-        box.set_orientation(Gtk.Orientation.HORIZONTAL)
-        zoom_label = Gtk.Label.new(_('Zoom'))
-        zoom_label.set_margin_start(10)
-        box.set_start_widget(zoom_label)
-        inner_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
-
-        button_zoom_out = MenuBuilder.create_button('', shortcut=None)
-        button_zoom_out.set_icon_name('value-decrease-symbolic')
-        button_zoom_out.set_action_name('win.zoom-out')
-        inner_box.append(button_zoom_out)
-        self.reset_zoom_button_more = MenuBuilder.create_button('', shortcut=None)
-        self.reset_zoom_button_more.set_label('100%')
-        self.reset_zoom_button_more.set_action_name('win.reset-zoom')
-        self.reset_zoom_button_more.set_size_request(53, -1)
-        inner_box.append(self.reset_zoom_button_more)
-        button_zoom_in = MenuBuilder.create_button('', shortcut=None)
-        button_zoom_in.set_icon_name('value-increase-symbolic')
-        button_zoom_in.set_action_name('win.zoom-in')
-        inner_box.append(button_zoom_in)
-        box.set_end_widget(inner_box)
-        self.popover_more.add_widget(box)
 
     def build_popover_pointer(self):
         self.add_basic_buttons(self.popover_pointer)
@@ -155,7 +112,7 @@ class ContextMenu(object):
     def create_button(self, popover, label, action_name, shortcut=None):
         button = MenuBuilder.create_button(label, shortcut=shortcut)
         button.set_action_name(action_name)
-        button.connect('clicked', self.on_menu_button_click, popover)
+        button.connect('clicked', self.on_menu_button_click)
         return button
 
     def popup_at_cursor(self, x, y):
@@ -171,7 +128,8 @@ class ContextMenu(object):
         self.popover_pointer.set_pointing_to(rect)
         self.popover_pointer.popup()
 
-    def on_menu_button_click(self, button, popover):
-        popover.popdown()
+    def on_menu_button_click(self, button):
+        self.popover_pointer.popdown()
+        PopoverManager.popdown()
 
 

@@ -35,7 +35,7 @@ import setzer.dialogs.save_document.save_document as save_document_dialog
 import setzer.dialogs.save_session.save_session as save_session_dialog
 
 
-class DialogLocator(object):
+class DialogLocator():
 
     dialogs = dict()
 

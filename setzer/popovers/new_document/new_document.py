@@ -15,24 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+from setzer.popovers.new_document.new_document_viewgtk import NewDocumentView
 
-class ColorManager():
 
-    main_window = None
+class NewDocument(object):
 
-    def init(main_window):
-        ColorManager.main_window = main_window
-
-    def get_ui_color(name):
-        rgba = ColorManager.main_window.get_style_context().lookup_color(name)[1]
-        return rgba
-
-    def get_ui_color_string(name):
-        color_rgba = ColorManager.get_ui_color(name)
-        color_string = '#'
-        color_string += format(int(color_rgba.red * 255), '02x')
-        color_string += format(int(color_rgba.green * 255), '02x')
-        color_string += format(int(color_rgba.blue * 255), '02x')
-        return color_string
+    def __init__(self, popover_manager):
+        self.view = NewDocumentView(popover_manager)
 
 

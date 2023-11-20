@@ -26,10 +26,12 @@ import sys, gettext, argparse, os.path
 
 from setzer.workspace.workspace import Workspace
 import setzer.workspace.workspace_viewgtk as view
+import setzer.keyboard_shortcuts.shortcuts as shortcuts
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 from setzer.app.color_manager import ColorManager
 from setzer.app.font_manager import FontManager
+from setzer.popovers.popover_manager import PopoverManager
 from setzer.app.latex_db import LaTeXDB
 from setzer.settings.document_settings import DocumentSettings
 from setzer.helpers.timer import timer
@@ -112,10 +114,12 @@ class MainApplicationController(Adw.Application):
         ServiceLocator.set_main_window(self.main_window)
         ColorManager.init(self.main_window)
         FontManager.init(self.main_window)
-        LaTeXDB.init(resources_path)
-        self.main_window.create_widgets()
 
         self.workspace = Workspace()
+
+        PopoverManager.init(self.main_window, self.workspace)
+        LaTeXDB.init(resources_path)
+        self.main_window.create_widgets()
         ServiceLocator.set_workspace(self.workspace)
         DialogLocator.init_dialogs(self.main_window, self.workspace)
 
@@ -132,6 +136,7 @@ class MainApplicationController(Adw.Application):
 
         # init controller
         self.workspace.init_workspace_controller()
+        self.shortcuts = shortcuts.Shortcuts()
         self.workspace.actions.actions['quit'].connect('activate', self.on_quit_action)
 
     def save_window_state(self):

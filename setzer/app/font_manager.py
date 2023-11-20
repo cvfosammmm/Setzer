@@ -23,7 +23,7 @@ from gi.repository import Gtk
 from setzer.app.service_locator import ServiceLocator
 
 
-class FontManager(object):
+class FontManager():
 
     main_window = None
     default_font_string = None
@@ -56,8 +56,6 @@ class FontManager(object):
             font_string = settings.get_value('preferences', 'font_string')
         font_desc = Pango.FontDescription.from_string(font_string)
         FontManager.zoom_level = FontManager.get_font_desc().get_size() / font_desc.get_size()
-        ServiceLocator.get_workspace().context_menu.reset_zoom_button_more.set_label("{:.0%}".format(FontManager.zoom_level))
-        ServiceLocator.get_workspace().context_menu.reset_zoom_button_pointer.set_label("{:.0%}".format(FontManager.zoom_level))
 
     def get_char_width(text_view, char='A'):
         context = text_view.get_pango_context()

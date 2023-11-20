@@ -17,25 +17,28 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, Pango, Graphene
 
+import re
 import os.path
 
+from setzer.popovers.document_chooser.document_chooser_viewgtk import DocumentChooserView
+from setzer.app.color_manager import ColorManager
 from setzer.app.service_locator import ServiceLocator
 
 
 class DocumentChooser(object):
     
-    def __init__(self, workspace):
+    def __init__(self, popover_manager, workspace):
+        self.popover_manager = popover_manager
         self.workspace = workspace
         self.main_window = ServiceLocator.get_main_window()
-        self.popover_manager = ServiceLocator.get_popover_manager()
-        self.popover = ServiceLocator.get_main_window().headerbar.open_document_popover
-        self.view = ServiceLocator.get_main_window().headerbar.document_chooser
+        self.view = DocumentChooserView(popover_manager)
 
         self.workspace.connect('update_recently_opened_documents', self.on_update_recently_opened_documents)
         self.popover_manager.connect('popdown', self.on_popover_popdown)
         self.popover_manager.connect('popup', self.on_popover_popup)
+
         self.view.search_entry.connect('search-changed', self.on_document_chooser_search_changed)
         self.view.search_entry.connect('stop-search', self.on_stop_search)
 
@@ -91,12 +94,12 @@ class DocumentChooser(object):
             items.append(os.path.split(item['filename']))
         self.view.update_items(items)
 
-    def on_popover_popup(self, popover_manager, name):
+    def on_popover_popup(self, name):
         if name != 'open_document': return
 
         self.view.search_entry.grab_focus()
 
-    def on_popover_popdown(self, popover_manager, name):
+    def on_popover_popdown(self, name):
         if name != 'open_document': return
 
         self.view.search_entry.set_text('')

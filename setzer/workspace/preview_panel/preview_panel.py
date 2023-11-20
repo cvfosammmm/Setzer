@@ -15,25 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import setzer.workspace.document_switcher.item.document_switcher_item_viewgtk as document_switcher_item_view
-from setzer.app.service_locator import ServiceLocator
-from setzer.dialogs.dialog_locator import DialogLocator
+import setzer.workspace.preview_panel.preview_panel_presenter as preview_panel_presenter
+import setzer.workspace.preview_panel.preview_panel_controller as preview_panel_controller
 
 
-class DocumentSwitcherItem():
+class PreviewPanel(object):
 
-    def __init__(self, document):
-        self.document = document
-        self.view = document_switcher_item_view.OpenDocsPopoverItem(document)
-
-    def set_is_root(self, is_root):
-        if is_root:
-            self.view.icon.hide()
-            self.view.root_icon.show()
-            self.view.root_label.show()
-        else:
-            self.view.icon.show()
-            self.view.root_icon.hide()
-            self.view.root_label.hide()
+    def __init__(self, workspace):
+        self.preview_panel_presenter = preview_panel_presenter.PreviewPanelPresenter(workspace)
+        self.preview_panel_controller = preview_panel_controller.PreviewPanelController(workspace)
 
 

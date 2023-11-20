@@ -18,65 +18,17 @@
 import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import Gdk
-from gi.repository import GObject
-from gi.repository import Pango
 
-from setzer.app.service_locator import ServiceLocator
-from setzer.helpers.popover_menu_builder import MenuBuilder
+from setzer.popovers.helpers.popover_menu_builder import MenuBuilder
+from setzer.popovers.helpers.popover import Popover
 
 
-class OpenDocsButton(Gtk.Stack):
-    
-    def __init__(self):
-        Gtk.Stack.__init__(self)
+class DocumentSwitcherView(Popover):
 
-        self.document_name_label = Gtk.Label()
-        self.document_name_label.get_style_context().add_class('title')
-        self.document_name_label.set_ellipsize(Pango.EllipsizeMode.END)
-        self.document_folder_label = Gtk.Label()
-        self.document_folder_label.get_style_context().add_class('subtitle')
-        self.document_folder_label.set_ellipsize(Pango.EllipsizeMode.END)
-        self.document_arrow = Gtk.Image.new_from_icon_name('pan-down-symbolic')
-        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
-        vbox.append(self.document_name_label)
-        vbox.append(self.document_folder_label)
-        hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
-        hbox.append(vbox)
-        hbox.append(self.document_arrow)
-        hbox.set_valign(Gtk.Align.CENTER)
+    def __init__(self, popover_manager):
+        Popover.__init__(self, popover_manager)
 
-        self.open_docs_widget = OpenDocsWidget()
-        self.open_docs_popover = ServiceLocator.get_popover_manager().create_popover('document_switcher')
-        self.open_docs_popover.set_width(414)
-        self.open_docs_popover.add_widget(self.open_docs_widget)
-
-        self.center_button = ServiceLocator.get_popover_manager().create_popover_button('document_switcher')
-        self.center_button.get_style_context().add_class('flat')
-        self.center_button.get_style_context().add_class('open-docs-popover-button')
-        self.center_button.set_tooltip_text(_('Show open documents') + ' (' + _('Ctrl') + '+T)')
-        self.center_button.set_can_focus(False)
-        self.center_button.set_child(hbox)
-
-        self.center_label_welcome = Gtk.Label.new(_('Welcome to Setzer'))
-        self.center_label_welcome.get_style_context().add_class('title')
-
-        self.add_named(self.center_button, 'button')
-        self.add_named(self.center_label_welcome, 'welcome')
-
-        self.set_valign(Gtk.Align.FILL)
-        self.center_button.set_valign(Gtk.Align.FILL)
-        self.center_label_welcome.set_valign(Gtk.Align.FILL)
-
-
-class OpenDocsWidget(Gtk.Box):
-    
-    def __init__(self):
-        Gtk.Box.__init__(self)
-        self.set_orientation(Gtk.Orientation.VERTICAL)
-        self.get_style_context().add_class('open-docs-popover')
+        self.set_width(414)
 
         self.document_list = Gtk.ListBox()
         self.document_list.set_sort_func(self.sort_function)
@@ -113,11 +65,15 @@ class OpenDocsWidget(Gtk.Box):
         self.root_explaination_revealer.set_child(self.root_explaination_box)
         self.root_explaination_revealer.set_reveal_child(False)
 
-        self.append(self.root_explaination_revealer)
-        self.append(self.scrolled_window)
-        self.append(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
-        self.append(self.set_root_document_button)
-        self.append(self.unset_root_document_button)
+        self.box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.box.get_style_context().add_class('open-docs-popover')
+        self.box.append(self.root_explaination_revealer)
+        self.box.append(self.scrolled_window)
+        self.box.append(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
+        self.box.append(self.set_root_document_button)
+        self.box.append(self.unset_root_document_button)
+
+        self.add_widget(self.box)
 
     def sort_function(self, row1, row2, user_data=None):
         date1 = row1.document.get_last_activated()

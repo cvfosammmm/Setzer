@@ -21,7 +21,7 @@ from gi.repository import Gdk, Gtk, Pango
 
 from setzer.app.service_locator import ServiceLocator
 from setzer.app.font_manager import FontManager
-from setzer.helpers.popover_menu_builder import MenuBuilder
+from setzer.popovers.helpers.popover_menu_builder import MenuBuilder
 
 
 class ContextMenu(object):
@@ -116,10 +116,6 @@ class ContextMenu(object):
     def zoom_fit_to_height(self, button):
         self.preview.zoom_manager.set_zoom_fit_to_height()
         self.popover_pointer.popdown()
-
-    def on_set_zoom_button_clicked(self, button, level):
-        self.preview.zoom_manager.set_zoom_level_auto_offset(level)
-        self.view.popover.popdown()
 
     def update_buttons(self):
         zoom_level = self.preview.zoom_manager.get_zoom_level()

@@ -26,7 +26,7 @@ import setzer.helpers.path as path_helpers
 from setzer.app.service_locator import ServiceLocator
 
 
-class LaTeXDB(object):
+class LaTeXDB():
 
     static_proposals = dict()
     resources_path = None

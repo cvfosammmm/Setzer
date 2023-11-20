@@ -15,24 +15,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk
 
-class ColorManager():
+from setzer.app.service_locator import ServiceLocator
 
-    main_window = None
 
-    def init(main_window):
-        ColorManager.main_window = main_window
+class ShortcutController(Gtk.ShortcutController):
 
-    def get_ui_color(name):
-        rgba = ColorManager.main_window.get_style_context().lookup_color(name)[1]
-        return rgba
+    def __init__(self):
+        Gtk.ShortcutController.__init__(self)
 
-    def get_ui_color_string(name):
-        color_rgba = ColorManager.get_ui_color(name)
-        color_string = '#'
-        color_string += format(int(color_rgba.red * 255), '02x')
-        color_string += format(int(color_rgba.green * 255), '02x')
-        color_string += format(int(color_rgba.blue * 255), '02x')
-        return color_string
+    def create_and_add_shortcut(self, trigger_string, callback):
+        shortcut = Gtk.Shortcut()
+
+        shortcut.set_action(Gtk.CallbackAction.new(self.action, callback))
+        shortcut.set_trigger(Gtk.ShortcutTrigger.parse_string(trigger_string))
+
+        self.add_shortcut(shortcut)
+
+    def action(self, a, b, callback):
+        callback()
+        return True
 
 

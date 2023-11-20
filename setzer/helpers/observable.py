@@ -22,7 +22,6 @@ class Observable(object):
         get change notifications pushed to them. '''
 
     def __init__(self):
-        self.observers = set()
         self.connected_functions = dict()
     
     def add_change_code(self, change_code, parameter=None):

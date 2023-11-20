@@ -17,7 +17,10 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, Pango
+
+from setzer.widgets.fixed_width_label.fixed_width_label import FixedWidthLabel
+from setzer.popovers.popover_manager import PopoverManager
 
 
 class PreviewPanelView(Gtk.Box):
@@ -27,13 +30,71 @@ class PreviewPanelView(Gtk.Box):
         self.set_orientation(Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('preview')
 
+        self.zoom_out_button = Gtk.Button.new_from_icon_name('zoom-out-symbolic')
+        self.zoom_out_button.set_tooltip_text(_('Zoom out'))
+        self.zoom_out_button.get_style_context().add_class('flat')
+        self.zoom_out_button.set_can_focus(False)
+        self.zoom_out_button.get_style_context().add_class('scbar')
+
+        self.zoom_level_label = FixedWidthLabel(66)
+        self.zoom_level_label.get_style_context().add_class('zoom-level-button')
+
+        self.zoom_level_popover = PopoverManager.create_popover('preview_zoom_level')
+        self.zoom_level_button = PopoverManager.create_popover_button('preview_zoom_level')
+        self.zoom_level_button.set_can_focus(False)
+        self.zoom_level_button.set_tooltip_text(_('Set zoom level'))
+        self.zoom_level_button.get_style_context().add_class('flat')
+        self.zoom_level_button.get_style_context().add_class('scbar')
+        self.zoom_level_button.set_can_focus(False)
+        self.zoom_level_button.set_child(self.zoom_level_label)
+
+        self.zoom_in_button = Gtk.Button.new_from_icon_name('zoom-in-symbolic')
+        self.zoom_in_button.set_tooltip_text(_('Zoom in'))
+        self.zoom_in_button.get_style_context().add_class('flat')
+        self.zoom_in_button.set_can_focus(False)
+        self.zoom_in_button.get_style_context().add_class('scbar')
+
+        self.recolor_pdf_toggle = Gtk.ToggleButton()
+        self.recolor_pdf_toggle.set_icon_name('color-symbolic')
+        self.recolor_pdf_toggle.set_tooltip_text(_('Match theme colors'))
+        self.recolor_pdf_toggle.get_style_context().add_class('flat')
+        self.recolor_pdf_toggle.set_can_focus(False)
+        self.recolor_pdf_toggle.get_style_context().add_class('scbar')
+
+        self.external_viewer_button = Gtk.Button.new_from_icon_name('external-viewer-symbolic')
+        self.external_viewer_button.set_tooltip_text(_('External Viewer'))
+        self.external_viewer_button.get_style_context().add_class('flat')
+        self.external_viewer_button.set_can_focus(False)
+        self.external_viewer_button.get_style_context().add_class('scbar')
+
+        self.action_bar_right = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.action_bar_right.append(self.zoom_out_button)
+        self.action_bar_right.append(self.zoom_level_button)
+        self.action_bar_right.append(self.zoom_in_button)
+        self.action_bar_right.append(self.recolor_pdf_toggle)
+        self.action_bar_right.append(self.external_viewer_button)
+
+        self.paging_label = FixedWidthLabel(100)
+        self.paging_label.layout.set_alignment(Pango.Alignment.LEFT)
+        self.paging_label.get_style_context().add_class('paging-widget')
+
+        self.action_bar_left = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.action_bar_left.append(self.paging_label)
+
+        self.action_bar = Gtk.CenterBox()
+        self.action_bar.set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.action_bar.set_size_request(-1, 37)
+        self.action_bar.set_start_widget(self.action_bar_left)
+        self.action_bar.set_end_widget(self.action_bar_right)
+
         self.notebook = Gtk.Notebook()
         self.notebook.set_show_tabs(False)
         self.notebook.set_show_border(False)
         self.notebook.set_vexpand(True)
-        self.append(self.notebook)
-
         self.notebook.insert_page(Gtk.DrawingArea(), None, 0)
+
+        self.append(self.action_bar)
+        self.append(self.notebook)
 
     def do_get_request_mode(self):
         return Gtk.SizeRequestMode.CONSTANT_SIZE

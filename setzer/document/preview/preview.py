@@ -33,8 +33,6 @@ import setzer.document.preview.preview_controller as preview_controller
 import setzer.document.preview.preview_page_renderer as preview_page_renderer
 import setzer.document.preview.preview_links_parser as preview_links_parser
 import setzer.document.preview.preview_zoom_manager as preview_zoom_manager
-import setzer.document.preview.zoom_widget.zoom_widget as zoom_widget
-import setzer.document.preview.paging_widget.paging_widget as paging_widget
 import setzer.document.preview.context_menu.context_menu as context_menu
 from setzer.helpers.observable import Observable
 from setzer.helpers.timer import timer
@@ -64,8 +62,6 @@ class Preview(Observable):
         self.page_renderer = preview_page_renderer.PreviewPageRenderer(self)
         self.links_parser = preview_links_parser.PreviewLinksParser(self)
         self.presenter = preview_presenter.PreviewPresenter(self, self.page_renderer, self.view)
-        self.paging_widget = paging_widget.PagingWidget(self)
-        self.zoom_widget = zoom_widget.ZoomWidget(self)
         self.context_menu = context_menu.ContextMenu(self, self.view)
 
         self.document.connect('filename_change', self.on_filename_change)
@@ -77,7 +73,9 @@ class Preview(Observable):
         section, item, value = parameter
 
         if item == 'recolor_pdf':
-            self.set_recolor_pdf(value)
+            self.recolor_pdf = value
+            self.add_change_code('recolor_pdf_changed')
+            self.view.drawing_area.queue_draw()
 
     def on_filename_change(self, document, filename=None):
         if filename != None:
@@ -92,10 +90,6 @@ class Preview(Observable):
     def set_pdf_filename(self, pdf_filename):
         if pdf_filename != self.pdf_filename:
             self.pdf_filename = pdf_filename
-
-    def set_recolor_pdf(self, recolor_pdf):
-        self.recolor_pdf = recolor_pdf
-        self.add_change_code('recolor_pdf_changed')
 
     def get_pdf_date(self):
         if self.pdf_filename != None:
@@ -121,8 +115,8 @@ class Preview(Observable):
         self.poppler_document = None
         self.page_width = None
         self.page_height = None
-        self.add_change_code('pdf_changed')
         self.layout = None
+        self.add_change_code('pdf_changed')
         self.add_change_code('layout_changed')
 
     def setup_layout_and_zoom_levels(self):
@@ -143,10 +137,6 @@ class Preview(Observable):
                     current_min = rect.x1
         current_min -= 20
         self.vertical_margin = current_min
-
-    def open_external_viewer(self):
-        if self.pdf_filename != None:
-            Gio.AppInfo.launch_default_for_uri(GLib.filename_to_uri(self.pdf_filename))
 
     def scroll_to_position(self, x, y):
         if self.layout == None: return

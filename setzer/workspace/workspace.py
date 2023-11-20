@@ -27,16 +27,13 @@ import setzer.document.preview.preview as preview
 from setzer.helpers.observable import Observable
 import setzer.workspace.workspace_presenter as workspace_presenter
 import setzer.workspace.workspace_controller as workspace_controller
-import setzer.workspace.preview_panel.preview_panel_presenter as preview_panel_presenter
+import setzer.workspace.preview_panel.preview_panel as preview_panel
 import setzer.workspace.help_panel.help_panel as help_panel
 import setzer.workspace.welcome_screen.welcome_screen as welcome_screen
 import setzer.workspace.headerbar.headerbar as headerbar
 import setzer.workspace.sidebar.sidebar as sidebar
 import setzer.workspace.shortcutsbar.shortcutsbar as shortcutsbar
 import setzer.workspace.build_log.build_log as build_log
-import setzer.workspace.keyboard_shortcuts.shortcuts as shortcuts
-import setzer.workspace.document_switcher.document_switcher as document_switcher
-import setzer.workspace.document_chooser.document_chooser as document_chooser
 import setzer.workspace.actions.actions as actions
 import setzer.workspace.context_menu.context_menu as context_menu
 from setzer.app.service_locator import ServiceLocator
@@ -68,21 +65,17 @@ class Workspace(Observable):
         self.show_symbols = self.settings.get_value('window_state', 'show_symbols')
         self.show_document_structure = self.settings.get_value('window_state', 'show_document_structure')
 
+    def init_workspace_controller(self):
         self.welcome_screen = welcome_screen.WelcomeScreen()
         self.sidebar = sidebar.Sidebar(self)
-
-    def init_workspace_controller(self):
         self.actions = actions.Actions(self)
         self.shortcutsbar = shortcutsbar.Shortcutsbar(self)
         self.context_menu = context_menu.ContextMenu(self)
-        self.shortcuts = shortcuts.Shortcuts(self)
         self.presenter = workspace_presenter.WorkspacePresenter(self)
         self.headerbar = headerbar.Headerbar(self)
-        self.preview_panel = preview_panel_presenter.PreviewPanelPresenter(self)
+        self.preview_panel = preview_panel.PreviewPanel(self)
         self.help_panel = help_panel.HelpPanel(self)
         self.build_log = build_log.BuildLog(self)
-        self.document_chooser = document_chooser.DocumentChooser(self)
-        self.document_switcher = document_switcher.DocumentSwitcher(self)
         self.controller = workspace_controller.WorkspaceController(self)
 
     def open_document_by_filename(self, filename):
@@ -188,7 +181,6 @@ class Workspace(Observable):
             self.active_document.set_last_activated(time.time())
             self.update_preview_visibility(self.active_document)
             self.add_change_code('new_active_document', document)
-            self.shortcuts.set_document_type(self.active_document.get_document_type())
             self.set_build_log()
 
     def set_build_log(self):

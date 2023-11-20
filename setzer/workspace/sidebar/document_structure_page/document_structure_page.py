@@ -34,6 +34,7 @@ class DocumentStructurePage(Gtk.Overlay):
         self.scrolled_window = Gtk.ScrolledWindow()
         self.scrolled_window.set_child(self.content_vbox)
         self.scrolled_window.set_vexpand(True)
+        self.scrolled_window.set_can_focus(False)
 
         self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.add_buttons()
@@ -75,6 +76,7 @@ class DocumentStructurePage(Gtk.Overlay):
         self.prev_button.set_focus_on_click(False)
         self.prev_button.set_tooltip_text(_('Back'))
         self.prev_button.get_style_context().add_class('flat')
+        self.prev_button.set_can_focus(False)
         self.tabs.append(self.prev_button)
 
         self.next_button = Gtk.Button()
@@ -82,6 +84,7 @@ class DocumentStructurePage(Gtk.Overlay):
         self.next_button.set_focus_on_click(False)
         self.next_button.set_tooltip_text(_('Forward'))
         self.next_button.get_style_context().add_class('flat')
+        self.next_button.set_can_focus(False)
         self.tabs.append(self.next_button)
 
         self.tabs_box = Gtk.CenterBox()

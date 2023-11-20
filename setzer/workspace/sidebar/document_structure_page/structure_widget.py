@@ -24,6 +24,7 @@ class StructureWidget(Gtk.DrawingArea):
 
     def __init__(self, model):
         Gtk.DrawingArea.__init__(self)
+
         self.model = model
 
         self.icons = dict()

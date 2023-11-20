@@ -31,39 +31,6 @@ class PreviewView(Gtk.Box):
         self.set_orientation(Gtk.Orientation.VERTICAL)
         self.get_style_context().add_class('preview')
 
-        self.action_bar = Gtk.CenterBox()
-        self.action_bar.set_orientation(Gtk.Orientation.HORIZONTAL)
-        self.action_bar.set_size_request(-1, 37)
-
-        self.action_bar_left = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
-        self.action_bar.set_start_widget(self.action_bar_left)
-        self.action_bar_right = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
-        self.action_bar.set_end_widget(self.action_bar_right)
-
-        self.recolor_pdf_toggle = Gtk.ToggleButton()
-        self.recolor_pdf_toggle.set_icon_name('color-symbolic')
-        self.recolor_pdf_toggle.set_tooltip_text(_('Match theme colors'))
-        self.recolor_pdf_toggle.get_style_context().add_class('flat')
-        self.recolor_pdf_toggle.set_can_focus(False)
-        self.recolor_pdf_toggle.get_style_context().add_class('scbar')
-
-        self.external_viewer_button = Gtk.Button.new_from_icon_name('external-viewer-symbolic')
-        self.external_viewer_button.set_tooltip_text(_('External Viewer'))
-        self.external_viewer_button.get_style_context().add_class('flat')
-        self.external_viewer_button.set_can_focus(False)
-        self.external_viewer_button.get_style_context().add_class('scbar')
-
-        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
-        box.append(self.recolor_pdf_toggle)
-        box.append(self.external_viewer_button)
-
-        self.preview_button_revealer = Gtk.Revealer()
-        self.preview_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
-        self.preview_button_revealer.set_child(box)
-        self.action_bar_right.append(self.preview_button_revealer)
-
-        self.append(self.action_bar)
-
         self.content = ScrollingWidget()
         self.drawing_area = self.content.content
 
