@@ -16,10 +16,21 @@ scrollbar.hidden slider {
     opacity: 0;
 }
 headerbar > windowhandle > box {
-    padding: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
-headerbar box.start, headerbar box.end {
-    padding: 6px;
+headerbar > windowhandle > box > box.start, headerbar > windowhandle > box > box.end {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+headerbar menubutton {
+    margin: 0px;
+}
+headerbar button {
+    margin: 0px;
+}
+headerbar togglebutton {
+    margin: 0px;
 }
 
 /*
