@@ -109,12 +109,12 @@ class PreviewPageRenderer(Observable):
                     height = todo['page_height'] * 2
                     surface = cairo.ImageSurface(cairo.Format.ARGB32, width, height)
                     ctx = cairo.Context(surface)
-                    ctx.scale(todo['scale_factor'] * todo['hidpi_factor'], todo['scale_factor'] * todo['hidpi_factor'])
 
                     ctx.set_source_rgba(1, 1, 1, 1)
                     ctx.rectangle(0, 0, width, height)
                     ctx.fill()
 
+                    ctx.scale(todo['scale_factor'] * todo['hidpi_factor'], todo['scale_factor'] * todo['hidpi_factor'])
                     page = self.preview.poppler_document.get_page(todo['page_number'])
                     page.render(ctx)
 
