@@ -24,13 +24,16 @@ headerbar > windowhandle > box > box.start, headerbar > windowhandle > box > box
     padding-bottom: 6px;
 }
 headerbar menubutton {
-    margin: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 headerbar button {
-    margin: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 headerbar togglebutton {
-    margin: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 /*
