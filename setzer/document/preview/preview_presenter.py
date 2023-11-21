@@ -66,6 +66,7 @@ class PreviewPresenter(object):
 
     def show_pdf(self):
         self.view.stack.set_visible_child_name('pdf')
+        self.view.drawing_area.queue_draw()
 
     def start_fade_loop(self):
         def draw():

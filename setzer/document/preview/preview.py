@@ -108,7 +108,9 @@ class Preview(Observable):
         self.page_width = page_size.width
         self.page_height = page_size.height
         self.update_vertical_margin()
+        self.layout = None
         self.add_change_code('pdf_changed')
+        self.add_change_code('layout_changed')
 
     def reset_pdf_data(self):
         self.pdf_filename = None
