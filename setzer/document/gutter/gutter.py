@@ -48,6 +48,8 @@ class Gutter(object):
         self.code_folding_visible = self.document.is_latex_document() and self.settings.get_value('preferences', 'enable_code_folding')
         self.code_folding_width = None
 
+        self.highlight_current_line = self.settings.get_value('preferences', 'highlight_current_line')
+
         self.char_width = FontManager.get_char_width(self.source_view)
         self.line_height = FontManager.get_line_height(self.source_view)
         self.total_width = None
@@ -90,6 +92,10 @@ class Gutter(object):
             self.line_numbers_visible = self.settings.get_value('preferences', 'show_line_numbers')
             self.update_hovered_folding_region()
             self.update_size()
+            self.drawing_area.queue_draw()
+
+        if item == 'highlight_current_line':
+            self.highlight_current_line = self.settings.get_value('preferences', 'highlight_current_line')
             self.drawing_area.queue_draw()
 
         if item == 'enable_code_folding':
@@ -260,7 +266,7 @@ class Gutter(object):
         else:
             text = str(line + 1)
 
-        if is_current:
+        if is_current and self.highlight_current_line:
             Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('line_highlighting_color'))
             yrange = self.source_view.get_line_yrange(self.source_buffer.get_iter_at_line(line).iter)
             ctx.rectangle(0, yrange.y - self.adjustment.get_value(), self.total_width, yrange.height)
