@@ -91,7 +91,7 @@ class PreviewPresenter(object):
         scrolling_offset_x = self.view.content.scrolling_offset_x
         scrolling_offset_y = self.view.content.scrolling_offset_y
         first_page = int(scrolling_offset_y // (page_height + page_gap))
-        last_page = int((scrolling_offset_y + height + 1) // (page_height + page_gap))
+        last_page = min(int((scrolling_offset_y + height + 1) // (page_height + page_gap)), self.preview.poppler_document.get_n_pages() - 1)
         ctx.transform(cairo.Matrix(1, 0, 0, 1, margin - scrolling_offset_x, first_page * (page_height + page_gap) - scrolling_offset_y))
 
         for page_number in range(first_page, last_page + 1):
