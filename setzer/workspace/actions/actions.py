@@ -145,6 +145,7 @@ class Actions(object):
         if self.workspace.root_document != None: sync_document = self.workspace.root_document
         else: sync_document = document
         can_sync = sync_document != None and sync_document.is_latex_document() and sync_document.build_system.can_sync
+        can_build = (self.workspace.get_root_or_active_latex_document() != None)
         can_reset_zoom = (round(FontManager.zoom_level * 100) != 100)
         can_zoom_in = (FontManager.get_font_desc().get_size() * 1.1 <= 24 * Pango.SCALE)
         can_zoom_out = (FontManager.get_font_desc().get_size() / 1.1 >= 6 * Pango.SCALE)
@@ -176,6 +177,8 @@ class Actions(object):
         self.actions['add-remove-packages-dialog'].set_enabled(document_active_is_latex)
         self.actions['toggle-comment'].set_enabled(document_active_is_latex)
         self.actions['forward-sync'].set_enabled(can_sync)
+        self.actions['build'].set_enabled(can_build)
+        self.actions['save-and-build'].set_enabled(can_build)
         self.actions['show-build-log'].set_enabled(document_active_is_latex)
         self.actions['close-build-log'].set_enabled(document_active_is_latex)
         self.actions['reset-zoom'].set_enabled(can_reset_zoom)
