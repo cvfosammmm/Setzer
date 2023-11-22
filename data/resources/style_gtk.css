@@ -239,7 +239,7 @@ box.popover button.action, box.popover button.menu, box.popover button.header {
 box.popover button.action:hover, box.popover button.menu:hover, box.popover button.header:hover {
     background: @view_hover_color;
 }
-box.popover button.action:active, box.popover button.action:focus, box.popover button.menu:active, box.popover button.menu:focus, box.popover button.header:active, box.popover button.header:focus {
+box.popover button.action:active, box.popover button.menu:active, box.popover button.header:active {
     background: @borders;
 }
 box.popover button label.shortcut {
