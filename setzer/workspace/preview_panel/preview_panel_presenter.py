@@ -94,9 +94,9 @@ class PreviewPanelPresenter(object):
 
     def update_label(self):
         if self.document == None:
-            self.view.paging_label.hide()
+            self.view.paging_label.set_visible(False)
         else:
-            self.view.paging_label.show()
+            self.view.paging_label.set_visible(True)
             preview = self.document.preview
             if preview.pdf_filename != None:
                 total = str(preview.poppler_document.get_n_pages())
@@ -113,17 +113,17 @@ class PreviewPanelPresenter(object):
     def update_buttons(self):
         self.document = self.workspace.get_root_or_active_latex_document()
         if self.document == None or self.document.preview.poppler_document == None:
-            self.view.external_viewer_button.hide()
-            self.view.recolor_pdf_toggle.hide()
-            self.view.zoom_out_button.hide()
-            self.view.zoom_level_button.hide()
-            self.view.zoom_in_button.hide()
+            self.view.external_viewer_button.set_visible(False)
+            self.view.recolor_pdf_toggle.set_visible(False)
+            self.view.zoom_out_button.set_visible(False)
+            self.view.zoom_level_button.set_visible(False)
+            self.view.zoom_in_button.set_visible(False)
         else:
-            self.view.external_viewer_button.show()
-            self.view.recolor_pdf_toggle.show()
-            self.view.zoom_out_button.show()
-            self.view.zoom_level_button.show()
-            self.view.zoom_in_button.show()
+            self.view.external_viewer_button.set_visible(True)
+            self.view.recolor_pdf_toggle.set_visible(True)
+            self.view.zoom_out_button.set_visible(True)
+            self.view.zoom_level_button.set_visible(True)
+            self.view.zoom_in_button.set_visible(True)
 
             zoom_level = self.document.preview.zoom_manager.get_zoom_level()
 

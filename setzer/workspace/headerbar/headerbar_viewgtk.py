@@ -84,13 +84,6 @@ class HeaderBar(Gtk.HeaderBar):
         self.menu_button.set_can_focus(False)
         self.pack_end(self.menu_button)
 
-        # save document button
-        self.save_document_button = Gtk.Button.new_with_label(_('Save'))
-        self.save_document_button.set_can_focus(False)
-        self.save_document_button.set_tooltip_text(_('Save the current document') + ' (' + _('Ctrl') + '+S)')
-        self.save_document_button.set_action_name('win.save')
-        self.pack_end(self.save_document_button)
-
         # help and preview toggles
         box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.preview_toggle = Gtk.ToggleButton()
@@ -105,6 +98,13 @@ class HeaderBar(Gtk.HeaderBar):
         box.append(self.help_toggle)
         box.get_style_context().add_class('linked')
         self.pack_end(box)
+
+        # save document button
+        self.save_document_button = Gtk.Button.new_with_label(_('Save'))
+        self.save_document_button.set_can_focus(False)
+        self.save_document_button.set_tooltip_text(_('Save the current document') + ' (' + _('Ctrl') + '+S)')
+        self.save_document_button.set_action_name('win.save')
+        self.pack_end(self.save_document_button)
 
         # build button wrapper
         self.build_wrapper = Gtk.CenterBox()

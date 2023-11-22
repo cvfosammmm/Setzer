@@ -32,18 +32,18 @@ class HamburgerMenuView(Popover):
 
         self.button_save_as = MenuBuilder.create_button(_('Save Document As') + '...', shortcut=_('Shift') + '+' + _('Ctrl') + '+S')
         self.button_save_as.set_action_name('win.save-as')
-        self.add_closing_button(self.button_save_as)
+        #self.add_closing_button(self.button_save_as)
 
         self.button_save_all = MenuBuilder.create_button(_('Save All Documents'))
         self.button_save_all.set_action_name('win.save-all')
-        self.add_closing_button(self.button_save_all)
+        #self.add_closing_button(self.button_save_all)
 
-        self.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
+        #self.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
 
         self.button_session = MenuBuilder.create_menu_button(_('Session'))
-        self.add_widget(self.button_session)
+        #self.add_widget(self.button_session)
 
-        self.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
+        #self.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
 
         self.button_preferences = MenuBuilder.create_button(_('Preferences'))
         self.button_preferences.set_action_name('win.show-preferences-dialog')
@@ -63,11 +63,11 @@ class HamburgerMenuView(Popover):
 
         self.button_close_all = MenuBuilder.create_button(_('Close All Documents'))
         self.button_close_all.set_action_name('win.close-all-documents')
-        self.add_closing_button(self.button_close_all)
+        #self.add_closing_button(self.button_close_all)
 
         self.button_close_active = MenuBuilder.create_button(_('Close Document'), shortcut=_('Ctrl') + '+W')
         self.button_close_active.set_action_name('win.close-active-document')
-        self.add_closing_button(self.button_close_active)
+        #self.add_closing_button(self.button_close_active)
 
         self.button_quit = MenuBuilder.create_button(_('Quit'), shortcut=_('Ctrl') + '+Q')
         self.button_quit.set_action_name('win.quit')

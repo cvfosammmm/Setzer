@@ -85,23 +85,23 @@ class Shortcutsbar(object):
         if self.document == None: return
 
         if self.document.is_latex_document():
-            self.view.wizard_button.show()
+            self.view.wizard_button.set_visible(True)
 
             is_visible = self.document.source_buffer.get_char_count() == 0 and self.width > 675
             if is_visible and animate == False:
                 self.view.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.NONE)
                 self.view.wizard_button_revealer.set_reveal_child(True)
                 self.view.wizard_button_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT)
-                self.view.wizard_button_revealer.show()
+                self.view.wizard_button_revealer.set_visible(True)
             elif is_visible:
-                self.view.wizard_button_revealer.show()
+                self.view.wizard_button_revealer.set_visible(True)
                 self.view.wizard_button_revealer.set_reveal_child(True)
             elif animate == False:
-                self.view.wizard_button_revealer.hide()
+                self.view.wizard_button_revealer.set_visible(False)
             else:
                 self.view.wizard_button_revealer.set_reveal_child(False)
         else:
-            self.view.wizard_button.hide()
+            self.view.wizard_button.set_visible(False)
 
     def update_buttons(self, workspace=None, parameter=None):
         if self.document == None: return
@@ -109,34 +109,21 @@ class Shortcutsbar(object):
         self.view.button_search.set_active(self.document.search.search_bar_mode == 'search')
         self.view.button_replace.set_active(self.document.search.search_bar_mode == 'replace')
 
-        if self.document.is_latex_document():
-            self.view.beamer_button.show()
-            self.view.bibliography_button.show()
-            self.view.text_button.show()
-            self.view.quotes_button.show()
-            self.view.math_button.show()
-            self.view.insert_object_button.show()
-            self.view.italic_button.show()
-            self.view.bold_button.show()
-            self.view.document_button.show()
-        else:
-            self.view.beamer_button.hide()
-            self.view.bibliography_button.hide()
-            self.view.text_button.hide()
-            self.view.quotes_button.hide()
-            self.view.math_button.hide()
-            self.view.insert_object_button.hide()
-            self.view.italic_button.hide()
-            self.view.bold_button.hide()
-            self.view.document_button.hide()
+        is_latex = self.document.is_latex_document()
+        self.view.beamer_button.set_visible(is_latex)
+        self.view.bibliography_button.set_visible(is_latex)
+        self.view.text_button.set_visible(is_latex)
+        self.view.quotes_button.set_visible(is_latex)
+        self.view.math_button.set_visible(is_latex)
+        self.view.insert_object_button.set_visible(is_latex)
+        self.view.italic_button.set_visible(is_latex)
+        self.view.bold_button.set_visible(is_latex)
+        self.view.document_button.set_visible(is_latex)
 
-        if self.workspace.get_root_or_active_latex_document():
-            self.view.button_build_log.set_active(self.workspace.get_show_build_log())
-            self.view.button_build_log.set_sensitive(True)
-            self.view.button_build_log.show()
-        else:
-            self.view.button_build_log.set_sensitive(False)
-            self.view.button_build_log.hide()
+        root_or_active_latex = self.workspace.get_root_or_active_latex_document()
+        self.view.button_build_log.set_active(self.workspace.get_show_build_log())
+        self.view.button_build_log.set_sensitive(root_or_active_latex)
+        self.view.button_build_log.set_visible(root_or_active_latex)
 
     def on_build_log_button_clicked(self, toggle_button, parameter=None):
         self.workspace.set_show_build_log(toggle_button.get_active())

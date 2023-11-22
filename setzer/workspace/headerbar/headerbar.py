@@ -77,12 +77,12 @@ class Headerbar(object):
         data = recently_opened_documents.values()
         if len(data) > 0:
             self.view.open_document_button.set_sensitive(True)
-            self.view.open_document_button.show()
-            self.view.open_document_blank_button.hide()
+            self.view.open_document_button.set_visible(True)
+            self.view.open_document_blank_button.set_visible(False)
         else:
             self.view.open_document_button.set_sensitive(False)
-            self.view.open_document_button.hide()
-            self.view.open_document_blank_button.show()
+            self.view.open_document_button.set_visible(False)
+            self.view.open_document_blank_button.set_visible(True)
 
     def set_build_button_state(self):
         document = self.workspace.get_root_or_active_latex_document()
@@ -97,13 +97,13 @@ class Headerbar(object):
     def activate_welcome_screen_mode(self):
         self.hide_sidebar_toggles()
         self.hide_preview_help_toggles()
-        self.view.save_document_button.hide()
+        self.view.save_document_button.set_visible(False)
         self.view.center_button.set_sensitive(False)
         self.view.center_widget.set_visible_child_name('welcome')
         self.view.get_style_context().add_class('welcome')
 
     def activate_document_mode(self):
-        self.view.save_document_button.show()
+        self.view.save_document_button.set_visible(True)
         self.view.center_button.set_sensitive(True)
         self.view.center_widget.set_visible_child_name('button')
         self.view.get_style_context().remove_class('welcome')
@@ -115,9 +115,9 @@ class Headerbar(object):
         if dirname != '':
             folder_text = dirname.replace(os.path.expanduser('~'), '~')
             self.view.document_folder_label.set_text(folder_text)
-            self.view.document_folder_label.show()
+            self.view.document_folder_label.set_visible(True)
         else:
-            self.view.document_folder_label.hide()
+            self.view.document_folder_label.set_visible(False)
 
     def update_toggles(self):
         if self.workspace.get_active_latex_document():
@@ -131,25 +131,25 @@ class Headerbar(object):
             self.hide_preview_help_toggles()
 
     def hide_sidebar_toggles(self):
-        self.view.sidebar_toggles_box.hide()
+        self.view.sidebar_toggles_box.set_visible(False)
         self.view.document_structure_toggle.set_sensitive(False)
         self.view.symbols_toggle.set_sensitive(False)
 
     def hide_preview_help_toggles(self):
-        self.view.preview_toggle.hide()
+        self.view.preview_toggle.set_visible(False)
         self.view.preview_toggle.set_sensitive(False)
-        self.view.help_toggle.hide()
+        self.view.help_toggle.set_visible(False)
         self.view.help_toggle.set_sensitive(False)
 
     def show_sidebar_toggles(self):
-        self.view.sidebar_toggles_box.show()
+        self.view.sidebar_toggles_box.set_visible(True)
         self.view.document_structure_toggle.set_sensitive(True)
         self.view.symbols_toggle.set_sensitive(True)
 
     def show_preview_help_toggles(self):
-        self.view.preview_toggle.show()
+        self.view.preview_toggle.set_visible(True)
         self.view.preview_toggle.set_sensitive(True)
-        self.view.help_toggle.show()
+        self.view.help_toggle.set_visible(True)
         self.view.help_toggle.set_sensitive(True)
 
 
