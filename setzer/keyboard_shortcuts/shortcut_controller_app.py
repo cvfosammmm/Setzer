@@ -43,7 +43,7 @@ class ShortcutControllerApp(ShortcutController):
         self.create_and_add_shortcut('<Control>q', self.actions.actions['quit'].activate)
         self.create_and_add_shortcut('<Control>question', self.actions.show_shortcuts_dialog)
         self.create_and_add_shortcut('<Control>t', self.shortcut_show_open_docs)
-        self.create_and_add_shortcut('<Control>Page_Down', self.shortcut_switch_document)
+        self.create_and_add_shortcut('<Control>Tab', self.shortcut_switch_document)
         self.create_and_add_shortcut('<Control><Shift>o', self.shortcut_show_document_chooser)
         self.create_and_add_shortcut('<Control>plus', self.actions.zoom_in)
         self.create_and_add_shortcut('<Control>minus', self.actions.zoom_out)

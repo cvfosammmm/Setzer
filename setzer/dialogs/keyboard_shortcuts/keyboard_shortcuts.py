@@ -35,7 +35,7 @@ class KeyboardShortcutsDialog(object):
         section['items'].append({'title': _('Open a document'), 'shortcut': '&lt;ctrl&gt;O'})
         section['items'].append({'title': _('Show recent documents'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;O'})
         section['items'].append({'title': _('Show open documents'), 'shortcut': '&lt;ctrl&gt;T'})
-        section['items'].append({'title': _('Switch to the next open document'), 'shortcut': '&lt;ctrl&gt;Page_Down'})
+        section['items'].append({'title': _('Switch to the next open document'), 'shortcut': '&lt;ctrl&gt;Tab'})
         section['items'].append({'title': _('Save the current document'), 'shortcut': '&lt;ctrl&gt;S'})
         section['items'].append({'title': _('Save the document with a new filename'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;S'})
         section['items'].append({'title': _('Close the current document'), 'shortcut': '&lt;ctrl&gt;W'})
