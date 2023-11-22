@@ -47,19 +47,19 @@ class MainWindow(Adw.ApplicationWindow):
     def create_widgets(self):
         self.shortcutsbar = shortcutsbar_view.Shortcutsbar()
 
-        self.notebook = Gtk.Notebook()
-        self.notebook.set_show_tabs(False)
-        self.notebook.set_show_border(False)
-        self.notebook.set_scrollable(True)
-        self.notebook.set_size_request(550, -1)
-        self.notebook.set_vexpand(True)
+        self.document_stack = Gtk.Notebook()
+        self.document_stack.set_show_tabs(False)
+        self.document_stack.set_show_border(False)
+        self.document_stack.set_scrollable(True)
+        self.document_stack.set_size_request(550, -1)
+        self.document_stack.set_vexpand(True)
 
-        self.notebook_wrapper = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
-        self.notebook_wrapper.append(self.shortcutsbar)
-        self.notebook_wrapper.append(self.notebook)
+        self.document_stack_wrapper = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.document_stack_wrapper.append(self.shortcutsbar)
+        self.document_stack_wrapper.append(self.document_stack)
 
         self.build_log = build_log_view.BuildLogView()
-        self.build_log_paned = animated_paned.AnimatedVPaned(self.notebook_wrapper, self.build_log, False)
+        self.build_log_paned = animated_paned.AnimatedVPaned(self.document_stack_wrapper, self.build_log, False)
 
         self.preview_panel = preview_panel_view.PreviewPanelView()
 

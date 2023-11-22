@@ -53,17 +53,17 @@ class WorkspacePresenter(object):
             self.update_colors()
 
     def on_new_document(self, workspace, document):
-        self.main_window.notebook.append_page(document.view)
+        self.main_window.document_stack.append_page(document.view)
 
     def on_document_removed(self, workspace, document):
-        self.main_window.notebook.remove_page(self.main_window.notebook.page_num(document.view))
+        self.main_window.document_stack.remove_page(self.main_window.document_stack.page_num(document.view))
 
         if self.workspace.active_document == None:
             self.main_window.mode_stack.set_visible_child_name('welcome_screen')
 
     def on_new_active_document(self, workspace, document):
         self.main_window.mode_stack.set_visible_child_name('documents')
-        self.main_window.notebook.set_current_page(self.main_window.notebook.page_num(document.view))
+        self.main_window.document_stack.set_current_page(self.main_window.document_stack.page_num(document.view))
         self.focus_active_document()
 
         if document.is_latex_document():
