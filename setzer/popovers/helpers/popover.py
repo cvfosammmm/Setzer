@@ -40,6 +40,9 @@ class Popover(Gtk.Box):
 
         self.width = 0
 
+        self.selected_button_id = {'main': None}
+        self.buttons_by_id = {'main': list()}
+
         self.arrow = Gtk.DrawingArea()
         self.arrow.get_style_context().add_class('arrow')
         self.arrow_box = Gtk.CenterBox()
@@ -71,6 +74,21 @@ class Popover(Gtk.Box):
                 self.popover_manager.popdown()
                 return True
 
+        if keyval == Gdk.keyval_from_name('Return'):
+            if state & modifiers == 0:
+                self.activate_selected_button()
+                return True
+
+        if keyval == Gdk.keyval_from_name('Down'):
+            if state & modifiers == 0:
+                self.select_next_button()
+                return True
+
+        if keyval == Gdk.keyval_from_name('Up'):
+            if state & modifiers == 0:
+                self.select_previous_button()
+                return True
+
         return True
 
     def add_page(self, pagename='main', label=None):
@@ -88,11 +106,12 @@ class Popover(Gtk.Box):
             button.get_style_context().add_class('header')
             button.connect('clicked', self.show_page, 'main', Gtk.StackTransitionType.SLIDE_LEFT)
 
-            self.add_widget(button, pagename)
+            self.add_button(button, pagename)
 
     def add_menu_button(self, title, menu_name):
         button = MenuBuilder.create_menu_button(title)
         button.connect('clicked', self.show_page, menu_name, Gtk.StackTransitionType.SLIDE_RIGHT)
+        self.buttons_by_id['main'].append(button)
         self.add_widget(button)
 
     def add_before_after_item(self, pagename, title, commands, icon=None, shortcut=None):
@@ -116,11 +135,18 @@ class Popover(Gtk.Box):
         return button
 
     def add_closing_button(self, button, pagename='main'):
-        self.add_widget(button, pagename)
+        self.add_button(button, pagename)
         button.connect('clicked', self.on_closing_button_click)
 
     def on_closing_button_click(self, button):
         self.popover_manager.popdown()
+
+    def add_button(self, button, pagename='main'):
+        if pagename not in self.buttons_by_id:
+            self.selected_button_id[pagename] = None
+            self.buttons_by_id[pagename] = list()
+        self.buttons_by_id[pagename].append(button)
+        self.add_widget(button, pagename)
 
     def add_widget(self, widget, pagename='main'):
         box = self.stack.get_child_by_name(pagename)
@@ -133,5 +159,43 @@ class Popover(Gtk.Box):
     def show_page(self, button, page_name, transition_type):
         self.stack.set_transition_type(transition_type)
         self.stack.set_visible_child_name(page_name)
+        self.set_selected_button(page_name, None)
+
+    def activate_selected_button(self):
+        pagename = self.stack.get_visible_child_name()
+        button_id = self.selected_button_id[pagename]
+        if button_id != None:
+            button = self.buttons_by_id[pagename][button_id]
+            button.activate()
+
+    def select_next_button(self):
+        pagename = self.stack.get_visible_child_name()
+        button_id = self.selected_button_id[pagename]
+        no_buttons = len(self.buttons_by_id[pagename])
+        if no_buttons == 0: return
+
+        if button_id == None:
+            self.set_selected_button(pagename, 0)
+        else:
+            self.set_selected_button(pagename, (button_id + 1) % no_buttons)
+
+    def select_previous_button(self):
+        pagename = self.stack.get_visible_child_name()
+        button_id = self.selected_button_id[pagename]
+        no_buttons = len(self.buttons_by_id[pagename])
+        if no_buttons == 0: return
+
+        if button_id == None:
+            self.set_selected_button(pagename, no_buttons - 1)
+        else:
+            self.set_selected_button(pagename, (button_id - 1) % no_buttons)
+
+    def set_selected_button(self, pagename, button_id):
+        for button in self.buttons_by_id[pagename]:
+            button.get_style_context().remove_class('highlight')
+
+        self.selected_button_id[pagename] = button_id
+        if button_id != None:
+            self.buttons_by_id[pagename][button_id].get_style_context().add_class('highlight')
 
 

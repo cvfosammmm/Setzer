@@ -245,6 +245,9 @@ box.popover button.action:active, box.popover button.menu:active, box.popover bu
 box.popover button.header {
     font-weight: bold;
 }
+box.popover button.highlight:not(:disabled) {
+    background: @view_hover_color;
+}
 box.popover button label.shortcut {
     color: @menu_shortcut_color;
     margin-left: 18px;

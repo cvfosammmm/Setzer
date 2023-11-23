@@ -40,8 +40,7 @@ class HamburgerMenuView(Popover):
 
         self.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
 
-        self.button_session = MenuBuilder.create_menu_button(_('Session'))
-        self.add_widget(self.button_session)
+        self.add_menu_button(_('Session'), 'session')
 
         self.add_widget(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
 
@@ -75,7 +74,6 @@ class HamburgerMenuView(Popover):
 
         # session submenu
         self.add_page('session', _('Session'))
-        self.button_session.connect('clicked', self.show_page, 'session', Gtk.StackTransitionType.SLIDE_RIGHT)
 
         self.session_explaination = Gtk.Label.new(_('Save the list of open documents in a session file\nand restore it later, a convenient way to work\non multiple projects.'))
         self.session_explaination.set_xalign(0)
@@ -93,7 +91,7 @@ class HamburgerMenuView(Popover):
         self.prev_sessions_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         self.add_widget(self.session_explaination, pagename='session')
-        self.add_widget(self.button_restore_session, pagename='session')
+        self.add_button(self.button_restore_session, pagename='session')
         self.add_closing_button(self.button_save_session, pagename='session')
         self.add_widget(self.session_box_separator, pagename='session')
         self.add_widget(self.prev_sessions_box, pagename='session')
