@@ -242,6 +242,9 @@ box.popover button.action:hover, box.popover button.menu:hover, box.popover butt
 box.popover button.action:active, box.popover button.menu:active, box.popover button.header:active {
     background: @borders;
 }
+box.popover button.header {
+    font-weight: bold;
+}
 box.popover button label.shortcut {
     color: @menu_shortcut_color;
     margin-left: 18px;
