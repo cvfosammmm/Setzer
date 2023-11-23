@@ -52,14 +52,14 @@ class PreviewView(Gtk.Box):
         self.target_label.set_can_target(False)
         self.target_label.get_style_context().add_class('target-label')
         self.overlay.add_overlay(self.target_label)
+        self.set_link_target_string('')
 
     def set_layout_data(self, layout_data):
         self.layout_data = layout_data
 
     def set_link_target_string(self, target_string):
         self.target_label.set_text(target_string)
-        if target_string: self.target_label.show()
-        else: self.target_label.hide()
+        self.target_label.set_visible(target_string != '')
 
 
 class BlankSlateView(Gtk.Box):
