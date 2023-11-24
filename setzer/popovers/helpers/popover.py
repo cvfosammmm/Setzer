@@ -156,10 +156,10 @@ class Popover(Gtk.Box):
         self.width = width
         self.set_size_request(width, -1)
 
-    def show_page(self, button, page_name, transition_type):
+    def show_page(self, button, pagename, transition_type):
         self.stack.set_transition_type(transition_type)
-        self.stack.set_visible_child_name(page_name)
-        self.set_selected_button(page_name, None)
+        self.stack.set_visible_child_name(pagename)
+        self.set_selected_button(pagename, None)
 
     def activate_selected_button(self):
         pagename = self.stack.get_visible_child_name()
@@ -172,23 +172,27 @@ class Popover(Gtk.Box):
         pagename = self.stack.get_visible_child_name()
         button_id = self.selected_button_id[pagename]
         no_buttons = len(self.buttons_by_id[pagename])
-        if no_buttons == 0: return
-
         if button_id == None:
-            self.set_selected_button(pagename, 0)
+            buttons = range(no_buttons)
         else:
-            self.set_selected_button(pagename, (button_id + 1) % no_buttons)
+            buttons = list(range(((button_id + 1) % no_buttons), no_buttons)) + list(range((button_id + 1) % no_buttons))
+        for button_id in buttons:
+            if self.buttons_by_id[pagename][button_id].get_sensitive():
+                self.set_selected_button(pagename, button_id)
+                break
 
     def select_previous_button(self):
         pagename = self.stack.get_visible_child_name()
         button_id = self.selected_button_id[pagename]
         no_buttons = len(self.buttons_by_id[pagename])
-        if no_buttons == 0: return
-
         if button_id == None:
-            self.set_selected_button(pagename, no_buttons - 1)
+            buttons = range(no_buttons)
         else:
-            self.set_selected_button(pagename, (button_id - 1) % no_buttons)
+            buttons = list(range((button_id % no_buttons), no_buttons)) + list(range(button_id % no_buttons))
+        for button_id in reversed(buttons):
+            if self.buttons_by_id[pagename][button_id].get_sensitive():
+                self.set_selected_button(pagename, button_id)
+                break
 
     def set_selected_button(self, pagename, button_id):
         for button in self.buttons_by_id[pagename]:
