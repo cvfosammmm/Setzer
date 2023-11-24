@@ -152,7 +152,29 @@ class Popover(Gtk.Box):
             self.selected_button_id[pagename] = None
             self.buttons_by_id[pagename] = list()
         button.set_can_focus(False)
+        motion_controller = Gtk.EventControllerMotion()
+        motion_controller.connect('enter', self.button_on_motion)
+        motion_controller.connect('motion', self.button_on_motion)
+        motion_controller.connect('leave', self.button_on_leave)
+        button.add_controller(motion_controller)
         self.buttons_by_id[pagename].append(button)
+
+    def button_on_motion(self, controller, x, y):
+        pagename = self.stack.get_visible_child_name()
+        try:
+            button_id = self.buttons_by_id[pagename].index(controller.get_widget())
+        except ValueError: pass
+        else:
+            self.set_selected_button(pagename, button_id)
+
+    def button_on_leave(self, controller):
+        pagename = self.stack.get_visible_child_name()
+        try:
+            button_id = self.buttons_by_id[pagename].index(controller.get_widget())
+        except ValueError: pass
+        else:
+            if self.selected_button_id[pagename] == button_id and controller.get_widget().get_sensitive():
+                self.set_selected_button(pagename, None)
 
     def set_width(self, width):
         self.width = width
