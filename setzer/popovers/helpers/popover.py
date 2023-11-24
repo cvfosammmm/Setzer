@@ -151,6 +151,7 @@ class Popover(Gtk.Box):
         if pagename not in self.buttons_by_id:
             self.selected_button_id[pagename] = None
             self.buttons_by_id[pagename] = list()
+        button.set_can_focus(False)
         self.buttons_by_id[pagename].append(button)
 
     def set_width(self, width):
