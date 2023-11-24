@@ -106,12 +106,13 @@ class Popover(Gtk.Box):
             button.get_style_context().add_class('header')
             button.connect('clicked', self.show_page, 'main', Gtk.StackTransitionType.SLIDE_LEFT)
 
-            self.add_button(button, pagename)
+            self.register_button_for_keyboard_navigation(button, pagename)
+            self.add_widget(button, pagename)
 
     def add_menu_button(self, title, menu_name):
         button = MenuBuilder.create_menu_button(title)
         button.connect('clicked', self.show_page, menu_name, Gtk.StackTransitionType.SLIDE_RIGHT)
-        self.buttons_by_id['main'].append(button)
+        self.register_button_for_keyboard_navigation(button, 'main')
         self.add_widget(button)
 
     def add_before_after_item(self, pagename, title, commands, icon=None, shortcut=None):
@@ -135,22 +136,22 @@ class Popover(Gtk.Box):
         return button
 
     def add_closing_button(self, button, pagename='main'):
-        self.add_button(button, pagename)
+        self.register_button_for_keyboard_navigation(button, pagename)
+        self.add_widget(button, pagename)
         button.connect('clicked', self.on_closing_button_click)
 
     def on_closing_button_click(self, button):
         self.popover_manager.popdown()
 
-    def add_button(self, button, pagename='main'):
+    def add_widget(self, widget, pagename='main'):
+        box = self.stack.get_child_by_name(pagename)
+        box.append(widget)
+
+    def register_button_for_keyboard_navigation(self, button, pagename='main'):
         if pagename not in self.buttons_by_id:
             self.selected_button_id[pagename] = None
             self.buttons_by_id[pagename] = list()
         self.buttons_by_id[pagename].append(button)
-        self.add_widget(button, pagename)
-
-    def add_widget(self, widget, pagename='main'):
-        box = self.stack.get_child_by_name(pagename)
-        box.append(widget)
 
     def set_width(self, width):
         self.width = width

@@ -91,7 +91,8 @@ class HamburgerMenuView(Popover):
         self.prev_sessions_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 
         self.add_widget(self.session_explaination, pagename='session')
-        self.add_button(self.button_restore_session, pagename='session')
+        self.add_widget(self.button_restore_session, pagename='session')
+        self.register_button_for_keyboard_navigation(self.button_restore_session, pagename='session')
         self.add_closing_button(self.button_save_session, pagename='session')
         self.add_widget(self.session_box_separator, pagename='session')
         self.add_widget(self.prev_sessions_box, pagename='session')
