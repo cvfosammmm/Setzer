@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import gi
+gi.require_version('Gtk', '4.0')
+from gi.repository import Gtk, Gdk
+
 from setzer.dialogs.dialog_locator import DialogLocator
 from setzer.popovers.helpers.popover_menu_builder import MenuBuilder
 from setzer.popovers.hamburger_menu.hamburger_menu_viewgtk import HamburgerMenuView
@@ -30,7 +34,21 @@ class HamburgerMenu(object):
         self.session_file_buttons = list()
         self.view.button_restore_session.connect('clicked', self.on_restore_session_click, None)
 
+        self.key_controller = Gtk.EventControllerKey()
+        self.key_controller.connect('key-pressed', self.on_keypress)
+        self.view.add_controller(self.key_controller)
+
         self.workspace.connect('update_recently_opened_session_files', self.on_update_recently_opened_session_files)
+
+    def on_keypress(self, controller, keyval, keycode, state):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if keyval == Gdk.keyval_from_name('F10'):
+            if state & modifiers == 0:
+                self.popover_manager.popdown()
+                return True
+
+        return False
 
     def on_update_recently_opened_session_files(self, workspace, recently_opened_session_files):
         items = list()
