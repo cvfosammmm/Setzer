@@ -17,7 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk, Pango, Graphene
+from gi.repository import Gtk, Gdk
 
 import re
 import os.path
@@ -41,6 +41,7 @@ class DocumentChooser(object):
 
         self.view.search_entry.connect('search-changed', self.on_document_chooser_search_changed)
         self.view.search_entry.connect('stop-search', self.on_stop_search)
+        self.view.search_entry.connect('activate', self.on_search_activate)
 
         motion_controller = Gtk.EventControllerMotion()
         motion_controller.connect('enter', self.on_enter)
@@ -54,7 +55,34 @@ class DocumentChooser(object):
         event_controller.set_button(1)
         self.view.auto_suggest_list.add_controller(event_controller)
 
+        self.key_controller = Gtk.EventControllerKey()
+        self.key_controller.connect('key-pressed', self.on_keypress)
+        self.view.add_controller(self.key_controller)
+
         self.view.other_documents_button.connect('clicked', self.on_other_docs_clicked)
+
+    def on_keypress(self, controller, keyval, keycode, state):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Down')):
+            no_items = len(self.view.auto_suggest_list.items)
+            if self.view.auto_suggest_list.hover_item == None and no_items > 0:
+                self.view.auto_suggest_list.hover_item = 0
+            elif no_items > 0:
+                self.view.auto_suggest_list.hover_item = (self.view.auto_suggest_list.hover_item + 1) % no_items
+            self.view.auto_suggest_list.queue_draw()
+            return True
+
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Up')):
+            no_items = len(self.view.auto_suggest_list.items)
+            if self.view.auto_suggest_list.hover_item == None and no_items > 0:
+                self.view.auto_suggest_list.hover_item = no_items - 1
+            elif no_items > 0:
+                self.view.auto_suggest_list.hover_item = (self.view.auto_suggest_list.hover_item - 1) % no_items
+            self.view.auto_suggest_list.queue_draw()
+            return True
+
+        return False
 
     def on_enter(self, controller, x, y):
         self.update_hover_state(y)
@@ -109,9 +137,20 @@ class DocumentChooser(object):
 
     def on_document_chooser_search_changed(self, search_entry):
         self.view.search_filter()
-    
+        self.view.auto_suggest_list.hover_item = None
+
     def on_stop_search(self, search_entry):
         self.popover_manager.popdown()
+
+    def on_search_activate(self, search_entry):
+        if self.view.auto_suggest_list.hover_item != None:
+            item = self.view.auto_suggest_list.items[self.view.auto_suggest_list.hover_item]
+            filename = item.folder + '/' + item.filename
+            self.workspace.open_document_by_filename(filename)
+
+            self.view.auto_suggest_list.hover_item = None
+            self.view.auto_suggest_list.selected_index = None
+            self.popover_manager.popdown()
 
     def on_other_docs_clicked(self, button):
         self.workspace.actions.actions['open-document-dialog'].activate()
