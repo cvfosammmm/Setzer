@@ -69,25 +69,23 @@ class Popover(Gtk.Box):
     def on_keypress(self, controller, keyval, keycode, state):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if keyval == Gdk.keyval_from_name('Escape'):
-            if state & modifiers == 0:
-                self.popover_manager.popdown()
-                return True
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Escape')):
+            self.popover_manager.popdown()
 
-        if keyval == Gdk.keyval_from_name('Return'):
-            if state & modifiers == 0:
-                self.activate_selected_button()
-                return True
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Return')):
+            self.activate_selected_button()
 
-        if keyval == Gdk.keyval_from_name('Down'):
-            if state & modifiers == 0:
-                self.select_next_button()
-                return True
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Down')):
+            self.select_next_button()
 
-        if keyval == Gdk.keyval_from_name('Up'):
-            if state & modifiers == 0:
-                self.select_previous_button()
-                return True
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Tab')):
+            self.select_next_button()
+
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Up')):
+            self.select_previous_button()
+
+        if (state & modifiers, keyval) == (Gdk.ModifierType.SHIFT_MASK, Gdk.keyval_from_name('ISO_Left_Tab')):
+            self.select_previous_button()
 
         return True
 
