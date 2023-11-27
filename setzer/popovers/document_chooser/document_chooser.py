@@ -70,6 +70,7 @@ class DocumentChooser(object):
                 self.view.auto_suggest_list.hover_item = 0
             elif no_items > 0:
                 self.view.auto_suggest_list.hover_item = (self.view.auto_suggest_list.hover_item + 1) % no_items
+            self.update_first_item_index()
             self.view.auto_suggest_list.queue_draw()
             return True
 
@@ -79,10 +80,23 @@ class DocumentChooser(object):
                 self.view.auto_suggest_list.hover_item = no_items - 1
             elif no_items > 0:
                 self.view.auto_suggest_list.hover_item = (self.view.auto_suggest_list.hover_item - 1) % no_items
+            self.update_first_item_index()
             self.view.auto_suggest_list.queue_draw()
             return True
 
         return False
+
+    def update_first_item_index(self):
+        if self.view.auto_suggest_list.hover_item == None: return
+
+        adjustment = self.view.scrolled_window.get_vadjustment()
+        item_height = 2 * self.view.auto_suggest_list.line_height + 25
+        page_size = adjustment.get_page_size()
+        offset = adjustment.get_value()
+        if offset > self.view.auto_suggest_list.hover_item * item_height:
+            adjustment.set_value(self.view.auto_suggest_list.hover_item * item_height)
+        if offset < (self.view.auto_suggest_list.hover_item + 1) * item_height - page_size:
+            adjustment.set_value((self.view.auto_suggest_list.hover_item + 1) * item_height - page_size)
 
     def on_enter(self, controller, x, y):
         self.update_hover_state(y)
