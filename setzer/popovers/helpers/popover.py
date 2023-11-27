@@ -75,6 +75,13 @@ class Popover(Gtk.Box):
         if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Return')):
             self.activate_selected_button()
 
+        if (state & modifiers, keyval) == (Gdk.ModifierType.ALT_MASK, Gdk.keyval_from_name('Right')):
+            self.activate_selected_menu_button()
+
+        if (state & modifiers, keyval) == (Gdk.ModifierType.ALT_MASK, Gdk.keyval_from_name('Left')):
+            if self.stack.get_visible_child_name() != 'main':
+                self.show_page(None, 'main', Gtk.StackTransitionType.SLIDE_LEFT)
+
         if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Down')):
             self.select_next_button()
 
@@ -189,6 +196,14 @@ class Popover(Gtk.Box):
         if button_id != None:
             button = self.buttons_by_id[pagename][button_id]
             button.activate()
+
+    def activate_selected_menu_button(self):
+        pagename = self.stack.get_visible_child_name()
+        button_id = self.selected_button_id[pagename]
+        if button_id != None:
+            button = self.buttons_by_id[pagename][button_id]
+            if button.has_css_class('menu'):
+                button.activate()
 
     def select_next_button(self):
         pagename = self.stack.get_visible_child_name()
