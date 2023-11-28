@@ -19,6 +19,8 @@ import gi
 gi.require_versions({'Gtk': '4.0', 'WebKit': '6.0'})
 from gi.repository import WebKit, Gtk
 
+from setzer.widgets.search_entry.search_entry import SearchEntry
+
 
 class HelpPanelView(Gtk.Box):
 
@@ -73,7 +75,7 @@ class HelpPanelView(Gtk.Box):
         self.search_vbox.set_orientation(Gtk.Orientation.VERTICAL)
         self.search_vbox.set_margin_start(18)
         self.search_vbox.set_margin_end(18)
-        self.search_entry = Gtk.SearchEntry()
+        self.search_entry = SearchEntry()
         self.search_entry.set_size_request(360, -1)
         self.search_entry.set_margin_bottom(21)
         self.search_result_items = list()

@@ -26,6 +26,7 @@ from gi.repository import GtkSource
 import setzer.document.search.search_viewgtk as search_view
 from setzer.helpers.observable import Observable
 from setzer.dialogs.dialog_locator import DialogLocator
+from setzer.helpers.timer import timer
 
 
 class Search(Observable):
@@ -44,10 +45,10 @@ class Search(Observable):
         self.search_context = GtkSource.SearchContext.new(self.document.source_buffer, self.search_settings)
         self.search_context.set_highlight(True)
 
-        self.view.entry.connect('search-changed', self.on_search_entry_changed)
-        self.view.entry.connect('stop-search', self.on_search_stop)
-        self.view.entry.connect('next-match', self.on_search_next_match)
-        self.view.entry.connect('previous-match', self.on_search_previous_match)
+        self.view.entry.connect('changed', self.on_search_entry_changed)
+        self.view.entry.connect('stop_search', self.on_search_stop)
+        self.view.entry.connect('next_match', self.on_search_next_match)
+        self.view.entry.connect('previous_match', self.on_search_previous_match)
         self.view.entry.connect('activate', self.on_search_entry_activate)
         self.view.close_button.connect('clicked', self.on_search_close_button_click)
         self.view.next_button.connect('clicked', self.on_search_next_button_click)
@@ -136,7 +137,7 @@ class Search(Observable):
                 buffer.select_range(result[1], result[2])
                 self.document.scroll_cursor_onscreen()
                 self.set_match_counter(self.search_context.get_occurrence_position(result[1], result[2]), self.search_context.get_occurrences_count())
-    
+
     def on_search_entry_changed(self, entry):
         search_view = self.view
         self.search_settings.set_search_text(entry.get_text())

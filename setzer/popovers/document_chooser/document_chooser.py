@@ -41,7 +41,9 @@ class DocumentChooser(object):
 
         self.view.search_entry.connect('changed', self.on_document_chooser_search_changed)
         self.view.search_entry.connect('activate', self.on_search_activate)
-        self.view.search_entry.connect('icon-press', self.on_icon_press)
+        self.view.search_entry.connect('stop_search', self.on_stop_search)
+        self.view.search_entry.connect('next_match', self.on_next_match)
+        self.view.search_entry.connect('previous_match', self.on_previous_match)
 
         motion_controller = Gtk.EventControllerMotion()
         motion_controller.connect('enter', self.on_enter)
@@ -55,36 +57,7 @@ class DocumentChooser(object):
         event_controller.set_button(1)
         self.view.auto_suggest_list.add_controller(event_controller)
 
-        self.key_controller = Gtk.EventControllerKey()
-        self.key_controller.connect('key-pressed', self.on_keypress)
-        self.view.add_controller(self.key_controller)
-
         self.view.other_documents_button.connect('clicked', self.on_other_docs_clicked)
-
-    def on_keypress(self, controller, keyval, keycode, state):
-        modifiers = Gtk.accelerator_get_default_mod_mask()
-
-        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Down')):
-            no_items = len(self.view.auto_suggest_list.items)
-            if self.view.auto_suggest_list.hover_item == None and no_items > 0:
-                self.view.auto_suggest_list.hover_item = 0
-            elif no_items > 0:
-                self.view.auto_suggest_list.hover_item = (self.view.auto_suggest_list.hover_item + 1) % no_items
-            self.update_first_item_index()
-            self.view.auto_suggest_list.queue_draw()
-            return True
-
-        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Up')):
-            no_items = len(self.view.auto_suggest_list.items)
-            if self.view.auto_suggest_list.hover_item == None and no_items > 0:
-                self.view.auto_suggest_list.hover_item = no_items - 1
-            elif no_items > 0:
-                self.view.auto_suggest_list.hover_item = (self.view.auto_suggest_list.hover_item - 1) % no_items
-            self.update_first_item_index()
-            self.view.auto_suggest_list.queue_draw()
-            return True
-
-        return False
 
     def update_first_item_index(self):
         if self.view.auto_suggest_list.hover_item == None: return
@@ -163,9 +136,26 @@ class DocumentChooser(object):
             self.view.auto_suggest_list.selected_index = None
             self.popover_manager.popdown()
 
-    def on_icon_press(self, search_entry, icon_pos):
-        if icon_pos == Gtk.EntryIconPosition.SECONDARY:
-            self.view.search_entry.set_text('')
+    def on_next_match(self, search_entry):
+        no_items = len(self.view.auto_suggest_list.items)
+        if self.view.auto_suggest_list.hover_item == None and no_items > 0:
+            self.view.auto_suggest_list.hover_item = 0
+        elif no_items > 0:
+            self.view.auto_suggest_list.hover_item = (self.view.auto_suggest_list.hover_item + 1) % no_items
+        self.update_first_item_index()
+        self.view.auto_suggest_list.queue_draw()
+
+    def on_previous_match(self, search_entry):
+        no_items = len(self.view.auto_suggest_list.items)
+        if self.view.auto_suggest_list.hover_item == None and no_items > 0:
+            self.view.auto_suggest_list.hover_item = no_items - 1
+        elif no_items > 0:
+            self.view.auto_suggest_list.hover_item = (self.view.auto_suggest_list.hover_item - 1) % no_items
+        self.update_first_item_index()
+        self.view.auto_suggest_list.queue_draw()
+
+    def on_stop_search(self, search_entry):
+        self.popover_manager.popdown()
 
     def on_other_docs_clicked(self, button):
         self.workspace.actions.actions['open-document-dialog'].activate()

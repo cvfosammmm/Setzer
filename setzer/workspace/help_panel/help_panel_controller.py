@@ -39,7 +39,7 @@ class HelpPanelController(object):
         self.view.home_button.connect('clicked', self.on_home_button_clicked)
         self.view.search_button.connect('toggled', self.on_search_button_toggled)
         self.view.search_entry.connect('changed', self.on_search_entry_changed)
-        self.view.search_entry.connect('stop-search', self.on_search_stopped)
+        self.view.search_entry.connect('stop_search', self.on_search_stopped)
 
         self.view.search_results.connect('row-activated', self.on_search_result_activated)
 

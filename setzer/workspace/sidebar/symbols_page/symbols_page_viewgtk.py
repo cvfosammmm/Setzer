@@ -22,6 +22,7 @@ from gi.repository import Gdk, Gtk
 import xml.etree.ElementTree as ET
 import os
 
+from setzer.widgets.search_entry.search_entry import SearchEntry
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -74,7 +75,7 @@ class SymbolsPageView(Gtk.Box):
         self.search_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.search_box.get_style_context().add_class('search_bar')
 
-        self.search_entry = Gtk.SearchEntry()
+        self.search_entry = SearchEntry()
         self.search_entry.set_hexpand(True)
         self.search_box.append(self.search_entry)
 

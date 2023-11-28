@@ -19,6 +19,8 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
+from setzer.widgets.search_entry.search_entry import SearchEntry
+
 
 class SearchBar(Gtk.Revealer):
     ''' Find text in a document '''
@@ -35,10 +37,8 @@ class SearchBar(Gtk.Revealer):
         self.left_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.replace_wrapper = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
 
-        self.entry = Gtk.SearchEntry()
+        self.entry = SearchEntry()
         self.entry.get_style_context().add_class('search_entry')
-        self.entry_css_provider = Gtk.CssProvider()
-        self.entry.get_style_context().add_provider(self.entry_css_provider, 800)
 
         self.arrow = Gtk.Image.new_from_icon_name('own-searchandreplacearrow-symbolic')
         self.arrow.set_margin_start(6)
@@ -46,8 +46,6 @@ class SearchBar(Gtk.Revealer):
         self.replace_entry = Gtk.Entry()
         self.replace_entry.set_width_chars(4)
         self.replace_entry.get_style_context().add_class('replace_entry')
-        self.replace_entry_css_provider = Gtk.CssProvider()
-        self.replace_entry.get_style_context().add_provider(self.replace_entry_css_provider, 800)
         self.replace_entry.set_size_request(105, -1)
         self.replace_entry.set_margin_start(6)
 
