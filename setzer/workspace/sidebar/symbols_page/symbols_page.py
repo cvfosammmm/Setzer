@@ -247,15 +247,13 @@ class SymbolsPage(object):
                     symbols_view.visible_symbols.append(symbol)
                     symbols_view.insert(image, -1)
 
+            adjustment = self.view.scrolled_window.get_vadjustment()
             symbols_found = (len(symbols_view.visible_symbols) > 0)
             any_symbols_found |= symbols_found
             symbols_view.set_visible(symbols_found)
-            self.view.labels[i].set_visible(symbols_found)
+            self.view.labels[i].set_visible(symbols_found and (adjustment.get_upper() <= self.view.scrolled_window.get_allocated_height()))
             self.view.placeholders[i].set_visible(symbols_found)
             self.update_borders(symbols_view, symbols_view.get_allocated_width())
-
-            adjustment = self.view.scrolled_window.get_vadjustment()
-            self.view.labels[i].set_visible(adjustment.get_upper() <= self.view.scrolled_window.get_allocated_height())
 
         if any_symbols_found:
             self.view.search_entry.get_style_context().remove_class('error')
