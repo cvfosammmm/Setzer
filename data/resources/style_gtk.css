@@ -67,6 +67,7 @@ box.documentchooser {
 }
 box.documentchooser entry {
     margin-bottom: 6px;
+    transition: none;
 }
 box.documentchooser scrolledwindow {
     margin-bottom: 12px;
