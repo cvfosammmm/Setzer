@@ -28,7 +28,7 @@ from setzer.app.service_locator import ServiceLocator
 
 
 class DocumentChooser(object):
-    
+
     def __init__(self, popover_manager, workspace):
         self.popover_manager = popover_manager
         self.workspace = workspace
@@ -39,9 +39,9 @@ class DocumentChooser(object):
         self.popover_manager.connect('popdown', self.on_popover_popdown)
         self.popover_manager.connect('popup', self.on_popover_popup)
 
-        self.view.search_entry.connect('search-changed', self.on_document_chooser_search_changed)
-        self.view.search_entry.connect('stop-search', self.on_stop_search)
+        self.view.search_entry.connect('changed', self.on_document_chooser_search_changed)
         self.view.search_entry.connect('activate', self.on_search_activate)
+        self.view.search_entry.connect('icon-press', self.on_icon_press)
 
         motion_controller = Gtk.EventControllerMotion()
         motion_controller.connect('enter', self.on_enter)
@@ -153,9 +153,6 @@ class DocumentChooser(object):
         self.view.search_filter()
         self.view.auto_suggest_list.hover_item = None
 
-    def on_stop_search(self, search_entry):
-        self.popover_manager.popdown()
-
     def on_search_activate(self, search_entry):
         if self.view.auto_suggest_list.hover_item != None:
             item = self.view.auto_suggest_list.items[self.view.auto_suggest_list.hover_item]
@@ -165,6 +162,10 @@ class DocumentChooser(object):
             self.view.auto_suggest_list.hover_item = None
             self.view.auto_suggest_list.selected_index = None
             self.popover_manager.popdown()
+
+    def on_icon_press(self, search_entry, icon_pos):
+        if icon_pos == Gtk.EntryIconPosition.SECONDARY:
+            self.view.search_entry.set_text('')
 
     def on_other_docs_clicked(self, button):
         self.workspace.actions.actions['open-document-dialog'].activate()

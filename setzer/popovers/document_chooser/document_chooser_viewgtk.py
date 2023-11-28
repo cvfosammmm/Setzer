@@ -25,6 +25,7 @@ import os.path
 from setzer.app.color_manager import ColorManager
 from setzer.app.service_locator import ServiceLocator
 from setzer.popovers.helpers.popover import Popover
+from setzer.helpers.timer import timer
 
 
 class DocumentChooserView(Popover):
@@ -37,7 +38,9 @@ class DocumentChooserView(Popover):
         self.box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.box.get_style_context().add_class('documentchooser')
 
-        self.search_entry = Gtk.SearchEntry()
+        self.search_entry = Gtk.Entry()
+        self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'system-search-symbolic')
+        self.search_entry.set_icon_activatable(Gtk.EntryIconPosition.PRIMARY, False)
 
         self.auto_suggest_entries = list()
         self.auto_suggest_list = DocumentChooserList()
@@ -112,7 +115,7 @@ class DocumentChooserView(Popover):
 
         self.auto_suggest_list.set_data(entries)
         self.update_search_entry(count)
-        
+
     def update_search_entry(self, results_count):
         if results_count == 0:
             self.search_entry.get_style_context().add_class('error')
@@ -120,6 +123,13 @@ class DocumentChooserView(Popover):
         else:
             self.search_entry.get_style_context().remove_class('error')
             self.notebook.set_current_page(0)
+
+        if self.search_entry.get_text() == '':
+            self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
+            self.search_entry.set_icon_activatable(Gtk.EntryIconPosition.SECONDARY, False)
+        else:
+            self.search_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, 'edit-clear-symbolic')
+            self.search_entry.set_icon_activatable(Gtk.EntryIconPosition.SECONDARY, True)
 
 
 class DocumentChooserList(Gtk.Widget):
