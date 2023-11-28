@@ -229,6 +229,8 @@ class SymbolsPage(object):
         self.update_symbols()
 
     def update_symbols(self):
+        any_symbols_found = False
+
         search_words = self.view.search_entry.get_text().split()
         for i, symbols_view in enumerate(self.view.symbols_views):
             for symbol in symbols_view.visible_symbols:
@@ -244,18 +246,21 @@ class SymbolsPage(object):
                 if symbol_found:
                     symbols_view.visible_symbols.append(symbol)
                     symbols_view.insert(image, -1)
-            if len(symbols_view.visible_symbols) > 0:
-                symbols_view.show()
-                self.view.labels[i].show()
-                self.view.placeholders[i].show()
-                self.update_borders(symbols_view, symbols_view.get_allocated_width())
-            else:
-                symbols_view.hide()
-                self.view.labels[i].hide()
-                self.view.placeholders[i].hide()
+
+            symbols_found = (len(symbols_view.visible_symbols) > 0)
+            any_symbols_found |= symbols_found
+            symbols_view.set_visible(symbols_found)
+            self.view.labels[i].set_visible(symbols_found)
+            self.view.placeholders[i].set_visible(symbols_found)
+            self.update_borders(symbols_view, symbols_view.get_allocated_width())
+
             adjustment = self.view.scrolled_window.get_vadjustment()
-            if adjustment.get_upper() <= self.view.scrolled_window.get_allocated_height():
-                self.view.labels[i].hide()
+            self.view.labels[i].set_visible(adjustment.get_upper() <= self.view.scrolled_window.get_allocated_height())
+
+        if any_symbols_found:
+            self.view.search_entry.get_style_context().remove_class('error')
+        else:
+            self.view.search_entry.get_style_context().add_class('error')
 
     def on_symbols_view_size_allocate(self, *arguments):
         for symbols_view in self.view.symbols_views:
