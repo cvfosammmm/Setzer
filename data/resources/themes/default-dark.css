@@ -92,3 +92,5 @@
 @define-color link_color @accent_color;
 @define-color link_color_active white;
 @define-color link_color_visited mix(@accent_color, transparent, 0.8);
+@define-color list_selection_color mix(@accent_bg_color, @view_bg_color, 0.75);
+@define-color list_selection_hover_color mix(@accent_bg_color, @view_bg_color, 0.68);

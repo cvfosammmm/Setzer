@@ -160,17 +160,21 @@ class DocumentChooserList(Gtk.Widget):
         fg_color_light = ColorManager.get_ui_color('fg_color_light')
         bg_color = ColorManager.get_ui_color('view_bg_color')
         hover_color = ColorManager.get_ui_color('view_hover_color')
-        active_color = ColorManager.get_ui_color('view_active_color')
+        active_color = ColorManager.get_ui_color('list_selection_color')
+        active_hover_color = ColorManager.get_ui_color('list_selection_hover_color')
         border_color = ColorManager.get_ui_color('borders')
 
         snapshot.append_color(bg_color, Graphene.Rect().init(0, 0, self.get_allocated_width(), self.get_allocated_height()))
-        
-        if self.hover_item != None:
-            if self.selected_index == self.hover_item:
-                highlight_color = active_color
-            else:
-                highlight_color = hover_color
+
+        if self.hover_item != None and self.selected_index != None and self.hover_item == self.selected_index:
+            highlight_color = active_hover_color
             snapshot.append_color(highlight_color, Graphene.Rect().init(0, self.hover_item * (25 + 2 * self.line_height), self.get_allocated_width(), 25 + 2 * self.line_height))
+        if self.hover_item != None and self.hover_item != self.selected_index:
+            highlight_color = hover_color
+            snapshot.append_color(highlight_color, Graphene.Rect().init(0, self.hover_item * (25 + 2 * self.line_height), self.get_allocated_width(), 25 + 2 * self.line_height))
+        if self.selected_index != None and self.hover_item != self.selected_index:
+            highlight_color = active_color
+            snapshot.append_color(highlight_color, Graphene.Rect().init(0, self.selected_index * (25 + 2 * self.line_height), self.get_allocated_width(), 25 + 2 * self.line_height))
 
         filename_text = ''
         folder_text = ''

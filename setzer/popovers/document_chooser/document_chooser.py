@@ -113,10 +113,13 @@ class DocumentChooser(object):
         if name != 'open_document': return
 
         self.view.search_entry.grab_focus()
+        self.view.auto_suggest_list.selected_index = None
 
     def on_popover_popdown(self, name):
         if name != 'open_document': return
 
+        self.view.auto_suggest_list.hover_item = None
+        self.view.auto_suggest_list.selected_index = None
         self.view.search_entry.set_text('')
         active_document = self.workspace.get_active_document()
         if active_document != None:
@@ -124,37 +127,34 @@ class DocumentChooser(object):
 
     def on_document_chooser_search_changed(self, search_entry):
         self.view.search_filter()
-        self.view.auto_suggest_list.hover_item = None
+        self.view.auto_suggest_list.selected_index = None
 
-    def on_search_activate(self, search_entry):
-        if self.view.auto_suggest_list.hover_item != None:
-            item = self.view.auto_suggest_list.items[self.view.auto_suggest_list.hover_item]
+    def on_search_activate(self, search_entry=None):
+        if self.view.auto_suggest_list.selected_index != None:
+            item = self.view.auto_suggest_list.items[self.view.auto_suggest_list.selected_index]
             filename = item.folder + '/' + item.filename
             self.workspace.open_document_by_filename(filename)
-
-            self.view.auto_suggest_list.hover_item = None
-            self.view.auto_suggest_list.selected_index = None
             self.popover_manager.popdown()
 
-    def on_next_match(self, search_entry):
+    def on_next_match(self, search_entry=None):
         no_items = len(self.view.auto_suggest_list.items)
-        if self.view.auto_suggest_list.hover_item == None and no_items > 0:
-            self.view.auto_suggest_list.hover_item = 0
+        if self.view.auto_suggest_list.selected_index == None and no_items > 0:
+            self.view.auto_suggest_list.selected_index = 0
         elif no_items > 0:
-            self.view.auto_suggest_list.hover_item = (self.view.auto_suggest_list.hover_item + 1) % no_items
+            self.view.auto_suggest_list.selected_index = (self.view.auto_suggest_list.selected_index + 1) % no_items
         self.update_first_item_index()
         self.view.auto_suggest_list.queue_draw()
 
-    def on_previous_match(self, search_entry):
+    def on_previous_match(self, search_entry=None):
         no_items = len(self.view.auto_suggest_list.items)
-        if self.view.auto_suggest_list.hover_item == None and no_items > 0:
-            self.view.auto_suggest_list.hover_item = no_items - 1
+        if self.view.auto_suggest_list.selected_index == None and no_items > 0:
+            self.view.auto_suggest_list.selected_index = no_items - 1
         elif no_items > 0:
-            self.view.auto_suggest_list.hover_item = (self.view.auto_suggest_list.hover_item - 1) % no_items
+            self.view.auto_suggest_list.selected_index = (self.view.auto_suggest_list.selected_index - 1) % no_items
         self.update_first_item_index()
         self.view.auto_suggest_list.queue_draw()
 
-    def on_stop_search(self, search_entry):
+    def on_stop_search(self, search_entry=None):
         self.popover_manager.popdown()
 
     def on_other_docs_clicked(self, button):
