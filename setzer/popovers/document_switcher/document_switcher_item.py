@@ -26,6 +26,7 @@ class DocumentSwitcherItem(Gtk.ListBoxRow):
     def __init__(self, document):
         Gtk.ListBoxRow.__init__(self)
         self.set_selectable(False)
+        self.set_can_focus(False)
         self.document = document
 
         self.center_box = Gtk.CenterBox()
@@ -67,6 +68,7 @@ class DocumentSwitcherItem(Gtk.ListBoxRow):
         self.document_close_button = Gtk.Button.new_from_icon_name('window-close-symbolic')
         self.document_close_button.get_style_context().add_class('flat')
         self.document_close_button.get_style_context().add_class('image-button')
+        self.document_close_button.set_can_focus(False)
 
         self.center_box.set_start_widget(self.box)
         self.center_box.set_end_widget(self.document_close_button)

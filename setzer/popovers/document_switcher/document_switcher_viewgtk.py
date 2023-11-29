@@ -32,9 +32,7 @@ class DocumentSwitcherView(Popover):
 
         self.document_list = Gtk.ListBox()
         self.document_list.set_sort_func(self.sort_function)
-
-        self.document_list_selection = Gtk.ListBox()
-        self.document_list_selection.set_sort_func(self.sort_function)
+        self.document_list.set_can_focus(False)
 
         self.in_selection_mode = False
 
@@ -45,9 +43,12 @@ class DocumentSwitcherView(Popover):
         self.scrolled_window.set_max_content_width(398)
         self.scrolled_window.set_propagate_natural_height(True)
         self.scrolled_window.set_propagate_natural_width(True)
+        self.scrolled_window.set_can_focus(False)
 
         self.set_root_document_button = MenuBuilder.create_button(_('Set one Document as Root'))
+        self.set_root_document_button.set_can_focus(False)
         self.unset_root_document_button = MenuBuilder.create_button(_('Unset Root Document'))
+        self.unset_root_document_button.set_can_focus(False)
 
         self.root_explaination1 = Gtk.Label.new(_('Click on a document in the list below to set it as root.'))
         self.root_explaination1.set_margin_top(6)

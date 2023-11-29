@@ -179,7 +179,6 @@ class DocumentSwitcher(Observable):
         self.view.set_root_document_button.set_sensitive(False)
         self.view.unset_root_document_button.set_sensitive(True)
         self.view.root_explaination_revealer.set_reveal_child(True)
-        self.view.set_can_focus(False)
         self.view.document_list.get_style_context().remove_class('normal-mode')
         self.view.document_list.get_style_context().add_class('selection-mode')
 
