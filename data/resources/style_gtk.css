@@ -107,7 +107,7 @@ button.open-docs-popover-button:checked, button.open-docs-popover-button:active 
 }
 .open-docs-popover list,
 .open-docs-popover row:not(:hover):not(:selected) {
-    background-color: @view_bg_color;
+    background-color: @popover_bg_color;
 }
 .open-docs-popover row:hover:not(:active):not(:selected) {
     background-color: @view_hover_color;
@@ -123,6 +123,7 @@ button.open-docs-popover-button:checked, button.open-docs-popover-button:active 
 .open-docs-popover list {
     padding: 0px;
     margin: 0px;
+    background-color: @popover_bg_color;
 }
 .open-docs-popover list button {
     padding: 0px 0px;
@@ -214,7 +215,7 @@ box.popover {
     animation-timing-function: ease;
 }
 box.popover .content {
-    background: @window_bg_color;
+    background: @popover_bg_color;
     padding: 6px;
     padding-top: 5px;
     border-radius: 10px;
@@ -223,14 +224,14 @@ box.popover .content {
 box.popover .arrow {
     min-width: 10px;
     min-height: 10px;
-    background: @window_bg_color;
+    background: @popover_bg_color;
     border: 1px solid @borders;
     transform: translateY(9px) scale(2, 2) rotate(-45deg);
 }
 box.popover .arrow-border {
     min-width: 25px;
     min-height: 1px;
-    background: @window_bg_color;
+    background: @popover_bg_color;
     transform: translateY(-6px);
 }
 box.popover button.action, box.popover button.menu, box.popover button.header {
@@ -283,10 +284,10 @@ button.popover.active {
 */
 
 popover arrow {
-    background: @window_bg_color;
+    background: @popover_bg_color;
 }
 popover contents {
-    background: @window_bg_color;
+    background: @popover_bg_color;
 }
 popover button.action, popover button.menu, popover button.header {
     background: none;

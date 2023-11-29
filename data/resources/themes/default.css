@@ -61,7 +61,7 @@
 @define-color dialog_fg_color rgba(0, 0, 0, 0.8);
 
 /* Popovers */
-@define-color popover_bg_color #ffffff;
+@define-color popover_bg_color @dialog_bg_color;
 @define-color popover_fg_color rgba(0, 0, 0, 0.8);
 @define-color popover_shade_color rgba(0, 0, 0, 0.07);
 
