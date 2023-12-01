@@ -157,7 +157,7 @@ class Shortcutsbar(Gtk.Box):
         self.current_popover = PopoverManager.create_popover('bibliography_menu')
 
         self.bibliography_button = PopoverManager.create_popover_button('bibliography_menu')
-        self.bibliography_button.set_icon_name('view-dual-symbolic')
+        self.bibliography_button.set_icon_name('library-symbolic')
         self.bibliography_button.set_tooltip_text(_('Bibliography'))
         self.bibliography_button.get_style_context().add_class('flat')
         self.bibliography_button.get_style_context().add_class('scbar')
