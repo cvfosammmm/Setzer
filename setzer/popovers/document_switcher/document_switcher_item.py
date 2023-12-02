@@ -25,8 +25,8 @@ class DocumentSwitcherItem(Gtk.ListBoxRow):
 
     def __init__(self, document):
         Gtk.ListBoxRow.__init__(self)
-        self.set_selectable(False)
-        self.set_can_focus(False)
+        self.set_selectable(True)
+        self.set_can_focus(True)
         self.document = document
 
         self.center_box = Gtk.CenterBox()

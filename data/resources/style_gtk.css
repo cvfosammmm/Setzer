@@ -105,69 +105,15 @@ button.open-docs-popover-button:checked, button.open-docs-popover-button:active 
     border-left: 1px solid @borders;
     border-right: 1px solid @borders;
 }
-.open-docs-popover list,
-.open-docs-popover row:not(:hover):not(:selected) {
-    background-color: @popover_bg_color;
+box.documentswitcher scrolledwindow {
+    border-bottom: 1px solid @borders;
+    margin-bottom: 6px;
 }
-.open-docs-popover row:hover:not(:active):not(:selected) {
-    background-color: @view_hover_color;
-}
-.open-docs-popover scrollbar slider {
+box.documentswitcher scrollbar slider {
     min-height: 12px;
 }
-.open-docs-popover row {
-    border-radius: 6px;
-    padding: 5px 5px 5px 8px;
-    color: @view_fg_color;
-}
-.open-docs-popover list {
-    padding: 0px;
-    margin: 0px;
-    background-color: @popover_bg_color;
-}
-.open-docs-popover list button {
-    padding: 0px 0px;
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: 12px;
-    opacity: 0.5;
-    border-style: none;
-    border-width: 0px;
-    box-shadow: none;
-    outline: none;
-}
-.open-docs-popover list button:hover:not(:backdrop) {
-    background-image: none;
-    opacity: 1;
-    border-style: none;
-    border-width: 0px;
-}
-.open-docs-popover label.root-label {
-    color: @description_color;
-}
-button.like-model {
-    border-width: 0px;
-    box-shadow: none;
-    padding: 1px 5px 1px 5px;
-    margin: 0px;
-    background: transparent;
-    outline: none;
-}
-button.like-model:hover {
-    background: @view_bg_color;
-    transition: none;
-}
-.open-docs-popover list .icon {
-    padding-top: 3px;
-    padding-bottom: 3px;
-}
-.open-docs-popover list.selection-mode .radio-hover {
-    padding-top: 3px;
-    padding-bottom: 3px;
-    opacity: 0;
-}
-.open-docs-popover list.selection-mode row:hover .radio-hover {
-    opacity: 1;
+box.documentswitcher scrollbar {
+    margin-right: -6px;
 }
 
 /*

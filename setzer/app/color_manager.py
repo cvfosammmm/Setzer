@@ -35,4 +35,13 @@ class ColorManager():
         color_string += format(int(color_rgba.blue * 255), '02x')
         return color_string
 
+    def get_ui_color_string_with_alpha(name):
+        color_rgba = ColorManager.get_ui_color(name)
+        color_string = '#'
+        color_string += format(int(color_rgba.red * 255), '02x')
+        color_string += format(int(color_rgba.green * 255), '02x')
+        color_string += format(int(color_rgba.blue * 255), '02x')
+        color_string += format(int(color_rgba.alpha * 255), '02x')
+        return color_string
+
 
