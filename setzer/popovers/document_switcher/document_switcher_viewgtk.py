@@ -89,6 +89,7 @@ class DocumentChooserList(Gtk.Widget):
         self.pointer_y = None
         self.selected_index = None
         self.close_button_active = False
+        self.button_pressed = False
         self.root_selection_mode = False
 
         self.font = self.get_pango_context().get_font_description()
@@ -123,10 +124,10 @@ class DocumentChooserList(Gtk.Widget):
         snapshot.append_color(bg_color, Graphene.Rect().init(0, 0, self.get_allocated_width(), self.get_allocated_height()))
 
         if hover_item != None or self.selected_index != None:
-            if hover_item != None:
-                rect = Graphene.Rect().init(0, hover_item * iheight, self.get_allocated_width(), iheight)
-            elif self.selected_index != None:
+            if self.selected_index != None:
                 rect = Graphene.Rect().init(0, self.selected_index * iheight, self.get_allocated_width(), iheight)
+            elif hover_item != None:
+                rect = Graphene.Rect().init(0, hover_item * iheight, self.get_allocated_width(), iheight)
             rounded_rect = Gsk.RoundedRect()
             rounded_rect.init_from_rect(rect, radius=6)
             snapshot.push_rounded_clip(rounded_rect)

@@ -142,20 +142,27 @@ class DocumentSwitcher(Observable):
     def on_enter(self, controller, x, y):
         self.view.document_list.pointer_x = x
         self.view.document_list.pointer_y = y
+        if not self.view.document_list.button_pressed:
+            self.view.document_list.selected_index = self.view.document_list.get_hover_item()
+
         self.view.document_list.queue_draw()
 
     def on_hover(self, controller, x, y):
         self.view.document_list.pointer_x = x
         self.view.document_list.pointer_y = y
+        if not self.view.document_list.button_pressed:
+            self.view.document_list.selected_index = self.view.document_list.get_hover_item()
+
         self.view.document_list.queue_draw()
 
     def on_leave(self, controller):
         self.view.document_list.pointer_x = None
         self.view.document_list.pointer_y = None
+        self.view.document_list.selected_index = None
         self.view.document_list.queue_draw()
 
     def on_button_press(self, event_controller, n_press, x, y):
-        self.view.document_list.selected_index = self.view.document_list.get_hover_item()
+        self.view.document_list.button_pressed = True
         self.view.document_list.close_button_active = (self.view.document_list.pointer_x > self.view.document_list.get_allocated_width() - 34)
         self.view.document_list.queue_draw()
 
@@ -192,6 +199,7 @@ class DocumentSwitcher(Observable):
                     self.popover_manager.popdown()
         self.view.document_list.selected_index = None
         self.view.document_list.close_button_active = False
+        self.view.document_list.button_pressed = False
 
     def on_close_document_callback(self, parameters, response):
         not_save_to_close = response['not_save_to_close_documents']
@@ -206,6 +214,7 @@ class DocumentSwitcher(Observable):
 
         self.view.document_list.selected_index = None
         self.view.document_list.close_button_active = False
+        self.view.document_list.button_pressed = False
 
     def on_popover_popdown(self, name):
         if name != 'document_switcher': return
@@ -215,6 +224,7 @@ class DocumentSwitcher(Observable):
         self.view.document_list.pointer_y = None
         self.view.document_list.selected_index = None
         self.view.document_list.close_button_active = False
+        self.view.document_list.button_pressed = False
         active_document = self.workspace.get_active_document()
         if active_document != None:
             active_document.view.source_view.grab_focus()
@@ -238,6 +248,7 @@ class DocumentSwitcher(Observable):
         elif no_items > 0:
             self.view.document_list.selected_index = (self.view.document_list.selected_index + 1) % no_items
         self.view.document_list.close_button_active = False
+        self.view.document_list.button_pressed = False
         self.update_first_item_index()
         self.view.document_list.queue_draw()
 
@@ -248,6 +259,7 @@ class DocumentSwitcher(Observable):
         elif no_items > 0:
             self.view.document_list.selected_index = (self.view.document_list.selected_index - 1) % no_items
         self.view.document_list.close_button_active = False
+        self.view.document_list.button_pressed = False
         self.update_first_item_index()
         self.view.document_list.queue_draw()
 
