@@ -60,16 +60,16 @@ class DocumentChooser(object):
         self.view.other_documents_button.connect('clicked', self.on_other_docs_clicked)
 
     def update_first_item_index(self):
-        if self.view.auto_suggest_list.hover_item == None: return
+        if self.view.auto_suggest_list.selected_index == None: return
 
         adjustment = self.view.scrolled_window.get_vadjustment()
         item_height = 2 * self.view.auto_suggest_list.line_height + 25
         page_size = adjustment.get_page_size()
         offset = adjustment.get_value()
-        if offset > self.view.auto_suggest_list.hover_item * item_height:
-            adjustment.set_value(self.view.auto_suggest_list.hover_item * item_height)
-        if offset < (self.view.auto_suggest_list.hover_item + 1) * item_height - page_size:
-            adjustment.set_value((self.view.auto_suggest_list.hover_item + 1) * item_height - page_size)
+        if offset > self.view.auto_suggest_list.selected_index * item_height:
+            adjustment.set_value(self.view.auto_suggest_list.selected_index * item_height)
+        if offset < (self.view.auto_suggest_list.selected_index + 1) * item_height - page_size:
+            adjustment.set_value((self.view.auto_suggest_list.selected_index + 1) * item_height - page_size)
 
     def on_enter(self, controller, x, y):
         self.update_hover_state(y)

@@ -60,6 +60,10 @@ class DocumentSwitcher(Observable):
         event_controller.set_button(1)
         self.view.document_list.add_controller(event_controller)
 
+        key_controller = Gtk.EventControllerKey()
+        key_controller.connect('key-pressed', self.on_keypress)
+        self.add_controller(self.key_controller)
+
         self.view.set_root_document_button.connect('clicked', self.set_selection_mode)
         self.view.unset_root_document_button.connect('clicked', self.unset_root_document)
         self.update_unset_root_button()
@@ -97,6 +101,31 @@ class DocumentSwitcher(Observable):
 
     def on_modified_changed(self, document):
         self.view.document_list.update_items()
+
+    def on_keypress(self, controller, keyval, keycode, state):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Down')):
+            print("down")
+            return True
+
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Tab')):
+            print('next_match')
+            return True
+
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Up')):
+            print('previous_match')
+            return True
+
+        if (state & modifiers, keyval) == (Gdk.ModifierType.SHIFT_MASK, Gdk.keyval_from_name('ISO_Left_Tab')):
+            print('previous_match')
+            return True
+
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Return')):
+            print('stop_search')
+            return True
+
+        return False
 
     def on_enter(self, controller, x, y):
         self.view.document_list.pointer_x = x
