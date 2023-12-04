@@ -17,7 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 
 import re
 import os.path
@@ -62,7 +62,7 @@ class DocumentSwitcher(Observable):
 
         key_controller = Gtk.EventControllerKey()
         key_controller.connect('key-pressed', self.on_keypress)
-        self.add_controller(self.key_controller)
+        self.view.add_controller(key_controller)
 
         self.view.set_root_document_button.connect('clicked', self.set_selection_mode)
         self.view.unset_root_document_button.connect('clicked', self.unset_root_document)
@@ -106,26 +106,38 @@ class DocumentSwitcher(Observable):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
         if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Down')):
-            print("down")
+            self.select_next()
             return True
 
         if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Tab')):
-            print('next_match')
+            self.select_next()
             return True
 
         if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Up')):
-            print('previous_match')
+            self.select_previous()
             return True
 
         if (state & modifiers, keyval) == (Gdk.ModifierType.SHIFT_MASK, Gdk.keyval_from_name('ISO_Left_Tab')):
-            print('previous_match')
+            self.select_previous()
             return True
 
         if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Return')):
-            print('stop_search')
+            self.activate_selection()
             return True
 
         return False
+
+    def update_first_item_index(self):
+        if self.view.document_list.selected_index == None: return
+
+        adjustment = self.view.scrolled_window.get_vadjustment()
+        item_height = self.view.document_list.line_height + 15
+        page_size = adjustment.get_page_size()
+        offset = adjustment.get_value()
+        if offset > self.view.document_list.selected_index * item_height:
+            adjustment.set_value(self.view.document_list.selected_index * item_height)
+        if offset < (self.view.document_list.selected_index + 1) * item_height - page_size:
+            adjustment.set_value((self.view.document_list.selected_index + 1) * item_height - page_size + 6)
 
     def on_enter(self, controller, x, y):
         self.view.document_list.pointer_x = x
@@ -150,13 +162,13 @@ class DocumentSwitcher(Observable):
     def on_button_release(self, event_controller, n_press, x, y):
         if self.root_selection_mode:
             if self.view.document_list.get_hover_item() != None and self.view.document_list.get_hover_item() == self.view.document_list.selected_index:
-                document = self.view.document_list.visible_items[self.view.document_list.get_hover_item()]
+                document = self.view.document_list.visible_items[self.view.document_list.selected_index]
                 self.workspace.set_one_document_root(document)
                 self.activate_normal_mode()
         else:
             if self.view.document_list.close_button_active:
                 if self.view.document_list.get_hover_item() != None and self.view.document_list.get_hover_item() == self.view.document_list.selected_index and (self.view.document_list.pointer_x > self.view.document_list.get_allocated_width() - 34):
-                    document = self.view.document_list.visible_items[self.view.document_list.get_hover_item()]
+                    document = self.view.document_list.visible_items[self.view.document_list.selected_index]
                     if document.source_buffer.get_modified():
                         active_document = self.workspace.get_active_document()
                         if document != active_document:
@@ -175,7 +187,7 @@ class DocumentSwitcher(Observable):
                         self.workspace.remove_document(document)
             else:
                 if self.view.document_list.get_hover_item() != None and self.view.document_list.get_hover_item() == self.view.document_list.selected_index:
-                    document = self.view.document_list.visible_items[self.view.document_list.get_hover_item()]
+                    document = self.view.document_list.visible_items[self.view.document_list.selected_index]
                     self.workspace.set_active_document(document)
                     self.popover_manager.popdown()
         self.view.document_list.selected_index = None
@@ -207,6 +219,38 @@ class DocumentSwitcher(Observable):
         if active_document != None:
             active_document.view.source_view.grab_focus()
 
+    def activate_selection(self):
+        if self.view.document_list.selected_index == None: return
+
+        if self.root_selection_mode:
+            document = self.view.document_list.visible_items[self.view.document_list.selected_index]
+            self.workspace.set_one_document_root(document)
+            self.activate_normal_mode()
+        else:
+            document = self.view.document_list.visible_items[self.view.document_list.selected_index]
+            self.workspace.set_active_document(document)
+            self.popover_manager.popdown()
+
+    def select_next(self):
+        no_items = len(self.view.document_list.visible_items)
+        if self.view.document_list.selected_index == None and no_items > 0:
+            self.view.document_list.selected_index = 0
+        elif no_items > 0:
+            self.view.document_list.selected_index = (self.view.document_list.selected_index + 1) % no_items
+        self.view.document_list.close_button_active = False
+        self.update_first_item_index()
+        self.view.document_list.queue_draw()
+
+    def select_previous(self):
+        no_items = len(self.view.document_list.visible_items)
+        if self.view.document_list.selected_index == None and no_items > 0:
+            self.view.document_list.selected_index = no_items - 1
+        elif no_items > 0:
+            self.view.document_list.selected_index = (self.view.document_list.selected_index - 1) % no_items
+        self.view.document_list.close_button_active = False
+        self.update_first_item_index()
+        self.view.document_list.queue_draw()
+
     def set_selection_mode(self, action, parameter=None):
         self.activate_selection_mode()
 
@@ -221,6 +265,7 @@ class DocumentSwitcher(Observable):
         self.update_unset_root_button()
         self.view.root_explaination_revealer.set_reveal_child(False)
         self.view.document_list.root_selection_mode = False
+        self.view.document_list.selected_index = None
         self.view.document_list.update_items()
 
     def activate_selection_mode(self):
@@ -230,6 +275,7 @@ class DocumentSwitcher(Observable):
         self.view.unset_root_document_button.set_sensitive(True)
         self.view.root_explaination_revealer.set_reveal_child(True)
         self.view.document_list.root_selection_mode = True
+        self.view.document_list.selected_index = None
         self.view.document_list.update_items()
 
     def activate_set_root_document_button(self):
