@@ -114,20 +114,20 @@ class DocumentSwitcher(Observable):
         self.view.document_list.queue_draw()
 
     def on_button_press(self, event_controller, n_press, x, y):
-        self.view.document_list.selected_index = self.view.document_list.hover_item
+        self.view.document_list.selected_index = self.view.document_list.get_hover_item()
         self.view.document_list.close_button_active = (self.view.document_list.pointer_x > self.view.document_list.get_allocated_width() - 34)
         self.view.document_list.queue_draw()
 
     def on_button_release(self, event_controller, n_press, x, y):
         if self.root_selection_mode:
-            if self.view.document_list.hover_item != None and self.view.document_list.hover_item == self.view.document_list.selected_index:
-                document = self.view.document_list.visible_items[self.view.document_list.hover_item]
+            if self.view.document_list.get_hover_item() != None and self.view.document_list.get_hover_item() == self.view.document_list.selected_index:
+                document = self.view.document_list.visible_items[self.view.document_list.get_hover_item()]
                 self.workspace.set_one_document_root(document)
                 self.activate_normal_mode()
         else:
             if self.view.document_list.close_button_active:
-                if self.view.document_list.hover_item != None and self.view.document_list.hover_item == self.view.document_list.selected_index and (self.view.document_list.pointer_x > self.view.document_list.get_allocated_width() - 34):
-                    document = self.view.document_list.visible_items[self.view.document_list.hover_item]
+                if self.view.document_list.get_hover_item() != None and self.view.document_list.get_hover_item() == self.view.document_list.selected_index and (self.view.document_list.pointer_x > self.view.document_list.get_allocated_width() - 34):
+                    document = self.view.document_list.visible_items[self.view.document_list.get_hover_item()]
                     if document.source_buffer.get_modified():
                         active_document = self.workspace.get_active_document()
                         if document != active_document:
@@ -145,8 +145,8 @@ class DocumentSwitcher(Observable):
                             self.popover_manager.popdown()
                         self.workspace.remove_document(document)
             else:
-                if self.view.document_list.hover_item != None and self.view.document_list.hover_item == self.view.document_list.selected_index:
-                    document = self.view.document_list.visible_items[self.view.document_list.hover_item]
+                if self.view.document_list.get_hover_item() != None and self.view.document_list.get_hover_item() == self.view.document_list.selected_index:
+                    document = self.view.document_list.visible_items[self.view.document_list.get_hover_item()]
                     self.workspace.set_active_document(document)
                     self.popover_manager.popdown()
         self.view.document_list.selected_index = None
@@ -172,7 +172,6 @@ class DocumentSwitcher(Observable):
         self.view.scrolled_window.get_vadjustment().set_value(0)
         self.view.document_list.pointer_x = None
         self.view.document_list.pointer_y = None
-        self.view.document_list.hover_item = None
         self.view.document_list.selected_index = None
         self.view.document_list.close_button_active = False
         active_document = self.workspace.get_active_document()

@@ -118,14 +118,13 @@ class DocumentChooserList(Gtk.Widget):
         active_color = ColorManager.get_ui_color('view_hover_color')
         root_color_string = ColorManager.get_ui_color_string_with_alpha('fg_color_light')
         iheight = (15 + self.line_height)
-
-        self.update_hover_state()
+        hover_item = self.get_hover_item()
 
         snapshot.append_color(bg_color, Graphene.Rect().init(0, 0, self.get_allocated_width(), self.get_allocated_height()))
 
-        if self.hover_item != None or self.selected_index != None:
-            if self.hover_item != None:
-                rect = Graphene.Rect().init(0, self.hover_item * iheight, self.get_allocated_width(), iheight)
+        if hover_item != None or self.selected_index != None:
+            if hover_item != None:
+                rect = Graphene.Rect().init(0, hover_item * iheight, self.get_allocated_width(), iheight)
             elif self.selected_index != None:
                 rect = Graphene.Rect().init(0, self.selected_index * iheight, self.get_allocated_width(), iheight)
             rounded_rect = Gsk.RoundedRect()
@@ -146,7 +145,7 @@ class DocumentChooserList(Gtk.Widget):
 
         if self.root_selection_mode:
             for i, document in enumerate(self.visible_items):
-                if i == self.hover_item:
+                if i == hover_item:
                     snapshot.translate(Graphene.Point().init(0, i * (self.line_height + 15)))
                     self.icons['root'].snapshot_symbolic(snapshot, 16, 16, [fg_color])
         else:
@@ -157,7 +156,7 @@ class DocumentChooserList(Gtk.Widget):
                     self.icons[document.get_document_type()].snapshot_symbolic(snapshot, 16, 16, [fg_color])
                 snapshot.translate(Graphene.Point().init(self.get_allocated_width() - 34, 0))
 
-                if i == self.hover_item and self.pointer_x > self.get_allocated_width() - 34:
+                if i == hover_item and self.pointer_x > self.get_allocated_width() - 34:
                     snapshot.translate(Graphene.Point().init(- 4, - 4))
                     rect = Graphene.Rect().init(0, 0, 24, iheight - 10)
                     rounded_rect = Gsk.RoundedRect()
@@ -173,15 +172,15 @@ class DocumentChooserList(Gtk.Widget):
 
                 snapshot.translate(Graphene.Point().init(34 - self.get_allocated_width(), self.line_height + 15))
 
-    def update_hover_state(self):
+    def get_hover_item(self):
         if self.pointer_y == None:
-            self.hover_item = None
+            return None
         else:
             item_num = int((self.pointer_y) // (15 + self.line_height))
             if item_num < 0 or item_num > (len(self.visible_items) - 1):
-                self.hover_item = None
+                return None
             else:
-                self.hover_item = item_num
+                return item_num
 
     def update_items(self):
         if self.root_selection_mode:
