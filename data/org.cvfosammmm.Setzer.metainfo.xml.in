@@ -66,6 +66,11 @@
     </requires>
 
     <releases>
+        <release version="63" date="2023-12-4">
+            <description translatable="no">
+                <p>Navigate popovers with keyboard, ...</p>
+            </description>
+        </release>
         <release version="62" date="2023-11-21">
             <description translatable="no">
                 <p>Custom popovers, ...</p>
