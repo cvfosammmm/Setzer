@@ -6,9 +6,7 @@
     <content_rating type="oars-1.1" />
     <name translatable="no">Setzer</name>
     <summary>Simple yet full-featured LaTeX editor</summary>
-    <developer id="https://github.com/cvfosammmm">
-        <name translatable="no">Cvfosammmm</name>
-    </developer>
+    <developer_name translatable="no">Cvfosammmm</developer_name>
 
     <description>
         <p>Setzer lets you Write LaTeX documents with an easy to use yet full-featured editor.</p>
