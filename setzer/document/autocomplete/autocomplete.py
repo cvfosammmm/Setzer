@@ -32,6 +32,7 @@ class Autocomplete(object):
     def __init__(self, document):
         self.document = document
         self.source_buffer = document.source_buffer
+        self.adjustment = self.document.view.scrolled_window.get_vadjustment()
 
         self.is_active = False
         self.current_word_offset = None
@@ -41,10 +42,32 @@ class Autocomplete(object):
         self.first_item_index = None
         self.selected_item_index = None
 
-        self.cursor_unchanged_after_autoclosing_bracket = False
-
         self.controller = autocomplete_controller.AutocompleteController(self, document)
         self.widget = autocomplete_widget.AutocompleteWidget(self)
+
+        self.document.connect('changed', self.on_document_change)
+        self.source_buffer.connect('notify::cursor-position', self.on_cursor_position_change)
+        self.adjustment.connect('changed', self.on_adjustment_change)
+        self.adjustment.connect('value-changed', self.on_adjustment_value_change)
+
+    def on_document_change(self, document):
+        if self.is_active:
+            self.deactivate_if_necessary()
+            self.update_suggestions()
+        elif self.document.parser.last_edit[0] == 'insert':
+            if len(self.document.parser.last_edit[2]) == 1:
+                self.activate_if_possible()
+
+    def on_cursor_position_change(self, buffer, position):
+        if self.is_active:
+            self.deactivate_if_necessary()
+            self.update_suggestions()
+
+    def on_adjustment_change(self, adjustment):
+        self.widget.queue_draw()
+
+    def on_adjustment_value_change(self, adjustment):
+        self.widget.queue_draw()
 
     def activate_if_possible(self):
         # Triggered on tab, if ac is inactive,
@@ -64,6 +87,7 @@ class Autocomplete(object):
             self.current_word_offset = insert_iter.get_offset() - len(line_before_cursor) + matching_result.start()
             self.is_active = True
             self.update_suggestions()
+        self.widget.queue_draw()
 
     def deactivate_if_necessary(self):
         # Deactivates autocomplete if certain invariants don't hold
@@ -84,6 +108,7 @@ class Autocomplete(object):
         self.last_tabbed_item = None
         self.first_item_index = None
         self.selected_item_index = None
+        self.widget.queue_draw()
 
     def update_suggestions(self):
         # Placeholders are not considered as such, so matching is literal.
@@ -102,14 +127,17 @@ class Autocomplete(object):
             self.selected_item_index = 0
         else:
             self.deactivate()
+        self.widget.queue_draw()
 
     def select_next(self):
         self.selected_item_index = (self.selected_item_index + 1) % len(self.items)
         self.update_first_item_index()
+        self.widget.queue_draw()
 
     def select_previous(self):
         self.selected_item_index = (self.selected_item_index - 1) % len(self.items)
         self.update_first_item_index()
+        self.widget.queue_draw()
 
     def update_first_item_index(self):
         if self.selected_item_index < self.first_item_index:
@@ -132,6 +160,7 @@ class Autocomplete(object):
             self.first_item_index += page_size
         elif f_index < length - page_size:
             self.first_item_index = length - page_size
+        self.widget.queue_draw()
 
     def page_up(self):
         s_index = self.selected_item_index
@@ -148,6 +177,7 @@ class Autocomplete(object):
             self.first_item_index -= page_size
         else:
             self.first_item_index = 0
+        self.widget.queue_draw()
 
     def tab(self):
         # If the selected item matches the beginning of the end of the
@@ -245,84 +275,6 @@ class Autocomplete(object):
         if select_dot_and_scroll:
             self.document.select_first_dot_around_cursor(offset_before=len(text), offset_after=0)
             self.document.scroll_cursor_onscreen()
-
-    def autoclose_brackets(self, char):
-        closing_char = {'[': ']', '{': '}', '(': ')'}[char]
-        start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        end_iter = start_iter.copy()
-        end_iter.backward_char()
-        if self.source_buffer.get_text(start_iter, end_iter, False) == '\\':
-            closing_char = '\\' + closing_char
-
-        self.source_buffer.begin_user_action()
-        self.source_buffer.delete_selection(True, True)
-        self.source_buffer.insert_at_cursor(char + closing_char)
-        self.source_buffer.end_user_action()
-
-        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        insert_iter.backward_char()
-        if closing_char.startswith('\\'):
-            insert_iter.backward_char()
-        self.source_buffer.place_cursor(insert_iter)
-        self.cursor_unchanged_after_autoclosing_bracket = True
-
-    def handle_autoclosing_bracket_overwrite(self, char):
-        if not self.cursor_unchanged_after_autoclosing_bracket: return False
-        if not self.document.get_chars_at_cursor(1) == char: return False
-
-        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        insert_iter.forward_chars(1)
-        self.source_buffer.begin_user_action()
-        self.source_buffer.place_cursor(insert_iter)
-        self.source_buffer.end_user_action()
-        if char == '\\':
-            self.cursor_unchanged_after_autoclosing_bracket = True
-        return True
-
-    def jump_over_closing_bracket(self):
-        chars_at_cursor = self.document.get_chars_at_cursor(2)
-        if chars_at_cursor in ['\\}', '\\)', '\\]']: forward_chars = 2
-        elif chars_at_cursor[0] in ['}', ')', ']']: forward_chars = 1
-        else: forward_chars = 0
-        if forward_chars > 0:
-            insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-            insert_iter.forward_chars(forward_chars)
-            self.source_buffer.place_cursor(insert_iter)
-            return True
-        else:
-            return False
-
-    def placeholder_selected(self):
-        return self.document.get_selected_text() == '•'
-
-    def select_next_placeholder(self):
-        if self.placeholder_selected():
-            insert = self.source_buffer.get_selection_bounds()[1]
-        else:
-            insert = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-
-        limit_iter = insert.copy()
-        limit_iter.forward_lines(5)
-        limit_iter.backward_chars(1)
-        result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
-        if result != None:
-            self.source_buffer.select_range(result[0], result[1])
-            self.document.scroll_cursor_onscreen()
-            return True
-
-    def select_previous_placeholder(self):
-        if self.placeholder_selected():
-            insert = self.source_buffer.get_selection_bounds()[0]
-        else:
-            insert = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-
-        limit_iter = insert.copy()
-        limit_iter.backward_lines(5)
-        result = insert.backward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
-        if result != None:
-            self.source_buffer.select_range(result[0], result[1])
-            self.document.scroll_cursor_onscreen()
-            return True
 
     def handle_keypress_inside_begin_or_end(self, keyval):
         buffer = self.source_buffer

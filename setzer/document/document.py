@@ -324,12 +324,35 @@ class Document(Observable):
         if result != None:
             self.source_buffer.select_range(result[0], result[1])
 
-    def select_last_dot_around_cursor(self):
-        end_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        start_iter = self.source_buffer.get_start_iter()
-        result = end_iter.backward_search('•', 0, start_iter)
+    def select_next_placeholder(self):
+        if self.dot_selected():
+            insert = self.source_buffer.get_selection_bounds()[1]
+        else:
+            insert = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+
+        limit_iter = insert.copy()
+        limit_iter.forward_lines(5)
+        limit_iter.backward_chars(1)
+        result = insert.forward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
         if result != None:
             self.source_buffer.select_range(result[0], result[1])
+            self.scroll_cursor_onscreen()
+
+    def select_previous_placeholder(self):
+        if self.dot_selected():
+            insert = self.source_buffer.get_selection_bounds()[0]
+        else:
+            insert = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+
+        limit_iter = insert.copy()
+        limit_iter.backward_lines(5)
+        result = insert.backward_search('•', Gtk.TextSearchFlags.VISIBLE_ONLY, limit_iter)
+        if result != None:
+            self.source_buffer.select_range(result[0], result[1])
+            self.scroll_cursor_onscreen()
+
+    def dot_selected(self):
+        return self.get_selected_text() == '•'
 
     def highlight_section(self, start_iter, end_iter):
         self.highlight_tag_count += 1

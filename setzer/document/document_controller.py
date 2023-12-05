@@ -58,6 +58,11 @@ class DocumentController(object):
         self.scrolling_controller.connect('decelerate', self.on_decelerate)
         self.view.scrolled_window.add_controller(self.scrolling_controller)
 
+        key_controller = Gtk.EventControllerKey()
+        key_controller.connect('key-pressed', self.on_keypress)
+        key_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.document.view.source_view.add_controller(key_controller)
+
     def on_primary_buttonpress(self, controller, n_press, x, y):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
@@ -71,6 +76,21 @@ class DocumentController(object):
         if n_press == 1:
             ServiceLocator.get_workspace().context_menu.popup_at_cursor(x, y)
         controller.reset()
+
+    def on_keypress(self, controller, keyval, keycode, state):
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Tab')):
+            self.document.select_next_placeholder()
+            if self.document.dot_selected():
+                return True
+
+        if (state & modifiers, keyval) == (Gdk.ModifierType.SHIFT_MASK, Gdk.keyval_from_name('ISO_Left_Tab')):
+            self.document.select_previous_placeholder()
+            if self.document.dot_selected():
+                return True
+
+        return False
 
     def on_scroll(self, controller, dx, dy):
         modifiers = Gtk.accelerator_get_default_mod_mask()
