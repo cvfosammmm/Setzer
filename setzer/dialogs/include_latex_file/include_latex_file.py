@@ -34,17 +34,12 @@ class IncludeLaTeXFile(object):
         self.pathtypes = {'rel' : _('Relative Path'), 'abs' : _('Absolute Path')}
         self.current_values = dict()
 
-        self.view = view.IncludeLaTeXFileView(self.main_window)
-
-        self.is_not_setup = True
-
     def run(self, document):
         self.document = document
 
         self.init_current_values()
-        if self.is_not_setup:
-            self.setup()
-            self.is_not_setup = False
+        self.view = view.IncludeLaTeXFileView(self.main_window)
+        self.setup()
 
         self.view.pathtype_buttons[self.current_values['pathtype']].set_active(True)
         self.view.pathtype_buttons[self.current_values['pathtype']].toggled()
@@ -56,15 +51,15 @@ class IncludeLaTeXFile(object):
         self.view.cancel_button.connect('clicked', self.on_cancel_button_clicked)
         self.view.include_button.connect('clicked', self.on_include_button_clicked)
 
-        self.view.dialog.show()
+        self.view.present()
 
     def on_cancel_button_clicked(self, button):
-        self.view.dialog.close()
+        self.view.close()
 
     def on_include_button_clicked(self, button):
         self.insert_template()
 
-        self.view.dialog.close()
+        self.view.close()
 
     def init_current_values(self):
         self.current_values['filename'] = ''

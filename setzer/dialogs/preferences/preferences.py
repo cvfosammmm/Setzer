@@ -34,7 +34,7 @@ class PreferencesDialog(object):
 
     def run(self):
         self.setup()
-        self.view.dialog.present()
+        self.view.present()
 
     def setup(self):
         self.view = view.Preferences(self.main_window)

@@ -57,7 +57,7 @@ class PageBuildSystem(object):
     def setup_latex_interpreters(self):
         self.latex_interpreters = list()
         for interpreter in ['xelatex', 'pdflatex', 'lualatex', 'tectonic']:
-            self.view.option_latex_interpreter[interpreter].hide()
+            self.view.option_latex_interpreter[interpreter].set_visible(False)
             arguments = [interpreter, '--version']
             try:
                 process = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -80,27 +80,27 @@ class PageBuildSystem(object):
                 self.latexmk_available = True
 
         if len(self.latex_interpreters) == 0:
-            self.view.no_interpreter_label.show()
+            self.view.no_interpreter_label.set_visible(True)
         else:
-            self.view.no_interpreter_label.hide()
+            self.view.no_interpreter_label.set_visible(False)
             if self.settings.get_value('preferences', 'latex_interpreter') not in self.latex_interpreters:
                 self.settings.set_value('preferences', 'latex_interpreter', self.latex_interpreters[0])
 
             if self.latexmk_available:
-                self.view.option_use_latexmk.show()
+                self.view.option_use_latexmk.set_visible(True)
             else:
-                self.view.option_use_latexmk.hide()
+                self.view.option_use_latexmk.set_visible(False)
                 self.settings.set_value('preferences', 'use_latexmk', False)
             self.view.option_use_latexmk.set_active(self.settings.get_value('preferences', 'use_latexmk'))
             self.view.option_use_latexmk.connect('toggled', self.preferences.on_check_button_toggle, 'use_latexmk')
 
             for interpreter in self.view.option_latex_interpreter:
                 if interpreter in self.latex_interpreters:
-                    self.view.option_latex_interpreter[interpreter].show()
+                    self.view.option_latex_interpreter[interpreter].set_visible(True)
                     self.view.option_latex_interpreter[interpreter].set_active(interpreter == self.settings.get_value('preferences', 'latex_interpreter'))
                     self.view.option_latex_interpreter[interpreter].connect('toggled', self.preferences.on_interpreter_changed, 'latex_interpreter', interpreter)
                 else:
-                    self.view.option_latex_interpreter[interpreter].hide()
+                    self.view.option_latex_interpreter[interpreter].set_visible(False)
 
             self.view.option_latex_interpreter['tectonic'].connect('toggled', self.on_use_tectonic_toggled)
             self.update_tectonic_element_visibility()
@@ -110,13 +110,13 @@ class PageBuildSystem(object):
 
     def update_tectonic_element_visibility(self):
         if self.view.option_latex_interpreter['tectonic'].get_active():
-            self.view.tectonic_warning_label.show()
-            self.view.option_use_latexmk.hide()
-            self.view.shell_escape_box.hide()
+            self.view.tectonic_warning_label.set_visible(True)
+            self.view.option_use_latexmk.set_visible(False)
+            self.view.shell_escape_box.set_visible(False)
         else:
-            self.view.tectonic_warning_label.hide()
-            self.view.option_use_latexmk.show()
-            self.view.shell_escape_box.show()
+            self.view.tectonic_warning_label.set_visible(False)
+            self.view.option_use_latexmk.set_visible(True)
+            self.view.shell_escape_box.set_visible(True)
 
 class PageBuildSystemView(Gtk.Box):
 

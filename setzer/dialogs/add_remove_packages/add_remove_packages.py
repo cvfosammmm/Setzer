@@ -42,7 +42,7 @@ class AddRemovePackagesDialog(object):
         self.document = document
 
         self.setup()
-        self.view.dialog.show()
+        self.view.present()
 
     def setup(self):
         self.view = view.AddRemovePackagesDialogView(self.main_window)
@@ -52,8 +52,8 @@ class AddRemovePackagesDialog(object):
 
         self.view.add_button.set_sensitive(False)
         self.view.remove_button.set_sensitive(False)
-        self.view.add_button.hide()
-        self.view.remove_button.hide()
+        self.view.add_button.set_visible(False)
+        self.view.remove_button.set_visible(False)
 
         self.view.add_list.connect('row-selected', self.add_list_row_selected)
         self.view.remove_list.connect('row-selected', self.remove_list_row_selected)
@@ -78,12 +78,10 @@ class AddRemovePackagesDialog(object):
             command = self.packages[child_name]['command']
             self.view.add_description.set_markup('<b>' + child_name + ':</b> ' + description)
             self.add_package_selection = command
-            self.view.add_button.set_sensitive(True)
-            self.view.add_button.show()
         else:
             self.view.add_description.set_markup('')
-            self.view.add_button.set_sensitive(False)
-            self.view.add_button.hide()
+        self.view.add_button.set_sensitive(row != None)
+        self.view.add_button.set_visible(row != None)
 
     def remove_list_row_selected(self, box, row, user_data=None):
         if row != None:
@@ -92,12 +90,10 @@ class AddRemovePackagesDialog(object):
             command = self.packages[child_name]['command']
             self.view.remove_description.set_markup('<b>' + child_name + ':</b> ' + description)
             self.remove_package_selection = command
-            self.view.remove_button.set_sensitive(True)
-            self.view.remove_button.show()
         else:
             self.view.remove_description.set_markup('')
-            self.view.remove_button.set_sensitive(False)
-            self.view.remove_button.hide()
+        self.view.remove_button.set_sensitive(row != None)
+        self.view.remove_button.set_visible(row != None)
 
     def add_button_clicked(self, button):
         self.document.add_packages([self.add_package_selection])

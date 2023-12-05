@@ -122,7 +122,7 @@ class KeyboardShortcutsDialog(object):
 
     def run(self):
         self.setup()
-        self.view.show()
+        self.view.present()
         del(self.view)
 
     def setup(self):

@@ -88,7 +88,7 @@ class FilechooserButton(Observable):
         if self.default_folder != None:
             self.dialog.set_current_folder(self.default_folder)
 
-        self.dialog.show()
+        self.dialog.present()
         self.signal_connection_id = self.dialog.connect('response', self.dialog_process_response)
 
     def dialog_process_response(self, view, response_id):
@@ -96,11 +96,7 @@ class FilechooserButton(Observable):
             self.filename = self.dialog.get_file().get_path()
             self.view.button_label.set_text(os.path.basename(self.filename))
             self.add_change_code('file-set')
-        self.dialog_close()
-
-    def dialog_close(self):
-        self.dialog.hide()
         self.dialog.disconnect(self.signal_connection_id)
-        del(self.dialog)
+        self.dialog.close()
 
 

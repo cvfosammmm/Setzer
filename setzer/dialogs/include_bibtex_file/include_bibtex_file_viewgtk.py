@@ -31,9 +31,9 @@ class IncludeBibTeXFileView(DialogView):
     def __init__(self, main_window):
         DialogView.__init__(self, main_window)
 
-        self.dialog.set_default_size(400, 300)
-        self.dialog.set_can_focus(False)
-        self.dialog.get_style_context().add_class('include-bibtex-file-dialog')
+        self.set_default_size(400, 300)
+        self.set_can_focus(False)
+        self.get_style_context().add_class('include-bibtex-file-dialog')
         self.headerbar.set_show_title_buttons(False)
         self.headerbar.set_title_widget(Gtk.Label.new(_('Include BibTeX file')))
         self.topbox.set_size_request(400, -1)
@@ -55,7 +55,7 @@ class IncludeBibTeXFileView(DialogView):
         label.set_margin_bottom(3)
         label.set_margin_top(18)
         self.content.append(label)
-        self.file_chooser_button = filechooser_button.FilechooserButton(self.dialog)
+        self.file_chooser_button = filechooser_button.FilechooserButton(self)
         self.file_chooser_button.set_title(_('Select a BibTeX File'))
         self.content.append(self.file_chooser_button.view)
 

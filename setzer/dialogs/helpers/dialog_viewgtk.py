@@ -19,19 +19,26 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
+from setzer.keyboard_shortcuts.shortcut_controller import ShortcutController
 
-class DialogView(object):
+
+class DialogView(Gtk.Window):
 
     def __init__(self, main_window):
-        self.dialog = Gtk.Window()
-        self.dialog.set_modal(True)
-        self.dialog.set_transient_for(main_window)
-        self.dialog.set_destroy_with_parent(True)
+        Gtk.Window.__init__(self)
+
+        self.set_modal(True)
+        self.set_transient_for(main_window)
+        self.set_destroy_with_parent(True)
 
         self.headerbar = Gtk.HeaderBar()
-        self.dialog.set_titlebar(self.headerbar)
+        self.set_titlebar(self.headerbar)
 
         self.topbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
-        self.dialog.set_child(self.topbox)
+        self.set_child(self.topbox)
+
+        self.shortcuts_controller = ShortcutController()
+        self.shortcuts_controller.create_and_add_shortcut('Escape', self.close)
+        self.add_controller(self.shortcuts_controller)
 
 

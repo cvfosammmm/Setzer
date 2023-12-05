@@ -30,11 +30,11 @@ class OpenDocumentDialog(object):
 
     def run(self):
         self.setup()
-        self.view.show()
+        self.view.present()
         self.signal_connection_id = self.view.connect('response', self.process_response)
 
     def close(self):
-        self.view.hide()
+        self.view.close()
         self.view.disconnect(self.signal_connection_id)
         del(self.view)
 

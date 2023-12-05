@@ -30,12 +30,12 @@ class BuildSaveDialog(object):
 
     def run(self, document, callback):
         self.setup(document)
-        self.view.show()
+        self.view.present()
         self.callback = callback
         self.signal_connection_id = self.view.connect('response', self.process_response)
 
     def close(self):
-        self.view.hide()
+        self.view.close()
         self.view.disconnect(self.signal_connection_id)
         del(self.view)
 

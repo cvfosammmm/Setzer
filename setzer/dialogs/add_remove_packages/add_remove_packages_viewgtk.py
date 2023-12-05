@@ -29,8 +29,8 @@ class AddRemovePackagesDialogView(DialogView):
     def __init__(self, main_window):
         DialogView.__init__(self, main_window)
 
-        self.dialog.set_default_size(650, -1)
-        self.dialog.set_can_focus(False)
+        self.set_default_size(650, -1)
+        self.set_can_focus(False)
         self.headerbar.set_title_widget(Gtk.Label.new(_('Add / Remove Packages')))
         self.topbox.set_size_request(650, -1)
 

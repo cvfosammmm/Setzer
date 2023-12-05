@@ -38,20 +38,14 @@ class IncludeBibTeXFile(object):
         self.natbib_style_names = ['Plainnat', 'Abbrvnat', 'Unsrtnat', 'Achemso']
         self.current_values = dict()
 
-        self.view = view.IncludeBibTeXFileView(self.main_window)
-
-        self.view.cancel_button.connect('clicked', self.on_cancel_button_clicked)
-        self.view.include_button.connect('clicked', self.on_include_button_clicked)
-
-        self.is_not_setup = True
-
     def run(self, document):
         self.document = document
 
         self.init_current_values()
-        if self.is_not_setup:
-            self.setup()
-            self.is_not_setup = False
+        self.view = view.IncludeBibTeXFileView(self.main_window)
+        self.view.cancel_button.connect('clicked', self.on_cancel_button_clicked)
+        self.view.include_button.connect('clicked', self.on_include_button_clicked)
+        self.setup()
 
         self.view.style_buttons[self.current_values['style']].set_active(True)
         self.view.style_buttons[self.current_values['style']].toggled()
@@ -63,15 +57,15 @@ class IncludeBibTeXFile(object):
         self.view.include_button.set_sensitive(False)
         self.view.file_chooser_button.reset()
 
-        self.view.dialog.show()
+        self.view.present()
 
     def on_cancel_button_clicked(self, button):
-        self.view.dialog.close()
+        self.view.close()
 
     def on_include_button_clicked(self, button):
         self.insert_template()
 
-        self.view.dialog.close()
+        self.view.close()
 
     def init_current_values(self):
         self.current_values['style'] = 'plain'
@@ -150,16 +144,10 @@ class IncludeBibTeXFile(object):
 
     def update_style_chooser_visibility(self):
         self.current_values['natbib_toggle'] = self.view.natbib_option.get_active()
-        if self.view.natbib_option.get_active():
-            self.view.preview_stack_wrapper.hide()
-            self.view.style_switcher.hide()
-            self.view.natbib_preview_stack_wrapper.show()
-            self.view.natbib_style_switcher.show()
-        else:
-            self.view.preview_stack_wrapper.show()
-            self.view.style_switcher.show()
-            self.view.natbib_preview_stack_wrapper.hide()
-            self.view.natbib_style_switcher.hide()
+        self.view.preview_stack_wrapper.set_visible(not self.view.natbib_option.get_active())
+        self.view.style_switcher.set_visible(not self.view.natbib_option.get_active())
+        self.view.natbib_preview_stack_wrapper.set_visible(self.view.natbib_option.get_active())
+        self.view.natbib_style_switcher.set_visible(self.view.natbib_option.get_active())
 
     def on_natbib_style_chosen(self, button, style):
         if self.natbib_styles.index(style) > self.natbib_styles.index(self.current_values['natbib_style']):

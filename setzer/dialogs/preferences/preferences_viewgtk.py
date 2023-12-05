@@ -28,9 +28,9 @@ class Preferences(DialogView):
     def __init__(self, main_window):
         DialogView.__init__(self, main_window)
 
-        self.dialog.set_can_focus(False)
-        self.dialog.set_size_request(400, 250)
-        self.dialog.set_default_size(400, 250)
+        self.set_can_focus(False)
+        self.set_size_request(400, 250)
+        self.set_default_size(400, 250)
         self.headerbar.set_title_widget(Gtk.Label.new(_('Preferences')))
 
         self.notebook = Gtk.Notebook()

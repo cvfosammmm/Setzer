@@ -29,7 +29,7 @@ class InterpreterMissingDialog(object):
 
     def run(self, interpreter_name):
         self.setup(interpreter_name)
-        self.view.show()
+        self.view.present()
         self.signal_connection_id = self.view.connect('response', self.process_response)
 
     def process_response(self, view, response_id):
@@ -38,7 +38,7 @@ class InterpreterMissingDialog(object):
         self.close()
 
     def close(self):
-        self.view.hide()
+        self.view.close()
         self.view.disconnect(self.signal_connection_id)
         del(self.view)
 
