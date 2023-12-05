@@ -60,12 +60,12 @@ class TodosSection(object):
 
         if len(todos) == 0:
             self.height = 0
-            self.view.hide()
-            self.headline_labels['inline'].hide()
         else:
             self.height = len(self.todos) * self.view.line_height + 33
-            self.view.show()
-            self.headline_labels['inline'].show()
+
+        self.view.set_visible(len(todos) != 0)
+        self.headline_labels['inline'].set_visible(len(todos) != 0)
+
         self.view.set_size_request(-1, self.height)
         self.view.set_hover_item(None)
         self.view.queue_draw()

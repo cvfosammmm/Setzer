@@ -114,12 +114,12 @@ class DocumentStructurePage(Gtk.Overlay):
 
         if self.content_vbox.get_allocated_height() == self.scrolled_window.get_allocated_height():
             for label_name in self.labels:
-                self.labels[label_name]['overlay'].hide()
+                self.labels[label_name]['overlay'].set_visible(False)
         else:
             self.tabs_box.get_style_context().remove_class('no-border')
             for label_name, label_offset in zip(self.labels, self.get_label_offsets()):
                 margin_top = max(0, label_offset - int(scrolling_offset))
-                self.labels[label_name]['overlay'].show()
+                self.labels[label_name]['overlay'].set_visible(True)
                 self.labels[label_name]['overlay'].set_margin_top(margin_top)
 
                 if margin_top > 0 and margin_top <= tabs_height:

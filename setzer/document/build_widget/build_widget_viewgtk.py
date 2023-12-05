@@ -75,7 +75,7 @@ class BuildWidgetView(Gtk.Box):
         self.label.set_text('')
 
     def show_timer(self):
-        self.build_timer.show()
+        self.build_timer.set_visible(True)
         self.state_change_count += 1
         GObject.timeout_add(5, self.reveal, self.state_change_count)
         

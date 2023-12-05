@@ -86,7 +86,7 @@ class HamburgerMenuView(Popover):
         self.button_save_session.set_action_name('win.save-session')
 
         self.session_box_separator = Gtk.Separator()
-        self.session_box_separator.hide()
+        self.session_box_separator.set_visible(False)
 
         self.prev_sessions_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
 

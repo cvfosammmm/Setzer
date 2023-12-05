@@ -111,12 +111,12 @@ class StructureSection(object):
 
         if len(nodes_in_line) == 0:
             self.view.height = 0
-            self.view.hide()
-            self.labels['inline'].hide()
         else:
             self.view.height = len(nodes_in_line) * self.view.line_height + 33
-            self.view.show()
-            self.labels['inline'].show()
+
+        self.view.set_visible(len(nodes_in_line) != 0)
+        self.labels['inline'].set_visible(len(nodes_in_line) != 0)
+
         self.view.set_size_request(-1, self.view.height)
         self.nodes_in_line = nodes_in_line
         self.nodes = nodes

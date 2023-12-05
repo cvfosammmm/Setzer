@@ -48,14 +48,9 @@ class ContextMenu(object):
 
     def on_new_active_document(self, workspace=None, parameter=None):
         self.document = self.workspace.active_document
-        if self.document != None and self.document.is_latex_document():
-            self.comment_button_pointer.show()
-            self.sync_button_pointer.show()
-            self.latex_buttons_separator_pointer.show()
-        else:
-            self.comment_button_pointer.hide()
-            self.sync_button_pointer.hide()
-            self.latex_buttons_separator_pointer.hide()
+        self.comment_button_pointer.set_visible(self.document != None and self.document.is_latex_document())
+        self.sync_button_pointer.set_visible(self.document != None and self.document.is_latex_document())
+        self.latex_buttons_separator_pointer.set_visible(self.document != None and self.document.is_latex_document())
 
     def build_popover_pointer(self):
         self.add_basic_buttons(self.popover_pointer)

@@ -28,13 +28,8 @@ class ContextMenu(object):
 
     def on_new_active_document(self, workspace=None, parameter=None):
         document = self.workspace.active_document
-        if document != None and document.is_latex_document():
-            self.view.comment_button.show()
-            self.view.sync_button.show()
-            self.view.latex_buttons_separator.show()
-        else:
-            self.view.comment_button.hide()
-            self.view.sync_button.hide()
-            self.view.latex_buttons_separator.hide()
+        self.view.comment_button.set_visible(document != None and document.is_latex_document())
+        self.view.sync_button.set_visible(document != None and document.is_latex_document())
+        self.view.latex_buttons_separator.set_visible(document != None and document.is_latex_document())
 
 

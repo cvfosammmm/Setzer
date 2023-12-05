@@ -149,9 +149,9 @@ class DocumentStats(object):
             markup += str(values[2])
             markup += '</b> words outside text (captions, ...).'
             self.view.label_whole_document.set_markup(markup)
-            self.view.label_whole_document.show()
+            self.view.label_whole_document.set_visible(True)
         else:
-            self.view.label_whole_document.hide()
+            self.view.label_whole_document.set_visible(False)
 
         document = self.workspace.get_active_document()
         if document == None: return True
@@ -178,8 +178,8 @@ class DocumentStats(object):
         return True
 
     def hide_view(self):
-        self.view.hide()
-        self.headline_labels['inline'].hide()
-        self.headline_labels['overlay'].hide()
+        self.view.set_visible(False)
+        self.headline_labels['inline'].set_visible(False)
+        self.headline_labels['overlay'].set_visible(False)
 
 

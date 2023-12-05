@@ -58,9 +58,7 @@ class HamburgerMenu(object):
         for button in self.session_file_buttons:
             self.view.prev_sessions_box.remove(button)
         self.session_file_buttons = list()
-        self.view.session_box_separator.hide()
-        if len(items) > 0:
-            self.view.session_box_separator.show()
+        self.view.session_box_separator.set_visible(len(items) > 0)
         for item in items:
             button = MenuBuilder.create_button(item)
             button.connect('clicked', self.on_restore_session_click, item)
