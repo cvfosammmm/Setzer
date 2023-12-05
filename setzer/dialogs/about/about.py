@@ -31,7 +31,6 @@ class AboutDialog(object):
     def run(self):
         self.setup()
         self.view.present()
-        del(self.view)
 
     def setup(self):
         self.view = Gtk.AboutDialog()

@@ -71,32 +71,25 @@ class FilechooserButton(Observable):
         self.filters.append(file_filter)
 
     def on_button_clicked(self, button):
-        self.dialog = Gtk.FileChooserDialog()
-        self.dialog.set_action(Gtk.FileChooserAction.OPEN)
-        self.dialog.set_transient_for(self.parent_window)
-
-        self.cancel_button = self.dialog.add_button(_('_Cancel'), Gtk.ResponseType.CANCEL)
-        self.cancel_button.set_can_focus(False)
-        
-        self.create_button = self.dialog.add_button(_('_Select'), Gtk.ResponseType.APPLY)
-        self.create_button.set_can_focus(False)
-        self.create_button.get_style_context().add_class('suggested-action')
+        self.dialog = Gtk.FileDialog()
+        self.dialog.set_modal(True)
 
         for file_filter in self.filters:
-            self.dialog.add_filter(file_filter)
+            self.dialog.set_default_filter(file_filter)
 
         if self.default_folder != None:
             self.dialog.set_current_folder(self.default_folder)
 
-        self.dialog.present()
-        self.signal_connection_id = self.dialog.connect('response', self.dialog_process_response)
+        file = self.dialog.open(self.parent_window, None, self.dialog_process_response)
 
-    def dialog_process_response(self, view, response_id):
-        if response_id == Gtk.ResponseType.APPLY:
-            self.filename = self.dialog.get_file().get_path()
-            self.view.button_label.set_text(os.path.basename(self.filename))
-            self.add_change_code('file-set')
-        self.dialog.disconnect(self.signal_connection_id)
-        self.dialog.close()
+    def dialog_process_response(self, dialog, result):
+        try:
+            file = dialog.open_finish(result)
+        except Exception: pass
+        else:
+            if file != None:
+                self.filename = file.get_path()
+                self.view.button_label.set_text(os.path.basename(self.filename))
+                self.add_change_code('file-set')
 
 
