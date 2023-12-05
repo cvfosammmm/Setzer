@@ -195,18 +195,9 @@ class DocumentWizard(object):
 
             self.pages[page_number].on_activation()
 
-            if page_number == 0:
-                self.view.back_button.hide()
-                self.view.create_button.hide()
-                self.view.next_button.show()
-            elif page_number < 6:
-                self.view.create_button.hide()
-                self.view.back_button.show()
-                self.view.next_button.show()
-            else:
-                self.view.next_button.hide()
-                self.view.back_button.show()
-                self.view.create_button.show()
+            self.view.back_button.set_visible(page_number != 0)
+            self.view.next_button.set_visible(page_number < 6)
+            self.view.create_button.set_visible(page_number >= 6)
 
     def on_keypress(self, controller, keyval, keycode, state, data=None):
         modifiers = Gtk.accelerator_get_default_mod_mask()

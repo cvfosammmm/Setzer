@@ -76,10 +76,7 @@ class AnimatedPaned(object):
 
     def first_set_show_widget(self, show_widget):
         self.set_show_widget(show_widget)
-        if show_widget:
-            self.animated_widget.show()
-        else:
-            self.animated_widget.hide()
+        self.animated_widget.set_visible(show_widget)
 
     def set_show_widget(self, show_widget):
         self.show_widget = show_widget
@@ -136,7 +133,7 @@ class AnimatedPaned(object):
         if frame_clock != None and animate:
             if self.get_position() != end:
                 if self.show_widget:
-                    self.animated_widget.show()
+                    self.animated_widget.set_visible(True)
 
                 if self.is_visible:
                     start = self.get_position()
@@ -152,13 +149,12 @@ class AnimatedPaned(object):
                 self.animation_id = self.add_tick_callback(self.set_position_on_tick, (self.show_widget, start_time, end_time, start, end))
         else:
             if self.show_widget:
-                self.animated_widget.show()
+                self.animated_widget.set_visible(self.show_widget)
                 self.set_shrink_animated_widget(False)
-                self.set_is_visible(True)
             else:
                 self.set_shrink_animated_widget(True)
-                self.animated_widget.hide()
-                self.set_is_visible(False)
+                self.animated_widget.set_visible(self.show_widget)
+            self.set_is_visible(self.show_widget)
             self.set_position(end)
 
     def set_position_on_tick(self, paned, frame_clock_cb, user_data):
@@ -172,7 +168,7 @@ class AnimatedPaned(object):
             self.set_position(end)
             self.reset_animated_widget_size_request()
             if not show_widget:
-                self.animated_widget.hide()
+                self.animated_widget.set_visible(False)
                 self.set_is_visible(False)
             else:
                 self.set_shrink_animated_widget(False)

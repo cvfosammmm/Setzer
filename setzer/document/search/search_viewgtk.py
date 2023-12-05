@@ -98,7 +98,7 @@ class SearchBar(Gtk.Revealer):
 
         self.set_child(self.overlay_wrapper)
 
-        self.replace_wrapper.hide()
+        self.replace_wrapper.set_visible(False)
         self.set_reveal_child(False)
         
 

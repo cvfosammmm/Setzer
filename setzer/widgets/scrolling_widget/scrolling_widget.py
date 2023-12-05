@@ -202,14 +202,8 @@ class ScrollingWidget(Observable):
             self.content.queue_draw()
 
     def update_scrollbars(self):
-        if self.adjustment_x.get_upper() - self.adjustment_x.get_page_size() < 1:
-            self.scrollbar_x.hide()
-        else:
-            self.scrollbar_x.show()
-        if self.adjustment_y.get_upper() - self.adjustment_y.get_page_size() < 1:
-            self.scrollbar_y.hide()
-        else:
-            self.scrollbar_y.show()
+        self.scrollbar_x.set_visible(self.adjustment_x.get_upper() - self.adjustment_x.get_page_size() >= 1)
+        self.scrollbar_y.set_visible(self.adjustment_y.get_upper() - self.adjustment_y.get_page_size() >= 1)
 
         if self.cursor_x != None and self.cursor_x > self.width - 24:
             self.scrollbar_y.get_style_context().add_class('hovering')

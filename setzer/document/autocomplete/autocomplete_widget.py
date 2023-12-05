@@ -62,11 +62,8 @@ class AutocompleteWidget(object):
         self.update_position()
         self.update_margins()
 
-        if not self.model.is_active or not self.position_is_visible() or self.focus_hide:
-            self.view.hide()
-        else:
-            self.view.show()
-            self.view.queue_draw()
+        self.view.set_visible(self.model.is_active and self.position_is_visible() and not self.focus_hide)
+        self.view.queue_draw()
 
     def update_size(self):
         self.line_height = FontManager.get_line_height(self.source_view)

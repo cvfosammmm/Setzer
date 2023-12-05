@@ -190,7 +190,7 @@ class Search(Observable):
         self.search_bar_mode = 'search'
         self.view.entry.set_size_request(300, -1)
         self.view.match_counter.set_size_request(270, -1)
-        self.view.replace_wrapper.hide()
+        self.view.replace_wrapper.set_visible(False)
         self.add_change_code('mode_changed')
 
     def set_mode_replace(self):
@@ -199,7 +199,7 @@ class Search(Observable):
         self.search_bar_mode = 'replace'
         self.view.entry.set_size_request(230, -1)
         self.view.match_counter.set_size_request(200, -1)
-        self.view.replace_wrapper.show()
+        self.view.replace_wrapper.set_visible(True)
         self.add_change_code('mode_changed')
 
     def search_entry_grab_focus(self, args=None):
