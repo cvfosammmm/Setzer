@@ -43,15 +43,6 @@ class AddRemovePackagesDialog(object):
 
         self.setup()
         self.view.dialog.show()
-        self.signal_connection_id = self.view.dialog.connect('response', self.process_response)
-
-    def process_response(self, view, response_id):
-        self.close()
-
-    def close(self):
-        self.view.dialog.hide()
-        self.view.dialog.disconnect(self.signal_connection_id)
-        del(self.view)
 
     def setup(self):
         self.view = view.AddRemovePackagesDialogView(self.main_window)

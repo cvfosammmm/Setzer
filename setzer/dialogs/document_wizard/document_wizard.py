@@ -57,6 +57,9 @@ class DocumentWizard(object):
 
         self.is_not_setup = True
 
+        self.view.cancel_button.connect('clicked', self.on_cancel_button_clicked)
+        self.view.create_button.connect('clicked', self.on_create_button_clicked)
+
     def run(self, document):
         self.document = document
 
@@ -71,21 +74,21 @@ class DocumentWizard(object):
         self.goto_page(0)
 
         self.view.dialog.show()
-        self.signal_connection_id = self.view.dialog.connect('response', self.process_response)
 
-    def process_response(self, view, response_id):
-        if response_id == Gtk.ResponseType.APPLY:
-            self.save_presets()
+    def on_cancel_button_clicked(self, button):
+        self.close()
 
-            document_class = self.current_values['document_class']
-            template_start, template_end = eval('self.get_insert_text_' + document_class + '()')
-            self.insert_template(template_start, template_end)
+    def on_create_button_clicked(self, button):
+        self.save_presets()
+
+        document_class = self.current_values['document_class']
+        template_start, template_end = eval('self.get_insert_text_' + document_class + '()')
+        self.insert_template(template_start, template_end)
 
         self.close()
 
     def close(self):
-        self.view.dialog.hide()
-        self.view.dialog.disconnect(self.signal_connection_id)
+        self.view.dialog.close()
 
     def init_current_values(self):
         self.current_values['document_class'] = 'article'

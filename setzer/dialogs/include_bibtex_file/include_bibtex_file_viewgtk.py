@@ -23,33 +23,29 @@ from gi.repository import Gdk, GdkPixbuf
 import os
 
 import setzer.widgets.filechooser_button.filechooser_button as filechooser_button
+from setzer.dialogs.helpers.dialog_viewgtk import DialogView
 
 
-class IncludeBibTeXFileView(object):
+class IncludeBibTeXFileView(DialogView):
 
     def __init__(self, main_window):
-        builder = Gtk.Builder.new_from_string('<?xml version="1.0" encoding="UTF-8"?><interface><object class="GtkDialog" id="dialog"><property name="use-header-bar">1</property></object></interface>', -1)
+        DialogView.__init__(self, main_window)
 
-        self.dialog = builder.get_object('dialog')
-        self.dialog.set_modal(True)
-        self.dialog.set_transient_for(main_window)
-        self.dialog.set_destroy_with_parent(True)
         self.dialog.set_default_size(400, 300)
         self.dialog.set_can_focus(False)
         self.dialog.get_style_context().add_class('include-bibtex-file-dialog')
-        self.topbox = self.dialog.get_content_area()
-        self.topbox.set_size_request(400, -1)
-        
-        self.headerbar = self.dialog.get_header_bar()
         self.headerbar.set_show_title_buttons(False)
         self.headerbar.set_title_widget(Gtk.Label.new(_('Include BibTeX file')))
+        self.topbox.set_size_request(400, -1)
 
-        self.cancel_button = self.dialog.add_button(_('_Cancel'), Gtk.ResponseType.CANCEL)
+        self.cancel_button = Gtk.Button.new_with_mnemonic(_('_Cancel'))
         self.cancel_button.set_can_focus(False)
-        
-        self.create_button = self.dialog.add_button(_('_Include'), Gtk.ResponseType.APPLY)
-        self.create_button.set_can_focus(False)
-        self.create_button.get_style_context().add_class('suggested-action')
+        self.headerbar.pack_start(self.cancel_button)
+
+        self.include_button = Gtk.Button.new_with_mnemonic(_('_Include'))
+        self.include_button.set_can_focus(False)
+        self.include_button.get_style_context().add_class('suggested-action')
+        self.headerbar.pack_end(self.include_button)
 
         self.content = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.content.set_margin_start(18)

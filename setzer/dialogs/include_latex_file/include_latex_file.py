@@ -50,21 +50,21 @@ class IncludeLaTeXFile(object):
         self.view.pathtype_buttons[self.current_values['pathtype']].toggled()
         self.view.pathtype_info_button.set_active(False)
 
-        self.view.create_button.set_sensitive(False)
+        self.view.include_button.set_sensitive(False)
         self.view.file_chooser_button.reset()
 
+        self.view.cancel_button.connect('clicked', self.on_cancel_button_clicked)
+        self.view.include_button.connect('clicked', self.on_include_button_clicked)
+
         self.view.dialog.show()
-        self.signal_connection_id = self.view.dialog.connect('response', self.process_response)
 
-    def process_response(self, view, response_id):
-        if response_id == Gtk.ResponseType.APPLY:
-            self.insert_template()
+    def on_cancel_button_clicked(self, button):
+        self.view.dialog.close()
 
-        self.close()
+    def on_include_button_clicked(self, button):
+        self.insert_template()
 
-    def close(self):
-        self.view.dialog.hide()
-        self.view.dialog.disconnect(self.signal_connection_id)
+        self.view.dialog.close()
 
     def init_current_values(self):
         self.current_values['filename'] = ''
@@ -99,7 +99,7 @@ class IncludeLaTeXFile(object):
         self.view.file_chooser_button.connect('file-set', self.on_file_chosen)
 
     def on_file_chosen(self, widget=None):
-        self.view.create_button.set_sensitive(True)
+        self.view.include_button.set_sensitive(True)
         self.current_values['filename'] = self.view.file_chooser_button.get_filename()
 
     def on_info_button_toggled(self, button):

@@ -34,16 +34,7 @@ class PreferencesDialog(object):
 
     def run(self):
         self.setup()
-        self.view.dialog.show()
-        self.signal_connection_id = self.view.dialog.connect('response', self.close)
-
-    def close(self, view=None, response_id=None):
-        self.view.dialog.hide()
-        self.view.dialog.disconnect(self.signal_connection_id)
-        del(self.view)
-        del(self.page_build_system)
-        del(self.page_editor)
-        del(self.page_font_color)
+        self.view.dialog.present()
 
     def setup(self):
         self.view = view.Preferences(self.main_window)

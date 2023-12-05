@@ -21,28 +21,21 @@ from gi.repository import Gtk
 
 import os
 
+from setzer.dialogs.helpers.dialog_viewgtk import DialogView
 
-class AddRemovePackagesDialogView(Gtk.Dialog):
+
+class AddRemovePackagesDialogView(DialogView):
 
     def __init__(self, main_window):
-        builder = Gtk.Builder.new_from_string('<?xml version="1.0" encoding="UTF-8"?><interface><object class="GtkDialog" id="dialog"><property name="use-header-bar">1</property></object></interface>', -1)
+        DialogView.__init__(self, main_window)
 
-        self.dialog = builder.get_object('dialog')
-        self.dialog.set_modal(True)
-        self.dialog.set_transient_for(main_window)
-        self.dialog.set_destroy_with_parent(True)
         self.dialog.set_default_size(650, -1)
         self.dialog.set_can_focus(False)
-        self.topbox = self.dialog.get_content_area()
+        self.headerbar.set_title_widget(Gtk.Label.new(_('Add / Remove Packages')))
         self.topbox.set_size_request(650, -1)
 
-        self.create_headerbar()
         self.create_add_box()
         self.create_remove_box()
-
-    def create_headerbar(self):
-        self.headerbar = self.dialog.get_header_bar()
-        self.headerbar.set_title_widget(Gtk.Label.new(_('Add / Remove Packages')))
 
     def create_add_box(self):
         self.add_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)

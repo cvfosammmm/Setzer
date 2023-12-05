@@ -21,20 +21,19 @@ from gi.repository import Gtk, GLib, Gdk, GdkPixbuf
 
 import os
 
+from setzer.dialogs.helpers.dialog_viewgtk import DialogView
 
-class DocumentWizardView(object):
-    ''' Create document templates for users to build on. '''
+
+class DocumentWizardView(DialogView):
 
     def __init__(self, main_window):
-        builder = Gtk.Builder.new_from_string('<?xml version="1.0" encoding="UTF-8"?><interface><object class="GtkDialog" id="dialog"><property name="use-header-bar">1</property></object></interface>', -1)
+        DialogView.__init__(self, main_window)
 
-        self.dialog = builder.get_object('dialog')
-        self.dialog.set_modal(True)
-        self.dialog.set_transient_for(main_window)
-        self.dialog.set_destroy_with_parent(True)
         self.dialog.set_default_size(750, 500)
-        self.topbox = self.dialog.get_content_area()
+        self.headerbar.set_title_widget(Gtk.Label.new(_('Add / Remove Packages')))
+        self.headerbar.set_show_title_buttons(False)
         self.topbox.set_size_request(750, 450)
+
         self.center_box = Gtk.CenterBox()
         self.center_box.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.pages = list()
@@ -52,23 +51,24 @@ class DocumentWizardView(object):
         self.title_widget.set_orientation(Gtk.Orientation.VERTICAL)
         self.title_widget.set_center_widget(self.title_box)
 
-        self.headerbar = self.dialog.get_header_bar()
-        self.headerbar.set_show_title_buttons(False)
-        self.headerbar.set_title_widget(self.title_widget)
-
-        self.cancel_button = self.dialog.add_button(_('_Cancel'), Gtk.ResponseType.CANCEL)
+        self.cancel_button = Gtk.Button.new_with_mnemonic(_('_Cancel'))
         self.cancel_button.set_can_focus(False)
+
         self.back_button = Gtk.Button.new_with_mnemonic(_('_Back'))
         self.back_button.set_can_focus(False)
         
         self.next_button = Gtk.Button.new_with_mnemonic(_('_Next'))
         self.next_button.set_can_focus(False)
         self.next_button.get_style_context().add_class('suggested-action')
-        self.create_button = self.dialog.add_button(_('_Create'), Gtk.ResponseType.APPLY)
+
+        self.create_button = Gtk.Button.new_with_mnemonic(_('_Create'))
         self.create_button.set_can_focus(False)
         self.create_button.get_style_context().add_class('suggested-action')
 
+        self.headerbar.set_title_widget(self.title_widget)
+        self.headerbar.pack_start(self.cancel_button)
         self.headerbar.pack_start(self.back_button)
+        self.headerbar.pack_end(self.create_button)
         self.headerbar.pack_end(self.next_button)
 
         self.notebook = Gtk.Notebook()

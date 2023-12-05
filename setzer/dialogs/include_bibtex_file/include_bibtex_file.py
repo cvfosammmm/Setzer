@@ -40,6 +40,9 @@ class IncludeBibTeXFile(object):
 
         self.view = view.IncludeBibTeXFileView(self.main_window)
 
+        self.view.cancel_button.connect('clicked', self.on_cancel_button_clicked)
+        self.view.include_button.connect('clicked', self.on_include_button_clicked)
+
         self.is_not_setup = True
 
     def run(self, document):
@@ -57,21 +60,18 @@ class IncludeBibTeXFile(object):
         self.view.natbib_option.set_active(self.current_values['natbib_toggle'])
         self.update_style_chooser_visibility()
 
-        self.view.create_button.set_sensitive(False)
+        self.view.include_button.set_sensitive(False)
         self.view.file_chooser_button.reset()
 
         self.view.dialog.show()
-        self.signal_connection_id = self.view.dialog.connect('response', self.process_response)
 
-    def process_response(self, view, response_id):
-        if response_id == Gtk.ResponseType.APPLY:
-            self.insert_template()
+    def on_cancel_button_clicked(self, button):
+        self.view.dialog.close()
 
-        self.close()
+    def on_include_button_clicked(self, button):
+        self.insert_template()
 
-    def close(self):
-        self.view.dialog.hide()
-        self.view.dialog.disconnect(self.signal_connection_id)
+        self.view.dialog.close()
 
     def init_current_values(self):
         self.current_values['style'] = 'plain'
@@ -142,7 +142,7 @@ class IncludeBibTeXFile(object):
         self.view.natbib_option.connect('toggled', self.on_natbib_toggled)
 
     def on_file_chosen(self, widget=None):
-        self.view.create_button.set_sensitive(True)
+        self.view.include_button.set_sensitive(True)
         self.current_values['filename'] = self.view.file_chooser_button.get_filename()
 
     def on_natbib_toggled(self, togglebutton):
