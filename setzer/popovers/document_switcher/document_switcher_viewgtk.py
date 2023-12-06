@@ -134,23 +134,21 @@ class DocumentChooserList(Gtk.Widget):
             snapshot.append_color(active_color, rect)
             snapshot.pop()
 
-        filename_text = ''
-        for document in self.visible_items:
+        snapshot.translate(Graphene.Point().init(9, 9))
+        for i, document in enumerate(self.visible_items):
             modified_suffix = ('*' if document.source_buffer.get_modified() else '')
             root_suffix = ('  <span color="' + root_color_string + '">(root)</span>' if document.get_is_root() else '')
-            filename_text += os.path.split(document.get_displayname())[1] + modified_suffix + root_suffix + '\n'
-        snapshot.translate(Graphene.Point().init(32, 8))
-        self.layout_header.set_markup(filename_text)
-        snapshot.append_layout(self.layout_header, fg_color)
-        snapshot.translate(Graphene.Point().init(-23, 1))
+            filename_text = os.path.split(document.get_displayname())[1] + modified_suffix + root_suffix + '\n'
+            snapshot.translate(Graphene.Point().init(23, -1))
+            self.layout_header.set_markup(filename_text)
+            snapshot.append_layout(self.layout_header, fg_color)
+            snapshot.translate(Graphene.Point().init(-23, 1))
 
-        if self.root_selection_mode:
-            for i, document in enumerate(self.visible_items):
+            if self.root_selection_mode:
                 if i == hover_item:
                     snapshot.translate(Graphene.Point().init(0, i * (self.line_height + 15)))
                     self.icons['root'].snapshot_symbolic(snapshot, 16, 16, [fg_color])
-        else:
-            for i, document in enumerate(self.visible_items):
+            else:
                 if document.get_is_root():
                     self.icons['root'].snapshot_symbolic(snapshot, 16, 16, [fg_color])
                 else:
