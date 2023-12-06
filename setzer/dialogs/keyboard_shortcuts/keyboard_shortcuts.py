@@ -123,7 +123,6 @@ class KeyboardShortcutsDialog(object):
     def run(self):
         self.setup()
         self.view.present()
-        del(self.view)
 
     def setup(self):
         builder_string = '''<?xml version="1.0" encoding="UTF-8"?>

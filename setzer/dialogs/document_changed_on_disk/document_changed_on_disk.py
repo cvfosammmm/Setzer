@@ -37,36 +37,19 @@ class DocumentChangedOnDiskDialog(object):
         self.callback = callback
 
         self.setup(self.parameters['document'])
-
-        self.view.present()
-        self.signal_connection_id = self.view.connect('response', self.process_response)
-
-    def process_response(self, view, response_id):
-        document = self.parameters['document']
-
-        if response_id == Gtk.ResponseType.YES:
-            value = True
-        else:
-            value = False
-
-        self.close()
-        self.callback(value)
-
-    def close(self):
-        self.view.close()
-        self.view.disconnect(self.signal_connection_id)
-        del(self.view)
+        self.view.choose(self.main_window, None, self.dialog_process_response)
 
     def setup(self, document):
-        self.view = Gtk.MessageDialog()
-        self.view.set_transient_for(self.main_window)
+        self.view = Gtk.AlertDialog()
         self.view.set_modal(True)
-        self.view.set_property('message-type', Gtk.MessageType.QUESTION)
+        self.view.set_message(_('Document »{document}« has changed on disk.').format(document=document.get_displayname()))
+        self.view.set_detail(_('Should Setzer reload it now?'))
+        self.view.set_buttons([_('_Keep the current Version'), _('_Reload from Disk')])
+        self.view.set_cancel_button(0)
+        self.view.set_default_button(1)
 
-        self.view.set_property('text', _('Document »{document}« has changed on disk.').format(document=document.get_displayname()))
-        self.view.set_property('secondary-text', _('Should Setzer reload it now?'))
-
-        self.view.add_buttons(_('_Keep the current Version'), Gtk.ResponseType.CANCEL, _('_Reload from Disk'), Gtk.ResponseType.YES)
-        self.view.set_default_response(Gtk.ResponseType.YES)
+    def dialog_process_response(self, dialog, result):
+        index = dialog.choose_finish(result)
+        self.callback(index == 1)
 
 
