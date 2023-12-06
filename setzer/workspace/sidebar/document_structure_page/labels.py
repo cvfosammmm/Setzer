@@ -61,7 +61,7 @@ class LabelsSection(object):
         if len(labels) == 0:
             self.height = 0
         else:
-            self.height = len(self.todos) * self.view.line_height + 33
+            self.height = len(labels) * self.view.line_height + 33
 
         self.view.set_visible(len(labels) != 0)
         self.headline_labels['inline'].set_visible(len(labels) != 0)
