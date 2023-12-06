@@ -19,53 +19,38 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
-import os.path
-
 
 class OpenDocumentDialog(object):
 
     def __init__(self, main_window, workspace):
         self.main_window = main_window
         self.workspace = workspace
+        self.view = None
 
     def run(self):
         self.setup()
-        self.view.present()
-        self.signal_connection_id = self.view.connect('response', self.process_response)
-
-    def close(self):
-        self.view.close()
-        self.view.disconnect(self.signal_connection_id)
-        del(self.view)
-
-    def process_response(self, view, response_id):
-        if response_id == Gtk.ResponseType.OK:
-            files = self.view.get_files()
-            self.close()
-            for file in files:
-                self.workspace.open_document_by_filename(file.get_path())
-        else:
-            self.close()
+        self.view.open_multiple(self.main_window, None, self.dialog_process_response)
 
     def setup(self):
-        self.view = Gtk.FileChooserDialog()
-        self.view.set_transient_for(self.main_window)
+        self.view = Gtk.FileDialog()
         self.view.set_modal(True)
-        self.view.set_action(Gtk.FileChooserAction.OPEN)
-        self.view.add_button(_('_Cancel'), Gtk.ResponseType.CANCEL)
-        button_open = Gtk.Button.new_with_mnemonic(_('_Open'))
-        button_open.get_style_context().add_class('suggested-action')
-        self.view.add_action_widget(button_open, Gtk.ResponseType.OK)
         self.view.set_title(_('Open'))
 
-        file_filter1 = Gtk.FileFilter()
-        file_filter1.add_pattern('*.tex')
-        file_filter1.add_pattern('*.bib')
-        file_filter1.add_pattern('*.cls')
-        file_filter1.add_pattern('*.sty')
-        file_filter1.set_name(_('LaTeX and BibTeX Files'))
-        self.view.add_filter(file_filter1)
+        file_filter = Gtk.FileFilter()
+        file_filter.add_pattern('*.tex')
+        file_filter.add_pattern('*.bib')
+        file_filter.add_pattern('*.cls')
+        file_filter.add_pattern('*.sty')
+        file_filter.set_name(_('LaTeX and BibTeX Files'))
+        self.view.set_default_filter(file_filter)
 
-        self.view.set_select_multiple(True)
+    def dialog_process_response(self, dialog, result):
+        try:
+            files = dialog.open_multiple_finish(result)
+        except Exception: pass
+        else:
+            if files != None:
+                for file in files:
+                    self.workspace.open_document_by_filename(file.get_path())
 
 
