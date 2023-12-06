@@ -206,8 +206,7 @@ class Actions(object):
         if document == None or active_document == None: return
 
         if document.filename == None:
-            dialog = DialogLocator.get_dialog('build_save')
-            dialog.run(document, self.build_save_cb)
+            DialogLocator.get_dialog('build_save').run(document)
         else:
             self.save()
             document.build_system.build_and_forward_sync(active_document)
@@ -220,14 +219,9 @@ class Actions(object):
         if document == None or active_document == None: return
 
         if document.filename == None:
-            dialog = DialogLocator.get_dialog('build_save')
-            dialog.run(document, self.build_save_cb)
+            DialogLocator.get_dialog('build_save').run(document)
         else:
             document.build_system.build_and_forward_sync(active_document)
-
-    def build_save_cb(self, response_id):
-        if response_id == Gtk.ResponseType.YES:
-            self.save_as()
 
     def forward_sync(self, action=None, parameter=''):
         active_document = self.workspace.get_active_document()

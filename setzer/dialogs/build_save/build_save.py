@@ -19,39 +19,29 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
-import os.path
-
 
 class BuildSaveDialog(object):
 
-    def __init__(self, main_window):
+    def __init__(self, main_window, workspace):
         self.main_window = main_window
-        self.callback = None
+        self.workspace = workspace
 
-    def run(self, document, callback):
+    def run(self, document):
         self.setup(document)
-        self.view.present()
-        self.callback = callback
-        self.signal_connection_id = self.view.connect('response', self.process_response)
-
-    def close(self):
-        self.view.close()
-        self.view.disconnect(self.signal_connection_id)
-        del(self.view)
-
-    def process_response(self, view, response_id):
-        self.callback(response_id)
-        self.close()
+        self.view.choose(self.main_window, None, self.dialog_process_response)
 
     def setup(self, document):
-        self.view = Gtk.MessageDialog()
-        self.view.set_transient_for(self.main_window)
+        self.view = Gtk.AlertDialog()
         self.view.set_modal(True)
-        self.view.set_property('message-type', Gtk.MessageType.QUESTION)
+        self.view.set_message(_('Document »{document}« has no filename.').format(document=document.get_displayname()))
+        self.view.set_detail(_('Please save your document to a file, so the build system knows where to put the .pdf (it will be in the same folder as your document).'))
+        self.view.set_buttons([_('_Cancel'), _('_Save document now')])
+        self.view.set_cancel_button(0)
+        self.view.set_default_button(1)
 
-        self.view.set_property('text', _('Document »{document}« has no filename.').format(document=document.get_displayname()))
-        self.view.set_property('secondary-text', _('Please save your document to a file, so the build system knows where to put the .pdf (it will be in the same folder as your document).'))
-        self.view.add_buttons(_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Save document now'), Gtk.ResponseType.YES)
-        self.view.set_default_response(Gtk.ResponseType.YES)
+    def dialog_process_response(self, dialog, result):
+        index = dialog.choose_finish(result)
+        if index == 1:
+            self.workspace.actions.save_as()
 
 

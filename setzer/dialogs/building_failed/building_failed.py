@@ -30,11 +30,6 @@ class BuildingFailedDialog(object):
         self.setup(error_message)
         self.view.choose(self.main_window, None, self.dialog_process_response)
 
-    def close(self):
-        self.view.close()
-        self.view.disconnect(self.signal_connection_id)
-        del(self.view)
-
     def setup(self, error_message):
         self.view = Gtk.AlertDialog()
         self.view.set_modal(True)
