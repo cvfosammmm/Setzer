@@ -49,7 +49,7 @@ class PreviewPanelController(object):
         document = self.workspace.get_root_or_active_latex_document()
         if document != None:
             pdf_filename = document.preview.pdf_filename
-            if pdf_filename != None:
+            if document.preview.poppler_document != None:
                 Gio.AppInfo.launch_default_for_uri(GLib.filename_to_uri(pdf_filename))
 
     def on_recolor_pdf_toggle_toggled(self, toggle_button, parameter=None):

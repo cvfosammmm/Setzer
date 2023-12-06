@@ -98,7 +98,7 @@ class PreviewPanelPresenter(object):
         else:
             self.view.paging_label.set_visible(True)
             preview = self.document.preview
-            if preview.pdf_filename != None:
+            if preview.poppler_document != None:
                 total = str(preview.poppler_document.get_n_pages())
                 if preview.layout != None:
                     offset = preview.view.content.scrolling_offset_y
