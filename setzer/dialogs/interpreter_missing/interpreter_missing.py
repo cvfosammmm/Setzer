@@ -17,8 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-gi.require_version('Xdp', '1.0')
-from gi.repository import Gtk, Xdp
+from gi.repository import Gtk
 
 
 class InterpreterMissingDialog(object):
@@ -29,42 +28,22 @@ class InterpreterMissingDialog(object):
 
     def run(self, interpreter_name):
         self.setup(interpreter_name)
-        self.view.present()
-        self.signal_connection_id = self.view.connect('response', self.process_response)
-
-    def process_response(self, view, response_id):
-        if response_id == Gtk.ResponseType.YES:
-            self.preferences_dialog.run()
-        self.close()
-
-    def close(self):
-        self.view.close()
-        self.view.disconnect(self.signal_connection_id)
-        del(self.view)
+        self.view.choose(self.main_window, None, self.dialog_process_response)
 
     def setup(self, interpreter_name):
-        self.view = Gtk.MessageDialog()
-        self.view.set_transient_for(self.main_window)
+        self.view = Gtk.AlertDialog()
         self.view.set_modal(True)
-        self.view.set_property('message-type', Gtk.MessageType.QUESTION)
+        self.view.set_message(_('LateX Interpreter is missing.'))
+        self.view.set_detail(_('''Setzer is configured to use »{interpreter}« which seems to be missing on this system.
 
-        self.view.set_property('text', _('LateX Interpreter is missing.'))
-        self.view.set_property('secondary-use-markup', True)
-        if Xdp.Portal().running_under_flatpak():
-            self.view.set_property('secondary-text', _('''Setzer is configured to use »{interpreter}« which seems to be missing on this system.
+To choose a different interpreter go to Preferences.''').format(interpreter=interpreter_name))
+        self.view.set_buttons([_('_Cancel'), _('_Go to Preferences')])
+        self.view.set_cancel_button(0)
+        self.view.set_default_button(1)
 
-To choose a different interpreter go to Preferences.
+    def dialog_process_response(self, dialog, result):
+        index = dialog.choose_finish(result)
+        if index == 1:
+            self.preferences_dialog.run()
 
-To install interpreters in Flatpak, open a terminal and run the following command:
-
-    flatpak install org.freedesktop.Sdk.Extension.texlive''').format(interpreter=interpreter_name))
-        else:
-            self.view.set_property('secondary-text', _('''Setzer is configured to use »{interpreter}« which seems to be missing on this system.
-
-To choose a different interpreter go to Preferences.
-
-For instructions on installing LaTeX see <a href="https://en.wikibooks.org/wiki/LaTeX/Installation">https://en.wikibooks.org/wiki/LaTeX/Installation</a>''').format(interpreter=interpreter_name))
-
-        self.view.add_buttons(_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Go to Preferences'), Gtk.ResponseType.YES)
-        self.view.set_default_response(Gtk.ResponseType.YES)
 

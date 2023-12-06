@@ -28,13 +28,7 @@ class BuildingFailedDialog(object):
 
     def run(self, error_message):
         self.setup(error_message)
-        self.view.present()
-        self.signal_connection_id = self.view.connect('response', self.process_response)
-
-    def process_response(self, view, response_id):
-        if response_id == Gtk.ResponseType.YES:
-            self.preferences_dialog.run()
-        self.close()
+        self.view.choose(self.main_window, None, self.dialog_process_response)
 
     def close(self):
         self.view.close()
@@ -42,17 +36,19 @@ class BuildingFailedDialog(object):
         del(self.view)
 
     def setup(self, error_message):
-        self.view = Gtk.MessageDialog()
-        self.view.set_transient_for(self.main_window)
+        self.view = Gtk.AlertDialog()
         self.view.set_modal(True)
-        self.view.set_property('message-type', Gtk.MessageType.QUESTION)
-        
-        self.view.set_property('text', _('Something went wrong.'))
-        self.view.set_property('secondary-text', _('''The build process ended unexpectedly returning "{error_message}".
+        self.view.set_message(_('Something went wrong.'))
+        self.view.set_detail(_('''The build process ended unexpectedly returning "{error_message}".
 
 To configure your build system go to Preferences.''').format(error_message=error_message))
+        self.view.set_buttons([_('_Cancel'), _('_Go to Preferences')])
+        self.view.set_cancel_button(0)
+        self.view.set_default_button(1)
 
-        self.view.add_buttons(_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Go to Preferences'), Gtk.ResponseType.YES)
-        self.view.set_default_response(Gtk.ResponseType.YES)
+    def dialog_process_response(self, dialog, result):
+        index = dialog.choose_finish(result)
+        if index == 1:
+            self.preferences_dialog.run()
 
 
