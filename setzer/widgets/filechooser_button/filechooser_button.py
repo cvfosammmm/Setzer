@@ -73,6 +73,7 @@ class FilechooserButton(Observable):
     def on_button_clicked(self, button):
         self.dialog = Gtk.FileDialog()
         self.dialog.set_modal(True)
+        self.dialog.set_title(self.title)
 
         for file_filter in self.filters:
             self.dialog.set_default_filter(file_filter)
@@ -80,7 +81,7 @@ class FilechooserButton(Observable):
         if self.default_folder != None:
             self.dialog.set_current_folder(self.default_folder)
 
-        file = self.dialog.open(self.parent_window, None, self.dialog_process_response)
+        self.dialog.open(self.parent_window, None, self.dialog_process_response)
 
     def dialog_process_response(self, dialog, result):
         try:
