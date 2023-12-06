@@ -22,7 +22,6 @@ from gi.repository import Gtk
 
 
 class ReplaceConfirmationDialog(object):
-    ''' This dialog is asking users if they really want to do a replace all. '''
 
     def __init__(self, main_window):
         self.main_window = main_window
@@ -33,31 +32,21 @@ class ReplaceConfirmationDialog(object):
         self.search_context = search_context
         self.replacement = replacement
         self.setup(original, replacement, number_of_occurrences)
-
-        self.view.present()
-        self.signal_connection_id = self.view.connect('response', self.process_response)
-
-    def process_response(self, view, response_id):
-        if response_id == Gtk.ResponseType.YES:
-            self.search_context.replace_all(self.replacement, -1)
-        self.close()
-
-    def close(self):
-        self.view.close()
-        self.view.disconnect(self.signal_connection_id)
-        del(self.view)
+        self.view.choose(self.main_window, None, self.dialog_process_response)
 
     def setup(self, original, replacement, number_of_occurrences):
-        self.view = Gtk.MessageDialog()
-        self.view.set_transient_for(self.main_window)
+        self.view = Gtk.AlertDialog()
         self.view.set_modal(True)
-        self.view.set_property('message-type', Gtk.MessageType.QUESTION)
-
         str_occurrences = ngettext('Replacing {amount} occurence of »{original}« with »{replacement}«.', 'Replacing {amount} occurrences of »{original}« with »{replacement}«.', number_of_occurrences)
-        self.view.set_property('text', str_occurrences.format(amount=str(number_of_occurrences), original=original, replacement=replacement))
-        self.view.set_property('secondary-text', _('Do you really want to do this?'))
+        self.view.set_message(str_occurrences.format(amount=str(number_of_occurrences), original=original, replacement=replacement))
+        self.view.set_detail(_('Do you really want to do this?'))
+        self.view.set_buttons([_('_Cancel'), _('_Yes, replace all occurrences')])
+        self.view.set_cancel_button(0)
+        self.view.set_default_button(1)
 
-        self.view.add_buttons(_('_Cancel'), Gtk.ResponseType.CANCEL, _('_Yes, replace all occurrences'), Gtk.ResponseType.YES)
-        self.view.set_default_response(Gtk.ResponseType.YES)
+    def dialog_process_response(self, dialog, result):
+        index = dialog.choose_finish(result)
+        if index == 1:
+            self.search_context.replace_all(self.replacement, -1)
 
 
