@@ -76,24 +76,28 @@ class HamburgerMenu(object):
     def restore_session_cb(self, filename):
         if filename == None: return
 
-        documents = self.workspace.get_all_documents()
         unsaved_documents = self.workspace.get_unsaved_documents()
-        if unsaved_documents:
+        if len(unsaved_documents) > 0:
+            self.workspace.set_active_document(unsaved_documents[0])
             dialog = DialogLocator.get_dialog('close_confirmation')
-            dialog.run({'unsaved_documents': unsaved_documents, 'documents': documents, 'session_filename': filename}, self.close_confirmation_cb)
+            dialog.run({'unsaved_document': unsaved_documents[0], 'session_filename': filename}, self.close_confirmation_cb)
         else:
-            if documents != None:
-                for document in documents:
-                    self.workspace.remove_document(document)
+            documents = self.workspace.get_all_documents()
+            for document in documents:
+                self.workspace.remove_document(document)
             self.workspace.load_documents_from_session_file(filename)
 
-    def close_confirmation_cb(self, parameters, response):
-        not_save_to_close_documents = response['not_save_to_close_documents']
+    def close_confirmation_cb(self, parameters):
+        document = parameters['unsaved_document']
 
-        if len(not_save_to_close_documents) == 0:
-            if parameters['documents'] != None:
-                for document in parameters['documents']:
-                    self.workspace.remove_document(document)
-            self.workspace.load_documents_from_session_file(parameters['session_filename'])
+        if parameters['response'] == 0:
+            self.workspace.remove_document(document)
+            self.restore_session_cb(parameters['session_filename'])
+        elif parameters['response'] == 2:
+            if document.get_filename() == None:
+                DialogLocator.get_dialog('save_document').run(document, self.restore_session_cb, parameters['session_filename'])
+            else:
+                document.save_to_disk()
+                self.restore_session_cb(parameters['session_filename'])
 
 

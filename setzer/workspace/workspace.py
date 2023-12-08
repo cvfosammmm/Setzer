@@ -333,11 +333,10 @@ class Workspace(Observable):
         for document in self.open_documents:
             if document.source_buffer.get_modified():
                 unsaved_documents.append(document)
+        return unsaved_documents
 
-        return unsaved_documents if len(unsaved_documents) >= 1 else None
-        
     def get_all_documents(self):
-        return self.open_documents.copy() if len(self.open_documents) >= 1 else None
+        return self.open_documents.copy()
 
     def set_one_document_root(self, root_document):
         if root_document.is_latex_document():

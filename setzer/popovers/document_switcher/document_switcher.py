@@ -185,7 +185,7 @@ class DocumentSwitcher(Observable):
 
                         self.popover_manager.popdown()
                         dialog = DialogLocator.get_dialog('close_confirmation')
-                        dialog.run({'unsaved_documents': [document], 'document': document, 'previously_active_document': previously_active_document}, self.on_close_document_callback)
+                        dialog.run({'unsaved_document': document, 'previously_active_document': previously_active_document}, self.on_close_document_callback)
                         return True
                     else:
                         if document == self.workspace.get_active_document():
@@ -200,10 +200,19 @@ class DocumentSwitcher(Observable):
         self.view.document_list.close_button_active = False
         self.view.document_list.button_pressed = False
 
-    def on_close_document_callback(self, parameters, response):
-        not_save_to_close = response['not_save_to_close_documents']
-        if parameters['document'] not in not_save_to_close:
-            self.workspace.remove_document(parameters['document'])
+    def on_close_document_callback(self, parameters):
+        if parameters['response'] == 0:
+            self.workspace.remove_document(parameters['unsaved_document'])
+        elif parameters['response'] == 2:
+            document = parameters['unsaved_document']
+            if document.get_filename() == None:
+                self.workspace.set_active_document(document)
+                DialogLocator.get_dialog('save_document').run(document)
+                return
+            else:
+                document.save_to_disk()
+                self.workspace.remove_document(parameters['unsaved_document'])
+
         if parameters['previously_active_document'] != None:
             self.workspace.set_active_document(parameters['previously_active_document'])
             self.popover_manager.popup_at_button('document_switcher')

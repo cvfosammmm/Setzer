@@ -160,19 +160,42 @@ class MainApplicationController(Adw.Application):
     def on_quit_action(self, action=None, parameter=None):
         self.save_quit()
 
-    def save_quit(self):
+    def save_quit(self, unsaved_documents=None):
         for document in self.workspace.open_documents: DocumentSettings.save_document_state(document)
 
-        documents = self.workspace.get_unsaved_documents()
-        active_document = self.workspace.get_active_document()
-        if documents == None or active_document == None:
+        if unsaved_documents == None:
+            unsaved_documents = self.workspace.get_unsaved_documents()
+
+        if len(unsaved_documents) > 0:
+            self.workspace.set_active_document(unsaved_documents[0])
+            dialog = DialogLocator.get_dialog('close_confirmation')
+            dialog.run({'unsaved_document': unsaved_documents[0], 'documents': unsaved_documents}, self.save_quit_callback)
+        else:
             self.save_state_and_quit()
 
-        DialogLocator.get_dialog('close_confirmation').run({'unsaved_documents': documents}, self.save_quit_callback)
+    def save_quit_callback(self, parameters):
+        document = parameters['unsaved_document']
+        unsaved_documents = parameters['documents']
 
-    def save_quit_callback(self, parameters, response):
-        if response['all_save_to_close']:
-            self.save_state_and_quit()
+        if parameters['response'] == 0:
+            unsaved_documents.remove(document)
+            self.save_quit(unsaved_documents)
+        elif parameters['response'] == 2:
+            document = parameters['unsaved_document']
+            if document.get_filename() == None:
+                DialogLocator.get_dialog('save_document').run(document, self.save_callback, parameters)
+            else:
+                document.save_to_disk()
+                unsaved_documents.remove(document)
+                self.save_quit(unsaved_documents)
+
+    def save_callback(self, parameters):
+        document = parameters['unsaved_document']
+        unsaved_documents = parameters['documents']
+
+        if not document.source_buffer.get_modified():
+            unsaved_documents.remove(document)
+        self.save_quit(unsaved_documents)
 
     def save_state_and_quit(self):
         self.save_window_state()

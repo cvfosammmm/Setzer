@@ -155,7 +155,7 @@ class Actions(object):
         self.actions['save-session'].set_enabled(document_active)
         self.actions['save'].set_enabled(enable_save)
         self.actions['save-as'].set_enabled(document_active)
-        self.actions['save-all'].set_enabled(self.workspace.get_unsaved_documents() != None)
+        self.actions['save-all'].set_enabled(len(self.workspace.get_unsaved_documents()) > 0)
         self.actions['add-remove-packages-dialog'].set_enabled(document_active_is_latex)
         self.actions['redo'].set_enabled(document_active and document.source_buffer.get_can_redo())
         self.actions['undo'].set_enabled(document_active and document.source_buffer.get_can_undo())
@@ -261,7 +261,7 @@ class Actions(object):
         active_document = self.workspace.get_active_document()
         return_to_active_document = False
         documents = self.workspace.get_unsaved_documents()
-        if documents != None: 
+        if len(documents) > 0: 
             for document in documents:
                 if document.get_filename() == None:
                     self.workspace.set_active_document(document)
@@ -280,16 +280,28 @@ class Actions(object):
     def close_all(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
 
-        documents = self.workspace.get_all_documents()
         unsaved_documents = self.workspace.get_unsaved_documents()
-        dialog = DialogLocator.get_dialog('close_confirmation')
-        dialog.run({'unsaved_documents': unsaved_documents, 'documents': documents}, self.close_all_callback)
-
-    def close_all_callback(self, parameters, response):
-        not_save_to_close_documents = response['not_save_to_close_documents']
-        for document in parameters['documents']:
-            if document not in not_save_to_close_documents:
+        if len(unsaved_documents) > 0:
+            self.workspace.set_active_document(unsaved_documents[0])
+            dialog = DialogLocator.get_dialog('close_confirmation')
+            dialog.run({'unsaved_document': unsaved_documents[0]}, self.close_all_callback)
+        else:
+            documents = self.workspace.get_all_documents()
+            for document in documents:
                 self.workspace.remove_document(document)
+
+    def close_all_callback(self, parameters):
+        document = parameters['unsaved_document']
+
+        if parameters['response'] == 0:
+            self.workspace.remove_document(document)
+            self.close_all()
+        elif parameters['response'] == 2:
+            if document.get_filename() == None:
+                DialogLocator.get_dialog('save_document').run(document, self.close_all)
+            else:
+                document.save_to_disk()
+                self.close_all()
 
     def close_active_document(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return
@@ -297,14 +309,20 @@ class Actions(object):
         document = self.workspace.get_active_document()
         if document.source_buffer.get_modified():
             dialog = DialogLocator.get_dialog('close_confirmation')
-            dialog.run({'unsaved_documents': [document], 'document': document}, self.close_document_callback)
+            dialog.run({'unsaved_document': document}, self.close_document_callback)
         else:
             self.workspace.remove_document(document)
 
-    def close_document_callback(self, parameters, response):
-        not_save_to_close = response['not_save_to_close_documents']
-        if parameters['document'] not in not_save_to_close:
-            self.workspace.remove_document(parameters['document'])
+    def close_document_callback(self, parameters):
+        if parameters['response'] == 0:
+            self.workspace.remove_document(parameters['unsaved_document'])
+        elif parameters['response'] == 2:
+            document = parameters['unsaved_document']
+            if document.get_filename() == None:
+                DialogLocator.get_dialog('save_document').run(document)
+            else:
+                document.save_to_disk()
+                self.workspace.remove_document(parameters['unsaved_document'])
 
     def start_wizard(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return

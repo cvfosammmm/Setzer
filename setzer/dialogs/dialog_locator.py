@@ -15,24 +15,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
-import setzer.dialogs.about.about as about_dialog
-import setzer.dialogs.add_remove_packages.add_remove_packages as add_remove_packages
-import setzer.dialogs.build_save.build_save as build_save_dialog
-import setzer.dialogs.building_failed.building_failed as building_failed_dialog
-import setzer.dialogs.close_confirmation.close_confirmation as close_confirmation_dialog
-import setzer.dialogs.document_changed_on_disk.document_changed_on_disk as document_changed_on_disk_dialog
-import setzer.dialogs.document_deleted_on_disk.document_deleted_on_disk as document_deleted_on_disk_dialog
-import setzer.dialogs.document_wizard.document_wizard as document_wizard_dialog
-import setzer.dialogs.include_bibtex_file.include_bibtex_file as include_bibtex_file_dialog
-import setzer.dialogs.include_latex_file.include_latex_file as include_latex_file_dialog
-import setzer.dialogs.interpreter_missing.interpreter_missing as interpreter_missing_dialog
-import setzer.dialogs.keyboard_shortcuts.keyboard_shortcuts as keyboard_shortcuts_dialog
-import setzer.dialogs.open_document.open_document as open_document_dialog
-import setzer.dialogs.open_session.open_session as open_session_dialog
-import setzer.dialogs.preferences.preferences as preferences_dialog
-import setzer.dialogs.replace_confirmation.replace_confirmation as replace_confirmation_dialog
-import setzer.dialogs.save_document.save_document as save_document_dialog
-import setzer.dialogs.save_session.save_session as save_session_dialog
+from setzer.dialogs.about.about import AboutDialog
+from setzer.dialogs.add_remove_packages.add_remove_packages import AddRemovePackagesDialog
+from setzer.dialogs.build_save.build_save import BuildSaveDialog
+from setzer.dialogs.building_failed.building_failed import BuildingFailedDialog
+from setzer.dialogs.close_confirmation.close_confirmation import CloseConfirmationDialog
+from setzer.dialogs.document_changed_on_disk.document_changed_on_disk import DocumentChangedOnDiskDialog
+from setzer.dialogs.document_deleted_on_disk.document_deleted_on_disk import DocumentDeletedOnDiskDialog
+from setzer.dialogs.document_wizard.document_wizard import DocumentWizard
+from setzer.dialogs.include_bibtex_file.include_bibtex_file import IncludeBibTeXFile
+from setzer.dialogs.include_latex_file.include_latex_file import IncludeLaTeXFile
+from setzer.dialogs.interpreter_missing.interpreter_missing import InterpreterMissingDialog
+from setzer.dialogs.keyboard_shortcuts.keyboard_shortcuts import KeyboardShortcutsDialog
+from setzer.dialogs.open_document.open_document import OpenDocumentDialog
+from setzer.dialogs.open_session.open_session import OpenSessionDialog
+from setzer.dialogs.preferences.preferences import PreferencesDialog
+from setzer.dialogs.replace_confirmation.replace_confirmation import ReplaceConfirmationDialog
+from setzer.dialogs.save_document.save_document import SaveDocumentDialog
+from setzer.dialogs.save_session.save_session import SaveSessionDialog
 
 
 class DialogLocator():
@@ -41,24 +41,24 @@ class DialogLocator():
 
     def init_dialogs(main_window, workspace):
         dialogs = dict()
-        dialogs['about'] = about_dialog.AboutDialog(main_window)
-        dialogs['add_remove_packages'] = add_remove_packages.AddRemovePackagesDialog(main_window)
-        dialogs['build_save'] = build_save_dialog.BuildSaveDialog(main_window, workspace)
-        dialogs['document_changed_on_disk'] = document_changed_on_disk_dialog.DocumentChangedOnDiskDialog(main_window)
-        dialogs['document_deleted_on_disk'] = document_deleted_on_disk_dialog.DocumentDeletedOnDiskDialog(main_window)
-        dialogs['document_wizard'] = document_wizard_dialog.DocumentWizard(main_window)
-        dialogs['include_bibtex_file'] = include_bibtex_file_dialog.IncludeBibTeXFile(main_window)
-        dialogs['include_latex_file'] = include_latex_file_dialog.IncludeLaTeXFile(main_window)
-        dialogs['keyboard_shortcuts'] = keyboard_shortcuts_dialog.KeyboardShortcutsDialog(main_window)
-        dialogs['open_document'] = open_document_dialog.OpenDocumentDialog(main_window, workspace)
-        dialogs['open_session'] = open_session_dialog.OpenSessionDialog(main_window, workspace)
-        dialogs['preferences'] = preferences_dialog.PreferencesDialog(main_window)
-        dialogs['replace_confirmation'] = replace_confirmation_dialog.ReplaceConfirmationDialog(main_window)
-        dialogs['save_document'] = save_document_dialog.SaveDocumentDialog(main_window, workspace)
-        dialogs['save_session'] = save_session_dialog.SaveSessionDialog(main_window, workspace)
-        dialogs['close_confirmation'] = close_confirmation_dialog.CloseConfirmationDialog(main_window, workspace, dialogs['save_document'])
-        dialogs['building_failed'] = building_failed_dialog.BuildingFailedDialog(main_window, dialogs['preferences'])
-        dialogs['interpreter_missing'] = interpreter_missing_dialog.InterpreterMissingDialog(main_window, dialogs['preferences'])
+        dialogs['about'] = AboutDialog(main_window)
+        dialogs['add_remove_packages'] = AddRemovePackagesDialog(main_window)
+        dialogs['build_save'] = BuildSaveDialog(main_window, workspace)
+        dialogs['document_changed_on_disk'] = DocumentChangedOnDiskDialog(main_window)
+        dialogs['document_deleted_on_disk'] = DocumentDeletedOnDiskDialog(main_window)
+        dialogs['document_wizard'] = DocumentWizard(main_window)
+        dialogs['include_bibtex_file'] = IncludeBibTeXFile(main_window)
+        dialogs['include_latex_file'] = IncludeLaTeXFile(main_window)
+        dialogs['keyboard_shortcuts'] = KeyboardShortcutsDialog(main_window)
+        dialogs['open_document'] = OpenDocumentDialog(main_window, workspace)
+        dialogs['open_session'] = OpenSessionDialog(main_window, workspace)
+        dialogs['preferences'] = PreferencesDialog(main_window)
+        dialogs['replace_confirmation'] = ReplaceConfirmationDialog(main_window)
+        dialogs['save_document'] = SaveDocumentDialog(main_window, workspace)
+        dialogs['save_session'] = SaveSessionDialog(main_window, workspace)
+        dialogs['close_confirmation'] = CloseConfirmationDialog(main_window, workspace)
+        dialogs['building_failed'] = BuildingFailedDialog(main_window, dialogs['preferences'])
+        dialogs['interpreter_missing'] = InterpreterMissingDialog(main_window, dialogs['preferences'])
         DialogLocator.dialogs = dialogs
     
     def get_dialog(dialog_type):

@@ -29,9 +29,13 @@ class SaveDocumentDialog(object):
         self.main_window = main_window
         self.workspace = workspace
         self.document = None
+        self.callback = None
+        self.arguments = None
 
-    def run(self, document):
+    def run(self, document, callback=None, arguments=None):
         self.document = document
+        self.callback = callback
+        self.arguments = arguments
         self.setup()
         self.view.save(self.main_window, None, self.dialog_process_response)
 
@@ -63,5 +67,8 @@ class SaveDocumentDialog(object):
                 self.document.set_filename(filename)
                 self.document.save_to_disk()
                 self.workspace.update_recently_opened_document(filename)
+
+        if self.callback != None:
+            self.callback(self.arguments)
 
 
