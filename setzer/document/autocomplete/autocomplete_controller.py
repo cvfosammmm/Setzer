@@ -52,40 +52,34 @@ class AutocompleteController(object):
                     if self.autocomplete.is_active:
                         return True
 
-        if keyval == Gdk.keyval_from_name('Return'):
-            if state & modifiers == 0:
-                if self.autocomplete.is_active:
-                    self.autocomplete.submit()
-                    return True
-
-        if keyval == Gdk.keyval_from_name('Escape'):
-            if state & modifiers == 0:
-                self.autocomplete.deactivate()
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Return')):
+            if self.autocomplete.is_active:
+                self.autocomplete.submit()
                 return True
 
-        if keyval == Gdk.keyval_from_name('Down'):
-            if state & modifiers == 0:
-                if self.autocomplete.is_active:
-                    self.autocomplete.select_next()
-                    return True
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Escape')):
+            self.autocomplete.deactivate()
+            return True
 
-        if keyval == Gdk.keyval_from_name('Up'):
-            if state & modifiers == 0:
-                if self.autocomplete.is_active:
-                    self.autocomplete.select_previous()
-                    return True
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Down')):
+            if self.autocomplete.is_active:
+                self.autocomplete.select_next()
+                return True
 
-        if keyval == Gdk.keyval_from_name('Page_Down'):
-            if state & modifiers == 0:
-                if self.autocomplete.is_active:
-                    self.autocomplete.page_down()
-                    return True
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Up')):
+            if self.autocomplete.is_active:
+                self.autocomplete.select_previous()
+                return True
 
-        if keyval == Gdk.keyval_from_name('Page_Up'):
-            if state & modifiers == 0:
-                if self.autocomplete.is_active:
-                    self.autocomplete.page_up()
-                    return True
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Page_Down')):
+            if self.autocomplete.is_active:
+                self.autocomplete.page_down()
+                return True
+
+        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Page_Up')):
+            if self.autocomplete.is_active:
+                self.autocomplete.page_up()
+                return True
 
         return False
 
