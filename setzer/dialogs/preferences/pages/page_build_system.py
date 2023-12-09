@@ -103,13 +103,13 @@ class PageBuildSystem(object):
                     self.view.option_latex_interpreter[interpreter].set_visible(False)
 
             self.view.option_latex_interpreter['tectonic'].connect('toggled', self.on_use_tectonic_toggled)
-            self.update_tectonic_element_visibility()
+        self.update_tectonic_element_visibility()
 
     def on_use_tectonic_toggled(self, button):
         self.update_tectonic_element_visibility()
 
     def update_tectonic_element_visibility(self):
-        if self.view.option_latex_interpreter['tectonic'].get_active():
+        if 'tectonic' in self.latex_interpreters and self.view.option_latex_interpreter['tectonic'].get_active():
             self.view.tectonic_warning_label.set_visible(True)
             self.view.option_use_latexmk.set_visible(False)
             self.view.shell_escape_box.set_visible(False)
