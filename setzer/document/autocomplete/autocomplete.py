@@ -34,6 +34,7 @@ class Autocomplete(object):
         self.source_buffer = document.source_buffer
         self.adjustment = self.document.view.scrolled_window.get_vadjustment()
 
+        self.is_enabled = self.document.settings.get_value('preferences', 'enable_autocomplete')
         self.is_active = False
         self.current_word_offset = None
         self.current_word = None
@@ -49,6 +50,14 @@ class Autocomplete(object):
         self.source_buffer.connect('notify::cursor-position', self.on_cursor_position_change)
         self.adjustment.connect('changed', self.on_adjustment_change)
         self.adjustment.connect('value-changed', self.on_adjustment_value_change)
+        self.document.settings.connect('settings_changed', self.on_settings_changed)
+
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+
+        if item == 'enable_autocomplete':
+            self.is_enabled = value
+            if not self.is_enabled: self.deactivate()
 
     def on_document_change(self, document):
         if self.is_active:
@@ -70,6 +79,9 @@ class Autocomplete(object):
         self.widget.queue_draw()
 
     def activate_if_possible(self):
+        # No activation if autocomplete is disabled.
+        if not self.is_enabled: return
+
         # Triggered on tab, if ac is inactive,
         # also when text is inserted, if it is a single character.
 

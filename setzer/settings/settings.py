@@ -82,6 +82,9 @@ class Settings(Observable):
         self.defaults['preferences']['highlight_current_line'] = False
         self.defaults['preferences']['highlight_matching_brackets'] = True
         self.defaults['preferences']['build_option_system_commands'] = 'disable'
+        self.defaults['preferences']['enable_autocomplete'] = True
+        self.defaults['preferences']['enable_bracket_completion'] = True
+        self.defaults['preferences']['enable_matching_begin_end'] = True
 
         self.defaults['preferences']['use_system_font'] = True
         textview = Gtk.TextView()
