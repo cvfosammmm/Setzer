@@ -64,6 +64,11 @@
     </requires>
 
     <releases>
+        <release version="64" date="2023-12-11">
+            <description translatable="no">
+                <p>Autocomplete preferences, ...</p>
+            </description>
+        </release>
         <release version="63" date="2023-12-4">
             <description translatable="no">
                 <p>Navigate popovers with keyboard, ...</p>
