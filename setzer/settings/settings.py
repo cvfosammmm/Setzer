@@ -84,7 +84,7 @@ class Settings(Observable):
         self.defaults['preferences']['build_option_system_commands'] = 'disable'
         self.defaults['preferences']['enable_autocomplete'] = True
         self.defaults['preferences']['enable_bracket_completion'] = True
-        self.defaults['preferences']['enable_matching_begin_end'] = True
+        self.defaults['preferences']['update_matching_blocks'] = True
 
         self.defaults['preferences']['use_system_font'] = True
         textview = Gtk.TextView()

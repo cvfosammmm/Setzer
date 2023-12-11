@@ -36,12 +36,6 @@ class AutocompleteController(object):
     def on_keypress(self, controller, keyval, keycode, state):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if ServiceLocator.get_regex_object('[a-zA-Z]\Z').match(Gdk.keyval_name(keyval)) or keyval == Gdk.keyval_from_name('asterisk') or keyval == Gdk.keyval_from_name('BackSpace') or keyval == Gdk.keyval_from_name('Delete'):
-            if state & modifiers == 0:
-                if not self.autocomplete.is_active:
-                    if self.autocomplete.handle_keypress_inside_begin_or_end(keyval):
-                        return True
-
         if keyval in [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]:
             if state & modifiers == 0:
                 if self.autocomplete.is_active:

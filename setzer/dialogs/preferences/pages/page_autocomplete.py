@@ -34,8 +34,8 @@ class PageAutocomplete(object):
         self.view.option_bracket_completion.set_active(self.settings.get_value('preferences', 'enable_bracket_completion'))
         self.view.option_bracket_completion.connect('toggled', self.preferences.on_check_button_toggle, 'enable_bracket_completion')
 
-        self.view.option_begin_end.set_active(self.settings.get_value('preferences', 'enable_matching_begin_end'))
-        self.view.option_begin_end.connect('toggled', self.preferences.on_check_button_toggle, 'enable_matching_begin_end')
+        self.view.option_update_matching_blocks.set_active(self.settings.get_value('preferences', 'update_matching_blocks'))
+        self.view.option_update_matching_blocks.connect('toggled', self.preferences.on_check_button_toggle, 'update_matching_blocks')
 
 
 class PageAutocompleteView(Gtk.Box):
@@ -71,8 +71,8 @@ class PageAutocompleteView(Gtk.Box):
 
         label = Gtk.Label()
         label.set_markup(_('Update matching <i>begin</i>- or <i>end</i>-blocks'))
-        self.option_begin_end = Gtk.CheckButton()
-        self.option_begin_end.set_child(label)
-        #self.append(self.option_begin_end)
+        self.option_update_matching_blocks = Gtk.CheckButton()
+        self.option_update_matching_blocks.set_child(label)
+        self.append(self.option_update_matching_blocks)
 
 
