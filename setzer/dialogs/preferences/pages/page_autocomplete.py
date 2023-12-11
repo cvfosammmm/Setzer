@@ -64,10 +64,10 @@ class PageAutocompleteView(Gtk.Box):
         label.set_xalign(0)
         label.set_margin_top(18)
         label.set_margin_bottom(6)
-        #self.append(label)
+        self.append(label)
 
         self.option_bracket_completion = Gtk.CheckButton.new_with_label(_('Automatically add closing brackets'))
-        #self.append(self.option_bracket_completion)
+        self.append(self.option_bracket_completion)
 
         label = Gtk.Label()
         label.set_markup(_('Update matching <i>begin</i>- or <i>end</i>-blocks'))

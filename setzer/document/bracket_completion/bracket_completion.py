@@ -28,6 +28,8 @@ class BracketCompletion(object):
         self.document = document
         self.source_buffer = document.source_buffer
 
+        self.is_enabled = self.document.settings.get_value('preferences', 'enable_bracket_completion')
+
         key_controller = Gtk.EventControllerKey()
         key_controller.connect('key-pressed', self.on_keypress)
         key_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
@@ -36,9 +38,19 @@ class BracketCompletion(object):
         self.completion_marks = list()
         self.document.connect('cursor_position_changed', self.on_cursor_position_changed)
         self.document.connect('changed', self.on_buffer_changed)
+        self.document.settings.connect('settings_changed', self.on_settings_changed)
+
+    def on_settings_changed(self, settings, parameter):
+        section, item, value = parameter
+
+        if item == 'enable_bracket_completion':
+            self.is_enabled = value
+            if not self.is_enabled:
+                self.reconsider_completion_marks()
 
     def on_keypress(self, controller, keyval, keycode, state):
         if self.document.autocomplete.is_active: return False
+        if not self.is_enabled: return False
 
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
@@ -110,7 +122,7 @@ class BracketCompletion(object):
             end_iter = self.source_buffer.get_iter_at_mark(end_mark)
             insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
 
-            if start_iter.get_offset() < insert_iter.get_offset() and end_iter.get_offset() > insert_iter.get_offset():
+            if self.is_enabled and start_iter.get_offset() < insert_iter.get_offset() and end_iter.get_offset() > insert_iter.get_offset():
                 completion_marks.append([start_mark, end_mark])
             else:
                 self.source_buffer.delete_mark(start_mark)
