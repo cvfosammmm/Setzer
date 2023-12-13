@@ -70,6 +70,8 @@ class BracketCompletion(object):
             return self.handle_autoclosing_bracket_overwrite('}')
         if keyval == Gdk.keyval_from_name('parenright'):
             return self.handle_autoclosing_bracket_overwrite(')')
+        if keyval == Gdk.keyval_from_name('backslash'):
+            return self.handle_autoclosing_bracket_overwrite('\\')
 
         return False
 
@@ -80,11 +82,9 @@ class BracketCompletion(object):
         self.reconsider_completion_marks()
 
     def autoclose_brackets(self, char):
-        start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        end_iter = start_iter.copy()
-        end_iter.backward_char()
-
         closing_char = {'[': ']', '{': '}', '(': ')'}[char]
+        if self.document.get_chars_at_cursor(-1):
+            closing_char = '\\' + closing_char
 
         self.source_buffer.begin_user_action()
         self.source_buffer.delete_selection(True, True)
@@ -92,7 +92,7 @@ class BracketCompletion(object):
         self.source_buffer.end_user_action()
 
         insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        insert_iter.backward_char()
+        insert_iter.backward_chars(len(closing_char))
         self.source_buffer.place_cursor(insert_iter)
 
         self.add_completion_marks(insert_iter, len(closing_char), len(closing_char))
@@ -137,15 +137,27 @@ class BracketCompletion(object):
 
         if not self.document.get_chars_at_cursor(1) == char: return False
 
-        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
-        insert_iter.forward_chars(1)
-        for mark in insert_iter.get_marks():
-            if mark != None and mark.get_name() != None and mark.get_name().startswith('brackets_autoclose_end_'):
-                self.source_buffer.begin_user_action()
-                self.source_buffer.place_cursor(insert_iter)
-                self.source_buffer.end_user_action()
-                self.reconsider_completion_marks()
-                return True
+        if char == '\\':
+            insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+            insert_iter.forward_chars(2)
+            for mark in insert_iter.get_marks():
+                if mark != None and mark.get_name() != None and mark.get_name().startswith('brackets_autoclose_end_'):
+                    self.source_buffer.begin_user_action()
+                    insert_iter.backward_chars(1)
+                    self.source_buffer.place_cursor(insert_iter)
+                    self.source_buffer.end_user_action()
+                    self.reconsider_completion_marks()
+                    return True
+        else:
+            insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+            insert_iter.forward_chars(1)
+            for mark in insert_iter.get_marks():
+                if mark != None and mark.get_name() != None and mark.get_name().startswith('brackets_autoclose_end_'):
+                    self.source_buffer.begin_user_action()
+                    self.source_buffer.place_cursor(insert_iter)
+                    self.source_buffer.end_user_action()
+                    self.reconsider_completion_marks()
+                    return True
 
         return False
 
