@@ -74,9 +74,9 @@ class Document(Observable):
         self.code_folding = code_folding.CodeFolding(self)
         self.gutter = gutter.Gutter(self, self.view)
         self.search = search.Search(self, self.view)
-        if self.is_latex_document(): self.autocomplete = autocomplete.Autocomplete(self)
         if self.is_latex_document(): self.update_matching_blocks = update_matching_blocks.UpdateMatchingBlocks(self)
         if self.is_latex_document(): self.bracket_completion = bracket_completion.BracketCompletion(self)
+        if self.is_latex_document(): self.autocomplete = autocomplete.Autocomplete(self)
 
         self.settings.connect('settings_changed', self.on_settings_changed)
 

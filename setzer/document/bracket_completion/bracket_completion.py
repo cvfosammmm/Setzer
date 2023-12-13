@@ -73,6 +73,10 @@ class BracketCompletion(object):
         if keyval == Gdk.keyval_from_name('backslash'):
             return self.handle_autoclosing_bracket_overwrite('\\')
 
+        if keyval in [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]:
+            if state & modifiers == 0:
+                return self.jump_over_closing_bracket()
+
         return False
 
     def on_cursor_position_changed(self, document):
@@ -160,5 +164,16 @@ class BracketCompletion(object):
                     return True
 
         return False
+
+    def jump_over_closing_bracket(self):
+        chars_at_cursor = self.document.get_chars_at_cursor(2)
+        if chars_at_cursor in ['\\}', '\\)', '\\]']: forward_chars = 2
+        elif chars_at_cursor[0] in ['}', ')', ']']: forward_chars = 1
+        else: return False
+
+        insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        insert_iter.forward_chars(forward_chars)
+        self.source_buffer.place_cursor(insert_iter)
+        return True
 
 
