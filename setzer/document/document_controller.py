@@ -80,9 +80,20 @@ class DocumentController(object):
     def on_keypress(self, controller, keyval, keycode, state):
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Tab')):
-            self.document.select_next_placeholder()
-            if self.document.dot_selected():
+        if keyval in [Gdk.keyval_from_name('Tab'), Gdk.keyval_from_name('ISO_Left_Tab')]:
+            if state & modifiers == 0:
+                self.document.select_next_placeholder()
+                if self.document.dot_selected():
+                    return True
+
+                chars_at_cursor = self.document.get_chars_at_cursor(2)
+                if chars_at_cursor in ['\\}', '\\)', '\\]']: forward_chars = 2
+                elif chars_at_cursor[0] in ['}', ')', ']']: forward_chars = 1
+                else: return False
+
+                insert_iter = self.document.source_buffer.get_iter_at_mark(self.document.source_buffer.get_insert())
+                insert_iter.forward_chars(forward_chars)
+                self.document.source_buffer.place_cursor(insert_iter)
                 return True
 
         if (state & modifiers, keyval) == (Gdk.ModifierType.SHIFT_MASK, Gdk.keyval_from_name('ISO_Left_Tab')):
