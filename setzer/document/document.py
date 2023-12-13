@@ -205,7 +205,9 @@ class Document(Observable):
         return self.get_line(start_iter.get_line())[start_iter.get_line_offset():]
 
     def get_chars_at_cursor(self, number_of_chars):
-        start_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
+        return self.get_chars_at_iter(self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert()), number_of_chars)
+
+    def get_chars_at_iter(self, start_iter, number_of_chars):
         end_iter = start_iter.copy()
         end_iter.forward_chars(number_of_chars)
         return self.source_buffer.get_text(start_iter, end_iter, False)

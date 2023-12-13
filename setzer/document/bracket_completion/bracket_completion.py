@@ -28,7 +28,7 @@ class BracketCompletion(object):
         self.document = document
         self.source_buffer = document.source_buffer
 
-        self.is_enabled = self.document.settings.get_value('preferences', 'enable_bracket_completion')
+        self.autoclose_enabled = self.document.settings.get_value('preferences', 'enable_bracket_completion')
 
         key_controller = Gtk.EventControllerKey()
         key_controller.connect('key-pressed', self.on_keypress)
@@ -44,34 +44,40 @@ class BracketCompletion(object):
         section, item, value = parameter
 
         if item == 'enable_bracket_completion':
-            self.is_enabled = value
-            if not self.is_enabled:
+            self.autoclose_enabled = value
+            if not self.autoclose_enabled:
                 self.reconsider_completion_marks()
 
     def on_keypress(self, controller, keyval, keycode, state):
         if self.document.autocomplete.is_active: return False
-        if not self.is_enabled: return False
 
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if keyval == Gdk.keyval_from_name('bracketleft'):
-            self.autoclose_brackets('[')
-            return True
-        if keyval == Gdk.keyval_from_name('braceleft'):
-            self.autoclose_brackets('{')
-            return True
-        if keyval == Gdk.keyval_from_name('parenleft'):
-            self.autoclose_brackets('(')
-            return True
+        if self.source_buffer.get_has_selection():
+            if keyval == Gdk.keyval_from_name('backslash'):
+                return self.bracket_selection('\\')
+            if keyval == Gdk.keyval_from_name('bracketleft'):
+                return self.bracket_selection('[')
+            if keyval == Gdk.keyval_from_name('braceleft'):
+                return self.bracket_selection('{')
+            if keyval == Gdk.keyval_from_name('parenleft'):
+                return self.bracket_selection('(')
+        else:
+            if keyval == Gdk.keyval_from_name('bracketleft'):
+                return self.autoclose_brackets('[')
+            if keyval == Gdk.keyval_from_name('braceleft'):
+                return self.autoclose_brackets('{')
+            if keyval == Gdk.keyval_from_name('parenleft'):
+                return self.autoclose_brackets('(')
 
-        if keyval == Gdk.keyval_from_name('bracketright'):
-            return self.handle_autoclosing_bracket_overwrite(']')
-        if keyval == Gdk.keyval_from_name('braceright'):
-            return self.handle_autoclosing_bracket_overwrite('}')
-        if keyval == Gdk.keyval_from_name('parenright'):
-            return self.handle_autoclosing_bracket_overwrite(')')
-        if keyval == Gdk.keyval_from_name('backslash'):
-            return self.handle_autoclosing_bracket_overwrite('\\')
+            if keyval == Gdk.keyval_from_name('bracketright'):
+                return self.handle_autoclosing_bracket_overwrite(']')
+            if keyval == Gdk.keyval_from_name('braceright'):
+                return self.handle_autoclosing_bracket_overwrite('}')
+            if keyval == Gdk.keyval_from_name('parenright'):
+                return self.handle_autoclosing_bracket_overwrite(')')
+            if keyval == Gdk.keyval_from_name('backslash'):
+                return self.handle_autoclosing_bracket_overwrite('\\')
 
         return False
 
@@ -81,13 +87,34 @@ class BracketCompletion(object):
     def on_buffer_changed(self, document):
         self.reconsider_completion_marks()
 
+    def bracket_selection(self, char):
+        # if backslash or opening brackets are typed, don't replace selected text
+        # but put a backslash or brackets around it.
+
+        bounds = self.source_buffer.get_selection_bounds()
+        closing_char = {'[': ']', '{': '}', '(': ')', '\\': ''}[char]
+        if self.document.get_chars_at_iter(bounds[0], -1) == '\\' and char in ['[', '{', '(']:
+            closing_char = '\\' + closing_char
+        offset_start = bounds[0].get_offset()
+        text = char + self.document.get_selected_text() + closing_char
+
+        self.source_buffer.begin_user_action()
+        self.source_buffer.delete_selection(True, True)
+        self.source_buffer.insert_at_cursor(text)
+        start_iter = self.source_buffer.get_iter_at_offset(offset_start + 1)
+        end_iter = self.source_buffer.get_iter_at_offset(offset_start + len(text) - len(closing_char))
+        self.source_buffer.select_range(start_iter, end_iter)
+        self.source_buffer.end_user_action()
+        return True
+
     def autoclose_brackets(self, char):
+        if not self.autoclose_enabled: return False
+
         closing_char = {'[': ']', '{': '}', '(': ')'}[char]
         if self.document.get_chars_at_cursor(-1):
             closing_char = '\\' + closing_char
 
         self.source_buffer.begin_user_action()
-        self.source_buffer.delete_selection(True, True)
         self.source_buffer.insert_at_cursor(char + closing_char)
         self.source_buffer.end_user_action()
 
@@ -96,6 +123,8 @@ class BracketCompletion(object):
         self.source_buffer.place_cursor(insert_iter)
 
         self.add_completion_marks(insert_iter, len(closing_char), len(closing_char))
+
+        return True
 
     def add_completion_marks(self, insert_iter, len_before, len_after):
         # marks are added to the text buffer, to signal that a completion took place
@@ -122,7 +151,7 @@ class BracketCompletion(object):
             end_iter = self.source_buffer.get_iter_at_mark(end_mark)
             insert_iter = self.source_buffer.get_iter_at_mark(self.source_buffer.get_insert())
 
-            if self.is_enabled and start_iter.get_offset() < insert_iter.get_offset() and end_iter.get_offset() > insert_iter.get_offset():
+            if self.autoclose_enabled and start_iter.get_offset() < insert_iter.get_offset() and end_iter.get_offset() > insert_iter.get_offset():
                 completion_marks.append([start_mark, end_mark])
             else:
                 self.source_buffer.delete_mark(start_mark)
