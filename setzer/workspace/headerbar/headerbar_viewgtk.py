@@ -82,6 +82,7 @@ class HeaderBar(Gtk.HeaderBar):
         self.menu_button = PopoverManager.create_popover_button('hamburger_menu')
         self.menu_button.set_child(Gtk.Image.new_from_icon_name('open-menu-symbolic'))
         self.menu_button.set_can_focus(False)
+        self.menu_button.set_tooltip_text(_('Main Menu') + ' (F10)')
         self.pack_end(self.menu_button)
 
         # save document button

@@ -92,7 +92,7 @@ class Shortcutsbar(Gtk.Box):
         self.button_more.set_icon_name('view-more-symbolic')
         self.button_more.get_style_context().add_class('flat')
         self.button_more.get_style_context().add_class('scbar')
-        self.button_more.set_tooltip_text(_('Document'))
+        self.button_more.set_tooltip_text(_('Context Menu') + ' (F12)')
         self.right_icons.append(self.button_more)
 
         self.button_build_log = Gtk.ToggleButton()
