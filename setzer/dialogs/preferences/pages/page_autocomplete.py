@@ -37,6 +37,9 @@ class PageAutocomplete(object):
         self.view.option_selection_brackets.set_active(self.settings.get_value('preferences', 'bracket_selection'))
         self.view.option_selection_brackets.connect('toggled', self.preferences.on_check_button_toggle, 'bracket_selection')
 
+        self.view.option_tab_jump_brackets.set_active(self.settings.get_value('preferences', 'tab_jump_brackets'))
+        self.view.option_tab_jump_brackets.connect('toggled', self.preferences.on_check_button_toggle, 'tab_jump_brackets')
+
         self.view.option_update_matching_blocks.set_active(self.settings.get_value('preferences', 'update_matching_blocks'))
         self.view.option_update_matching_blocks.connect('toggled', self.preferences.on_check_button_toggle, 'update_matching_blocks')
 
@@ -76,7 +79,13 @@ class PageAutocompleteView(Gtk.Box):
         self.append(self.option_selection_brackets)
 
         label = Gtk.Label()
-        label.set_markup(_('Update matching begin/end blocks'))
+        label.set_markup(_('Jump over closing brackets with <tt>Tab</tt>'))
+        self.option_tab_jump_brackets = Gtk.CheckButton()
+        self.option_tab_jump_brackets.set_child(label)
+        self.append(self.option_tab_jump_brackets)
+
+        label = Gtk.Label()
+        label.set_markup(_('Update matching <tt>begin</tt> / <tt>end</tt> blocks'))
         self.option_update_matching_blocks = Gtk.CheckButton()
         self.option_update_matching_blocks.set_child(label)
         self.append(self.option_update_matching_blocks)

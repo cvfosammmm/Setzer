@@ -86,6 +86,7 @@ class DocumentController(object):
                 if self.document.dot_selected():
                     return True
 
+                if not self.document.settings.get_value('preferences', 'tab_jump_brackets'): return False
                 chars_at_cursor = self.document.get_chars_at_cursor(2)
                 if chars_at_cursor in ['\\}', '\\)', '\\]']: forward_chars = 2
                 elif chars_at_cursor[0] in ['}', ')', ']']: forward_chars = 1

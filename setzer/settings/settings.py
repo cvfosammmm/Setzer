@@ -85,6 +85,7 @@ class Settings(Observable):
         self.defaults['preferences']['enable_autocomplete'] = True
         self.defaults['preferences']['enable_bracket_completion'] = True
         self.defaults['preferences']['bracket_selection'] = True
+        self.defaults['preferences']['tab_jump_brackets'] = True
         self.defaults['preferences']['update_matching_blocks'] = True
 
         self.defaults['preferences']['use_system_font'] = True
