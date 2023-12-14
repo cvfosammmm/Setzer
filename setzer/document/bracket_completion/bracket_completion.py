@@ -29,6 +29,7 @@ class BracketCompletion(object):
         self.source_buffer = document.source_buffer
 
         self.autoclose_enabled = self.document.settings.get_value('preferences', 'enable_bracket_completion')
+        self.bracket_selection_enabled = self.document.settings.get_value('preferences', 'bracket_selection')
 
         key_controller = Gtk.EventControllerKey()
         key_controller.connect('key-pressed', self.on_keypress)
@@ -47,6 +48,9 @@ class BracketCompletion(object):
             self.autoclose_enabled = value
             if not self.autoclose_enabled:
                 self.reconsider_completion_marks()
+
+        if item == 'bracket_selection':
+            self.bracket_selection_enabled = value
 
     def on_keypress(self, controller, keyval, keycode, state):
         if self.document.autocomplete.is_active: return False
@@ -88,6 +92,8 @@ class BracketCompletion(object):
         self.reconsider_completion_marks()
 
     def bracket_selection(self, char):
+        if not self.bracket_selection_enabled: return False
+
         # if backslash or opening brackets are typed, don't replace selected text
         # but put a backslash or brackets around it.
 

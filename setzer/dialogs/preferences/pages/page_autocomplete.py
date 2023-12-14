@@ -34,6 +34,9 @@ class PageAutocomplete(object):
         self.view.option_bracket_completion.set_active(self.settings.get_value('preferences', 'enable_bracket_completion'))
         self.view.option_bracket_completion.connect('toggled', self.preferences.on_check_button_toggle, 'enable_bracket_completion')
 
+        self.view.option_selection_brackets.set_active(self.settings.get_value('preferences', 'bracket_selection'))
+        self.view.option_selection_brackets.connect('toggled', self.preferences.on_check_button_toggle, 'bracket_selection')
+
         self.view.option_update_matching_blocks.set_active(self.settings.get_value('preferences', 'update_matching_blocks'))
         self.view.option_update_matching_blocks.connect('toggled', self.preferences.on_check_button_toggle, 'update_matching_blocks')
 
@@ -69,8 +72,11 @@ class PageAutocompleteView(Gtk.Box):
         self.option_bracket_completion = Gtk.CheckButton.new_with_label(_('Automatically add closing brackets'))
         self.append(self.option_bracket_completion)
 
+        self.option_selection_brackets = Gtk.CheckButton.new_with_label(_('Add brackets to selected text, instead of replacing it with them'))
+        self.append(self.option_selection_brackets)
+
         label = Gtk.Label()
-        label.set_markup(_('Update matching <i>begin</i>- or <i>end</i>-blocks'))
+        label.set_markup(_('Update matching begin/end blocks'))
         self.option_update_matching_blocks = Gtk.CheckButton()
         self.option_update_matching_blocks.set_child(label)
         self.append(self.option_update_matching_blocks)
