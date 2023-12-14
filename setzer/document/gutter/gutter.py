@@ -266,7 +266,7 @@ class Gutter(object):
         else:
             text = str(line + 1)
 
-        if is_current and self.highlight_current_line:
+        if is_current and self.highlight_current_line and not self.source_buffer.get_has_selection():
             Gdk.cairo_set_source_rgba(ctx, ColorManager.get_ui_color('line_highlighting_color'))
             yrange = self.source_view.get_line_yrange(self.source_buffer.get_iter_at_line(line).iter)
             ctx.rectangle(0, yrange.y - self.adjustment.get_value(), self.total_width, yrange.height)
