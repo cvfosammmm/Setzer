@@ -117,7 +117,7 @@ class BracketCompletion(object):
         if not self.autoclose_enabled: return False
 
         closing_char = {'[': ']', '{': '}', '(': ')'}[char]
-        if self.document.get_chars_at_cursor(-1):
+        if self.document.get_chars_at_cursor(-1) == '\\':
             closing_char = '\\' + closing_char
 
         self.source_buffer.begin_user_action()
