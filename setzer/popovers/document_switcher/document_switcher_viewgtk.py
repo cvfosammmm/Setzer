@@ -146,8 +146,8 @@ class DocumentChooserList(Gtk.Widget):
 
             if self.root_selection_mode:
                 if i == hover_item:
-                    snapshot.translate(Graphene.Point().init(0, i * (self.line_height + 15)))
                     self.icons['root'].snapshot_symbolic(snapshot, 16, 16, [fg_color])
+                snapshot.translate(Graphene.Point().init(0, self.line_height + 15))
             else:
                 if document.get_is_root():
                     self.icons['root'].snapshot_symbolic(snapshot, 16, 16, [fg_color])

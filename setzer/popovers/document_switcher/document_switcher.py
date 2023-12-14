@@ -236,6 +236,7 @@ class DocumentSwitcher(Observable):
         active_document = self.workspace.get_active_document()
         if active_document != None:
             active_document.view.source_view.grab_focus()
+        self.activate_normal_mode()
 
     def activate_selection(self):
         if self.view.document_list.selected_index == None: return
