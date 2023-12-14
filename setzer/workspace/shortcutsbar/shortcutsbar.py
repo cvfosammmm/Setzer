@@ -76,7 +76,7 @@ class Shortcutsbar(object):
 
     def on_paned_position_changed(self, paned, position=None):
         self.width = paned.get_position()
-        self.update_wizard_button(animate=True)
+        self.update_wizard_button(animate=False)
 
     def on_document_changed(self, workspace=None, parameter=None):
         self.update_wizard_button(animate=True)
