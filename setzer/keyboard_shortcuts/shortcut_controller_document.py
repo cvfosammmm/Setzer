@@ -39,5 +39,6 @@ class ShortcutControllerDocument(ShortcutController):
         self.create_and_add_shortcut('<Control>v', self.actions.paste)
         self.create_and_add_shortcut('<Control>z', self.actions.undo)
         self.create_and_add_shortcut('<Control><Shift>z', self.actions.redo)
+        self.create_and_add_shortcut('<Shift>F10', self.actions.show_context_menu)
 
 

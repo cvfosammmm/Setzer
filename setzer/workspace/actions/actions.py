@@ -22,6 +22,7 @@ from gi.repository import GLib, Gio, Gtk, Gdk, Pango
 from setzer.app.service_locator import ServiceLocator
 from setzer.dialogs.dialog_locator import DialogLocator
 from setzer.app.font_manager import FontManager
+from setzer.popovers.popover_manager import PopoverManager
 
 
 class Actions(object):
@@ -79,6 +80,7 @@ class Actions(object):
         self.add_action('show-preferences-dialog', self.show_preferences_dialog)
         self.add_action('show-shortcuts-dialog', self.show_shortcuts_dialog)
         self.add_action('show-about-dialog', self.show_about_dialog)
+        self.add_action('show-context-menu', self.show_context_menu)
 
         self.actions['quit'] = Gio.SimpleAction.new('quit', None)
         self.main_window.add_action(self.actions['quit'])
@@ -556,5 +558,8 @@ class Actions(object):
 
     def show_about_dialog(self, action=None, parameter=''):
         DialogLocator.get_dialog('about').run()
+
+    def show_context_menu(self, action=None, parameter=''):
+        PopoverManager.popup_at_button('context_menu')
 
 
