@@ -32,10 +32,7 @@ from setzer.popovers.shortcutsbar.quotes_menu import QuotesMenu
 from setzer.popovers.shortcutsbar.text_menu import TextMenu
 from setzer.popovers.preview_zoom_level.preview_zoom_level import PreviewZoomLevel
 from setzer.popovers.context_menu.context_menu import ContextMenu
-
-from setzer.popovers.helpers.popover import Popover
 from setzer.popovers.helpers.popover_button import PopoverButton
-from setzer.helpers.observable import Observable
 
 
 class PopoverManager():
