@@ -53,20 +53,20 @@ class SymbolsPageView(Gtk.Box):
         self.tabs = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
 
         self.prev_button = Gtk.Button.new_from_icon_name('go-up-symbolic')
-        self.prev_button.set_focus_on_click(False)
+        self.prev_button.set_can_focus(False)
         self.prev_button.get_style_context().add_class('flat')
         self.prev_button.set_tooltip_text(_('Back'))
         self.tabs.append(self.prev_button)
 
         self.next_button = Gtk.Button.new_from_icon_name('go-down-symbolic')
-        self.next_button.set_focus_on_click(False)
+        self.next_button.set_can_focus(False)
         self.next_button.get_style_context().add_class('flat')
         self.next_button.set_tooltip_text(_('Forward'))
         self.tabs.append(self.next_button)
 
         self.search_button = Gtk.ToggleButton()
         self.search_button.set_icon_name('edit-find-symbolic')
-        self.search_button.set_focus_on_click(False)
+        self.search_button.set_can_focus(False)
         self.search_button.get_style_context().add_class('flat')
         self.search_button.set_tooltip_text(_('Find'))
         self.tabs.append(self.search_button)

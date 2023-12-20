@@ -73,7 +73,6 @@ class DocumentStructurePage(Gtk.Overlay):
 
         self.prev_button = Gtk.Button()
         self.prev_button.set_icon_name('go-up-symbolic')
-        self.prev_button.set_focus_on_click(False)
         self.prev_button.set_tooltip_text(_('Back'))
         self.prev_button.get_style_context().add_class('flat')
         self.prev_button.set_can_focus(False)
@@ -81,7 +80,6 @@ class DocumentStructurePage(Gtk.Overlay):
 
         self.next_button = Gtk.Button()
         self.next_button.set_icon_name('go-down-symbolic')
-        self.next_button.set_focus_on_click(False)
         self.next_button.set_tooltip_text(_('Forward'))
         self.next_button.get_style_context().add_class('flat')
         self.next_button.set_can_focus(False)
