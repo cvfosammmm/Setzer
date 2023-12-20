@@ -152,13 +152,14 @@ box.buildlog > box button {
     }
     to {
         opacity: 1;
-        transform: translateY(0px);
+        transform: translateY(1px);
     }
 }
 box.popover {
     animation-name: popover-animation;
     animation-duration: 0.2s;
     animation-timing-function: ease;
+    transform: translateY(1px);
 }
 box.popover .content {
     background: @popover_bg_color;
@@ -166,6 +167,7 @@ box.popover .content {
     padding-top: 5px;
     border-radius: 10px;
     border: 1px solid @borders;
+    box-shadow: 0 1px 5px 1px mix(black, transparent, .91), 0 2px 14px 3px mix(black, transparent, .95);
 }
 box.popover .arrow {
     min-width: 10px;
@@ -175,10 +177,11 @@ box.popover .arrow {
     transform: translateY(9px) scale(2, 2) rotate(-45deg);
 }
 box.popover .arrow-border {
-    min-width: 25px;
+    min-width: 1px;
     min-height: 1px;
+    background: black;
     background: @popover_bg_color;
-    transform: translateY(-6px);
+    transform: translateY(-5px) translateX(12px) scale(18, 18) rotate(-45deg);
 }
 box.popover button.action, box.popover button.menu, box.popover button.header {
     background: none;
