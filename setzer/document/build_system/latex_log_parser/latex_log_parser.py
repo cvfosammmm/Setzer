@@ -137,7 +137,7 @@ class LaTeXLogParser():
                 if line.startswith('No file '):
                     text = line.strip()
                     line_number = -1
-                    log_messages['error'].append((None, line_number, text))
+                    log_messages['warning'].append((None, line_number, text))
 
                 elif line.startswith('Package biblatex Warning: Please (re)run Biber on the file:'):
                     text = line[26:].strip()
