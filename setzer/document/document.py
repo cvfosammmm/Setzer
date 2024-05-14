@@ -140,7 +140,7 @@ class Document(Observable):
         self.place_cursor(0, 0)
         self.update_save_date()
         return True
-                
+
     def save_to_disk(self):
         if self.filename == None: return False
 
