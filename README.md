@@ -2,7 +2,7 @@
 
 Simple yet full-featured LaTeX editor for the GNU/Linux desktop, written in Python with Gtk.
 
-Website: <a href="https://www.cvfosammmm.org/setzer/">https://www.cvfosammmm.org/setzer/</a>
+Website: <https://www.cvfosammmm.org/setzer/>
 
 <a href="https://flathub.org/apps/org.cvfosammmm.Setzer"><img src="https://dl.flathub.org/assets/badges/flathub-badge-en.png" width="150" height="50" alt="Download on Flathub"></a>
 
@@ -12,7 +12,7 @@ Setzer is a LaTeX editor written in Python with Gtk. I'm happy if you give it a 
 
 ## Running Setzer with Gnome Builder
 
-To run Setzer with Gnome Builder just click the "Clone.." button on the start screen, paste in the url (https://github.com/cvfosammmm/Setzer.git), click on "Clone" again, wait for it to download and hit the play button. It will build Setzer and its dependencies and then launch it.
+To run Setzer with Gnome Builder just click the "Clone.." button on the start screen, paste in the url (<https://github.com/cvfosammmm/Setzer.git>), click on "Clone" again, wait for it to download and hit the play button. It will build Setzer and its dependencies and then launch it.
 
 Warning: Building Setzer this way may take a long time (~ 30 minutes on my laptop).
 
@@ -20,18 +20,18 @@ Warning: Building Setzer this way may take a long time (~ 30 minutes on my lapto
 
 This way is probably a bit faster and may save you some disk space. I develop Setzer on Debian and that's what I tested it with. On Debian derivatives (like Ubuntu) it should probably work the same. On distributions other than Debian and Debian derivatives it should work more or less the same. If you want to run Setzer from source on another distribution and don't know how please open an issue here on GitHub. I will then try to provide instructions for your system.
 
-1. Run the following command to install prerequisite Debian packages:<br />
-`apt-get install meson python3-gi gir1.2-gtk-4.0 gir1.2-gtksource-5 gir1.2-pango-1.0 gir1.2-poppler-0.18 gir1.2-webkit-6.0 gettext python3-cairo python3-gi-cairo python3-pexpect gir1.2-adw-1 python3-bibtexparser python3-willow python3-numpy gir1.2-xdp-1.0`
+1. Run the following command to install prerequisite Debian packages:
+
+   ```shell
+   apt-get install meson python3-gi gir1.2-gtk-4.0 gir1.2-gtksource-5 gir1.2-pango-1.0 gir1.2-poppler-0.18 gir1.2-webkit-6.0 gettext python3-cairo python3-gi-cairo python3-pexpect gir1.2-adw-1 python3-bibtexparser python3-willow python3-numpy gir1.2-xdp-1.0
+   ```
 
 2. Download und Unpack Setzer from GitHub
-
 3. cd to Setzer folder
-
-4. Run meson: `meson builddir`<br />
-Note: Some distributions may not include systemwide installations of Python modules which aren't installed from distribution packages. In this case, you want to install Setzer in your home directory with `meson builddir --prefix=~/.local`.
-
-5. Install Setzer with: `ninja install -C builddir`<br />
-Or run it locally: `./scripts/setzer.dev`
+4. Run meson: `meson builddir` \
+   Note: Some distributions may not include systemwide installations of Python modules which aren't installed from distribution packages. In this case, you want to install Setzer in your home directory with `meson builddir --prefix=~/.local`.
+5. Install Setzer with: `ninja install -C builddir` \
+   Or run it locally: `./scripts/setzer.dev`
 
 ## Installation with a Package Manager
 
@@ -60,7 +60,7 @@ To specify a build command open the "Preferences" dialog and choose the command 
 
 ## Getting in touch
 
-Setzer development / discussion takes place on GitHub at [https://github.com/cvfosammmm/setzer](https://github.com/cvfosammmm/setzer "project url").
+Setzer development / discussion takes place on GitHub at <https://github.com/cvfosammmm/setzer>
 
 ## Acknowledgements
 
