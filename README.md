@@ -16,7 +16,7 @@ To run Setzer with Gnome Builder just click the "Clone.." button on the start sc
 
 Warning: Building Setzer this way may take a long time (~ 30 minutes on my laptop).
 
-## Running Setzer on Debian (probably Ubuntu, other Distributions too?)
+## Manual Running Setzer on Debian/Ubuntu (probably other Distributions too?)
 
 This way is probably a bit faster and may save you some disk space. I develop Setzer on Debian and that's what I tested it with. On Debian derivatives (like Ubuntu) it should probably work the same. On distributions other than Debian and Debian derivatives it should work more or less the same. If you want to run Setzer from source on another distribution and don't know how please open an issue here on GitHub. I will then try to provide instructions for your system.
 
