@@ -33,6 +33,15 @@ Note: Some distributions may not include systemwide installations of Python modu
 5. Install Setzer with: `ninja install -C builddir`<br />
 Or run it locally: `./scripts/setzer.dev`
 
+## Installation with a Package Manager
+
+These Linux distributions allow an installation of Setzer with their package
+manager:
+
+[![Packaging status](https://repology.org/badge/vertical-allrepos/setzer.svg?exclude_unsupported=1&&columns=3)](https://repology.org/project/setzer/versions)
+
+
+
 ## Building your documents from within the app
 
 To build your documents from within the app you have to install a LaTeX interpreter. For example if you want to build with XeLaTeX, on Debian this can be installed like so:
