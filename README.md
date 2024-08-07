@@ -40,7 +40,16 @@ manager:
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/setzer.svg?exclude_unsupported=1&&columns=3)](https://repology.org/project/setzer/versions)
 
+Note: depending on the distribution, this can replace an already present TeX
+distribution on your system (for instance [MiKTeX](https://miktex.org/download))
+by [TeXLive](https://www.tug.org/texlive/).  In the case of Debian and Ubuntu,
+you can prevent this by running
 
+```shell
+apt install --no-install-recommends setzer
+```
+
+instead to install only Setzer with its requirements.
 
 ## Building your documents from within the app
 
