@@ -64,6 +64,11 @@
     </requires>
 
     <releases>
+        <release version="66" date="2024-8-26">
+            <description translatable="no">
+                <p>Mostly bugfixes, ...</p>
+            </description>
+        </release>
         <release version="65" date="2023-12-14">
             <description translatable="no">
                 <p>Fix brackets autoclosing, add brackets to selected text (instead of replacing it), ...</p>
