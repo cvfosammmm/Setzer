@@ -92,8 +92,8 @@ class LaTeXDB():
     def get_dynamic_proposals(word):
         documents = []
 
-        ref_regex = '(' + re.escape('|'.join(LaTeXDB.dynamic_commands['references'])).replace('\|', '|') + ')'
-        cite_regex = '(' + re.escape('|'.join(LaTeXDB.dynamic_commands['citations'])).replace('\|', '|') + ')'
+        ref_regex = '(' + re.escape('|'.join(LaTeXDB.dynamic_commands['references'])).replace('\\|', '|') + ')'
+        cite_regex = '(' + re.escape('|'.join(LaTeXDB.dynamic_commands['citations'])).replace('\\|', '|') + ')'
         matchings = dict()
         matchings['labels'] = ServiceLocator.get_regex_object(ref_regex).match(word)
         matchings['bibitems'] = ServiceLocator.get_regex_object(cite_regex).match(word)

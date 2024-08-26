@@ -193,7 +193,7 @@ class PageFontColorView(Gtk.Box):
 \\usepackage{amssymb}
 \\begin{document}
 \\section{Preview}
-This is a \\textit{preview}, for $x, y \in \mathbb{R}: x \leq y$ or $x > y$.
+This is a \\textit{preview}, for $x, y \\in \\mathbb{R}: x \\leq y$ or $x > y$.
 \\end{document}''')
         self.source_buffer.place_cursor(self.source_buffer.get_start_iter())
         self.preview_wrapper.append(scrolled_window)

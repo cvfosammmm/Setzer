@@ -260,7 +260,7 @@ class Autocomplete(object):
     def match_current_command_with_buffer(self):
         command = self.items[self.selected_item_index]['command']
         regex = re.escape(command)
-        regex = regex.replace('•', '\{(?:[^\{\}\(\)\[\]])*\}')
+        regex = regex.replace('•', r'\{(?:[^\{\}\(\)\[\]])*\}')
         matching_result = re.match(regex, self.document.get_line_after_offset(self.current_word_offset))
         if matching_result:
             return (self.current_word_offset, self.current_word_offset + matching_result.end())

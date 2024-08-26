@@ -49,7 +49,7 @@ class UpdateMatchingBlocks(object):
 
         modifiers = Gtk.accelerator_get_default_mod_mask()
 
-        if ServiceLocator.get_regex_object('[a-zA-Z]\Z').match(Gdk.keyval_name(keyval)) or keyval == Gdk.keyval_from_name('asterisk') or keyval == Gdk.keyval_from_name('BackSpace') or keyval == Gdk.keyval_from_name('Delete'):
+        if ServiceLocator.get_regex_object('[a-zA-Z]\\Z').match(Gdk.keyval_name(keyval)) or keyval == Gdk.keyval_from_name('asterisk') or keyval == Gdk.keyval_from_name('BackSpace') or keyval == Gdk.keyval_from_name('Delete'):
             if state & modifiers == 0:
                 if not self.document.autocomplete.is_active:
                     if self.handle_keypress_inside_begin_or_end(keyval):

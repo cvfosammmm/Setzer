@@ -156,14 +156,14 @@ class LaTeXLogParser():
                     text = line[24:].strip()
                     log_messages['warning'].append((None, -1, text))
 
-                elif line.startswith('Overfull \hbox'):
+                elif line.startswith('Overfull \\hbox'):
                     line_number_match = self.badbox_line_number_regex.search(line)
                     if line_number_match != None:
                         line_number = int(line_number_match.group(1))
                         text = line.strip()
                         log_messages['badbox'].append((None, line_number, text))
 
-                elif line.startswith('Underfull \hbox'):
+                elif line.startswith('Underfull \\hbox'):
                     line_number_match = self.badbox_line_number_regex.search(line)
                     if line_number_match != None:
                         line_number = int(line_number_match.group(1))
@@ -205,7 +205,7 @@ class LaTeXLogParser():
                     line_number = -1
                     log_messages['error'].append((None, line_number, text))
 
-                elif line.startswith('! I can\'t find file\.'):
+                elif line.startswith('! I can\'t find file.'):
                     text = line.strip()
                     line_number = -1
                     log_messages['error'].append((None, line_number, text))
