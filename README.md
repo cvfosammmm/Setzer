@@ -4,7 +4,7 @@ Simple yet full-featured LaTeX editor for the GNU/Linux desktop, written in Pyth
 
 Website: <a href="https://www.cvfosammmm.org/setzer/">https://www.cvfosammmm.org/setzer/</a>
 
-<a href="https://flathub.org/apps/org.cvfosammmm.Setzer"><img src="https://dl.flathub.org/assets/badges/flathub-badge-en.png" width="150" height="50" alt="Download on Flathub"></a>
+<a href="https://flathub.org/apps/org.cvfosammmm.Setzer"><img src="https://flathub.org/api/badge?svg&locale=en" width="150" height="50" alt="Download on Flathub"></a>
 
 ![Screenshot](https://github.com/cvfosammmm/Setzer/raw/master/data/screenshot.png)
 
