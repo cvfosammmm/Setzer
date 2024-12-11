@@ -23,12 +23,12 @@ This way is probably a bit faster and may save you some disk space. I develop Se
 1. Run the following command to install prerequisite Debian packages:<br />
 `apt-get install meson python3-gi gir1.2-gtk-4.0 gir1.2-gtksource-5 gir1.2-pango-1.0 gir1.2-poppler-0.18 gir1.2-webkit-6.0 gettext python3-cairo python3-gi-cairo python3-pexpect gir1.2-adw-1 python3-bibtexparser python3-willow python3-numpy gir1.2-xdp-1.0`
 
-2. Download und Unpack Setzer from GitHub
+2. Download and Unpack Setzer from GitHub
 
 3. cd to Setzer folder
 
-4. Run meson: `meson builddir`<br />
-Note: Some distributions may not include systemwide installations of Python modules which aren't installed from distribution packages. In this case, you want to install Setzer in your home directory with `meson builddir --prefix=~/.local`.
+4. Run meson: `meson setup builddir`<br />
+Note: Some distributions may not include systemwide installations of Python modules which aren't installed from distribution packages. In this case, you want to install Setzer in your home directory with `meson setup builddir --prefix=~/.local`.
 
 5. Install Setzer with: `ninja install -C builddir`<br />
 Or run it locally: `./scripts/setzer.dev`
