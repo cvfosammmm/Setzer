@@ -30,7 +30,6 @@ class Shortcutsbar(object):
 
         self.view.button_build_log.set_active(self.workspace.get_show_build_log())
         self.view.button_build_log.connect('clicked', self.on_build_log_button_clicked)
-        self.view.button_build_log.get_child().set_sensitive(False)
 
         self.view.button_search.connect('clicked', self.on_find_button_clicked)
         self.view.button_replace.connect('clicked', self.on_find_replace_button_clicked)
@@ -122,7 +121,6 @@ class Shortcutsbar(object):
 
         root_or_active_latex = self.workspace.get_root_or_active_latex_document()
         self.view.button_build_log.set_active(self.workspace.get_show_build_log())
-        self.view.button_build_log.set_sensitive(root_or_active_latex)
         self.view.button_build_log.set_visible(root_or_active_latex)
 
     def on_build_log_button_clicked(self, toggle_button, parameter=None):
