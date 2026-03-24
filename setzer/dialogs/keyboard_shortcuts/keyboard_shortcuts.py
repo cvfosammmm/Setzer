@@ -21,7 +21,7 @@ gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
 import os.path
-
+from setzer.keyboard_shortcuts.keybind_parser import KeybindParser
 
 class KeyboardShortcutsDialog(object):
 
@@ -30,93 +30,103 @@ class KeyboardShortcutsDialog(object):
 
         data = list()
 
+        def add_item(section, title, action_name, category=None):
+            shortcut_array = KeybindParser.get_shortcut(action_name, category)
+            if shortcut_array:
+                shortcut = KeybindParser.to_gtk_display(shortcut_array)
+                section['items'].append({'title': title, 'shortcut': shortcut})
+
         section = {'title': _('Documents'), 'items': list()}
-        section['items'].append({'title': _('Create new document'), 'shortcut': '&lt;ctrl&gt;N'})
-        section['items'].append({'title': _('Open a document'), 'shortcut': '&lt;ctrl&gt;O'})
-        section['items'].append({'title': _('Show recent documents'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;O'})
-        section['items'].append({'title': _('Show open documents'), 'shortcut': '&lt;ctrl&gt;T'})
-        section['items'].append({'title': _('Switch to the next open document'), 'shortcut': '&lt;ctrl&gt;Tab'})
-        section['items'].append({'title': _('Save the current document'), 'shortcut': '&lt;ctrl&gt;S'})
-        section['items'].append({'title': _('Save the document with a new filename'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;S'})
-        section['items'].append({'title': _('Close the current document'), 'shortcut': '&lt;ctrl&gt;W'})
+        add_item(section, _('Create new document'), 'new-latex-document', 'app')
+        add_item(section, _('Open a document'), 'open-document-dialog', 'app')
+        add_item(section, _('Show recent documents'), 'shortcut_show_document_chooser', 'app')
+        add_item(section, _('Show open documents'), 'shortcut_show_open_docs', 'app')
+        add_item(section, _('Switch to the next open document'), 'shortcut_switch_document', 'app')
+        add_item(section, _('Save the current document'), 'save', 'app')
+        add_item(section, _('Save the document with a new filename'), 'save-as', 'app')
+        add_item(section, _('Close the current document'), 'close-active-document', 'app')
         data.append(section)
 
         section = {'title': _('Tools'), 'items': list()}
-        section['items'].append({'title': _('Save and build .pdf-file from document'), 'shortcut': 'F5'})
-        section['items'].append({'title': _('Build .pdf-file from document'), 'shortcut': 'F6'})
-        section['items'].append({'title': _('Show current position in preview'), 'shortcut': 'F7'})
+        add_item(section, _('Save and build .pdf-file from document'), 'save-and-build', 'app')
+        add_item(section, _('Build .pdf-file from document'), 'build', 'app')
+        add_item(section, _('Show current position in preview'), 'forward-sync', 'app')
         data.append(section)
 
         section = {'title': 'Windows and Panels', 'items': list()}
-        section['items'].append({'title': _('Show help panel'), 'shortcut': 'F1'})
-        section['items'].append({'title': _('Show build log'), 'shortcut': 'F8'})
-        section['items'].append({'title': _('Show preview panel'), 'shortcut': 'F9'})
-        section['items'].append({'title': _('Show global menu'), 'shortcut': 'F10'})
-        section['items'].append({'title': _('Show context menu'), 'shortcut': 'F12'})
-        section['items'].append({'title': _('Show keyboard shortcuts'), 'shortcut': '&lt;ctrl&gt;question'})
-        section['items'].append({'title': _('Close Application'), 'shortcut': '&lt;ctrl&gt;Q'})
+        add_item(section, _('Show help panel'), 'shortcut_help', 'app')
+        add_item(section, _('Show document structure'), 'shortcut_document_structure_toggle', 'app')
+        add_item(section, _('Show symbols'), 'shortcut_symbols_toggle', 'app')
+        add_item(section, _('Show build log'), 'shortcut_build_log', 'app')
+        add_item(section, _('Show preview panel'), 'shortcut_preview', 'app')
+        add_item(section, _('Show global menu'), 'shortcut_show_hamburger', 'app')
+        add_item(section, _('Show context menu'), 'show-context-menu', 'document')
+        add_item(section, _('Show keyboard shortcuts'), 'show-shortcuts-dialog', 'app')
+        add_item(section, _('Close Application'), 'quit', 'app')
         data.append(section)
 
         section = {'title': _('Find and Replace'), 'items': list()}
-        section['items'].append({'title': _('Find'), 'shortcut': '&lt;ctrl&gt;F'})
-        section['items'].append({'title': _('Find the next match'), 'shortcut': '&lt;ctrl&gt;G'})
-        section['items'].append({'title': _('Find the previous match'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;G'})
-        section['items'].append({'title': _('Find and Replace'), 'shortcut': '&lt;ctrl&gt;H'})
+        add_item(section, _('Find'), 'start-search', 'app')
+        add_item(section, _('Find the next match'), 'search-next', 'document')
+        add_item(section, _('Find the previous match'), 'search-previous', 'document')
+        add_item(section, _('Find and Replace'), 'start-search-and-replace', 'app')
         data.append(section)
 
         section = {'title': _('Zoom'), 'items': list()}
-        section['items'].append({'title': _('Zoom in'), 'shortcut': '&lt;ctrl&gt;plus'})
-        section['items'].append({'title': _('Zoom out'), 'shortcut': '&lt;ctrl&gt;minus'})
-        section['items'].append({'title': _('Reset zoom'), 'shortcut': '&lt;ctrl&gt;0'})
+        add_item(section, _('Zoom in'), 'zoom-in', 'app')
+        add_item(section, _('Zoom out'), 'zoom-out', 'app')
+        add_item(section, _('Reset zoom'), 'reset-zoom', 'app')
         data.append(section)
 
         section = {'title': 'Copy and Paste', 'items': list()}
-        section['items'].append({'title': _('Copy selected text to clipboard'), 'shortcut': '&lt;ctrl&gt;C'})
-        section['items'].append({'title': _('Cut selected text to clipboard'), 'shortcut': '&lt;ctrl&gt;X'})
-        section['items'].append({'title': _('Paste text from clipboard'), 'shortcut': '&lt;ctrl&gt;V'})
+        add_item(section, _('Copy selected text to clipboard'), 'copy', 'document')
+        add_item(section, _('Cut selected text to clipboard'), 'cut', 'document')
+        add_item(section, _('Paste text from clipboard'), 'paste', 'document')
         data.append(section)
 
         section = {'title': _('Undo and Redo'), 'items': list()}
-        section['items'].append({'title': _('Undo previous text edit'), 'shortcut': '&lt;ctrl&gt;Z'})
-        section['items'].append({'title': _('Redo previous text edit'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;Z'})
+        add_item(section, _('Undo previous text edit'), 'undo', 'document')
+        add_item(section, _('Redo previous text edit'), 'redo', 'document')
         data.append(section)
 
         section = {'title': _('Selection'), 'items': list()}
-        section['items'].append({'title': _('Select all text'), 'shortcut': '&lt;ctrl&gt;A'})
+        add_item(section, _('Select all text'), 'select-all', 'document')
         data.append(section)
 
         section = {'title': _('Editing'), 'items': list()}
-        section['items'].append({'title': _('Toggle insert / overwrite'), 'shortcut': 'Insert'})
-        section['items'].append({'title': _('Move current line up'), 'shortcut': '&lt;Alt&gt;Up'})
-        section['items'].append({'title': _('Move current line down'), 'shortcut': '&lt;Alt&gt;Down'})
-        section['items'].append({'title': _('Move current word left'), 'shortcut': '&lt;Alt&gt;Left'})
-        section['items'].append({'title': _('Move current word right'), 'shortcut': '&lt;Alt&gt;Right'})
-        section['items'].append({'title': _('Increment number at cursor'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;A'})
-        section['items'].append({'title': _('Decrement number at cursor'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;X'})
+        add_item(section, _('Toggle insert / overwrite'), 'toggle-insert', 'document')
+        add_item(section, _('Move current line up'), 'move-line-up', 'document')
+        add_item(section, _('Move current line down'), 'move-line-down', 'document')
+        add_item(section, _('Move current word left'), 'move-word-left', 'document')
+        add_item(section, _('Move current word right'), 'move-word-right', 'document')
+        add_item(section, _('Select next placeholder'), 'select-next-placeholder', 'document')
+        add_item(section, _('Select previous placeholder'), 'select-previous-placeholder', 'document')
+        add_item(section, _('Increment number at cursor'), 'increment-number', 'document')
+        add_item(section, _('Decrement number at cursor'), 'decrement-number', 'document')
         data.append(section)
 
         section = {'title': _('LaTeX Shortcuts'), 'items': list()}
-        section['items'].append({'title': _('Comment / Uncomment current line(s)'), 'shortcut': '&lt;ctrl&gt;K'})
-        section['items'].append({'title': _('New Line') + ' (\\\\)', 'shortcut': '&lt;ctrl&gt;Return'})
-        section['items'].append({'title': _('Bold Text'), 'shortcut': '&lt;ctrl&gt;B'})
-        section['items'].append({'title': _('Italic Text'), 'shortcut': '&lt;ctrl&gt;I'})
-        section['items'].append({'title': _('Underlined Text'), 'shortcut': '&lt;ctrl&gt;U'})
-        section['items'].append({'title': _('Typewriter Text'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;T'})
-        section['items'].append({'title': _('Emphasized Text'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;E'})
-        section['items'].append({'title': _('Quotation Marks'), 'shortcut': '&lt;ctrl&gt;quotedbl'})
-        section['items'].append({'title': _('List Item'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;I'})
-        section['items'].append({'title': _('Environment'), 'shortcut': '&lt;ctrl&gt;E'})
+        add_item(section, _('Comment / Uncomment current line(s)'), 'toggle-comment', 'latex')
+        add_item(section, _('Quotation Marks'), 'shortcut_quotes', 'latex')
+        add_item(section, _('New Line') + ' (\\\\)', '\\\\\\\\\\n', 'latex-symbol')
+        add_item(section, _('Bold Text'), '\\\\textbf{@@}', 'latex-before-after')
+        add_item(section, _('Italic Text'), '\\\\textit{@@}', 'latex-before-after')
+        add_item(section, _('Underlined Text'), '\\\\underline{@@}', 'latex-before-after')
+        add_item(section, _('Typewriter Text'), '\\\\texttt{@@}', 'latex-before-after')
+        add_item(section, _('Emphasized Text'), '\\\\emph{@@}', 'latex-before-after')
+        add_item(section, _('List Item'), '\\\\item •', 'latex-symbol')
+        add_item(section, _('Environment'), '\\\\begin{•}\\n\\t@@\\n\\\\end{•}', 'latex-before-after')
         data.append(section)
 
         section = {'title': _('Math Shortcuts'), 'items': list()}
-        section['items'].append({'title': _('Inline Math Section'), 'shortcut': '&lt;ctrl&gt;M'})
-        section['items'].append({'title': _('Display Math Section'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;M'})
-        section['items'].append({'title': _('Equation'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;N'})
-        section['items'].append({'title': _('Subscript'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;D'})
-        section['items'].append({'title': _('Superscript'), 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;U'})
-        section['items'].append({'title': _('Fraction'), 'shortcut': '&lt;alt&gt;&lt;shift&gt;F'})
-        section['items'].append({'title': '\\left', 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;L'})
-        section['items'].append({'title': '\\right', 'shortcut': '&lt;ctrl&gt;&lt;shift&gt;R'})
+        add_item(section, _('Inline Math Section'), '$ @@ $', 'latex-before-after')
+        add_item(section, _('Display Math Section'), '\\\\[ @@ \\\\]', 'latex-before-after')
+        add_item(section, _('Equation'), '\\\\begin{equation}\\n\\t@@\\n\\\\end{equation}', 'latex-before-after')
+        add_item(section, _('Subscript'), '_{@@}', 'latex-before-after')
+        add_item(section, _('Superscript'), '^{@@}', 'latex-before-after')
+        add_item(section, _('Fraction'), '\\\\frac{•}{•}', 'latex-symbol')
+        add_item(section, '\\left', '\\\\left •', 'latex-symbol')
+        add_item(section, '\\right', '\\\\right •', 'latex-symbol')
         data.append(section)
 
         self.data = data

@@ -18,6 +18,7 @@
 import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk, GObject
+from setzer.keyboard_shortcuts.keybind_parser import KeybindParser
 
 
 class BuildWidgetView(Gtk.Box):
@@ -34,7 +35,8 @@ class BuildWidgetView(Gtk.Box):
         
         self.build_button = Gtk.Button()
         self.build_button.set_child(Gtk.Image.new_from_icon_name('builder-build-symbolic'))
-        self.build_button.set_tooltip_text(_('Save and build .pdf-file from document') + ' (F5)')
+        build_shortcut = KeybindParser.to_display(KeybindParser.get_shortcut('save-and-build', 'app'))
+        self.build_button.set_tooltip_text(_('Save and build .pdf-file from document') + ' (' + build_shortcut + ')')
         self.build_button.set_action_name('win.save-and-build')
 
         self.stop_button = Gtk.Button()

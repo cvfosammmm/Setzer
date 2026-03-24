@@ -24,6 +24,7 @@ from gi.repository import Gio
 from setzer.popovers.helpers.popover_menu_builder import MenuBuilder
 from setzer.app.service_locator import ServiceLocator
 from setzer.popovers.popover_manager import PopoverManager
+from setzer.keyboard_shortcuts.keybind_parser import KeybindParser
 
 
 class Shortcutsbar(Gtk.Box):
@@ -50,7 +51,8 @@ class Shortcutsbar(Gtk.Box):
         self.italic_button.set_action_target_value(GLib.Variant('as', ['\\textit{', '}']))
         self.italic_button.get_style_context().add_class('flat')
         self.italic_button.get_style_context().add_class('scbar')
-        self.italic_button.set_tooltip_text(_('Italic') + ' (' + _('Ctrl') + '+I)')
+        italic_shortcut = KeybindParser.to_display(['Ctrl', 'i'])
+        self.italic_button.set_tooltip_text(_('Italic') + ' (' + italic_shortcut + ')')
         self.top_icons.prepend(self.italic_button)
 
         self.bold_button = Gtk.Button()
@@ -59,7 +61,8 @@ class Shortcutsbar(Gtk.Box):
         self.bold_button.set_action_target_value(GLib.Variant('as', ['\\textbf{', '}']))
         self.bold_button.get_style_context().add_class('flat')
         self.bold_button.get_style_context().add_class('scbar')
-        self.bold_button.set_tooltip_text(_('Bold') + ' (' + _('Ctrl') + '+B)')
+        bold_shortcut = KeybindParser.to_display(['Ctrl', 'b'])
+        self.bold_button.set_tooltip_text(_('Bold') + ' (' + bold_shortcut + ')')
         self.top_icons.prepend(self.bold_button)
 
         self.insert_quotes_button()
@@ -76,14 +79,16 @@ class Shortcutsbar(Gtk.Box):
 
         self.button_search = Gtk.ToggleButton()
         self.button_search.set_icon_name('edit-find-symbolic')
-        self.button_search.set_tooltip_text(_('Find') + ' (' + _('Ctrl') + '+F)')
+        search_shortcut = KeybindParser.to_display(KeybindParser.get_shortcut('start-search', 'app'))
+        self.button_search.set_tooltip_text(_('Find') + ' (' + search_shortcut + ')')
         self.button_search.get_style_context().add_class('flat')
         self.button_search.get_style_context().add_class('scbar')
         self.right_icons.append(self.button_search)
 
         self.button_replace = Gtk.ToggleButton()
         self.button_replace.set_icon_name('edit-find-replace-symbolic')
-        self.button_replace.set_tooltip_text(_('Find and Replace') + ' (' + _('Ctrl') + '+H)')
+        replace_shortcut = KeybindParser.to_display(KeybindParser.get_shortcut('start-search-and-replace', 'app'))
+        self.button_replace.set_tooltip_text(_('Find and Replace') + ' (' + replace_shortcut + ')')
         self.button_replace.get_style_context().add_class('flat')
         self.button_replace.get_style_context().add_class('scbar')
         self.right_icons.append(self.button_replace)
@@ -92,12 +97,14 @@ class Shortcutsbar(Gtk.Box):
         self.button_more.set_icon_name('view-more-symbolic')
         self.button_more.get_style_context().add_class('flat')
         self.button_more.get_style_context().add_class('scbar')
-        self.button_more.set_tooltip_text(_('Context Menu') + ' (F12)')
+        context_menu_shortcut = KeybindParser.to_display(KeybindParser.get_shortcut('show-context-menu', 'document'))
+        self.button_more.set_tooltip_text(_('Context Menu') + ' (' + context_menu_shortcut + ')')
         self.right_icons.append(self.button_more)
 
         self.button_build_log = Gtk.ToggleButton()
         self.button_build_log.set_icon_name('build-log-symbolic')
-        self.button_build_log.set_tooltip_text(_('Build log') + ' (F8)')
+        build_log_shortcut = KeybindParser.to_display(KeybindParser.get_shortcut('shortcut_build_log', 'app'))
+        self.button_build_log.set_tooltip_text(_('Build log') + ' (' + build_log_shortcut + ')')
         self.button_build_log.get_style_context().add_class('flat')
         self.button_build_log.get_style_context().add_class('scbar')
         self.right_icons.append(self.button_build_log)
@@ -180,7 +187,8 @@ class Shortcutsbar(Gtk.Box):
 
         self.quotes_button = PopoverManager.create_popover_button('quotes_menu')
         self.quotes_button.set_icon_name('own-quotes-symbolic')
-        self.quotes_button.set_tooltip_text(_('Quotes') + ' (' + _('Ctrl') + '+")')
+        quotes_shortcut = KeybindParser.to_display(KeybindParser.get_shortcut('shortcut_quotes', 'latex'))
+        self.quotes_button.set_tooltip_text(_('Quotes') + ' (' + quotes_shortcut + ')')
         self.quotes_button.get_style_context().add_class('flat')
         self.quotes_button.get_style_context().add_class('scbar')
 

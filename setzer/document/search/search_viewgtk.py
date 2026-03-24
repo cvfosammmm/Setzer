@@ -20,6 +20,7 @@ gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
 from setzer.widgets.search_entry.search_entry import SearchEntry
+from setzer.keyboard_shortcuts.keybind_parser import KeybindParser
 
 
 class SearchBar(Gtk.Revealer):
@@ -51,10 +52,12 @@ class SearchBar(Gtk.Revealer):
 
         self.prev_button = Gtk.Button.new_from_icon_name('go-up-symbolic')
         self.prev_button.set_can_focus(False)
-        self.prev_button.set_tooltip_text(_('Previous result') + ' (Ctrl+Shift+G)')
+        prev_result_shortcut = KeybindParser.to_display(KeybindParser.get_shortcut('find-previous', 'app'))
+        self.prev_button.set_tooltip_text(_('Previous result') + ' (' + prev_result_shortcut + ')')
         self.next_button = Gtk.Button.new_from_icon_name('go-down-symbolic')
         self.next_button.set_can_focus(False)
-        self.next_button.set_tooltip_text(_('Next result') + ' (Ctrl+G)')
+        next_result_shortcut = KeybindParser.to_display(KeybindParser.get_shortcut('find-next', 'app'))
+        self.next_button.set_tooltip_text(_('Next result') + ' (' + next_result_shortcut + ')')
         self.replace_button = Gtk.Button.new_with_label(_('Replace'))
         self.replace_button.set_can_focus(False)
         self.replace_button.set_tooltip_text(_('Replace selected result'))

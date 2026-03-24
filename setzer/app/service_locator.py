@@ -35,10 +35,17 @@ class ServiceLocator():
     setzer_version = None
     resources_path = None
     app_icons_path = None
+    keymap_config_path = '/etc/setzer.config.json'
     increments = dict()
     regexes = dict()
     source_language_manager = None
     source_style_scheme_manager = None
+
+    def set_keymap_config_path(path):
+        ServiceLocator.keymap_config_path = path
+
+    def get_keymap_config_path():
+        return ServiceLocator.keymap_config_path
 
     def set_main_window(main_window):
         ServiceLocator.main_window = main_window

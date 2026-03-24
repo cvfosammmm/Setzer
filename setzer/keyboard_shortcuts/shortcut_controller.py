@@ -38,5 +38,3 @@ class ShortcutController(Gtk.ShortcutController):
     def action(self, a, b, callback):
         callback()
         return True
-
-

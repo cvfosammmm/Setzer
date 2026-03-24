@@ -205,9 +205,15 @@ class MainApplicationController(Adw.Application):
 
 argparser = argparse.ArgumentParser(usage='%(prog)s [OPTION...] [FILE...]')
 argparser.add_argument('-V', '--version', action='version', version='@setzer_version@')
+argparser.add_argument('-c', '--config', help='JSON config file for keybinds')
 argparser.add_argument('file', nargs='*', help=argparse.SUPPRESS)
-argparser.parse_args()
+args, unknown = argparser.parse_known_args()
+
+if args.config:
+    ServiceLocator.set_keymap_config_path(args.config)
+
+new_argv = [sys.argv[0]] + unknown + args.file
 
 main_controller = MainApplicationController()
-exit_status = main_controller.run(sys.argv)
+exit_status = main_controller.run(new_argv)
 sys.exit(exit_status)

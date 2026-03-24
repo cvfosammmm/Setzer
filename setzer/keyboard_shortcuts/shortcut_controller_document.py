@@ -21,6 +21,7 @@ from gi.repository import Gtk
 
 from setzer.app.service_locator import ServiceLocator
 from setzer.keyboard_shortcuts.shortcut_controller import ShortcutController
+from setzer.keyboard_shortcuts.keybind_parser import KeybindParser
 
 
 class ShortcutControllerDocument(ShortcutController):
@@ -34,11 +35,12 @@ class ShortcutControllerDocument(ShortcutController):
 
         self.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
 
-        self.create_and_add_shortcut('<Control>x', self.actions.cut)
-        self.create_and_add_shortcut('<Control>c', self.actions.copy)
-        self.create_and_add_shortcut('<Control>v', self.actions.paste)
-        self.create_and_add_shortcut('<Control>z', self.actions.undo)
-        self.create_and_add_shortcut('<Control><Shift>z', self.actions.redo)
-        self.create_and_add_shortcut('F12', self.actions.show_context_menu)
-
-
+        doc_keybinds = KeybindParser.get_category_keybinds('document')
+        for action_name, shortcut_array in doc_keybinds.items():
+            shortcut = KeybindParser.to_gtk(shortcut_array)
+            # Handle alternative actions (like redo_alt)
+            real_action_name = action_name.split('_alt')[0]
+            if real_action_name in self.actions.actions:
+                self.create_and_add_shortcut(shortcut, self.actions.actions[real_action_name].activate)
+            elif hasattr(self, real_action_name):
+                self.create_and_add_shortcut(shortcut, getattr(self, real_action_name))

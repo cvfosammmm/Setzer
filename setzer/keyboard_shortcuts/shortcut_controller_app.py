@@ -22,6 +22,7 @@ from gi.repository import Gtk
 from setzer.app.service_locator import ServiceLocator
 from setzer.keyboard_shortcuts.shortcut_controller import ShortcutController
 from setzer.popovers.popover_manager import PopoverManager
+from setzer.keyboard_shortcuts.keybind_parser import KeybindParser
 
 
 class ShortcutControllerApp(ShortcutController):
@@ -35,32 +36,13 @@ class ShortcutControllerApp(ShortcutController):
 
         self.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
 
-        self.create_and_add_shortcut('<Control>n', self.actions.new_latex_document)
-        self.create_and_add_shortcut('<Control>o', self.actions.open_document_dialog)
-        self.create_and_add_shortcut('<Control>s', self.actions.save)
-        self.create_and_add_shortcut('<Control><Shift>s', self.actions.save_as)
-        self.create_and_add_shortcut('<Control>w', self.actions.close_active_document)
-        self.create_and_add_shortcut('<Control>q', self.actions.actions['quit'].activate)
-        self.create_and_add_shortcut('<Control>question', self.actions.show_shortcuts_dialog)
-        self.create_and_add_shortcut('<Control>t', self.shortcut_show_open_docs)
-        self.create_and_add_shortcut('<Control>Tab', self.shortcut_switch_document)
-        self.create_and_add_shortcut('<Control><Shift>o', self.shortcut_show_document_chooser)
-        self.create_and_add_shortcut('<Control>plus', self.actions.zoom_in)
-        self.create_and_add_shortcut('<Control>minus', self.actions.zoom_out)
-        self.create_and_add_shortcut('<Control>0', self.actions.reset_zoom)
-        self.create_and_add_shortcut('<Control>f', self.actions.start_search)
-        self.create_and_add_shortcut('<Control>h', self.actions.start_search_and_replace)
-        self.create_and_add_shortcut('<Control>g', self.actions.find_next)
-        self.create_and_add_shortcut('<Control><Shift>g', self.actions.find_previous)
-        self.create_and_add_shortcut('F1', self.shortcut_help)
-        self.create_and_add_shortcut('F2', self.shortcut_document_structure_toggle)
-        self.create_and_add_shortcut('F3', self.shortcut_symbols_toggle)
-        self.create_and_add_shortcut('F5', self.actions.save_and_build)
-        self.create_and_add_shortcut('F6', self.actions.build)
-        self.create_and_add_shortcut('F7', self.actions.forward_sync)
-        self.create_and_add_shortcut('F8', self.shortcut_build_log)
-        self.create_and_add_shortcut('F9', self.shortcut_preview)
-        self.create_and_add_shortcut('F10', self.shortcut_show_hamburger)
+        app_keybinds = KeybindParser.get_category_keybinds('app')
+        for action_name, shortcut_array in app_keybinds.items():
+            shortcut = KeybindParser.to_gtk(shortcut_array)
+            if action_name in self.actions.actions:
+                self.create_and_add_shortcut(shortcut, self.actions.actions[action_name].activate)
+            elif hasattr(self, action_name):
+                self.create_and_add_shortcut(shortcut, getattr(self, action_name))
 
     def shortcut_show_document_chooser(self):
         if self.main_window.headerbar.open_document_button.get_sensitive():
@@ -104,5 +86,3 @@ class ShortcutControllerApp(ShortcutController):
     def shortcut_show_hamburger(self, accel_group=None, window=None, key=None, mask=None):
         PopoverManager.popup_at_button('hamburger_menu')
         return True
-
-

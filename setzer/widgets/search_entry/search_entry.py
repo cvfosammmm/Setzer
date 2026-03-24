@@ -52,15 +52,7 @@ class SearchEntry(Gtk.Entry):
             self.emit('next_match')
             return True
 
-        if (state & modifiers, keyval) == (Gdk.ModifierType.CONTROL_MASK, Gdk.keyval_from_name('g')):
-            self.emit('next_match')
-            return True
-
         if (state & modifiers, keyval) == (0, Gdk.keyval_from_name('Up')):
-            self.emit('previous_match')
-            return True
-
-        if (state & modifiers, keyval) == (Gdk.ModifierType.CONTROL_MASK & Gdk.ModifierType.SHIFT_MASK, Gdk.keyval_from_name('g')):
             self.emit('previous_match')
             return True
 
