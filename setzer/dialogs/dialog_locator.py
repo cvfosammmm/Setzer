@@ -23,6 +23,8 @@ from setzer.dialogs.close_confirmation.close_confirmation import CloseConfirmati
 from setzer.dialogs.document_changed_on_disk.document_changed_on_disk import DocumentChangedOnDiskDialog
 from setzer.dialogs.document_deleted_on_disk.document_deleted_on_disk import DocumentDeletedOnDiskDialog
 from setzer.dialogs.document_wizard.document_wizard import DocumentWizard
+from setzer.dialogs.git_commit.git_commit import GitCommitDialog
+from setzer.dialogs.git_credentials.git_credentials import GitCredentialsDialog
 from setzer.dialogs.include_bibtex_file.include_bibtex_file import IncludeBibTeXFile
 from setzer.dialogs.include_latex_file.include_latex_file import IncludeLaTeXFile
 from setzer.dialogs.interpreter_missing.interpreter_missing import InterpreterMissingDialog
@@ -47,6 +49,8 @@ class DialogLocator():
         dialogs['document_changed_on_disk'] = DocumentChangedOnDiskDialog(main_window)
         dialogs['document_deleted_on_disk'] = DocumentDeletedOnDiskDialog(main_window)
         dialogs['document_wizard'] = DocumentWizard(main_window)
+        dialogs['git_commit'] = GitCommitDialog(main_window)
+        dialogs['git_credentials'] = GitCredentialsDialog(main_window)
         dialogs['include_bibtex_file'] = IncludeBibTeXFile(main_window)
         dialogs['include_latex_file'] = IncludeLaTeXFile(main_window)
         dialogs['keyboard_shortcuts'] = KeyboardShortcutsDialog(main_window)

@@ -45,6 +45,12 @@
 ./setzer/dialogs/document_wizard/pages/page_letter_settings.py
 ./setzer/dialogs/document_wizard/pages/page.py
 ./setzer/dialogs/document_wizard/pages/page_report_settings.py
+./setzer/dialogs/git_commit/__init__.py
+./setzer/dialogs/git_commit/git_commit.py
+./setzer/dialogs/git_commit/git_commit_viewgtk.py
+./setzer/dialogs/git_credentials/__init__.py
+./setzer/dialogs/git_credentials/git_credentials.py
+./setzer/dialogs/git_credentials/git_credentials_viewgtk.py
 ./setzer/dialogs/include_bibtex_file/include_bibtex_file.py
 ./setzer/dialogs/include_bibtex_file/include_bibtex_file_viewgtk.py
 ./setzer/dialogs/include_bibtex_file/__init__.py
@@ -217,6 +223,12 @@
 ./setzer/workspace/sidebar/document_structure_page/todos.py
 ./setzer/workspace/sidebar/document_structure_page/todos_viewgtk.py
 ./setzer/workspace/sidebar/__init__.py
+./setzer/workspace/sidebar/git_section/__init__.py
+./setzer/workspace/sidebar/git_section/git_client.py
+./setzer/workspace/sidebar/git_section/git_section.py
+./setzer/workspace/sidebar/git_section/git_section_controller.py
+./setzer/workspace/sidebar/git_section/git_section_presenter.py
+./setzer/workspace/sidebar/git_section/git_section_viewgtk.py
 ./setzer/workspace/sidebar/sidebar.py
 ./setzer/workspace/sidebar/sidebar_viewgtk.py
 ./setzer/workspace/sidebar/symbols_page/__init__.py

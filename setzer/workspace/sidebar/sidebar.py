@@ -23,6 +23,7 @@ import setzer.workspace.sidebar.document_structure_page.structure as structure_s
 import setzer.workspace.sidebar.document_structure_page.labels as labels_section
 import setzer.workspace.sidebar.document_structure_page.todos as todos_section
 import setzer.workspace.sidebar.document_stats.document_stats as document_stats_section
+import setzer.workspace.sidebar.git_section.git_section as git_section
 from setzer.app.service_locator import ServiceLocator
 
 
@@ -61,6 +62,10 @@ class Sidebar(object):
         self.document_structure_page.add_label('todos', _('To-Dos'))
         self.todos_section = todos_section.TodosSection(self.data_provider, self.document_structure_page.labels['todos'])
         self.document_structure_page.add_content_widget('todos', self.todos_section.view)
+
+        self.document_structure_page.add_label('git', _('Git'))
+        self.git_section = git_section.GitSection(self.workspace, self.document_structure_page.labels['git'])
+        self.document_structure_page.add_content_widget('git', self.git_section.view)
 
         self.document_structure_page.add_label('stats', _('Document Stats'))
         self.document_stats_section = document_stats_section.DocumentStats(self.workspace, self.document_structure_page.labels['stats'])
