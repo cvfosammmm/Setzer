@@ -17,7 +17,7 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gdk, Gtk, Pango
+from gi.repository import Gdk, GLib, Gtk, Pango
 
 from setzer.app.service_locator import ServiceLocator
 from setzer.app.font_manager import FontManager
@@ -53,6 +53,9 @@ class ContextMenu(object):
         self.latex_buttons_separator_pointer.set_visible(self.document != None and self.document.is_latex_document())
 
     def build_popover_pointer(self):
+        self.spelling_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.popover_pointer.add_widget(self.spelling_box)
+
         self.add_basic_buttons(self.popover_pointer)
 
         self.comment_button_pointer = self.create_button(self.popover_pointer, _('Toggle Comment'), 'win.toggle-comment', shortcut=_('Ctrl') + '+K')
@@ -110,8 +113,35 @@ class ContextMenu(object):
         button.connect('clicked', self.on_menu_button_click)
         return button
 
+    def update_spelling_section(self, x, y):
+        ''' Show corrections for the misspelled word at the pointer position,
+            if there is one. '''
+
+        child = self.spelling_box.get_first_child()
+        while child != None:
+            next_child = child.get_next_sibling()
+            self.spelling_box.remove(child)
+            child = next_child
+
+        if self.document == None: return
+        if self.document.spellchecker == None: return
+        if self.document.spellchecker.set_word_at_location(x, y) == None: return
+
+        for correction in self.document.spellchecker.get_corrections()[:5]:
+            button = self.create_button(self.popover_pointer, correction, 'win.spelling-correct')
+            button.set_action_target_value(GLib.Variant('s', correction))
+            self.spelling_box.append(button)
+
+        button = self.create_button(self.popover_pointer, _('Add to Dictionary'), 'win.spelling-add-to-dictionary')
+        self.spelling_box.append(button)
+        button = self.create_button(self.popover_pointer, _('Ignore'), 'win.spelling-ignore')
+        self.spelling_box.append(button)
+        self.spelling_box.append(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL))
+
     def popup_at_cursor(self, x, y):
         if self.document == None: return
+
+        self.update_spelling_section(x, y)
 
         self.popover_pointer.unparent()
         self.popover_pointer.set_parent(self.document.view)
