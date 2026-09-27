@@ -59,6 +59,10 @@ class Actions(object):
         self.add_action('toggle-comment', self.toggle_comment)
         self.add_action('forward-sync', self.forward_sync)
 
+        self.add_action('spelling-correct', self.spelling_correct, GLib.VariantType('s'))
+        self.add_action('spelling-add-to-dictionary', self.spelling_add_to_dictionary)
+        self.add_action('spelling-ignore', self.spelling_ignore)
+
         self.add_action('start-search', self.start_search)
         self.add_action('start-search-and-replace', self.start_search_and_replace)
         self.add_action('find-next', self.find_next)
@@ -423,6 +427,30 @@ class Actions(object):
 
         document = self.workspace.get_active_document()
         DialogLocator.get_dialog('add_remove_packages').run(document)
+
+    def get_active_spellchecker(self):
+        document = self.workspace.get_active_document()
+        if document == None: return None
+
+        return document.spellchecker
+
+    def spelling_correct(self, action=None, parameter=None):
+        spellchecker = self.get_active_spellchecker()
+        if spellchecker == None: return
+
+        spellchecker.replace_word(parameter.get_string())
+
+    def spelling_add_to_dictionary(self, action=None, parameter=None):
+        spellchecker = self.get_active_spellchecker()
+        if spellchecker == None: return
+
+        spellchecker.add_word_to_dictionary()
+
+    def spelling_ignore(self, action=None, parameter=None):
+        spellchecker = self.get_active_spellchecker()
+        if spellchecker == None: return
+
+        spellchecker.ignore_word()
 
     def toggle_comment(self, action=None, parameter=None):
         if self.workspace.get_active_document() == None: return

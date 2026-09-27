@@ -49,6 +49,35 @@ class PageEditor(object):
         self.view.option_highlight_matching_brackets.set_active(self.settings.get_value('preferences', 'highlight_matching_brackets'))
         self.view.option_highlight_matching_brackets.connect('toggled', self.preferences.on_check_button_toggle, 'highlight_matching_brackets')
 
+        self.view.option_inline_spellchecking.set_active(self.settings.get_value('preferences', 'inline_spellchecking'))
+        self.view.option_inline_spellchecking.connect('toggled', self.preferences.on_check_button_toggle, 'inline_spellchecking')
+
+        self.init_spellchecking_languages()
+
+    def init_spellchecking_languages(self):
+        try:
+            import setzer.document.spellchecker.spellchecker as spellchecker
+            languages = spellchecker.get_languages() if spellchecker.is_available() else []
+            language_code = spellchecker.get_language_code()
+        except (ImportError, ValueError):
+            languages = []
+            language_code = None
+
+        if len(languages) == 0:
+            self.view.option_inline_spellchecking.set_sensitive(False)
+            self.view.spellchecking_language_label.set_visible(False)
+            self.view.spellchecking_language_box.set_visible(False)
+            self.view.spellchecking_unavailable_label.set_visible(True)
+            return
+
+        for code, name in languages:
+            self.view.spellchecking_language_combobox.append(code, name)
+        self.view.spellchecking_language_combobox.set_active_id(language_code)
+        self.view.spellchecking_language_combobox.connect('changed', self.on_spellchecking_language_changed)
+
+    def on_spellchecking_language_changed(self, combobox):
+        self.settings.set_value('preferences', 'spellchecking_language_code', combobox.get_active_id())
+
 
 class PageEditorView(Gtk.Box):
 
@@ -119,5 +148,31 @@ class PageEditorView(Gtk.Box):
         self.append(self.option_highlight_current_line)
         self.option_highlight_matching_brackets = Gtk.CheckButton.new_with_label(_('Highlight matching brackets'))
         self.append(self.option_highlight_matching_brackets)
+
+        label = Gtk.Label()
+        label.set_markup('<b>' + _('Spellchecking') + '</b>')
+        label.set_xalign(0)
+        label.set_margin_top(18)
+        label.set_margin_bottom(6)
+        self.append(label)
+        self.option_inline_spellchecking = Gtk.CheckButton.new_with_label(_('Highlight misspelled words'))
+        self.append(self.option_inline_spellchecking)
+
+        self.spellchecking_language_label = Gtk.Label()
+        self.spellchecking_language_label.set_markup(_('Language:'))
+        self.spellchecking_language_label.set_xalign(0)
+        self.spellchecking_language_label.set_margin_top(12)
+        self.spellchecking_language_label.set_margin_bottom(6)
+        self.append(self.spellchecking_language_label)
+        self.spellchecking_language_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.spellchecking_language_combobox = Gtk.ComboBoxText()
+        self.spellchecking_language_box.append(self.spellchecking_language_combobox)
+        self.append(self.spellchecking_language_box)
+
+        self.spellchecking_unavailable_label = Gtk.Label.new(_('No dictionaries are installed on your system.'))
+        self.spellchecking_unavailable_label.set_xalign(0)
+        self.spellchecking_unavailable_label.set_margin_top(6)
+        self.spellchecking_unavailable_label.set_visible(False)
+        self.append(self.spellchecking_unavailable_label)
 
 

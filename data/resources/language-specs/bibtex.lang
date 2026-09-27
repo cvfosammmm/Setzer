@@ -37,6 +37,18 @@
 
   <definitions>
 
+    <!-- the entry type together with the citation key, so that the key is not
+         spellchecked -->
+    <context id="entry-key" class="no-spell-check">
+      <match extended="true">
+        (@[a-z]+)\s*\{\s*([^,\s\{\}]+)
+      </match>
+
+      <include>
+        <context sub-pattern="1" style-ref="entry-type"/>
+      </include>
+    </context>
+
     <context id="entry-type" style-ref="entry-type" class="no-spell-check">
       <prefix>@</prefix>
 
@@ -97,6 +109,21 @@
       <keyword>year</keyword>
     </context>
 
+    <!-- fields holding identifiers instead of prose, they are not
+         spellchecked -->
+    <context id="identifier-field" class="no-spell-check">
+      <match extended="true">
+        \b(crossref|doi|eprint|eprinttype|file|isbn|issn|key|url|urldate)\b
+        \s*=\s*
+        ((\{.*?\})|(".*?"))
+      </match>
+
+      <include>
+        <context sub-pattern="1" style-ref="field"/>
+        <context sub-pattern="2" style-ref="string" class="string"/>
+      </include>
+    </context>
+
     <context id="string" class-disabled="no-spell-check">
       <match extended="true">
         =\s*(\{.*?\})|(".*?")
@@ -111,7 +138,9 @@
     <context id="bibtex">
       <include>
         <context ref="latex:latex"/>
+        <context ref="entry-key"/>
         <context ref="entry-type"/>
+        <context ref="identifier-field"/>
         <context ref="field"/>
         <context ref="string"/>
       </include>

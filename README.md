@@ -23,6 +23,9 @@ This way is probably a bit faster and may save you some disk space. I develop Se
 1. Run the following command to install prerequisite Debian packages:<br />
 `apt-get install meson python3-gi gir1.2-gtk-4.0 gir1.2-gtksource-5 gir1.2-pango-1.0 gir1.2-poppler-0.18 gir1.2-webkit-6.0 gettext python3-cairo python3-gi-cairo python3-pexpect gir1.2-adw-1 python3-bibtexparser python3-willow python3-numpy gir1.2-xdp-1.0`
 
+Spellchecking is optional, Setzer runs without it. To enable it, additionally install libspelling and at least one hunspell dictionary, for example:<br />
+`apt-get install gir1.2-spelling-1 libspelling-1-1 hunspell-en-us`
+
 2. Download and Unpack Setzer from GitHub
 
 3. cd to Setzer folder

@@ -77,8 +77,19 @@ class Document(Observable):
         if self.is_latex_document(): self.update_matching_blocks = update_matching_blocks.UpdateMatchingBlocks(self)
         if self.is_latex_document(): self.bracket_completion = bracket_completion.BracketCompletion(self)
         if self.is_latex_document(): self.autocomplete = autocomplete.Autocomplete(self)
+        self.spellchecker = self.init_spellchecker()
 
         self.settings.connect('settings_changed', self.on_settings_changed)
+
+    def init_spellchecker(self):
+        ''' Spellchecking is optional, Setzer runs without libspelling
+            installed and with no dictionaries present. '''
+
+        try:
+            import setzer.document.spellchecker.spellchecker as spellchecker
+            return spellchecker.Spellchecker(self)
+        except (ImportError, ValueError):
+            return None
 
     def on_settings_changed(self, settings, parameter):
         section, item, value = parameter
