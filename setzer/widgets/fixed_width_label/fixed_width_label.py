@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
+import math
+
 import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk, Gdk, Pango, PangoCairo
@@ -27,6 +29,7 @@ class FixedWidthLabel(Gtk.DrawingArea):
     def __init__(self, width):
         Gtk.DrawingArea.__init__(self)
 
+        self.width = width
         self.set_size_request(width, -1)
         self.layout = Pango.Layout(self.get_pango_context())
         self.layout.set_text('')
@@ -37,6 +40,18 @@ class FixedWidthLabel(Gtk.DrawingArea):
 
     def set_text(self, text):
         self.layout.set_text(text)
+
+        # grow (never shrink) if the text doesn't fit, e.g. in longer translations.
+        # the size request includes css padding, so the text only gets what is left of it.
+        self.layout.set_width(-1)
+        text_width = math.ceil(self.layout.get_size()[0] / Pango.SCALE)
+        padding = self.get_style_context().get_padding()
+        padding_width = padding.left + padding.right
+        if text_width + padding_width > self.width:
+            self.width = text_width + padding_width
+            self.set_size_request(self.width, -1)
+        self.layout.set_width((self.width - padding_width) * Pango.SCALE)
+
         self.queue_draw()
 
     def draw(self, drawing_area, ctx, width, height):
