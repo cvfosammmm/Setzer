@@ -356,6 +356,33 @@ box.document-stats {
     margin-bottom: 24px;
 }
 
+box.git-section {
+    margin-bottom: 24px;
+}
+box.git-section label.branch {
+    padding: 9px 8px 0px 9px;
+}
+box.git-section label.commit {
+    padding: 3px 8px 0px 9px;
+}
+box.git-section label.description {
+    color: @description_color;
+    font-size: 13px;
+    padding: 3px 8px 3px 9px;
+}
+box.git-section box.buttons {
+    padding: 6px 8px 3px 9px;
+}
+
+.git-commit-dialog box.files box.file-row {
+    padding: 3px 9px;
+}
+.git-commit-dialog box.files label.description,
+.git-credentials-dialog label.description {
+    color: @description_color;
+    font-size: 13px;
+}
+
 /*
 ** shortcuts bar
 */
